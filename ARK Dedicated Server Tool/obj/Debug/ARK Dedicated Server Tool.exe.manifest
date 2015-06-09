@@ -4,7 +4,7 @@
   <description asmv2:iconFile="favicon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="ARK Dedicated Server Tool" version="1.0.0.21" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="ARK Dedicated Server Tool" version="1.0.0.22" language="neutral" processorArchitecture="msil" />
     <commandLine file="ARK Dedicated Server Tool.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -44,13 +44,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ARK Dedicated Server Tool.exe" size="75264">
-      <assemblyIdentity name="ARK Dedicated Server Tool" version="1.0.0.21" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="ARK Dedicated Server Tool" version="1.0.0.22" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>n3biIDWJSD/15Yq777CozyQxJxVVNUPNi00zkc3JvPY=</dsig:DigestValue>
+        <dsig:DigestValue>iUzeDtdQUSx1Kv1c4aemsBNYg/2U6HfXljpCabe3cxQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
