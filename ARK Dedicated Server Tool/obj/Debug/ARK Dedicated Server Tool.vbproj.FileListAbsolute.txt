@@ -1,3 +1,0 @@
-C:\Users\HellsGuard\Documents\New folder\ARK Dedicated Server Tool\bin\Debug\ARK Dedicated Server Tool.exe.config
-C:\Users\HellsGuard\Documents\New folder\ARK Dedicated Server Tool\obj\Debug\Interop.Shell32.dll
-C:\Users\HellsGuard\Documents\New folder\ARK Dedicated Server Tool\obj\Debug\ARK Dedicated Server Tool.vbproj.ResolveComReference.cache
