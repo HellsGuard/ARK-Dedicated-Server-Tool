@@ -1,0 +1,8 @@
+*.suo
+*.swp
+*~
+packages/
+ARK Dedicated Server Tool/bin/
+ARK Dedicated Server Tool/obj/
+Ark Server Manager/bin/
+Ark Server Manager/obj/
