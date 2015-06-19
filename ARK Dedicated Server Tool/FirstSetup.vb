@@ -11,8 +11,6 @@
         My.Settings.defaultSetup = True
         My.Settings.firstTimeRan = True
         My.Settings.userSetDirectoryBool = False
-        My.Settings.userSetDirectory = Directory.GetCurrentDirectory & "\ark_server\ShooterGame\Saved\Config\WindowsServer\"
-        My.Settings.runningServerDirectory = Directory.GetCurrentDirectory & "\ark_server\ShooterGame\Binaries\Win64\"
         My.Settings.Save()
 
         Main.DefaultSetup()

@@ -35,7 +35,6 @@ Partial Class Main
         Me.chkServerCrosshair = New System.Windows.Forms.CheckBox()
         Me.chkServerForceNoHUD = New System.Windows.Forms.CheckBox()
         Me.chkAllowThirdPersonPlayer = New System.Windows.Forms.CheckBox()
-        Me.chkMessageOfTheDay = New System.Windows.Forms.CheckBox()
         Me.txtMessageOfTheDay = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtMaxPlayers = New System.Windows.Forms.TextBox()
@@ -60,9 +59,6 @@ Partial Class Main
         Me.txtTime = New System.Windows.Forms.TextBox()
         Me.cmbTimeAMPM = New System.Windows.Forms.ComboBox()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.setDirectoryDialog = New System.Windows.Forms.FolderBrowserDialog()
         Me.lbServerSelect = New System.Windows.Forms.ListBox()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -73,14 +69,18 @@ Partial Class Main
         Me.Label12 = New System.Windows.Forms.Label()
         Me.chkMultiHome = New System.Windows.Forms.CheckBox()
         Me.txtMultiHome = New System.Windows.Forms.TextBox()
-        Me.MenuStrip1.SuspendLayout()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.chkDisableStructureDecayPvE = New System.Windows.Forms.CheckBox()
+        Me.chkAllowFlyerCarryPvE = New System.Windows.Forms.CheckBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.txtMaxStructuresInRange = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(37, 33)
+        Me.Label1.Location = New System.Drawing.Point(37, 12)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(91, 13)
         Me.Label1.TabIndex = 1
@@ -89,7 +89,7 @@ Partial Class Main
         'chkShowPlayerMarker
         '
         Me.chkShowPlayerMarker.AutoSize = True
-        Me.chkShowPlayerMarker.Location = New System.Drawing.Point(7, 54)
+        Me.chkShowPlayerMarker.Location = New System.Drawing.Point(7, 33)
         Me.chkShowPlayerMarker.Name = "chkShowPlayerMarker"
         Me.chkShowPlayerMarker.Size = New System.Drawing.Size(160, 17)
         Me.chkShowPlayerMarker.TabIndex = 2
@@ -99,7 +99,7 @@ Partial Class Main
         'chkServerHardcore
         '
         Me.chkServerHardcore.AutoSize = True
-        Me.chkServerHardcore.Location = New System.Drawing.Point(7, 78)
+        Me.chkServerHardcore.Location = New System.Drawing.Point(7, 57)
         Me.chkServerHardcore.Name = "chkServerHardcore"
         Me.chkServerHardcore.Size = New System.Drawing.Size(134, 17)
         Me.chkServerHardcore.TabIndex = 3
@@ -109,7 +109,7 @@ Partial Class Main
         'chkGlobalVoiceChat
         '
         Me.chkGlobalVoiceChat.AutoSize = True
-        Me.chkGlobalVoiceChat.Location = New System.Drawing.Point(7, 101)
+        Me.chkGlobalVoiceChat.Location = New System.Drawing.Point(7, 80)
         Me.chkGlobalVoiceChat.Name = "chkGlobalVoiceChat"
         Me.chkGlobalVoiceChat.Size = New System.Drawing.Size(111, 17)
         Me.chkGlobalVoiceChat.TabIndex = 4
@@ -119,7 +119,7 @@ Partial Class Main
         'chkProximityChat
         '
         Me.chkProximityChat.AutoSize = True
-        Me.chkProximityChat.Location = New System.Drawing.Point(7, 124)
+        Me.chkProximityChat.Location = New System.Drawing.Point(7, 103)
         Me.chkProximityChat.Name = "chkProximityChat"
         Me.chkProximityChat.Size = New System.Drawing.Size(116, 17)
         Me.chkProximityChat.TabIndex = 5
@@ -129,7 +129,7 @@ Partial Class Main
         'chkAllowTributeDownloads
         '
         Me.chkAllowTributeDownloads.AutoSize = True
-        Me.chkAllowTributeDownloads.Location = New System.Drawing.Point(7, 147)
+        Me.chkAllowTributeDownloads.Location = New System.Drawing.Point(7, 126)
         Me.chkAllowTributeDownloads.Name = "chkAllowTributeDownloads"
         Me.chkAllowTributeDownloads.Size = New System.Drawing.Size(132, 17)
         Me.chkAllowTributeDownloads.TabIndex = 6
@@ -139,7 +139,7 @@ Partial Class Main
         'chkAlwaysNotifyPlayerJoined
         '
         Me.chkAlwaysNotifyPlayerJoined.AutoSize = True
-        Me.chkAlwaysNotifyPlayerJoined.Location = New System.Drawing.Point(7, 170)
+        Me.chkAlwaysNotifyPlayerJoined.Location = New System.Drawing.Point(7, 149)
         Me.chkAlwaysNotifyPlayerJoined.Name = "chkAlwaysNotifyPlayerJoined"
         Me.chkAlwaysNotifyPlayerJoined.Size = New System.Drawing.Size(147, 17)
         Me.chkAlwaysNotifyPlayerJoined.TabIndex = 7
@@ -149,7 +149,7 @@ Partial Class Main
         'chkDontAlwaysNotifyPlayerJoined
         '
         Me.chkDontAlwaysNotifyPlayerJoined.AutoSize = True
-        Me.chkDontAlwaysNotifyPlayerJoined.Location = New System.Drawing.Point(7, 193)
+        Me.chkDontAlwaysNotifyPlayerJoined.Location = New System.Drawing.Point(7, 172)
         Me.chkDontAlwaysNotifyPlayerJoined.Name = "chkDontAlwaysNotifyPlayerJoined"
         Me.chkDontAlwaysNotifyPlayerJoined.Size = New System.Drawing.Size(177, 17)
         Me.chkDontAlwaysNotifyPlayerJoined.TabIndex = 8
@@ -159,7 +159,7 @@ Partial Class Main
         'chkServerPVE
         '
         Me.chkServerPVE.AutoSize = True
-        Me.chkServerPVE.Location = New System.Drawing.Point(7, 216)
+        Me.chkServerPVE.Location = New System.Drawing.Point(7, 195)
         Me.chkServerPVE.Name = "chkServerPVE"
         Me.chkServerPVE.Size = New System.Drawing.Size(80, 17)
         Me.chkServerPVE.TabIndex = 9
@@ -169,7 +169,7 @@ Partial Class Main
         'chkServerCrosshair
         '
         Me.chkServerCrosshair.AutoSize = True
-        Me.chkServerCrosshair.Location = New System.Drawing.Point(7, 239)
+        Me.chkServerCrosshair.Location = New System.Drawing.Point(7, 218)
         Me.chkServerCrosshair.Name = "chkServerCrosshair"
         Me.chkServerCrosshair.Size = New System.Drawing.Size(105, 17)
         Me.chkServerCrosshair.TabIndex = 10
@@ -179,7 +179,7 @@ Partial Class Main
         'chkServerForceNoHUD
         '
         Me.chkServerForceNoHUD.AutoSize = True
-        Me.chkServerForceNoHUD.Location = New System.Drawing.Point(7, 262)
+        Me.chkServerForceNoHUD.Location = New System.Drawing.Point(7, 241)
         Me.chkServerForceNoHUD.Name = "chkServerForceNoHUD"
         Me.chkServerForceNoHUD.Size = New System.Drawing.Size(97, 17)
         Me.chkServerForceNoHUD.TabIndex = 11
@@ -189,28 +189,16 @@ Partial Class Main
         'chkAllowThirdPersonPlayer
         '
         Me.chkAllowThirdPersonPlayer.AutoSize = True
-        Me.chkAllowThirdPersonPlayer.Location = New System.Drawing.Point(7, 285)
+        Me.chkAllowThirdPersonPlayer.Location = New System.Drawing.Point(7, 264)
         Me.chkAllowThirdPersonPlayer.Name = "chkAllowThirdPersonPlayer"
         Me.chkAllowThirdPersonPlayer.Size = New System.Drawing.Size(122, 17)
         Me.chkAllowThirdPersonPlayer.TabIndex = 12
         Me.chkAllowThirdPersonPlayer.Text = "Enable Third Person"
         Me.chkAllowThirdPersonPlayer.UseVisualStyleBackColor = True
         '
-        'chkMessageOfTheDay
-        '
-        Me.chkMessageOfTheDay.AutoSize = True
-        Me.chkMessageOfTheDay.Checked = True
-        Me.chkMessageOfTheDay.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMessageOfTheDay.Location = New System.Drawing.Point(7, 309)
-        Me.chkMessageOfTheDay.Name = "chkMessageOfTheDay"
-        Me.chkMessageOfTheDay.Size = New System.Drawing.Size(121, 17)
-        Me.chkMessageOfTheDay.TabIndex = 13
-        Me.chkMessageOfTheDay.Text = "Message of the Day"
-        Me.chkMessageOfTheDay.UseVisualStyleBackColor = True
-        '
         'txtMessageOfTheDay
         '
-        Me.txtMessageOfTheDay.Location = New System.Drawing.Point(7, 333)
+        Me.txtMessageOfTheDay.Location = New System.Drawing.Point(197, 349)
         Me.txtMessageOfTheDay.Name = "txtMessageOfTheDay"
         Me.txtMessageOfTheDay.Size = New System.Drawing.Size(177, 20)
         Me.txtMessageOfTheDay.TabIndex = 14
@@ -219,7 +207,7 @@ Partial Class Main
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(199, 33)
+        Me.Label2.Location = New System.Drawing.Point(220, 12)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(138, 13)
         Me.Label2.TabIndex = 15
@@ -227,7 +215,7 @@ Partial Class Main
         '
         'txtMaxPlayers
         '
-        Me.txtMaxPlayers.Location = New System.Drawing.Point(217, 49)
+        Me.txtMaxPlayers.Location = New System.Drawing.Point(238, 28)
         Me.txtMaxPlayers.Name = "txtMaxPlayers"
         Me.txtMaxPlayers.Size = New System.Drawing.Size(100, 20)
         Me.txtMaxPlayers.TabIndex = 16
@@ -237,15 +225,15 @@ Partial Class Main
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(199, 79)
+        Me.Label3.Location = New System.Drawing.Point(212, 58)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(133, 13)
+        Me.Label3.Size = New System.Drawing.Size(155, 13)
         Me.Label3.TabIndex = 17
-        Me.Label3.Text = "Difficulty Offset (0 - 1)"
+        Me.Label3.Text = "Difficulty Offset (1.0 - 3.0)"
         '
         'txtDifficultyOffset
         '
-        Me.txtDifficultyOffset.Location = New System.Drawing.Point(217, 95)
+        Me.txtDifficultyOffset.Location = New System.Drawing.Point(238, 74)
         Me.txtDifficultyOffset.Name = "txtDifficultyOffset"
         Me.txtDifficultyOffset.Size = New System.Drawing.Size(100, 20)
         Me.txtDifficultyOffset.TabIndex = 18
@@ -254,7 +242,7 @@ Partial Class Main
         'btnSaveConfig
         '
         Me.btnSaveConfig.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSaveConfig.Location = New System.Drawing.Point(525, 318)
+        Me.btnSaveConfig.Location = New System.Drawing.Point(600, 155)
         Me.btnSaveConfig.Name = "btnSaveConfig"
         Me.btnSaveConfig.Size = New System.Drawing.Size(88, 23)
         Me.btnSaveConfig.TabIndex = 19
@@ -265,7 +253,7 @@ Partial Class Main
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(215, 124)
+        Me.Label4.Location = New System.Drawing.Point(236, 103)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(102, 13)
         Me.Label4.TabIndex = 20
@@ -273,7 +261,7 @@ Partial Class Main
         '
         'txtServerPassword
         '
-        Me.txtServerPassword.Location = New System.Drawing.Point(202, 140)
+        Me.txtServerPassword.Location = New System.Drawing.Point(223, 119)
         Me.txtServerPassword.Name = "txtServerPassword"
         Me.txtServerPassword.Size = New System.Drawing.Size(130, 20)
         Me.txtServerPassword.TabIndex = 21
@@ -282,7 +270,7 @@ Partial Class Main
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(218, 171)
+        Me.Label5.Location = New System.Drawing.Point(239, 150)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(99, 13)
         Me.Label5.TabIndex = 22
@@ -290,7 +278,7 @@ Partial Class Main
         '
         'txtAdminPassword
         '
-        Me.txtAdminPassword.Location = New System.Drawing.Point(202, 187)
+        Me.txtAdminPassword.Location = New System.Drawing.Point(223, 166)
         Me.txtAdminPassword.Name = "txtAdminPassword"
         Me.txtAdminPassword.Size = New System.Drawing.Size(130, 20)
         Me.txtAdminPassword.TabIndex = 23
@@ -299,7 +287,7 @@ Partial Class Main
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(227, 217)
+        Me.Label6.Location = New System.Drawing.Point(248, 196)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(80, 13)
         Me.Label6.TabIndex = 24
@@ -307,7 +295,7 @@ Partial Class Main
         '
         'txtServerName
         '
-        Me.txtServerName.Location = New System.Drawing.Point(202, 233)
+        Me.txtServerName.Location = New System.Drawing.Point(223, 212)
         Me.txtServerName.Name = "txtServerName"
         Me.txtServerName.Size = New System.Drawing.Size(130, 20)
         Me.txtServerName.TabIndex = 25
@@ -316,7 +304,7 @@ Partial Class Main
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(230, 263)
+        Me.Label7.Location = New System.Drawing.Point(248, 242)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(71, 13)
         Me.Label7.TabIndex = 27
@@ -324,7 +312,7 @@ Partial Class Main
         '
         'txtServerPort
         '
-        Me.txtServerPort.Location = New System.Drawing.Point(202, 279)
+        Me.txtServerPort.Location = New System.Drawing.Point(223, 258)
         Me.txtServerPort.Name = "txtServerPort"
         Me.txtServerPort.Size = New System.Drawing.Size(130, 20)
         Me.txtServerPort.TabIndex = 28
@@ -333,7 +321,7 @@ Partial Class Main
         'btnUpdateServer
         '
         Me.btnUpdateServer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnUpdateServer.Location = New System.Drawing.Point(226, 403)
+        Me.btnUpdateServer.Location = New System.Drawing.Point(405, 174)
         Me.btnUpdateServer.Name = "btnUpdateServer"
         Me.btnUpdateServer.Size = New System.Drawing.Size(101, 23)
         Me.btnUpdateServer.TabIndex = 29
@@ -342,7 +330,7 @@ Partial Class Main
         '
         'btnLaunchServer
         '
-        Me.btnLaunchServer.Location = New System.Drawing.Point(12, 403)
+        Me.btnLaunchServer.Location = New System.Drawing.Point(405, 116)
         Me.btnLaunchServer.Name = "btnLaunchServer"
         Me.btnLaunchServer.Size = New System.Drawing.Size(101, 23)
         Me.btnLaunchServer.TabIndex = 30
@@ -351,7 +339,7 @@ Partial Class Main
         '
         'btnStopServer
         '
-        Me.btnStopServer.Location = New System.Drawing.Point(119, 403)
+        Me.btnStopServer.Location = New System.Drawing.Point(405, 145)
         Me.btnStopServer.Name = "btnStopServer"
         Me.btnStopServer.Size = New System.Drawing.Size(101, 23)
         Me.btnStopServer.TabIndex = 31
@@ -360,7 +348,7 @@ Partial Class Main
         '
         'btnInstallSteamCMD
         '
-        Me.btnInstallSteamCMD.Location = New System.Drawing.Point(514, 289)
+        Me.btnInstallSteamCMD.Location = New System.Drawing.Point(591, 126)
         Me.btnInstallSteamCMD.Name = "btnInstallSteamCMD"
         Me.btnInstallSteamCMD.Size = New System.Drawing.Size(106, 23)
         Me.btnInstallSteamCMD.TabIndex = 32
@@ -372,7 +360,7 @@ Partial Class Main
         Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(362, 33)
+        Me.Label8.Location = New System.Drawing.Point(407, 264)
         Me.Label8.MaximumSize = New System.Drawing.Size(294, 143)
         Me.Label8.MinimumSize = New System.Drawing.Size(294, 143)
         Me.Label8.Name = "Label8"
@@ -385,7 +373,7 @@ Partial Class Main
         Me.lblVersion.AutoSize = True
         Me.lblVersion.BackColor = System.Drawing.SystemColors.Control
         Me.lblVersion.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.lblVersion.Location = New System.Drawing.Point(511, 416)
+        Me.lblVersion.Location = New System.Drawing.Point(407, 242)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(39, 13)
         Me.lblVersion.TabIndex = 34
@@ -395,7 +383,7 @@ Partial Class Main
         '
         Me.chkScheduledUpdate.AutoSize = True
         Me.chkScheduledUpdate.Enabled = False
-        Me.chkScheduledUpdate.Location = New System.Drawing.Point(212, 315)
+        Me.chkScheduledUpdate.Location = New System.Drawing.Point(531, 196)
         Me.chkScheduledUpdate.Name = "chkScheduledUpdate"
         Me.chkScheduledUpdate.Size = New System.Drawing.Size(120, 17)
         Me.chkScheduledUpdate.TabIndex = 36
@@ -405,7 +393,7 @@ Partial Class Main
         'txtTime
         '
         Me.txtTime.Enabled = False
-        Me.txtTime.Location = New System.Drawing.Point(216, 353)
+        Me.txtTime.Location = New System.Drawing.Point(535, 234)
         Me.txtTime.Name = "txtTime"
         Me.txtTime.Size = New System.Drawing.Size(64, 20)
         Me.txtTime.TabIndex = 37
@@ -415,7 +403,7 @@ Partial Class Main
         Me.cmbTimeAMPM.Enabled = False
         Me.cmbTimeAMPM.FormattingEnabled = True
         Me.cmbTimeAMPM.Items.AddRange(New Object() {"AM", "PM"})
-        Me.cmbTimeAMPM.Location = New System.Drawing.Point(286, 353)
+        Me.cmbTimeAMPM.Location = New System.Drawing.Point(605, 234)
         Me.cmbTimeAMPM.Name = "cmbTimeAMPM"
         Me.cmbTimeAMPM.Size = New System.Drawing.Size(38, 21)
         Me.cmbTimeAMPM.TabIndex = 38
@@ -425,35 +413,11 @@ Partial Class Main
         Me.Label9.AutoSize = True
         Me.Label9.Enabled = False
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(221, 337)
+        Me.Label9.Location = New System.Drawing.Point(540, 218)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(101, 13)
         Me.Label9.TabIndex = 39
         Me.Label9.Text = "Time (Eg. 12:00)"
-        '
-        'MenuStrip1
-        '
-        Me.MenuStrip1.BackColor = System.Drawing.SystemColors.Control
-        Me.MenuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(663, 24)
-        Me.MenuStrip1.TabIndex = 40
-        Me.MenuStrip1.Text = "MenuStrip1"
-        '
-        'FileToolStripMenuItem
-        '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
-        Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
-        Me.FileToolStripMenuItem.Text = "&File"
-        '
-        'ExitToolStripMenuItem
-        '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.ExitToolStripMenuItem.Text = "&Exit"
         '
         'setDirectoryDialog
         '
@@ -461,8 +425,9 @@ Partial Class Main
         '
         'lbServerSelect
         '
+        Me.lbServerSelect.Enabled = False
         Me.lbServerSelect.FormattingEnabled = True
-        Me.lbServerSelect.Location = New System.Drawing.Point(477, 203)
+        Me.lbServerSelect.Location = New System.Drawing.Point(522, 28)
         Me.lbServerSelect.Name = "lbServerSelect"
         Me.lbServerSelect.Size = New System.Drawing.Size(179, 69)
         Me.lbServerSelect.TabIndex = 41
@@ -470,8 +435,9 @@ Partial Class Main
         'Label10
         '
         Me.Label10.AutoSize = True
+        Me.Label10.Enabled = False
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(522, 187)
+        Me.Label10.Location = New System.Drawing.Point(567, 12)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(84, 13)
         Me.Label10.TabIndex = 42
@@ -479,7 +445,8 @@ Partial Class Main
         '
         'txtMultiServerName
         '
-        Me.txtMultiServerName.Location = New System.Drawing.Point(353, 203)
+        Me.txtMultiServerName.Enabled = False
+        Me.txtMultiServerName.Location = New System.Drawing.Point(398, 28)
         Me.txtMultiServerName.Name = "txtMultiServerName"
         Me.txtMultiServerName.Size = New System.Drawing.Size(118, 20)
         Me.txtMultiServerName.TabIndex = 43
@@ -487,8 +454,9 @@ Partial Class Main
         'Label11
         '
         Me.Label11.AutoSize = True
+        Me.Label11.Enabled = False
         Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(357, 187)
+        Me.Label11.Location = New System.Drawing.Point(402, 12)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(111, 13)
         Me.Label11.TabIndex = 44
@@ -496,17 +464,18 @@ Partial Class Main
         '
         'btnSaveMultiServer
         '
-        Me.btnSaveMultiServer.Location = New System.Drawing.Point(373, 229)
+        Me.btnSaveMultiServer.Enabled = False
+        Me.btnSaveMultiServer.Location = New System.Drawing.Point(421, 54)
         Me.btnSaveMultiServer.Name = "btnSaveMultiServer"
         Me.btnSaveMultiServer.Size = New System.Drawing.Size(75, 23)
         Me.btnSaveMultiServer.TabIndex = 45
-        Me.btnSaveMultiServer.Text = "Save Server"
+        Me.btnSaveMultiServer.Text = "Add Server"
         Me.btnSaveMultiServer.UseVisualStyleBackColor = True
         '
         'lblCurrentServer
         '
         Me.lblCurrentServer.AutoSize = True
-        Me.lblCurrentServer.Location = New System.Drawing.Point(511, 403)
+        Me.lblCurrentServer.Location = New System.Drawing.Point(519, 100)
         Me.lblCurrentServer.Name = "lblCurrentServer"
         Me.lblCurrentServer.Size = New System.Drawing.Size(45, 13)
         Me.lblCurrentServer.TabIndex = 46
@@ -516,7 +485,7 @@ Partial Class Main
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(370, 335)
+        Me.Label12.Location = New System.Drawing.Point(22, 371)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(86, 13)
         Me.Label12.TabIndex = 47
@@ -525,7 +494,7 @@ Partial Class Main
         'chkMultiHome
         '
         Me.chkMultiHome.AutoSize = True
-        Me.chkMultiHome.Location = New System.Drawing.Point(373, 315)
+        Me.chkMultiHome.Location = New System.Drawing.Point(23, 351)
         Me.chkMultiHome.Name = "chkMultiHome"
         Me.chkMultiHome.Size = New System.Drawing.Size(79, 17)
         Me.chkMultiHome.TabIndex = 48
@@ -534,17 +503,70 @@ Partial Class Main
         '
         'txtMultiHome
         '
-        Me.txtMultiHome.Location = New System.Drawing.Point(360, 351)
+        Me.txtMultiHome.Location = New System.Drawing.Point(12, 387)
         Me.txtMultiHome.Name = "txtMultiHome"
         Me.txtMultiHome.Size = New System.Drawing.Size(111, 20)
         Me.txtMultiHome.TabIndex = 49
         Me.txtMultiHome.Text = "127.0.0.1"
         '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(224, 332)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(120, 13)
+        Me.Label13.TabIndex = 50
+        Me.Label13.Text = "Message of the Day"
+        '
+        'chkDisableStructureDecayPvE
+        '
+        Me.chkDisableStructureDecayPvE.AutoSize = True
+        Me.chkDisableStructureDecayPvE.Location = New System.Drawing.Point(7, 285)
+        Me.chkDisableStructureDecayPvE.Name = "chkDisableStructureDecayPvE"
+        Me.chkDisableStructureDecayPvE.Size = New System.Drawing.Size(170, 17)
+        Me.chkDisableStructureDecayPvE.TabIndex = 51
+        Me.chkDisableStructureDecayPvE.Text = "Disable Structure Decay (PvE)"
+        Me.chkDisableStructureDecayPvE.UseVisualStyleBackColor = True
+        '
+        'chkAllowFlyerCarryPvE
+        '
+        Me.chkAllowFlyerCarryPvE.AutoSize = True
+        Me.chkAllowFlyerCarryPvE.Location = New System.Drawing.Point(7, 307)
+        Me.chkAllowFlyerCarryPvE.Name = "chkAllowFlyerCarryPvE"
+        Me.chkAllowFlyerCarryPvE.Size = New System.Drawing.Size(132, 17)
+        Me.chkAllowFlyerCarryPvE.TabIndex = 52
+        Me.chkAllowFlyerCarryPvE.Text = "Allow Flyer Carry (PvE)"
+        Me.chkAllowFlyerCarryPvE.UseVisualStyleBackColor = True
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(214, 286)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(148, 13)
+        Me.Label14.TabIndex = 53
+        Me.Label14.Text = "Max Structures In Range"
+        '
+        'txtMaxStructuresInRange
+        '
+        Me.txtMaxStructuresInRange.Location = New System.Drawing.Point(238, 302)
+        Me.txtMaxStructuresInRange.Name = "txtMaxStructuresInRange"
+        Me.txtMaxStructuresInRange.Size = New System.Drawing.Size(100, 20)
+        Me.txtMaxStructuresInRange.TabIndex = 54
+        Me.txtMaxStructuresInRange.Text = "1300"
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(663, 438)
+        Me.ClientSize = New System.Drawing.Size(709, 415)
+        Me.Controls.Add(Me.txtMaxStructuresInRange)
+        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.chkAllowFlyerCarryPvE)
+        Me.Controls.Add(Me.chkDisableStructureDecayPvE)
+        Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.txtMultiHome)
         Me.Controls.Add(Me.chkMultiHome)
         Me.Controls.Add(Me.Label12)
@@ -578,7 +600,6 @@ Partial Class Main
         Me.Controls.Add(Me.txtMaxPlayers)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtMessageOfTheDay)
-        Me.Controls.Add(Me.chkMessageOfTheDay)
         Me.Controls.Add(Me.chkAllowThirdPersonPlayer)
         Me.Controls.Add(Me.chkServerForceNoHUD)
         Me.Controls.Add(Me.chkServerCrosshair)
@@ -591,16 +612,10 @@ Partial Class Main
         Me.Controls.Add(Me.chkServerHardcore)
         Me.Controls.Add(Me.chkShowPlayerMarker)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(679, 476)
-        Me.MinimumSize = New System.Drawing.Size(679, 476)
         Me.Name = "Main"
         Me.Text = "ARK: Survival Evolved - Server Tool"
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -617,7 +632,6 @@ Partial Class Main
     Friend WithEvents chkServerCrosshair As System.Windows.Forms.CheckBox
     Friend WithEvents chkServerForceNoHUD As System.Windows.Forms.CheckBox
     Friend WithEvents chkAllowThirdPersonPlayer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMessageOfTheDay As System.Windows.Forms.CheckBox
     Friend WithEvents txtMessageOfTheDay As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txtMaxPlayers As System.Windows.Forms.TextBox
@@ -642,9 +656,6 @@ Partial Class Main
     Friend WithEvents txtTime As System.Windows.Forms.TextBox
     Friend WithEvents cmbTimeAMPM As System.Windows.Forms.ComboBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
-    Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents setDirectoryDialog As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents lbServerSelect As System.Windows.Forms.ListBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
@@ -655,5 +666,10 @@ Partial Class Main
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents chkMultiHome As System.Windows.Forms.CheckBox
     Friend WithEvents txtMultiHome As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents chkDisableStructureDecayPvE As System.Windows.Forms.CheckBox
+    Friend WithEvents chkAllowFlyerCarryPvE As System.Windows.Forms.CheckBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtMaxStructuresInRange As System.Windows.Forms.TextBox
 
 End Class
