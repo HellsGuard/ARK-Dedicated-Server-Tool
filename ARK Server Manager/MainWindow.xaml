@@ -1,0 +1,13 @@
+﻿<Window x:Class="ARK_Server_Manager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="191*"/>
+            <ColumnDefinition Width="59*"/>
+            <ColumnDefinition Width="267*"/>
+        </Grid.ColumnDefinitions>
+
+    </Grid>
+</Window>
