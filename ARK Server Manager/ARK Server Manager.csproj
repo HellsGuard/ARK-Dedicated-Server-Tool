@@ -66,6 +66,7 @@
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\ServerSettings.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
+    <Compile Include="Lib\ServerRuntime.cs" />
     <Compile Include="ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>

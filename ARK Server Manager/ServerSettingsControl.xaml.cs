@@ -21,10 +21,25 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
+        ServerSettingsViewModel settingsViewModel;
+        ServerRuntimeViewModel runtimeViewModel;
+
+        public ServerSettingsViewModel Settings
+        {
+            get { return this.settingsViewModel; }
+        }
+
+        public ServerRuntimeViewModel Runtime
+        {
+            get { return this.runtimeViewModel; }
+        }
+
         internal ServerSettingsControl(ServerSettingsViewModel viewModel)
         {
             InitializeComponent();
-            this.DataContext = viewModel;
+            this.settingsViewModel = viewModel;
+            this.runtimeViewModel = new ServerRuntimeViewModel(settingsViewModel.Model);
+            this.DataContext = this;
         }
     }
 }

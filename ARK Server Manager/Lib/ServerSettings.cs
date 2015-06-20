@@ -62,141 +62,144 @@ namespace ARK_Server_Manager.Lib
 
     public class ServerSettingsViewModel : ViewModelBase
     {
-        ServerSettings settings;
+        ServerSettings model;
+
+        public ServerSettings Model
+        {
+            get { return model; }
+        }
 
         public ServerSettingsViewModel(ServerSettings settings)
         {
-            this.settings = settings;
+            this.model = settings;
         }
-
         public string ProfileName {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
         public string ServerPassword
         {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
 
         public string AdminPassword
         {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
 
         public string ServerName
         {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
 
         public int ServerPort
         {
-            get { return Get<int>(settings); }
-            set { Set(settings, value); }
+            get { return Get<int>(model); }
+            set { Set(model, value); }
         }
 
         public string ServerIP
         {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
         public string MOTD
         {
-            get { return Get<string>(settings); }
-            set { Set(settings, value); }
+            get { return Get<string>(model); }
+            set { Set(model, value); }
         }
         public int MaxPlayers
         {
-            get { return Get<int>(settings); }
-            set { Set(settings, value); }
+            get { return Get<int>(model); }
+            set { Set(model, value); }
         }
 
         public float DifficultyOffset
         {
-            get { return Get<float>(settings); }
-            set { Set(settings, value); }
+            get { return Get<float>(model); }
+            set { Set(model, value); }
         }
 
         public float MaxStructuresVisible
         {
-            get { return Get<float>(settings); }
-            set { Set(settings, value); }
+            get { return Get<float>(model); }
+            set { Set(model, value); }
         }
 
         public bool ShowMapPlayerLocation
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnableGlobalVoiceChat
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnableProximityChat
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnableTributeDownloads
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnableFlyerCarry
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnableStructureDecay
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
 
         public bool EnablePlayerLeaveNotifications
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool EnablePlayerJoinedNotifications
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool EnableHardcore
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool EnablePVP
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool AllowCrosshair
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool AllowHUD
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public bool AllowThirdPersonView
         {
-            get { return Get<bool>(settings); }
-            set { Set(settings, value); }
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
-
     }
 
     public class DifficultyOffsetValueConverter : IValueConverter
