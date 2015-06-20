@@ -58,7 +58,7 @@ namespace ARK_Server_Manager
             var viewModel = new ServerSettingsViewModel(new ServerSettings());
             newTab.DataContext = viewModel;
             newTab.Content = new ServerSettingsControl(viewModel);
-            newTab.SetBinding(TabItem.HeaderProperty, new Binding("Name"));
+            newTab.SetBinding(TabItem.HeaderProperty, new Binding(ServerSettings.ProfileNameProperty));
             this.ServerTabs.Insert(this.ServerTabs.Count - 1, newTab);
             return this.ServerTabs.Count - 2;
         }

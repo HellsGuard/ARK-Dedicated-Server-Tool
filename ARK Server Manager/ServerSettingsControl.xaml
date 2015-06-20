@@ -21,7 +21,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Settings Name:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-            <TextBox Grid.Column="1" Text="{Binding Name}" VerticalContentAlignment="Center"/>
+            <TextBox Grid.Column="1" Text="{Binding ProfileName}" VerticalContentAlignment="Center"/>
         </Grid>
         <StackPanel Margin="0" Grid.Row="1">
             <Expander Header="Rules" IsExpanded="True">

@@ -85,5 +85,50 @@ namespace ARK_Server_Manager {
                 return ((string)(this["SteamCmdInstallArgs"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ConfigDirectory {
+            get {
+                return ((string)(this["ConfigDirectory"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +force_install_dir {1}  \"+app_update 346110 validate\" +quit")]
+        public string SteamCmdInstallServerArgsFormat {
+            get {
+                return ((string)(this["SteamCmdInstallServerArgsFormat"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Servers")]
+        public string ServersInstallDir {
+            get {
+                return ((string)(this["ServersInstallDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unnamed Server")]
+        public string DefaultServerProfileName {
+            get {
+                return ((string)(this["DefaultServerProfileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unnamed Server")]
+        public string DefaultServerName {
+            get {
+                return ((string)(this["DefaultServerName"]));
+            }
+        }
     }
 }

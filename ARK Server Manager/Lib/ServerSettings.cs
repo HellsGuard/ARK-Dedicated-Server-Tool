@@ -15,7 +15,9 @@ namespace ARK_Server_Manager.Lib
 
     public class ServerSettings : ISettingsBag
     {
-        public string Name = "Unnamed Server";        
+        public const string ProfileNameProperty = "ProfileName";
+
+        public string ProfileName = Config.Default.DefaultServerProfileName;        
         public bool EnableGlobalVoiceChat = true;
         public bool EnableProximityChat = true;
         public bool EnableTributeDownloads = false;
@@ -34,7 +36,7 @@ namespace ARK_Server_Manager.Lib
         public int MaxPlayers = 5;
         public float DifficultyOffset = 0.25f;
         public float MaxStructuresVisible = 1300;
-        public string ServerName = "Unnamed Server";
+        public string ServerName = Config.Default.DefaultServerName;
         public int ServerPort = 27015;
         public string ServerIP = String.Empty;
         public string MOTD = String.Empty;
@@ -45,10 +47,16 @@ namespace ARK_Server_Manager.Lib
             AdminPassword = PasswordUtils.GeneratePassword(16);
         }
 
+        public bool IsDirty
+        {
+            get;
+            set;
+        }
+
         public object this[string propertyName]
         {
             get { return this.GetType().GetField(propertyName).GetValue(this); }
-            set { this.GetType().GetField(propertyName).SetValue(this, value); }
+            set { this.GetType().GetField(propertyName).SetValue(this, value); this.IsDirty = true; }
         }
     }
 
@@ -61,7 +69,7 @@ namespace ARK_Server_Manager.Lib
             this.settings = settings;
         }
 
-        public string Name {
+        public string ProfileName {
             get { return Get<string>(settings); }
             set { Set(settings, value); }
         }
