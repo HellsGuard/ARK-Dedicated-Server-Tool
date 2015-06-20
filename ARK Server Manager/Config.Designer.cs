@@ -40,5 +40,50 @@ namespace ARK_Server_Manager {
                 return ((string)(this["DefaultUpdatePackageUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip")]
+        public string SteamCmdUrl {
+            get {
+                return ((string)(this["SteamCmdUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SteamCMD.exe")]
+        public string SteamCmdExe {
+            get {
+                return ((string)(this["SteamCmdExe"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SteamCMD")]
+        public string SteamCmdDir {
+            get {
+                return ((string)(this["SteamCmdDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SteamCMD.zip")]
+        public string SteamCmdZip {
+            get {
+                return ((string)(this["SteamCmdZip"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +quit")]
+        public string SteamCmdInstallArgs {
+            get {
+                return ((string)(this["SteamCmdInstallArgs"]));
+            }
+        }
     }
 }

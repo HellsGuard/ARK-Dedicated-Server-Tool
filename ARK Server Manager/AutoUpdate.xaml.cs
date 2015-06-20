@@ -34,10 +34,16 @@ namespace ARK_Server_Manager
                 {
                     if (this.IsActive)
                     {                        
-                        this.StatusLabel.Content = this.FindResource(u.Status);
+                        this.StatusLabel.Content = this.FindResource(u.StatusKey);
                         this.CompletionProgress.Value = u.CompletionPercent;
 
-                        if (u.CompletionPercent >= 100 || u.canceled)
+                        if(u.FailureText != null)
+                        {
+                            // TODO: Report error through UI
+                            throw new Exception(u.FailureText);
+                        }
+
+                        if (u.CompletionPercent >= 100 || u.Cancelled)
                         {
                             await Task.Delay(1000);
                             var mainWindow = new MainWindow();
