@@ -16,8 +16,6 @@ namespace ARK_Server_Manager.Lib
         const string StatusKey_Downloading = "AutoUpdater_Status_Downloading";
         const string StatusKey_Complete =    "AutoUpdater_Status_Complete";
         const string StatusKey_Cancelled =   "AutoUpdater_Status_Cancelled";
-        const string DefaultVersionURL = "https://www.dropbox.com/s/a6v1obnqigu2bpu/version.txt?dl=1";
-        const string DefaultSourceURL = "http://hellsguard.site11.com/ARK_Server_Tool/updater.zip";
 
         public async void UpdateAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
         {

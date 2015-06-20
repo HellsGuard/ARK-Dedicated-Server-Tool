@@ -57,6 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Lib\IniFile.cs" />
+    <Compile Include="Lib\PasswordUtils.cs" />
+    <Compile Include="Lib\Server.cs" />
+    <Compile Include="Lib\ServerSettings.cs" />
+    <Compile Include="Lib\ViewModelBase.cs" />
+    <Compile Include="ServerSettingsControl.xaml.cs">
+      <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="AutoUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,6 +108,11 @@
     <Compile Include="AutoUpdate.xaml.cs">
       <DependentUpon>AutoUpdate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Config.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Config.settings</DependentUpon>
+    </Compile>
     <Compile Include="Example\GlobalizedWindow.xaml.cs">
       <DependentUpon>GlobalizedWindow.xaml</DependentUpon>
     </Compile>
@@ -117,6 +130,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="ServerSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -136,6 +153,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Config.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Config.Designer.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

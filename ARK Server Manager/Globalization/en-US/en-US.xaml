@@ -15,7 +15,7 @@
     <sys:String x:Key="AutoUpdater_Status_Cancelled">Cancelled</sys:String>
     
     <!-- Main Window -->
-    <sys:String x:Key="MainWindow_Title">WPF Globalization Example (English)</sys:String>
+    <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
 
     <!-- Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
