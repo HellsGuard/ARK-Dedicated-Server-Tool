@@ -39,6 +39,7 @@ namespace ARK_Server_Manager.Lib
         public string ServerName = Config.Default.DefaultServerName;
         public int ServerPort = 27015;
         public string ServerIP = String.Empty;
+        public string SaveDirectory = String.Empty;
         public string MOTD = String.Empty;
 
         public ServerSettings()
@@ -106,6 +107,12 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+        public string SaveDirectory
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+
         public string MOTD
         {
             get { return Get<string>(model); }
