@@ -27,7 +27,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SteamCmdInstallServerArgsFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">+login {0} +force_install_dir {1}  "+app_update 346110 validate" +quit</Value>
+      <Value Profile="(Default)">+login {0} +force_install_dir "{1}"  "+app_update 346110" +quit</Value>
     </Setting>
     <Setting Name="ServersInstallDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Servers</Value>
@@ -37,6 +37,24 @@
     </Setting>
     <Setting Name="DefaultServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Unnamed Server</Value>
+    </Setting>
+    <Setting Name="ServerBinaryRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGame\Binaries\Win64</Value>
+    </Setting>
+    <Setting Name="ServerConfigRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGame\Saved\Config\WindowsServer</Value>
+    </Setting>
+    <Setting Name="ServerExe" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGameServer.exe</Value>
+    </Setting>
+    <Setting Name="SteamLoginName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ChronosWS</Value>
+    </Setting>
+    <Setting Name="ServerCommandLineArgsMatchFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">?SessionName={0}</Value>
+    </Setting>
+    <Setting Name="ServerCommandLineStandardArgs" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-nosteamclient -game -server -log</Value>
     </Setting>
   </Settings>
 </SettingsFile>

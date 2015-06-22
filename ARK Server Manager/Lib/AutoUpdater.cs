@@ -101,7 +101,7 @@ namespace ARK_Server_Manager.Lib
             var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
             process.EnableRaisingEvents = true;
             var ts = new TaskCompletionSource<bool>();
-            using (var cancelRegistration = cancellationToken.Register(() => { ts.TrySetCanceled(); }))  
+            using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))  
             {
                 process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
                 process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));

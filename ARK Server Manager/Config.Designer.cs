@@ -97,7 +97,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +force_install_dir {1}  \"+app_update 346110 validate\" +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +force_install_dir \"{1}\"  \"+app_update 346110\" +quit")]
         public string SteamCmdInstallServerArgsFormat {
             get {
                 return ((string)(this["SteamCmdInstallServerArgsFormat"]));
@@ -128,6 +128,66 @@ namespace ARK_Server_Manager {
         public string DefaultServerName {
             get {
                 return ((string)(this["DefaultServerName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Binaries\\Win64")]
+        public string ServerBinaryRelativePath {
+            get {
+                return ((string)(this["ServerBinaryRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Saved\\Config\\WindowsServer")]
+        public string ServerConfigRelativePath {
+            get {
+                return ((string)(this["ServerConfigRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGameServer.exe")]
+        public string ServerExe {
+            get {
+                return ((string)(this["ServerExe"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ChronosWS")]
+        public string SteamLoginName {
+            get {
+                return ((string)(this["SteamLoginName"]));
+            }
+            set {
+                this["SteamLoginName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("?SessionName={0}")]
+        public string ServerCommandLineArgsMatchFormat {
+            get {
+                return ((string)(this["ServerCommandLineArgsMatchFormat"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-nosteamclient -game -server -log")]
+        public string ServerCommandLineStandardArgs {
+            get {
+                return ((string)(this["ServerCommandLineStandardArgs"]));
+            }
+            set {
+                this["ServerCommandLineStandardArgs"] = value;
             }
         }
     }

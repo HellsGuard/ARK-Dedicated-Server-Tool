@@ -15,6 +15,11 @@ namespace ARK_Server_Manager.Lib
             return (T)settings[propertyName];
         }
 
+        protected T Get<T>(ref T field, [CallerMemberName] string propertyName = "")
+        {
+            return field;
+        }
+
         protected void Set<T>(ISettingsBag settings, T value, [CallerMemberName] string propertyName = "")
         {
             T existingValue = Get<T>(settings, propertyName);
@@ -25,7 +30,17 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private void OnPropertyChanged(string propertyName)
+        protected void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
+        {            
+            if (!Object.Equals(field, value))
+            {
+                field = value;
+                OnPropertyChanged(propertyName);
+            }
+        }
+
+
+        protected void OnPropertyChanged(string propertyName)
         {
             if(PropertyChanged != null)
             {

@@ -28,9 +28,9 @@
             <Label Grid.Column="0" Grid.Row="0" Content="Settings Name:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
             <TextBox Margin="5" Grid.Column="1"  Grid.Row="0" Text="{Binding ProfileName}" VerticalContentAlignment="Center"/>
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                <Button Margin="5" Width="50" Content="Load"/>
-                <Button Margin="5" Width="50" Content="Save"/>
-                <Button Margin="5" Width="50" Content="Copy"/>
+                <Button Margin="5" Width="50" Content="Load" IsEnabled="False"/>
+                <Button Margin="5" Width="50" Content="Save" IsEnabled="False"/>
+                <Button Margin="5" Width="50" Content="Copy" IsEnabled="False"/>
             </StackPanel>
         </Grid>
         <Grid DataContext="{Binding Runtime}" Margin="10,0,10,5" Grid.Row="1">
@@ -44,14 +44,14 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Label Content="Version:"/>
-                <Label Content="Unknown"/>
+                <Label Content="{Binding Version}"/>
                 <Label Content="Status:"/>
-                <Label Content="Unknown"/>
+                <Label Content="{Binding Status}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                <Button Margin="5" Width="50" Content="Start"/>
-                <Button Margin="5" Width="50" Content="Upgrade"/>
-                <Button Margin="5" Width="50" Content="Logs"/>
+                <Button Margin="5" Width="50" Content="Start" Click="Start_Click" />
+                <Button Margin="5" Width="50" Content="Upgrade" Click="Upgrade_Click" />
+                <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
             </StackPanel>
         </Grid>
         <StackPanel DataContext="{Binding Settings}" Margin="10,5,10,5" Grid.Row="2">
@@ -174,11 +174,23 @@
                         <Label Grid.Column="0" Grid.Row="0" Content="MOTD:"/>
                         <TextBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="5,0,0,0" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
                     </Grid>
-                    <StackPanel Margin="5" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <Label Content="Directory:"/>
-                        <TextBox MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding SaveDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Button Width="50" Content="..."/>
-                    </StackPanel>
+                    <Grid Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Content="Save Directory:"/>
+                        <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding SaveDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <Button IsEnabled="False" Grid.Column="2" Grid.Row="0" Width="50" Content="..." Click="SelectSaveDirectory_Click"/>
+                        <Label Grid.Column="0" Grid.Row="1" Content="Install Directory:"/>
+                        <TextBox Grid.Column="1" Grid.Row="1" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding InstallDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <Button Grid.Column="2" Grid.Row="1" Width="50" Content="..." Click="SelectInstallDirectory_Click"/>
+                    </Grid>
                 </Grid>
             </Expander>
         </StackPanel>

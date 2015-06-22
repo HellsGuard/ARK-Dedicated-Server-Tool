@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,10 @@ namespace ARK_Server_Manager.Lib
     {
         public const string ProfileNameProperty = "ProfileName";
 
-        public string ProfileName = Config.Default.DefaultServerProfileName;        
+        public string ProfileName = Config.Default.DefaultServerProfileName;
+
+        #region Server properties
+        
         public bool EnableGlobalVoiceChat = true;
         public bool EnableProximityChat = true;
         public bool EnableTributeDownloads = false;
@@ -31,6 +35,7 @@ namespace ARK_Server_Manager.Lib
         public bool AllowHUD = true;
         public bool AllowThirdPersonView = false;
         public bool AllowMapPlayerLocation = true;
+        public bool AllowPVPGamma = false;
         public string ServerPassword = "";
         public string AdminPassword = "";
         public int MaxPlayers = 5;
@@ -40,24 +45,91 @@ namespace ARK_Server_Manager.Lib
         public int ServerPort = 27015;
         public string ServerIP = String.Empty;
         public string SaveDirectory = String.Empty;
+        public string InstallDirectory = String.Empty;
         public string MOTD = String.Empty;
+        public string ServerMap = "TheIsland";
+        
+        #endregion
+
+        public bool IsDirty = false;
 
         public ServerSettings()
         {
             ServerPassword = PasswordUtils.GeneratePassword(16);
             AdminPassword = PasswordUtils.GeneratePassword(16);
+            GetDefaultDirectories();
         }
 
-        public bool IsDirty
+        public string GetServerArgs()
         {
-            get;
-            set;
+            var serverArgs = new StringBuilder();
+            serverArgs.Append(this.ServerMap);
+            serverArgs.Append("?GlobalVoiceChat=").Append(this.EnableGlobalVoiceChat);
+            serverArgs.Append("?ProximityChat=").Append(this.EnableProximityChat);
+            serverArgs.Append("?NoTributeDownloads=").Append(!this.EnableTributeDownloads);
+            serverArgs.Append("?bAllowFlyerCarryPVE=").Append(this.EnableFlyerCarry);
+            serverArgs.Append("?bDisableStructureDecayPVE=").Append(!this.EnableStructureDecay);
+            serverArgs.Append("?AlwaysNotifyPlayerLeft=").Append(this.EnablePlayerLeaveNotifications);
+            serverArgs.Append("?DontAlwaysNotifyPlayerJoined=").Append(!this.EnablePlayerJoinedNotifications);
+            serverArgs.Append("?ServerHardcore=").Append(this.EnableHardcore);           
+            serverArgs.Append("?ServerPVE=").Append(!this.EnablePVP);
+
+            serverArgs.Append("?ServerCrosshair=").Append(this.AllowCrosshair);
+            serverArgs.Append("?ServerForceNoHud=").Append(!this.AllowHUD);
+            serverArgs.Append("?AllowThirdPersonPlayer=").Append(this.AllowThirdPersonView);
+            serverArgs.Append("?MapPlayerLocation=").Append(this.AllowMapPlayerLocation);
+            serverArgs.Append("?EnablePVPGamma=").Append(this.AllowPVPGamma);
+
+
+            serverArgs.Append("?ServerPassword=").Append(this.ServerPassword);
+            serverArgs.Append("?ServerAdminPassword=").Append(this.AdminPassword);
+            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
+            serverArgs.Append("?DifficultyOffset=").Append(this.DifficultyOffset);
+            serverArgs.Append("?MaxStructuresInRange=").Append(this.MaxStructuresVisible);
+            
+            serverArgs.Append("?\"SessionName=").Append(this.ServerName).Append('"');
+            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
+            if(!String.IsNullOrWhiteSpace(this.ServerIP))
+            {
+                serverArgs.Append("?MultiHome=").Append(this.ServerIP);
+            }
+            
+            if(!String.IsNullOrWhiteSpace(this.SaveDirectory))
+            {
+                serverArgs.Append("?\"AltSaveDirectoryName=").Append(this.SaveDirectory).Append('"');
+            }
+
+            if(!String.IsNullOrWhiteSpace(this.MOTD))
+            {
+                serverArgs.Append("?MOTD=").Append('"').Append(this.MOTD).Append('"');
+            }
+
+            serverArgs.Append("?listen");
+            serverArgs.Append(' ');
+            serverArgs.Append(Config.Default.ServerCommandLineStandardArgs);
+
+            return serverArgs.ToString();
         }
 
         public object this[string propertyName]
         {
             get { return this.GetType().GetField(propertyName).GetValue(this); }
             set { this.GetType().GetField(propertyName).SetValue(this, value); this.IsDirty = true; }
+        }
+
+        private void GetDefaultDirectories()
+        {
+            if (String.IsNullOrWhiteSpace(SaveDirectory))
+            {
+                SaveDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir, Config.Default.ServerConfigRelativePath)
+                                                                                    : Path.Combine(Directory.GetCurrentDirectory(), Config.Default.ServersInstallDir, Config.Default.ServerConfigRelativePath);
+            }
+
+            if (String.IsNullOrWhiteSpace(InstallDirectory))
+            {
+                InstallDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir)
+                                                                                       : Path.Combine(Directory.GetCurrentDirectory(), Config.Default.ServersInstallDir);
+            }
         }
     }
 
@@ -108,6 +180,11 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
         public string SaveDirectory
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+        public string InstallDirectory
         {
             get { return Get<string>(model); }
             set { Set(model, value); }
@@ -203,6 +280,11 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
         public bool AllowThirdPersonView
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+        public bool AllowMapPlayerLocation
         {
             get { return Get<bool>(model); }
             set { Set(model, value); }
