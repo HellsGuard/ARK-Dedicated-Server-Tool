@@ -13,7 +13,7 @@ namespace ARK_Server_Manager {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
-    internal sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
         
         private static Config defaultInstance = ((Config)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Config())));
         
@@ -86,12 +86,15 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ConfigDirectory {
             get {
                 return ((string)(this["ConfigDirectory"]));
+            }
+            set {
+                this["ConfigDirectory"] = value;
             }
         }
         
@@ -104,12 +107,15 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Servers")]
         public string ServersInstallDir {
             get {
                 return ((string)(this["ServersInstallDir"]));
+            }
+            set {
+                this["ServersInstallDir"] = value;
             }
         }
         
@@ -172,22 +178,82 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("?SessionName={0}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("?QueryPort={0}")]
         public string ServerCommandLineArgsMatchFormat {
             get {
                 return ((string)(this["ServerCommandLineArgsMatchFormat"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("-nosteamclient -game -server -log")]
         public string ServerCommandLineStandardArgs {
             get {
                 return ((string)(this["ServerCommandLineStandardArgs"]));
             }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Profiles")]
+        public string ProfilesDir {
+            get {
+                return ((string)(this["ProfilesDir"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".profile")]
+        public string ProfileExtension {
+            get {
+                return ((string)(this["ProfileExtension"]));
+            }
             set {
-                this["ServerCommandLineStandardArgs"] = value;
+                this["ProfileExtension"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TheIsland")]
+        public string DefaultServerMap {
+            get {
+                return ((string)(this["DefaultServerMap"]));
+            }
+            set {
+                this["DefaultServerMap"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DataDir {
+            get {
+                return ((string)(this["DataDir"]));
+            }
+            set {
+                this["DataDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ark Server Manager")]
+        public string DefaultDataDir {
+            get {
+                return ((string)(this["DefaultDataDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGameServer")]
+        public string ServerProcessName {
+            get {
+                return ((string)(this["ServerProcessName"]));
             }
         }
     }

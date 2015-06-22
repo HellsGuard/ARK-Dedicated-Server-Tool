@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,16 +34,27 @@ namespace ARK_Server_Manager
         public MainWindow()
         {
             InitializeComponent();
-            ServerTabs = new ObservableCollection<TabItem>();
+            ServerTabs = new ObservableCollection<TabItem>();            
             this.DataContext = this;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             AddDefaultServerTab();            
-            // We need to load the set of existing servers, or create a blank one if we don't have any...
-            AddNewServerTab();
 
+            // We need to load the set of existing servers, or create a blank one if we don't have any...
+            var tabAdded = false;
+            foreach(var profile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
+            {
+                var settings = ServerSettings.LoadFrom(profile);
+                AddNewServerTab(settings);
+                tabAdded = true;
+            }
+
+            if (!tabAdded)
+            {
+                AddNewServerTab(new ServerSettings());
+            }
         }
 
         private void AddDefaultServerTab()
@@ -52,13 +64,13 @@ namespace ARK_Server_Manager
             ServerTabs.Add(this.defaultTab);
         }
 
-        private int AddNewServerTab()
+        private int AddNewServerTab(ServerSettings settings)
         {
             var newTab = new TabItem();
-            var viewModel = new ServerSettingsViewModel(new ServerSettings());
-            newTab.DataContext = viewModel;
-            newTab.Content = new ServerSettingsControl(viewModel);
-            newTab.SetBinding(TabItem.HeaderProperty, new Binding(ServerSettings.ProfileNameProperty));
+            var control = new ServerSettingsControl(settings);
+            newTab.Content = control;
+            newTab.DataContext = control;
+            newTab.SetBinding(TabItem.HeaderProperty, new Binding("Settings." + ServerSettings.ProfileNameProperty));
             this.ServerTabs.Insert(this.ServerTabs.Count - 1, newTab);
             return this.ServerTabs.Count - 2;
         }
@@ -70,8 +82,7 @@ namespace ARK_Server_Manager
             {
                 if (tabControl.SelectedItem == this.defaultTab)
                 {
-                    tabControl.SelectedIndex = AddNewServerTab();
-                    
+                    tabControl.SelectedIndex = AddNewServerTab(new ServerSettings());                    
                 }
             }
         }

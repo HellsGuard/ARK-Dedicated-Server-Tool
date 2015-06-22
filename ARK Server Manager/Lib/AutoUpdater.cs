@@ -70,7 +70,7 @@ namespace ARK_Server_Manager.Lib
 
         private async Task InstallSteamCmdAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
         {
-            string steamCmdDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Config.Default.SteamCmdDir);
+            string steamCmdDirectory = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir);
             if(!Directory.Exists(steamCmdDirectory))
             {
                 Directory.CreateDirectory(steamCmdDirectory);

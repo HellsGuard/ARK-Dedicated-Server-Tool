@@ -17,6 +17,7 @@ namespace ARK_Server_Manager.Lib
         public enum ServerStatus
         {
             Unknown,
+            Stopping,
             Stopped,
             Initializing,
             Running,
@@ -96,9 +97,9 @@ namespace ARK_Server_Manager.Lib
 
         private Process FindMatchingServerProcess()
         {
-            foreach(var process in Process.GetProcesses())
+            foreach(var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
             {
-                var commandLineBuilder = new StringBuilder(process.MainModule.FileName + " ");
+                var commandLineBuilder = new StringBuilder();
 
                 using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
                 {
@@ -112,10 +113,11 @@ namespace ARK_Server_Manager.Lib
 
                 if (commandLine.Contains(Config.Default.ServerExe))
                 {
-                    // Does this match our servername?
-                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, this.Settings.ServerName);
+                    // Does this match our server?
+                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, this.Settings.ServerPort);
                     if (commandLine.Contains(serverArgMatch))
                     {
+                        process.EnableRaisingEvents = true;
                         return process;
                     }
                 }
@@ -132,8 +134,9 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
-            var serverExe = Path.Combine(Config.Default.ServersInstallDir, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            var serverExe = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
             var serverArgs = this.Settings.GetServerArgs();
+            var startInfo = new ProcessStartInfo();
             this.serverProcess = Process.Start(serverExe, serverArgs);
             this.serverProcess.EnableRaisingEvents = true;
             this.ExecutionStatus = ServerStatus.Initializing;
@@ -148,10 +151,21 @@ namespace ARK_Server_Manager.Lib
                 try
                 {
                     var ts = new TaskCompletionSource<bool>();
-                    this.serverProcess.Exited += (s, e) => ts.TrySetResult(true);
-                    this.serverProcess.CloseMainWindow();
-                    await ts.Task;
+                    EventHandler handler = (s, e) => ts.TrySetResult(true);
+                    try
+                    {
+                        this.ExecutionStatus = ServerStatus.Stopping;
+                        this.serverProcess.Exited += handler;
+                        this.serverProcess.CloseMainWindow();
+                        await ts.Task;
+                    }
+                    finally
+                    {
+                        this.serverProcess.Exited -= handler;
+                    }
+
                     this.ExecutionStatus = ServerStatus.Stopped;
+
                 }
                 catch(InvalidOperationException)
                 {                    
@@ -222,6 +236,7 @@ namespace ARK_Server_Manager.Lib
             this.serverSettings = serverSettings;  
             this.model = new ServerRuntime(serverSettings);
             this.model.PropertyChanged += (s, e) => base.OnPropertyChanged(e.PropertyName);
+            this.model.UpdateStatusAsync();
         }
 
         public ServerRuntime.ServerStatus Status

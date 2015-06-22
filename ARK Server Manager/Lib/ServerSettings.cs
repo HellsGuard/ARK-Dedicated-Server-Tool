@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -14,6 +16,8 @@ namespace ARK_Server_Manager.Lib
         object this[string propertyName] { get; set; }
     }
 
+    [XmlRoot("ArkServerProfile")]
+    [Serializable()]
     public class ServerSettings : ISettingsBag
     {
         public const string ProfileNameProperty = "ProfileName";
@@ -47,17 +51,43 @@ namespace ARK_Server_Manager.Lib
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
         public string MOTD = String.Empty;
-        public string ServerMap = "TheIsland";
+        public string ServerMap = Config.Default.DefaultServerMap;
         
         #endregion
 
-        public bool IsDirty = false;
+        [XmlIgnore()]
+        public bool IsDirty = true;
 
         public ServerSettings()
         {
             ServerPassword = PasswordUtils.GeneratePassword(16);
             AdminPassword = PasswordUtils.GeneratePassword(16);
             GetDefaultDirectories();
+        }
+
+        public static ServerSettings LoadFrom(string path)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
+            using (var reader = File.OpenRead(path))
+            {
+                var settings = (ServerSettings)serializer.Deserialize(reader);
+                settings.IsDirty = false;
+                return settings;
+            }
+        }
+
+        public void Save()
+        {
+            XmlSerializer serializer = new XmlSerializer(this.GetType());
+            using (var writer = new StreamWriter(GetProfilePath()))
+            {
+                serializer.Serialize(writer, this);
+            }
+        }
+
+        private string GetProfilePath()
+        {
+            return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
         public string GetServerArgs()
@@ -87,7 +117,7 @@ namespace ARK_Server_Manager.Lib
             serverArgs.Append("?DifficultyOffset=").Append(this.DifficultyOffset);
             serverArgs.Append("?MaxStructuresInRange=").Append(this.MaxStructuresVisible);
             
-            serverArgs.Append("?\"SessionName=").Append(this.ServerName).Append('"');
+            serverArgs.Append("?SessionName=").Append('"').Append(this.ServerName).Append('"');
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
             if(!String.IsNullOrWhiteSpace(this.ServerIP))
             {
@@ -96,11 +126,13 @@ namespace ARK_Server_Manager.Lib
             
             if(!String.IsNullOrWhiteSpace(this.SaveDirectory))
             {
+                // TODO: This doesn't appear to work 
                 serverArgs.Append("?\"AltSaveDirectoryName=").Append(this.SaveDirectory).Append('"');
             }
 
             if(!String.IsNullOrWhiteSpace(this.MOTD))
             {
+                // TODO: This needs to go into the MessageOfTheDay INI file section
                 serverArgs.Append("?MOTD=").Append('"').Append(this.MOTD).Append('"');
             }
 
@@ -122,13 +154,13 @@ namespace ARK_Server_Manager.Lib
             if (String.IsNullOrWhiteSpace(SaveDirectory))
             {
                 SaveDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir, Config.Default.ServerConfigRelativePath)
-                                                                                    : Path.Combine(Directory.GetCurrentDirectory(), Config.Default.ServersInstallDir, Config.Default.ServerConfigRelativePath);
+                                                                                    : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.ServerConfigRelativePath);
             }
 
             if (String.IsNullOrWhiteSpace(InstallDirectory))
             {
                 InstallDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir)
-                                                                                       : Path.Combine(Directory.GetCurrentDirectory(), Config.Default.ServersInstallDir);
+                                                                                       : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir);
             }
         }
     }
@@ -145,6 +177,12 @@ namespace ARK_Server_Manager.Lib
         public ServerSettingsViewModel(ServerSettings settings)
         {
             this.model = settings;
+        }
+
+        public bool IsDirty
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
         }
         public string ProfileName {
             get { return Get<string>(model); }

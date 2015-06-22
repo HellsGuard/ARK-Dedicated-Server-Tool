@@ -26,26 +26,32 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        ServerSettingsViewModel settingsViewModel;
-        ServerRuntimeViewModel runtimeViewModel;
+        DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
+        DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
         CancellationTokenSource upgradeCancellationSource;
 
         public ServerSettingsViewModel Settings
         {
-            get { return this.settingsViewModel; }
+            get { return GetValue(SettingsProperty) as ServerSettingsViewModel; }
+            set { SetValue(SettingsProperty, value); }
         }
 
         public ServerRuntimeViewModel Runtime
         {
-            get { return this.runtimeViewModel; }
+            get { return GetValue(RuntimeProperty) as ServerRuntimeViewModel; }
+            set { SetValue(RuntimeProperty, value); }
         }
 
-        internal ServerSettingsControl(ServerSettingsViewModel viewModel)
+        internal ServerSettingsControl(ServerSettings settings)
         {
             InitializeComponent();
-            this.settingsViewModel = viewModel;
-            this.runtimeViewModel = new ServerRuntimeViewModel(settingsViewModel.Model);
-            this.DataContext = this;
+            ReinitializeFromSettings(settings);
+        }
+
+        private void ReinitializeFromSettings(ServerSettings settings)
+        {
+            this.Settings = new ServerSettingsViewModel(settings);
+            this.Runtime = new ServerRuntimeViewModel(settings);
         }
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
@@ -88,15 +94,16 @@ namespace ARK_Server_Manager
         {            
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            if (!String.IsNullOrWhiteSpace(settingsViewModel.SaveDirectory))
+            dialog.Title = "Select Save Directory";
+            if (!String.IsNullOrWhiteSpace(Settings.SaveDirectory))
             {
-                dialog.InitialDirectory = settingsViewModel.SaveDirectory;
+                dialog.InitialDirectory = Settings.SaveDirectory;
             }
 
             var result = dialog.ShowDialog();            
             if(result == CommonFileDialogResult.Ok)
             {
-                settingsViewModel.SaveDirectory = dialog.FileName;
+                Settings.SaveDirectory = dialog.FileName;
             }
         }
 
@@ -104,16 +111,46 @@ namespace ARK_Server_Manager
         {
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            if(!String.IsNullOrWhiteSpace(settingsViewModel.InstallDirectory))
+            dialog.Title = "Select Install Directory";
+            if(!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
             {
-                dialog.InitialDirectory = settingsViewModel.InstallDirectory;
+                dialog.InitialDirectory = Settings.InstallDirectory;
             }
 
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                settingsViewModel.InstallDirectory = dialog.FileName;
+                Settings.InstallDirectory = dialog.FileName;
             }
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.EnsureFileExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = "Load Server Profile";
+            dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.ProfileExtension));
+            if(!Directory.Exists(Config.Default.ConfigDirectory))
+            {
+                System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
+            }
+
+            dialog.InitialDirectory = Config.Default.ConfigDirectory;
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                var settings = ServerSettings.LoadFrom(dialog.FileName);
+                if (settings != null)
+                {
+                    ReinitializeFromSettings(settings);
+                }
+            }            
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.Model.Save();
         }
     }
 }

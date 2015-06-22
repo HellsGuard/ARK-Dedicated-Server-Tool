@@ -9,6 +9,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -25,11 +26,11 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="Settings Name:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="0" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
             <TextBox Margin="5" Grid.Column="1"  Grid.Row="0" Text="{Binding ProfileName}" VerticalContentAlignment="Center"/>
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                <Button Margin="5" Width="50" Content="Load" IsEnabled="False"/>
-                <Button Margin="5" Width="50" Content="Save" IsEnabled="False"/>
+                <Button Margin="5" Width="50" Content="Load" Click="Load_Click" />
+                <Button Margin="5" Width="50" Content="Save" Click="Save_Click" />
                 <Button Margin="5" Width="50" Content="Copy" IsEnabled="False"/>
             </StackPanel>
         </Grid>
@@ -49,8 +50,79 @@
                 <Label Content="{Binding Status}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                <Button Margin="5" Width="50" Content="Start" Click="Start_Click" />
-                <Button Margin="5" Width="50" Content="Upgrade" Click="Upgrade_Click" />
+                <Button Margin="5" Width="50" Click="Start_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                    <Setter Property="Content" Value="Stop"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                    <Setter Property="Content" Value="Stop"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                    <Setter Property="Content" Value="Stop"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                    <Setter Property="Content" Value="Start"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                    <Setter Property="Content" Value="Start"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                    <Setter Property="Content" Value="Start"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                    <Setter Property="Content" Value="Start"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Margin="5" Width="50" Click="Upgrade_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                    <Setter Property="Content" Value="Upgrade"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                    <Setter Property="Content" Value="Upgrade"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                    <Setter Property="Content" Value="Upgrade"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                    <Setter Property="Content" Value="Upgrade"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                    <Setter Property="Content" Value="Install"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                    <Setter Property="Content" Value="Cancel"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                    <Setter Property="Content" Value="Install"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
                 <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
             </StackPanel>
         </Grid>
@@ -172,7 +244,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" Content="MOTD:"/>
-                        <TextBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="5,0,0,0" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
+                        <TextBox IsEnabled="False"  Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="5,0,0,0" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
                     </Grid>
                     <Grid Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
