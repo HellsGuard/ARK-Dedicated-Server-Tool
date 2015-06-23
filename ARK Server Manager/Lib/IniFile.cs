@@ -140,6 +140,52 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public void Deserialize(object obj)
+        {
+            var fields = obj.GetType().GetFields().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
+            foreach (var field in fields)
+            {
+                var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
+                foreach (var attribute in attributes)
+                {
+                    var attr = attribute as IniFileEntryAttribute;
+                    var value = field.GetValue(obj);
+
+                    bool hasExtraBoolValue = false;
+                    if (attr.WriteBoolValueIfNonEmpty)
+                    {
+                        var flag = Convert.ToString(IniReadValue(SectionNames[attr.Section], attr.Key));
+                        hasExtraBoolValue = true;
+                        
+                        
+                        {
+                            if (value is string)
+                            {
+                                var strValue = value as string;
+                                IniWriteValue(SectionNames[attr.Section], attr.Key, String.IsNullOrEmpty(strValue) ? "False" : "True");
+                            }
+                            else
+                            {
+                                // Not supported
+                                throw new NotSupportedException("Unexpected IniFileEntry value type.");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (attr.InvertBoolean && value is Boolean)
+                        {
+                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(!(bool)(value)));
+                        }
+                        else
+                        {
+                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(value));
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Write Data to the INI File
         /// </summary>

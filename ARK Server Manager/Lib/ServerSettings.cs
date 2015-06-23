@@ -116,11 +116,21 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerSettings LoadFrom(string path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
-            using (var reader = File.OpenRead(path))
+            if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
-                var settings = (ServerSettings)serializer.Deserialize(reader);
-                settings.IsDirty = false;
+                XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
+                using (var reader = File.OpenRead(path))
+                {
+                    var settings = (ServerSettings)serializer.Deserialize(reader);
+                    settings.IsDirty = false;
+                    return settings;
+                }
+            }
+            else
+            {
+                IniFile iniFile = new IniFile(path);
+                ServerSettings settings = new ServerSettings();
+                iniFile.Deserialize(settings);
                 return settings;
             }
         }
