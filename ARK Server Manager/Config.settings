@@ -74,5 +74,8 @@
     <Setting Name="ServerProcessName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGameServer</Value>
     </Setting>
+    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GameUserSettings.ini</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

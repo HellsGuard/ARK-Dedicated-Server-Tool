@@ -256,5 +256,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ServerProcessName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GameUserSettings.ini")]
+        public string ServerGameUserSettingsFile {
+            get {
+                return ((string)(this["ServerGameUserSettingsFile"]));
+            }
+            set {
+                this["ServerGameUserSettingsFile"] = value;
+            }
+        }
     }
 }

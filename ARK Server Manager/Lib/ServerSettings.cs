@@ -26,31 +26,80 @@ namespace ARK_Server_Manager.Lib
 
         #region Server properties
         
+        [IniFileEntry(IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ProximityVoiceChat")]
         public bool EnableProximityChat = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "NoTributeDownloads", InvertBoolean = true)]
         public bool EnableTributeDownloads = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "bAllowFlyerCarryPVE")]
         public bool EnableFlyerCarry = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecay = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "AlwaysNotifyPlayerLeft")]
         public bool EnablePlayerLeaveNotifications = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "DontAlwaysNotifyPlayerJoined", InvertBoolean = true)]
         public bool EnablePlayerJoinedNotifications = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerHardcore")]        
         public bool EnableHardcore = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerPVE", InvertBoolean = true)]        
         public bool EnablePVP = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerCrosshair")]        
         public bool AllowCrosshair = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerForceNoHud", InvertBoolean = true)]        
         public bool AllowHUD = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "AllowThirdPersonPlayer")]        
         public bool AllowThirdPersonView = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ShowMapPlayerLocation")]        
         public bool AllowMapPlayerLocation = true;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "EnablePVPGamma")]        
         public bool AllowPVPGamma = false;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerPassword")]        
         public string ServerPassword = "";
+
+        [IniFileEntry(IniFileSections.ServerSettings, "ServerAdminPassword")]        
         public string AdminPassword = "";
+
+        [IniFileEntry(IniFileSections.GameSession, "MaxPlayers")]        
         public int MaxPlayers = 5;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "DifficultyOffset")]        
         public float DifficultyOffset = 0.25f;
+
+        [IniFileEntry(IniFileSections.ServerSettings, "MaxStructuresInRange")]  
         public float MaxStructuresVisible = 1300;
+
+        [IniFileEntry(IniFileSections.SessionSettings, "SessionName")]  
         public string ServerName = Config.Default.DefaultServerName;
+
+        [IniFileEntry(IniFileSections.SessionSettings, "QueryPort")]  
         public int ServerPort = 27015;
+
+        [IniFileEntry(IniFileSections.SessionSettings, "MultiHome")]
+        [IniFileEntry(IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
+
+        [IniFileEntry(IniFileSections.MessageOfTheDay, "Message")]
+        public string MOTD = String.Empty;
+  
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
-        public string MOTD = String.Empty;
+
+
         public string ServerMap = Config.Default.DefaultServerMap;
         
         #endregion
@@ -83,6 +132,8 @@ namespace ARK_Server_Manager.Lib
             {
                 serializer.Serialize(writer, this);
             }
+
+            WriteINIFile();
         }
 
         private string GetProfilePath()
@@ -90,10 +141,28 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
+        public void WriteINIFile()
+        {
+            string iniFilePath = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+            Directory.CreateDirectory(Path.GetDirectoryName(iniFilePath));
+
+            var iniFile = new IniFile(iniFilePath);            
+            iniFile.Serialize(this);
+
+        }
         public string GetServerArgs()
         {
             var serverArgs = new StringBuilder();
             serverArgs.Append(this.ServerMap);
+
+            // These are used to match the server to the profile.
+            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
+            if (!String.IsNullOrEmpty(this.ServerIP))
+            {
+                serverArgs.Append("?MultiHome=").Append(this.ServerIP);
+            }
+
+#if false
             serverArgs.Append("?GlobalVoiceChat=").Append(this.EnableGlobalVoiceChat);
             serverArgs.Append("?ProximityChat=").Append(this.EnableProximityChat);
             serverArgs.Append("?NoTributeDownloads=").Append(!this.EnableTributeDownloads);
@@ -107,7 +176,7 @@ namespace ARK_Server_Manager.Lib
             serverArgs.Append("?ServerCrosshair=").Append(this.AllowCrosshair);
             serverArgs.Append("?ServerForceNoHud=").Append(!this.AllowHUD);
             serverArgs.Append("?AllowThirdPersonPlayer=").Append(this.AllowThirdPersonView);
-            serverArgs.Append("?MapPlayerLocation=").Append(this.AllowMapPlayerLocation);
+            serverArgs.Append("?ShowMapPlayerLocation=").Append(this.AllowMapPlayerLocation);
             serverArgs.Append("?EnablePVPGamma=").Append(this.AllowPVPGamma);
 
 
@@ -135,6 +204,7 @@ namespace ARK_Server_Manager.Lib
                 // TODO: This needs to go into the MessageOfTheDay INI file section
                 serverArgs.Append("?MOTD=").Append('"').Append(this.MOTD).Append('"');
             }
+#endif
 
             serverArgs.Append("?listen");
             serverArgs.Append(' ');

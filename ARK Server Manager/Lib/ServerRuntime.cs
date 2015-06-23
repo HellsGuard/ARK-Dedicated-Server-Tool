@@ -134,6 +134,7 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
+            this.Settings.WriteINIFile();
             var serverExe = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
             var serverArgs = this.Settings.GetServerArgs();
             var startInfo = new ProcessStartInfo();
