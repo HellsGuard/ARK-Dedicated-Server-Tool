@@ -1,0 +1,23 @@
+﻿<Window x:Class="ARK_Server_Manager.AutoUpdate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
+        xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+        Title="{DynamicResource AutoUpdater_Title}" 
+        Loaded="Window_Loaded" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Center" 
+        Height="106" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize" 
+        Width="381" 
+        WindowStyle="ToolWindow" 
+        SizeToContent="Height" Closing="Window_Closing">
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch" Width="Auto">
+            <ProgressBar x:Name="CompletionProgress" Height="10"/>
+            <Label x:Name="StatusLabel" Content="Status" HorizontalContentAlignment="Center"/>
+            <Button Content="Cancel" Width="75" HorizontalAlignment="Center" IsCancel="True" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
