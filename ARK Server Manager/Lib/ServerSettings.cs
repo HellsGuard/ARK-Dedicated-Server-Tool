@@ -131,6 +131,7 @@ namespace ARK_Server_Manager.Lib
                 IniFile iniFile = new IniFile(path);
                 ServerSettings settings = new ServerSettings();
                 iniFile.Deserialize(settings);
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
                 return settings;
             }
         }

@@ -86,5 +86,10 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+        private void SettingsTab_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Config.Default.Save();
+        }
     }
 }

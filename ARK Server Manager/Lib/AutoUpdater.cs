@@ -100,11 +100,17 @@ namespace ARK_Server_Manager.Lib
             reporter.Report(statuses[Status.RunningSteamCmd]);
             var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
             process.EnableRaisingEvents = true;
-            var ts = new TaskCompletionSource<bool>();
+            var ts = new TaskCompletionSource<bool>();            
             using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))  
             {
-                process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
-                process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
+                process.Exited += (s, e) => 
+                    {
+                        ts.TrySetResult(process.ExitCode == 0);
+                    };
+                process.ErrorDataReceived += (s, e) =>
+                    {
+                        ts.TrySetException(new Exception(e.Data));
+                    };
                 await ts.Task;
             }
 

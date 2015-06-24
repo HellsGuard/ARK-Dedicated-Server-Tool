@@ -146,40 +146,46 @@ namespace ARK_Server_Manager.Lib
             foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
+                bool extraBoolValue = false;
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
-                    var value = field.GetValue(obj);
-
-                    bool hasExtraBoolValue = false;
+                    
                     if (attr.WriteBoolValueIfNonEmpty)
                     {
-                        var flag = Convert.ToString(IniReadValue(SectionNames[attr.Section], attr.Key));
-                        hasExtraBoolValue = true;
-                        
-                        
-                        {
-                            if (value is string)
-                            {
-                                var strValue = value as string;
-                                IniWriteValue(SectionNames[attr.Section], attr.Key, String.IsNullOrEmpty(strValue) ? "False" : "True");
-                            }
-                            else
-                            {
-                                // Not supported
-                                throw new NotSupportedException("Unexpected IniFileEntry value type.");
-                            }
-                        }
+                        // Don't really need to do anything here, we don't care about this on reading it.
+                        // extraBoolValue = Convert.ToBoolean(IniReadValue(SectionNames[attr.Section], attr.Key));
                     }
                     else
                     {
-                        if (attr.InvertBoolean && value is Boolean)
+                        var iniValue = IniReadValue(SectionNames[attr.Section], attr.Key);
+                        var fieldType = field.FieldType;
+
+                        if(fieldType == typeof(string))
                         {
-                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(!(bool)(value)));
+                            field.SetValue(obj, iniValue);
+                        }
+                        else if(fieldType == typeof(bool))
+                        {
+                            var boolValue = Convert.ToBoolean(iniValue);
+                            if(attr.InvertBoolean)
+                            {
+                                boolValue = !boolValue;
+                            }
+
+                            field.SetValue(obj, boolValue);
+                        }
+                        else if(fieldType == typeof(int))
+                        {
+                            field.SetValue(obj, Convert.ToInt32(iniValue));
+                        }
+                        else if(fieldType == typeof(float))
+                        {
+                            field.SetValue(obj, Convert.ToSingle(iniValue));
                         }
                         else
                         {
-                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(value));
+                            throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), attr.Key, attr.Section));
                         }
                     }
                 }
