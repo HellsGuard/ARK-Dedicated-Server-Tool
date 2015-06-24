@@ -8,22 +8,22 @@
              x:Name="Control">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding ElementName=Control, Path=LabelRelativeWidth}"/>
-            <ColumnDefinition Width="{Binding ElementName=Control, Path=SliderRelativeWidth}"/>
-            <ColumnDefinition Width="{Binding ElementName=Control, Path=ValueRelativeWidth}"/>
-            <ColumnDefinition Width="{Binding ElementName=Control, Path=SuffixRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding LabelRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding SliderRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding ValueRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding SuffixRelativeWidth}"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Content="{Binding ElementName=Control, Path=Label}" VerticalContentAlignment="Center"/>
-        <Slider Grid.Column="1" Value="{Binding ElementName=Control, Path=Value}" Margin="0,0,5,0"
-                                                        Minimum="{Binding ElementName=Control, Path=Minimum}" 
-                                                        Maximum="{Binding ElementName=Control, Path=Maximum}" 
+        <Label Grid.Column="0" Content="{Binding Label}" VerticalContentAlignment="Center"/>
+        <Slider Grid.Column="1" Value="{Binding Value}" Margin="0,0,5,0"
+                                                        Minimum="{Binding Minimum}" 
+                                                        Maximum="{Binding Maximum}" 
                                                         HorizontalAlignment="Stretch" 
                                                         VerticalAlignment="Center" 
                                                         HorizontalContentAlignment="Stretch" 
-                                                        LargeChange="{Binding ElementName=Control, Path=LargeChange}" 
-                                                        SmallChange="{Binding ElementName=Control, Path=SmallChange}" 
-                                                        TickFrequency="{Binding ElementName=Control, Path=TickFrequency}" />
-        <TextBox Grid.Column="2" Text="{Binding ElementName=Control, Path=Value}" VerticalContentAlignment="Center"/>
-        <Label Grid.Column="3" Content="{Binding ElementName=Control, Path=Suffix}" VerticalContentAlignment="Center" />
+                                                        LargeChange="{Binding LargeChange}" 
+                                                        SmallChange="{Binding SmallChange}" 
+                                                        TickFrequency="{Binding TickFrequency}" />
+        <TextBox Grid.Column="2" Text="{Binding Value}" VerticalContentAlignment="Center"/>
+        <Label Grid.Column="3" Content="{Binding Suffix}" VerticalContentAlignment="Center" />
     </Grid>
 </UserControl>

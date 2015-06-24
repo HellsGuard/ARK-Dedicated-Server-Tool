@@ -21,7 +21,7 @@ namespace ARK_Server_Manager
     public partial class AnnotatedSlider : UserControl
     {
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(AnnotatedSlider));
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(float), typeof(AnnotatedSlider));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(float), typeof(AnnotatedSlider), new FrameworkPropertyMetadata(default(float), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         public static readonly DependencyProperty SuffixProperty = DependencyProperty.Register("Suffix", typeof(string), typeof(AnnotatedSlider));
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(float), typeof(AnnotatedSlider));
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(float), typeof(AnnotatedSlider));
@@ -38,7 +38,7 @@ namespace ARK_Server_Manager
             get { return (string)GetValue(LabelProperty); }
             set { SetValue(LabelProperty, value); }
         }
-
+        
         public float Value
         {
             get { return (float)GetValue(ValueProperty); }
@@ -105,11 +105,10 @@ namespace ARK_Server_Manager
             set { SetValue(SuffixRelativeWidthProperty, value); }
         }
 
-
-
         public AnnotatedSlider()
         {
             InitializeComponent();
+            (this.Content as FrameworkElement).DataContext = this;
         }
     }
 }

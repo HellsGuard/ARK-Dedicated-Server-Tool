@@ -121,6 +121,7 @@ namespace ARK_Server_Manager
             if (result == CommonFileDialogResult.Ok)
             {
                 Settings.InstallDirectory = dialog.FileName;
+                Runtime.Model.UpdateStatusAsync();
             }
         }
 
