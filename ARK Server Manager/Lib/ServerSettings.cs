@@ -265,6 +265,9 @@ namespace ARK_Server_Manager.Lib
             }
 #endif
 
+            // Currently this setting does not seem to get picked up from the INI file.
+            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
+
             serverArgs.Append("?listen");
             serverArgs.Append(' ');
             serverArgs.Append(Config.Default.ServerCommandLineStandardArgs);
