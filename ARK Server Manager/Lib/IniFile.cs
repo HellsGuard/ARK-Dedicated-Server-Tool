@@ -161,31 +161,45 @@ namespace ARK_Server_Manager.Lib
                         var iniValue = IniReadValue(SectionNames[attr.Section], attr.Key);
                         var fieldType = field.FieldType;
 
-                        if(fieldType == typeof(string))
+                        if (fieldType == typeof(string))
                         {
                             field.SetValue(obj, iniValue);
                         }
-                        else if(fieldType == typeof(bool))
-                        {
-                            var boolValue = Convert.ToBoolean(iniValue);
-                            if(attr.InvertBoolean)
-                            {
-                                boolValue = !boolValue;
-                            }
-
-                            field.SetValue(obj, boolValue);
-                        }
-                        else if(fieldType == typeof(int))
-                        {
-                            field.SetValue(obj, Convert.ToInt32(iniValue));
-                        }
-                        else if(fieldType == typeof(float))
-                        {
-                            field.SetValue(obj, Convert.ToSingle(iniValue));
-                        }
                         else
                         {
-                            throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), attr.Key, attr.Section));
+                            if (String.IsNullOrWhiteSpace(iniValue))
+                            {
+                                // Skip non-string values which are not found
+                                continue;
+                            }
+
+                            if (fieldType == typeof(bool))
+                            {
+                                var boolValue = false;
+                                bool.TryParse(iniValue, out boolValue);
+                                if (attr.InvertBoolean)
+                                {
+                                    boolValue = !boolValue;
+                                }
+
+                                field.SetValue(obj, boolValue);
+                            }
+                            else if (fieldType == typeof(int))
+                            {
+                                int intValue;
+                                int.TryParse(iniValue, out intValue);
+                                field.SetValue(obj, intValue);
+                            }
+                            else if (fieldType == typeof(float))
+                            {
+                                float floatValue;
+                                float.TryParse(iniValue, out floatValue);
+                                field.SetValue(obj, floatValue);
+                            }
+                            else
+                            {
+                                throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), attr.Key, attr.Section));
+                            }
                         }
                     }
                 }
