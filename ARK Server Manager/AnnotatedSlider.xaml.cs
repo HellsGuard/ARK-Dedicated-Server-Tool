@@ -80,7 +80,6 @@ namespace ARK_Server_Manager
         public AnnotatedSlider()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
     }
 }

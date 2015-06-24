@@ -157,7 +157,7 @@
                             <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
                             <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
                             <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
-                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset}" Suffix="%"/>
+                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10"/>
                         </StackPanel>
                     </Grid>
                 </Expander>
