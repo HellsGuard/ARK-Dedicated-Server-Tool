@@ -11,35 +11,22 @@
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        
-        <Style TargetType="local:AnnotatedSlider">
+        <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="local:AnnotatedSlider">
+                    <ControlTemplate TargetType="local:AnnotatedTextBox">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="{TemplateBinding Text}" VerticalContentAlignment="Center"/>
-                            <Slider Grid.Column="1" Value="{TemplateBinding Value}" 
-                                                            Minimum="{TemplateBinding Minimum}" 
-                                                            Maximum="{TemplateBinding Maximum}" 
-                                                            HorizontalAlignment="Stretch" 
-                                                            VerticalAlignment="Center" 
-                                                            HorizontalContentAlignment="Stretch" 
-                                                            LargeChange="{TemplateBinding LargeChange}" 
-                                                            SmallChange="{TemplateBinding SmallChange}" 
-                                                            TickFrequency="{TemplateBinding TickFrequency}" 
-                                                            AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}" 
-                                                            TickPlacement="{TemplateBinding TickPlacement}"/>
-                            <Label Grid.Column="2" Content="{TemplateBinding Value}" />
+                            <Label Grid.Column="0" Content="{TemplateBinding Label}"/>
+                            <TextBox Grid.Column="1" Text="{TemplateBinding Text}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>      
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -170,7 +157,7 @@
                             <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
                             <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
                             <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
-                            <local:AnnotatedSlider Text="Difficulty %:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Minimum="{x:Static lib:DifficultyOffsetValueConverter.MinValue}" Maximum="{x:Static lib:DifficultyOffsetValueConverter.MaxValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft"/>
+                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset}" Suffix="%"/>
                         </StackPanel>
                     </Grid>
                 </Expander>
@@ -208,7 +195,7 @@
                             <CheckBox IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
                             <CheckBox IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
                             <CheckBox IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
-                            <local:AnnotatedSlider Text="Max Structures Visible:" Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
+                            <local:AnnotatedSlider Label="Max Structures Visible:" Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" />
                         </StackPanel>
                     </Grid>
                 </Expander>

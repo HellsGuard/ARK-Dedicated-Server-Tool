@@ -41,22 +41,22 @@ namespace ARK_Server_Manager
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:AnnotatedSlider/>
+    ///     <MyNamespace:AnnotatedTextBox/>
     ///
     /// </summary>
-    public class AnnotatedSlider : Slider
+    public class AnnotatedTextBox : TextBox
     {
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AnnotatedSlider));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(AnnotatedTextBox));
 
-        public string Text
+        public string Label
         {
-            get { return GetValue(TextProperty) as string; }
-            set { SetValue(TextProperty, value); }
+            get { return GetValue(LabelProperty) as string; }
+            set { SetValue(LabelProperty, value); }
         }
 
-        static AnnotatedSlider()
+        static AnnotatedTextBox()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AnnotatedSlider), new FrameworkPropertyMetadata(typeof(AnnotatedSlider)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AnnotatedTextBox), new FrameworkPropertyMetadata(typeof(AnnotatedTextBox)));
         }
     }
 }

@@ -91,7 +91,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AnnotatedSlider.cs" />
+    <Compile Include="AnnotatedSlider.xaml.cs">
+      <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedTextBox.cs" />
     <Compile Include="ErrorHandling.cs" />
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
@@ -105,6 +108,10 @@
     <Compile Include="ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="AnnotatedSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AutoUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
