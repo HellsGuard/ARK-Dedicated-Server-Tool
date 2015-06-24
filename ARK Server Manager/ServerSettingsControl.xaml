@@ -3,13 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
+             xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"             
              xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+             xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
              mc:Ignorable="d">
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
+        <Style TargetType="local:AnnotatedSlider">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:AnnotatedSlider">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{TemplateBinding Text}" VerticalContentAlignment="Center"/>
+                            <Slider Grid.Column="1" Value="{TemplateBinding Value}" 
+                                                            Minimum="{TemplateBinding Minimum}" 
+                                                            Maximum="{TemplateBinding Maximum}" 
+                                                            HorizontalAlignment="Stretch" 
+                                                            VerticalAlignment="Center" 
+                                                            HorizontalContentAlignment="Stretch" 
+                                                            LargeChange="{TemplateBinding LargeChange}" 
+                                                            SmallChange="{TemplateBinding SmallChange}" 
+                                                            TickFrequency="{TemplateBinding TickFrequency}" 
+                                                            AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}" 
+                                                            TickPlacement="{TemplateBinding TickPlacement}"/>
+                            <Label Grid.Column="2" Content="{TemplateBinding Value}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -140,18 +170,16 @@
                             <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
                             <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
                             <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
+                            <local:AnnotatedSlider Text="Difficulty %:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Minimum="{x:Static lib:DifficultyOffsetValueConverter.MinValue}" Maximum="{x:Static lib:DifficultyOffsetValueConverter.MaxValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft"/>
                         </StackPanel>
-                        <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="70*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column= "0" Grid.Row="0" Content="Difficulty %:" VerticalContentAlignment="Center"/>
-                            <Slider Grid.Column= "1" Grid.Row="0" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Minimum="{x:Static lib:DifficultyOffsetValueConverter.MinValue}" Maximum="{x:Static lib:DifficultyOffsetValueConverter.MaxValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
-                        </Grid>
+                    </Grid>
+                </Expander>
+                <Expander Header="Player Settings" IsExpanded="True">
+                    <Grid Margin ="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
+                        </Grid.ColumnDefinitions>                        
                     </Grid>
                 </Expander>
                 <Expander Header="Chat and Notifications" IsExpanded="True">
@@ -170,26 +198,18 @@
                     </Grid>
                 </Expander>
                 <Expander Header="HUD and Visuals" IsExpanded="True">
-                    <Grid Margin ="10" HorizontalAlignment="Left" MinWidth="499">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" IsChecked="{Binding AllowCrosshair}">Allow Crosshair</CheckBox>
-                        <CheckBox Grid.Row="1" IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
-                        <CheckBox Grid.Row="2" IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
-                        <CheckBox Grid.Row="3" IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
-                        <Grid Grid.Row="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="70*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column= "0" Grid.Row="0" Content="Max Structures Visibile:" VerticalContentAlignment="Center"/>
-                            <Slider Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
-                        </Grid>
+                    <Grid Margin ="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <CheckBox IsChecked="{Binding AllowCrosshair}">Allow Crosshair</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
+                            <local:AnnotatedSlider Text="Max Structures Visible:" Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
+                        </StackPanel>
                     </Grid>
                 </Expander>
                 <Expander Header="Administration" IsExpanded="True">
