@@ -456,6 +456,123 @@ namespace ARK_Server_Manager.Lib
             get { return Get<bool>(model); }
             set { Set(model, value); }
         }
+
+        public float HarvestAmountMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }            
+        }
+        public float PlayerCharacterWaterDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterFoodDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterFoodDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterStaminaDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterStaminaDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterHealthRecoveryMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterHealthRecoveryMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCountMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float HarvestHealthMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PvEStructureDecayDestructionPeriod
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float DayCycleSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float NightTimeSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DayTimeSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float TamedDinoDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float StructureDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float TamedDinoResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float StructureResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float XPMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
     }
 
     public class DifficultyOffsetValueConverter : IValueConverter
