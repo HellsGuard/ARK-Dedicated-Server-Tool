@@ -28,6 +28,10 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(float), typeof(AnnotatedSlider));
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(float), typeof(AnnotatedSlider));
         public static readonly DependencyProperty TickFrequencyProperty = DependencyProperty.Register("TickFrequency", typeof(float), typeof(AnnotatedSlider));
+        public static readonly DependencyProperty LabelRelativeWidthProperty = DependencyProperty.Register("LabelRelativeWidth", typeof(string), typeof(AnnotatedSlider), new PropertyMetadata("4*"));
+        public static readonly DependencyProperty SliderRelativeWidthProperty = DependencyProperty.Register("SliderRelativeWidth", typeof(string), typeof(AnnotatedSlider), new PropertyMetadata("8*"));
+        public static readonly DependencyProperty ValueRelativeWidthProperty = DependencyProperty.Register("ValueRelativeWidth", typeof(string), typeof(AnnotatedSlider), new PropertyMetadata("3*"));
+        public static readonly DependencyProperty SuffixRelativeWidthProperty = DependencyProperty.Register("SuffixRelativeWidth", typeof(string), typeof(AnnotatedSlider), new PropertyMetadata("1*"));
 
         public string Label
         {
@@ -76,6 +80,32 @@ namespace ARK_Server_Manager
             get { return (float)GetValue(TickFrequencyProperty); }
             set { SetValue(TickFrequencyProperty, value); }
         }
+
+        public string LabelRelativeWidth
+        {
+            get { return (string)GetValue(LabelRelativeWidthProperty); }
+            set { SetValue(LabelRelativeWidthProperty, value); }
+        }
+
+        public string SliderRelativeWidth
+        {
+            get { return (string)GetValue(SliderRelativeWidthProperty); }
+            set { SetValue(SliderRelativeWidthProperty, value); }
+        }
+
+        public string ValueRelativeWidth
+        {
+            get { return (string)GetValue(ValueRelativeWidthProperty); }
+            set { SetValue(ValueRelativeWidthProperty, value); }
+        }
+
+        public string SuffixRelativeWidth
+        {
+            get { return (string)GetValue(SuffixRelativeWidthProperty); }
+            set { SetValue(SuffixRelativeWidthProperty, value); }
+        }
+
+
 
         public AnnotatedSlider()
         {

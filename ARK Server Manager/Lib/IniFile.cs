@@ -121,19 +121,20 @@ namespace ARK_Server_Manager.Lib
                 {
                     var attr = attribute as IniFileEntryAttribute;
                     var value = field.GetValue(obj);
+                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
 
                     if(attr.WriteBoolValueIfNonEmpty)
                     {
                         if(value == null)
                         {
-                            IniWriteValue(SectionNames[attr.Section], attr.Key, "False", FileNames[attr.File]);
+                            IniWriteValue(SectionNames[attr.Section], keyName, "False", FileNames[attr.File]);
                         }
                         else
                         {                           
                             if(value is string)
                             {
                                 var strValue = value as string;
-                                IniWriteValue(SectionNames[attr.Section], attr.Key, String.IsNullOrEmpty(strValue) ? "False" : "True", FileNames[attr.File]);
+                                IniWriteValue(SectionNames[attr.Section], keyName, String.IsNullOrEmpty(strValue) ? "False" : "True", FileNames[attr.File]);
                             }
                             else
                             {
@@ -146,11 +147,11 @@ namespace ARK_Server_Manager.Lib
                     {
                         if (attr.InvertBoolean && value is Boolean)
                         {
-                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(!(bool)(value)), FileNames[attr.File]);
+                            IniWriteValue(SectionNames[attr.Section], keyName, Convert.ToString(!(bool)(value)), FileNames[attr.File]);
                         }
                         else
                         {
-                            IniWriteValue(SectionNames[attr.Section], attr.Key, Convert.ToString(value), FileNames[attr.File]);
+                            IniWriteValue(SectionNames[attr.Section], keyName, Convert.ToString(value), FileNames[attr.File]);
                         }
                     }
                 }
@@ -167,7 +168,8 @@ namespace ARK_Server_Manager.Lib
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
-                    
+                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+
                     if (attr.WriteBoolValueIfNonEmpty)
                     {
                         // Don't really need to do anything here, we don't care about this on reading it.
@@ -175,7 +177,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
-                        var iniValue = IniReadValue(SectionNames[attr.Section], attr.Key, FileNames[attr.File]);
+                        var iniValue = IniReadValue(SectionNames[attr.Section], keyName, FileNames[attr.File]);
                         var fieldType = field.FieldType;
 
                         if (fieldType == typeof(string))

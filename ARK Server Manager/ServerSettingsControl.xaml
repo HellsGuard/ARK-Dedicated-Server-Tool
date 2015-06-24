@@ -157,16 +157,58 @@
                             <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
                             <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
                             <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
-                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10"/>
+                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
+                                                   Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
                         </StackPanel>
                     </Grid>
                 </Expander>
                 <Expander Header="Player Settings" IsExpanded="True">
                     <Grid Margin ="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="33*"/>
-                            <ColumnDefinition Width="33*"/>
-                        </Grid.ColumnDefinitions>                        
+                        <StackPanel Grid.Column="0">
+                            <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Dino Settings" IsExpanded="True">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">
+                            <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Environment" IsExpanded="True">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">                            
+                            <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Harvest Ammount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Structures" IsExpanded="True">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">
+                            <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                            <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
+                        </StackPanel>
                     </Grid>
                 </Expander>
                 <Expander Header="Chat and Notifications" IsExpanded="True">
@@ -195,7 +237,6 @@
                             <CheckBox IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
                             <CheckBox IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
                             <CheckBox IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
-                            <local:AnnotatedSlider Label="Max Structures Visible:" Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" />
                         </StackPanel>
                     </Grid>
                 </Expander>

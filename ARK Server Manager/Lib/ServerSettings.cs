@@ -96,6 +96,8 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message")]
         public string MOTD = String.Empty;
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float TamingSpeedMultiplier = 1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float HarvestAmountMultiplier=1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
@@ -457,6 +459,12 @@ namespace ARK_Server_Manager.Lib
         public bool AllowMapPlayerLocation
         {
             get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+
+        public float TamingSpeedMultiplier
+        {
+            get { return Get<float>(model); }
             set { Set(model, value); }
         }
 

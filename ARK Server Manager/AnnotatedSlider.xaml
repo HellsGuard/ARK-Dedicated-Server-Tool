@@ -8,10 +8,10 @@
              x:Name="Control">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="70*"/>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="{Binding ElementName=Control, Path=LabelRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding ElementName=Control, Path=SliderRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding ElementName=Control, Path=ValueRelativeWidth}"/>
+            <ColumnDefinition Width="{Binding ElementName=Control, Path=SuffixRelativeWidth}"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding ElementName=Control, Path=Label}" VerticalContentAlignment="Center"/>
         <Slider Grid.Column="1" Value="{Binding ElementName=Control, Path=Value}" Margin="0,0,5,0"
