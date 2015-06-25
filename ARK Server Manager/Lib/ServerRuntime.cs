@@ -148,8 +148,8 @@ namespace ARK_Server_Manager.Lib
             }
 
             this.serverProcess.EnableRaisingEvents = true;
-            this.ExecutionStatus = ServerStatus.Initializing;
-            // TODO: Ensure the watchdog is running
+            this.ExecutionStatus = ServerStatus.Running;
+            // TODO: Ensure the watchdog is running and start with Initializing instead of Running
             return;            
         }
 
