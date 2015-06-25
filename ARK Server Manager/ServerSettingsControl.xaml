@@ -44,10 +44,11 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-            <TextBox Margin="5" Grid.Column="1"  Grid.Row="0" Text="{Binding ProfileName}" VerticalContentAlignment="Center"/>
+            <TextBox Margin="5" Grid.Column="1"  Grid.Row="0" Text="{Binding ProfileName}" VerticalContentAlignment="Center"
+                     ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                <Button Margin="5" Width="50" Content="Load" Click="Load_Click" />
-                <Button Margin="5" Width="50" Content="Save" Click="Save_Click" />
+                <Button Margin="5" Width="50" Content="Load" Click="Load_Click" ToolTip="Load an existing profile, or import one directly from an existing server."/>
+                <Button Margin="5" Width="50" Content="Save" Click="Save_Click" ToolTip="Save the current profile and write the .INI files for the server."/>
                 <Button Margin="5" Width="50" Content="Copy" IsEnabled="False"/>
             </StackPanel>
         </Grid>
@@ -164,31 +165,40 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
-                        <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="The public name of the server, as seen in Steam and Ark."/>
                         <Label Grid.Column="2" Grid.Row="0" Content="Server Password:"/>
-                        <TextBox Grid.Column="3" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="3" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
                         <Label Grid.Column="4" Grid.Row="0" Content="Admin Password:"/>
-                        <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="Ths password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
                             
                         <Label Grid.Column="0" Grid.Row="1" Content="Server Port:"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
                         <Label Grid.Column="2" Grid.Row="1" Content="Query Port:"/>
-                        <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
                         <Label Grid.Column="4" Grid.Row="1" Content="IP Address"/>
-                        <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
 
-                        <local:AnnotatedSlider Grid.Column= "0" Grid.ColumnSpan="6" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" />
+                        <local:AnnotatedSlider Grid.Column= "0" Grid.ColumnSpan="6" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
+                                               ToolTip="Sets the maximum number of players which can join this server."/>
                             
                         <Label Grid.Column="0" Grid.Row="3" Content="MOTD:"/>
-                        <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3"  Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3"  Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"
+                                 ToolTip="The Message of the Day displayed to users when they connect to the server."/>
 
                         <Label Grid.Column="0" Grid.Row="4" Content="Install Directory:"/>
-                        <TextBox Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="4" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding InstallDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="4" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding InstallDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                 ToolTip="The root directory where the server is installed."/>
                         <Button Grid.Column="5" Grid.Row="4" Width="50" Content="..." Click="SelectInstallDirectory_Click"/>
 
                         <Label Grid.Column="0" Grid.Row="5" Content="Additional Args:"/>
                         <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-                                 ToolTip="Additional command-line args for the server.  First should be the ?args, followed by any -args."/>
+                                 ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient"/>
 
                     </Grid>
                 </Expander>
