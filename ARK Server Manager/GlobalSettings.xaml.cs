@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,30 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class GlobalSettings : UserControl
     {
+        public string Version
+        {
+            get;
+            set;
+        }
+
+        public Config CurrentConfig
+        {
+            get;
+            set;
+        }
+
         public GlobalSettings()
         {
+            this.Version = Assembly.GetEntryAssembly().FullName;            
+            this.CurrentConfig = Config.Default;
+            this.DataContext = this;
+
             InitializeComponent();
+        }
+
+        private void SaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            Config.Default.Save();
         }
     }
 }

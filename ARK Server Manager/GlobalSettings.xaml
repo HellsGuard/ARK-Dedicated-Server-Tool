@@ -5,10 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>   
-        <Grid.RowDefinitions></Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical" Grid.ColumnSpan="2">
+            <Label Content="Ark Server Manager" FontSize="20"/>
+            <Label Content="{Binding Version}" />            
+        </StackPanel>
     </Grid>
 </UserControl>

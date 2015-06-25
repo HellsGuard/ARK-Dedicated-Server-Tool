@@ -22,7 +22,7 @@ namespace ARK_Server_Manager
     public partial class AutoUpdate : Window
     {
         AutoUpdater updater = new AutoUpdater();
-        CancellationTokenSource cancelSource = new CancellationTokenSource();
+        CancellationTokenSource cancelSource;
         public AutoUpdate()
         {
             InitializeComponent();
@@ -30,26 +30,27 @@ namespace ARK_Server_Manager
       
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            cancelSource = new CancellationTokenSource();
             updater.UpdateAsync(new Progress<AutoUpdater.Update>(async u =>
                 {
-                    if (this.IsActive)
-                    {                        
-                        this.StatusLabel.Content = this.FindResource(u.StatusKey);
-                        this.CompletionProgress.Value = u.CompletionPercent;
+                    this.StatusLabel.Content = this.FindResource(u.StatusKey);
+                    this.CompletionProgress.Value = u.CompletionPercent;
 
-                        if(u.FailureText != null)
-                        {
-                            // TODO: Report error through UI
-                            throw new Exception(u.FailureText);
-                        }
+                    if(u.FailureText != null)
+                    {
+                        // TODO: Report error through UI
+                        throw new Exception(u.FailureText);
+                    }
 
-                        if (u.CompletionPercent >= 100 || u.Cancelled)
-                        {
-                            await Task.Delay(1000);
-                            var mainWindow = new MainWindow();
-                            mainWindow.Show();
-                            this.Close();
-                        }
+                    if (u.CompletionPercent >= 100 || u.Cancelled)
+                    {
+                        await Task.Delay(1000);
+                        await Application.Current.Dispatcher.InvokeAsync(() =>
+                            {
+                                var mainWindow = new MainWindow();
+                                mainWindow.Show();
+                                this.Close();
+                            });
                     }
                 }), cancelSource.Token);
         }

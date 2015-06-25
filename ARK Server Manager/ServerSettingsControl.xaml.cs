@@ -26,8 +26,8 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
-        DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
         CancellationTokenSource upgradeCancellationSource;
 
         public ServerSettingsViewModel Settings
@@ -121,6 +121,7 @@ namespace ARK_Server_Manager
             if (result == CommonFileDialogResult.Ok)
             {
                 Settings.InstallDirectory = dialog.FileName;
+                Runtime.Model.UpdateStatusAsync();
             }
         }
 
@@ -129,8 +130,8 @@ namespace ARK_Server_Manager
             var dialog = new CommonOpenFileDialog();
             dialog.EnsureFileExists = true;
             dialog.Multiselect = false;
-            dialog.Title = "Load Server Profile";
-            dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.ProfileExtension));
+            dialog.Title = "Load Server Profile or GameUserSettings.ini";
+            dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.LoadProfileExtensionList));
             if(!Directory.Exists(Config.Default.ConfigDirectory))
             {
                 System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);

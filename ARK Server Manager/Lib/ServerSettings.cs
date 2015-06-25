@@ -26,76 +26,126 @@ namespace ARK_Server_Manager.Lib
 
         #region Server properties
         
-        [IniFileEntry(IniFileSections.ServerSettings, "GlobalVoiceChat")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ProximityVoiceChat")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ProximityVoiceChat")]
         public bool EnableProximityChat = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "NoTributeDownloads", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NoTributeDownloads", InvertBoolean = true)]
         public bool EnableTributeDownloads = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "bAllowFlyerCarryPVE")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bAllowFlyerCarryPVE")]
         public bool EnableFlyerCarry = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecay = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "AlwaysNotifyPlayerLeft")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AlwaysNotifyPlayerLeft")]
         public bool EnablePlayerLeaveNotifications = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "DontAlwaysNotifyPlayerJoined", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DontAlwaysNotifyPlayerJoined", InvertBoolean = true)]
         public bool EnablePlayerJoinedNotifications = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerHardcore")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerHardcore")]        
         public bool EnableHardcore = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerPVE", InvertBoolean = true)]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPVE", InvertBoolean = true)]        
         public bool EnablePVP = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerCrosshair")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerCrosshair")]        
         public bool AllowCrosshair = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerForceNoHud", InvertBoolean = true)]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerForceNoHud", InvertBoolean = true)]        
         public bool AllowHUD = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "AllowThirdPersonPlayer")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowThirdPersonPlayer")]        
         public bool AllowThirdPersonView = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ShowMapPlayerLocation")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ShowMapPlayerLocation")]        
         public bool AllowMapPlayerLocation = true;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "EnablePVPGamma")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "EnablePVPGamma")]        
         public bool AllowPVPGamma = false;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerPassword")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPassword")]        
         public string ServerPassword = "";
 
-        [IniFileEntry(IniFileSections.ServerSettings, "ServerAdminPassword")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerAdminPassword")]        
         public string AdminPassword = "";
 
-        [IniFileEntry(IniFileSections.GameSession, "MaxPlayers")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.GameSession, "MaxPlayers")]        
         public int MaxPlayers = 5;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "DifficultyOffset")]        
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DifficultyOffset")]        
         public float DifficultyOffset = 0.25f;
 
-        [IniFileEntry(IniFileSections.ServerSettings, "MaxStructuresInRange")]  
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "MaxStructuresInRange")]  
         public float MaxStructuresVisible = 1300;
 
-        [IniFileEntry(IniFileSections.SessionSettings, "SessionName")]  
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "SessionName")]  
         public string ServerName = Config.Default.DefaultServerName;
 
-        [IniFileEntry(IniFileSections.SessionSettings, "QueryPort")]  
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "QueryPort")]  
         public int ServerPort = 27015;
 
-        [IniFileEntry(IniFileSections.SessionSettings, "MultiHome")]
-        [IniFileEntry(IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "MultiHome")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
 
-        [IniFileEntry(IniFileSections.MessageOfTheDay, "Message")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message")]
         public string MOTD = String.Empty;
-  
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float TamingSpeedMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float HarvestAmountMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerCharacterWaterDrainMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerCharacterFoodDrainMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoCharacterFoodDrainMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerCharacterStaminaDrainMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoCharacterStaminaDrainMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerCharacterHealthRecoveryMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoCharacterHealthRecoveryMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoCountMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float HarvestHealthMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PvEStructureDecayDestructionPeriod = 0;
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DayCycleSpeedScale=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float NightTimeSpeedScale = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DayTimeSpeedScale=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoDamageMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float TamedDinoDamageMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerDamageMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float StructureDamageMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float PlayerResistanceMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float DinoResistanceMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float TamedDinoResistanceMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float StructureResistanceMultiplier=1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
+        public float XPMultiplier = 1;
+
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
@@ -116,11 +166,22 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerSettings LoadFrom(string path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
-            using (var reader = File.OpenRead(path))
+            if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
-                var settings = (ServerSettings)serializer.Deserialize(reader);
-                settings.IsDirty = false;
+                XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
+                using (var reader = File.OpenRead(path))
+                {
+                    var settings = (ServerSettings)serializer.Deserialize(reader);
+                    settings.IsDirty = false;
+                    return settings;
+                }
+            }
+            else
+            {
+                IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
+                ServerSettings settings = new ServerSettings();
+                iniFile.Deserialize(settings);
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
                 return settings;
             }
         }
@@ -143,10 +204,10 @@ namespace ARK_Server_Manager.Lib
 
         public void WriteINIFile()
         {
-            string iniFilePath = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
-            Directory.CreateDirectory(Path.GetDirectoryName(iniFilePath));
+            string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
+            Directory.CreateDirectory(Path.GetDirectoryName(configDir));
 
-            var iniFile = new IniFile(iniFilePath);            
+            var iniFile = new IniFile(configDir);            
             iniFile.Serialize(this);
 
         }
@@ -205,6 +266,9 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?MOTD=").Append('"').Append(this.MOTD).Append('"');
             }
 #endif
+
+            // Currently this setting does not seem to get picked up from the INI file.
+            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
 
             serverArgs.Append("?listen");
             serverArgs.Append(' ');
@@ -395,6 +459,129 @@ namespace ARK_Server_Manager.Lib
         public bool AllowMapPlayerLocation
         {
             get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+
+        public float TamingSpeedMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float HarvestAmountMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }            
+        }
+        public float PlayerCharacterWaterDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterFoodDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterFoodDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterStaminaDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterStaminaDrainMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerCharacterHealthRecoveryMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCharacterHealthRecoveryMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoCountMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float HarvestHealthMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PvEStructureDecayDestructionPeriod
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float DayCycleSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float NightTimeSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DayTimeSpeedScale
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float TamedDinoDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float StructureDamageMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float PlayerResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float DinoResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float TamedDinoResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float StructureResistanceMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+        public float XPMultiplier
+        {
+            get { return Get<float>(model); }
             set { Set(model, value); }
         }
     }

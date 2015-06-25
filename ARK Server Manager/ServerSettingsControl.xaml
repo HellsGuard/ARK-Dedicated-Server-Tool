@@ -3,13 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
+             xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"             
              xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+             xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
              mc:Ignorable="d">
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="local:AnnotatedTextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:AnnotatedTextBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{TemplateBinding Label}"/>
+                            <TextBox Grid.Column="1" Text="{TemplateBinding Text}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>      
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -126,145 +143,166 @@
                 <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
             </StackPanel>
         </Grid>
-        <StackPanel DataContext="{Binding Settings}" Margin="10,5,10,5" Grid.Row="2">
-            <Expander Header="Rules" IsExpanded="True">
-                <Grid Margin ="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <CheckBox IsChecked="{Binding EnableHardcore}">Enable Hardcore Mode</CheckBox>
-                        <CheckBox IsChecked="{Binding EnablePVP}">Enable PvP</CheckBox>
-                        <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
-                        <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
-                        <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
-                    </StackPanel>
-                    <Grid Grid.Column="1">
+        <ScrollViewer DataContext="{Binding Settings}" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Expander Header="Administration" IsExpanded="True">
+                    <Grid Margin="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30*"/>
-                            <ColumnDefinition Width="70*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column= "0" Grid.Row="0" Content="Difficulty %:" VerticalContentAlignment="Center"/>
-                        <Slider Grid.Column= "1" Grid.Row="0" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Minimum="{x:Static lib:DifficultyOffsetValueConverter.MinValue}" Maximum="{x:Static lib:DifficultyOffsetValueConverter.MaxValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
-                    </Grid>
-                </Grid>
-            </Expander>
-            <Expander Header="Chat and Notifications" IsExpanded="True">
-                <Grid Margin ="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}">Enable Global Voice Chat</CheckBox>
-                        <CheckBox IsChecked="{Binding EnableProximityChat}">Enable Proximity Text Chat</CheckBox>
-                        <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}">Enable 'Player Left' Notifications</CheckBox>
-                        <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}">Enable 'Player Joined' Notifications</CheckBox>
-                    </StackPanel>
-                </Grid>
-            </Expander>
-            <Expander Header="HUD and Visuals" IsExpanded="True">
-                <Grid Margin ="10" HorizontalAlignment="Left" MinWidth="499">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Grid.Row="0" IsChecked="{Binding AllowCrosshair}">Allow Crosshair</CheckBox>
-                    <CheckBox Grid.Row="1" IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
-                    <CheckBox Grid.Row="2" IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
-                    <CheckBox Grid.Row="3" IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30*"/>
-                            <ColumnDefinition Width="70*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column= "0" Grid.Row="0" Content="Max Structures Visibile:" VerticalContentAlignment="Center"/>
-                        <Slider Grid.Column= "1" Grid.Row="0" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="50" SmallChange="10" TickFrequency="100" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
-                    </Grid>
-                </Grid>
-            </Expander>
-            <Expander Header="Administration" IsExpanded="True">
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30*"/>
-                            <ColumnDefinition Width="70*"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
-                            <RowDefinition/>                            
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
-                        <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Label Grid.Column="0" Grid.Row="1" Content="Server Port:"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Label Grid.Column="0" Grid.Row="2" Content="IP Address"/>
-                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30*"/>
-                            <ColumnDefinition Width="70*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="Server Password:"/>
-                        <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Label Grid.Column="0" Grid.Row="1" Content="Admin Password:"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Label Grid.Column= "0" Grid.Row="2" Content="Max Players:" VerticalContentAlignment="Center"/>
-                        <Slider Grid.Column= "1" Grid.Row="2" Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30*"/>
+                                <ColumnDefinition Width="70*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
+                            <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Label Grid.Column="0" Grid.Row="1" Content="Server Port:"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Label Grid.Column="0" Grid.Row="2" Content="IP Address"/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30*"/>
+                                <ColumnDefinition Width="70*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Server Password:"/>
+                            <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Label Grid.Column="0" Grid.Row="1" Content="Admin Password:"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Label Grid.Column= "0" Grid.Row="2" Content="Max Players:" VerticalContentAlignment="Center"/>
+                            <Slider Grid.Column= "1" Grid.Row="2" Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" AutoToolTipPlacement="BottomRight" TickPlacement="TopLeft" />
 
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="MOTD:"/>
+                            <TextBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="5,0,0,0" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Visibility="Collapsed"  Grid.Column="0" Grid.Row="0" Content="Save Directory:"/>
+                            <TextBox Visibility="Collapsed" IsEnabled="False" Grid.Column="1" Grid.Row="0" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding SaveDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Button Visibility="Collapsed" IsEnabled="False" Grid.Column="2" Grid.Row="0" Width="50" Content="..." Click="SelectSaveDirectory_Click"/>
+                            <Label Grid.Column="0" Grid.Row="1" Content="Install Directory:"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding InstallDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+                            <Button Grid.Column="2" Grid.Row="1" Width="50" Content="..." Click="SelectInstallDirectory_Click"/>
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="MOTD:"/>
-                        <TextBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="5,0,0,0" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"/>
+                </Expander>
+                <Expander Header="Rules" IsExpanded="True">
+                    <Grid Margin ="10">
+                        <StackPanel>
+                            <CheckBox IsChecked="{Binding EnableHardcore}">Enable Hardcore Mode</CheckBox>
+                            <CheckBox IsChecked="{Binding EnablePVP}">Enable PvP</CheckBox>
+                            <CheckBox IsChecked="{Binding EnableTributeDownloads}">Enable Tribute Downloads</CheckBox>
+                            <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
+                                                   Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
+                        </StackPanel>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="Save Directory:"/>
-                        <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding SaveDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Button IsEnabled="False" Grid.Column="2" Grid.Row="0" Width="50" Content="..." Click="SelectSaveDirectory_Click"/>
-                        <Label Grid.Column="0" Grid.Row="1" Content="Install Directory:"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding InstallDirectory}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
-                        <Button Grid.Column="2" Grid.Row="1" Width="50" Content="..." Click="SelectInstallDirectory_Click"/>
+                </Expander>
+                <Expander Header="Chat and Notifications" IsExpanded="False">
+                    <Grid Margin ="10">
+                        <StackPanel>
+                            <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}">Enable Global Voice Chat</CheckBox>
+                            <CheckBox IsChecked="{Binding EnableProximityChat}">Enable Proximity Text Chat</CheckBox>
+                            <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}">Enable 'Player Left' Notifications</CheckBox>
+                            <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}">Enable 'Player Joined' Notifications</CheckBox>
+                        </StackPanel>
                     </Grid>
-                </Grid>
-            </Expander>
-        </StackPanel>
+                </Expander>
+                <Expander Header="HUD and Visuals" IsExpanded="False">
+                    <Grid Margin ="10">                        
+                        <StackPanel>
+                            <CheckBox IsChecked="{Binding AllowCrosshair}">Allow Crosshair</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowHUD}">Allow HUD</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowThirdPersonView}">Allow Third-Person View</CheckBox>
+                            <CheckBox IsChecked="{Binding AllowMapPlayerLocation}">Allow Map Player Location</CheckBox>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Player Settings" IsExpanded="False">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">
+                            <CheckBox IsChecked="{Binding EnableFlyerCarry}">Enable Flyer-Carry</CheckBox>
+                            <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Dino Settings" IsExpanded="False">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">
+                            <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Environment" IsExpanded="False">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">                            
+                            <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Harvest Ammount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                <Expander Header="Structures" IsExpanded="False">
+                    <Grid Margin ="10">
+                        <StackPanel Grid.Column="0">
+                            <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                            <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
+                            <CheckBox IsChecked="{Binding EnableStructureDecay}">Enable Structure Decay</CheckBox>
+                            <local:AnnotatedSlider Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                        </StackPanel>
+                    </Grid>
+                </Expander>
+                         
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

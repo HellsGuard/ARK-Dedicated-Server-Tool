@@ -138,7 +138,15 @@ namespace ARK_Server_Manager.Lib
             var serverExe = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
             var serverArgs = this.Settings.GetServerArgs();
             var startInfo = new ProcessStartInfo();
-            this.serverProcess = Process.Start(serverExe, serverArgs);
+            try
+            {
+                this.serverProcess = Process.Start(serverExe, serverArgs);
+            }
+            catch(System.ComponentModel.Win32Exception ex)
+            {
+                throw new FileNotFoundException(String.Format("Unable to find SteamCmd.exe at {0}.  Server Install Directory: {1}", serverExe, this.Settings.InstallDirectory), serverExe, ex);
+            }
+
             this.serverProcess.EnableRaisingEvents = true;
             this.ExecutionStatus = ServerStatus.Initializing;
             // TODO: Ensure the watchdog is running
@@ -188,9 +196,9 @@ namespace ARK_Server_Manager.Lib
                     this.ExecutionStatus = ServerStatus.Updating;
 
                     // Run the SteamCMD to install the server
-                    var steamCmdPath = System.IO.Path.Combine(Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
+                    var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
                     Directory.CreateDirectory(this.Settings.InstallDirectory);
-                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.SteamLoginName, this.Settings.InstallDirectory);
+                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory);
                     var process = Process.Start(steamCmdPath, steamArgs);
                     process.EnableRaisingEvents = true;
                     var ts = new TaskCompletionSource<bool>();
