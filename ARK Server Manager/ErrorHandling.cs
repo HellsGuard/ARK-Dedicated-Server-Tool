@@ -45,12 +45,12 @@ OOPS!  ARK Server Manager has suffered from an internal error and must shut down
 This is probably a bug and should be reported.  The error files are below:
 Error File: {0}
 Crash Dump: {1}
-Please send this file to ChronosWS or HellsGuard on Steam.  Would you like
-to view the error log now?
-", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.YesNo);
+Please send this file to ChronosWS or HellsGuard on Steam.  The crash log
+will now be opened in notepad.
+", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.OK);
 
 
-                if (result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.OK)
                 {
                     Process.Start("notepad.exe", file);
                 }

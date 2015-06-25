@@ -138,7 +138,15 @@ namespace ARK_Server_Manager.Lib
             var serverExe = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
             var serverArgs = this.Settings.GetServerArgs();
             var startInfo = new ProcessStartInfo();
-            this.serverProcess = Process.Start(serverExe, serverArgs);
+            try
+            {
+                this.serverProcess = Process.Start(serverExe, serverArgs);
+            }
+            catch(System.ComponentModel.Win32Exception ex)
+            {
+                throw new FileNotFoundException(String.Format("Unable to find SteamCmd.exe at {0}.  Server Install Directory: {1}", serverExe, this.Settings.InstallDirectory), serverExe, ex);
+            }
+
             this.serverProcess.EnableRaisingEvents = true;
             this.ExecutionStatus = ServerStatus.Initializing;
             // TODO: Ensure the watchdog is running
