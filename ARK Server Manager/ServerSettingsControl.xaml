@@ -7,7 +7,8 @@
              xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
              xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             x:Name="SettingsControl">
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -30,9 +31,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="277*"/>
         </Grid.RowDefinitions>
         <Grid DataContext="{Binding Settings}" Margin="10,5,10,0" Grid.Row="0">
@@ -44,7 +44,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="0" FontSize="15" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
             <TextBox Margin="5" Grid.Column="1"  Grid.Row="0" Text="{Binding ProfileName}" VerticalContentAlignment="Center"
                      ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
@@ -55,48 +55,25 @@
         </Grid>
         <Grid DataContext="{Binding Runtime}" Margin="10,0,10,5" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <Label Content="Version:"/>
-                <Label Content="{Binding Version}"/>
-                <Label Content="Server Status:"/>
-                <Label Content="{Binding Status}"/>
-                <Label Content="Steam Status:"/>
-                <Label>
-                    <Label.Style>
-                        <Style TargetType="{x:Type Label}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
-                                    <Setter Property="Content" Value="Unknown"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
-                                    <Setter Property="Content" Value="Please Public IP in Settings"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
-                                    <Setter Property="Content" Value="Unavailable"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
-                                    <Setter Property="Content" Value="Waiting for publication"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
-                                    <Setter Property="Content" Value="Available"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-                <Label Content="Players"/>
-                <Label Content="{Binding Players}"/>
-                <Label Content="/"/>
-                <Label Content="{Binding MaxPlayers}"/>
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <Label FontSize="15" Content="Version:"/>
+                <Label FontSize="15" Content="{Binding Version}"/>
+                <Label FontSize="15" Content="Server Status:"/>
+                <Label FontSize="15" Content="{Binding Status}"/>
+                <Label FontSize="15" Content="Players"/>
+                <Label FontSize="15" Content="{Binding Players}"/>
+                <Label FontSize="15" Content="/"/>
+                <Label FontSize="15" Content="{Binding MaxPlayers}"/>
             </StackPanel>
-            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
                 <Button Margin="5" Width="50" Click="Start_Click">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -172,23 +149,50 @@
                 </Button>
                 <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
             </StackPanel>
+            <DockPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Label FontSize="15" Content="Steam Status:"/>
+                    <Label FontSize="15">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
+                                        <Setter Property="Content" Value="Unknown"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
+                                        <Setter Property="Content" Value="Set Public IP"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
+                                        <Setter Property="Content" Value="Unavailable"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
+                                        <Setter Property="Content" Value="Waiting for publication"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
+                                        <Setter Property="Content" Value="Available"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Stretch">
+                    <Label FontSize="15" Content="My Public IP:"/>
+                    <TextBox FontSize="12" Text="{Binding ElementName=SettingsControl, Path=CurrentConfig.MachinePublicIP}" Width="125" LostFocus="Save_Config" VerticalContentAlignment="Center">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Style.Triggers>
+                                    <DataTrigger  Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                        <Setter Property="Background" Value="#ffaaaa"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </StackPanel>
+            </DockPanel>            
         </Grid>
-        <Expander DataContext="{Binding Runtime}" Header="Server Test" IsExpanded="True" Grid.Row="2">
-            <ListView ItemsSource="{Binding MasterServers}" Height="100">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Address"/>
-                            <Label Content="{Binding Address}"/>
-                            <Label Content="Port"/>
-                            <Label Content="{Binding Port}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Expander>
-
-        <ScrollViewer DataContext="{Binding Settings}" Grid.Row="3" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer DataContext="{Binding Settings}" Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <Expander Header="Administration" IsExpanded="True">
                     <Grid Margin="10">
@@ -224,7 +228,7 @@
                         <Label Grid.Column="2" Grid.Row="1" Content="Query Port:"/>
                         <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
                                  ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
-                        <Label Grid.Column="4" Grid.Row="1" Content="IP Address"/>
+                        <Label Grid.Column="4" Grid.Row="1" Content="MultiHome IP:"/>
                         <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
                                  ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
 

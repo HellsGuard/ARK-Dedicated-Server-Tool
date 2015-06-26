@@ -28,7 +28,15 @@ namespace ARK_Server_Manager
     {
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register("CurrentConfig", typeof(Config), typeof(ServerSettingsControl));
+
         CancellationTokenSource upgradeCancellationSource;
+
+        public Config CurrentConfig
+        {
+            get { return GetValue(CurrentConfigProperty) as Config; }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
 
         public ServerSettingsViewModel Settings
         {
@@ -46,6 +54,7 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
+            this.CurrentConfig = Config.Default;
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
@@ -66,7 +75,7 @@ namespace ARK_Server_Manager
                 if(this.Runtime.Model.IsRunning)
                 {
                     var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo);
-                    if(result != MessageBoxResult.Yes)
+                    if(result == MessageBoxResult.No)
                     {
                         return;
                     }
@@ -82,6 +91,12 @@ namespace ARK_Server_Manager
         {
             if (this.Runtime.Model.IsRunning)
             {
+                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+
                 await this.Runtime.Model.StopAsync();
             }
             else
@@ -156,6 +171,11 @@ namespace ARK_Server_Manager
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Settings.Model.Save();
+        }
+
+        private void Save_Config(object sender, RoutedEventArgs e)
+        {
+            Config.Default.Save();
         }
     }
 }
