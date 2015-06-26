@@ -50,7 +50,6 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         private Process serverProcess;
-        private MasterServer masterServer = null;
 
         public ServerSettings Settings
         {
@@ -129,16 +128,23 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     if (this.serverProcess != null)
-                    {                        
-                        try
+                    {                 
+                        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                        if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                         {
-                            // Get the local status
-                            var server = ServerQuery.GetServerInstance(EngineType.Source, "127.0.0.1", Convert.ToUInt16(this.Settings.ServerPort));
-                            var ping = server.Ping();
+                            IPAddress ipAddress;
+                            if (IPAddress.TryParse(Config.Default.MachinePublicIP, out ipAddress))
+                            {
+                                serverEndPoint = new IPEndPoint(ipAddress, serverEndPoint.Port);
+                            }
+                        }
+
+                        var serverInfo = App.ServerWatcher.GetLastServerInfo(serverEndPoint);
+                        var isSteamConnected = App.ServerWatcher.GetLastSteamVisible(serverEndPoint);
+                            
+                        if(serverInfo != null)
+                        {
                             this.ExecutionStatus = ServerStatus.Running;
-                            var serverInfo = server.GetInfo();
-
-
                             this.RunningMaxPlayers = serverInfo.MaxPlayers;
                             this.RunningPlayers = serverInfo.Players;
 
@@ -154,34 +160,28 @@ namespace ARK_Server_Manager.Lib
                                     this.Settings.LastInstalledVersion = serverVersion;
                                 }
                             }
-                            
-                            // Check steam.
-                            if (String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+
+                            if (serverEndPoint.Address == IPAddress.Loopback)
                             {
                                 this.SteamAvailability = SteamStatus.NeedPublicIP;
                             }
                             else
                             {
-                                if(this.masterServer == null)
+                                if (isSteamConnected)
                                 {
-                                    this.masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
-                                    masterServer.GetAddresses(Region.US_West_coast, c => { });
-
+                                    this.SteamAvailability = SteamStatus.Available;
+                                }
+                                else
+                                {
                                     this.SteamAvailability = SteamStatus.WaitingForPublication;
-
                                 }
                             }
                         }
-                        catch(SocketException e)
+                        else
                         {
-                            // This is normal when the server has not yet fully started up.
                             this.ExecutionStatus = ServerStatus.Initializing;
-                            if(this.masterServer != null)
-                            {
-                                this.masterServer.Dispose();
-                                this.masterServer = null;
-                            }
-                        }                       
+                            this.SteamAvailability = SteamStatus.Unavailable;
+                        }
                     }
                     else
                     {
@@ -277,12 +277,6 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch(InvalidOperationException)
                 {                    
-                }
-
-                if (this.masterServer != null)
-                {
-                    this.masterServer.Dispose();
-                    this.masterServer = null;
                 }
             }            
         }

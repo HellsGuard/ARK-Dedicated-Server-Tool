@@ -68,7 +68,29 @@
                 <Label Content="Server Status:"/>
                 <Label Content="{Binding Status}"/>
                 <Label Content="Steam Status:"/>
-                <Label Content="{Binding Steam}"/>
+                <Label>
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
+                                    <Setter Property="Content" Value="Unknown"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
+                                    <Setter Property="Content" Value="Please Public IP in Settings"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
+                                    <Setter Property="Content" Value="Unavailable"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
+                                    <Setter Property="Content" Value="Waiting for publication"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
+                                    <Setter Property="Content" Value="Available"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
                 <Label Content="Players"/>
                 <Label Content="{Binding Players}"/>
                 <Label Content="/"/>

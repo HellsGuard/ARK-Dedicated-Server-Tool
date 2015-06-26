@@ -129,6 +129,7 @@
     <Compile Include="ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\ServerStatusWatcher.cs" />
     <Page Include="AnnotatedSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

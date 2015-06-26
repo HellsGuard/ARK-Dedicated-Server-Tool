@@ -148,6 +148,11 @@ namespace ARK_Server_Manager
             }            
         }
 
+        private void SetIP_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Instance.SwitchToSettingsTab();            
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Settings.Model.Save();

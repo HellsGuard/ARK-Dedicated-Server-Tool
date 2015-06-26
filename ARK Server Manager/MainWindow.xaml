@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         Title="{DynamicResource MainWindow_Title}" Height="800" Width="1024" Loaded="Window_Loaded">
     <Grid>
-        <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" TabStripPlacement="Left">
-            <TabItem Header="Profiles" IsSelected="True">
+        <TabControl Name="Tabs" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" TabStripPlacement="Left">
+            <TabItem Header="Profiles" IsSelected="True" Margin="-2,-2,0,2">
                 <TabControl ItemsSource="{Binding Path=ServerTabs, Mode=OneWay}" Margin="0" SelectionChanged="Servers_SelectionChanged">
                 </TabControl>
             </TabItem>
-            <TabItem Header="Settings" Height="24" VerticalAlignment="Bottom" LostFocus="SettingsTab_LostFocus">
+            <TabItem Name="SettingsTab" Header="Settings" Height="24" VerticalAlignment="Bottom" LostFocus="SettingsTab_LostFocus">
                 <local:GlobalSettings/>
             </TabItem>
         </TabControl>

@@ -1,3 +1,4 @@
+using ARK_Server_Manager.Lib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,9 @@ namespace ARK_Server_Manager
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : GlobalizedApplication
-    {        
+    {
+        public static readonly ServerStatusWatcher ServerWatcher = new ServerStatusWatcher();
+
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
