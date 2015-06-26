@@ -229,7 +229,7 @@ Partial Class Main
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(155, 13)
         Me.Label3.TabIndex = 17
-        Me.Label3.Text = "Difficulty Offset (1.0 - 3.0)"
+        Me.Label3.Text = "Difficulty Offset (0.0 - 1.0)"
         '
         'txtDifficultyOffset
         '
