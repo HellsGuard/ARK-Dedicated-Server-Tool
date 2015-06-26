@@ -43,6 +43,9 @@ namespace ARK_Server_Manager.Lib
         public bool GetLastSteamVisible(IPEndPoint server)
         {
             int lastSeenGeneration;
+
+            LocalWatches.TryAdd(server, null);
+
             if(SteamWatches.TryGetValue(server, out lastSeenGeneration))
             {
                 if(lastSeenGeneration >= this.watchGeneration - 1)
@@ -65,7 +68,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         try
                         {
-                            var server = ServerQuery.GetServerInstance(EngineType.Source, "127.0.0.1", (ushort)endPoint.Port);                            
+                            var server = ServerQuery.GetServerInstance(EngineType.Source, new IPEndPoint(IPAddress.Loopback, (ushort)endPoint.Port));                            
                             var serverInfo = server.GetInfo();
                             this.LocalWatches[endPoint] = serverInfo;
                         }
@@ -101,33 +104,31 @@ namespace ARK_Server_Manager.Lib
                     this.watchGeneration++;
                     masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
 
-                    var finishedSteamProcessing = new TaskCompletionSource<bool>();
-                    masterServer.GetAddresses(Region.Rest_of_the_world, endPoints =>
-                        {
-                            var currentApp = App.Current;
-                            if (currentApp != null)
+                    foreach(var localServer in this.LocalWatches.Keys.Where(p => !IPAddress.IsLoopback(p.Address)))
+                    {
+                        var finishedSteamProcessing = new TaskCompletionSource<bool>();
+                        masterServer.GetAddresses(Region.Rest_of_the_world, endPoints =>
                             {
-                                currentApp.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine(String.Format("Received {0} entries", endPoints.Count))));
-                            }
-                            foreach (var endPoint in endPoints)
-                            {
-                                if (endPoint.Address.Equals(masterServer.SeedEndpoint.Address))
+                                var currentApp = App.Current;
+                                if (currentApp != null)
                                 {
-                                    finishedSteamProcessing.TrySetResult(true);
+                                    currentApp.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine(String.Format("Received {0} entries", endPoints.Count))));
                                 }
-                                else if (LocalWatches.ContainsKey(endPoint))
+                                foreach (var endPoint in endPoints)
                                 {
-                                    if (currentApp != null)
+                                    if (endPoint.Address.Equals(masterServer.SeedEndpoint.Address))
                                     {
-                                        //Debug.WriteLine(String.Format("**FOUND** {0}", endPoint.ToString()));
+                                        finishedSteamProcessing.TrySetResult(true);
                                     }
-
-                                    SteamWatches[endPoint] = watchGeneration;
+                                    else if (LocalWatches.ContainsKey(endPoint))
+                                    {
+                                        SteamWatches[endPoint] = watchGeneration;
+                                    }
                                 }
-                            }
-                        }, new IpFilter() { GameDirectory = "ark_survival_evolved" });
+                            }, new IpFilter() { IpAddr = localServer.Address.ToString() });
 
-                    await finishedSteamProcessing.Task;
+                        await finishedSteamProcessing.Task;
+                    }
                 }
 
                 await Task.Delay(5000);

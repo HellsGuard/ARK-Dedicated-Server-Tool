@@ -128,19 +128,20 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     if (this.serverProcess != null)
-                    {                 
-                        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                    {                                         
+                        IPEndPoint localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                        IPEndPoint serverQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
                         if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                         {
                             IPAddress ipAddress;
                             if (IPAddress.TryParse(Config.Default.MachinePublicIP, out ipAddress))
                             {
-                                serverEndPoint = new IPEndPoint(ipAddress, serverEndPoint.Port);
+                                serverQueryEndPoint = new IPEndPoint(ipAddress, serverQueryEndPoint.Port);
                             }
                         }
 
-                        var serverInfo = App.ServerWatcher.GetLastServerInfo(serverEndPoint);
-                        var isSteamConnected = App.ServerWatcher.GetLastSteamVisible(serverEndPoint);
+                        var serverInfo = App.ServerWatcher.GetLastServerInfo(localServerQueryEndPoint);
+                        var isSteamConnected = App.ServerWatcher.GetLastSteamVisible(serverQueryEndPoint);
                             
                         if(serverInfo != null)
                         {
@@ -161,7 +162,7 @@ namespace ARK_Server_Manager.Lib
                                 }
                             }
 
-                            if (serverEndPoint.Address == IPAddress.Loopback)
+                            if (serverQueryEndPoint.Address == IPAddress.Loopback)
                             {
                                 this.SteamAvailability = SteamStatus.NeedPublicIP;
                             }
@@ -265,11 +266,11 @@ namespace ARK_Server_Manager.Lib
                         this.serverProcess.Exited += handler;
                         this.serverProcess.CloseMainWindow();
                         await ts.Task;
-                        this.serverProcess = null;
                     }
                     finally
                     {
-                        this.serverProcess.Exited -= handler;
+                        this.serverProcess.Exited -= handler; 
+                        this.serverProcess = null;
                     }
 
                     this.ExecutionStatus = ServerStatus.Stopped;
