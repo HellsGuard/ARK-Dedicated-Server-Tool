@@ -34,9 +34,10 @@ namespace ARK_Server_Manager
             if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
                 Config.Default.DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.Default.DefaultDataDir);
-                Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);
-                System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             }
+
+            Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);
+            System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
         }
     }
 }
