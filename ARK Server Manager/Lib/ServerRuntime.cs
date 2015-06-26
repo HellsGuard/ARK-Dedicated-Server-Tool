@@ -1,12 +1,17 @@
-﻿using System;
+﻿using QueryMaster;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,14 +30,27 @@ namespace ARK_Server_Manager.Lib
             Uninstalled
         }
 
+        public enum SteamStatus
+        {
+            Unknown,
+            NeedPublicIP,
+            Unavailable,
+            WaitingForPublication,
+            Available
+        }
+
         #region Model Properties
-        
+
+        public SteamStatus Steam = SteamStatus.Unknown;
         public ServerStatus Status = ServerStatus.Unknown;
+        public int MaxPlayers = 0;
+        public int Players = 0;
         public Version Version = new Version();
         
         #endregion
 
         private Process serverProcess;
+        private MasterServer masterServer = null;
 
         public ServerSettings Settings
         {
@@ -43,7 +61,6 @@ namespace ARK_Server_Manager.Lib
         public ServerRuntime(ServerSettings settings)
         {
             this.Settings = settings;
-            UpdateStatusAsync();
         }
 
         public object this[string propertyName]
@@ -63,38 +80,119 @@ namespace ARK_Server_Manager.Lib
             private set { this.Status = value; OnPropertyChanged("Status"); }
         }
 
+        public SteamStatus SteamAvailability
+        {
+            get { return Steam; }
+            private set { this.Steam = value; OnPropertyChanged("Steam"); }
+        }
+
         public Version InstalledVersion
         {
             get { return Version; }
             private set { this.Version = value; OnPropertyChanged("Version"); }
         }
 
-        public async Task UpdateStatusAsync()
+        public int RunningMaxPlayers
         {
-            if (!File.Exists(Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe)))
-            {
-                this.ExecutionStatus = ServerStatus.Uninstalled;
-            }
-            else            
-            {
-                this.ExecutionStatus = ServerStatus.Stopped;
-
-                if(this.serverProcess == null)
-                {
-                    this.serverProcess = FindMatchingServerProcess();
-                }
-
-                if(this.serverProcess != null)
-                {
-                    this.ExecutionStatus = ServerStatus.Running;
-                    // Determine whether we are initializing or accepting connections
-                    // TODO: Implement
-                }
-            }
-
-            await Task.FromResult<bool>(true);
+            get { return this.MaxPlayers; }
+            private set { this.MaxPlayers = value; OnPropertyChanged("MaxPlayers"); }
         }
 
+        public int RunningPlayers
+        {
+            get { return this.Players; }
+            private set { this.Players = value; OnPropertyChanged("Players"); }
+        }
+
+        public Task UpdateStatusAsync(CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(async () =>
+                {
+                    await PeriodicUpdateCheck(cancellationToken);
+                });
+        }
+
+        private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
+        {            
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (!File.Exists(Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe)))
+                {
+                    this.ExecutionStatus = ServerStatus.Uninstalled;
+                    this.SteamAvailability = SteamStatus.Unavailable;
+                }
+                else
+                {
+                    if (this.serverProcess == null)
+                    {
+                        this.serverProcess = FindMatchingServerProcess();
+                    }
+
+                    if (this.serverProcess != null)
+                    {                        
+                        try
+                        {
+                            // Get the local status
+                            var server = ServerQuery.GetServerInstance(EngineType.Source, "127.0.0.1", Convert.ToUInt16(this.Settings.ServerPort));
+                            var ping = server.Ping();
+                            this.ExecutionStatus = ServerStatus.Running;
+                            var serverInfo = server.GetInfo();
+
+
+                            this.RunningMaxPlayers = serverInfo.MaxPlayers;
+                            this.RunningPlayers = serverInfo.Players;
+
+                            // Get the version
+                            var match = Regex.Match(serverInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
+                            if (match.Success && match.Groups.Count >= 2)
+                            {
+                                var serverVersion = match.Groups[1].Value;
+                                Version temp;
+                                if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
+                                {
+                                    this.InstalledVersion = temp;
+                                    this.Settings.LastInstalledVersion = serverVersion;
+                                }
+                            }
+                            
+                            // Check steam.
+                            if (String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+                            {
+                                this.SteamAvailability = SteamStatus.NeedPublicIP;
+                            }
+                            else
+                            {
+                                if(this.masterServer == null)
+                                {
+                                    this.masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
+                                    masterServer.GetAddresses(Region.US_West_coast, c => { });
+
+                                    this.SteamAvailability = SteamStatus.WaitingForPublication;
+
+                                }
+                            }
+                        }
+                        catch(SocketException e)
+                        {
+                            // This is normal when the server has not yet fully started up.
+                            this.ExecutionStatus = ServerStatus.Initializing;
+                            if(this.masterServer != null)
+                            {
+                                this.masterServer.Dispose();
+                                this.masterServer = null;
+                            }
+                        }                       
+                    }
+                    else
+                    {
+                        this.ExecutionStatus = ServerStatus.Stopped;
+                        this.SteamAvailability = SteamStatus.Unavailable;
+                    }
+                }
+
+                await Task.Delay(1000);
+            }            
+        }
         private Process FindMatchingServerProcess()
         {
             foreach(var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
@@ -167,6 +265,7 @@ namespace ARK_Server_Manager.Lib
                         this.serverProcess.Exited += handler;
                         this.serverProcess.CloseMainWindow();
                         await ts.Task;
+                        this.serverProcess = null;
                     }
                     finally
                     {
@@ -178,7 +277,13 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch(InvalidOperationException)
                 {                    
-                }                
+                }
+
+                if (this.masterServer != null)
+                {
+                    this.masterServer.Dispose();
+                    this.masterServer = null;
+                }
             }            
         }
 
@@ -221,9 +326,17 @@ namespace ARK_Server_Manager.Lib
     
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            var propChanged = this.PropertyChanged;
+            if (propChanged != null)
             {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                // TODO: When the app shuts down, we need to kill outstanding update tasks.
+                if (App.Current != null)
+                {
+                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            propChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                        }));
+                }
             }
         }
 
@@ -234,6 +347,13 @@ namespace ARK_Server_Manager.Lib
     {
         private ServerSettings serverSettings;
         private ServerRuntime model;
+        CancellationTokenSource updateCancellation = new CancellationTokenSource();
+
+        public ObservableCollection<IPEndPoint> MasterServers
+        {
+            get;
+            set;
+        }
 
         public ServerRuntime Model
         {
@@ -245,7 +365,12 @@ namespace ARK_Server_Manager.Lib
             this.serverSettings = serverSettings;  
             this.model = new ServerRuntime(serverSettings);
             this.model.PropertyChanged += (s, e) => base.OnPropertyChanged(e.PropertyName);
-            this.model.UpdateStatusAsync();
+            this.model.UpdateStatusAsync(updateCancellation.Token);
+        }
+
+        public ServerRuntime.SteamStatus Steam
+        {
+            get { return Get<ServerRuntime.SteamStatus>(model); }
         }
 
         public ServerRuntime.ServerStatus Status
@@ -257,5 +382,16 @@ namespace ARK_Server_Manager.Lib
         {
             get { return Get<Version>(model); }
         }
+
+        public int MaxPlayers
+        {
+            get { return Get<int>(model); }
+        }
+
+        public int Players
+        {
+            get { return Get<int>(model); }
+        }
+
     }
 }

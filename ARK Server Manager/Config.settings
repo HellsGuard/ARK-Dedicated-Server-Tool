@@ -80,5 +80,8 @@
     <Setting Name="LoadProfileExtensionList" Type="System.String" Scope="User">
       <Value Profile="(Default)">*.profile,*.ini</Value>
     </Setting>
+    <Setting Name="MachinePublicIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

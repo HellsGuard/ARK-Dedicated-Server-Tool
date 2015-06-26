@@ -32,6 +32,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="20*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="277*"/>
         </Grid.RowDefinitions>
         <Grid DataContext="{Binding Settings}" Margin="10,5,10,0" Grid.Row="0">
@@ -64,8 +65,14 @@
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Label Content="Version:"/>
                 <Label Content="{Binding Version}"/>
-                <Label Content="Status:"/>
+                <Label Content="Server Status:"/>
                 <Label Content="{Binding Status}"/>
+                <Label Content="Steam Status:"/>
+                <Label Content="{Binding Steam}"/>
+                <Label Content="Players"/>
+                <Label Content="{Binding Players}"/>
+                <Label Content="/"/>
+                <Label Content="{Binding MaxPlayers}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                 <Button Margin="5" Width="50" Click="Start_Click">
@@ -144,7 +151,22 @@
                 <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
             </StackPanel>
         </Grid>
-        <ScrollViewer DataContext="{Binding Settings}" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+        <Expander DataContext="{Binding Runtime}" Header="Server Test" IsExpanded="True" Grid.Row="2">
+            <ListView ItemsSource="{Binding MasterServers}" Height="100">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Address"/>
+                            <Label Content="{Binding Address}"/>
+                            <Label Content="Port"/>
+                            <Label Content="{Binding Port}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Expander>
+
+        <ScrollViewer DataContext="{Binding Settings}" Grid.Row="3" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <Expander Header="Administration" IsExpanded="True">
                     <Grid Margin="10">

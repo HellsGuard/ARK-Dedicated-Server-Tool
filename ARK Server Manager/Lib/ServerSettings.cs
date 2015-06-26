@@ -152,6 +152,7 @@ namespace ARK_Server_Manager.Lib
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
+        public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
 
         public string ServerMap = Config.Default.DefaultServerMap;
@@ -209,7 +210,7 @@ namespace ARK_Server_Manager.Lib
         public void WriteINIFile()
         {
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(configDir));
+            Directory.CreateDirectory(configDir);
 
             var iniFile = new IniFile(configDir);            
             iniFile.Serialize(this);
