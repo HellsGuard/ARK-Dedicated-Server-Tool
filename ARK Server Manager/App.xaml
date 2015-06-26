@@ -13,5 +13,6 @@
 			<Setter Property="BorderBrush" Value="{DynamicResource MedBeige}"/>
 			<Setter Property="Background" Value="{DynamicResource LtBeige}"/>
 		</Style>
+		<SolidColorBrush x:Key="DkBeige" Color="#FFBFA786"/>
 	</globalizer:GlobalizedApplication.Resources>
 </globalizer:GlobalizedApplication>
