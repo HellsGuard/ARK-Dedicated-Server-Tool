@@ -290,13 +290,15 @@
         <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
         	<GradientStop Color="#FFECE1D4" Offset="1"/>
         	<GradientStop Color="#FFEAE8E6"/>
-        </LinearGradientBrush>      
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="BeigeLabel" Color="#FFE6DFD8"/>
+        <SolidColorBrush x:Key="BeigeBorder" Color="#FFD8CCBC"/>      
     </UserControl.Resources>
     <Grid Background="{DynamicResource BeigeGradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="277*"/>
+            <RowDefinition Height="76"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Margin="10,5" Grid.RowSpan="2" BorderBrush="#FF10274F" BorderThickness="1">
     		<Grid>
@@ -329,14 +331,27 @@
     					<ColumnDefinition Width="Auto"/>
     				</Grid.ColumnDefinitions>
     				<StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-    					<Label FontSize="15" Content="Version:"/>
-    					<Label FontSize="15" Content="{Binding Version}" Margin="0,0,16,0"/>
-    					<Label FontSize="15" Content="Server Status:"/>
-    					<Label FontSize="15" Content="{Binding Status}" Margin="0,0,16,0"/>
-    					<Label FontSize="15" Content="Players"/>
-    					<Label FontSize="15" Content="{Binding Players}"/>
-    					<Label FontSize="15" Content="/"/>
-    					<Label FontSize="15" Content="{Binding MaxPlayers}"/>
+    					<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" BorderBrush="{DynamicResource BeigeBorder}" 
+						Style="{DynamicResource BorderLabel}">
+    						<StackPanel Orientation="Horizontal">
+    							<Label FontSize="15" Content="Version:" HorizontalAlignment="Left" Width="60.903" />
+    							<Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left" Height="29.95" />
+    						</StackPanel>
+    					</Border>
+    					<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+    						<StackPanel Orientation="Horizontal">
+    							<Label FontSize="15" Content="Server Status:" Height="29.95" Width="99.257"/>
+    							<Label FontSize="15" Content="{Binding Status}" Height="29.95" Width="10.001"/>
+    						</StackPanel>
+    					</Border>
+    					<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+    						<StackPanel Orientation="Horizontal">
+    							<Label FontSize="15" Content="Players" Height="29.95" Width="56.343"/>
+    							<Label FontSize="15" Content="{Binding Players}" Height="29.95" Width="10"/>
+    							<Label FontSize="15" Content="/" Height="29.95" Width="15.843"/>
+    							<Label FontSize="15" Content="{Binding MaxPlayers}" Height="29.95" Width="10"/>
+    						</StackPanel>
+    					</Border>
     				</StackPanel>
     				<StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
     					<Button Margin="5" Width="50" Click="Start_Click">
@@ -416,30 +431,34 @@
     				</StackPanel>
     				<DockPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" LastChildFill="False">
     					<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-    						<Label FontSize="15" Content="Steam Status:"/>
-    						<Label FontSize="15">
-    							<Label.Style>
-    								<Style TargetType="{x:Type Label}">
-    									<Style.Triggers>
-    										<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
-    											<Setter Property="Content" Value="Unknown"/>
-    										</DataTrigger>
-    										<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
-    											<Setter Property="Content" Value="Set Public IP"/>
-    										</DataTrigger>
-    										<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
-    											<Setter Property="Content" Value="Unavailable"/>
-    										</DataTrigger>
-    										<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
-    											<Setter Property="Content" Value="Waiting for publication"/>
-    										</DataTrigger>
-    										<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
-    											<Setter Property="Content" Value="Available"/>
-    										</DataTrigger>
-    									</Style.Triggers>
-    								</Style>
-    							</Label.Style>
-    						</Label>
+    						<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+    							<StackPanel Orientation="Horizontal">
+    								<Label FontSize="15" Content="Steam Status:" Height="29.95" Width="99.437"/>
+    								<Label FontSize="15" Height="29.95" Width="10.001">
+    									<Label.Style>
+    										<Style TargetType="{x:Type Label}">
+    											<Style.Triggers>
+    												<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
+    													<Setter Property="Content" Value="Unknown"/>
+    												</DataTrigger>
+    												<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
+    													<Setter Property="Content" Value="Set Public IP"/>
+    												</DataTrigger>
+    												<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
+    													<Setter Property="Content" Value="Unavailable"/>
+    												</DataTrigger>
+    												<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
+    													<Setter Property="Content" Value="Waiting for publication"/>
+    												</DataTrigger>
+    												<DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
+    													<Setter Property="Content" Value="Available"/>
+    												</DataTrigger>
+    											</Style.Triggers>
+    										</Style>
+    									</Label.Style>
+    								</Label>
+    							</StackPanel>
+    						</Border>
     					</StackPanel>
     					<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Stretch">
     						<Label FontSize="15" Content="My Public IP:"/>
@@ -468,7 +487,7 @@
         	</Border.Background>
         	<ScrollViewer DataContext="{Binding Settings}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
         		<StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-        			<Expander IsExpanded="True" Background="#FFF0ECE3" Margin="0" Padding="4" BorderBrush="Black" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Administration" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -541,7 +560,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Chat and Notifications" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -554,7 +573,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="HUD and Visuals" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -567,7 +586,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Settings" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -584,7 +603,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dino Settings" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -601,7 +620,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Environment" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
@@ -616,7 +635,7 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-        			<Expander IsExpanded="False" Style="{DynamicResource ExpanderStyle1}">
+        			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
         					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Structures" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
         				</Expander.Header>
