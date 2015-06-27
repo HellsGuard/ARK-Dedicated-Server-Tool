@@ -23,6 +23,12 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance
+        {
+            get;
+            private set;
+        }
+
         public ObservableCollection<TabItem> ServerTabs
         {
             get;
@@ -34,6 +40,7 @@ namespace ARK_Server_Manager
         public MainWindow()
         {
             InitializeComponent();
+            MainWindow.Instance = this;
             ServerTabs = new ObservableCollection<TabItem>();            
             this.DataContext = this;
         }
@@ -90,6 +97,11 @@ namespace ARK_Server_Manager
         private void SettingsTab_LostFocus(object sender, RoutedEventArgs e)
         {
             Config.Default.Save();
+        }
+
+        public void SwitchToSettingsTab()
+        {
+            this.Tabs.SelectedIndex = 1;
         }
     }
 }

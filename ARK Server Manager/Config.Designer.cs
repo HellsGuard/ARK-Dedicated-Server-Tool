@@ -280,5 +280,17 @@ namespace ARK_Server_Manager {
                 this["LoadProfileExtensionList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MachinePublicIP {
+            get {
+                return ((string)(this["MachinePublicIP"]));
+            }
+            set {
+                this["MachinePublicIP"] = value;
+            }
+        }
     }
 }

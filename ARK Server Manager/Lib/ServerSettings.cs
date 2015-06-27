@@ -89,6 +89,9 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "QueryPort")]  
         public int ServerPort = 27015;
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "Port")]
+        public int ServerConnectionPort = 7777;
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "MultiHome")]
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
@@ -149,6 +152,8 @@ namespace ARK_Server_Manager.Lib
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
+        public string LastInstalledVersion = String.Empty;
+        public string AdditionalArgs = String.Empty;
 
         public string ServerMap = Config.Default.DefaultServerMap;
         
@@ -205,7 +210,7 @@ namespace ARK_Server_Manager.Lib
         public void WriteINIFile()
         {
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(configDir));
+            Directory.CreateDirectory(configDir);
 
             var iniFile = new IniFile(configDir);            
             iniFile.Serialize(this);
@@ -269,8 +274,12 @@ namespace ARK_Server_Manager.Lib
 
             // Currently this setting does not seem to get picked up from the INI file.
             serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
+            serverArgs.Append("?Port=").Append(this.ServerConnectionPort);
 
             serverArgs.Append("?listen");
+
+            serverArgs.Append(this.AdditionalArgs);
+
             serverArgs.Append(' ');
             serverArgs.Append(Config.Default.ServerCommandLineStandardArgs);
 
@@ -346,6 +355,12 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
+        public int ServerConnectionPort
+        {
+            get { return Get<int>(model); }
+            set { Set(model, value); }
+        }
+
         public string ServerIP
         {
             get { return Get<string>(model); }
@@ -357,6 +372,12 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
         public string InstallDirectory
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+
+        public string AdditionalArgs
         {
             get { return Get<string>(model); }
             set { Set(model, value); }

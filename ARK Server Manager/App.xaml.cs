@@ -1,3 +1,4 @@
+using ARK_Server_Manager.Lib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,9 @@ namespace ARK_Server_Manager
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : GlobalizedApplication
-    {        
+    {
+        public static readonly ServerStatusWatcher ServerWatcher = new ServerStatusWatcher();
+
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
@@ -31,9 +34,10 @@ namespace ARK_Server_Manager
             if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
                 Config.Default.DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.Default.DefaultDataDir);
-                Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);
-                System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             }
+
+            Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);
+            System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace ARK_Server_Manager.Lib
         protected T Get<T>(ref T field, [CallerMemberName] string propertyName = "")
         {
             return field;
-        }
+        }                                                                 
 
         protected void Set<T>(ISettingsBag settings, T value, [CallerMemberName] string propertyName = "")
         {
