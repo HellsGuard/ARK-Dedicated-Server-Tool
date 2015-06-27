@@ -341,15 +341,15 @@
     					<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
     						<StackPanel Orientation="Horizontal">
     							<Label FontSize="15" Content="Server Status:" Height="29.95" Width="99.257"/>
-    							<Label FontSize="15" Content="{Binding Status}" Height="29.95" Width="10.001"/>
+    							<Label FontSize="15" Content="{Binding Status}" Height="29.95" Width="100"/>
     						</StackPanel>
     					</Border>
     					<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
     						<StackPanel Orientation="Horizontal">
     							<Label FontSize="15" Content="Players" Height="29.95" Width="56.343"/>
-    							<Label FontSize="15" Content="{Binding Players}" Height="29.95" Width="10"/>
+    							<Label FontSize="15" Content="{Binding Players}" Height="29.95" Width="30"/>
     							<Label FontSize="15" Content="/" Height="29.95" Width="15.843"/>
-    							<Label FontSize="15" Content="{Binding MaxPlayers}" Height="29.95" Width="10"/>
+    							<Label FontSize="15" Content="{Binding MaxPlayers}" Height="29.95" Width="30"/>
     						</StackPanel>
     					</Border>
     				</StackPanel>
@@ -434,7 +434,7 @@
     						<Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
     							<StackPanel Orientation="Horizontal">
     								<Label FontSize="15" Content="Steam Status:" Height="29.95" Width="99.437"/>
-    								<Label FontSize="15" Height="29.95" Width="10.001">
+    								<Label FontSize="15" Height="29.95" Width="200">
     									<Label.Style>
     										<Style TargetType="{x:Type Label}">
     											<Style.Triggers>
