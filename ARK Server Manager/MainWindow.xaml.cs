@@ -106,13 +106,23 @@ namespace ARK_Server_Manager
             }
         }
 
+        public void Settings_Click(object sender, RoutedEventArgs args)
+        {
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
+        }
+
+        public void Help_Click(object sender, RoutedEventArgs args)
+        {
+        }
+
         public void CloseTab_Click(object sender, RoutedEventArgs args)
         {
             var button = sender as Button;
             if(button != null)
             {   
                 var context = button.DataContext as ServerSettingsControl;
-                var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo);
+                var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if(result == MessageBoxResult.Yes)
                 {
                     try

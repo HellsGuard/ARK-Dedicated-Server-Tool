@@ -107,15 +107,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Servers")]
         public string ServersInstallDir {
             get {
                 return ((string)(this["ServersInstallDir"]));
-            }
-            set {
-                this["ServersInstallDir"] = value;
             }
         }
         
@@ -191,15 +188,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".profile")]
         public string ProfileExtension {
             get {
                 return ((string)(this["ProfileExtension"]));
-            }
-            set {
-                this["ProfileExtension"] = value;
             }
         }
         
@@ -257,27 +251,21 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".ini")]
         public string IniExtension {
             get {
                 return ((string)(this["IniExtension"]));
             }
-            set {
-                this["IniExtension"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("*.profile,*.ini")]
         public string LoadProfileExtensionList {
             get {
                 return ((string)(this["LoadProfileExtensionList"]));
-            }
-            set {
-                this["LoadProfileExtensionList"] = value;
             }
         }
         

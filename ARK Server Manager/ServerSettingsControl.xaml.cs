@@ -66,7 +66,7 @@ namespace ARK_Server_Manager
             {
                 if(this.Runtime.Model.IsRunning)
                 {
-                    var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo);
+                    var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if(result == MessageBoxResult.No)
                     {
                         return;
@@ -83,7 +83,7 @@ namespace ARK_Server_Manager
         {
             if (this.Runtime.Model.IsRunning)
             {
-                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo);
+                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     return;

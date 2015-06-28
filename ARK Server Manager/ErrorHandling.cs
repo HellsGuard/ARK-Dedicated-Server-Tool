@@ -47,7 +47,7 @@ Error File: {0}
 Crash Dump: {1}
 Please send this file to ChronosWS or HellsGuard on Steam.  The crash log
 will now be opened in notepad.
-", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.OK);
+", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
 
                 if (result == MessageBoxResult.OK)

@@ -155,12 +155,17 @@ namespace ARK_Server_Manager.Lib
         public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
 
+
         public string ServerMap = Config.Default.DefaultServerMap;
-        
+
+
         #endregion
 
         [XmlIgnore()]
         public bool IsDirty = true;
+
+        [XmlIgnore()]
+        private string LastSaveLocation = String.Empty;
 
         public ServerSettings()
         {
@@ -171,28 +176,30 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerSettings LoadFrom(string path)
         {
+            ServerSettings settings;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
                 using (var reader = File.OpenRead(path))
                 {
-                    var settings = (ServerSettings)serializer.Deserialize(reader);
+                    settings = (ServerSettings)serializer.Deserialize(reader);
                     settings.IsDirty = false;
-                    return settings;
                 }
             }
             else
             {
                 IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
-                ServerSettings settings = new ServerSettings();
+                settings = new ServerSettings();
                 iniFile.Deserialize(settings);
-                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
-                return settings;
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));                
             }
+
+            settings.LastSaveLocation = path;
+            return settings;
         }
 
         public void Save()
-        {
+        {            
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var writer = new StreamWriter(GetProfilePath()))
             {
@@ -200,6 +207,24 @@ namespace ARK_Server_Manager.Lib
             }
 
             WriteINIFile();
+
+            // If this was a rename, remove the old profile after writing the new one.
+            if(!String.Equals(GetProfilePath(), this.LastSaveLocation))
+            {
+                try
+                {
+                    if (File.Exists(this.LastSaveLocation))
+                    {
+                        File.Delete(this.LastSaveLocation);
+                    }
+                }
+                catch(IOException ex)
+                {
+                    // We tried...
+                }
+
+                this.LastSaveLocation = GetProfilePath();
+            }
         }
 
         public string GetProfilePath()
