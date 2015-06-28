@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,31 +25,43 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register("IsIpValid", typeof(bool), typeof(MainWindow));
+        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register("CurrentConfig", typeof(Config), typeof(MainWindow));
+
         public static MainWindow Instance
         {
             get;
             private set;
         }
 
-        public ObservableCollection<TabItem> ServerTabs
+        public bool IsIpValid
         {
-            get;
-            set;
+            get { return (bool)GetValue(IsIpValidProperty); }
+            set { SetValue(IsIpValidProperty, value); }
         }
 
-        private TabItem defaultTab;
+        public Config CurrentConfig
+        {
+            get { return GetValue(CurrentConfigProperty) as Config; }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
+
+        private object defaultTab;
 
         public MainWindow()
         {
+            Config.Default.Reload();
+            this.CurrentConfig = Config.Default;
+
             InitializeComponent();
             MainWindow.Instance = this;
-            ServerTabs = new ObservableCollection<TabItem>();            
             this.DataContext = this;
+            this.defaultTab = this.Tabs.Items[0];
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AddDefaultServerTab();            
+            //AddDefaultServerTab();            
 
             // We need to load the set of existing servers, or create a blank one if we don't have any...
             var tabAdded = false;
@@ -62,13 +76,8 @@ namespace ARK_Server_Manager
             {
                 AddNewServerTab(new ServerSettings());
             }
-        }
 
-        private void AddDefaultServerTab()
-        {
-            this.defaultTab = new TabItem();
-            this.defaultTab.Header = "+";
-            ServerTabs.Add(this.defaultTab);
+            Tabs.SelectedIndex = 0;
         }
 
         private int AddNewServerTab(ServerSettings settings)
@@ -78,30 +87,91 @@ namespace ARK_Server_Manager
             newTab.Content = control;
             newTab.DataContext = control;
             newTab.SetBinding(TabItem.HeaderProperty, new Binding("Settings." + ServerSettings.ProfileNameProperty));
-            this.ServerTabs.Insert(this.ServerTabs.Count - 1, newTab);
-            return this.ServerTabs.Count - 2;
+            this.Tabs.Items.Insert(this.Tabs.Items.Count - 1, newTab);
+            return this.Tabs.Items.Count - 2;            
         }
 
-        private void Servers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tabControl = sender as TabControl;
-            if (tabControl != null)
+            if (this.IsLoaded)
             {
-                if (tabControl.SelectedItem == this.defaultTab)
+                var tabControl = sender as TabControl;
+                if (tabControl != null)
                 {
-                    tabControl.SelectedIndex = AddNewServerTab(new ServerSettings());                    
+                    if (tabControl.SelectedItem == this.defaultTab)
+                    {
+                        tabControl.SelectedIndex = AddNewServerTab(new ServerSettings());
+                    }
                 }
             }
         }
 
-        private void SettingsTab_LostFocus(object sender, RoutedEventArgs e)
+        public void CloseTab_Click(object sender, RoutedEventArgs args)
         {
-            Config.Default.Save();
+            var button = sender as Button;
+            if(button != null)
+            {   
+                var context = button.DataContext as ServerSettingsControl;
+                var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo);
+                if(result == MessageBoxResult.Yes)
+                {
+
+                }
+            }
+        }
+    }
+
+    public class IpValidationRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (IpValidationRule.ValidateIP((string)value))
+            {
+                return ValidationResult.ValidResult;
+            }
+            else
+            {
+                return new ValidationResult(false, "Invalid IP address or host name");
+            }
         }
 
-        public void SwitchToSettingsTab()
+        private static bool ValidateIP(string source)
         {
-            this.Tabs.SelectedIndex = 1;
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return false;
+            }
+            else
+            {
+                IPAddress ipAddress;
+                if (IPAddress.TryParse(source, out ipAddress))
+                {
+                    return true;
+                }
+                else
+                {
+                    // Try DNS resolution
+                    try
+                    {
+                        var addresses = Dns.GetHostAddresses(source);
+                        var ip4Address = addresses.FirstOrDefault(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+                        if (ip4Address != null)
+                        {
+                            Debug.WriteLine(String.Format("Resolved address {0} to {1}", source, ip4Address.ToString()));
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+            }
         }
+
     }
 }
