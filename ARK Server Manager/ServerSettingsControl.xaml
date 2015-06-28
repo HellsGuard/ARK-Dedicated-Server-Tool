@@ -360,7 +360,7 @@
                         <Button Margin="5" Click="Save_Click" ToolTip="Save the current profile and write the .INI files for the server.">
                             <Image Source="Art/Save_6530.png" Height="16" Margin="5,0,5,0"/>
                         </Button>
-                        <Button Margin="5" Click="CopyProfile_Click" ToolTip="Copy this profile to a new profile.">
+                        <Button Margin="5" IsEnabled="False" Click="CopyProfile_Click" ToolTip="Copy this profile to a new profile.">
                             <Image Source="Art/Copy_6524.png" Height="16"  Margin="5,0,5,0" />
                         </Button>
                     </StackPanel>
@@ -387,7 +387,7 @@
                         <Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="0" BorderBrush="{DynamicResource BeigeBorder}" >
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left"/>
-                                <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left"/>
+                                <Label FontSize="15" Content="Unknown" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>

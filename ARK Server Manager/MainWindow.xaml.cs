@@ -115,7 +115,32 @@ namespace ARK_Server_Manager
                 var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo);
                 if(result == MessageBoxResult.Yes)
                 {
+                    try
+                    {
+                        File.Delete(context.Settings.Model.GetProfilePath());
+                    }
+                    catch(FileNotFoundException)
+                    {
+                    }
 
+                    for (int i = 0; i < this.Tabs.Items.Count; i++)
+                    {
+                        ServerSettingsControl control = ((TabItem)this.Tabs.Items[i]).DataContext as ServerSettingsControl;
+                        if (object.ReferenceEquals(control, context))
+                        {
+                            if (i > 0)
+                            {
+                                this.Tabs.SelectedIndex = i - 1;
+                            }
+                            else
+                            {
+                                this.Tabs.SelectedIndex = i + 1;
+                            }
+
+                            App.Current.Dispatcher.BeginInvoke(new Action(() => this.Tabs.Items.RemoveAt(i)));
+                            return;
+                        }
+                    }
                 }
             }
         }
