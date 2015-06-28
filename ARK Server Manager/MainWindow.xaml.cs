@@ -67,9 +67,16 @@ namespace ARK_Server_Manager
             var tabAdded = false;
             foreach(var profile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
             {
-                var settings = ServerSettings.LoadFrom(profile);
-                AddNewServerTab(settings);
-                tabAdded = true;
+                try
+                {
+                    var settings = ServerSettings.LoadFrom(profile);
+                    AddNewServerTab(settings);
+                    tabAdded = true;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", profile, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
 
             if (!tabAdded)
