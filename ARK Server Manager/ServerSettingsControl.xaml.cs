@@ -147,10 +147,17 @@ namespace ARK_Server_Manager
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                var settings = ServerSettings.LoadFrom(dialog.FileName);
-                if (settings != null)
+                try
                 {
-                    ReinitializeFromSettings(settings);
+                    var settings = ServerSettings.LoadFrom(dialog.FileName);
+                    if (settings != null)
+                    {
+                        ReinitializeFromSettings(settings);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", profile, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }            
         }
