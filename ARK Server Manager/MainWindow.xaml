@@ -88,6 +88,14 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Background="#FF4F4F4F">
             <TextBox DockPanel.Dock="Left" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="8,4,10,7" Text="{DynamicResource MainWindow_Title}" BorderThickness="0"/>
+            <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Settings">
+                    <Image Source="Art/Settings.png" Width="16"/>
+                </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Help">
+                    <Image Source="Art/Help.png" Width="16"/>
+                </Button>
+            </StackPanel>
             <Label  DockPanel.Dock="Right" Margin="5,4,5,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <Label  DockPanel.Dock="Right" Margin="10,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <TextBox DockPanel.Dock="Right" FontSize="12" Height="25"  Width="250" VerticalAlignment="Bottom" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
@@ -125,7 +133,7 @@
             <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
         </DockPanel>
-        <TabControl Name="Tabs" Grid.Row ="1" Margin="0" Style="{DynamicResource TabControlStyle1}" SelectionChanged="Tabs_SelectionChanged">
+        <TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" Style="{DynamicResource TabControlStyle1}" SelectionChanged="Tabs_SelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Style.Triggers>
