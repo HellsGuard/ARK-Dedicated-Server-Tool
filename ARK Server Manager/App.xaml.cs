@@ -47,7 +47,6 @@ namespace ARK_Server_Manager
 
         protected override void OnStartup(StartupEventArgs e)
         {           
-            base.OnStartup(e);
             //System.Configuration.ConfigurationSettings.AppSettings.
             
             // Initial configuration setting
@@ -59,6 +58,8 @@ namespace ARK_Server_Manager
             Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);            
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
+
+            base.OnStartup(e);
         }
 
         protected override void OnExit(ExitEventArgs e)

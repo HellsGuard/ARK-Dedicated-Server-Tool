@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -123,6 +124,10 @@ namespace ARK_Server_Manager.Lib
         public float HarvestHealthMultiplier = 1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float PvEStructureDecayDestructionPeriod = 0;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float PvEStructureDecayPeriodMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float ResourcesRespawnPeriodMultiplier = 1;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float DayCycleSpeedScale=1;
@@ -154,10 +159,11 @@ namespace ARK_Server_Manager.Lib
 
         public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
-
-
+        
         public string ServerMap = Config.Default.DefaultServerMap;
 
+        [XmlIgnore()]
+        public ObservableCollection<string> Whitelist = new ObservableCollection<string>();
 
         #endregion
 
@@ -570,6 +576,18 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
+        public float PvEStructureDecayPeriodMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float ResourcesRespawnPeriodMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
         public float DayCycleSpeedScale
         {
             get { return Get<float>(model); }
@@ -628,6 +646,12 @@ namespace ARK_Server_Manager.Lib
         public float XPMultiplier
         {
             get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public ObservableCollection<string> Whitelist
+        {
+            get { return Get<ObservableCollection<string>>(model); }
             set { Set(model, value); }
         }
     }

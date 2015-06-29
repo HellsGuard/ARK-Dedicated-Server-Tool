@@ -28,9 +28,16 @@ namespace ARK_Server_Manager
     {
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty WhitelistUserProperty = DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
 
         CancellationTokenSource upgradeCancellationSource;
 
+        public string WhitelistUser
+        {
+            get { return (string)GetValue(WhitelistUserProperty); }
+            set { SetValue(WhitelistUserProperty, value); }
+        }
+        
         public ServerSettingsViewModel Settings
         {
             get { return GetValue(SettingsProperty) as ServerSettingsViewModel; }
@@ -55,6 +62,23 @@ namespace ARK_Server_Manager
             this.Runtime = new ServerRuntimeViewModel(settings);            
         }
 
+        private void WhitelistAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(this.WhitelistUser))
+            {
+                Settings.Whitelist.Add(this.WhitelistUser);
+            }
+        }
+
+        private void WhitelistRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WhitelistControl.SelectedIndex >= 0)
+            {
+                Settings.Whitelist.RemoveAt(this.WhitelistControl.SelectedIndex);
+            }
+        }
+
+    
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
             if(this.Runtime.Model.ExecutionStatus == ServerRuntime.ServerStatus.Updating)
@@ -157,7 +181,7 @@ namespace ARK_Server_Manager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", profile, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", dialog.FileName, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }            
         }

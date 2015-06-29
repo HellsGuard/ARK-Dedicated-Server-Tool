@@ -257,14 +257,17 @@
         				<Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true" Padding="1" Margin="0,0,0,8" BorderBrush="Black" Background="#FFCFC8BA">
         					<DockPanel Background="#FFEAE7E0">
         						<ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" Content="{TemplateBinding Header}" DockPanel.Dock="Top" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="4,4,1,4" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-        						<ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Visibility="Collapsed" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="10,0,0,0"/>
+        						<ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="10,0,0,0"/>
         					</DockPanel>
         				</Border>
         				<ControlTemplate.Triggers>
         					<Trigger Property="IsExpanded" Value="true">
         						<Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
         					</Trigger>
-        					<Trigger Property="ExpandDirection" Value="Right">
+                            <Trigger Property="IsExpanded" Value="false">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Right">
         						<Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
         						<Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
         						<Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderRightHeaderStyle}"/>
@@ -330,6 +333,19 @@
                 <Label Content="Set Location..." />
             </StackPanel>
         </ContentControl>
+        <ContentControl x:Key="AddWhitelistButtonContent">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Art/Back.png" Width="16" Margin="5,0,5,0" />
+                <Label Content="Add" />
+            </StackPanel>
+        </ContentControl>
+        <ContentControl x:Key="RemoveWhitelistButtonContent">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Art/Delete.png" Width="16" Margin="5,0,5,0" />
+                <Label Content="Remove" />
+            </StackPanel>
+        </ContentControl>
+
     </UserControl.Resources>
     <Grid Background="{DynamicResource BeigeGradient}">
         <Grid.RowDefinitions>
@@ -365,7 +381,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="1" Margin="0,0,0,3">
+                <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -376,21 +392,25 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel DataContext="{Binding Runtime}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Height="38" Orientation="Horizontal" Margin="0">
-                        <Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="4,2" BorderBrush="{DynamicResource BeigeBorder}" 
+                    <Grid DataContext="{Binding Runtime}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Height="38" Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" 
 						Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Installed Version:" HorizontalAlignment="Left"/>
                                 <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
-                        <Border Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="0" BorderBrush="{DynamicResource BeigeBorder}" >
+                        <Border Grid.Column="1" Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left"/>
                                 <Label FontSize="15" Content="Unknown" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
-                    </StackPanel>
+                    </Grid>
                     <Button DataContext="{Binding Runtime}"  Grid.Column="2" Grid.Row="0" Margin="5" Click="Upgrade_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
@@ -431,7 +451,7 @@
 
                     </Button>
 
-                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Settings}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Settings}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="true">                        
                             <Label DockPanel.Dock="Left" Content="Installation Location:" FontSize="15" VerticalAlignment="Center"/>
                             <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5"/>
@@ -482,13 +502,13 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+                        <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Server Status:"/>
                                 <Label FontSize="15" Content="{Binding Status}"/>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+                        <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Steam Status:"/>
                                 <Label FontSize="15">
@@ -516,7 +536,7 @@
                                 </Label>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="2" Background="{DynamicResource BeigeLabel}" Margin="4,2" Style="{DynamicResource BorderLabel}">
+                        <Border Grid.Column="2" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Players:"/>
                                 <Label FontSize="15" Content="{Binding Players}"/>
@@ -596,6 +616,7 @@
         						<RowDefinition/>
         						<RowDefinition/>
         						<RowDefinition/>
+                                <RowDefinition/>
         					</Grid.RowDefinitions>
         					<Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
         					<TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
@@ -621,14 +642,34 @@
         						ToolTip="Sets the maximum number of players which can join this server."/>
                             
         					<Label Grid.Column="0" Grid.Row="3" Content="MOTD:"/>
-        					<TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3"  Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="256"
-        						ToolTip="The Message of the Day displayed to users when they connect to the server."/>
+        					
 
         					<Label Grid.Column="0" Grid.Row="5" Content="Additional Args:"/>
         					<TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" MinWidth="400" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
 
-        				</Grid>
+                            <GroupBox Header="Whitelist" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Height="150" BorderBrush="#FFD4C2B0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ListBox IsEnabled="false" Name="WhitelistControl" Grid.Column="0" Grid.RowSpan="3" ItemsSource="{Binding Whitelist}"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBox IsEnabled="false" Height="28" Margin="5" Text="{Binding ElementName=SettingsControl, Path=WhitelistUser}"/>
+                                        <Button IsEnabled="false" Margin="5" Content="{StaticResource AddWhitelistButtonContent}" Click="WhitelistAdd_Click" />
+                                        <Button IsEnabled="false" Margin="5" Content="{StaticResource RemoveWhitelistButtonContent}" Click="WhitelistRemove_Click" />
+                                    </StackPanel>
+                                </Grid>
+                                
+                            </GroupBox>
+
+                            <GroupBox Header="Message of the Day" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="4" BorderBrush="#FFD4C2B0">
+                                <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3"  Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
+        						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True"/>
+                            </GroupBox>
+
+                        </Grid>
         			</Expander>
         			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
         				<Expander.Header>
@@ -712,6 +753,7 @@
         					<StackPanel Grid.Column="0">                            
         						<local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Harvest Ammount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -730,6 +772,7 @@
         						<local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
         						<CheckBox IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay"/>
         						<local:AnnotatedSlider Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                <local:AnnotatedSlider Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
         					</StackPanel>
         				</Grid>
         			</Expander>
