@@ -28,15 +28,8 @@ namespace ARK_Server_Manager
     {
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register("CurrentConfig", typeof(Config), typeof(ServerSettingsControl));
 
         CancellationTokenSource upgradeCancellationSource;
-
-        public Config CurrentConfig
-        {
-            get { return GetValue(CurrentConfigProperty) as Config; }
-            set { SetValue(CurrentConfigProperty, value); }
-        }
 
         public ServerSettingsViewModel Settings
         {
@@ -54,13 +47,12 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
-            this.CurrentConfig = Config.Default;
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
         {
             this.Settings = new ServerSettingsViewModel(settings);
-            this.Runtime = new ServerRuntimeViewModel(settings);
+            this.Runtime = new ServerRuntimeViewModel(settings);            
         }
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
@@ -163,19 +155,22 @@ namespace ARK_Server_Manager
             }            
         }
 
-        private void SetIP_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.SwitchToSettingsTab();            
-        }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Settings.Model.Save();
         }
 
-        private void Save_Config(object sender, RoutedEventArgs e)
+        private void CopyProfile_Click(object sender, RoutedEventArgs e)
         {
-            Config.Default.Save();
+        }
+
+        private void DeleteProfile_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Show_Clock(object sender, RoutedEventArgs e)
+        {
+            Process.Start("exploer", Settings.InstallDirectory);
         }
     }
 }

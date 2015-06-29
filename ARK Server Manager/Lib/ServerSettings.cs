@@ -202,7 +202,7 @@ namespace ARK_Server_Manager.Lib
             WriteINIFile();
         }
 
-        private string GetProfilePath()
+        public string GetProfilePath()
         {
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }

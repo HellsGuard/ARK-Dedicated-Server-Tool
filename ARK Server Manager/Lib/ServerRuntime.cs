@@ -60,6 +60,11 @@ namespace ARK_Server_Manager.Lib
         public ServerRuntime(ServerSettings settings)
         {
             this.Settings = settings;
+            Version lastInstalled;
+            if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
+            {
+                this.InstalledVersion = lastInstalled;
+            }
         }
 
         public object this[string propertyName]
@@ -137,6 +142,14 @@ namespace ARK_Server_Manager.Lib
                             if (IPAddress.TryParse(Config.Default.MachinePublicIP, out ipAddress))
                             {
                                 serverQueryEndPoint = new IPEndPoint(ipAddress, serverQueryEndPoint.Port);
+                            }
+                            else
+                            {
+                                var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
+                                if (addresses.Length > 0)
+                                {
+                                    serverQueryEndPoint = new IPEndPoint(addresses[0], serverQueryEndPoint.Port);
+                                }
                             }
                         }
 
@@ -360,7 +373,7 @@ namespace ARK_Server_Manager.Lib
             this.serverSettings = serverSettings;  
             this.model = new ServerRuntime(serverSettings);
             this.model.PropertyChanged += (s, e) => base.OnPropertyChanged(e.PropertyName);
-            this.model.UpdateStatusAsync(updateCancellation.Token);
+            this.model.UpdateStatusAsync(updateCancellation.Token);            
         }
 
         public ServerRuntime.SteamStatus Steam
