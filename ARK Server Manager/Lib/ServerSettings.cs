@@ -454,12 +454,6 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
-        public bool ShowMapPlayerLocation
-        {
-            get { return Get<bool>(model); }
-            set { Set(model, value); }
-        }
-
         public bool EnableGlobalVoiceChat
         {
             get { return Get<bool>(model); }
@@ -526,6 +520,12 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
         public bool AllowMapPlayerLocation
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+
+        public bool AllowPVPGamma
         {
             get { return Get<bool>(model); }
             set { Set(model, value); }

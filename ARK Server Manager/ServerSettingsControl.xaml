@@ -744,6 +744,7 @@
         						<CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD"/>
         						<CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View"/>
         						<CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location"/>
+                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP"/>
         					</StackPanel>
         				</Grid>
         			</Expander>
