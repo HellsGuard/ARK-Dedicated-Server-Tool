@@ -40,21 +40,29 @@ IF ERRORLEVEL 1 EXIT 1
 
         private static bool RunElevatedShellScript(string scriptName)
         {
-            ProcessStartInfo psInfo = new ProcessStartInfo()
+            try
             {
-                FileName = scriptName,
-                Verb = "runas"
-            };
+                ProcessStartInfo psInfo = new ProcessStartInfo()
+                {
+                    FileName = scriptName,
+                    Verb = "runas"
+                };
 
-            var process = new Process
+                var process = new Process
+                {
+                    EnableRaisingEvents = true,
+                    StartInfo = psInfo
+                };
+
+                process.Start();
+                process.WaitForExit();
+                return process.ExitCode == 0;
+            }
+            catch(Exception ex)
             {
-                EnableRaisingEvents = true,
-                StartInfo = psInfo
-            };
-
-            process.Start();
-            process.WaitForExit();
-            return process.ExitCode == 0;
+                Debug.WriteLine("Firewall process failed to start: {0}", ex.Message);
+                return false;
+            }
         }
     }
 }
