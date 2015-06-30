@@ -280,5 +280,14 @@ namespace ARK_Server_Manager {
                 this["MachinePublicIP"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://whatismyip.akamai.com/")]
+        public string PublicIPCheckUrl {
+            get {
+                return ((string)(this["PublicIPCheckUrl"]));
+            }
+        }
     }
 }

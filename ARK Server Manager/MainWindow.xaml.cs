@@ -50,7 +50,6 @@ namespace ARK_Server_Manager
 
         public MainWindow()
         {
-            Config.Default.Reload();
             this.CurrentConfig = Config.Default;
 
             InitializeComponent();

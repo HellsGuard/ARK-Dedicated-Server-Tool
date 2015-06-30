@@ -63,7 +63,7 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
-            var adapters = NetworkAdapters.GetAvailableIPV4NetworkAdapters();
+            var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
             this.NetworkInterfaces = adapters;
 
         }

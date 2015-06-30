@@ -30,7 +30,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
-    public static class NetworkAdapters
+    public static class NetworkUtils
     {
         public static List<NetworkAdapterEntry> GetAvailableIPV4NetworkAdapters()
         {
@@ -50,6 +50,21 @@ namespace ARK_Server_Manager.Lib
             }
 
             return adapters;
+        }
+
+        public static async Task<string> DiscoverPublicIPAsync()
+        {
+            using (var webClient = new WebClient())
+            {
+                var publicIP = await webClient.DownloadStringTaskAsync(Config.Default.PublicIPCheckUrl);
+                IPAddress address;
+                if(IPAddress.TryParse(publicIP, out address))
+                {
+                    return publicIP;
+                }
+
+                return String.Empty;
+            }
         }
     }
 }

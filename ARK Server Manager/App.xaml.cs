@@ -88,7 +88,27 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
 
+            if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+            {
+                Task.Factory.StartNew(async () => await DiscoverMachinePublicIP());
+            }
+
             base.OnStartup(e);
+        }
+
+        private async Task DiscoverMachinePublicIP()
+        {
+            var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
+            if(publicIP != null)
+            {
+                await App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+                    {
+                        Config.Default.MachinePublicIP = publicIP;
+                    }
+                }));
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
