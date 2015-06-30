@@ -119,7 +119,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
-        {            
+        {
             while (!cancellationToken.IsCancellationRequested)
             {
                 //
@@ -137,89 +137,9 @@ namespace ARK_Server_Manager.Lib
                         this.serverProcess = FindMatchingServerProcess();
                     }
 
-                    if (this.serverProcess != null)
+                    if (this.serverProcess != null && ! this.serverProcess.HasExited)
                     {
-                        //
-                        // Get the local endpoint for querying the local network
-                        //
-                        IPEndPoint localServerQueryEndPoint;
-                        IPAddress localServerIpAddress;
-                        if(!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
-                        { 
-                            localServerQueryEndPoint= new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
-                        }
-                        else
-                        {
-                            localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
-                        }
-
-                        //
-                        // Get the public endpoint for querying Steam
-                        IPEndPoint steamServerQueryEndPoint = null;  
-                        if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
-                        {
-                            IPAddress steamServerIpAddress;
-                            if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
-                            {
-                                steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
-                            }
-                            else
-                            {
-                                var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
-                                if (addresses.Length > 0)
-                                {
-                                    steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
-                                }
-                            }
-                        }
-
-                        var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
-                        ServerInfo steamServerInfo = null;
-                        if (steamServerQueryEndPoint != null)
-                        {
-                            steamServerInfo = App.ServerWatcher.GetSteamServerInfo(steamServerQueryEndPoint);
-                        }
-                            
-                        if(localServerInfo != null)
-                        {
-                            this.ExecutionStatus = ServerStatus.Running;
-                            this.RunningMaxPlayers = localServerInfo.MaxPlayers;
-                            this.RunningPlayers = localServerInfo.Players;
-
-                            // Get the version
-                            var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
-                            if (match.Success && match.Groups.Count >= 2)
-                            {
-                                var serverVersion = match.Groups[1].Value;
-                                Version temp;
-                                if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
-                                {
-                                    this.InstalledVersion = temp;
-                                    this.Settings.LastInstalledVersion = serverVersion;
-                                }
-                            }
-
-                            if (steamServerQueryEndPoint == null)
-                            {
-                                this.SteamAvailability = SteamStatus.NeedPublicIP;
-                            }
-                            else
-                            {
-                                if (steamServerInfo != null)
-                                {
-                                    this.SteamAvailability = SteamStatus.Available;
-                                }
-                                else
-                                {
-                                    this.SteamAvailability = SteamStatus.WaitingForPublication;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            this.ExecutionStatus = ServerStatus.Initializing;
-                            this.SteamAvailability = SteamStatus.Unavailable;
-                        }
+                        QueryNetworkStatus();
                     }
                     else
                     {
@@ -229,11 +149,97 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 await Task.Delay(1000);
-            }            
+            }
         }
+
+        private void QueryNetworkStatus()
+        {
+            //
+            // Get the local endpoint for querying the local network
+            //
+            IPEndPoint localServerQueryEndPoint;
+            IPAddress localServerIpAddress;
+            if (!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
+            {
+                localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
+            }
+            else
+            {
+                localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+            }
+
+            //
+            // Get the public endpoint for querying Steam
+            IPEndPoint steamServerQueryEndPoint = null;
+            if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+            {
+                IPAddress steamServerIpAddress;
+                if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
+                {
+                    steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
+                }
+                else
+                {
+                    var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
+                    if (addresses.Length > 0)
+                    {
+                        steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                    }
+                }
+            }
+
+            var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
+            ServerInfo steamServerInfo = null;
+            if (steamServerQueryEndPoint != null)
+            {
+                steamServerInfo = App.ServerWatcher.GetSteamServerInfo(steamServerQueryEndPoint);
+            }
+
+            if (localServerInfo != null)
+            {
+                this.ExecutionStatus = ServerStatus.Running;
+                this.RunningMaxPlayers = localServerInfo.MaxPlayers;
+                this.RunningPlayers = localServerInfo.Players;
+
+                // Get the version
+                var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
+                if (match.Success && match.Groups.Count >= 2)
+                {
+                    var serverVersion = match.Groups[1].Value;
+                    Version temp;
+                    if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
+                    {
+                        this.InstalledVersion = temp;
+                        this.Settings.LastInstalledVersion = serverVersion;
+                    }
+                }
+
+                if (steamServerQueryEndPoint == null)
+                {
+                    this.SteamAvailability = SteamStatus.NeedPublicIP;
+                }
+                else
+                {
+                    if (steamServerInfo != null)
+                    {
+                        this.SteamAvailability = SteamStatus.Available;
+                    }
+                    else
+                    {
+                        this.SteamAvailability = SteamStatus.WaitingForPublication;
+                    }
+                }
+            }
+            else
+            {
+                this.ExecutionStatus = ServerStatus.Initializing;
+                this.SteamAvailability = SteamStatus.Unavailable;
+            }
+        }
+
         private Process FindMatchingServerProcess()
         {
-            foreach(var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
+            foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
             {
                 var commandLineBuilder = new StringBuilder();
 
@@ -284,6 +290,19 @@ namespace ARK_Server_Manager.Lib
             this.Settings.WriteINIFile();
             var serverExe = GetServerExe();
             var serverArgs = this.Settings.GetServerArgs();
+
+            if (Config.Default.ManageFirewallAutomatically)
+            {
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, new int[] { this.Settings.ServerPort, this.Settings.ServerConnectionPort }, "ARK Server: " + this.Settings.ServerName))
+                {
+                    var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
+
             var startInfo = new ProcessStartInfo();
             try
             {

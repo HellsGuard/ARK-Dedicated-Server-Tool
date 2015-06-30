@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>30</ApplicationRevision>
+    <ApplicationRevision>31</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -124,6 +124,7 @@
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\IniFile.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
     <Compile Include="Lib\PasswordUtils.cs" />

@@ -112,7 +112,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         var finishedSteamProcessing = new TaskCompletionSource<bool>();
                         var gotServer = false;
-
+                        
                         //
                         // The code in here is called repeatedly by the QueryMaster code.
                         //
@@ -163,13 +163,18 @@ namespace ARK_Server_Manager.Lib
                                 }
                                 else
                                 {
-                                    SteamWatches[steamServer] = null;
+                                    
                                 }
+                            }
+                            else
+                            {
+                                SteamWatches[steamServer] = null;
                             }
                         }
                         catch (Exception ex)
                         {
                             Debug.WriteLine(String.Format("Unexpected exception getting server info: {0}\n{1}", ex.Message, ex.StackTrace));
+                            SteamWatches[steamServer] = null;
                         }
                     }
                 }

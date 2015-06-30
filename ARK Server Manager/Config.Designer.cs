@@ -289,5 +289,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["PublicIPCheckUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ManageFirewallAutomatically {
+            get {
+                return ((bool)(this["ManageFirewallAutomatically"]));
+            }
+            set {
+                this["ManageFirewallAutomatically"] = value;
+            }
+        }
     }
 }
