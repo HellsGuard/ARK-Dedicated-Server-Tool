@@ -110,5 +110,16 @@ namespace ARK_Server_Manager
             InitializeComponent();
             (this.Content as FrameworkElement).DataContext = this;
         }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(Slider.IsFocused)
+            {
+                unchecked
+                {
+                    Value = (float)e.NewValue;
+                }
+            }
+        }
     }
 }
