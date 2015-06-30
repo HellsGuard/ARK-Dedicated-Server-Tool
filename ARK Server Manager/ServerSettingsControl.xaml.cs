@@ -211,5 +211,11 @@ namespace ARK_Server_Manager
         private void DeleteProfile_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void ShowCmd_Click(object sender, RoutedEventArgs e)
+        {
+            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.Model.GetServerExe(), this.Settings.Model.GetServerArgs()));
+            cmdLine.ShowDialog();
+        }
     }
 }

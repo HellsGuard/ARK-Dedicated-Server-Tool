@@ -117,6 +117,9 @@
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="AnnotatedTextBox.cs" />
+    <Compile Include="CommandLine.xaml.cs">
+      <DependentUpon>CommandLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ErrorHandling.cs" />
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
@@ -156,10 +159,15 @@
     <Resource Include="Art\Back.png" />
     <Resource Include="Art\Forward.png" />
     <Resource Include="Art\Check.png" />
+    <Resource Include="Art\Command.png" />
     <Content Include="Globalization\en-US\en-US.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="CommandLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GlobalSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

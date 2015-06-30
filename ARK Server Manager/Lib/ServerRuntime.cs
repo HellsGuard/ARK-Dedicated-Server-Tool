@@ -125,7 +125,7 @@ namespace ARK_Server_Manager.Lib
                 //
                 // Check the status of the server locally and on Steam
                 //
-                if (!File.Exists(Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe)))
+                if (!File.Exists(GetServerExe()))
                 {
                     this.ExecutionStatus = ServerStatus.Uninstalled;
                     this.SteamAvailability = SteamStatus.Unavailable;
@@ -262,6 +262,11 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
+        public string GetServerExe()
+        {
+            return Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+        }
+
         public async Task StartAsync()
         {
             if(!System.Environment.Is64BitOperatingSystem)
@@ -277,7 +282,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             this.Settings.WriteINIFile();
-            var serverExe = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            var serverExe = GetServerExe();
             var serverArgs = this.Settings.GetServerArgs();
             var startInfo = new ProcessStartInfo();
             try
@@ -336,7 +341,7 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            string serverExe = System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            string serverExe = GetServerExe();
 
             // TODO: Do a version check
             if (true)

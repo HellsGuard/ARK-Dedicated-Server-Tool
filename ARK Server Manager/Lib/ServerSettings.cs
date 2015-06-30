@@ -365,6 +365,13 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public string ServerMap
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+
         public string ServerPassword
         {
             get { return Get<string>(model); }
