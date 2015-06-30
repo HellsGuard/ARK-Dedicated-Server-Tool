@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -263,6 +264,12 @@ namespace ARK_Server_Manager.Lib
 
         public async Task StartAsync()
         {
+            if(!System.Environment.Is64BitOperatingSystem)
+            {
+                MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager cannot start the server.  You may still load and save profiles and settings files for use on other machines.", "64-bit OS Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (this.IsRunning)
             {
                 Debug.WriteLine("Server {0} already running.", Settings.ProfileName);
@@ -319,7 +326,16 @@ namespace ARK_Server_Manager.Lib
         }
 
         public async Task UpgradeAsync(CancellationToken cancellationToken, bool validate)
-        {           
+        {
+            if (!System.Environment.Is64BitOperatingSystem)
+            {
+                var result = MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager will be unable to start the server, but you may still install it or load and save profiles and settings files for use on other machines.\r\n\r\nDo you wish to continue?", "64-bit OS Required", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
             string serverExe = System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
 
             // TODO: Do a version check
