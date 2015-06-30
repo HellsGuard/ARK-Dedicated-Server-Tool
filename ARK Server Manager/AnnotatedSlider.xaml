@@ -269,7 +269,7 @@
             <ColumnDefinition Width="{Binding SuffixRelativeWidth}"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="{Binding Label}" VerticalContentAlignment="Center"/>
-        <Slider Grid.Column="1" Value="{Binding Value}" Margin="0,0,5,0"
+        <Slider x:Name="Slider" Grid.Column="1" Value="{Binding Value, Mode=OneWay}" Margin="0,0,5,0"
                                                         Minimum="{Binding Minimum}" 
                                                         Maximum="{Binding Maximum}" 
                                                         HorizontalAlignment="Stretch" 
@@ -277,8 +277,9 @@
                                                         HorizontalContentAlignment="Stretch" 
                                                         LargeChange="{Binding LargeChange}" 
                                                         SmallChange="{Binding SmallChange}" 
-                                                        TickFrequency="{Binding TickFrequency}" Style="{DynamicResource AnnotatedSliderStyle}" />
-        <TextBox Grid.Column="2" Text="{Binding Value}" VerticalContentAlignment="Center"/>
+                                                        TickFrequency="{Binding TickFrequency}" Style="{DynamicResource AnnotatedSliderStyle}"
+                                                        ValueChanged="Slider_ValueChanged"/>
+        <TextBox x:Name="Text" Grid.Column="2" Text="{Binding Value, Mode=TwoWay}" VerticalContentAlignment="Center"/>
         <Label Grid.Column="3" Content="{Binding Suffix}" VerticalContentAlignment="Center" />
     </Grid>
 </UserControl>
