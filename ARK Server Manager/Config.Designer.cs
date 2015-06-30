@@ -100,7 +100,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030\" +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1}\" +quit")]
         public string SteamCmdInstallServerArgsFormat {
             get {
                 return ((string)(this["SteamCmdInstallServerArgsFormat"]));

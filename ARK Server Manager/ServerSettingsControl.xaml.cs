@@ -3,9 +3,11 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +31,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty WhitelistUserProperty = DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
 
         CancellationTokenSource upgradeCancellationSource;
 
@@ -50,10 +53,19 @@ namespace ARK_Server_Manager
             set { SetValue(RuntimeProperty, value); }
         }
 
+        public List<NetworkAdapterEntry> NetworkInterfaces
+        {
+            get { return (List<NetworkAdapterEntry>)GetValue(NetworkInterfacesProperty); }
+            set { SetValue(NetworkInterfacesProperty, value); }
+        }
+
         internal ServerSettingsControl(ServerSettings settings)
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
+            var adapters = NetworkAdapters.GetAvailableIPV4NetworkAdapters();
+            this.NetworkInterfaces = adapters;
+
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
@@ -61,7 +73,8 @@ namespace ARK_Server_Manager
             this.Settings = new ServerSettingsViewModel(settings);
             this.Runtime = new ServerRuntimeViewModel(settings);            
         }
-
+           
+#if false
         private void WhitelistAdd_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(this.WhitelistUser))
@@ -77,8 +90,8 @@ namespace ARK_Server_Manager
                 Settings.Whitelist.RemoveAt(this.WhitelistControl.SelectedIndex);
             }
         }
+#endif
 
-    
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
             if(this.Runtime.Model.ExecutionStatus == ServerRuntime.ServerStatus.Updating)
@@ -99,7 +112,7 @@ namespace ARK_Server_Manager
 
                 // Start the upgrade
                 upgradeCancellationSource = new CancellationTokenSource();
-                await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token);
+                await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
             }                       
         }
 
@@ -197,11 +210,6 @@ namespace ARK_Server_Manager
 
         private void DeleteProfile_Click(object sender, RoutedEventArgs e)
         {
-        }
-
-        private void Show_Clock(object sender, RoutedEventArgs e)
-        {
-            Process.Start("exploer", Settings.InstallDirectory);
         }
     }
 }

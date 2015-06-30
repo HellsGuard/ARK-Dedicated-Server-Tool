@@ -15,7 +15,7 @@ namespace ARK_Server_Manager.Lib
 {
     public class ServerStatusWatcher
     {
-        public ConcurrentDictionary<IPEndPoint, int> SteamWatches = new ConcurrentDictionary<IPEndPoint, int>();
+        public ConcurrentDictionary<IPEndPoint, ServerInfo> SteamWatches = new ConcurrentDictionary<IPEndPoint, ServerInfo>();
         public ConcurrentDictionary<IPEndPoint, ServerInfo> LocalWatches = new ConcurrentDictionary<IPEndPoint, ServerInfo>();
 
         private Task steamWatchTask;
@@ -25,11 +25,16 @@ namespace ARK_Server_Manager.Lib
 
         public ServerStatusWatcher()
         {
-            steamWatchTask = Task.Factory.StartNew(async () => await StartSteamDataStream());
+            steamWatchTask = Task.Factory.StartNew(async () => await StartSteamWatch());
             localWatchTask = Task.Factory.StartNew(async () => await StartLocalWatch());
         }
 
-        public ServerInfo GetLastServerInfo(IPEndPoint server)
+        /// <summary>
+        /// Gets the status of a server from the local machine
+        /// </summary>
+        /// <param name="server">The server's private address</param>
+        /// <returns>The server info, or null.</returns>
+        public ServerInfo GetLocalServerInfo(IPEndPoint server)
         {
             ServerInfo info = null;
             if(!LocalWatches.TryGetValue(server, out info))
@@ -40,21 +45,20 @@ namespace ARK_Server_Manager.Lib
             return info;
         }
 
-        public bool GetLastSteamVisible(IPEndPoint server)
+        /// <summary>
+        /// Gets the status of a server from the Steam master server
+        /// </summary>
+        /// <param name="server">The server's public address</param>
+        /// <returns>The server info, or null.</returns>
+        public ServerInfo GetSteamServerInfo(IPEndPoint server)
         {
-            int lastSeenGeneration;
-
-            LocalWatches.TryAdd(server, null);
-
-            if(SteamWatches.TryGetValue(server, out lastSeenGeneration))
+            ServerInfo info = null;
+            if (!SteamWatches.TryGetValue(server, out info))
             {
-                if(lastSeenGeneration >= this.watchGeneration - 1)
-                {
-                    return true;
-                }
+                SteamWatches.TryAdd(server, null);
             }
-            
-            return false;
+
+            return info;
         }
 
         private async Task StartLocalWatch()
@@ -68,7 +72,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         try
                         {
-                            var server = ServerQuery.GetServerInstance(EngineType.Source, new IPEndPoint(IPAddress.Loopback, (ushort)endPoint.Port));                            
+                            var server = ServerQuery.GetServerInstance(EngineType.Source, endPoint);                            
                             var serverInfo = server.GetInfo();
                             this.LocalWatches[endPoint] = serverInfo;
                         }
@@ -82,7 +86,7 @@ namespace ARK_Server_Manager.Lib
                 await Task.Delay(5000);
             }
         }
-        private async Task StartSteamDataStream()
+        private async Task StartSteamWatch()
         {
             MasterServer masterServer = null; ;
             while(true)
@@ -98,36 +102,75 @@ namespace ARK_Server_Manager.Lib
                     var app = App.Current;
                     if (app != null)
                     {
-                        app.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine("Starting Steam data stream...")));
+                        await app.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine("Starting Steam data stream...")));
                     }
             
                     this.watchGeneration++;
                     masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
 
-                    foreach(var localServer in this.LocalWatches.Keys.Where(p => !IPAddress.IsLoopback(p.Address)))
+                    foreach(var steamServer in this.SteamWatches.Keys)
                     {
                         var finishedSteamProcessing = new TaskCompletionSource<bool>();
+                        var gotServer = false;
+
+                        //
+                        // The code in here is called repeatedly by the QueryMaster code.
+                        //
                         masterServer.GetAddresses(Region.Rest_of_the_world, endPoints =>
                             {
                                 var currentApp = App.Current;
-                                if (currentApp != null)
+                                if (currentApp != null)                                
                                 {
-                                    currentApp.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine(String.Format("Received {0} entries", endPoints.Count))));
+                                    var dispatcher = currentApp.Dispatcher;
+                                    if (dispatcher != null)
+                                    {
+                                        dispatcher.BeginInvoke(new Action(() => Debug.WriteLine(String.Format("Received {0} entries", endPoints.Count))));
+                                    }
                                 }
+
                                 foreach (var endPoint in endPoints)
                                 {
                                     if (endPoint.Address.Equals(masterServer.SeedEndpoint.Address))
                                     {
                                         finishedSteamProcessing.TrySetResult(true);
                                     }
-                                    else if (LocalWatches.ContainsKey(endPoint))
+                                    else if (SteamWatches.ContainsKey(endPoint))
                                     {
-                                        SteamWatches[endPoint] = watchGeneration;
+                                        gotServer = true;
+                                        finishedSteamProcessing.TrySetResult(true);
                                     }
                                 }
-                            }, new IpFilter() { IpAddr = localServer.Address.ToString() });
+                            }, new IpFilter() { IpAddr = steamServer.Address.ToString() });
 
                         await finishedSteamProcessing.Task;
+
+                        try
+                        {
+                            if (gotServer)
+                            {
+                                var server = ServerQuery.GetServerInstance(EngineType.Source, steamServer);
+                                if (server != null)
+                                {
+                                    var serverInfo = server.GetInfo();
+                                    if (serverInfo != null)
+                                    {
+                                        SteamWatches[steamServer] = serverInfo;
+                                    }
+                                    else
+                                    {
+                                        SteamWatches[steamServer] = null;
+                                    }
+                                }
+                                else
+                                {
+                                    SteamWatches[steamServer] = null;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(String.Format("Unexpected exception getting server info: {0}\n{1}", ex.Message, ex.StackTrace));
+                        }
                     }
                 }
 

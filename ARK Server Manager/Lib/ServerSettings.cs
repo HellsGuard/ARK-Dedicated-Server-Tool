@@ -97,8 +97,11 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection=true)]
         public string MOTD = String.Empty;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
+        public int MOTDDuration = 20;
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float TamingSpeedMultiplier = 1;
@@ -419,6 +422,13 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public int MOTDDuration
+        {
+            get { return Get<int>(model); }
+            set { Set(model, value); }
+        }
+
         public int MaxPlayers
         {
             get { return Get<int>(model); }

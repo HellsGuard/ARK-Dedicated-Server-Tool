@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -120,6 +121,9 @@ namespace ARK_Server_Manager.Lib
         {            
             while (!cancellationToken.IsCancellationRequested)
             {
+                //
+                // Check the status of the server locally and on Steam
+                //
                 if (!File.Exists(Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe)))
                 {
                     this.ExecutionStatus = ServerStatus.Uninstalled;
@@ -133,37 +137,56 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     if (this.serverProcess != null)
-                    {                                         
-                        IPEndPoint localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
-                        IPEndPoint serverQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                    {
+                        //
+                        // Get the local endpoint for querying the local network
+                        //
+                        IPEndPoint localServerQueryEndPoint;
+                        IPAddress localServerIpAddress;
+                        if(!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
+                        { 
+                            localServerQueryEndPoint= new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
+                        }
+                        else
+                        {
+                            localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                        }
+
+                        //
+                        // Get the public endpoint for querying Steam
+                        IPEndPoint steamServerQueryEndPoint = null;  
                         if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                         {
-                            IPAddress ipAddress;
-                            if (IPAddress.TryParse(Config.Default.MachinePublicIP, out ipAddress))
+                            IPAddress steamServerIpAddress;
+                            if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
                             {
-                                serverQueryEndPoint = new IPEndPoint(ipAddress, serverQueryEndPoint.Port);
+                                steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
                             }
                             else
                             {
                                 var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
                                 if (addresses.Length > 0)
                                 {
-                                    serverQueryEndPoint = new IPEndPoint(addresses[0], serverQueryEndPoint.Port);
+                                    steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
                                 }
                             }
                         }
 
-                        var serverInfo = App.ServerWatcher.GetLastServerInfo(localServerQueryEndPoint);
-                        var isSteamConnected = App.ServerWatcher.GetLastSteamVisible(serverQueryEndPoint);
+                        var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
+                        ServerInfo steamServerInfo = null;
+                        if (steamServerQueryEndPoint != null)
+                        {
+                            steamServerInfo = App.ServerWatcher.GetSteamServerInfo(steamServerQueryEndPoint);
+                        }
                             
-                        if(serverInfo != null)
+                        if(localServerInfo != null)
                         {
                             this.ExecutionStatus = ServerStatus.Running;
-                            this.RunningMaxPlayers = serverInfo.MaxPlayers;
-                            this.RunningPlayers = serverInfo.Players;
+                            this.RunningMaxPlayers = localServerInfo.MaxPlayers;
+                            this.RunningPlayers = localServerInfo.Players;
 
                             // Get the version
-                            var match = Regex.Match(serverInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
+                            var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
                             if (match.Success && match.Groups.Count >= 2)
                             {
                                 var serverVersion = match.Groups[1].Value;
@@ -175,13 +198,13 @@ namespace ARK_Server_Manager.Lib
                                 }
                             }
 
-                            if (serverQueryEndPoint.Address == IPAddress.Loopback)
+                            if (steamServerQueryEndPoint == null)
                             {
                                 this.SteamAvailability = SteamStatus.NeedPublicIP;
                             }
                             else
                             {
-                                if (isSteamConnected)
+                                if (steamServerInfo != null)
                                 {
                                     this.SteamAvailability = SteamStatus.Available;
                                 }
@@ -256,7 +279,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch(System.ComponentModel.Win32Exception ex)
             {
-                throw new FileNotFoundException(String.Format("Unable to find SteamCmd.exe at {0}.  Server Install Directory: {1}", serverExe, this.Settings.InstallDirectory), serverExe, ex);
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.Settings.InstallDirectory), serverExe, ex);
             }
 
             this.serverProcess.EnableRaisingEvents = true;
@@ -295,8 +318,8 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
-        public async Task UpgradeAsync(CancellationToken cancellationToken)
-        {
+        public async Task UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        {           
             string serverExe = System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
 
             // TODO: Do a version check
@@ -311,7 +334,7 @@ namespace ARK_Server_Manager.Lib
                     // Run the SteamCMD to install the server
                     var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
                     Directory.CreateDirectory(this.Settings.InstallDirectory);
-                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory);
+                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
                     var process = Process.Start(steamCmdPath, steamArgs);
                     process.EnableRaisingEvents = true;
                     var ts = new TaskCompletionSource<bool>();

@@ -50,6 +50,11 @@ namespace ARK_Server_Manager.Lib
         public bool WriteBoolValueIfNonEmpty;
 
         /// <summary>
+        /// Clear the section before writing this value.
+        /// </summary>
+        public bool ClearSection;
+        
+        /// <summary>
         /// Attribute for the IniFile serializer
         /// </summary>
         /// <param name="File">The file into which the setting should be serialized.</param>
@@ -122,6 +127,11 @@ namespace ARK_Server_Manager.Lib
                     var attr = attribute as IniFileEntryAttribute;
                     var value = field.GetValue(obj);
                     var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+
+                    if(attr.ClearSection)
+                    {
+                        IniWriteValue(SectionNames[attr.Section], null, null, FileNames[IniFiles.GameUserSettings]);
+                    }
 
                     if(attr.WriteBoolValueIfNonEmpty)
                     {
