@@ -100,22 +100,19 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030\" +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1}\" +quit")]
         public string SteamCmdInstallServerArgsFormat {
             get {
                 return ((string)(this["SteamCmdInstallServerArgsFormat"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Servers")]
         public string ServersInstallDir {
             get {
                 return ((string)(this["ServersInstallDir"]));
-            }
-            set {
-                this["ServersInstallDir"] = value;
             }
         }
         
@@ -191,15 +188,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".profile")]
         public string ProfileExtension {
             get {
                 return ((string)(this["ProfileExtension"]));
-            }
-            set {
-                this["ProfileExtension"] = value;
             }
         }
         
@@ -257,27 +251,21 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".ini")]
         public string IniExtension {
             get {
                 return ((string)(this["IniExtension"]));
             }
-            set {
-                this["IniExtension"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("*.profile,*.ini")]
         public string LoadProfileExtensionList {
             get {
                 return ((string)(this["LoadProfileExtensionList"]));
-            }
-            set {
-                this["LoadProfileExtensionList"] = value;
             }
         }
         
@@ -290,6 +278,27 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["MachinePublicIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://whatismyip.akamai.com/")]
+        public string PublicIPCheckUrl {
+            get {
+                return ((string)(this["PublicIPCheckUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ManageFirewallAutomatically {
+            get {
+                return ((bool)(this["ManageFirewallAutomatically"]));
+            }
+            set {
+                this["ManageFirewallAutomatically"] = value;
             }
         }
     }

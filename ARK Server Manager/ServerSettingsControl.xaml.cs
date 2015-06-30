@@ -3,9 +3,11 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,16 +30,17 @@ namespace ARK_Server_Manager
     {
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register("CurrentConfig", typeof(Config), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty WhitelistUserProperty = DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
 
         CancellationTokenSource upgradeCancellationSource;
 
-        public Config CurrentConfig
+        public string WhitelistUser
         {
-            get { return GetValue(CurrentConfigProperty) as Config; }
-            set { SetValue(CurrentConfigProperty, value); }
+            get { return (string)GetValue(WhitelistUserProperty); }
+            set { SetValue(WhitelistUserProperty, value); }
         }
-
+        
         public ServerSettingsViewModel Settings
         {
             get { return GetValue(SettingsProperty) as ServerSettingsViewModel; }
@@ -50,18 +53,44 @@ namespace ARK_Server_Manager
             set { SetValue(RuntimeProperty, value); }
         }
 
+        public List<NetworkAdapterEntry> NetworkInterfaces
+        {
+            get { return (List<NetworkAdapterEntry>)GetValue(NetworkInterfacesProperty); }
+            set { SetValue(NetworkInterfacesProperty, value); }
+        }
+
         internal ServerSettingsControl(ServerSettings settings)
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
-            this.CurrentConfig = Config.Default;
+            var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
+            this.NetworkInterfaces = adapters;
+
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
         {
             this.Settings = new ServerSettingsViewModel(settings);
-            this.Runtime = new ServerRuntimeViewModel(settings);
+            this.Runtime = new ServerRuntimeViewModel(settings);            
         }
+           
+#if false
+        private void WhitelistAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(this.WhitelistUser))
+            {
+                Settings.Whitelist.Add(this.WhitelistUser);
+            }
+        }
+
+        private void WhitelistRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WhitelistControl.SelectedIndex >= 0)
+            {
+                Settings.Whitelist.RemoveAt(this.WhitelistControl.SelectedIndex);
+            }
+        }
+#endif
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
@@ -74,7 +103,7 @@ namespace ARK_Server_Manager
             {
                 if(this.Runtime.Model.IsRunning)
                 {
-                    var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo);
+                    var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if(result == MessageBoxResult.No)
                     {
                         return;
@@ -83,7 +112,7 @@ namespace ARK_Server_Manager
 
                 // Start the upgrade
                 upgradeCancellationSource = new CancellationTokenSource();
-                await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token);
+                await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
             }                       
         }
 
@@ -91,7 +120,7 @@ namespace ARK_Server_Manager
         {
             if (this.Runtime.Model.IsRunning)
             {
-                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo);
+                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     return;
@@ -155,17 +184,19 @@ namespace ARK_Server_Manager
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                var settings = ServerSettings.LoadFrom(dialog.FileName);
-                if (settings != null)
+                try
                 {
-                    ReinitializeFromSettings(settings);
+                    var settings = ServerSettings.LoadFrom(dialog.FileName);
+                    if (settings != null)
+                    {
+                        ReinitializeFromSettings(settings);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", dialog.FileName, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }            
-        }
-
-        private void SetIP_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.SwitchToSettingsTab();            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -173,9 +204,18 @@ namespace ARK_Server_Manager
             Settings.Model.Save();
         }
 
-        private void Save_Config(object sender, RoutedEventArgs e)
+        private void CopyProfile_Click(object sender, RoutedEventArgs e)
         {
-            Config.Default.Save();
+        }
+
+        private void DeleteProfile_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void ShowCmd_Click(object sender, RoutedEventArgs e)
+        {
+            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.Model.GetServerExe(), this.Settings.Model.GetServerArgs()));
+            cmdLine.ShowDialog();
         }
     }
 }

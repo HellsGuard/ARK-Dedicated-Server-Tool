@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -96,8 +97,11 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection=true)]
         public string MOTD = String.Empty;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
+        public int MOTDDuration = 20;
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float TamingSpeedMultiplier = 1;
@@ -123,6 +127,10 @@ namespace ARK_Server_Manager.Lib
         public float HarvestHealthMultiplier = 1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float PvEStructureDecayDestructionPeriod = 0;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float PvEStructureDecayPeriodMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float ResourcesRespawnPeriodMultiplier = 1;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float DayCycleSpeedScale=1;
@@ -154,13 +162,19 @@ namespace ARK_Server_Manager.Lib
 
         public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
-
-        public string ServerMap = Config.Default.DefaultServerMap;
         
+        public string ServerMap = Config.Default.DefaultServerMap;
+
+        [XmlIgnore()]
+        public ObservableCollection<string> Whitelist = new ObservableCollection<string>();
+
         #endregion
 
         [XmlIgnore()]
         public bool IsDirty = true;
+
+        [XmlIgnore()]
+        private string LastSaveLocation = String.Empty;
 
         public ServerSettings()
         {
@@ -171,28 +185,30 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerSettings LoadFrom(string path)
         {
+            ServerSettings settings;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
                 using (var reader = File.OpenRead(path))
                 {
-                    var settings = (ServerSettings)serializer.Deserialize(reader);
+                    settings = (ServerSettings)serializer.Deserialize(reader);
                     settings.IsDirty = false;
-                    return settings;
                 }
             }
             else
             {
                 IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
-                ServerSettings settings = new ServerSettings();
+                settings = new ServerSettings();
                 iniFile.Deserialize(settings);
-                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
-                return settings;
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));                
             }
+
+            settings.LastSaveLocation = path;
+            return settings;
         }
 
         public void Save()
-        {
+        {            
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var writer = new StreamWriter(GetProfilePath()))
             {
@@ -200,9 +216,27 @@ namespace ARK_Server_Manager.Lib
             }
 
             WriteINIFile();
+
+            // If this was a rename, remove the old profile after writing the new one.
+            if(!String.Equals(GetProfilePath(), this.LastSaveLocation))
+            {
+                try
+                {
+                    if (File.Exists(this.LastSaveLocation))
+                    {
+                        File.Delete(this.LastSaveLocation);
+                    }
+                }
+                catch(IOException ex)
+                {
+                    // We tried...
+                }
+
+                this.LastSaveLocation = GetProfilePath();
+            }
         }
 
-        private string GetProfilePath()
+        public string GetProfilePath()
         {
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
@@ -331,6 +365,13 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public string ServerMap
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+
         public string ServerPassword
         {
             get { return Get<string>(model); }
@@ -388,6 +429,13 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public int MOTDDuration
+        {
+            get { return Get<int>(model); }
+            set { Set(model, value); }
+        }
+
         public int MaxPlayers
         {
             get { return Get<int>(model); }
@@ -545,6 +593,18 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
+        public float PvEStructureDecayPeriodMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float ResourcesRespawnPeriodMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
         public float DayCycleSpeedScale
         {
             get { return Get<float>(model); }
@@ -603,6 +663,12 @@ namespace ARK_Server_Manager.Lib
         public float XPMultiplier
         {
             get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public ObservableCollection<string> Whitelist
+        {
+            get { return Get<ObservableCollection<string>>(model); }
             set { Set(model, value); }
         }
     }
