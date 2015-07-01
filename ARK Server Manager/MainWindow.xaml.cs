@@ -80,7 +80,7 @@ namespace ARK_Server_Manager
 
             if (!tabAdded)
             {
-                AddNewServerTab(new ServerSettings());
+                AddNewServerTab(ServerSettings.GetDefault());
             }
 
             Tabs.SelectedIndex = 0;
@@ -106,7 +106,7 @@ namespace ARK_Server_Manager
                 {
                     if (tabControl.SelectedItem == this.defaultTab)
                     {
-                        tabControl.SelectedIndex = AddNewServerTab(new ServerSettings());
+                        tabControl.SelectedIndex = AddNewServerTab(ServerSettings.GetDefault());
                     }
                 }
             }

@@ -83,7 +83,7 @@ namespace ARK_Server_Manager.Lib
             { IniFileSections.MessageOfTheDay, "MessageOfTheDay" },
             { IniFileSections.MultiHome, "MultiHome" },
             { IniFileSections.ServerSettings, "ServerSettings" },
-            { IniFileSections.SessionSettings, "SessionSettings" }
+            { IniFileSections.SessionSettings, "SessionSettings" },
         };
 
         private readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
@@ -98,10 +98,18 @@ namespace ARK_Server_Manager.Lib
         private static extern long WritePrivateProfileString(string section,
             string key, string val, string filePath);
 
+
+        [DllImport("kernel32")]
+        private static extern int WritePrivateProfileSection(string section, string data, string filePath);
+
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section,
                  string key, string def, StringBuilder retVal,
             int size, string filePath);
+
+
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileSection(string section, StringBuilder retVal, int size, string filePath);
 
         /// <summary>
         /// INIFile Constructor.
@@ -249,6 +257,11 @@ namespace ARK_Server_Manager.Lib
             WritePrivateProfileString(Section, Key, Value, Path.Combine(this.basePath, pathSuffix));
         }
 
+        public void IniWriteValue(IniFileSections Section, string Key, string Value, IniFiles File)
+        {
+            IniWriteValue(SectionNames[Section], Key, Value, FileNames[File]);
+        }
+
         /// <summary>
         /// Read Data Value From the Ini File
         /// </summary>
@@ -263,6 +276,54 @@ namespace ARK_Server_Manager.Lib
             int i = GetPrivateProfileString(Section, Key, "", temp,
                                             MaxValueSize, Path.Combine(this.basePath, pathSuffix));
             return temp.ToString();
+        }
+
+        public string[] IniReadSection(IniFileSections Section, IniFiles File)
+        {
+            return IniReadSection(SectionNames[Section], FileNames[File]);
+        }
+
+        public string[] IniReadSection(string Section, string pathSuffix = "")
+        {
+            const int MaxSectionSize = 16384;
+            var temp = new StringBuilder(MaxSectionSize);
+            int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, Path.Combine(this.basePath, pathSuffix));
+            return MultiStringToArray(temp.ToString());
+        }
+
+        public void IniWriteSection(IniFileSections Section, string[] values, IniFiles File)
+        {
+            IniWriteSection(SectionNames[Section], values, FileNames[File]);
+        }
+
+        public void IniWriteSection(string Section, string[] values, string pathSuffix = "")
+        {
+            WritePrivateProfileSection(Section, StringArrayToMultiString(values), Path.Combine(this.basePath, pathSuffix));
+        }
+
+        static string StringArrayToMultiString(params string[] values)
+        {
+            if (values == null) throw new ArgumentNullException("values");
+            StringBuilder multiString = new StringBuilder();
+
+            if (values.Length == 0)
+            {
+                multiString.Append('\0');
+            }
+            else
+            {
+                foreach (string s in values)
+                {
+                    multiString.Append(s);
+                    multiString.Append('\0');
+                }
+            }
+            return multiString.ToString();
+        }
+
+        static string[] MultiStringToArray(string multiString)
+        {
+            return multiString.TrimEnd('\0').Split('\0');
         }
     }
 }

@@ -102,6 +102,11 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
         public int MOTDDuration = 20;
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float KickIdlePlayersPeriod = 2400;
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float AutoSavePeriodMinutes = 15;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float TamingSpeedMultiplier = 1;
@@ -157,6 +162,9 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float XPMultiplier = 1;
 
+        public bool EnableDinoSpawns = false;
+        public List<DinoSpawn> DinoSpawns = new List<DinoSpawn>();
+
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
@@ -176,11 +184,48 @@ namespace ARK_Server_Manager.Lib
         [XmlIgnore()]
         private string LastSaveLocation = String.Empty;
 
-        public ServerSettings()
+        private ServerSettings()
         {
             ServerPassword = PasswordUtils.GeneratePassword(16);
             AdminPassword = PasswordUtils.GeneratePassword(16);
             GetDefaultDirectories();
+        }
+
+        private void GetDefaultDinoSpawns()
+        {
+            DinoSpawn[] spawns = new DinoSpawn[] 
+            {
+                new DinoSpawn { Name = "Anky", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Argent", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Bat", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Bronto", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Carno", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Coel", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Dilo", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Dodo", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Mammoth", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Mega", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Para", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Phiomia", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Piranha", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Ptera", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Raptor", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Rex", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Sabertooth", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Sarco", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Scorpion", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Stego", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Spino", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Spider", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Titanboa", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Trike", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
+                new DinoSpawn { Name = "Turtle", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F }
+            };
+
+            foreach(var spawn in spawns)
+            {
+                this.DinoSpawns.Add(spawn);
+            }
         }
 
         public static ServerSettings LoadFrom(string path)
@@ -200,7 +245,25 @@ namespace ARK_Server_Manager.Lib
                 IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
                 settings = new ServerSettings();
                 iniFile.Deserialize(settings);
+
+                var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+                foreach(var entry in strings)
+                {
+                    var temp = entry.Split(new char[] { '=' }, StringSplitOptions.None);
+                    if(temp.Length > 0)
+                    {
+                        switch(temp[0])
+                        {
+
+                        }
+                    }
+                }
                 settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));                
+            }
+
+            if(settings.DinoSpawns.Count == 0)
+            {
+                settings.GetDefaultDinoSpawns();
             }
 
             settings.LastSaveLocation = path;
@@ -249,7 +312,24 @@ namespace ARK_Server_Manager.Lib
             var iniFile = new IniFile(configDir);            
             iniFile.Serialize(this);
 
+            //
+            // Write the Game.ini
+            //
+
+            //
+            // Clear the section first
+            var values = new List<string>();
+            if (this.EnableDinoSpawns)
+            {
+                foreach(var spawn in this.DinoSpawns)
+                {
+                    values.Add(String.Format("DinoSpawnWeightMultipliers={0}", spawn.ToINIValue()));
+                }
+            }
+
+            iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
         }
+
         public string GetServerArgs()
         {
             var serverArgs = new StringBuilder();
@@ -339,6 +419,13 @@ namespace ARK_Server_Manager.Lib
                 InstallDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir)
                                                                                        : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir);
             }
+        }
+
+        internal static ServerSettings GetDefault()
+        {
+            var settings = new ServerSettings();
+            settings.GetDefaultDinoSpawns();
+            return settings;
         }
     }
 
@@ -433,6 +520,19 @@ namespace ARK_Server_Manager.Lib
         public int MOTDDuration
         {
             get { return Get<int>(model); }
+            set { Set(model, value); }
+        }
+
+        public float KickIdlePlayersPeriod
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+
+        }
+
+        public float AutoSavePeriodMinutes
+        {
+            get { return Get<float>(model); }
             set { Set(model, value); }
         }
 
@@ -664,6 +764,17 @@ namespace ARK_Server_Manager.Lib
         {
             get { return Get<float>(model); }
             set { Set(model, value); }
+        }
+
+        public bool EnableDinoSpawns
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }       
+        }
+        public List<DinoSpawn> DinoSpawns
+        {
+            get { return Get<List<DinoSpawn>>(model); }
+            set { Set(model, value); }       
         }
 
         public ObservableCollection<string> Whitelist

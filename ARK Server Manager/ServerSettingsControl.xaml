@@ -666,11 +666,30 @@
 
                             <Label Grid.Column="0" Grid.Row="2" Content="Map"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ServerMap}" VerticalContentAlignment="Center"/>
-                            <local:AnnotatedSlider Grid.Column= "2" Grid.ColumnSpan="4" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
+                            <local:AnnotatedSlider Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
         						ToolTip="Sets the maximum number of players which can join this server."/>
-                                    					
-        					<Label Grid.Column="0" Grid.Row="3" Content="Additional Args:" VerticalAlignment="Center"/>
-                            <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3" LastChildFill="True">
+
+                            <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="3" Label="Idle Player Timeout:" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="The time until idle players are kicked from the server."/>
+
+                            <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="4" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="The time between server auto-saves."/>
+
+
+                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
+        						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
+                                    <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" />
+                                </Grid>
+                            </GroupBox>
+
+                            <Label Grid.Column="0" Grid.Row="6" Content="Additional Args:" VerticalAlignment="Center"/>
+                            <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="6" LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click"/>
                                 <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
@@ -693,18 +712,6 @@
                                 
                             </GroupBox>
                             -->
-                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
-        						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
-                                    <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" />
-                                </Grid>
-                            </GroupBox>
-
                         </Grid>
         			</Expander>
         			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
@@ -779,6 +786,29 @@
         						<local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Override Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
+                                <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="1*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                    <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
+                                                    <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>   
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>                                    
+                                </ListBox>
         					</StackPanel>
         				</Grid>
         			</Expander>
