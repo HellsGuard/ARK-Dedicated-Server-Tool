@@ -118,12 +118,19 @@ namespace ARK_Server_Manager.Lib
                 });
         }
 
+        private class ServerProcessContext
+        {
+            public string InstallDirectory = String.Empty;
+            public int ServerPort = 0;
+        }
+
         private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
         {
+            ServerProcessContext updateContext = new ServerProcessContext();
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
-                {
+                {                 
                     //
                     // Check the status of the server locally and on Steam
                     //
@@ -134,9 +141,19 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
+                        if (String.IsNullOrWhiteSpace(this.Settings.InstallDirectory) || // No installation directory set
+                            !updateContext.InstallDirectory.Equals(this.Settings.InstallDirectory, StringComparison.OrdinalIgnoreCase) || // Mismatched installation directory
+                            updateContext.ServerPort != this.Settings.ServerPort) // Mismatched query port
+                        {
+                            // The process we were watching no longer matches, so forget it and start watching with the current settings.
+                            this.serverProcess = null;
+                            updateContext.InstallDirectory = this.Settings.InstallDirectory;
+                            updateContext.ServerPort = this.Settings.ServerPort;
+                        }
+
                         if (this.serverProcess == null)
                         {
-                            this.serverProcess = FindMatchingServerProcess();
+                            this.serverProcess = FindMatchingServerProcess(updateContext);
                         }
 
                         if (this.serverProcess != null && !this.serverProcess.HasExited)
@@ -270,8 +287,13 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private Process FindMatchingServerProcess()
+        private static Process FindMatchingServerProcess(ServerProcessContext updateContext)
         {
+            if(String.IsNullOrWhiteSpace(updateContext.InstallDirectory))
+            {
+                return null;
+            }
+
             foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
             {
                 var commandLineBuilder = new StringBuilder();
@@ -286,10 +308,10 @@ namespace ARK_Server_Manager.Lib
 
                 var commandLine = commandLineBuilder.ToString();
 
-                if (commandLine.Contains(Config.Default.ServerExe))
+                if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
                 {
                     // Does this match our server?
-                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, this.Settings.ServerPort);
+                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.ServerPort);
                     if (commandLine.Contains(serverArgMatch))
                     {
                         process.EnableRaisingEvents = true;
