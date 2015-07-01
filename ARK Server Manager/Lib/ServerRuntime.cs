@@ -223,7 +223,9 @@ namespace ARK_Server_Manager.Lib
                 this.RunningMaxPlayers = localServerInfo.MaxPlayers;
                 this.RunningPlayers = localServerInfo.Players;
 
-                // Get the version
+                //
+                // Get the version, which is specified in the server name automatically by ARK
+                //
                 var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
                 if (match.Success && match.Groups.Count >= 2)
                 {
@@ -236,8 +238,14 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
+                //
+                // Set the Steam Status
+                //
                 if (steamServerQueryEndPoint == null)
                 {
+                    // 
+                    // The user didn't give us a public IP, so we can't ask Steam about this server.
+                    //
                     this.SteamAvailability = SteamStatus.NeedPublicIP;
                 }
                 else
@@ -248,6 +256,9 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
+                        //
+                        // Steam doesn't have a record of our public IP yet.
+                        //
                         this.SteamAvailability = SteamStatus.WaitingForPublication;
                     }
                 }

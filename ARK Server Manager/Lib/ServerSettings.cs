@@ -102,7 +102,9 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
         public int MOTDDuration = 20;
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool EnableKickIdlePlayers = false;
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn="EnableKickIdlePlayers")]
         public float KickIdlePlayersPeriod = 2400;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
@@ -523,11 +525,16 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
+        public bool EnableKickIdlePlayers
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+
+        }
         public float KickIdlePlayersPeriod
         {
             get { return Get<float>(model); }
             set { Set(model, value); }
-
         }
 
         public float AutoSavePeriodMinutes
