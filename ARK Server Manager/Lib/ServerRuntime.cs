@@ -122,30 +122,37 @@ namespace ARK_Server_Manager.Lib
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                //
-                // Check the status of the server locally and on Steam
-                //
-                if (!File.Exists(GetServerExe()))
+                try
                 {
-                    this.ExecutionStatus = ServerStatus.Uninstalled;
-                    this.SteamAvailability = SteamStatus.Unavailable;
-                }
-                else
-                {
-                    if (this.serverProcess == null)
+                    //
+                    // Check the status of the server locally and on Steam
+                    //
+                    if (!File.Exists(GetServerExe()))
                     {
-                        this.serverProcess = FindMatchingServerProcess();
-                    }
-
-                    if (this.serverProcess != null && ! this.serverProcess.HasExited)
-                    {
-                        QueryNetworkStatus();
+                        this.ExecutionStatus = ServerStatus.Uninstalled;
+                        this.SteamAvailability = SteamStatus.Unavailable;
                     }
                     else
                     {
-                        this.ExecutionStatus = ServerStatus.Stopped;
-                        this.SteamAvailability = SteamStatus.Unavailable;
+                        if (this.serverProcess == null)
+                        {
+                            this.serverProcess = FindMatchingServerProcess();
+                        }
+
+                        if (this.serverProcess != null && !this.serverProcess.HasExited)
+                        {
+                            QueryNetworkStatus();
+                        }
+                        else
+                        {
+                            this.ExecutionStatus = ServerStatus.Stopped;
+                            this.SteamAvailability = SteamStatus.Unavailable;
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine("Exception during update check: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 }
 
                 await Task.Delay(1000);
@@ -161,33 +168,48 @@ namespace ARK_Server_Manager.Lib
             IPAddress localServerIpAddress;
             if (!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
             {
+                // Use the explicit Server IP
                 localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
             }
             else
             {
+                // No Server IP specified, use Loopback
                 localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
             }
 
             //
             // Get the public endpoint for querying Steam
+            //
             IPEndPoint steamServerQueryEndPoint = null;
             if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
                 IPAddress steamServerIpAddress;
                 if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
                 {
+                    // Use the Public IP explicitly specified
                     steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
                 }
                 else
                 {
-                    var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
-                    if (addresses.Length > 0)
+                    // Resolve the IP from the DNS name provided
+                    try
                     {
-                        steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                        var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
+                        if (addresses.Length > 0)
+                        {
+                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Debug.WriteLine("Failed to resolve DNS address {0}: {1}\r\n{2}", Config.Default.MachinePublicIP, ex.Message, ex.StackTrace);
                     }
                 }
             }
 
+            //
+            // Get the current status for both the local server and Steam
+            //
             var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
             ServerInfo steamServerInfo = null;
             if (steamServerQueryEndPoint != null)
