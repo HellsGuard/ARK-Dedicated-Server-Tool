@@ -167,7 +167,7 @@ namespace ARK_Server_Manager.Lib
         public bool EnableDinoSpawns = false;
         public List<DinoSpawn> DinoSpawns = new List<DinoSpawn>();
 
-        public bool EnableLevels = false;
+        public bool EnableLevelProgressions = false;
         public List<Level> PlayerLevels = new List<Level>();
         public List<Level> DinoLevels = new List<Level>();
 
@@ -238,106 +238,106 @@ namespace ARK_Server_Manager.Lib
         {
             var playerLevels = new Level[]
             {             
-                new Level { LevelIndex=0	, XPRequired=1	    , EngramPointsEarned=3  },
-                new Level { LevelIndex=1	, XPRequired=5	    , EngramPointsEarned=5  },
-                new Level { LevelIndex=2	, XPRequired=15	    , EngramPointsEarned=6  },
-                new Level { LevelIndex=3	, XPRequired=20	    , EngramPointsEarned=7  },
-                new Level { LevelIndex=4	, XPRequired=35	    , EngramPointsEarned=8  },
-                new Level { LevelIndex=5	, XPRequired=60	    , EngramPointsEarned=9  },
-                new Level { LevelIndex=6	, XPRequired=95	    , EngramPointsEarned=10 },
-                new Level { LevelIndex=7	, XPRequired=140	, EngramPointsEarned=11 },
-                new Level { LevelIndex=8	, XPRequired=195	, EngramPointsEarned=12 },
-                new Level { LevelIndex=9	, XPRequired=260	, EngramPointsEarned=13 },
-                new Level { LevelIndex=10	, XPRequired=335	, EngramPointsEarned=14 },
-                new Level { LevelIndex=11	, XPRequired=420	, EngramPointsEarned=15 },
-                new Level { LevelIndex=12	, XPRequired=515	, EngramPointsEarned=16 },
-                new Level { LevelIndex=13	, XPRequired=620	, EngramPointsEarned=17 },
-                new Level { LevelIndex=14	, XPRequired=735	, EngramPointsEarned=18 },
-                new Level { LevelIndex=15	, XPRequired=860	, EngramPointsEarned=19 },
-                new Level { LevelIndex=16	, XPRequired=995	, EngramPointsEarned=20 },
-                new Level { LevelIndex=17	, XPRequired=1140	, EngramPointsEarned=21 },
-                new Level { LevelIndex=18	, XPRequired=1295	, EngramPointsEarned=22 },
-                new Level { LevelIndex=19	, XPRequired=1460	, EngramPointsEarned=23 },
-                new Level { LevelIndex=20	, XPRequired=1635	, EngramPointsEarned=24 },
-                new Level { LevelIndex=21	, XPRequired=1820	, EngramPointsEarned=25 },
-                new Level { LevelIndex=22	, XPRequired=2015	, EngramPointsEarned=26 },
-                new Level { LevelIndex=23	, XPRequired=2220	, EngramPointsEarned=27 },
-                new Level { LevelIndex=24	, XPRequired=2435	, EngramPointsEarned=28 },
-                new Level { LevelIndex=25	, XPRequired=2660	, EngramPointsEarned=29 },
-                new Level { LevelIndex=26	, XPRequired=2895	, EngramPointsEarned=30 },
-                new Level { LevelIndex=27	, XPRequired=3140	, EngramPointsEarned=31 },
-                new Level { LevelIndex=28	, XPRequired=3395	, EngramPointsEarned=32 },
-                new Level { LevelIndex=29	, XPRequired=3660	, EngramPointsEarned=33 },
-                new Level { LevelIndex=30	, XPRequired=3935	, EngramPointsEarned=34 },
-                new Level { LevelIndex=31	, XPRequired=4220	, EngramPointsEarned=35 },
-                new Level { LevelIndex=32	, XPRequired=4515	, EngramPointsEarned=36 },
-                new Level { LevelIndex=33	, XPRequired=4820	, EngramPointsEarned=37 },
-                new Level { LevelIndex=34	, XPRequired=5135	, EngramPointsEarned=38 },
-                new Level { LevelIndex=35	, XPRequired=5460	, EngramPointsEarned=39 },
-                new Level { LevelIndex=36	, XPRequired=5795	, EngramPointsEarned=40 },
-                new Level { LevelIndex=37	, XPRequired=6140	, EngramPointsEarned=41 },
-                new Level { LevelIndex=38	, XPRequired=6495	, EngramPointsEarned=42 },
-                new Level { LevelIndex=39	, XPRequired=6860	, EngramPointsEarned=43 },
-                new Level { LevelIndex=40	, XPRequired=7235	, EngramPointsEarned=44 },
-                new Level { LevelIndex=41	, XPRequired=7620	, EngramPointsEarned=45 },
-                new Level { LevelIndex=42	, XPRequired=8015	, EngramPointsEarned=46 },
-                new Level { LevelIndex=43	, XPRequired=8420	, EngramPointsEarned=47 },
-                new Level { LevelIndex=44	, XPRequired=8835	, EngramPointsEarned=48 },
-                new Level { LevelIndex=45	, XPRequired=9260	, EngramPointsEarned=49 },
-                new Level { LevelIndex=46	, XPRequired=9695	, EngramPointsEarned=50 },
-                new Level { LevelIndex=47	, XPRequired=10140	, EngramPointsEarned=51 },
-                new Level { LevelIndex=48	, XPRequired=10595	, EngramPointsEarned=52 },
-                new Level { LevelIndex=49	, XPRequired=11060	, EngramPointsEarned=53 },
-                new Level { LevelIndex=50	, XPRequired=11535	, EngramPointsEarned=54 },
-                new Level { LevelIndex=51	, XPRequired=12020	, EngramPointsEarned=55 },
-                new Level { LevelIndex=52	, XPRequired=12515	, EngramPointsEarned=56 },
-                new Level { LevelIndex=53	, XPRequired=13020	, EngramPointsEarned=57 },
-                new Level { LevelIndex=54	, XPRequired=13535	, EngramPointsEarned=58 },
-                new Level { LevelIndex=55	, XPRequired=14060	, EngramPointsEarned=59 },
-                new Level { LevelIndex=56	, XPRequired=14595	, EngramPointsEarned=60 },
-                new Level { LevelIndex=57	, XPRequired=15140	, EngramPointsEarned=61 },
-                new Level { LevelIndex=58	, XPRequired=15695	, EngramPointsEarned=62 },
-                new Level { LevelIndex=59	, XPRequired=16285	, EngramPointsEarned=63 },
-                new Level { LevelIndex=60	, XPRequired=16910	, EngramPointsEarned=64 },
-                new Level { LevelIndex=61	, XPRequired=17570	, EngramPointsEarned=65 },
-                new Level { LevelIndex=62	, XPRequired=18265	, EngramPointsEarned=66 },
-                new Level { LevelIndex=63	, XPRequired=18995	, EngramPointsEarned=67 },
-                new Level { LevelIndex=64	, XPRequired=19760	, EngramPointsEarned=68 },
-                new Level { LevelIndex=65	, XPRequired=20560	, EngramPointsEarned=69 },
-                new Level { LevelIndex=66	, XPRequired=21395	, EngramPointsEarned=70 },
-                new Level { LevelIndex=67	, XPRequired=22265	, EngramPointsEarned=71 },
-                new Level { LevelIndex=68	, XPRequired=23170	, EngramPointsEarned=72 },
-                new Level { LevelIndex=69	, XPRequired=24110	, EngramPointsEarned=73 },
-                new Level { LevelIndex=70	, XPRequired=25085	, EngramPointsEarned=74 },
-                new Level { LevelIndex=71	, XPRequired=26095	, EngramPointsEarned=75 },
-                new Level { LevelIndex=72	, XPRequired=27140	, EngramPointsEarned=76 },
-                new Level { LevelIndex=73	, XPRequired=28220	, EngramPointsEarned=77 },
-                new Level { LevelIndex=74	, XPRequired=29335	, EngramPointsEarned=78 },
-                new Level { LevelIndex=75	, XPRequired=30485	, EngramPointsEarned=79 },
-                new Level { LevelIndex=76	, XPRequired=31670	, EngramPointsEarned=80 },
-                new Level { LevelIndex=77	, XPRequired=32890	, EngramPointsEarned=81 },
-                new Level { LevelIndex=78	, XPRequired=34145	, EngramPointsEarned=82 },
-                new Level { LevelIndex=79	, XPRequired=35435	, EngramPointsEarned=83 },
-                new Level { LevelIndex=80	, XPRequired=36760	, EngramPointsEarned=84 },
-                new Level { LevelIndex=81	, XPRequired=38120	, EngramPointsEarned=85 },
-                new Level { LevelIndex=82	, XPRequired=39515	, EngramPointsEarned=86 },
-                new Level { LevelIndex=83	, XPRequired=40945	, EngramPointsEarned=87 },
-                new Level { LevelIndex=84	, XPRequired=42410	, EngramPointsEarned=88 },
-                new Level { LevelIndex=85	, XPRequired=43910	, EngramPointsEarned=89 },
-                new Level { LevelIndex=86	, XPRequired=45445	, EngramPointsEarned=90 },
-                new Level { LevelIndex=87	, XPRequired=47015	, EngramPointsEarned=91 },
-                new Level { LevelIndex=88	, XPRequired=48620	, EngramPointsEarned=92 },
-                new Level { LevelIndex=89	, XPRequired=50260	, EngramPointsEarned=93 },
-                new Level { LevelIndex=90	, XPRequired=51935	, EngramPointsEarned=94 },
-                new Level { LevelIndex=91	, XPRequired=53645	, EngramPointsEarned=95 },
-                new Level { LevelIndex=92	, XPRequired=55390	, EngramPointsEarned=96 },
-                new Level { LevelIndex=93	, XPRequired=57170	, EngramPointsEarned=97 },
-                new Level { LevelIndex=94	, XPRequired=58985	, EngramPointsEarned=98 },
-                new Level { LevelIndex=95	, XPRequired=60835	, EngramPointsEarned=99 },
-                new Level { LevelIndex=96	, XPRequired=62720	, EngramPointsEarned=100},
-                new Level { LevelIndex=97	, XPRequired=64640	, EngramPointsEarned=101},
-                new Level { LevelIndex=98	, XPRequired=66595	, EngramPointsEarned=102},
-                new Level { LevelIndex=99	, XPRequired=68585	, EngramPointsEarned=103}
+                new Level { LevelIndex=0	, XPRequired=1	    , EngramPoints=10 },
+                new Level { LevelIndex=1	, XPRequired=5	    , EngramPoints=10 },
+                new Level { LevelIndex=2	, XPRequired=15	    , EngramPoints=10 },
+                new Level { LevelIndex=3	, XPRequired=20	    , EngramPoints=10 },
+                new Level { LevelIndex=4	, XPRequired=35	    , EngramPoints=10 },
+                new Level { LevelIndex=5	, XPRequired=60	    , EngramPoints=10 },
+                new Level { LevelIndex=6	, XPRequired=95	    , EngramPoints=10 },
+                new Level { LevelIndex=7	, XPRequired=140	, EngramPoints=10 },
+                new Level { LevelIndex=8	, XPRequired=195	, EngramPoints=10 },
+                new Level { LevelIndex=9	, XPRequired=260	, EngramPoints=10 },
+                new Level { LevelIndex=10	, XPRequired=335	, EngramPoints=15 },
+                new Level { LevelIndex=11	, XPRequired=420	, EngramPoints=15 },
+                new Level { LevelIndex=12	, XPRequired=515	, EngramPoints=15 },
+                new Level { LevelIndex=13	, XPRequired=620	, EngramPoints=15 },
+                new Level { LevelIndex=14	, XPRequired=735	, EngramPoints=15 },
+                new Level { LevelIndex=15	, XPRequired=860	, EngramPoints=15 },
+                new Level { LevelIndex=16	, XPRequired=995	, EngramPoints=15 },
+                new Level { LevelIndex=17	, XPRequired=1140	, EngramPoints=15 },
+                new Level { LevelIndex=18	, XPRequired=1295	, EngramPoints=15 },
+                new Level { LevelIndex=19	, XPRequired=1460	, EngramPoints=15 },
+                new Level { LevelIndex=20	, XPRequired=1635	, EngramPoints=20 },
+                new Level { LevelIndex=21	, XPRequired=1820	, EngramPoints=20 },
+                new Level { LevelIndex=22	, XPRequired=2015	, EngramPoints=20 },
+                new Level { LevelIndex=23	, XPRequired=2220	, EngramPoints=20 },
+                new Level { LevelIndex=24	, XPRequired=2435	, EngramPoints=20 },
+                new Level { LevelIndex=25	, XPRequired=2660	, EngramPoints=20 },
+                new Level { LevelIndex=26	, XPRequired=2895	, EngramPoints=20 },
+                new Level { LevelIndex=27	, XPRequired=3140	, EngramPoints=20 },
+                new Level { LevelIndex=28	, XPRequired=3395	, EngramPoints=20 },
+                new Level { LevelIndex=29	, XPRequired=3660	, EngramPoints=20 },
+                new Level { LevelIndex=30	, XPRequired=3935	, EngramPoints=25 },
+                new Level { LevelIndex=31	, XPRequired=4220	, EngramPoints=25 },
+                new Level { LevelIndex=32	, XPRequired=4515	, EngramPoints=25 },
+                new Level { LevelIndex=33	, XPRequired=4820	, EngramPoints=25 },
+                new Level { LevelIndex=34	, XPRequired=5135	, EngramPoints=25 },
+                new Level { LevelIndex=35	, XPRequired=5460	, EngramPoints=25 },
+                new Level { LevelIndex=36	, XPRequired=5795	, EngramPoints=25 },
+                new Level { LevelIndex=37	, XPRequired=6140	, EngramPoints=25 },
+                new Level { LevelIndex=38	, XPRequired=6495	, EngramPoints=25 },
+                new Level { LevelIndex=39	, XPRequired=6860	, EngramPoints=25 },
+                new Level { LevelIndex=40	, XPRequired=7235	, EngramPoints=30 },
+                new Level { LevelIndex=41	, XPRequired=7620	, EngramPoints=30 },
+                new Level { LevelIndex=42	, XPRequired=8015	, EngramPoints=30 },
+                new Level { LevelIndex=43	, XPRequired=8420	, EngramPoints=30 },
+                new Level { LevelIndex=44	, XPRequired=8835	, EngramPoints=30 },
+                new Level { LevelIndex=45	, XPRequired=9260	, EngramPoints=30 },
+                new Level { LevelIndex=46	, XPRequired=9695	, EngramPoints=30 },
+                new Level { LevelIndex=47	, XPRequired=10140	, EngramPoints=30 },
+                new Level { LevelIndex=48	, XPRequired=10595	, EngramPoints=30 },
+                new Level { LevelIndex=49	, XPRequired=11060	, EngramPoints=30 },
+                new Level { LevelIndex=50	, XPRequired=11535	, EngramPoints=35 },
+                new Level { LevelIndex=51	, XPRequired=12020	, EngramPoints=35 },
+                new Level { LevelIndex=52	, XPRequired=12515	, EngramPoints=35 },
+                new Level { LevelIndex=53	, XPRequired=13020	, EngramPoints=35 },
+                new Level { LevelIndex=54	, XPRequired=13535	, EngramPoints=35 },
+                new Level { LevelIndex=55	, XPRequired=14060	, EngramPoints=35 },
+                new Level { LevelIndex=56	, XPRequired=14595	, EngramPoints=35 },
+                new Level { LevelIndex=57	, XPRequired=15140	, EngramPoints=35 },
+                new Level { LevelIndex=58	, XPRequired=15695	, EngramPoints=35 },
+                new Level { LevelIndex=59	, XPRequired=16285	, EngramPoints=35 },
+                new Level { LevelIndex=60	, XPRequired=16910	, EngramPoints=50 },
+                new Level { LevelIndex=61	, XPRequired=17570	, EngramPoints=50 },
+                new Level { LevelIndex=62	, XPRequired=18265	, EngramPoints=50 },
+                new Level { LevelIndex=63	, XPRequired=18995	, EngramPoints=50 },
+                new Level { LevelIndex=64	, XPRequired=19760	, EngramPoints=50 },
+                new Level { LevelIndex=65	, XPRequired=20560	, EngramPoints=50 },
+                new Level { LevelIndex=66	, XPRequired=21395	, EngramPoints=50 },
+                new Level { LevelIndex=67	, XPRequired=22265	, EngramPoints=50 },
+                new Level { LevelIndex=68	, XPRequired=23170	, EngramPoints=72 },
+                new Level { LevelIndex=69	, XPRequired=24110	, EngramPoints=73 },
+                new Level { LevelIndex=70	, XPRequired=25085	, EngramPoints=74 },
+                new Level { LevelIndex=71	, XPRequired=26095	, EngramPoints=75 },
+                new Level { LevelIndex=72	, XPRequired=27140	, EngramPoints=76 },
+                new Level { LevelIndex=73	, XPRequired=28220	, EngramPoints=77 },
+                new Level { LevelIndex=74	, XPRequired=29335	, EngramPoints=78 },
+                new Level { LevelIndex=75	, XPRequired=30485	, EngramPoints=79 },
+                new Level { LevelIndex=76	, XPRequired=31670	, EngramPoints=80 },
+                new Level { LevelIndex=77	, XPRequired=32890	, EngramPoints=81 },
+                new Level { LevelIndex=78	, XPRequired=34145	, EngramPoints=82 },
+                new Level { LevelIndex=79	, XPRequired=35435	, EngramPoints=83 },
+                new Level { LevelIndex=80	, XPRequired=36760	, EngramPoints=84 },
+                new Level { LevelIndex=81	, XPRequired=38120	, EngramPoints=85 },
+                new Level { LevelIndex=82	, XPRequired=39515	, EngramPoints=86 },
+                new Level { LevelIndex=83	, XPRequired=40945	, EngramPoints=87 },
+                new Level { LevelIndex=84	, XPRequired=42410	, EngramPoints=88 },
+                new Level { LevelIndex=85	, XPRequired=43910	, EngramPoints=89 },
+                new Level { LevelIndex=86	, XPRequired=45445	, EngramPoints=90 },
+                new Level { LevelIndex=87	, XPRequired=47015	, EngramPoints=91 },
+                new Level { LevelIndex=88	, XPRequired=48620	, EngramPoints=92 },
+                new Level { LevelIndex=89	, XPRequired=50260	, EngramPoints=93 },
+                new Level { LevelIndex=90	, XPRequired=51935	, EngramPoints=94 },
+                new Level { LevelIndex=91	, XPRequired=53645	, EngramPoints=95 },
+                new Level { LevelIndex=92	, XPRequired=55390	, EngramPoints=96 },
+                new Level { LevelIndex=93	, XPRequired=57170	, EngramPoints=97 },
+                new Level { LevelIndex=94	, XPRequired=58985	, EngramPoints=98 },
+                new Level { LevelIndex=95	, XPRequired=60835	, EngramPoints=99 },
+                new Level { LevelIndex=96	, XPRequired=62720	, EngramPoints=100},
+                new Level { LevelIndex=97	, XPRequired=64640	, EngramPoints=101},
+                new Level { LevelIndex=98	, XPRequired=66595	, EngramPoints=102},
+                new Level { LevelIndex=99	, XPRequired=68585	, EngramPoints=103}
             };
 
             foreach(var level in playerLevels)
@@ -379,7 +379,7 @@ namespace ARK_Server_Manager.Lib
             }
             else
             {
-                settings.EnableLevels = true;
+                settings.EnableLevelProgressions = true;
             }
 
             settings.LastSaveLocation = path;
@@ -479,7 +479,7 @@ namespace ARK_Server_Manager.Lib
                 values.AddRange(DinoSpawn.ToINIValues(this.DinoSpawns));
             }
 
-            if(this.EnableLevels)            
+            if(this.EnableLevelProgressions)            
             {
                 //
                 // These must be added in this order: Player, then Dinos, per the ARK INI file format.
@@ -945,6 +945,23 @@ namespace ARK_Server_Manager.Lib
         {
             get { return Get<List<DinoSpawn>>(model); }
             set { Set(model, value); }       
+        }
+
+        public bool EnableLevelProgressions
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }       
+        }
+
+        public List<Level> PlayerLevels
+        {
+            get { return Get<List<Level>>(model); }
+            set { Set(model, value); }       
+        }
+        public List<Level> DinoLevels
+        {
+            get { return Get<List<Level>>(model); }
+            set { Set(model, value); }
         }
 
         public ObservableCollection<string> Whitelist

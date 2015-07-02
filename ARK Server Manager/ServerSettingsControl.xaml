@@ -788,30 +788,34 @@
         						<local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
         						<local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Override Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
-                                <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="1*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition/>
-                                                        <RowDefinition/>
-                                                    </Grid.RowDefinitions>
-                                                    <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                    <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
-                                                    <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>   
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>                                    
-                                </ListBox>
-        					</StackPanel>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
+                                    </GroupBox.Header>                                                                       
+                                    <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                        <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>   
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>                                    
+                                    </ListBox>
+                                </GroupBox>
+                            </StackPanel>
         				</Grid>
         			</Expander>
         			<Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
@@ -845,8 +849,67 @@
         					</StackPanel>
         				</Grid>
         			</Expander>
-                         
-        		</StackPanel>
+                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                        <Expander.Header>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Levels" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                        </Expander.Header>
+                        <Grid Margin ="10">
+                            <StackPanel Grid.Column="0">                                
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5"/>
+                                <GroupBox Header="Custom Player Levels" HorizontalAlignment="Stretch">
+                                    <ListBox ItemsSource="{Binding PlayerLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="30"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding LevelIndex, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="1" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
+                                                        <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding XPRequired}" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="3" Grid.Row="0" Content="Engram Points:" VerticalAlignment="Center"/>
+                                                        <TextBox Grid.Column="4" Grid.Row="0" Text="{Binding EngramPoints}" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox Header="Custom Dino Levels" HorizontalAlignment="Stretch">
+                                    <ListBox ItemsSource="{Binding DinoLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="30"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding LevelIndex, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="1" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
+                                                        <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding XPRequired}" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                            </StackPanel>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
         	</ScrollViewer>
         </Border>
     </Grid>

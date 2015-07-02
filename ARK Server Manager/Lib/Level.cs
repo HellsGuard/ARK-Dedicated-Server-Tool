@@ -16,8 +16,8 @@ namespace ARK_Server_Manager.Lib
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-        public static readonly DependencyProperty EngramPointsEarnedProperty =
-            DependencyProperty.Register("EngramPointsEarned", typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty EngramPointsProperty =
+            DependencyProperty.Register("EngramPoints", typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty XPRequiredProperty =
             DependencyProperty.Register("XPRequired", typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty LevelIndexProperty =
@@ -36,27 +36,17 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(XPRequiredProperty, value); }
         }
 
-        public int EngramPointsEarned
+        public int EngramPoints
         {
-            get { return (int)GetValue(EngramPointsEarnedProperty); }
-            set { SetValue(EngramPointsEarnedProperty, value); }
+            get { return (int)GetValue(EngramPointsProperty); }
+            set { SetValue(EngramPointsProperty, value); }
         }
         
         public static string ToINIValueForXP(IEnumerable<Level> levels)
         {
             var builder = new StringBuilder();
-            builder.Append('(');
-            bool firstLevel = true;
-            foreach(var level in levels.OrderBy(l => l.LevelIndex))
-            {
-                if(!firstLevel)
-                {
-                    builder.Append(',');
-                }
-
-                builder.Append(level.GetINISubValueForXP());
-            }
-
+            builder.Append("LevelExperienceRampOverrides=(");
+            builder.Append(String.Join(",", levels.OrderBy(l => l.LevelIndex).Select(l => l.GetINISubValueForXP())));
             builder.Append(')');
 
             return builder.ToString();
@@ -105,9 +95,12 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                levels.Add(new Level { LevelIndex = levelIndex, XPRequired = xpRequired, EngramPointsEarned = engramPoints });
+                levels.Add(new Level { LevelIndex = levelIndex, XPRequired = xpRequired, EngramPoints = engramPoints });
                 xpResult = xpResult.NextMatch();
-                engramResult = engramResult.NextMatch();
+                if (engramResult != null)
+                {
+                    engramResult = engramResult.NextMatch();
+                }
             }
 
             return levels;
@@ -120,7 +113,7 @@ namespace ARK_Server_Manager.Lib
 
         private string GetINIValueForEngramPointsEarned()
         {
-            return String.Format("OverridePlayerLevelEngramPoints={0}", this.EngramPointsEarned);
+            return String.Format("OverridePlayerLevelEngramPoints={0}", this.EngramPoints);
         }
     }
 }
