@@ -315,11 +315,8 @@ namespace ARK_Server_Manager.Lib
             iniFile.Serialize(this);
 
             //
-            // Write the Game.ini
+            // Write the Game.ini, but only if the user enabled Dino Spawns.
             //
-
-            //
-            // Clear the section first
             var values = new List<string>();
             if (this.EnableDinoSpawns)
             {
@@ -327,9 +324,11 @@ namespace ARK_Server_Manager.Lib
                 {
                     values.Add(String.Format("DinoSpawnWeightMultipliers={0}", spawn.ToINIValue()));
                 }
+
+                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
             }
 
-            iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
+            
         }
 
         public string GetServerArgs()
