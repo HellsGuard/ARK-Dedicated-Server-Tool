@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>36</ApplicationRevision>
+    <ApplicationRevision>38</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -132,6 +132,7 @@
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\IniFile.cs" />
+    <Compile Include="Lib\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
     <Compile Include="Lib\PasswordUtils.cs" />
     <Compile Include="Lib\Server.cs" />

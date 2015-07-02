@@ -342,7 +342,7 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
-            this.Settings.WriteINIFile();
+            this.Settings.SaveINIFiles();
             var serverExe = GetServerExe();
             var serverArgs = this.Settings.GetServerArgs();
 

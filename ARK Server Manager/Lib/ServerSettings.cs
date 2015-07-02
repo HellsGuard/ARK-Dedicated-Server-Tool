@@ -167,6 +167,10 @@ namespace ARK_Server_Manager.Lib
         public bool EnableDinoSpawns = false;
         public List<DinoSpawn> DinoSpawns = new List<DinoSpawn>();
 
+        public bool EnableLevels = false;
+        public List<Level> PlayerLevels = new List<Level>();
+        public List<Level> DinoLevels = new List<Level>();
+
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
@@ -195,38 +199,151 @@ namespace ARK_Server_Manager.Lib
 
         private void GetDefaultDinoSpawns()
         {
-            DinoSpawn[] spawns = new DinoSpawn[] 
+            var spawns = new DinoSpawn[] 
             {
-                new DinoSpawn { Name = "Anky", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Argent", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Bat", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Bronto", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Carno", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Coel", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Dilo", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Dodo", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Mammoth", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Mega", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Para", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Phiomia", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Piranha", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Ptera", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Raptor", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Rex", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Sabertooth", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Sarco", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Scorpion", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Stego", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Spino", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Spider", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Titanboa", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Trike", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F },
-                new DinoSpawn { Name = "Turtle", SpawnWeightMultiplier = 1.0F, OverrideSpawnLimitPercentage = false, SpawnLimitPercentage = 0.0F }
+                new DinoSpawn { Name = "Anky",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Argent",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Bat",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Bronto",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Carno",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Coel",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Dilo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Dodo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Mammoth",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Mega",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Para",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Phiomia",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Piranha",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Ptera",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Raptor",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Rex",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Sabertooth", SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Sarco",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Scorpion",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Stego",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Spino",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Spider",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Titanboa",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Trike",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { Name = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
             };
 
             foreach(var spawn in spawns)
             {
                 this.DinoSpawns.Add(spawn);
+            }
+        }
+
+        private void GetDefaultLevels()
+        {
+            var playerLevels = new Level[]
+            {             
+                new Level { LevelIndex=0	, XPRequired=1	    , EngramPointsEarned=3  },
+                new Level { LevelIndex=1	, XPRequired=5	    , EngramPointsEarned=5  },
+                new Level { LevelIndex=2	, XPRequired=15	    , EngramPointsEarned=6  },
+                new Level { LevelIndex=3	, XPRequired=20	    , EngramPointsEarned=7  },
+                new Level { LevelIndex=4	, XPRequired=35	    , EngramPointsEarned=8  },
+                new Level { LevelIndex=5	, XPRequired=60	    , EngramPointsEarned=9  },
+                new Level { LevelIndex=6	, XPRequired=95	    , EngramPointsEarned=10 },
+                new Level { LevelIndex=7	, XPRequired=140	, EngramPointsEarned=11 },
+                new Level { LevelIndex=8	, XPRequired=195	, EngramPointsEarned=12 },
+                new Level { LevelIndex=9	, XPRequired=260	, EngramPointsEarned=13 },
+                new Level { LevelIndex=10	, XPRequired=335	, EngramPointsEarned=14 },
+                new Level { LevelIndex=11	, XPRequired=420	, EngramPointsEarned=15 },
+                new Level { LevelIndex=12	, XPRequired=515	, EngramPointsEarned=16 },
+                new Level { LevelIndex=13	, XPRequired=620	, EngramPointsEarned=17 },
+                new Level { LevelIndex=14	, XPRequired=735	, EngramPointsEarned=18 },
+                new Level { LevelIndex=15	, XPRequired=860	, EngramPointsEarned=19 },
+                new Level { LevelIndex=16	, XPRequired=995	, EngramPointsEarned=20 },
+                new Level { LevelIndex=17	, XPRequired=1140	, EngramPointsEarned=21 },
+                new Level { LevelIndex=18	, XPRequired=1295	, EngramPointsEarned=22 },
+                new Level { LevelIndex=19	, XPRequired=1460	, EngramPointsEarned=23 },
+                new Level { LevelIndex=20	, XPRequired=1635	, EngramPointsEarned=24 },
+                new Level { LevelIndex=21	, XPRequired=1820	, EngramPointsEarned=25 },
+                new Level { LevelIndex=22	, XPRequired=2015	, EngramPointsEarned=26 },
+                new Level { LevelIndex=23	, XPRequired=2220	, EngramPointsEarned=27 },
+                new Level { LevelIndex=24	, XPRequired=2435	, EngramPointsEarned=28 },
+                new Level { LevelIndex=25	, XPRequired=2660	, EngramPointsEarned=29 },
+                new Level { LevelIndex=26	, XPRequired=2895	, EngramPointsEarned=30 },
+                new Level { LevelIndex=27	, XPRequired=3140	, EngramPointsEarned=31 },
+                new Level { LevelIndex=28	, XPRequired=3395	, EngramPointsEarned=32 },
+                new Level { LevelIndex=29	, XPRequired=3660	, EngramPointsEarned=33 },
+                new Level { LevelIndex=30	, XPRequired=3935	, EngramPointsEarned=34 },
+                new Level { LevelIndex=31	, XPRequired=4220	, EngramPointsEarned=35 },
+                new Level { LevelIndex=32	, XPRequired=4515	, EngramPointsEarned=36 },
+                new Level { LevelIndex=33	, XPRequired=4820	, EngramPointsEarned=37 },
+                new Level { LevelIndex=34	, XPRequired=5135	, EngramPointsEarned=38 },
+                new Level { LevelIndex=35	, XPRequired=5460	, EngramPointsEarned=39 },
+                new Level { LevelIndex=36	, XPRequired=5795	, EngramPointsEarned=40 },
+                new Level { LevelIndex=37	, XPRequired=6140	, EngramPointsEarned=41 },
+                new Level { LevelIndex=38	, XPRequired=6495	, EngramPointsEarned=42 },
+                new Level { LevelIndex=39	, XPRequired=6860	, EngramPointsEarned=43 },
+                new Level { LevelIndex=40	, XPRequired=7235	, EngramPointsEarned=44 },
+                new Level { LevelIndex=41	, XPRequired=7620	, EngramPointsEarned=45 },
+                new Level { LevelIndex=42	, XPRequired=8015	, EngramPointsEarned=46 },
+                new Level { LevelIndex=43	, XPRequired=8420	, EngramPointsEarned=47 },
+                new Level { LevelIndex=44	, XPRequired=8835	, EngramPointsEarned=48 },
+                new Level { LevelIndex=45	, XPRequired=9260	, EngramPointsEarned=49 },
+                new Level { LevelIndex=46	, XPRequired=9695	, EngramPointsEarned=50 },
+                new Level { LevelIndex=47	, XPRequired=10140	, EngramPointsEarned=51 },
+                new Level { LevelIndex=48	, XPRequired=10595	, EngramPointsEarned=52 },
+                new Level { LevelIndex=49	, XPRequired=11060	, EngramPointsEarned=53 },
+                new Level { LevelIndex=50	, XPRequired=11535	, EngramPointsEarned=54 },
+                new Level { LevelIndex=51	, XPRequired=12020	, EngramPointsEarned=55 },
+                new Level { LevelIndex=52	, XPRequired=12515	, EngramPointsEarned=56 },
+                new Level { LevelIndex=53	, XPRequired=13020	, EngramPointsEarned=57 },
+                new Level { LevelIndex=54	, XPRequired=13535	, EngramPointsEarned=58 },
+                new Level { LevelIndex=55	, XPRequired=14060	, EngramPointsEarned=59 },
+                new Level { LevelIndex=56	, XPRequired=14595	, EngramPointsEarned=60 },
+                new Level { LevelIndex=57	, XPRequired=15140	, EngramPointsEarned=61 },
+                new Level { LevelIndex=58	, XPRequired=15695	, EngramPointsEarned=62 },
+                new Level { LevelIndex=59	, XPRequired=16285	, EngramPointsEarned=63 },
+                new Level { LevelIndex=60	, XPRequired=16910	, EngramPointsEarned=64 },
+                new Level { LevelIndex=61	, XPRequired=17570	, EngramPointsEarned=65 },
+                new Level { LevelIndex=62	, XPRequired=18265	, EngramPointsEarned=66 },
+                new Level { LevelIndex=63	, XPRequired=18995	, EngramPointsEarned=67 },
+                new Level { LevelIndex=64	, XPRequired=19760	, EngramPointsEarned=68 },
+                new Level { LevelIndex=65	, XPRequired=20560	, EngramPointsEarned=69 },
+                new Level { LevelIndex=66	, XPRequired=21395	, EngramPointsEarned=70 },
+                new Level { LevelIndex=67	, XPRequired=22265	, EngramPointsEarned=71 },
+                new Level { LevelIndex=68	, XPRequired=23170	, EngramPointsEarned=72 },
+                new Level { LevelIndex=69	, XPRequired=24110	, EngramPointsEarned=73 },
+                new Level { LevelIndex=70	, XPRequired=25085	, EngramPointsEarned=74 },
+                new Level { LevelIndex=71	, XPRequired=26095	, EngramPointsEarned=75 },
+                new Level { LevelIndex=72	, XPRequired=27140	, EngramPointsEarned=76 },
+                new Level { LevelIndex=73	, XPRequired=28220	, EngramPointsEarned=77 },
+                new Level { LevelIndex=74	, XPRequired=29335	, EngramPointsEarned=78 },
+                new Level { LevelIndex=75	, XPRequired=30485	, EngramPointsEarned=79 },
+                new Level { LevelIndex=76	, XPRequired=31670	, EngramPointsEarned=80 },
+                new Level { LevelIndex=77	, XPRequired=32890	, EngramPointsEarned=81 },
+                new Level { LevelIndex=78	, XPRequired=34145	, EngramPointsEarned=82 },
+                new Level { LevelIndex=79	, XPRequired=35435	, EngramPointsEarned=83 },
+                new Level { LevelIndex=80	, XPRequired=36760	, EngramPointsEarned=84 },
+                new Level { LevelIndex=81	, XPRequired=38120	, EngramPointsEarned=85 },
+                new Level { LevelIndex=82	, XPRequired=39515	, EngramPointsEarned=86 },
+                new Level { LevelIndex=83	, XPRequired=40945	, EngramPointsEarned=87 },
+                new Level { LevelIndex=84	, XPRequired=42410	, EngramPointsEarned=88 },
+                new Level { LevelIndex=85	, XPRequired=43910	, EngramPointsEarned=89 },
+                new Level { LevelIndex=86	, XPRequired=45445	, EngramPointsEarned=90 },
+                new Level { LevelIndex=87	, XPRequired=47015	, EngramPointsEarned=91 },
+                new Level { LevelIndex=88	, XPRequired=48620	, EngramPointsEarned=92 },
+                new Level { LevelIndex=89	, XPRequired=50260	, EngramPointsEarned=93 },
+                new Level { LevelIndex=90	, XPRequired=51935	, EngramPointsEarned=94 },
+                new Level { LevelIndex=91	, XPRequired=53645	, EngramPointsEarned=95 },
+                new Level { LevelIndex=92	, XPRequired=55390	, EngramPointsEarned=96 },
+                new Level { LevelIndex=93	, XPRequired=57170	, EngramPointsEarned=97 },
+                new Level { LevelIndex=94	, XPRequired=58985	, EngramPointsEarned=98 },
+                new Level { LevelIndex=95	, XPRequired=60835	, EngramPointsEarned=99 },
+                new Level { LevelIndex=96	, XPRequired=62720	, EngramPointsEarned=100},
+                new Level { LevelIndex=97	, XPRequired=64640	, EngramPointsEarned=101},
+                new Level { LevelIndex=98	, XPRequired=66595	, EngramPointsEarned=102},
+                new Level { LevelIndex=99	, XPRequired=68585	, EngramPointsEarned=103}
+            };
+
+            foreach(var level in playerLevels)
+            {
+                this.PlayerLevels.Add(level);
+                this.DinoLevels.Add(level);
             }
         }
 
@@ -244,45 +361,84 @@ namespace ARK_Server_Manager.Lib
             }
             else
             {
-                IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
-                settings = new ServerSettings();
-                iniFile.Deserialize(settings);
-
-                var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
-                foreach(var entry in strings)
-                {
-                    var temp = entry.Split(new char[] { '=' }, StringSplitOptions.None);
-                    if(temp.Length > 0)
-                    {
-                        switch(temp[0])
-                        {
-
-                        }
-                    }
-                }
-                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));                
+                settings = LoadFromINIFiles(path);           
             }
 
             if(settings.DinoSpawns.Count == 0)
             {
                 settings.GetDefaultDinoSpawns();
             }
+            else
+            {
+                settings.EnableDinoSpawns = true;
+            }
+
+            if(settings.PlayerLevels.Count == 0)
+            {
+                settings.GetDefaultLevels();
+            }
+            else
+            {
+                settings.EnableLevels = true;
+            }
 
             settings.LastSaveLocation = path;
             return settings;
         }
 
+        private static ServerSettings LoadFromINIFiles(string path)
+        {
+            ServerSettings settings;
+            IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
+            settings = new ServerSettings();
+            iniFile.Deserialize(settings);
+
+            var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+
+            //
+            // Dino spawn weights
+            //
+            var dinoSpawnWeightSources = strings.Where(s => s.StartsWith("DinoSpawnWeightMultipliers="));
+            settings.DinoSpawns = DinoSpawn.FromINIValues(dinoSpawnWeightSources);
+            
+            // 
+            // Levels
+            //
+            var levelRampOverrides = strings.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
+            var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
+            if (levelRampOverrides.Length > 0)
+            {
+                settings.PlayerLevels = Level.FromINIValues(levelRampOverrides[0], engramPointOverrides);
+
+                if(levelRampOverrides.Length > 1)
+                {
+                    settings.DinoLevels = Level.FromINIValues(levelRampOverrides[1], null);
+                }
+            }
+          
+            settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
+            return settings;
+        }
+
         public void Save()
-        {            
+        {           
+            //
+            // Save the profile
+            //
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var writer = new StreamWriter(GetProfilePath()))
             {
                 serializer.Serialize(writer, this);
             }
 
-            WriteINIFile();
+            //
+            // Write the INI files
+            //
+            SaveINIFiles();
 
+            //
             // If this was a rename, remove the old profile after writing the new one.
+            //
             if(!String.Equals(GetProfilePath(), this.LastSaveLocation))
             {
                 try
@@ -306,7 +462,7 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
-        public void WriteINIFile()
+        public void SaveINIFiles()
         {
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
             Directory.CreateDirectory(configDir);
@@ -320,14 +476,21 @@ namespace ARK_Server_Manager.Lib
             var values = new List<string>();
             if (this.EnableDinoSpawns)
             {
-                foreach(var spawn in this.DinoSpawns)
-                {
-                    values.Add(String.Format("DinoSpawnWeightMultipliers={0}", spawn.ToINIValue()));
-                }
-
-                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
+                values.AddRange(DinoSpawn.ToINIValues(this.DinoSpawns));
             }
 
+            if(this.EnableLevels)            
+            {
+                //
+                // These must be added in this order: Player, then Dinos, per the ARK INI file format.
+                //
+                values.Add(Level.ToINIValueForXP(this.PlayerLevels));
+                values.Add(Level.ToINIValueForXP(this.DinoLevels));
+                values.AddRange(Level.ToINIValuesForEngramPoints(this.PlayerLevels));
+            }
+
+            // WARNING: This will delete everything in this section before writing the new values.
+            iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
             
         }
 
@@ -426,6 +589,7 @@ namespace ARK_Server_Manager.Lib
         {
             var settings = new ServerSettings();
             settings.GetDefaultDinoSpawns();
+            settings.GetDefaultLevels();
             return settings;
         }
     }

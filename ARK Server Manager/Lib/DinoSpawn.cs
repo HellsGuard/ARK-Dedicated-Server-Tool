@@ -44,7 +44,29 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
-        public string ToINIValue()
+        public static List<string> ToINIValues(IEnumerable<DinoSpawn> dinos)
+        {
+            var values = new List<string>();
+            foreach (var spawn in dinos)
+            {
+                values.Add(String.Format("DinoSpawnWeightMultipliers={0}", spawn.ToINIValue()));
+            }
+
+            return values;
+        }
+
+        public static List<DinoSpawn> FromINIValues(IEnumerable<string> iniValues)
+        {
+            var spawns = new List<DinoSpawn>();
+            foreach(var iniValue in iniValues)
+            {
+                spawns.Add(DinoSpawn.FromINIValue(iniValue));
+            }
+
+            return spawns;
+        }
+
+        private string ToINIValue()
         {
             var entry = new StringBuilder();
             entry.AppendFormat("(DinoNameTag={0},SpawnWeightMultiplier={1},OverrideSpawnLimitPercentage={2}", this.Name, this.SpawnWeightMultiplier, this.OverrideSpawnLimitPercentage);
@@ -56,7 +78,7 @@ namespace ARK_Server_Manager.Lib
             return entry.ToString();
         }
 
-        public static DinoSpawn FromINIValue(string iniValue)
+        private static DinoSpawn FromINIValue(string iniValue)
         {
             var newSpawn = new DinoSpawn();
 
@@ -68,7 +90,6 @@ namespace ARK_Server_Manager.Lib
             }
             
             newSpawn.Name = match.Groups["dinoname"].Value;
-
 
             match = SpawnWeightRegex.Match(iniValue);
             if (!match.Success)
