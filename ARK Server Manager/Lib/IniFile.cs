@@ -112,9 +112,8 @@ namespace ARK_Server_Manager.Lib
                  string key, string def, StringBuilder retVal,
             int size, string filePath);
 
-
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileSection(string section, StringBuilder retVal, int size, string filePath);
+        [DllImport("kernel32", CharSet=CharSet.Auto)]
+        private static extern int GetPrivateProfileSection(string section, char[] retVal, int size, string filePath);
 
         /// <summary>
         /// INIFile Constructor.
@@ -318,10 +317,10 @@ namespace ARK_Server_Manager.Lib
 
         public string[] IniReadSection(string Section, string pathSuffix = "")
         {
-            const int MaxSectionSize = 16384;
-            var temp = new StringBuilder(MaxSectionSize);
+            const int MaxSectionSize = 65536;
+            var temp = new char[MaxSectionSize];
             int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, Path.Combine(this.basePath, pathSuffix));
-            return MultiStringToArray(temp.ToString());
+            return MultiStringToArray(temp);
         }
 
         public void IniWriteSection(IniFileSections Section, string[] values, IniFiles File)
@@ -354,9 +353,26 @@ namespace ARK_Server_Manager.Lib
             return multiString.ToString();
         }
 
-        static string[] MultiStringToArray(string multiString)
+        static string[] MultiStringToArray(char[] multistring)
         {
-            return multiString.TrimEnd('\0').Split('\0');
+            List<string> stringList = new List<string>();
+            int i = 0;
+            while (i < multistring.Length)
+            {
+                int j = i;
+                if (multistring[j++] == '\0') break;
+                while (j < multistring.Length)
+                {
+                    if (multistring[j++] == '\0')
+                    {
+                        stringList.Add(new string(multistring, i, j - i - 1));
+                        i = j;
+                        break;
+                    }
+                }
+            }
+
+            return stringList.ToArray();
         }
     }
 }
