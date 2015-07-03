@@ -98,38 +98,44 @@
             </StackPanel>
             <Label  DockPanel.Dock="Right" Margin="5,4,5,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <Label  DockPanel.Dock="Right" Margin="10,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <TextBox DockPanel.Dock="Right" FontSize="12" Height="25"  Width="250" VerticalAlignment="Bottom" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
-                <Validation.ErrorTemplate>
-                    <ControlTemplate>
-                        <StackPanel>
-                            <!-- Placeholder for the TextBox itself -->
-                            <AdornedElementPlaceholder x:Name="textBox"/>
-                            <TextBlock Text="Invalid IP address or hostname" Background="Red" Foreground="White"/>
-                        </StackPanel>
-                    </ControlTemplate>
-                </Validation.ErrorTemplate>
-                <TextBox.Text>                    
-                    <Binding Path="CurrentConfig.MachinePublicIP" ElementName="Main">
-                        <Binding.ValidationRules>
-                            <local:IpValidationRule ValidatesOnTargetUpdated="true" />
-                        </Binding.ValidationRules>
-                   </Binding>
-                </TextBox.Text>
-                <!--
-                <TextBox.Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <DataTrigger  Binding="{Binding ElementName=Main, Path=IsIpValid}" Value="false">
-                                <Setter Property="Background" Value="#ffaaaa"/>
-                            </DataTrigger>
-                            <DataTrigger  Binding="{Binding ElementName=Main, Path=IsIpValid}" Value="true">
-                                <Setter Property="Background" Value="#FFAAFD97"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-                -->
-            </TextBox>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
+                <TextBox FontSize="12" Height="25"  Width="250" VerticalAlignment="Bottom" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <StackPanel>
+                                <!-- Placeholder for the TextBox itself -->
+                                <AdornedElementPlaceholder x:Name="textBox"/>
+                                <TextBlock Text="Invalid IP address or hostname" Background="Red" Foreground="White"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                    <TextBox.Text>                    
+                        <Binding Path="CurrentConfig.MachinePublicIP" ElementName="Main">
+                            <Binding.ValidationRules>
+                                <local:IpValidationRule ValidatesOnTargetUpdated="true" />
+                            </Binding.ValidationRules>
+                       </Binding>
+                    </TextBox.Text>
+                    <!--
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <DataTrigger  Binding="{Binding ElementName=Main, Path=IsIpValid}" Value="false">
+                                    <Setter Property="Background" Value="#ffaaaa"/>
+                                </DataTrigger>
+                                <DataTrigger  Binding="{Binding ElementName=Main, Path=IsIpValid}" Value="true">
+                                    <Setter Property="Background" Value="#FFAAFD97"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                    -->
+                </TextBox>
+                <Button Width="22" Height="22" VerticalAlignment="Bottom" Margin="2,0,0,8" Click="RefreshPublicIP_Click"
+                        ToolTip="Attempt to determine your current public IP">
+                    <Image Source="Art/Refresh.png"/>
+                </Button>
+            </StackPanel>
             <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
         </DockPanel>

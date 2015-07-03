@@ -132,6 +132,7 @@ namespace ARK_Server_Manager.Lib
         private class ServerProcessContext
         {
             public string InstallDirectory = String.Empty;
+            public string ServerIP = String.Empty;
             public int ServerPort = 0;
         }
 
@@ -154,12 +155,14 @@ namespace ARK_Server_Manager.Lib
                     {
                         if (String.IsNullOrWhiteSpace(this.Settings.InstallDirectory) || // No installation directory set
                             !updateContext.InstallDirectory.Equals(this.Settings.InstallDirectory, StringComparison.OrdinalIgnoreCase) || // Mismatched installation directory
-                            updateContext.ServerPort != this.Settings.ServerPort) // Mismatched query port
+                            updateContext.ServerPort != this.Settings.ServerPort || // Mismatched query port
+                            !String.Equals(updateContext.ServerIP, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) // Mismatched IP
                         {
                             // The process we were watching no longer matches, so forget it and start watching with the current settings.
                             this.serverProcess = null;
                             updateContext.InstallDirectory = this.Settings.InstallDirectory;
                             updateContext.ServerPort = this.Settings.ServerPort;
+                            updateContext.ServerIP = this.Settings.ServerIP;
                         }
 
                         if (this.serverProcess == null)
@@ -322,10 +325,28 @@ namespace ARK_Server_Manager.Lib
 
                 if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
                 {
-                    // Does this match our server?
+                    // Does this match our server exe and port?
                     var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.ServerPort);
                     if (commandLine.Contains(serverArgMatch))
                     {
+                        // Was an IP set on it?
+                        var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty);
+                        if (commandLine.Contains(anyIpArgMatch))
+                        {
+                            // If we have a specific IP, check for it.
+                            if (!String.IsNullOrWhiteSpace(updateContext.ServerIP))
+                            {
+                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.ServerIP);
+                                if (!commandLine.Contains(ipArgMatch))
+                                {
+                                    // Specific IP set didn't match
+                                    continue;
+                                }
+                            }
+
+                            // Either we havw no specific IP set or it matched
+                        }
+                        
                         process.EnableRaisingEvents = true;
                         return process;
                     }

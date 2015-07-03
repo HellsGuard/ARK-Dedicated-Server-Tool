@@ -64,8 +64,7 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
-            var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
-            this.NetworkInterfaces = adapters;            
+            ReinitializeNetworkAdapters();
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
@@ -91,6 +90,39 @@ namespace ARK_Server_Manager
             }
         }
 #endif
+
+        private void ReinitializeNetworkAdapters()
+        {
+            var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
+
+            //
+            // Filter out self-assigned addresses
+            //
+            adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));           
+            this.NetworkInterfaces = adapters;            
+
+
+            //
+            // If there isn't already an adapter assigned, pick one
+            //
+            var preferredIP = NetworkUtils.GetPreferredIP(adapters);
+            preferredIP.Description = "(Recommended) " + preferredIP.Description;
+            if(String.IsNullOrWhiteSpace(this.Settings.ServerIP))
+            {
+                if(preferredIP != null)
+                {
+                    this.Settings.ServerIP = preferredIP.IPAddress;
+                }
+            } 
+            else if(adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null) 
+            {
+                MessageBox.Show(
+                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP), 
+                    "Local IP invalid", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);            
+            }
+        }        
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
@@ -266,6 +298,11 @@ namespace ARK_Server_Manager
         {
             this.Settings.PlayerLevels.UpdateTotals();
             this.CustomDinoLevelsView.Items.Refresh();
+        }
+
+        private void RefreshLocalIPs_Click(object sender, RoutedEventArgs e)
+        {
+            ReinitializeNetworkAdapters();
         }
     }
 }

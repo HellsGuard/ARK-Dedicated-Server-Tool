@@ -693,18 +693,24 @@
                             <Label Grid.Column="2" Grid.Row="1" Content="Query Port:"/>
                             <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
-                            <Label Grid.Column="4" Grid.Row="1" Content="MultiHome IP:"/>
+
+                            <DockPanel Grid.Column="4" Grid.Row="1">
+                                <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="1" Content="Local IP:"/>
+                                <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs">
+                                    <Image Source="Art/Refresh.png" Width="16" />
+                                </Button>
+                            </DockPanel>
+
                             <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
-                                      ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank.">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                          ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank.">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
                                             <Label Content="{Binding IPAddress}"/>
-                                            <Label Content=" - "/>
                                             <Label Content="{Binding Description}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                             </ComboBox>
                             <!--
         					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"

@@ -160,6 +160,11 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+        private  async void RefreshPublicIP_Click(object sender, RoutedEventArgs e)
+        {
+            await App.DiscoverMachinePublicIP(forceOverride: true);
+        }
     }
 
     public class IpValidationRule : ValidationRule

@@ -52,6 +52,30 @@ namespace ARK_Server_Manager.Lib
             return adapters;
         }
 
+        public static NetworkAdapterEntry GetPreferredIP(IEnumerable<NetworkAdapterEntry> adapters)
+        {
+            //
+            // Try for a 192.168. address first
+            //
+            var preferredIp = adapters.FirstOrDefault(a => a.IPAddress.StartsWith("192.168."));
+            if (preferredIp == null)
+            {
+                //
+                // Try a 10.0 address next
+                //
+                preferredIp = adapters.FirstOrDefault(a => a.IPAddress.StartsWith("10.0."));
+                if (preferredIp == null)
+                {
+                    // 
+                    // Sad.  Just take the first.
+                    //
+                    preferredIp = adapters.FirstOrDefault();
+                }
+            }
+
+            return preferredIp;
+        }
+
         public static async Task<string> DiscoverPublicIPAsync()
         {
             using (var webClient = new WebClient())
