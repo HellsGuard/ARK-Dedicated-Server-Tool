@@ -4,6 +4,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -65,7 +66,6 @@ namespace ARK_Server_Manager
             ReinitializeFromSettings(settings);
             var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
             this.NetworkInterfaces = adapters;
-
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
@@ -217,5 +217,44 @@ namespace ARK_Server_Manager
             var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.Model.GetServerExe(), this.Settings.Model.GetServerArgs()));
             cmdLine.ShowDialog();
         }
+
+        private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
+        {            
+            if(this.Settings.PlayerLevels.Count == 1)
+            {
+                MessageBox.Show("You can't delete the last level.  If you want to disable the feature, uncheck Enable Custom Level Progressions.", "Can't delete last item", MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.PlayerLevels.RemoveLevel(level);            
+            }
+        }
+
+        private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
+        {
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.PlayerLevels.AddNewLevel(level);
+        }
+
+        private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Settings.DinoLevels.Count == 1)
+            {
+                MessageBox.Show("You can't delete the last level.  If you want to disable the feature, uncheck Enable Custom Level Progressions.", "Can't delete last item", MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.DinoLevels.RemoveLevel(level);
+            }
+        }
+
+        private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
+        {
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.DinoLevels.AddNewLevel(level);
+        }
+
     }
 }

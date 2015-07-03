@@ -168,8 +168,8 @@ namespace ARK_Server_Manager.Lib
         public List<DinoSpawn> DinoSpawns = new List<DinoSpawn>();
 
         public bool EnableLevelProgressions = false;
-        public List<Level> PlayerLevels = new List<Level>();
-        public List<Level> DinoLevels = new List<Level>();
+        public LevelList PlayerLevels = new LevelList();
+        public LevelList DinoLevels = new LevelList();
 
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
@@ -342,8 +342,8 @@ namespace ARK_Server_Manager.Lib
 
             foreach(var level in playerLevels)
             {
-                this.PlayerLevels.Add(level);
-                this.DinoLevels.Add(level);
+                this.PlayerLevels.InsertLevel(level);
+                this.DinoLevels.InsertLevel(level);
             }
         }
 
@@ -358,29 +358,50 @@ namespace ARK_Server_Manager.Lib
                     settings = (ServerSettings)serializer.Deserialize(reader);
                     settings.IsDirty = false;
                 }
+
+                if (settings.DinoSpawns.Count == 0)
+                {
+                    settings.GetDefaultDinoSpawns();
+                    settings.EnableDinoSpawns = false;
+                }
+
+                if (settings.PlayerLevels.Count == 0)
+                {
+                    settings.GetDefaultLevels();
+                    settings.EnableLevelProgressions = false;
+                }
+
+                //
+                // Since these are not inserted the normal way, we force a recomputation here.
+                //
+                settings.PlayerLevels.UpdateTotals();
+                settings.DinoLevels.UpdateTotals();
             }
             else
             {
-                settings = LoadFromINIFiles(path);           
+                settings = LoadFromINIFiles(path);
+
+                if (settings.DinoSpawns.Count == 0)
+                {
+                    settings.GetDefaultDinoSpawns();
+                    settings.EnableDinoSpawns = false;
+                }
+                else
+                {
+                    settings.EnableDinoSpawns = true;
+                }
+
+                if (settings.PlayerLevels.Count == 0)
+                {
+                    settings.GetDefaultLevels();
+                    settings.EnableLevelProgressions = false;
+                }
+                else
+                {
+                    settings.EnableLevelProgressions = true;
+                }
             }
 
-            if(settings.DinoSpawns.Count == 0)
-            {
-                settings.GetDefaultDinoSpawns();
-            }
-            else
-            {
-                settings.EnableDinoSpawns = true;
-            }
-
-            if(settings.PlayerLevels.Count == 0)
-            {
-                settings.GetDefaultLevels();
-            }
-            else
-            {
-                settings.EnableLevelProgressions = true;
-            }
 
             settings.LastSaveLocation = path;
             return settings;
@@ -408,11 +429,11 @@ namespace ARK_Server_Manager.Lib
             var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
             if (levelRampOverrides.Length > 0)
             {
-                settings.PlayerLevels = Level.FromINIValues(levelRampOverrides[0], engramPointOverrides);
+                settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
 
                 if(levelRampOverrides.Length > 1)
                 {
-                    settings.DinoLevels = Level.FromINIValues(levelRampOverrides[1], null);
+                    settings.DinoLevels = LevelList.FromINIValues(levelRampOverrides[1], null);
                 }
             }
           
@@ -448,7 +469,7 @@ namespace ARK_Server_Manager.Lib
                         File.Delete(this.LastSaveLocation);
                     }
                 }
-                catch(IOException ex)
+                catch(IOException)
                 {
                     // We tried...
                 }
@@ -484,13 +505,16 @@ namespace ARK_Server_Manager.Lib
                 //
                 // These must be added in this order: Player, then Dinos, per the ARK INI file format.
                 //
-                values.Add(Level.ToINIValueForXP(this.PlayerLevels));
-                values.Add(Level.ToINIValueForXP(this.DinoLevels));
-                values.AddRange(Level.ToINIValuesForEngramPoints(this.PlayerLevels));
+                values.Add(this.PlayerLevels.ToINIValueForXP());
+                values.Add(this.DinoLevels.ToINIValueForXP());
+                values.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
             }
 
-            // WARNING: This will delete everything in this section before writing the new values.
-            iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
+            if (this.EnableDinoSpawns || this.EnableLevelProgressions)
+            {
+                // WARNING: This will delete everything in this section before writing the new values.
+                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
+            }
             
         }
 
@@ -953,14 +977,14 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }       
         }
 
-        public List<Level> PlayerLevels
+        public LevelList PlayerLevels
         {
-            get { return Get<List<Level>>(model); }
+            get { return Get<LevelList>(model); }
             set { Set(model, value); }       
         }
-        public List<Level> DinoLevels
+        public LevelList DinoLevels
         {
-            get { return Get<List<Level>>(model); }
+            get { return Get<LevelList>(model); }
             set { Set(model, value); }
         }
 

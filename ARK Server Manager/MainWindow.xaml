@@ -5,7 +5,7 @@
         xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
         xmlns:local="clr-namespace:ARK_Server_Manager"
         Title="{DynamicResource MainWindow_Title}" Height="800" Width="1024" Loaded="Window_Loaded"
-        Name="Main">
+        Name="Main" Icon="Art/favicon.ico">
 	<Window.Resources>
         <local:IpValidationRule x:Key="IpValidationRule"/>
 		<SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
