@@ -51,6 +51,9 @@ namespace ARK_Server_Manager.Lib
         
         #endregion
 
+        /// <summary>
+        /// The current server process.  Should only be set by the Periodic Update check.
+        /// </summary>
         private Process serverProcess;
 
         public ServerSettings Settings
@@ -75,9 +78,17 @@ namespace ARK_Server_Manager.Lib
             set { this.GetType().GetField(propertyName).SetValue(this, value); }
         }
 
+        /// <summary>
+        /// Gets a snapshot of the IsRunning state.  However since the server is in a separate process, this can become
+        /// invalid at any time.
+        /// </summary>
         public bool IsRunning
         {
-            get { return serverProcess != null && serverProcess.HasExited == false; }
+            get 
+            {            
+                var process = serverProcess;
+                return process != null && process.HasExited == false;
+            }
         }
 
         public ServerStatus ExecutionStatus
@@ -162,6 +173,7 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
+                            this.serverProcess = null;
                             this.ExecutionStatus = ServerStatus.Stopped;
                             this.SteamAvailability = SteamStatus.Unavailable;
                         }
@@ -359,18 +371,17 @@ namespace ARK_Server_Manager.Lib
             }
 
             var startInfo = new ProcessStartInfo();
+            Process process;
             try
             {
-                this.serverProcess = Process.Start(serverExe, serverArgs);
+                process = Process.Start(serverExe, serverArgs);
             }
             catch(System.ComponentModel.Win32Exception ex)
             {
                 throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.Settings.InstallDirectory), serverExe, ex);
             }
 
-            this.serverProcess.EnableRaisingEvents = true;
-            this.ExecutionStatus = ServerStatus.Running;
-            // TODO: Ensure the watchdog is running and start with Initializing instead of Running
+            process.EnableRaisingEvents = true;
             return;            
         }
 
@@ -382,21 +393,21 @@ namespace ARK_Server_Manager.Lib
                 {
                     var ts = new TaskCompletionSource<bool>();
                     EventHandler handler = (s, e) => ts.TrySetResult(true);
-                    try
+                    var process = this.serverProcess;
+                    if (process != null)
                     {
-                        this.ExecutionStatus = ServerStatus.Stopping;
-                        this.serverProcess.Exited += handler;
-                        this.serverProcess.CloseMainWindow();
-                        await ts.Task;
-                    }
-                    finally
-                    {
-                        this.serverProcess.Exited -= handler; 
-                        this.serverProcess = null;
-                    }
-
-                    this.ExecutionStatus = ServerStatus.Stopped;
-
+                        try
+                        {
+                            this.ExecutionStatus = ServerStatus.Stopping;
+                            process.Exited += handler;
+                            process.CloseMainWindow();
+                            await ts.Task;
+                        }
+                        finally
+                        {
+                            process.Exited -= handler;
+                        }
+                    }                    
                 }
                 catch(InvalidOperationException)
                 {                    
