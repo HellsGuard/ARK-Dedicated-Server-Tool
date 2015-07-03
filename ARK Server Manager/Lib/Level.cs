@@ -17,6 +17,7 @@ namespace ARK_Server_Manager.Lib
 
     public class LevelList : ObservableCollection<Level>
     {
+        const bool WORKAROUND_FOR_ENGRAM_LIST = true;
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
@@ -76,6 +77,13 @@ namespace ARK_Server_Manager.Lib
         public List<string> ToINIValuesForEngramPoints()
         {
             var entries = new List<string>();
+
+
+            if (WORKAROUND_FOR_ENGRAM_LIST)
+            {
+                entries.Add(new Level().GetINIValueForEngramPointsEarned());
+            }
+
             foreach (var level in this.OrderBy(l => l.XPRequired))
             {
                 entries.Add(level.GetINIValueForEngramPointsEarned());
@@ -89,6 +97,14 @@ namespace ARK_Server_Manager.Lib
             var levels = new LevelList();
             var xpResult = XPRegex.Match(xpValue);
             var engramResult = engramValues == null ? null : EngramRegex.Match(String.Join(" ", engramValues));
+
+            if(WORKAROUND_FOR_ENGRAM_LIST)
+            {
+                if(engramResult != null)
+                {
+                    engramResult = engramResult.NextMatch();
+                }
+            }
 
             while (xpResult.Success && (engramValues == null || engramResult.Success))
             {
@@ -116,7 +132,7 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                levels.InsertLevel(new Level { LevelIndex = levelIndex, XPRequired = xpRequired, EngramPoints = engramPoints });
+                levels.Add(new Level { LevelIndex = levelIndex, XPRequired = xpRequired, EngramPoints = engramPoints });
                 xpResult = xpResult.NextMatch();
                 if (engramResult != null)
                 {
@@ -124,6 +140,7 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
+            levels.UpdateTotals();
             return levels;
         }
     }
