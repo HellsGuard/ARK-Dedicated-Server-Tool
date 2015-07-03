@@ -65,13 +65,13 @@ namespace ARK_Server_Manager
             InitializeComponent();
             ReinitializeFromSettings(settings);
             var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
-            this.NetworkInterfaces = adapters;
+            this.NetworkInterfaces = adapters;            
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
         {
             this.Settings = new ServerSettingsViewModel(settings);
-            this.Runtime = new ServerRuntimeViewModel(settings);            
+            this.Runtime = new ServerRuntimeViewModel(settings);
         }
            
 #if false
@@ -256,5 +256,16 @@ namespace ARK_Server_Manager
             this.Settings.DinoLevels.AddNewLevel(level);
         }
 
+        private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.PlayerLevels.UpdateTotals();
+            this.CustomPlayerLevelsView.Items.Refresh();
+        }
+
+        private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.PlayerLevels.UpdateTotals();
+            this.CustomDinoLevelsView.Items.Refresh();
+        }
     }
 }

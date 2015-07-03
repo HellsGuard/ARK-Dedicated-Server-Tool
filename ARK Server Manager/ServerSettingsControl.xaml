@@ -910,7 +910,7 @@
                                                 <GridViewColumn Header="+" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="Add a level after this one">
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -919,7 +919,7 @@
                                                 <GridViewColumn Header="-" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="Remove this level">
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -929,14 +929,14 @@
                                                 <GridViewColumn Header="XP Required" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center"/>
+                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
                                                 <GridViewColumn Header="Engram Points">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding EngramPoints}" Width="75" VerticalContentAlignment="Center"/>
+                                                            <TextBox Text="{Binding EngramPoints}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -953,7 +953,7 @@
                                                 <GridViewColumn Header="+" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="Add a level after this one" >
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -962,7 +962,7 @@
                                                 <GridViewColumn Header="-" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="Remove this level" >
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -972,7 +972,7 @@
                                                 <GridViewColumn Header="XP Required" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center"/>
+                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="DinoLevels_Recalculate"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>

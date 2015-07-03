@@ -15,7 +15,7 @@ using System.Collections.ObjectModel;
 namespace ARK_Server_Manager.Lib
 {
 
-    public class LevelList : ObservableCollection<Level>
+    public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
@@ -62,6 +62,8 @@ namespace ARK_Server_Manager.Lib
                 existingLevel.LevelIndex = index;
                 index++;
             }
+
+            base.Sort(f => f.LevelIndex);
         }
 
         public string ToINIValueForXP()
