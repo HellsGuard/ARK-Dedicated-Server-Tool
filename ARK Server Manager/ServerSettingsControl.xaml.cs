@@ -159,8 +159,11 @@ namespace ARK_Server_Manager
                 upgradeCancellationSource = new CancellationTokenSource();
                 if(await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
                 {
-                    this.Settings.Model.LastInstalledVersion = AvailableVersion.Current.ToString();
-                    this.Runtime.Model.InstalledVersion = AvailableVersion.Current;
+                    if (AvailableVersion != null && AvailableVersion.Current != null)
+                    {
+                        this.Settings.Model.LastInstalledVersion = AvailableVersion.Current.ToString();
+                        this.Runtime.Model.InstalledVersion = AvailableVersion.Current;
+                    }
                 }
 
             }                       
@@ -180,6 +183,7 @@ namespace ARK_Server_Manager
             }
             else
             {
+                this.Settings.Model.Save();
                 await this.Runtime.Model.StartAsync();
             }
         }

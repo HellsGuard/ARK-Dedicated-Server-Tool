@@ -374,8 +374,7 @@ namespace ARK_Server_Manager.Lib
                 Debug.WriteLine("Server {0} already running.", Settings.ProfileName);
                 return;
             }
-
-            this.Settings.SaveINIFiles();
+            
             var serverExe = GetServerExe();
             var serverArgs = this.Settings.GetServerArgs();
 
