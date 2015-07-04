@@ -27,9 +27,13 @@ namespace ARK_Server_Manager.Lib
             UpdateTotals();
         }
 
-        public void InsertLevel(Level level)
+        public void InsertLevels(IEnumerable<Level> levels)
         {
-            base.Insert(0, level);
+            foreach(var level in levels)
+            {
+                base.Add(level);
+            }
+
             UpdateTotals();
         }
 

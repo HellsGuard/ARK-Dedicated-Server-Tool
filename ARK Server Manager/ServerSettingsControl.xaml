@@ -466,7 +466,24 @@
                         <Border Grid.Column="1" Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left"/>
-                                <Label FontSize="15" Content="Unknown" HorizontalAlignment="Left"/>
+                                <Label FontSize="15" HorizontalAlignment="Left">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="True">
+                                                    <Setter Property="Content" Value="{Binding ElementName=SettingsControl, Path=AvailableVersion.Current}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="False">
+                                                    <Setter Property="Content" Value="Unknown"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center"
+                                        ToolTip="Check for new versions">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -843,7 +860,13 @@
                                 <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" Click="DinoSpawn_Reset" 
+                                                    ToolTip="Reset spawns to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
                                     </GroupBox.Header>
                                     <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListBox.ItemTemplate>
@@ -909,7 +932,18 @@
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
                                 <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5"/>
-                                <GroupBox Header="Custom Player Levels" HorizontalAlignment="Stretch">
+                                <GroupBox HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Custom Player Levels"/>
+                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all levels">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset levels to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
                                     <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
@@ -952,7 +986,21 @@
                                         </ListView.View>
                                     </ListView>
                                 </GroupBox>
-                                <GroupBox Header="Custom Dino Levels" HorizontalAlignment="Stretch">
+                                <GroupBox HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Custom Player Levels"/>
+                                            <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
+                                                    ToolTip="Delete all levels">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
+                                                    ToolTip="Reset levels to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
                                     <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>

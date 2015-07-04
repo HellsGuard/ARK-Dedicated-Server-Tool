@@ -106,7 +106,7 @@ namespace ARK_Server_Manager.Lib
         public Version InstalledVersion
         {
             get { return Version; }
-            private set { this.Version = value; OnPropertyChanged("Version"); }
+            set { this.Version = value; OnPropertyChanged("Version"); }
         }
 
         public int RunningMaxPlayers
@@ -436,49 +436,45 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
-        public async Task UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
         {
             if (!System.Environment.Is64BitOperatingSystem)
             {
                 var result = MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager will be unable to start the server, but you may still install it or load and save profiles and settings files for use on other machines.\r\n\r\nDo you wish to continue?", "64-bit OS Required", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
-                    return;
+                    return false;
                 }
             }
 
             string serverExe = GetServerExe();
-
-            // TODO: Do a version check
-            if (true)
+            try
             {
-                try
-                {
-                    await StopAsync();
+                await StopAsync();
 
-                    this.ExecutionStatus = ServerStatus.Updating;
+                this.ExecutionStatus = ServerStatus.Updating;
 
-                    // Run the SteamCMD to install the server
-                    var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-                    Directory.CreateDirectory(this.Settings.InstallDirectory);
-                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
-                    var process = Process.Start(steamCmdPath, steamArgs);
-                    process.EnableRaisingEvents = true;
-                    var ts = new TaskCompletionSource<bool>();
-                    using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
-                    {
-                        process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
-                        process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
-                        await ts.Task;
-                    }
-                }
-                catch(TaskCanceledException)
+                // Run the SteamCMD to install the server
+                var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
+                Directory.CreateDirectory(this.Settings.InstallDirectory);
+                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
+                var process = Process.Start(steamCmdPath, steamArgs);
+                process.EnableRaisingEvents = true;
+                var ts = new TaskCompletionSource<bool>();
+                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
                 {
+                    process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
+                    process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
+                    return await ts.Task;                    
                 }
-                finally
-                {
-                    this.ExecutionStatus = ServerStatus.Stopped;
-                }
+            }
+            catch(TaskCanceledException)
+            {
+                return false;
+            }
+            finally
+            {
+                this.ExecutionStatus = ServerStatus.Stopped;
             }
         }
     

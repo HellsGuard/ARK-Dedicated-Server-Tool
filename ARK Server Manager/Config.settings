@@ -5,9 +5,6 @@
     <Setting Name="DefaultVersionCheckUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.dropbox.com/s/a6v1obnqigu2bpu/version.txt?dl=1</Value>
     </Setting>
-    <Setting Name="DefaultUpdatePackageUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://hellsguard.site11.com/ARK_Server_Tool/updater.zip</Value>
-    </Setting>
     <Setting Name="SteamCmdUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip</Value>
     </Setting>
@@ -94,6 +91,9 @@
     </Setting>
     <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">?MultiHome={0}</Value>
+    </Setting>
+    <Setting Name="AvailableVersionUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://api.ark.bar/version</Value>
     </Setting>
   </Settings>
 </SettingsFile>

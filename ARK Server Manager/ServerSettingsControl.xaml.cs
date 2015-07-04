@@ -29,12 +29,24 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty WhitelistUserProperty = DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
+        public static readonly DependencyProperty SettingsProperty = 
+            DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty RuntimeProperty = 
+            DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty WhitelistUserProperty = 
+            DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty NetworkInterfacesProperty = 
+            DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
+        public static readonly DependencyProperty AvailableVersionProperty =
+            DependencyProperty.Register("AvailableVersion", typeof(NetworkUtils.AvailableVersion), typeof(ServerSettingsControl), new PropertyMetadata(new NetworkUtils.AvailableVersion()));
 
         CancellationTokenSource upgradeCancellationSource;
+
+        public NetworkUtils.AvailableVersion AvailableVersion
+        {
+            get { return (NetworkUtils.AvailableVersion)GetValue(AvailableVersionProperty); }
+            set { SetValue(AvailableVersionProperty, value); }
+        }
 
         public string WhitelistUser
         {
@@ -65,6 +77,7 @@ namespace ARK_Server_Manager
             InitializeComponent();
             ReinitializeFromSettings(settings);
             ReinitializeNetworkAdapters();
+            CheckForUpdatesAsync();
         }
 
         private void ReinitializeFromSettings(ServerSettings settings)
@@ -144,7 +157,12 @@ namespace ARK_Server_Manager
 
                 // Start the upgrade
                 upgradeCancellationSource = new CancellationTokenSource();
-                await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
+                if(await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
+                {
+                    this.Settings.Model.LastInstalledVersion = AvailableVersion.Current.ToString();
+                    this.Runtime.Model.InstalledVersion = AvailableVersion.Current;
+                }
+
             }                       
         }
 
@@ -303,6 +321,42 @@ namespace ARK_Server_Manager
         private void RefreshLocalIPs_Click(object sender, RoutedEventArgs e)
         {
             ReinitializeNetworkAdapters();
+        }
+
+        private void DinoLevels_Clear(object sender, RoutedEventArgs e)
+        {
+            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Dino);
+        }
+
+        private void DinoLevels_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Dino);
+        }
+
+        private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
+        {
+            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Player);
+        }
+
+        private void PlayerLevels_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Player);
+        }
+
+        private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.Model.ResetDinoSpawnsToDefault();
+        }
+
+        private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            await CheckForUpdatesAsync();
+        }
+
+        private async Task CheckForUpdatesAsync()
+        {
+            var result = await NetworkUtils.CheckForUpdatesAsync();
+            await App.Current.Dispatcher.BeginInvoke(new Action(() => this.AvailableVersion = result));
         }
     }
 }

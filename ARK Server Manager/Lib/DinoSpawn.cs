@@ -8,6 +8,32 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    public class DinoSpawnList : SortableObservableCollection<DinoSpawn>
+    {
+
+        public void InsertSpawns(IEnumerable<DinoSpawn> spawns)
+        {
+            foreach(var spawn in spawns)
+            {
+                base.Add(spawn);
+            }
+        }
+
+        public static DinoSpawnList FromINIValues(IEnumerable<string> iniValues)
+        {
+            var spawns = new DinoSpawnList();
+            spawns.InsertSpawns(iniValues.Select(v => DinoSpawn.FromINIValue(v)));
+            return spawns;
+        }
+
+        public List<string> ToINIValues()
+        {
+            var values = new List<string>();
+            values.AddRange(this.Select(d => String.Format("DinoSpawnWeightMultipliers={0}", d.ToINIValue())));
+            return values;
+        }
+    }
+
     public class DinoSpawn : DependencyObject
     {
         public static readonly Regex DinoNameRegex = new Regex(@"DinoNameTag=\s*(?<dinoname>\w*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
@@ -44,29 +70,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
-        public static List<string> ToINIValues(IEnumerable<DinoSpawn> dinos)
-        {
-            var values = new List<string>();
-            foreach (var spawn in dinos)
-            {
-                values.Add(String.Format("DinoSpawnWeightMultipliers={0}", spawn.ToINIValue()));
-            }
-
-            return values;
-        }
-
-        public static List<DinoSpawn> FromINIValues(IEnumerable<string> iniValues)
-        {
-            var spawns = new List<DinoSpawn>();
-            foreach(var iniValue in iniValues)
-            {
-                spawns.Add(DinoSpawn.FromINIValue(iniValue));
-            }
-
-            return spawns;
-        }
-
-        private string ToINIValue()
+        public string ToINIValue()
         {
             var entry = new StringBuilder();
             entry.AppendFormat("(DinoNameTag={0},SpawnWeightMultiplier={1},OverrideSpawnLimitPercentage={2}", this.Name, this.SpawnWeightMultiplier, this.OverrideSpawnLimitPercentage);
@@ -78,7 +82,7 @@ namespace ARK_Server_Manager.Lib
             return entry.ToString();
         }
 
-        private static DinoSpawn FromINIValue(string iniValue)
+        public static DinoSpawn FromINIValue(string iniValue)
         {
             var newSpawn = new DinoSpawn();
 
