@@ -21,8 +21,6 @@ namespace ARK_Server_Manager.Lib
         private Task steamWatchTask;
         private Task localWatchTask;
         
-        private int watchGeneration = 0;
-
         public ServerStatusWatcher()
         {
             steamWatchTask = Task.Factory.StartNew(async () => await StartSteamWatch());
@@ -36,12 +34,7 @@ namespace ARK_Server_Manager.Lib
         /// <returns>The server info, or null.</returns>
         public ServerInfo GetLocalServerInfo(IPEndPoint server)
         {
-            ServerInfo info = null;
-            if(!LocalWatches.TryGetValue(server, out info))
-            {
-                LocalWatches.TryAdd(server, null);
-            }
-
+            ServerInfo info = LocalWatches.GetOrAdd(server, (ServerInfo)null);
             return info;
         }
 
@@ -52,12 +45,7 @@ namespace ARK_Server_Manager.Lib
         /// <returns>The server info, or null.</returns>
         public ServerInfo GetSteamServerInfo(IPEndPoint server)
         {
-            ServerInfo info = null;
-            if (!SteamWatches.TryGetValue(server, out info))
-            {
-                SteamWatches.TryAdd(server, null);
-            }
-
+            ServerInfo info = SteamWatches.GetOrAdd(server, (ServerInfo)null);
             return info;
         }
 
@@ -105,10 +93,9 @@ namespace ARK_Server_Manager.Lib
                         await app.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine("Starting Steam data stream...")));
                     }
             
-                    this.watchGeneration++;
                     masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
 
-                    foreach(var steamServer in this.SteamWatches.Keys)
+                    foreach(var steamServer in this.SteamWatches.Keys.ToArray())
                     {
                         var finishedSteamProcessing = new TaskCompletionSource<bool>();
                         var gotServer = false;
@@ -163,7 +150,7 @@ namespace ARK_Server_Manager.Lib
                                 }
                                 else
                                 {
-                                    
+                                    SteamWatches[steamServer] = null;
                                 }
                             }
                             else
@@ -179,7 +166,7 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                await Task.Delay(5000);
+                await Task.Delay(10000);
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,20 +91,20 @@ namespace ARK_Server_Manager
 
             if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
-                Task.Factory.StartNew(async () => await DiscoverMachinePublicIP());
+                Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
             }
 
             base.OnStartup(e);
         }
 
-        private async Task DiscoverMachinePublicIP()
+        public static async Task DiscoverMachinePublicIP(bool forceOverride)
         {
             var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
             if(publicIP != null)
             {
                 await App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+                    if(forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                     {
                         Config.Default.MachinePublicIP = publicIP;
                     }

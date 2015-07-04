@@ -51,6 +51,9 @@ namespace ARK_Server_Manager.Lib
         
         #endregion
 
+        /// <summary>
+        /// The current server process.  Should only be set by the Periodic Update check.
+        /// </summary>
         private Process serverProcess;
 
         public ServerSettings Settings
@@ -75,9 +78,17 @@ namespace ARK_Server_Manager.Lib
             set { this.GetType().GetField(propertyName).SetValue(this, value); }
         }
 
+        /// <summary>
+        /// Gets a snapshot of the IsRunning state.  However since the server is in a separate process, this can become
+        /// invalid at any time.
+        /// </summary>
         public bool IsRunning
         {
-            get { return serverProcess != null && serverProcess.HasExited == false; }
+            get 
+            {            
+                var process = serverProcess;
+                return process != null && process.HasExited == false;
+            }
         }
 
         public ServerStatus ExecutionStatus
@@ -95,7 +106,7 @@ namespace ARK_Server_Manager.Lib
         public Version InstalledVersion
         {
             get { return Version; }
-            private set { this.Version = value; OnPropertyChanged("Version"); }
+            set { this.Version = value; OnPropertyChanged("Version"); }
         }
 
         public int RunningMaxPlayers
@@ -118,34 +129,62 @@ namespace ARK_Server_Manager.Lib
                 });
         }
 
+        private class ServerProcessContext
+        {
+            public string InstallDirectory = String.Empty;
+            public string ServerIP = String.Empty;
+            public int ServerPort = 0;
+        }
+
         private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
         {
+            ServerProcessContext updateContext = new ServerProcessContext();
             while (!cancellationToken.IsCancellationRequested)
             {
-                //
-                // Check the status of the server locally and on Steam
-                //
-                if (!File.Exists(GetServerExe()))
-                {
-                    this.ExecutionStatus = ServerStatus.Uninstalled;
-                    this.SteamAvailability = SteamStatus.Unavailable;
-                }
-                else
-                {
-                    if (this.serverProcess == null)
+                try
+                {                 
+                    //
+                    // Check the status of the server locally and on Steam
+                    //
+                    if (!File.Exists(GetServerExe()))
                     {
-                        this.serverProcess = FindMatchingServerProcess();
-                    }
-
-                    if (this.serverProcess != null && ! this.serverProcess.HasExited)
-                    {
-                        QueryNetworkStatus();
+                        this.ExecutionStatus = ServerStatus.Uninstalled;
+                        this.SteamAvailability = SteamStatus.Unavailable;
                     }
                     else
                     {
-                        this.ExecutionStatus = ServerStatus.Stopped;
-                        this.SteamAvailability = SteamStatus.Unavailable;
+                        if (String.IsNullOrWhiteSpace(this.Settings.InstallDirectory) || // No installation directory set
+                            !updateContext.InstallDirectory.Equals(this.Settings.InstallDirectory, StringComparison.OrdinalIgnoreCase) || // Mismatched installation directory
+                            updateContext.ServerPort != this.Settings.ServerPort || // Mismatched query port
+                            !String.Equals(updateContext.ServerIP, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) // Mismatched IP
+                        {
+                            // The process we were watching no longer matches, so forget it and start watching with the current settings.
+                            this.serverProcess = null;
+                            updateContext.InstallDirectory = this.Settings.InstallDirectory;
+                            updateContext.ServerPort = this.Settings.ServerPort;
+                            updateContext.ServerIP = this.Settings.ServerIP;
+                        }
+
+                        if (this.serverProcess == null)
+                        {
+                            this.serverProcess = FindMatchingServerProcess(updateContext);
+                        }
+
+                        if (this.serverProcess != null && !this.serverProcess.HasExited)
+                        {
+                            QueryNetworkStatus();
+                        }
+                        else
+                        {
+                            this.serverProcess = null;
+                            this.ExecutionStatus = ServerStatus.Stopped;
+                            this.SteamAvailability = SteamStatus.Unavailable;
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine("Exception during update check: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 }
 
                 await Task.Delay(1000);
@@ -161,33 +200,48 @@ namespace ARK_Server_Manager.Lib
             IPAddress localServerIpAddress;
             if (!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
             {
+                // Use the explicit Server IP
                 localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
             }
             else
             {
+                // No Server IP specified, use Loopback
                 localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
             }
 
             //
             // Get the public endpoint for querying Steam
+            //
             IPEndPoint steamServerQueryEndPoint = null;
             if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
                 IPAddress steamServerIpAddress;
                 if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
                 {
+                    // Use the Public IP explicitly specified
                     steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
                 }
                 else
                 {
-                    var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
-                    if (addresses.Length > 0)
+                    // Resolve the IP from the DNS name provided
+                    try
                     {
-                        steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                        var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
+                        if (addresses.Length > 0)
+                        {
+                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Debug.WriteLine("Failed to resolve DNS address {0}: {1}\r\n{2}", Config.Default.MachinePublicIP, ex.Message, ex.StackTrace);
                     }
                 }
             }
 
+            //
+            // Get the current status for both the local server and Steam
+            //
             var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
             ServerInfo steamServerInfo = null;
             if (steamServerQueryEndPoint != null)
@@ -201,7 +255,9 @@ namespace ARK_Server_Manager.Lib
                 this.RunningMaxPlayers = localServerInfo.MaxPlayers;
                 this.RunningPlayers = localServerInfo.Players;
 
-                // Get the version
+                //
+                // Get the version, which is specified in the server name automatically by ARK
+                //
                 var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
                 if (match.Success && match.Groups.Count >= 2)
                 {
@@ -214,8 +270,14 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
+                //
+                // Set the Steam Status
+                //
                 if (steamServerQueryEndPoint == null)
                 {
+                    // 
+                    // The user didn't give us a public IP, so we can't ask Steam about this server.
+                    //
                     this.SteamAvailability = SteamStatus.NeedPublicIP;
                 }
                 else
@@ -226,6 +288,9 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
+                        //
+                        // Steam doesn't have a record of our public IP yet.
+                        //
                         this.SteamAvailability = SteamStatus.WaitingForPublication;
                     }
                 }
@@ -237,8 +302,13 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private Process FindMatchingServerProcess()
+        private static Process FindMatchingServerProcess(ServerProcessContext updateContext)
         {
+            if(String.IsNullOrWhiteSpace(updateContext.InstallDirectory))
+            {
+                return null;
+            }
+
             foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
             {
                 var commandLineBuilder = new StringBuilder();
@@ -253,12 +323,30 @@ namespace ARK_Server_Manager.Lib
 
                 var commandLine = commandLineBuilder.ToString();
 
-                if (commandLine.Contains(Config.Default.ServerExe))
+                if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
                 {
-                    // Does this match our server?
-                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, this.Settings.ServerPort);
+                    // Does this match our server exe and port?
+                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.ServerPort);
                     if (commandLine.Contains(serverArgMatch))
                     {
+                        // Was an IP set on it?
+                        var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty);
+                        if (commandLine.Contains(anyIpArgMatch))
+                        {
+                            // If we have a specific IP, check for it.
+                            if (!String.IsNullOrWhiteSpace(updateContext.ServerIP))
+                            {
+                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.ServerIP);
+                                if (!commandLine.Contains(ipArgMatch))
+                                {
+                                    // Specific IP set didn't match
+                                    continue;
+                                }
+                            }
+
+                            // Either we havw no specific IP set or it matched
+                        }
+                        
                         process.EnableRaisingEvents = true;
                         return process;
                     }
@@ -286,8 +374,7 @@ namespace ARK_Server_Manager.Lib
                 Debug.WriteLine("Server {0} already running.", Settings.ProfileName);
                 return;
             }
-
-            this.Settings.WriteINIFile();
+            
             var serverExe = GetServerExe();
             var serverArgs = this.Settings.GetServerArgs();
 
@@ -304,18 +391,17 @@ namespace ARK_Server_Manager.Lib
             }
 
             var startInfo = new ProcessStartInfo();
+            Process process;
             try
             {
-                this.serverProcess = Process.Start(serverExe, serverArgs);
+                process = Process.Start(serverExe, serverArgs);
             }
             catch(System.ComponentModel.Win32Exception ex)
             {
                 throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.Settings.InstallDirectory), serverExe, ex);
             }
 
-            this.serverProcess.EnableRaisingEvents = true;
-            this.ExecutionStatus = ServerStatus.Running;
-            // TODO: Ensure the watchdog is running and start with Initializing instead of Running
+            process.EnableRaisingEvents = true;
             return;            
         }
 
@@ -327,21 +413,21 @@ namespace ARK_Server_Manager.Lib
                 {
                     var ts = new TaskCompletionSource<bool>();
                     EventHandler handler = (s, e) => ts.TrySetResult(true);
-                    try
+                    var process = this.serverProcess;
+                    if (process != null)
                     {
-                        this.ExecutionStatus = ServerStatus.Stopping;
-                        this.serverProcess.Exited += handler;
-                        this.serverProcess.CloseMainWindow();
-                        await ts.Task;
-                    }
-                    finally
-                    {
-                        this.serverProcess.Exited -= handler; 
-                        this.serverProcess = null;
-                    }
-
-                    this.ExecutionStatus = ServerStatus.Stopped;
-
+                        try
+                        {
+                            this.ExecutionStatus = ServerStatus.Stopping;
+                            process.Exited += handler;
+                            process.CloseMainWindow();
+                            await ts.Task;
+                        }
+                        finally
+                        {
+                            process.Exited -= handler;
+                        }
+                    }                    
                 }
                 catch(InvalidOperationException)
                 {                    
@@ -349,49 +435,45 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
-        public async Task UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
         {
             if (!System.Environment.Is64BitOperatingSystem)
             {
                 var result = MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager will be unable to start the server, but you may still install it or load and save profiles and settings files for use on other machines.\r\n\r\nDo you wish to continue?", "64-bit OS Required", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
-                    return;
+                    return false;
                 }
             }
 
             string serverExe = GetServerExe();
-
-            // TODO: Do a version check
-            if (true)
+            try
             {
-                try
-                {
-                    await StopAsync();
+                await StopAsync();
 
-                    this.ExecutionStatus = ServerStatus.Updating;
+                this.ExecutionStatus = ServerStatus.Updating;
 
-                    // Run the SteamCMD to install the server
-                    var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-                    Directory.CreateDirectory(this.Settings.InstallDirectory);
-                    var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
-                    var process = Process.Start(steamCmdPath, steamArgs);
-                    process.EnableRaisingEvents = true;
-                    var ts = new TaskCompletionSource<bool>();
-                    using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
-                    {
-                        process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
-                        process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
-                        await ts.Task;
-                    }
-                }
-                catch(TaskCanceledException)
+                // Run the SteamCMD to install the server
+                var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
+                Directory.CreateDirectory(this.Settings.InstallDirectory);
+                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
+                var process = Process.Start(steamCmdPath, steamArgs);
+                process.EnableRaisingEvents = true;
+                var ts = new TaskCompletionSource<bool>();
+                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
                 {
+                    process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
+                    process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
+                    return await ts.Task;                    
                 }
-                finally
-                {
-                    this.ExecutionStatus = ServerStatus.Stopped;
-                }
+            }
+            catch(TaskCanceledException)
+            {
+                return false;
+            }
+            finally
+            {
+                this.ExecutionStatus = ServerStatus.Stopped;
             }
         }
     

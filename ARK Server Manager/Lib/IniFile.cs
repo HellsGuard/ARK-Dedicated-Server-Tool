@@ -53,6 +53,11 @@ namespace ARK_Server_Manager.Lib
         /// Clear the section before writing this value.
         /// </summary>
         public bool ClearSection;
+
+        /// <summary>
+        /// Only write the attributed value if the named field is true.
+        /// </summary>
+        public string ConditionedOn;
         
         /// <summary>
         /// Attribute for the IniFile serializer
@@ -83,7 +88,7 @@ namespace ARK_Server_Manager.Lib
             { IniFileSections.MessageOfTheDay, "MessageOfTheDay" },
             { IniFileSections.MultiHome, "MultiHome" },
             { IniFileSections.ServerSettings, "ServerSettings" },
-            { IniFileSections.SessionSettings, "SessionSettings" }
+            { IniFileSections.SessionSettings, "SessionSettings" },
         };
 
         private readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
@@ -98,10 +103,17 @@ namespace ARK_Server_Manager.Lib
         private static extern long WritePrivateProfileString(string section,
             string key, string val, string filePath);
 
+
+        [DllImport("kernel32")]
+        private static extern int WritePrivateProfileSection(string section, string data, string filePath);
+
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section,
                  string key, string def, StringBuilder retVal,
             int size, string filePath);
+
+        [DllImport("kernel32", CharSet=CharSet.Auto)]
+        private static extern int GetPrivateProfileSection(string section, char[] retVal, int size, string filePath);
 
         /// <summary>
         /// INIFile Constructor.
@@ -130,21 +142,34 @@ namespace ARK_Server_Manager.Lib
 
                     if(attr.ClearSection)
                     {
-                        IniWriteValue(SectionNames[attr.Section], null, null, FileNames[IniFiles.GameUserSettings]);
+                        IniWriteValue(attr.Section, null, null, IniFiles.GameUserSettings);
+                    }
+
+
+                    if(!String.IsNullOrEmpty(attr.ConditionedOn))
+                    {
+                        var conditionField = obj.GetType().GetField(attr.ConditionedOn);
+                        var conditionValue = conditionField.GetValue(obj);
+                        if(conditionValue is bool && (bool)conditionValue == false)
+                        {
+                            // The condition value was not set to true, so clear this attribute instead of writing it
+                            IniWriteValue(attr.Section, keyName, null, attr.File);
+                            continue;
+                        }
                     }
 
                     if(attr.WriteBoolValueIfNonEmpty)
                     {
                         if(value == null)
                         {
-                            IniWriteValue(SectionNames[attr.Section], keyName, "False", FileNames[attr.File]);
+                            IniWriteValue(attr.Section, keyName, "False", attr.File);
                         }
                         else
                         {                           
                             if(value is string)
                             {
                                 var strValue = value as string;
-                                IniWriteValue(SectionNames[attr.Section], keyName, String.IsNullOrEmpty(strValue) ? "False" : "True", FileNames[attr.File]);
+                                IniWriteValue(attr.Section, keyName, String.IsNullOrEmpty(strValue) ? "False" : "True", attr.File);
                             }
                             else
                             {
@@ -157,11 +182,11 @@ namespace ARK_Server_Manager.Lib
                     {
                         if (attr.InvertBoolean && value is Boolean)
                         {
-                            IniWriteValue(SectionNames[attr.Section], keyName, Convert.ToString(!(bool)(value)), FileNames[attr.File]);
+                            IniWriteValue(attr.Section, keyName, Convert.ToString(!(bool)(value)), attr.File);
                         }
                         else
                         {
-                            IniWriteValue(SectionNames[attr.Section], keyName, Convert.ToString(value), FileNames[attr.File]);
+                            IniWriteValue(attr.Section, keyName, Convert.ToString(value), attr.File);
                         }
                     }
                 }
@@ -196,8 +221,23 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            if (String.IsNullOrWhiteSpace(iniValue))
+                            // Update the ConditionedOn flag, if this field has one.
+                            if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
                             {
+                                var conditionField = obj.GetType().GetField(attr.ConditionedOn);
+                                if (String.IsNullOrWhiteSpace(iniValue))
+                                {
+                                    conditionField.SetValue(obj, false);
+                                }
+                                else
+                                {
+                                    conditionField.SetValue(obj, true);
+                                }
+                            }
+
+                            if (String.IsNullOrWhiteSpace(iniValue))
+                            {                                
+
                                 // Skip non-string values which are not found
                                 continue;
                             }
@@ -249,6 +289,11 @@ namespace ARK_Server_Manager.Lib
             WritePrivateProfileString(Section, Key, Value, Path.Combine(this.basePath, pathSuffix));
         }
 
+        public void IniWriteValue(IniFileSections Section, string Key, string Value, IniFiles File)
+        {
+            IniWriteValue(SectionNames[Section], Key, Value, FileNames[File]);
+        }
+
         /// <summary>
         /// Read Data Value From the Ini File
         /// </summary>
@@ -263,6 +308,71 @@ namespace ARK_Server_Manager.Lib
             int i = GetPrivateProfileString(Section, Key, "", temp,
                                             MaxValueSize, Path.Combine(this.basePath, pathSuffix));
             return temp.ToString();
+        }
+
+        public string[] IniReadSection(IniFileSections Section, IniFiles File)
+        {
+            return IniReadSection(SectionNames[Section], FileNames[File]);
+        }
+
+        public string[] IniReadSection(string Section, string pathSuffix = "")
+        {
+            const int MaxSectionSize = 65536;
+            var temp = new char[MaxSectionSize];
+            int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, Path.Combine(this.basePath, pathSuffix));
+            return MultiStringToArray(temp);
+        }
+
+        public void IniWriteSection(IniFileSections Section, string[] values, IniFiles File)
+        {
+            IniWriteSection(SectionNames[Section], values, FileNames[File]);
+        }
+
+        public void IniWriteSection(string Section, string[] values, string pathSuffix = "")
+        {
+            WritePrivateProfileSection(Section, StringArrayToMultiString(values), Path.Combine(this.basePath, pathSuffix));
+        }
+
+        static string StringArrayToMultiString(params string[] values)
+        {
+            if (values == null) throw new ArgumentNullException("values");
+            StringBuilder multiString = new StringBuilder();
+
+            if (values.Length == 0)
+            {
+                multiString.Append('\0');
+            }
+            else
+            {
+                foreach (string s in values)
+                {
+                    multiString.Append(s);
+                    multiString.Append('\0');
+                }
+            }
+            return multiString.ToString();
+        }
+
+        static string[] MultiStringToArray(char[] multistring)
+        {
+            List<string> stringList = new List<string>();
+            int i = 0;
+            while (i < multistring.Length)
+            {
+                int j = i;
+                if (multistring[j++] == '\0') break;
+                while (j < multistring.Length)
+                {
+                    if (multistring[j++] == '\0')
+                    {
+                        stringList.Add(new string(multistring, i, j - i - 1));
+                        i = j;
+                        break;
+                    }
+                }
+            }
+
+            return stringList.ToArray();
         }
     }
 }

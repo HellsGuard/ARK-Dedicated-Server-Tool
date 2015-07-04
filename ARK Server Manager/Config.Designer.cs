@@ -34,15 +34,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://hellsguard.site11.com/ARK_Server_Tool/updater.zip")]
-        public string DefaultUpdatePackageUrl {
-            get {
-                return ((string)(this["DefaultUpdatePackageUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip")]
         public string SteamCmdUrl {
             get {
@@ -299,6 +290,39 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["ManageFirewallAutomatically"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Logs")]
+        public string LogsDir {
+            get {
+                return ((string)(this["LogsDir"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("?MultiHome={0}")]
+        public string ServerCommandLineArgsIPMatchFormat {
+            get {
+                return ((string)(this["ServerCommandLineArgsIPMatchFormat"]));
+            }
+            set {
+                this["ServerCommandLineArgsIPMatchFormat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.ark.bar/version")]
+        public string AvailableVersionUrl {
+            get {
+                return ((string)(this["AvailableVersionUrl"]));
+            }
+            set {
+                this["AvailableVersionUrl"] = value;
             }
         }
     }
