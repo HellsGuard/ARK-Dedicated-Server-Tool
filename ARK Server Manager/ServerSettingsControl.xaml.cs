@@ -296,7 +296,7 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
         {
-            this.Settings.PlayerLevels.UpdateTotals();
+            this.Settings.DinoLevels.UpdateTotals();
             this.CustomDinoLevelsView.Items.Refresh();
         }
 
