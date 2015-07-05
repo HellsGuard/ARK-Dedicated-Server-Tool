@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -361,6 +362,76 @@ namespace ARK_Server_Manager
         {
             var result = await NetworkUtils.CheckForUpdatesAsync();
             await App.Current.Dispatcher.BeginInvoke(new Action(() => this.AvailableVersion = result));
+        }
+
+        private void BackupListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            BackupRefresh();
+        }
+
+        private void CreateBackupButton_Click(object sender, RoutedEventArgs e)
+        {
+            string formatFile = @"\" + DateTime.Now.ToString("dddd, dd MMMM yyyy - hh_mm tt") + ".zip";
+            string savedFilesDir = @System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.BackupThisLoc);
+            string backupToDir = @System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.BackupDir + formatFile);
+            
+            if (!System.IO.File.Exists(backupToDir)) 
+            {
+                ZipFile.CreateFromDirectory(savedFilesDir, backupToDir, CompressionLevel.Fastest, true);
+                BackupRefresh();
+            }
+            else
+            {
+                MessageBox.Show(String.Format("There is already a backup matching {0}.\r\nPlease wait a few minutes to create a new one.", backupToDir), "Backup Exists", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void LoadBackupButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedBackup = ((ListViewItem)BackupListView.SelectedItem).Content.ToString();
+            string fileDir = System.IO.Path.Combine(Config.Default.BackupDir + @"\" + selectedBackup);
+            string unpackBackupTo = System.IO.Path.Combine(this.Settings.InstallDirectory + @"\ShooterGame");
+            var settings = ServerSettings.LoadFrom(System.IO.Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath + @"\" + Config.Default.ServerGameUserSettingsFile));
+
+            var mbResult = MessageBox.Show(String.Format("Are you sure you want to load the following backup? \r\n\n {0} \r\n\nDoing so will overwrite save files with the ones from this backup.", selectedBackup), "Confirm loading backup", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (mbResult == MessageBoxResult.Yes)
+            {
+                System.IO.Directory.Delete(unpackBackupTo, true);
+                ZipFile.ExtractToDirectory(fileDir, unpackBackupTo);
+                ReinitializeFromSettings(settings);
+            }
+        }
+
+        private void DelBackupButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedBackup = ((ListViewItem)BackupListView.SelectedItem).Content.ToString();
+            string fileDir = System.IO.Path.Combine(Config.Default.BackupDir + @"\" + selectedBackup);
+
+            var mbResult = MessageBox.Show(String.Format("Are you sure you want to delete the following backup? \r\n\n {0} \r\n\n", selectedBackup), "Confirm deleting backup", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (mbResult == MessageBoxResult.Yes)
+            {
+                System.IO.Directory.Delete(fileDir, true);
+            }
+        }
+
+        public void BackupRefresh()
+        {
+            string[] fileArray = Directory.GetFiles(Config.Default.BackupDir, "*.ZIP");
+
+            BackupListView.Items.Clear();
+
+            foreach (string file in fileArray)
+            {
+                string fileName = System.IO.Path.GetFileName(file);
+
+                ListViewItem fileNameItem = new ListViewItem();
+                fileNameItem.Content = fileName;
+                fileNameItem.Tag = file;
+
+                BackupListView.Items.Add(fileNameItem);
+            }
         }
     }
 }

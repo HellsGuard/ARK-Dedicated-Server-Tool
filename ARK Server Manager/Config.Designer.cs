@@ -325,5 +325,35 @@ namespace ARK_Server_Manager {
                 this["AvailableVersionUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Saved")]
+        public string BackupThisLoc {
+            get {
+                return ((string)(this["BackupThisLoc"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupDir {
+            get {
+                return ((string)(this["BackupDir"]));
+            }
+            set {
+                this["BackupDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server Backups")]
+        public string DefaultBackupDir {
+            get {
+                return ((string)(this["DefaultBackupDir"]));
+            }
+        }
     }
 }

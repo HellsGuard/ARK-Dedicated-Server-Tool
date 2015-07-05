@@ -50,7 +50,7 @@ namespace ARK_Server_Manager
         protected override void OnStartup(StartupEventArgs e)
         {           
             //System.Configuration.ConfigurationSettings.AppSettings.
-            
+                        
             // Initial configuration setting
             if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
@@ -67,7 +67,7 @@ namespace ARK_Server_Manager
                     var result = dialog.ShowDialog();
                     if (result == CommonFileDialogResult.Ok)
                     {
-                        var confirm = MessageBox.Show(String.Format("Ark Server Manager will store profiles and SteamCMD in the following directories:\r\n\r\nProfiles: {0}\r\nSteamCMD: {1}\r\n\r\nIs this ok?", Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), "Confirm location", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                        var confirm = MessageBox.Show(String.Format("Ark Server Manager will store Profiles, SteamCMD and Backups in the following directories:\r\n\r\nProfiles: {0}\r\n\nSteamCMD: {1}\r\n\nBackups: {2}\r\n\r\nIs this ok?", Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir), Path.Combine(dialog.FileName, Config.Default.DefaultBackupDir)), "Confirm location", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                         if(confirm == MessageBoxResult.No)
                         {
                             continue;
@@ -87,6 +87,13 @@ namespace ARK_Server_Manager
 
             Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);            
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
+
+            if (String.IsNullOrWhiteSpace(Config.Default.BackupDir))
+            {
+                Config.Default.BackupDir = Path.Combine(Config.Default.DataDir, Config.Default.DefaultBackupDir);
+                System.IO.Directory.CreateDirectory(Config.Default.BackupDir);
+            }
+            
             Config.Default.Save();
 
             if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))

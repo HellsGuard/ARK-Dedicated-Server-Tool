@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ARK_Server_Manager.ServerSettingsControl"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,16 +8,17 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
+             xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" x:Class="ARK_Server_Manager.ServerSettingsControl"
              mc:Ignorable="d"
              x:Name="SettingsControl">
     <UserControl.Resources>
         <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
         <lib:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Style TargetType="local:AnnotatedTextBox">
+        <Style TargetType="{x:Type local:AnnotatedTextBox}">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="local:AnnotatedTextBox">
+                    <ControlTemplate TargetType="{x:Type local:AnnotatedTextBox}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -376,7 +377,7 @@
                     <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
                         <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                     </Button>
-                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: \{0\}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                     <Label Grid.Column="2" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding XPRequired}" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                     <Label Grid.Column="4" Grid.Row="0" Content="Engram Points:" VerticalAlignment="Center"/>
@@ -399,7 +400,7 @@
                     <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
                         <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                     </Button>
-                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: \{0\}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                     <Label Grid.Column="2" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding XPRequired}" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
@@ -411,8 +412,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-        </Grid.ColumnDefinitions>
         <Border Margin="10,5" Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="#FF10274F" BorderThickness="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -427,7 +426,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" FontSize="15" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
                     <TextBox Margin="5" Grid.Column="1" Text="{Binding ProfileName}" VerticalContentAlignment="Center"
-    					ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
+						ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                         <Button Margin="5" Click="Load_Click" ToolTip="Load an existing profile, or import one directly from an existing server.">
                             <Image Source="Art/Open_6529.png" Height="16" Margin="5,0,5,0" />
@@ -457,7 +456,7 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" 
-						Style="{DynamicResource BorderLabel}">
+							Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Installed Version:" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left"  VerticalAlignment="Center" />
@@ -470,10 +469,10 @@
                                     <Label.Style>
                                         <Style TargetType="{x:Type Label}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="True">
-                                                    <Setter Property="Content" Value="{Binding ElementName=SettingsControl, Path=AvailableVersion.Current}"/>
+                                                <DataTrigger Binding="{Binding AvailableVersion.IsValid, ElementName=SettingsControl}" Value="True">
+                                                    <Setter Property="Content" Value="{Binding AvailableVersion.Current, ElementName=SettingsControl}"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="False">
+                                                <DataTrigger Binding="{Binding AvailableVersion.IsValid, ElementName=SettingsControl}" Value="False">
                                                     <Setter Property="Content" Value="Unknown"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -481,7 +480,7 @@
                                     </Label.Style>
                                 </Label>
                                 <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center"
-                                        ToolTip="Check for new versions">
+									ToolTip="Check for new versions">
                                     <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                 </Button>
                             </StackPanel>
@@ -696,20 +695,20 @@
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
                             <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The public name of the server, as seen in Steam and Ark."/>
+								ToolTip="The public name of the server, as seen in Steam and Ark."/>
                             <Label Grid.Column="2" Grid.Row="0" Content="Server Password:"/>
                             <TextBox Grid.Column="3" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
+								ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
                             <Label Grid.Column="4" Grid.Row="0" Content="Admin Password:"/>
                             <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Ths password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
+								ToolTip="Ths password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
 
                             <Label Grid.Column="0" Grid.Row="1" Content="Server Port:"/>
                             <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
+								ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
                             <Label Grid.Column="2" Grid.Row="1" Content="Query Port:"/>
                             <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
+								ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
 
                             <DockPanel Grid.Column="4" Grid.Row="1">
                                 <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="1" Content="Local IP:"/>
@@ -718,16 +717,16 @@
                                 </Button>
                             </DockPanel>
 
-                            <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
-                                          ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank.">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
+                            <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding NetworkInterfaces, ElementName=SettingsControl}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
+								ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank.">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
                                             <Label Content="{Binding IPAddress}"/>
                                             <Label Content="{Binding Description}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                             <!--
         					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
@@ -737,15 +736,15 @@
                             <Label Grid.Column="0" Grid.Row="2" Content="Map"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ServerMap}" VerticalContentAlignment="Center"/>
                             <local:AnnotatedSlider Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
-        						ToolTip="Sets the maximum number of players which can join this server."/>
+								ToolTip="Sets the maximum number of players which can join this server."/>
 
                             <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5"/>
                             <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3" Label="Idle Player Timeout:" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time until idle players are kicked from the server."
-                                IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
+								ToolTip="The time until idle players are kicked from the server."
+								IsEnabled="{Binding IsChecked, ElementName=EnableKickIdlePlayersCheckbox}"/>
 
                             <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="4" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time between server auto-saves."/>
+								ToolTip="The time between server auto-saves."/>
 
 
                             <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
@@ -755,7 +754,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
-        						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
+										ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
                                     <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" />
                                 </Grid>
                             </GroupBox>
@@ -764,7 +763,7 @@
                             <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="6" LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click"/>
                                 <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
+									ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
                             </DockPanel>
 
                             <!--
@@ -796,7 +795,7 @@
                                 <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP"/>
                                 <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads"/>
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
-        							Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
+									Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -862,13 +861,13 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" Click="DinoSpawn_Reset" 
-                                                    ToolTip="Reset spawns to game defaults">
+                                            <Button Width="22" Height="22" IsEnabled="{Binding IsChecked, ElementName=EnableDinoSpawnsCheckbox}" Click="DinoSpawn_Reset" 
+												ToolTip="Reset spawns to game defaults">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding IsChecked, ElementName=EnableDinoSpawnsCheckbox}" HorizontalContentAlignment="Stretch">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
@@ -884,7 +883,7 @@
                                                         <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                         <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=OverrideSpawnLimitCheckbox}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
@@ -936,15 +935,15 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Custom Player Levels"/>
-                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all levels">
+                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}" ToolTip="Delete all levels">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset levels to game defaults">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}" ToolTip="Reset levels to game defaults">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="200" IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="+" Width="Auto">
@@ -990,18 +989,18 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Custom Player Levels"/>
-                                            <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
-                                                    ToolTip="Delete all levels">
+                                            <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}" 
+												ToolTip="Delete all levels">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    ToolTip="Reset levels to game defaults">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}"
+												ToolTip="Reset levels to game defaults">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="200" IsEnabled="{Binding IsChecked, ElementName=EnableLevelsCheckbox}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="+" Width="Auto">
@@ -1036,6 +1035,33 @@
                                     </ListView>
                                 </GroupBox>
                             </StackPanel>
+                        </Grid>
+                    </Expander>
+
+                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                        <Expander.Header>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Server Backups" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                        </Expander.Header>
+                        <Grid Margin ="10">
+                            <StackPanel Grid.Column="0" Margin="0,0,0,41">
+                                <GroupBox HorizontalAlignment="Stretch" Height="167">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Current Backups"/>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListView x:Name="BackupListView" HorizontalContentAlignment="Stretch" Loaded="BackupListView_Loaded" SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="File" Width="Auto"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </GroupBox>
+                            </StackPanel>
+                            <Button x:Name="CreateBackupButton" Content="Create Backup" Margin="11,172,271,4" ToolTip="Create a current backup of your entire server." Click="CreateBackupButton_Click" Width="105"/>
+                            <Button x:Name="LoadBackupButton" Content="Load Backup" Margin="140,172,142,4" ToolTip="Load the selected backup to your server." Click="LoadBackupButton_Click" Width="105"/>
+                            <Button x:Name="DelBackupButton" Content="Delete Backup" Margin="271,172,10,4" ToolTip="Delete the selected backup." Click="DelBackupButton_Click" Width="105"/>
                         </Grid>
                     </Expander>
                 </StackPanel>

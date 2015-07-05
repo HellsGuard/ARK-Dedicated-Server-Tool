@@ -38,7 +38,7 @@ namespace ARK_Server_Manager
 
         public GlobalSettings()
         {
-            this.Version = GetDeplployedVersion();
+            this.Version = GetDeployedVersion();
 
             this.CurrentConfig = Config.Default;
             this.DataContext = this;
@@ -46,7 +46,7 @@ namespace ARK_Server_Manager
             InitializeComponent();
         }
 
-        private string GetDeplployedVersion()
+        private string GetDeployedVersion()
         {
             XmlDocument xmlDoc = new XmlDocument();
             Assembly asmCurrent = System.Reflection.Assembly.GetExecutingAssembly();
@@ -80,11 +80,13 @@ namespace ARK_Server_Manager
                         {
                             // Set up the destination directories
                             string newConfigDirectory = Path.Combine(dialog.FileName, Config.Default.ProfilesDir);
+                            string newBackupDirectory = Path.Combine(dialog.FileName, Config.Default.DefaultBackupDir);
                             string oldSteamDirectory = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir);
                             string newSteamDirectory = Path.Combine(dialog.FileName, Config.Default.SteamCmdDir);
 
                             Directory.CreateDirectory(newConfigDirectory);
                             Directory.CreateDirectory(newSteamDirectory);
+                            Directory.CreateDirectory(newBackupDirectory);
 
                             // Copy the Profiles
                             foreach (var file in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*.*", SearchOption.AllDirectories))
@@ -127,5 +129,36 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+        public void SetBackupDir_Click(object sender, RoutedEventArgs args) 
+        {
+            var mbResult = MessageBox.Show("Are you sure you wish to change the default backup directory?", "Backup directory change confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (mbResult == MessageBoxResult.Yes) 
+            {
+                var fileDialog = new CommonOpenFileDialog();
+                fileDialog.IsFolderPicker = true;
+                fileDialog.Title = "Select Backup Directory";
+                fileDialog.InitialDirectory = Config.Default.DataDir;
+                var dialogResult = fileDialog.ShowDialog();
+
+                if (dialogResult == CommonFileDialogResult.Ok)
+                {
+                    if (!String.Equals(fileDialog.FileName, Config.Default.DataDir)) 
+                    {
+                        try
+                        {
+                            // Update Config
+                            Config.Default.BackupDir = fileDialog.FileName;
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(String.Format("There was an error changing the backup directory: {0}\r\nPlease correct the error and try again, or contact technical support for assistance.", ex.Message), "Failed to change backup directory", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

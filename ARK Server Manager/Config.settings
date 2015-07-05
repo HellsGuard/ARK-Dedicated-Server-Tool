@@ -95,5 +95,14 @@
     <Setting Name="AvailableVersionUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://api.ark.bar/version</Value>
     </Setting>
+    <Setting Name="BackupThisLoc" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGame\Saved</Value>
+    </Setting>
+    <Setting Name="BackupDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultBackupDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server Backups</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
