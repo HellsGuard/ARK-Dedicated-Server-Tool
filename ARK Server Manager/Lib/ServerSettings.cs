@@ -138,6 +138,8 @@ namespace ARK_Server_Manager.Lib
         public float PvEStructureDecayPeriodMultiplier = 1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float ResourcesRespawnPeriodMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool ClampResourceHarvestDamage = false;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float DayCycleSpeedScale=1;
@@ -795,6 +797,12 @@ namespace ARK_Server_Manager.Lib
         public float ResourcesRespawnPeriodMultiplier
         {
             get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public bool ClampResourceHarvestDamage
+        {
+            get { return Get<bool>(model); }
             set { Set(model, value); }
         }
 

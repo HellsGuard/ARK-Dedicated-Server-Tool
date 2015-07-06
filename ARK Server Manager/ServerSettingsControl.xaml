@@ -901,8 +901,9 @@
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
                                 <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Harvest Ammount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
