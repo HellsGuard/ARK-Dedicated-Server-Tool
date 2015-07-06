@@ -990,7 +990,7 @@
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="Custom Player Levels"/>
+                                            <Label Content="Custom Dino Levels"/>
                                             <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
                                                     ToolTip="Delete all levels">
                                                 <Image Source="Art/Delete.png" Width="16"/>
