@@ -792,9 +792,9 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode"/>
-                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP"/>
-                                <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads"/>
+                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
                             </StackPanel>
@@ -806,10 +806,10 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat"/>
-                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications"/>
+                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -819,11 +819,11 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair"/>
-                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD"/>
-                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View"/>
-                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location"/>
-                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP"/>
+                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -833,7 +833,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry"/>
+                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -903,7 +903,7 @@
                                 <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}"/>
+                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -920,9 +920,15 @@
                                 <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
-                                <CheckBox IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay"/>
-                                <local:AnnotatedSlider Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
-                                <local:AnnotatedSlider Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay" HorizontalAlignment="Left"/>
+                                    </GroupBox.Header>
+                                    <StackPanel Orientation="Vertical">
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -932,7 +938,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5"/>
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left"/>
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
