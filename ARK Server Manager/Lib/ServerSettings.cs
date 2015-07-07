@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -96,8 +97,18 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
         public string ServerIP = String.Empty;
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection=true)]
         public string MOTD = String.Empty;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
+        public int MOTDDuration = 20;
+
+        public bool EnableKickIdlePlayers = false;
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn="EnableKickIdlePlayers")]
+        public float KickIdlePlayersPeriod = 2400;
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float AutoSavePeriodMinutes = 15;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float TamingSpeedMultiplier = 1;
@@ -123,6 +134,10 @@ namespace ARK_Server_Manager.Lib
         public float HarvestHealthMultiplier = 1;
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float PvEStructureDecayDestructionPeriod = 0;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float PvEStructureDecayPeriodMultiplier = 1;
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float ResourcesRespawnPeriodMultiplier = 1;
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float DayCycleSpeedScale=1;
@@ -149,57 +164,217 @@ namespace ARK_Server_Manager.Lib
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]        
         public float XPMultiplier = 1;
 
+        public bool EnableDinoSpawns = false;
+        public DinoSpawnList DinoSpawns = new DinoSpawnList();
+
+        public bool EnableLevelProgressions = false;
+        public LevelList PlayerLevels = new LevelList();
+        public LevelList DinoLevels = new LevelList();
+
         public string SaveDirectory = String.Empty;
         public string InstallDirectory = String.Empty;
 
         public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
-
-        public string ServerMap = Config.Default.DefaultServerMap;
         
+        public string ServerMap = Config.Default.DefaultServerMap;
+
+        [XmlIgnore()]
+        public ObservableCollection<string> Whitelist = new ObservableCollection<string>();
+
         #endregion
 
         [XmlIgnore()]
         public bool IsDirty = true;
 
-        public ServerSettings()
+        [XmlIgnore()]
+        private string LastSaveLocation = String.Empty;
+
+        private ServerSettings()
         {
             ServerPassword = PasswordUtils.GeneratePassword(16);
             AdminPassword = PasswordUtils.GeneratePassword(16);
             GetDefaultDirectories();
         }
 
+        public void ResetDinoSpawnsToDefault()
+        {            
+            this.DinoSpawns.Clear();
+            this.DinoSpawns.InsertSpawns(GameData.DinoSpawns);
+        }
+
+        public enum LevelProgression
+        {
+            Player,
+            Dino
+        };
+
+        public void ResetLevelProgressionToDefault(LevelProgression levelProgression)
+        {
+            LevelList list = GetLevelList(levelProgression);
+
+            list.Clear();
+            list.InsertLevels(GameData.LevelProgression);
+        }
+
+        public void ClearLevelProgression(LevelProgression levelProgression)
+        {
+            var list = GetLevelList(levelProgression);
+            list.Clear();
+            list.Add(new Level { LevelIndex = 0, XPRequired = 1, EngramPoints = 0 });
+            list.UpdateTotals();
+        }
+
+        private LevelList GetLevelList(LevelProgression levelProgression)
+        {
+            LevelList list = null;
+            switch (levelProgression)
+            {
+                case LevelProgression.Player:
+                    list = this.PlayerLevels;
+                    break;
+
+                case LevelProgression.Dino:
+                    list = this.DinoLevels;
+                    break;
+
+                default:
+                    throw new ArgumentException("Invalid level progression type specified.");
+            }
+            return list;
+        }
+
         public static ServerSettings LoadFrom(string path)
         {
+            ServerSettings settings;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerSettings));
                 using (var reader = File.OpenRead(path))
                 {
-                    var settings = (ServerSettings)serializer.Deserialize(reader);
+                    settings = (ServerSettings)serializer.Deserialize(reader);
                     settings.IsDirty = false;
-                    return settings;
                 }
+
+                if (settings.DinoSpawns.Count == 0)
+                {
+                    settings.ResetDinoSpawnsToDefault();
+                    settings.EnableDinoSpawns = false;
+                }
+
+                if (settings.PlayerLevels.Count == 0)
+                {
+                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
+                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+                    settings.EnableLevelProgressions = false;
+                }
+
+                //
+                // Since these are not inserted the normal way, we force a recomputation here.
+                //
+                settings.PlayerLevels.UpdateTotals();
+                settings.DinoLevels.UpdateTotals();
             }
             else
             {
-                IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
-                ServerSettings settings = new ServerSettings();
-                iniFile.Deserialize(settings);
-                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
-                return settings;
+                settings = LoadFromINIFiles(path);
+
+                if (settings.DinoSpawns.Count == 0)
+                {
+                    settings.ResetDinoSpawnsToDefault();
+                    settings.EnableDinoSpawns = false;
+                }
+                else
+                {
+                    settings.EnableDinoSpawns = true;
+                }
+
+                if (settings.PlayerLevels.Count == 0)
+                {
+                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
+                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+                    settings.EnableLevelProgressions = false;
+                }
+                else
+                {
+                    settings.EnableLevelProgressions = true;
+                }
             }
+
+
+            settings.LastSaveLocation = path;
+            return settings;
+        }
+
+        private static ServerSettings LoadFromINIFiles(string path)
+        {
+            ServerSettings settings;
+            IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
+            settings = new ServerSettings();
+            iniFile.Deserialize(settings);
+
+            var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+
+            //
+            // Dino spawn weights
+            //
+            var dinoSpawnWeightSources = strings.Where(s => s.StartsWith("DinoSpawnWeightMultipliers="));
+            settings.DinoSpawns = DinoSpawnList.FromINIValues(dinoSpawnWeightSources);
+            
+            // 
+            // Levels
+            //
+            var levelRampOverrides = strings.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
+            var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
+            if (levelRampOverrides.Length > 0)
+            {
+                settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
+
+                if(levelRampOverrides.Length > 1)
+                {
+                    settings.DinoLevels = LevelList.FromINIValues(levelRampOverrides[1], null);
+                }
+            }
+          
+            settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
+            return settings;
         }
 
         public void Save()
-        {
+        {           
+            //
+            // Save the profile
+            //
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var writer = new StreamWriter(GetProfilePath()))
             {
                 serializer.Serialize(writer, this);
             }
 
-            WriteINIFile();
+            //
+            // Write the INI files
+            //
+            SaveINIFiles();
+
+            //
+            // If this was a rename, remove the old profile after writing the new one.
+            //
+            if(!String.Equals(GetProfilePath(), this.LastSaveLocation))
+            {
+                try
+                {
+                    if (File.Exists(this.LastSaveLocation))
+                    {
+                        File.Delete(this.LastSaveLocation);
+                    }
+                }
+                catch(IOException)
+                {
+                    // We tried...
+                }
+
+                this.LastSaveLocation = GetProfilePath();
+            }
         }
 
         public string GetProfilePath()
@@ -207,7 +382,7 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
-        public void WriteINIFile()
+        public void SaveINIFiles()
         {
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
             Directory.CreateDirectory(configDir);
@@ -215,7 +390,32 @@ namespace ARK_Server_Manager.Lib
             var iniFile = new IniFile(configDir);            
             iniFile.Serialize(this);
 
+            //
+            // Write the Game.ini, but only if the user enabled Dino Spawns.
+            //
+            var values = new List<string>();
+            if (this.EnableDinoSpawns)
+            {
+                values.AddRange(this.DinoSpawns.ToINIValues());
+            }
+
+            if(this.EnableLevelProgressions)            
+            {
+                //
+                // These must be added in this order: Player, then Dinos, per the ARK INI file format.
+                //
+                values.Add(this.PlayerLevels.ToINIValueForXP());
+                values.Add(this.DinoLevels.ToINIValueForXP());
+                values.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
+            }
+
+            if (this.EnableDinoSpawns || this.EnableLevelProgressions)
+            {
+                // WARNING: This will delete everything in this section before writing the new values.
+                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
+            }            
         }
+
         public string GetServerArgs()
         {
             var serverArgs = new StringBuilder();
@@ -306,6 +506,15 @@ namespace ARK_Server_Manager.Lib
                                                                                        : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir);
             }
         }
+
+        internal static ServerSettings GetDefault()
+        {
+            var settings = new ServerSettings();
+            settings.ResetDinoSpawnsToDefault();
+            settings.ResetLevelProgressionToDefault(LevelProgression.Player);
+            settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+            return settings;
+        }
     }
 
     public class ServerSettingsViewModel : ViewModelBase
@@ -331,6 +540,13 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public string ServerMap
+        {
+            get { return Get<string>(model); }
+            set { Set(model, value); }
+        }
+
         public string ServerPassword
         {
             get { return Get<string>(model); }
@@ -388,6 +604,31 @@ namespace ARK_Server_Manager.Lib
             get { return Get<string>(model); }
             set { Set(model, value); }
         }
+
+        public int MOTDDuration
+        {
+            get { return Get<int>(model); }
+            set { Set(model, value); }
+        }
+
+        public bool EnableKickIdlePlayers
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+
+        }
+        public float KickIdlePlayersPeriod
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float AutoSavePeriodMinutes
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
         public int MaxPlayers
         {
             get { return Get<int>(model); }
@@ -403,12 +644,6 @@ namespace ARK_Server_Manager.Lib
         public float MaxStructuresVisible
         {
             get { return Get<float>(model); }
-            set { Set(model, value); }
-        }
-
-        public bool ShowMapPlayerLocation
-        {
-            get { return Get<bool>(model); }
             set { Set(model, value); }
         }
 
@@ -483,6 +718,12 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
 
+        public bool AllowPVPGamma
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+
         public float TamingSpeedMultiplier
         {
             get { return Get<float>(model); }
@@ -540,6 +781,18 @@ namespace ARK_Server_Manager.Lib
             set { Set(model, value); }
         }
         public float PvEStructureDecayDestructionPeriod
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float PvEStructureDecayPeriodMultiplier
+        {
+            get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public float ResourcesRespawnPeriodMultiplier
         {
             get { return Get<float>(model); }
             set { Set(model, value); }
@@ -603,6 +856,40 @@ namespace ARK_Server_Manager.Lib
         public float XPMultiplier
         {
             get { return Get<float>(model); }
+            set { Set(model, value); }
+        }
+
+        public bool EnableDinoSpawns
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }       
+        }
+        public DinoSpawnList DinoSpawns
+        {
+            get { return Get<DinoSpawnList > (model); }
+            set { Set(model, value); }       
+        }
+
+        public bool EnableLevelProgressions
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }       
+        }
+
+        public LevelList PlayerLevels
+        {
+            get { return Get<LevelList>(model); }
+            set { Set(model, value); }       
+        }
+        public LevelList DinoLevels
+        {
+            get { return Get<LevelList>(model); }
+            set { Set(model, value); }
+        }
+
+        public ObservableCollection<string> Whitelist
+        {
+            get { return Get<ObservableCollection<string>>(model); }
             set { Set(model, value); }
         }
     }

@@ -1,4 +1,5 @@
 using ARK_Server_Manager.Lib;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,18 +49,67 @@ namespace ARK_Server_Manager
 
         protected override void OnStartup(StartupEventArgs e)
         {           
-            base.OnStartup(e);
             //System.Configuration.ConfigurationSettings.AppSettings.
             
             // Initial configuration setting
             if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
-                Config.Default.DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.Default.DefaultDataDir);
+                MessageBox.Show("It appears you do not have a data directory set.  The data directory is where your profiles and SteamCMD will be stored.  It is not the same as the server installation directory, which you can choose for each profile.  You will now be asked to select the location where the Ark Server Manager data directory is located.  You may later change this in the Settings window.", "Select Data Directory", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                while (String.IsNullOrWhiteSpace(Config.Default.DataDir))
+                {
+                    var dialog = new CommonOpenFileDialog();
+                    dialog.EnsureFileExists = true;
+                    dialog.IsFolderPicker = true;
+                    dialog.Multiselect = false;
+                    dialog.Title = "Select a Data Directory";
+                    dialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+                    var result = dialog.ShowDialog();
+                    if (result == CommonFileDialogResult.Ok)
+                    {
+                        var confirm = MessageBox.Show(String.Format("Ark Server Manager will store profiles and SteamCMD in the following directories:\r\n\r\nProfiles: {0}\r\nSteamCMD: {1}\r\n\r\nIs this ok?", Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), "Confirm location", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                        if(confirm == MessageBoxResult.No)
+                        {
+                            continue;
+                        }
+                        else if(confirm == MessageBoxResult.Yes)
+                        {
+                            Config.Default.DataDir = dialog.FileName;
+                            break;
+                        }
+                        else
+                        {
+                            Environment.Exit(0);
+                        }
+                    }
+                }
             }
 
             Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);            
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
+
+            if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+            {
+                Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
+            }
+
+            base.OnStartup(e);
+        }
+
+        public static async Task DiscoverMachinePublicIP(bool forceOverride)
+        {
+            var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
+            if(publicIP != null)
+            {
+                await App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if(forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+                    {
+                        Config.Default.MachinePublicIP = publicIP;
+                    }
+                }));
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -50,7 +50,6 @@ namespace ARK_Server_Manager
 
         public MainWindow()
         {
-            Config.Default.Reload();
             this.CurrentConfig = Config.Default;
 
             InitializeComponent();
@@ -67,14 +66,21 @@ namespace ARK_Server_Manager
             var tabAdded = false;
             foreach(var profile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
             {
-                var settings = ServerSettings.LoadFrom(profile);
-                AddNewServerTab(settings);
-                tabAdded = true;
+                try
+                {
+                    var settings = ServerSettings.LoadFrom(profile);
+                    AddNewServerTab(settings);
+                    tabAdded = true;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", profile, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
 
             if (!tabAdded)
             {
-                AddNewServerTab(new ServerSettings());
+                AddNewServerTab(ServerSettings.GetDefault());
             }
 
             Tabs.SelectedIndex = 0;
@@ -100,10 +106,20 @@ namespace ARK_Server_Manager
                 {
                     if (tabControl.SelectedItem == this.defaultTab)
                     {
-                        tabControl.SelectedIndex = AddNewServerTab(new ServerSettings());
+                        tabControl.SelectedIndex = AddNewServerTab(ServerSettings.GetDefault());
                     }
                 }
             }
+        }
+
+        public void Settings_Click(object sender, RoutedEventArgs args)
+        {
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
+        }
+
+        public void Help_Click(object sender, RoutedEventArgs args)
+        {
         }
 
         public void CloseTab_Click(object sender, RoutedEventArgs args)
@@ -112,7 +128,7 @@ namespace ARK_Server_Manager
             if(button != null)
             {   
                 var context = button.DataContext as ServerSettingsControl;
-                var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo);
+                var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", context.Settings.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if(result == MessageBoxResult.Yes)
                 {
                     try
@@ -143,6 +159,11 @@ namespace ARK_Server_Manager
                     }
                 }
             }
+        }
+
+        private  async void RefreshPublicIP_Click(object sender, RoutedEventArgs e)
+        {
+            await App.DiscoverMachinePublicIP(forceOverride: true);
         }
     }
 

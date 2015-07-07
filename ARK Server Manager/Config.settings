@@ -5,9 +5,6 @@
     <Setting Name="DefaultVersionCheckUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.dropbox.com/s/a6v1obnqigu2bpu/version.txt?dl=1</Value>
     </Setting>
-    <Setting Name="DefaultUpdatePackageUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://hellsguard.site11.com/ARK_Server_Tool/updater.zip</Value>
-    </Setting>
     <Setting Name="SteamCmdUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip</Value>
     </Setting>
@@ -27,9 +24,9 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SteamCmdInstallServerArgsFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 376030" +quit</Value>
+      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 376030 {1}" +quit</Value>
     </Setting>
-    <Setting Name="ServersInstallDir" Type="System.String" Scope="User">
+    <Setting Name="ServersInstallDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Servers</Value>
     </Setting>
     <Setting Name="DefaultServerProfileName" Type="System.String" Scope="Application">
@@ -56,7 +53,7 @@
     <Setting Name="ProfilesDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Profiles</Value>
     </Setting>
-    <Setting Name="ProfileExtension" Type="System.String" Scope="User">
+    <Setting Name="ProfileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.profile</Value>
     </Setting>
     <Setting Name="DefaultServerMap" Type="System.String" Scope="User">
@@ -74,14 +71,29 @@
     <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">GameUserSettings.ini</Value>
     </Setting>
-    <Setting Name="IniExtension" Type="System.String" Scope="User">
+    <Setting Name="IniExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.ini</Value>
     </Setting>
-    <Setting Name="LoadProfileExtensionList" Type="System.String" Scope="User">
+    <Setting Name="LoadProfileExtensionList" Type="System.String" Scope="Application">
       <Value Profile="(Default)">*.profile,*.ini</Value>
     </Setting>
     <Setting Name="MachinePublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PublicIPCheckUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://whatismyip.akamai.com/</Value>
+    </Setting>
+    <Setting Name="ManageFirewallAutomatically" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LogsDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Logs</Value>
+    </Setting>
+    <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">?MultiHome={0}</Value>
+    </Setting>
+    <Setting Name="AvailableVersionUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://api.ark.bar/version</Value>
     </Setting>
   </Settings>
 </SettingsFile>
