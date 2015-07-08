@@ -987,7 +987,6 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="XP Total" Width="75" DisplayMemberBinding="{Binding XPTotal}"/>
                                                 <GridViewColumn Header="Engram Total" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
                                             </GridView>
                                         </ListView.View>
@@ -1037,7 +1036,6 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="XP Total" Width="75" DisplayMemberBinding="{Binding XPTotal}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
