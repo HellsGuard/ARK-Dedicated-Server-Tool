@@ -911,7 +911,7 @@ namespace ARK_Server_Manager.Lib
         {
             double scaledValue = System.Convert.ToDouble(value); ;
             var sliderValue = MinValue + (scaledValue * (MaxValue - MinValue));
-            sliderValue = Math.Max(MinValue, Math.Min(MaxValue, sliderValue));
+            sliderValue = Math.Max(MinValue, sliderValue);
             return sliderValue;
         }
 
@@ -920,7 +920,7 @@ namespace ARK_Server_Manager.Lib
             var sliderValue = System.Convert.ToDouble(value);
             sliderValue = (double)sliderValue - (double)MinValue;
             var scaledValue = sliderValue / (double)(MaxValue - MinValue);
-            scaledValue = Math.Max(0, Math.Min(1.0f, scaledValue));
+            scaledValue = Math.Max(0, scaledValue);
             return scaledValue;
         }
     }
