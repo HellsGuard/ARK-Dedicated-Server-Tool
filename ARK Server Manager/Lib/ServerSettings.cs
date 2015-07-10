@@ -178,7 +178,10 @@ namespace ARK_Server_Manager.Lib
 
         public string LastInstalledVersion = String.Empty;
         public string AdditionalArgs = String.Empty;
-        
+
+        public bool RCONEnabled = false;
+        public int RCONPort = 32330;
+
         public string ServerMap = Config.Default.DefaultServerMap;
 
         [XmlIgnore()]
@@ -428,6 +431,12 @@ namespace ARK_Server_Manager.Lib
             if (!String.IsNullOrEmpty(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
+            }
+
+            if(this.RCONEnabled)
+            {
+                serverArgs.Append("?RCONEnabled=true");
+                serverArgs.Append("?RCONPort=").Append(this.RCONPort);
             }
 
 #if false
@@ -898,6 +907,18 @@ namespace ARK_Server_Manager.Lib
         public ObservableCollection<string> Whitelist
         {
             get { return Get<ObservableCollection<string>>(model); }
+            set { Set(model, value); }
+        }
+
+        public bool RCONEnabled
+        {
+            get { return Get<bool>(model); }
+            set { Set(model, value); }
+        }
+
+        public int RCONPort
+        {
+            get { return Get<int>(model); }
             set { Set(model, value); }
         }
     }

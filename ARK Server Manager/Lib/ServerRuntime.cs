@@ -380,7 +380,13 @@ namespace ARK_Server_Manager.Lib
 
             if (Config.Default.ManageFirewallAutomatically)
             {
-                if (!FirewallUtils.EnsurePortsOpen(serverExe, new int[] { this.Settings.ServerPort, this.Settings.ServerConnectionPort }, "ARK Server: " + this.Settings.ServerName))
+                var ports = new List<int>() { this.Settings.ServerPort, this.Settings.ServerConnectionPort };
+                if(this.Settings.RCONEnabled)
+                {
+                    ports.Add(this.Settings.RCONPort);
+                }
+
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.Settings.ServerName))
                 {
                     var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)

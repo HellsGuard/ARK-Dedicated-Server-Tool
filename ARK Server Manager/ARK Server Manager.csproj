@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>56</ApplicationRevision>
+    <ApplicationRevision>57</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -107,6 +107,10 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -148,6 +152,9 @@
     <Compile Include="Lib\SortableObservableCollection.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
     <Compile Include="Lib\ServerRuntime.cs" />
+    <Compile Include="RCONWindow.xaml.cs">
+      <DependentUpon>RCONWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
@@ -218,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="RCONWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ServerSettingsControl.xaml">
       <SubType>Designer</SubType>

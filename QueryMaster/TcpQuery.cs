@@ -23,7 +23,7 @@ namespace QueryMaster
             byte[] recvData;
             SendData(msg);
             recvData = ReceiveData();//Response value packet
-            recvData = ReceiveData();//Auth response packet
+            //recvData = ReceiveData();//Auth response packet
             return recvData;
         }
 
@@ -33,9 +33,10 @@ namespace QueryMaster
             bool isRemaining = true;
             byte[] recvData;
             SendData(msg);
-            SendData(EmptyPkt);//Empty packet
+            //SendData(EmptyPkt);//Empty packet
             recvData = ReceiveData();//reply
             recvBytes.Add(recvData);
+#if false
             do
             {
                 recvData = ReceiveData();//may or may not be an empty packet
@@ -44,7 +45,7 @@ namespace QueryMaster
                 else
                     recvBytes.Add(recvData);
             } while (isRemaining);
-
+#endif
             return recvBytes;
         }
     }

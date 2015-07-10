@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
@@ -41,6 +42,7 @@ namespace ARK_Server_Manager
             DependencyProperty.Register("AvailableVersion", typeof(NetworkUtils.AvailableVersion), typeof(ServerSettingsControl), new PropertyMetadata(new NetworkUtils.AvailableVersion()));
 
         CancellationTokenSource upgradeCancellationSource;
+        RCONWindow rconWindow;
 
         public NetworkUtils.AvailableVersion AvailableVersion
         {
@@ -361,6 +363,17 @@ namespace ARK_Server_Manager
         {
             var result = await NetworkUtils.CheckForUpdatesAsync();
             await App.Current.Dispatcher.BeginInvoke(new Action(() => this.AvailableVersion = result));
+        }
+
+        private void OpenRCON_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.rconWindow == null || !this.rconWindow.IsLoaded)
+            {
+                this.rconWindow = new RCONWindow(this.Settings.ProfileName, new IPEndPoint(IPAddress.Parse(this.Settings.ServerIP), this.Settings.RCONPort), this.Settings.AdminPassword);                
+            }
+
+            this.rconWindow.Show();
+            this.rconWindow.Focus();
         }
     }
 }
