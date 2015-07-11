@@ -24,25 +24,33 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RuntimeProperty, value); }
         }
 
+        public void ImportFromPath(string path)
+        {
+            var profile = ServerProfile.LoadFrom(path);
+            InitializeFromProfile(profile);
+        }
+
+        private Server(ServerProfile profile)
+        {
+            InitializeFromProfile(profile);
+        }
+
+        private void InitializeFromProfile(ServerProfile profile)
+        {
+            this.Profile = profile;
+            this.Runtime = new ServerRuntime(profile);
+        }
+
         public static Server FromPath(string path)
         {
             var profile = ServerProfile.LoadFrom(path);
-            return FromProfile(profile);
+            return new Server(profile);
         }   
      
         public static Server FromDefaults()
         {
             var profile = ServerProfile.FromDefaults();
-            return FromProfile(profile);
-        }
-
-        private static Server FromProfile(ServerProfile profile)
-        {
-            return new Server
-            {
-                Profile = profile,
-                Runtime = new ServerRuntime(profile)
-            };
+            return new Server(profile);
         }
     }
 }

@@ -428,7 +428,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid DataContext="{Binding Settings}" Grid.Row="0" Height="38">
+                <Grid DataContext="{Binding Profile}" Grid.Row="0" Height="38">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
@@ -536,7 +536,7 @@
 
                     </Button>
 
-                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Settings}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
+                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Profile}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="true">
                             <Label DockPanel.Dock="Left" Content="Installation Location:" FontSize="15" VerticalAlignment="Center"/>
                             <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5"/>
@@ -679,7 +679,7 @@
                     <GradientStop Color="#FFEAE8E6" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <ScrollViewer DataContext="{Binding Settings}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
+            <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
                 <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>

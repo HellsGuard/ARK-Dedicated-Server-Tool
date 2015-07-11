@@ -34,12 +34,12 @@ namespace ARK_Server_Manager
             DependencyProperty.Register("Settings", typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = 
             DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty WhitelistUserProperty = 
-            DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty NetworkInterfacesProperty = 
             DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
         public static readonly DependencyProperty AvailableVersionProperty =
             DependencyProperty.Register("AvailableVersion", typeof(NetworkUtils.AvailableVersion), typeof(ServerSettingsControl), new PropertyMetadata(new NetworkUtils.AvailableVersion()));
+        public static readonly DependencyProperty ServerProperty =
+            DependencyProperty.Register("Server", typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
 
         CancellationTokenSource upgradeCancellationSource;
         RCONWindow rconWindow;
@@ -50,10 +50,19 @@ namespace ARK_Server_Manager
             set { SetValue(AvailableVersionProperty, value); }
         }
 
-        public string WhitelistUser
+        public Server Server
         {
-            get { return (string)GetValue(WhitelistUserProperty); }
-            set { SetValue(WhitelistUserProperty, value); }
+            get { return (Server)GetValue(ServerProperty); }
+            set { SetValue(ServerProperty, value); }
+        }
+
+        private static void ServerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ssc = (ServerSettingsControl)d;
+            var server = (Server)e.NewValue;
+            ssc.Settings = server.Profile;
+            ssc.Runtime = server.Runtime;
+            ssc.ReinitializeNetworkAdapters();
         }
         
         public ServerProfile Settings
@@ -74,37 +83,11 @@ namespace ARK_Server_Manager
             set { SetValue(NetworkInterfacesProperty, value); }
         }
 
-        internal ServerSettingsControl(ServerProfile settings)
+        public ServerSettingsControl()
         {
-            InitializeComponent();
-            ReinitializeFromSettings(settings);
-            ReinitializeNetworkAdapters();
+            InitializeComponent();            
             CheckForUpdatesAsync();
         }
-
-        private void ReinitializeFromSettings(ServerProfile settings)
-        {
-            this.Settings = settings;
-            this.Runtime = new ServerRuntime(settings);
-        }
-           
-#if false
-        private void WhitelistAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (!String.IsNullOrWhiteSpace(this.WhitelistUser))
-            {
-                Settings.Whitelist.Add(this.WhitelistUser);
-            }
-        }
-
-        private void WhitelistRemove_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WhitelistControl.SelectedIndex >= 0)
-            {
-                Settings.Whitelist.RemoveAt(this.WhitelistControl.SelectedIndex);
-            }
-        }
-#endif
 
         private void ReinitializeNetworkAdapters()
         {
@@ -225,11 +208,9 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var settings = ServerProfile.LoadFrom(dialog.FileName);
-                    if (settings != null)
-                    {
-                        ReinitializeFromSettings(settings);
-                    }
+                    this.Server.ImportFromPath(dialog.FileName);
+                    this.Settings = this.Server.Profile;
+                    this.Runtime = this.Server.Runtime;
                 }
                 catch (Exception ex)
                 {
