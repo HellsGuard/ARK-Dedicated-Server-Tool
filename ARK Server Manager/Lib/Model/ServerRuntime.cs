@@ -19,7 +19,7 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class ServerRuntime : ISettingsBag, INotifyPropertyChanged
+    public class ServerRuntime : DependencyObject
     {
         public enum ServerStatus
         {
@@ -43,12 +43,42 @@ namespace ARK_Server_Manager.Lib
 
         #region Model Properties
 
-        public SteamStatus Steam = SteamStatus.Unknown;
-        public ServerStatus Status = ServerStatus.Unknown;
-        public int MaxPlayers = 0;
-        public int Players = 0;
-        public Version Version = new Version();
-        
+        public static readonly DependencyProperty SteamProperty = DependencyProperty.Register("Steam", typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register("MaxPlayers", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty VersionProperty = DependencyProperty.Register("Version", typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
+
+        public SteamStatus Steam
+        {
+            get { return (SteamStatus)GetValue(SteamProperty); }
+            set { SetValue(SteamProperty, value); }
+        }
+
+        public ServerStatus Status
+        {
+            get { return (ServerStatus)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
+
+        public int MaxPlayers
+        {
+            get { return (int)GetValue(MaxPlayersProperty); }
+            set { SetValue(MaxPlayersProperty, value); }
+        }
+
+        public int Players
+        {
+            get { return (int)GetValue(PlayersProperty); }
+            set { SetValue(PlayersProperty, value); }
+        }
+
+        public Version Version
+        {
+            get { return (Version)GetValue(VersionProperty); }
+            set { SetValue(VersionProperty, value); }
+        }
+                
         #endregion
 
         /// <summary>
@@ -56,26 +86,20 @@ namespace ARK_Server_Manager.Lib
         /// </summary>
         private Process serverProcess;
 
-        public ServerSettings Settings
+        public ServerProfile Settings
         {
             get;
             private set;
         }
 
-        public ServerRuntime(ServerSettings settings)
+        public ServerRuntime(ServerProfile settings)
         {
             this.Settings = settings;
             Version lastInstalled;
             if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
             {
-                this.InstalledVersion = lastInstalled;
+                this.Version = lastInstalled;
             }
-        }
-
-        public object this[string propertyName]
-        {
-            get { return this.GetType().GetField(propertyName).GetValue(this); }
-            set { this.GetType().GetField(propertyName).SetValue(this, value); }
         }
 
         /// <summary>
@@ -89,36 +113,6 @@ namespace ARK_Server_Manager.Lib
                 var process = serverProcess;
                 return process != null && process.HasExited == false;
             }
-        }
-
-        public ServerStatus ExecutionStatus
-        {
-            get { return Status; }
-            private set { this.Status = value; OnPropertyChanged("Status"); }
-        }
-
-        public SteamStatus SteamAvailability
-        {
-            get { return Steam; }
-            private set { this.Steam = value; OnPropertyChanged("Steam"); }
-        }
-
-        public Version InstalledVersion
-        {
-            get { return Version; }
-            set { this.Version = value; OnPropertyChanged("Version"); }
-        }
-
-        public int RunningMaxPlayers
-        {
-            get { return this.MaxPlayers; }
-            private set { this.MaxPlayers = value; OnPropertyChanged("MaxPlayers"); }
-        }
-
-        public int RunningPlayers
-        {
-            get { return this.Players; }
-            private set { this.Players = value; OnPropertyChanged("Players"); }
         }
 
         public Task UpdateStatusAsync(CancellationToken cancellationToken)
@@ -136,22 +130,32 @@ namespace ARK_Server_Manager.Lib
             public int ServerPort = 0;
         }
 
+        private struct ServerStatusUpdate
+        {
+            public ServerStatus ServerStatus;
+            public SteamStatus SteamStatus;
+            public Version InstalledVersion;
+            public int CurrentPlayers;
+            public int MaxPlayers;
+        }
+
         private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
         {
             ServerProcessContext updateContext = new ServerProcessContext();
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
-                {                 
+                {
+                    ServerStatusUpdate currentStatus = new ServerStatusUpdate
+                    {
+                        ServerStatus = ServerStatus.Uninstalled,
+                        SteamStatus = SteamStatus.Unavailable
+                    };
+
                     //
                     // Check the status of the server locally and on Steam
                     //
-                    if (!File.Exists(GetServerExe()))
-                    {
-                        this.ExecutionStatus = ServerStatus.Uninstalled;
-                        this.SteamAvailability = SteamStatus.Unavailable;
-                    }
-                    else
+                    if (File.Exists(GetServerExe()))
                     {
                         if (String.IsNullOrWhiteSpace(this.Settings.InstallDirectory) || // No installation directory set
                             !updateContext.InstallDirectory.Equals(this.Settings.InstallDirectory, StringComparison.OrdinalIgnoreCase) || // Mismatched installation directory
@@ -172,15 +176,24 @@ namespace ARK_Server_Manager.Lib
 
                         if (this.serverProcess != null && !this.serverProcess.HasExited)
                         {
-                            QueryNetworkStatus();
+                            currentStatus = QueryNetworkStatus();
                         }
                         else
                         {
                             this.serverProcess = null;
-                            this.ExecutionStatus = ServerStatus.Stopped;
-                            this.SteamAvailability = SteamStatus.Unavailable;
+                            currentStatus.ServerStatus = ServerStatus.Stopped;
+                            currentStatus.SteamStatus = SteamStatus.Unavailable;                            
                         }
                     }
+
+                    await App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        this.Status = currentStatus.ServerStatus;
+                        this.Steam = currentStatus.SteamStatus;
+                        this.Version = currentStatus.InstalledVersion;
+                        this.Players = currentStatus.CurrentPlayers;
+                        this.MaxPlayers = currentStatus.MaxPlayers;
+                    }));
                 }
                 catch(Exception ex)
                 {
@@ -191,8 +204,14 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private void QueryNetworkStatus()
+        private ServerStatusUpdate QueryNetworkStatus()
         {
+            ServerStatusUpdate currentStatus = new ServerStatusUpdate
+                {
+                    SteamStatus = SteamStatus.Unavailable,
+                    ServerStatus = ServerStatus.Unknown
+                };
+
             //
             // Get the local endpoint for querying the local network
             //
@@ -251,9 +270,9 @@ namespace ARK_Server_Manager.Lib
 
             if (localServerInfo != null)
             {
-                this.ExecutionStatus = ServerStatus.Running;
-                this.RunningMaxPlayers = localServerInfo.MaxPlayers;
-                this.RunningPlayers = localServerInfo.Players;
+                currentStatus.ServerStatus = ServerStatus.Running;
+                currentStatus.MaxPlayers = localServerInfo.MaxPlayers;
+                currentStatus.CurrentPlayers = localServerInfo.Players;
 
                 //
                 // Get the version, which is specified in the server name automatically by ARK
@@ -265,7 +284,7 @@ namespace ARK_Server_Manager.Lib
                     Version temp;
                     if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
                     {
-                        this.InstalledVersion = temp;
+                        currentStatus.InstalledVersion = temp;
                         this.Settings.LastInstalledVersion = serverVersion;
                     }
                 }
@@ -278,28 +297,30 @@ namespace ARK_Server_Manager.Lib
                     // 
                     // The user didn't give us a public IP, so we can't ask Steam about this server.
                     //
-                    this.SteamAvailability = SteamStatus.NeedPublicIP;
+                    currentStatus.SteamStatus = SteamStatus.NeedPublicIP;
                 }
                 else
                 {
                     if (steamServerInfo != null)
                     {
-                        this.SteamAvailability = SteamStatus.Available;
+                        currentStatus.SteamStatus = SteamStatus.Available;
                     }
                     else
                     {
                         //
                         // Steam doesn't have a record of our public IP yet.
                         //
-                        this.SteamAvailability = SteamStatus.WaitingForPublication;
+                        currentStatus.SteamStatus = SteamStatus.WaitingForPublication;
                     }
                 }
             }
             else
             {
-                this.ExecutionStatus = ServerStatus.Initializing;
-                this.SteamAvailability = SteamStatus.Unavailable;
+                currentStatus.ServerStatus = ServerStatus.Initializing;
+                currentStatus.SteamStatus = SteamStatus.Unavailable;
             }
+
+            return currentStatus;
         }
 
         private static Process FindMatchingServerProcess(ServerProcessContext updateContext)
@@ -424,7 +445,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         try
                         {
-                            this.ExecutionStatus = ServerStatus.Stopping;
+                            this.Status = ServerStatus.Stopping;
                             process.Exited += handler;
                             process.CloseMainWindow();
                             await ts.Task;
@@ -457,7 +478,7 @@ namespace ARK_Server_Manager.Lib
             {
                 await StopAsync();
 
-                this.ExecutionStatus = ServerStatus.Updating;
+                this.Status = ServerStatus.Updating;
 
                 // Run the SteamCMD to install the server
                 var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
@@ -479,7 +500,7 @@ namespace ARK_Server_Manager.Lib
             }
             finally
             {
-                this.ExecutionStatus = ServerStatus.Stopped;
+                this.Status = ServerStatus.Stopped;
             }
         }
     
@@ -500,57 +521,5 @@ namespace ARK_Server_Manager.Lib
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public class ServerRuntimeViewModel : ViewModelBase
-    {
-        private ServerSettings serverSettings;
-        private ServerRuntime model;
-        CancellationTokenSource updateCancellation = new CancellationTokenSource();
-
-        public ObservableCollection<IPEndPoint> MasterServers
-        {
-            get;
-            set;
-        }
-
-        public ServerRuntime Model
-        {
-            get { return this.model; }
-        }
-
-        public ServerRuntimeViewModel(ServerSettings serverSettings)
-        {            
-            this.serverSettings = serverSettings;  
-            this.model = new ServerRuntime(serverSettings);
-            this.model.PropertyChanged += (s, e) => base.OnPropertyChanged(e.PropertyName);
-            this.model.UpdateStatusAsync(updateCancellation.Token);            
-        }
-
-        public ServerRuntime.SteamStatus Steam
-        {
-            get { return Get<ServerRuntime.SteamStatus>(model); }
-        }
-
-        public ServerRuntime.ServerStatus Status
-        {
-            get { return Get<ServerRuntime.ServerStatus>(model); }
-        }
-
-        public Version Version
-        {
-            get { return Get<Version>(model); }
-        }
-
-        public int MaxPlayers
-        {
-            get { return Get<int>(model); }
-        }
-
-        public int Players
-        {
-            get { return Get<int>(model); }
-        }
-
     }
 }

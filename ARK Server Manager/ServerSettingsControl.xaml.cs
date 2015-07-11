@@ -30,10 +30,10 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        public static readonly DependencyProperty SettingsProperty = 
-            DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SettingsProperty =
+            DependencyProperty.Register("Settings", typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = 
-            DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
+            DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty WhitelistUserProperty = 
             DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty NetworkInterfacesProperty = 
@@ -56,15 +56,15 @@ namespace ARK_Server_Manager
             set { SetValue(WhitelistUserProperty, value); }
         }
         
-        public ServerSettingsViewModel Settings
+        public ServerProfile Settings
         {
-            get { return GetValue(SettingsProperty) as ServerSettingsViewModel; }
+            get { return GetValue(SettingsProperty) as ServerProfile; }
             set { SetValue(SettingsProperty, value); }
         }
 
-        public ServerRuntimeViewModel Runtime
+        public ServerRuntime Runtime
         {
-            get { return GetValue(RuntimeProperty) as ServerRuntimeViewModel; }
+            get { return GetValue(RuntimeProperty) as ServerRuntime; }
             set { SetValue(RuntimeProperty, value); }
         }
 
@@ -74,7 +74,7 @@ namespace ARK_Server_Manager
             set { SetValue(NetworkInterfacesProperty, value); }
         }
 
-        internal ServerSettingsControl(ServerSettings settings)
+        internal ServerSettingsControl(ServerProfile settings)
         {
             InitializeComponent();
             ReinitializeFromSettings(settings);
@@ -82,10 +82,10 @@ namespace ARK_Server_Manager
             CheckForUpdatesAsync();
         }
 
-        private void ReinitializeFromSettings(ServerSettings settings)
+        private void ReinitializeFromSettings(ServerProfile settings)
         {
-            this.Settings = new ServerSettingsViewModel(settings);
-            this.Runtime = new ServerRuntimeViewModel(settings);
+            this.Settings = settings;
+            this.Runtime = new ServerRuntime(settings);
         }
            
 #if false
@@ -141,14 +141,14 @@ namespace ARK_Server_Manager
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
-            if(this.Runtime.Model.ExecutionStatus == ServerRuntime.ServerStatus.Updating)
+            if(this.Runtime.Status == ServerRuntime.ServerStatus.Updating)
             {
                 // Cancel the current upgrade
                 upgradeCancellationSource.Cancel();
             }
             else
             {
-                if(this.Runtime.Model.IsRunning)
+                if(this.Runtime.IsRunning)
                 {
                     var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if(result == MessageBoxResult.No)
@@ -159,12 +159,12 @@ namespace ARK_Server_Manager
 
                 // Start the upgrade
                 upgradeCancellationSource = new CancellationTokenSource();
-                if(await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
+                if(await this.Runtime.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
                 {
                     if (AvailableVersion != null && AvailableVersion.Current != null)
                     {
-                        this.Settings.Model.LastInstalledVersion = AvailableVersion.Current.ToString();
-                        this.Runtime.Model.InstalledVersion = AvailableVersion.Current;
+                        this.Settings.LastInstalledVersion = AvailableVersion.Current.ToString();
+                        this.Runtime.Version = AvailableVersion.Current;
                     }
                 }
 
@@ -173,7 +173,7 @@ namespace ARK_Server_Manager
 
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Runtime.Model.IsRunning)
+            if (this.Runtime.IsRunning)
             {
                 var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -181,29 +181,12 @@ namespace ARK_Server_Manager
                     return;
                 }
 
-                await this.Runtime.Model.StopAsync();
+                await this.Runtime.StopAsync();
             }
             else
             {
-                this.Settings.Model.Save();
-                await this.Runtime.Model.StartAsync();
-            }
-        }
-
-        private void SelectSaveDirectory_Click(object sender, RoutedEventArgs e)
-        {            
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            dialog.Title = "Select Save Directory";
-            if (!String.IsNullOrWhiteSpace(Settings.SaveDirectory))
-            {
-                dialog.InitialDirectory = Settings.SaveDirectory;
-            }
-
-            var result = dialog.ShowDialog();            
-            if(result == CommonFileDialogResult.Ok)
-            {
-                Settings.SaveDirectory = dialog.FileName;
+                this.Settings.Save();
+                await this.Runtime.StartAsync();
             }
         }
 
@@ -242,7 +225,7 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var settings = ServerSettings.LoadFrom(dialog.FileName);
+                    var settings = ServerProfile.LoadFrom(dialog.FileName);
                     if (settings != null)
                     {
                         ReinitializeFromSettings(settings);
@@ -257,7 +240,7 @@ namespace ARK_Server_Manager
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Model.Save();
+            Settings.Save();
         }
 
         private void CopyProfile_Click(object sender, RoutedEventArgs e)
@@ -270,7 +253,7 @@ namespace ARK_Server_Manager
 
         private void ShowCmd_Click(object sender, RoutedEventArgs e)
         {
-            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.Model.GetServerExe(), this.Settings.Model.GetServerArgs()));
+            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.GetServerExe(), this.Settings.GetServerArgs()));
             cmdLine.ShowDialog();
         }
 
@@ -331,27 +314,27 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_Clear(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Dino);
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
         }
 
         private void DinoLevels_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Dino);
+            this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Dino);
         }
 
         private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Player);
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
         }
 
         private void PlayerLevels_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Player);
+            this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Player);
         }
 
         private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetDinoSpawnsToDefault();
+            this.Settings.ResetDinoSpawnsToDefault();
         }
 
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)

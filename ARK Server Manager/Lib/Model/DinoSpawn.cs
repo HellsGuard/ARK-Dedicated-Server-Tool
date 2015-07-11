@@ -10,8 +10,7 @@ namespace ARK_Server_Manager.Lib
 {
     public class DinoSpawnList : SortableObservableCollection<DinoSpawn>
     {
-
-        public void InsertSpawns(IEnumerable<DinoSpawn> spawns)
+        public void AddRange(IEnumerable<DinoSpawn> spawns)
         {
             foreach(var spawn in spawns)
             {
@@ -22,7 +21,7 @@ namespace ARK_Server_Manager.Lib
         public static DinoSpawnList FromINIValues(IEnumerable<string> iniValues)
         {
             var spawns = new DinoSpawnList();
-            spawns.InsertSpawns(iniValues.Select(v => DinoSpawn.FromINIValue(v)));
+            spawns.AddRange(iniValues.Select(v => DinoSpawn.FromINIValue(v)));
             return spawns;
         }
 

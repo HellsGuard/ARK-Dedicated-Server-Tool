@@ -24,7 +24,7 @@ namespace ARK_Server_Manager.Lib
         MultiHome
     }
 
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple=true)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=true)]
     public class IniFileEntryAttribute : Attribute
     {
         public IniFiles File;

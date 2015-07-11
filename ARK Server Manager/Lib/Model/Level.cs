@@ -27,7 +27,7 @@ namespace ARK_Server_Manager.Lib
             UpdateTotals();
         }
 
-        public void InsertLevels(IEnumerable<Level> levels)
+        public void AddRange(IEnumerable<Level> levels)
         {
             foreach(var level in levels)
             {
@@ -207,19 +207,6 @@ namespace ARK_Server_Manager.Lib
         public string GetINIValueForEngramPointsEarned()
         {
             return String.Format("OverridePlayerLevelEngramPoints={0}", this.EngramPoints);
-        }
-    }
-
-    public class LevelIndexToDisplayLevelConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return (int)value + 2;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }

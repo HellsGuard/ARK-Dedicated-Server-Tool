@@ -68,7 +68,7 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var settings = ServerSettings.LoadFrom(profile);
+                    var settings = ServerProfile.LoadFrom(profile);
                     AddNewServerTab(settings);
                     tabAdded = true;
                 }
@@ -80,19 +80,19 @@ namespace ARK_Server_Manager
 
             if (!tabAdded)
             {
-                AddNewServerTab(ServerSettings.GetDefault());
+                AddNewServerTab(ServerProfile.FromDefaults());
             }
 
             Tabs.SelectedIndex = 0;
         }
 
-        private int AddNewServerTab(ServerSettings settings)
+        private int AddNewServerTab(ServerProfile settings)
         {
             var newTab = new TabItem();
             var control = new ServerSettingsControl(settings);
             newTab.Content = control;
             newTab.DataContext = control;
-            newTab.SetBinding(TabItem.HeaderProperty, new Binding("Settings." + ServerSettings.ProfileNameProperty));
+            newTab.SetBinding(TabItem.HeaderProperty, new Binding("Settings." + ServerProfile.ProfileNameProperty));
             this.Tabs.Items.Insert(this.Tabs.Items.Count - 1, newTab);
             return this.Tabs.Items.Count - 2;            
         }
@@ -106,7 +106,7 @@ namespace ARK_Server_Manager
                 {
                     if (tabControl.SelectedItem == this.defaultTab)
                     {
-                        tabControl.SelectedIndex = AddNewServerTab(ServerSettings.GetDefault());
+                        tabControl.SelectedIndex = AddNewServerTab(ServerProfile.FromDefaults());
                     }
                 }
             }
@@ -133,7 +133,7 @@ namespace ARK_Server_Manager
                 {
                     try
                     {
-                        File.Delete(context.Settings.Model.GetProfilePath());
+                        File.Delete(context.Settings.GetProfilePath());
                     }
                     catch(FileNotFoundException)
                     {

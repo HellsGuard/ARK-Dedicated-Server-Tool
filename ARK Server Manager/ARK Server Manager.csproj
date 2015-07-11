@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>57</ApplicationRevision>
+    <ApplicationRevision>58</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -139,19 +139,21 @@
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lib\DinoSpawn.cs" />
+    <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
-    <Compile Include="Lib\IniFile.cs" />
-    <Compile Include="Lib\Level.cs" />
+    <Compile Include="Lib\Serialization\IniFile.cs" />
+    <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
     <Compile Include="Lib\PasswordUtils.cs" />
     <Compile Include="Lib\Server.cs" />
-    <Compile Include="Lib\ServerSettings.cs" />
+    <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
-    <Compile Include="Lib\ServerRuntime.cs" />
+    <Compile Include="Lib\Model\ServerRuntime.cs" />
+    <Compile Include="Lib\ViewModel\DifficultyOffsetValueConverter.cs" />
+    <Compile Include="Lib\ViewModel\LevelIndexToDisplayOffsetConverter.cs" />
     <Compile Include="RCONWindow.xaml.cs">
       <DependentUpon>RCONWindow.xaml</DependentUpon>
     </Compile>
@@ -320,6 +322,7 @@
   <ItemGroup>
     <Resource Include="Art\bgGrad1.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforePublish">
     <Exec Command="&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\bin\signtool.exe&quot; sign /f &quot;$(ProjectDir)Ark Server Manager_TemporaryKey.pfx&quot; /p &quot;b@}l@;jDVT4S&quot; /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
