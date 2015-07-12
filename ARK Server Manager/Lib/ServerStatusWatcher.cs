@@ -70,18 +70,18 @@ namespace ARK_Server_Manager.Lib
             public ReadOnlyCollection<Player> Players;
         }
 
-        private class ServerStatusUpdateRegistration : IDisposable
+        private class ServerStatusUpdateRegistration  : IAsyncDisposable
         {
             public string InstallDirectory;
             public IPEndPoint LocalEndpoint;
             public IPEndPoint SteamEndpoint;
             public Action<ServerStatusUpdate> LocalCallback;
             public Action<ServerStatusUpdate> SteamCallback;
-            public Action DisposeAction;
+            public Func<Task> UnregisterAction;
 
-            public void Dispose()
+            public async Task DisposeAsync()
             {
-                DisposeAction.Invoke();
+                await UnregisterAction();
             }
         }
 
@@ -106,7 +106,7 @@ namespace ARK_Server_Manager.Lib
             private set;
         }
 
-        public IDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<ServerStatusUpdate> localUpdateAction, Action<ServerStatusUpdate> steamUpdateAction)
+        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<ServerStatusUpdate> localUpdateAction, Action<ServerStatusUpdate> steamUpdateAction)
         {
             var registration = new ServerStatusUpdateRegistration 
             { 
@@ -117,7 +117,7 @@ namespace ARK_Server_Manager.Lib
                 SteamCallback = steamUpdateAction
             };
 
-            registration.DisposeAction = () => 
+            registration.UnregisterAction = async () => 
                 {
                     var tcs = new TaskCompletionSource<bool>();
                     eventQueue.Post(() => 
@@ -130,7 +130,7 @@ namespace ARK_Server_Manager.Lib
                         return Task.FromResult(true);
                     });
 
-                    tcs.Task.Wait();
+                    await tcs.Task;
                 };
 
             eventQueue.Post(() =>
@@ -343,7 +343,7 @@ namespace ARK_Server_Manager.Lib
             MasterServer masterServer = null;
             try
             { 
-                await DebugUtils.WriteFormatThreadSafeAsync("Starting Steam data stream...");
+                DebugUtils.WriteFormatThreadSafeAsync("Starting Steam data stream...").DoNotWait();
             
                 masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
 

@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>58</ApplicationRevision>
+    <ApplicationRevision>59</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -144,6 +144,7 @@
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\DebugUtils.cs" />
+    <Compile Include="Lib\IAsyncDisposable.cs" />
     <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />

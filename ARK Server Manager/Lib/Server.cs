@@ -40,7 +40,7 @@ namespace ARK_Server_Manager.Lib
         {
             this.Profile = profile;
             this.Runtime = new ServerRuntime();
-            this.Runtime.AttachToProfile(this.Profile);
+            this.Runtime.AttachToProfile(this.Profile).Wait();
         }
 
         public static Server FromPath(string path)
@@ -57,7 +57,7 @@ namespace ARK_Server_Manager.Lib
 
         public async Task StartAsync()
         {
-            this.Runtime.AttachToProfile(this.Profile);
+            await this.Runtime.AttachToProfile(this.Profile);
             await this.Runtime.StartAsync();
         }
 
@@ -68,7 +68,7 @@ namespace ARK_Server_Manager.Lib
 
         public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
         {
-            this.Runtime.AttachToProfile(this.Profile);
+            await this.Runtime.AttachToProfile(this.Profile);
             var success = await this.Runtime.UpgradeAsync(cancellationToken, validate);
             this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
             return success;

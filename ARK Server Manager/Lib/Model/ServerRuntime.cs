@@ -96,7 +96,7 @@ namespace ARK_Server_Manager.Lib
         };
 
         private ProfileSnapshot profileSnapshot;
-        private IDisposable updateRegistration;
+        private IAsyncDisposable updateRegistration;
         private Process serverProcess;
 
         public ServerRuntime()
@@ -124,11 +124,11 @@ namespace ARK_Server_Manager.Lib
             }
         }
         
-        public void AttachToProfile(ServerProfile settings)
+        public async Task AttachToProfile(ServerProfile settings)
         {
             if (this.updateRegistration != null)
             {
-                this.updateRegistration.Dispose();
+                await this.updateRegistration.DisposeAsync();
             }
 
             this.profileSnapshot = new ProfileSnapshot
@@ -373,7 +373,7 @@ namespace ARK_Server_Manager.Lib
             try
             {
                 await StopAsync();
-                this.updateRegistration.Dispose();
+                await this.updateRegistration.DisposeAsync();
 
                 this.Status = ServerStatus.Updating;
 
@@ -410,7 +410,7 @@ namespace ARK_Server_Manager.Lib
     
         public void Dispose()
         {
-            this.updateRegistration.Dispose();
+            this.updateRegistration.DisposeAsync().DoNotWait();
         }
     }
 }
