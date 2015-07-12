@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class Server : DependencyObject
+    public class Server : DependencyObject, IDisposable
     {
         public static readonly DependencyProperty ProfileProperty = DependencyProperty.Register("Profile", typeof(ServerProfile), typeof(Server), new PropertyMetadata((ServerProfile)null));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(Server), new PropertyMetadata((ServerRuntime)null));
@@ -15,13 +16,13 @@ namespace ARK_Server_Manager.Lib
         public ServerProfile Profile
         {
             get { return (ServerProfile)GetValue(ProfileProperty); }
-            set { SetValue(ProfileProperty, value); }
+            protected set { SetValue(ProfileProperty, value); }
         }
         
         public ServerRuntime Runtime
         {
             get { return (ServerRuntime)GetValue(RuntimeProperty); }
-            set { SetValue(RuntimeProperty, value); }
+            protected set { SetValue(RuntimeProperty, value); }
         }
 
         public void ImportFromPath(string path)
@@ -38,7 +39,8 @@ namespace ARK_Server_Manager.Lib
         private void InitializeFromProfile(ServerProfile profile)
         {
             this.Profile = profile;
-            this.Runtime = new ServerRuntime(profile);
+            this.Runtime = new ServerRuntime();
+            this.Runtime.AttachToProfile(this.Profile);
         }
 
         public static Server FromPath(string path)
@@ -51,6 +53,30 @@ namespace ARK_Server_Manager.Lib
         {
             var profile = ServerProfile.FromDefaults();
             return new Server(profile);
+        }
+
+        public async Task StartAsync()
+        {
+            this.Runtime.AttachToProfile(this.Profile);
+            await this.Runtime.StartAsync();
+        }
+
+        public async Task StopAsync()
+        {
+            await this.Runtime.StopAsync();
+        }
+
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        {
+            this.Runtime.AttachToProfile(this.Profile);
+            var success = await this.Runtime.UpgradeAsync(cancellationToken, validate);
+            this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
+            return success;
+        }
+
+        public void Dispose()
+        {
+            this.Runtime.Dispose();
         }
     }
 }

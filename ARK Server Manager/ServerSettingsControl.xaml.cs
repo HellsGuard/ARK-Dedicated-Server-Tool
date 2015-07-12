@@ -36,20 +36,23 @@ namespace ARK_Server_Manager
             DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty NetworkInterfacesProperty = 
             DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
-        public static readonly DependencyProperty AvailableVersionProperty =
-            DependencyProperty.Register("AvailableVersion", typeof(NetworkUtils.AvailableVersion), typeof(ServerSettingsControl), new PropertyMetadata(new NetworkUtils.AvailableVersion()));
         public static readonly DependencyProperty ServerProperty =
             DependencyProperty.Register("Server", typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
 
         CancellationTokenSource upgradeCancellationSource;
         RCONWindow rconWindow;
 
-        public NetworkUtils.AvailableVersion AvailableVersion
+        public ServerManager ServerManager
         {
-            get { return (NetworkUtils.AvailableVersion)GetValue(AvailableVersionProperty); }
-            set { SetValue(AvailableVersionProperty, value); }
+            get { return (ServerManager)GetValue(ServerManagerProperty); }
+            set { SetValue(ServerManagerProperty, value); }
         }
 
+        // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ServerManagerProperty =
+            DependencyProperty.Register("ServerManager", typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
+
+        
         public Server Server
         {
             get { return (Server)GetValue(ServerProperty); }
@@ -85,8 +88,8 @@ namespace ARK_Server_Manager
 
         public ServerSettingsControl()
         {
-            InitializeComponent();            
-            CheckForUpdatesAsync();
+            InitializeComponent();
+            this.ServerManager = ServerManager.Instance;           
         }
 
         private void ReinitializeNetworkAdapters()
@@ -142,15 +145,7 @@ namespace ARK_Server_Manager
 
                 // Start the upgrade
                 upgradeCancellationSource = new CancellationTokenSource();
-                if(await this.Runtime.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
-                {
-                    if (AvailableVersion != null && AvailableVersion.Current != null)
-                    {
-                        this.Settings.LastInstalledVersion = AvailableVersion.Current.ToString();
-                        this.Runtime.Version = AvailableVersion.Current;
-                    }
-                }
-
+                await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
             }                       
         }
 
@@ -164,12 +159,12 @@ namespace ARK_Server_Manager
                     return;
                 }
 
-                await this.Runtime.StopAsync();
+                await this.Server.StopAsync();
             }
             else
             {
                 this.Settings.Save();
-                await this.Runtime.StartAsync();
+                await this.Server.StartAsync();
             }
         }
 
@@ -320,13 +315,7 @@ namespace ARK_Server_Manager
 
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
-            await CheckForUpdatesAsync();
-        }
-
-        private async Task CheckForUpdatesAsync()
-        {
-            var result = await NetworkUtils.CheckForUpdatesAsync();
-            await App.Current.Dispatcher.BeginInvoke(new Action(() => this.AvailableVersion = result));
+            await ServerManager.Instance.CheckForUpdatesAsync();
         }
 
         private void OpenRCON_Click(object sender, RoutedEventArgs e)

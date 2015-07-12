@@ -143,10 +143,12 @@
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\DebugUtils.cs" />
     <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
+    <Compile Include="Lib\PropertyChangedNotifier.cs" />
     <Compile Include="Lib\Serialization\IniFile.cs" />
     <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
+    <Compile Include="Lib\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
     <Compile Include="Lib\Model\ServerRuntime.cs" />
     <Compile Include="Lib\ViewModel\DifficultyOffsetValueConverter.cs" />

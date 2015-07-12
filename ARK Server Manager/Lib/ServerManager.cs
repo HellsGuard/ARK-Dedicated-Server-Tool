@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,13 +27,37 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServersProperty = DependencyProperty.Register("Servers", typeof(ObservableCollection<Server>), typeof(ServerManager), new PropertyMetadata(new ObservableCollection<Server>()));
+        public static readonly DependencyProperty AvailableVersionProperty = DependencyProperty.Register("AvailableVersion", typeof(Version), typeof(ServerManager), new PropertyMetadata(new Version()));
 
         public ObservableCollection<Server> Servers
         {
             get { return (ObservableCollection<Server>)GetValue(ServersProperty); }
             set { SetValue(ServersProperty, value); }
         }
-        
+
+        public Version AvailableVersion
+        {
+            get { return (Version)GetValue(AvailableVersionProperty); }
+            set { SetValue(AvailableVersionProperty, value); }
+        }
+      
+        public ServerManager()
+        {
+            this.Servers.CollectionChanged += Servers_CollectionChanged;
+            CheckForUpdatesAsync().DoNotWait();
+        }
+
+        void Servers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach(Server server in e.OldItems)
+                {
+                    server.Dispose();
+                }
+            }
+        }
+
         public int AddFromPath(string path)
         {
             var server = Server.FromPath(path);
@@ -55,13 +80,19 @@ namespace ARK_Server_Manager.Lib
                 {
                     File.Delete(server.Profile.GetProfilePath());
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     // Best effort to delete.
                 }
             }
 
             this.Servers.Remove(server);
+        }
+
+        public async Task CheckForUpdatesAsync()
+        {
+            var result = await NetworkUtils.CheckForUpdatesAsync();
+            await TaskUtils.RunOnUIThreadAsync(() => this.AvailableVersion = result);
         }
     }
 }

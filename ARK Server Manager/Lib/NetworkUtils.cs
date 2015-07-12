@@ -95,88 +95,24 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public class AvailableVersion
+        public static async Task<Version> CheckForUpdatesAsync()
         {
-            public bool IsValid
-            {
-                get;
-                set;
-            }
-
-            public Version Current
-            {
-                get;
-                set;
-            }
-
-            public Version Upcoming
-            {
-                get;
-                set;
-            }
-
-            public string UpcomingETA
-            {
-                get;
-                set;
-            }
-        }
-
-        public static async Task<AvailableVersion> CheckForUpdatesAsync()
-        {
-            AvailableVersion result = new AvailableVersion();
-
+            var newVersion = new Version();
             try
             {
-                string jsonString;                
-                using (var client = new WebClient())
+                using(var client = new WebClient())
                 {
-                    jsonString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl);
+                    var versionString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl);
+                    Version.TryParse(versionString, out newVersion);
                 }
-                JObject query = JObject.Parse(jsonString);
-
-                var availableVersion = query.SelectToken("version.current");
-                var upcomingVersion = query.SelectToken("version.upcoming.version");
-                var upcomingETA = query.SelectToken("version.upcoming.version.eta");
-
-                if (availableVersion != null)
-                {
-                    var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match((string)availableVersion);
-                    if (versionMatch.Success)
-                    {
-                        Version ver;
-                        if (Version.TryParse(versionMatch.Groups["version"].Value, out ver))
-                        {
-                            result.IsValid = true;
-                            result.Current = ver;
-                        }
-                    }
-                }
-
-                if (upcomingVersion != null)
-                {
-                    var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match((string)upcomingVersion);
-                    if (versionMatch.Success)
-                    {
-                        Version ver;
-                        if (Version.TryParse(versionMatch.Value, out ver))
-                        {
-                            result.Upcoming = ver;
-                        }
-                    }
-                }
-
-                if (upcomingETA != null)
-                {
-                    result.UpcomingETA = (string)upcomingETA;
-                }                
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));
+                
             }
 
-            return result;
+            return newVersion;
         }
     }
 }

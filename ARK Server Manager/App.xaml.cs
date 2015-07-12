@@ -28,13 +28,11 @@ namespace ARK_Server_Manager
             set;
         }
 
-        static public App Instance
+        new static public App Instance
         {
             get;
             private set;
         }
-
-        public static readonly ServerStatusWatcher ServerWatcher = new ServerStatusWatcher();
 
         public App()
         {

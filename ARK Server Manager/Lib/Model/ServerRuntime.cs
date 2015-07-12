@@ -19,7 +19,7 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class ServerRuntime : DependencyObject
+    public class ServerRuntime : DependencyObject, IDisposable
     {
         public enum ServerStatus
         {
@@ -52,54 +52,63 @@ namespace ARK_Server_Manager.Lib
         public SteamStatus Steam
         {
             get { return (SteamStatus)GetValue(SteamProperty); }
-            set { SetValue(SteamProperty, value); }
+            protected set { SetValue(SteamProperty, value); }
         }
 
         public ServerStatus Status
         {
             get { return (ServerStatus)GetValue(StatusProperty); }
-            set { SetValue(StatusProperty, value); }
+            protected set { SetValue(StatusProperty, value); }
         }
 
         public int MaxPlayers
         {
             get { return (int)GetValue(MaxPlayersProperty); }
-            set { SetValue(MaxPlayersProperty, value); }
+            protected set { SetValue(MaxPlayersProperty, value); }
         }
 
         public int Players
         {
             get { return (int)GetValue(PlayersProperty); }
-            set { SetValue(PlayersProperty, value); }
+            protected set { SetValue(PlayersProperty, value); }
         }
 
         public Version Version
         {
             get { return (Version)GetValue(VersionProperty); }
-            set { SetValue(VersionProperty, value); }
+            protected set { SetValue(VersionProperty, value); }
         }
                 
         #endregion
 
-        /// <summary>
-        /// The current server process.  Should only be set by the Periodic Update check.
-        /// </summary>
+        private struct ProfileSnapshot
+        {
+            public string ServerName;
+            public string InstallDirectory;
+            public int QueryPort;
+            public int ServerConnectionPort;
+            public string ServerIP;
+            public string LastInstalledVersion;
+            public string ProfileName;            
+            public bool RCONEnabled;
+            public int RCONPort;
+            public string ServerArgs;
+        };
+
+        private ProfileSnapshot profileSnapshot;
+        private IDisposable updateRegistration;
         private Process serverProcess;
 
-        public ServerProfile Settings
+        public ServerRuntime()
         {
-            get;
-            private set;
         }
 
-        public ServerRuntime(ServerProfile settings)
+        private void RegisterForUpdates()
         {
-            this.Settings = settings;
-            Version lastInstalled;
-            if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
-            {
-                this.Version = lastInstalled;
-            }
+            IPEndPoint localServerQueryEndPoint;
+            IPEndPoint steamServerQueryEndPoint;
+            GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
+            this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.profileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessLocalUpdate, ProcessSteamUpdate);
         }
 
         /// <summary>
@@ -114,131 +123,66 @@ namespace ARK_Server_Manager.Lib
                 return process != null && process.HasExited == false;
             }
         }
-
-        public Task UpdateStatusAsync(CancellationToken cancellationToken)
+        
+        public void AttachToProfile(ServerProfile settings)
         {
-            return Task.Factory.StartNew(async () =>
-                {
-                    await PeriodicUpdateCheck(cancellationToken);
-                });
-        }
-
-        private class ServerProcessContext
-        {
-            public string InstallDirectory = String.Empty;
-            public string ServerIP = String.Empty;
-            public int ServerPort = 0;
-        }
-
-        private struct ServerStatusUpdate
-        {
-            public ServerStatus ServerStatus;
-            public SteamStatus SteamStatus;
-            public Version InstalledVersion;
-            public int CurrentPlayers;
-            public int MaxPlayers;
-        }
-
-        private async Task PeriodicUpdateCheck(CancellationToken cancellationToken)
-        {
-            ServerProcessContext updateContext = new ServerProcessContext();
-            while (!cancellationToken.IsCancellationRequested)
+            if (this.updateRegistration != null)
             {
-                try
-                {
-                    ServerStatusUpdate currentStatus = new ServerStatusUpdate
-                    {
-                        ServerStatus = ServerStatus.Uninstalled,
-                        SteamStatus = SteamStatus.Unavailable
-                    };
-
-                    //
-                    // Check the status of the server locally and on Steam
-                    //
-                    if (File.Exists(GetServerExe()))
-                    {
-                        if (String.IsNullOrWhiteSpace(this.Settings.InstallDirectory) || // No installation directory set
-                            !updateContext.InstallDirectory.Equals(this.Settings.InstallDirectory, StringComparison.OrdinalIgnoreCase) || // Mismatched installation directory
-                            updateContext.ServerPort != this.Settings.ServerPort || // Mismatched query port
-                            !String.Equals(updateContext.ServerIP, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) // Mismatched IP
-                        {
-                            // The process we were watching no longer matches, so forget it and start watching with the current settings.
-                            this.serverProcess = null;
-                            updateContext.InstallDirectory = this.Settings.InstallDirectory;
-                            updateContext.ServerPort = this.Settings.ServerPort;
-                            updateContext.ServerIP = this.Settings.ServerIP;
-                        }
-
-                        if (this.serverProcess == null)
-                        {
-                            this.serverProcess = FindMatchingServerProcess(updateContext);
-                        }
-
-                        if (this.serverProcess != null && !this.serverProcess.HasExited)
-                        {
-                            currentStatus = QueryNetworkStatus();
-                        }
-                        else
-                        {
-                            this.serverProcess = null;
-                            currentStatus.ServerStatus = ServerStatus.Stopped;
-                            currentStatus.SteamStatus = SteamStatus.Unavailable;                            
-                        }
-                    }
-
-                    await App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        this.Status = currentStatus.ServerStatus;
-                        this.Steam = currentStatus.SteamStatus;
-                        this.Version = currentStatus.InstalledVersion;
-                        this.Players = currentStatus.CurrentPlayers;
-                        this.MaxPlayers = currentStatus.MaxPlayers;
-                    }));
-                }
-                catch(Exception ex)
-                {
-                    Debug.WriteLine("Exception during update check: {0}\r\n{1}", ex.Message, ex.StackTrace);
-                }
-
-                await Task.Delay(1000);
+                this.updateRegistration.Dispose();
             }
+
+            this.profileSnapshot = new ProfileSnapshot
+            {
+                InstallDirectory = settings.InstallDirectory,
+                QueryPort = settings.ServerPort,
+                ServerConnectionPort = settings.ServerConnectionPort,
+                ServerIP = settings.ServerIP,
+                LastInstalledVersion = settings.LastInstalledVersion,
+                ProfileName = settings.ProfileName,
+                RCONEnabled = settings.RCONEnabled,
+                RCONPort = settings.RCONPort,
+                ServerName = settings.ServerName,
+                ServerArgs = settings.GetServerArgs()
+            };
+
+            Version lastInstalled;
+            if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
+            {
+                this.Version = lastInstalled;
+            }
+
+            RegisterForUpdates();
         }
 
-        private ServerStatusUpdate QueryNetworkStatus()
+        private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
         {
-            ServerStatusUpdate currentStatus = new ServerStatusUpdate
-                {
-                    SteamStatus = SteamStatus.Unavailable,
-                    ServerStatus = ServerStatus.Unknown
-                };
-
             //
             // Get the local endpoint for querying the local network
             //
-            IPEndPoint localServerQueryEndPoint;
+
             IPAddress localServerIpAddress;
-            if (!String.IsNullOrWhiteSpace(this.Settings.ServerIP) && IPAddress.TryParse(this.Settings.ServerIP, out localServerIpAddress))
+            if (!String.IsNullOrWhiteSpace(this.profileSnapshot.ServerIP) && IPAddress.TryParse(this.profileSnapshot.ServerIP, out localServerIpAddress))
             {
                 // Use the explicit Server IP
-                localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
+                localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.profileSnapshot.QueryPort));
             }
             else
             {
                 // No Server IP specified, use Loopback
-                localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.Settings.ServerPort));
+                localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.profileSnapshot.QueryPort));
             }
 
             //
             // Get the public endpoint for querying Steam
             //
-            IPEndPoint steamServerQueryEndPoint = null;
+            steamServerQueryEndPoint = null;
             if (!String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
                 IPAddress steamServerIpAddress;
                 if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
                 {
                     // Use the Public IP explicitly specified
-                    steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.Settings.ServerPort));
+                    steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.profileSnapshot.QueryPort));
                 }
                 else
                 {
@@ -248,138 +192,90 @@ namespace ARK_Server_Manager.Lib
                         var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
                         if (addresses.Length > 0)
                         {
-                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.Settings.ServerPort));
+                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.profileSnapshot.QueryPort));
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.WriteLine("Failed to resolve DNS address {0}: {1}\r\n{2}", Config.Default.MachinePublicIP, ex.Message, ex.StackTrace);
                     }
                 }
             }
-
-            //
-            // Get the current status for both the local server and Steam
-            //
-            var localServerInfo = App.ServerWatcher.GetLocalServerInfo(localServerQueryEndPoint);
-            ServerInfo steamServerInfo = null;
-            if (steamServerQueryEndPoint != null)
-            {
-                steamServerInfo = App.ServerWatcher.GetSteamServerInfo(steamServerQueryEndPoint);
-            }
-
-            if (localServerInfo != null)
-            {
-                currentStatus.ServerStatus = ServerStatus.Running;
-                currentStatus.MaxPlayers = localServerInfo.MaxPlayers;
-                currentStatus.CurrentPlayers = localServerInfo.Players;
-
-                //
-                // Get the version, which is specified in the server name automatically by ARK
-                //
-                var match = Regex.Match(localServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
-                if (match.Success && match.Groups.Count >= 2)
-                {
-                    var serverVersion = match.Groups[1].Value;
-                    Version temp;
-                    if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
-                    {
-                        currentStatus.InstalledVersion = temp;
-                        this.Settings.LastInstalledVersion = serverVersion;
-                    }
-                }
-
-                //
-                // Set the Steam Status
-                //
-                if (steamServerQueryEndPoint == null)
-                {
-                    // 
-                    // The user didn't give us a public IP, so we can't ask Steam about this server.
-                    //
-                    currentStatus.SteamStatus = SteamStatus.NeedPublicIP;
-                }
-                else
-                {
-                    if (steamServerInfo != null)
-                    {
-                        currentStatus.SteamStatus = SteamStatus.Available;
-                    }
-                    else
-                    {
-                        //
-                        // Steam doesn't have a record of our public IP yet.
-                        //
-                        currentStatus.SteamStatus = SteamStatus.WaitingForPublication;
-                    }
-                }
-            }
-            else
-            {
-                currentStatus.ServerStatus = ServerStatus.Initializing;
-                currentStatus.SteamStatus = SteamStatus.Unavailable;
-            }
-
-            return currentStatus;
         }
 
-        private static Process FindMatchingServerProcess(ServerProcessContext updateContext)
+        private void ProcessSteamUpdate(ServerStatusWatcher.ServerStatusUpdate update)
         {
-            if(String.IsNullOrWhiteSpace(updateContext.InstallDirectory))
-            {
-                return null;
-            }
-
-            foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
-            {
-                var commandLineBuilder = new StringBuilder();
-
-                using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
+            TaskUtils.RunOnUIThreadAsync(() =>
                 {
-                    foreach (var @object in searcher.Get())
+                    switch (update.Status)
                     {
-                        commandLineBuilder.Append(@object["CommandLine"] + " ");
-                    }
-                }
-
-                var commandLine = commandLineBuilder.ToString();
-
-                if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
-                {
-                    // Does this match our server exe and port?
-                    var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.ServerPort);
-                    if (commandLine.Contains(serverArgMatch))
-                    {
-                        // Was an IP set on it?
-                        var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty);
-                        if (commandLine.Contains(anyIpArgMatch))
-                        {
-                            // If we have a specific IP, check for it.
-                            if (!String.IsNullOrWhiteSpace(updateContext.ServerIP))
+                        case ServerStatusWatcher.ServerStatus.Stopped:
+                        case ServerStatusWatcher.ServerStatus.Initializing:
+                        case ServerStatusWatcher.ServerStatus.NotInstalled:
+                            if (this.Status == ServerStatus.Running)
                             {
-                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.ServerIP);
-                                if (!commandLine.Contains(ipArgMatch))
-                                {
-                                    // Specific IP set didn't match
-                                    continue;
-                                }
+                                this.Steam = SteamStatus.WaitingForPublication;
                             }
+                            else
+                            {
+                                this.Steam = SteamStatus.Unavailable;
+                            }
+                            break;
 
-                            // Either we havw no specific IP set or it matched
-                        }
-                        
-                        process.EnableRaisingEvents = true;
-                        return process;
+                        case ServerStatusWatcher.ServerStatus.Running:
+                            this.Steam = SteamStatus.Available;
+                            break;
                     }
-                }
-            }
+                }).DoNotWait();
+        }
 
-            return null;
+        private void ProcessLocalUpdate(ServerStatusWatcher.ServerStatusUpdate update)
+        {
+            TaskUtils.RunOnUIThreadAsync(() =>
+                {
+                    switch (update.Status)
+                    {
+                        case ServerStatusWatcher.ServerStatus.NotInstalled:
+                            this.Status = ServerStatus.Uninstalled;
+                            break;
+
+                        case ServerStatusWatcher.ServerStatus.Initializing:
+                            this.Status = ServerStatus.Initializing;
+                            break;
+
+                        case ServerStatusWatcher.ServerStatus.Stopped:
+                            this.Status = ServerStatus.Stopped;
+                            break;
+
+                        case ServerStatusWatcher.ServerStatus.Running:
+                            this.Status = ServerStatus.Running;
+                            break;
+                    }
+
+                    if (update.ServerInfo != null)
+                    {
+                        var match = Regex.Match(update.ServerInfo.Name, @"\(v([0-9]+\.[0-9]*)\)");
+                        if (match.Success && match.Groups.Count >= 2)
+                        {
+                            var serverVersion = match.Groups[1].Value;
+                            Version temp;
+                            if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
+                            {
+                                this.Version = temp;
+                            }
+                        }
+
+                        this.Players = update.ServerInfo.Players;
+                        this.MaxPlayers = update.ServerInfo.MaxPlayers;
+                    }
+
+                    this.serverProcess = update.Process;
+                }).DoNotWait();
         }
 
         public string GetServerExe()
         {
-            return Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            return Path.Combine(this.profileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
         }
 
         public async Task StartAsync()
@@ -392,22 +288,22 @@ namespace ARK_Server_Manager.Lib
 
             if (this.IsRunning)
             {
-                Debug.WriteLine("Server {0} already running.", Settings.ProfileName);
+                Debug.WriteLine("Server {0} already running.", profileSnapshot.ProfileName);
                 return;
             }
             
             var serverExe = GetServerExe();
-            var serverArgs = this.Settings.GetServerArgs();
+            var serverArgs = this.profileSnapshot.ServerArgs;
 
             if (Config.Default.ManageFirewallAutomatically)
             {
-                var ports = new List<int>() { this.Settings.ServerPort, this.Settings.ServerConnectionPort };
-                if(this.Settings.RCONEnabled)
+                var ports = new List<int>() { this.profileSnapshot.QueryPort, this.profileSnapshot.ServerConnectionPort };
+                if(this.profileSnapshot.RCONEnabled)
                 {
-                    ports.Add(this.Settings.RCONPort);
+                    ports.Add(this.profileSnapshot.RCONPort);
                 }
 
-                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.Settings.ServerName))
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.profileSnapshot.ServerName))
                 {
                     var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)
@@ -425,7 +321,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch(System.ComponentModel.Win32Exception ex)
             {
-                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.Settings.InstallDirectory), serverExe, ex);
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.profileSnapshot.InstallDirectory), serverExe, ex);
             }
 
             process.EnableRaisingEvents = true;
@@ -477,13 +373,14 @@ namespace ARK_Server_Manager.Lib
             try
             {
                 await StopAsync();
+                this.updateRegistration.Dispose();
 
                 this.Status = ServerStatus.Updating;
 
                 // Run the SteamCMD to install the server
                 var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-                Directory.CreateDirectory(this.Settings.InstallDirectory);
-                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.Settings.InstallDirectory, validate ? "validate" : String.Empty);
+                Directory.CreateDirectory(this.profileSnapshot.InstallDirectory);
+                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.profileSnapshot.InstallDirectory, validate ? "validate" : String.Empty);
                 var process = Process.Start(steamCmdPath, steamArgs);
                 process.EnableRaisingEvents = true;
                 var ts = new TaskCompletionSource<bool>();
@@ -491,7 +388,13 @@ namespace ARK_Server_Manager.Lib
                 {
                     process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
                     process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
-                    return await ts.Task;                    
+                    var success = await ts.Task;
+                    if(success && ServerManager.Instance.AvailableVersion != null)
+                    {
+                        this.Version = ServerManager.Instance.AvailableVersion;
+                    }
+
+                    return success;
                 }
             }
             catch(TaskCanceledException)
@@ -501,25 +404,13 @@ namespace ARK_Server_Manager.Lib
             finally
             {
                 this.Status = ServerStatus.Stopped;
+                RegisterForUpdates();
             }
         }
     
-        protected void OnPropertyChanged(string propertyName)
+        public void Dispose()
         {
-            var propChanged = this.PropertyChanged;
-            if (propChanged != null)
-            {
-                // TODO: When the app shuts down, we need to kill outstanding update tasks.
-                if (App.Current != null)
-                {
-                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            propChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                        }));
-                }
-            }
+            this.updateRegistration.Dispose();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
