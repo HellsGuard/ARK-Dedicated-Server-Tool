@@ -130,7 +130,7 @@ namespace ARK_Server_Manager.Lib
         /// <param name="obj"></param>
         public void Serialize(object obj)
         {
-            var fields = obj.GetType().GetFields().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
+            var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
             foreach(var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);   
@@ -148,7 +148,7 @@ namespace ARK_Server_Manager.Lib
 
                     if(!String.IsNullOrEmpty(attr.ConditionedOn))
                     {
-                        var conditionField = obj.GetType().GetField(attr.ConditionedOn);
+                        var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
                         var conditionValue = conditionField.GetValue(obj);
                         if(conditionValue is bool && (bool)conditionValue == false)
                         {
@@ -195,7 +195,7 @@ namespace ARK_Server_Manager.Lib
 
         public void Deserialize(object obj)
         {
-            var fields = obj.GetType().GetFields().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
+            var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
             foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
@@ -213,7 +213,7 @@ namespace ARK_Server_Manager.Lib
                     else
                     {
                         var iniValue = IniReadValue(SectionNames[attr.Section], keyName, FileNames[attr.File]);
-                        var fieldType = field.FieldType;
+                        var fieldType = field.PropertyType;
 
                         if (fieldType == typeof(string))
                         {
@@ -224,7 +224,7 @@ namespace ARK_Server_Manager.Lib
                             // Update the ConditionedOn flag, if this field has one.
                             if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
                             {
-                                var conditionField = obj.GetType().GetField(attr.ConditionedOn);
+                                var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
                                 if (String.IsNullOrWhiteSpace(iniValue))
                                 {
                                     conditionField.SetValue(obj, false);

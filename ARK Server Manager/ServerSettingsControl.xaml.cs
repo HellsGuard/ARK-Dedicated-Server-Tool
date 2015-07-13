@@ -63,9 +63,12 @@ namespace ARK_Server_Manager
         {
             var ssc = (ServerSettingsControl)d;
             var server = (Server)e.NewValue;
-            ssc.Settings = server.Profile;
-            ssc.Runtime = server.Runtime;
-            ssc.ReinitializeNetworkAdapters();
+            TaskUtils.RunOnUIThreadAsync(() =>
+                {
+                    ssc.Settings = server.Profile;
+                    ssc.Runtime = server.Runtime;
+                    ssc.ReinitializeNetworkAdapters();
+                });
         }
         
         public ServerProfile Settings
@@ -118,53 +121,60 @@ namespace ARK_Server_Manager
             else if(adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null) 
             {
                 MessageBox.Show(
-                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP), 
-                    "Local IP invalid", 
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Error);            
+                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP),
+                    "Local IP invalid",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }        
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
-            if(this.Runtime.Status == ServerRuntime.ServerStatus.Updating)
+            switch(this.Runtime.Status)
             {
-                // Cancel the current upgrade
-                upgradeCancellationSource.Cancel();
-            }
-            else
-            {
-                if(this.Runtime.IsRunning)
-                {
+                case ServerRuntime.ServerStatus.Stopped:
+                case ServerRuntime.ServerStatus.Uninstalled:
+                    break;
+
+                case ServerRuntime.ServerStatus.Running:
+                case ServerRuntime.ServerStatus.Initializing:
                     var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if(result == MessageBoxResult.No)
                     {
                         return;
                     }
-                }
 
-                // Start the upgrade
-                upgradeCancellationSource = new CancellationTokenSource();
-                await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
-            }                       
+                    break;
+
+                case ServerRuntime.ServerStatus.Updating:
+                    upgradeCancellationSource.Cancel();
+                    upgradeCancellationSource = null;
+                    return;
+            }
+
+            this.upgradeCancellationSource = new CancellationTokenSource();
+            await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);            
         }
 
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Runtime.IsRunning)
+            switch(this.Runtime.Status)
             {
-                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                {
-                    return;
-                }
+                case ServerRuntime.ServerStatus.Initializing:
+                case ServerRuntime.ServerStatus.Running:
+                    var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
 
-                await this.Server.StopAsync();
-            }
-            else
-            {
-                this.Settings.Save();
-                await this.Server.StartAsync();
+                    await this.Server.StopAsync();
+                    break;
+
+                case ServerRuntime.ServerStatus.Stopped:
+                    this.Settings.Save();
+                    await this.Server.StartAsync();
+                    break;
             }
         }
 

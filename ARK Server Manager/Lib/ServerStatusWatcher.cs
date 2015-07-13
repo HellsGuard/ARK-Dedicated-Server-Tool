@@ -16,10 +16,14 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ARK_Server_Manager.Lib
 {
+    using StatusCallback = Action<IAsyncDisposable, ARK_Server_Manager.Lib.ServerStatusWatcher.ServerStatusUpdate>;
+
     public class ServerStatusWatcher
     {
+        
+        
         private const int SteamStatusQueryDelay = 10000; // milliseconds
-        private const int LocalStatusQueryDelay = 5000; // milliseconds
+        private const int LocalStatusQueryDelay = 1000; // milliseconds
 
         private enum ServerProcessStatus
         {
@@ -75,8 +79,9 @@ namespace ARK_Server_Manager.Lib
             public string InstallDirectory;
             public IPEndPoint LocalEndpoint;
             public IPEndPoint SteamEndpoint;
-            public Action<ServerStatusUpdate> LocalCallback;
-            public Action<ServerStatusUpdate> SteamCallback;
+            public StatusCallback LocalCallback;
+            public StatusCallback SteamCallback;
+            public object IAsyncDisposable, Context;
             public Func<Task> UnregisterAction;
 
             public async Task DisposeAsync()
@@ -106,7 +111,7 @@ namespace ARK_Server_Manager.Lib
             private set;
         }
 
-        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<ServerStatusUpdate> localUpdateAction, Action<ServerStatusUpdate> steamUpdateAction)
+        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> localUpdateAction, Action<IAsyncDisposable, ServerStatusUpdate> steamUpdateAction)
         {
             var registration = new ServerStatusUpdateRegistration 
             { 
@@ -202,6 +207,7 @@ namespace ARK_Server_Manager.Lib
 
                             // Either specific IP matched or no specific IP was set and we will claim this is ours.
 
+                            process.EnableRaisingEvents = true;
                             if (process.HasExited)
                             {
                                 return ServerProcessStatus.Stopped;
@@ -249,14 +255,14 @@ namespace ARK_Server_Manager.Lib
             return;
         }
 
-        private async Task GenerateAndPostServerStatusUpdateAsync(ServerStatusUpdateRegistration registration, IPEndPoint specificEndpoint, Action<ServerStatusUpdate> callback)
+        private async Task GenerateAndPostServerStatusUpdateAsync(ServerStatusUpdateRegistration registration, IPEndPoint specificEndpoint, StatusCallback callback)
         {
             var statusUpdate = await GenerateServerStatusUpdateAsync(registration, specificEndpoint);
             PostServerStatusUpdate(registration, callback, statusUpdate);
             return;
         }
 
-        private void PostServerStatusUpdate(ServerStatusUpdateRegistration registration, Action<ServerStatusUpdate> callback, ServerStatusUpdate statusUpdate)
+        private void PostServerStatusUpdate(ServerStatusUpdateRegistration registration, StatusCallback callback, ServerStatusUpdate statusUpdate)
         {
             eventQueue.Post(() =>
             {
@@ -264,7 +270,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        callback(statusUpdate);
+                        callback(registration, statusUpdate);
                     }
                     catch (Exception ex)
                     {

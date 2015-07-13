@@ -891,6 +891,4 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
     }
-
-
 }
