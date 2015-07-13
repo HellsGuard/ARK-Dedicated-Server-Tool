@@ -63,12 +63,15 @@ namespace ARK_Server_Manager
         {
             var ssc = (ServerSettingsControl)d;
             var server = (Server)e.NewValue;
-            TaskUtils.RunOnUIThreadAsync(() =>
-                {
-                    ssc.Settings = server.Profile;
-                    ssc.Runtime = server.Runtime;
-                    ssc.ReinitializeNetworkAdapters();
-                });
+            if (server != null)
+            {
+                TaskUtils.RunOnUIThreadAsync(() =>
+                    {
+                        ssc.Settings = server.Profile;
+                        ssc.Runtime = server.Runtime;
+                        ssc.ReinitializeNetworkAdapters();
+                    }).DoNotWait();
+            }
         }
         
         public ServerProfile Settings

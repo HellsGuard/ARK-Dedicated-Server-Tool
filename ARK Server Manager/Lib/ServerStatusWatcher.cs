@@ -81,7 +81,6 @@ namespace ARK_Server_Manager.Lib
             public IPEndPoint SteamEndpoint;
             public StatusCallback LocalCallback;
             public StatusCallback SteamCallback;
-            public object IAsyncDisposable, Context;
             public Func<Task> UnregisterAction;
 
             public async Task DisposeAsync()

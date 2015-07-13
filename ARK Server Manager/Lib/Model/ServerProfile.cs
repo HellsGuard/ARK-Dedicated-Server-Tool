@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib
@@ -52,7 +53,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty AdminPasswordProperty = DependencyProperty.Register("AdminPassword", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register("MaxPlayers", typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
         public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register("DifficultyOffset", typeof(float), typeof(ServerProfile), new PropertyMetadata(0.25f));
-        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register("MaxStructuresVisible", typeof(int), typeof(ServerProfile), new PropertyMetadata(1300));
+        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register("MaxStructuresVisible", typeof(float), typeof(ServerProfile), new PropertyMetadata(1300f));
         public static readonly DependencyProperty ServerNameProperty = DependencyProperty.Register("ServerName", typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerName));
         public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register("ServerPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(27015));
         public static readonly DependencyProperty ServerConnectionPortProperty = DependencyProperty.Register("ServerConnectionPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(7777));
@@ -229,9 +230,9 @@ namespace ARK_Server_Manager.Lib
         }
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "MaxStructuresInRange")]
-        public int MaxStructuresVisible
+        public float MaxStructuresVisible
         {
-            get { return (int)GetValue(MaxStructuresVisibleProperty); }
+            get { return (float)GetValue(MaxStructuresVisibleProperty); }
             set { SetValue(MaxStructuresVisibleProperty, value); }
         }
 
@@ -625,9 +626,11 @@ namespace ARK_Server_Manager.Lib
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
+                
                 using (var reader = File.OpenRead(path))
                 {
-                    settings = (ServerProfile)serializer.Deserialize(reader);
+                    var streamReader = new StreamReader(reader, System.Text.Encoding.UTF8);
+                    settings = (ServerProfile)serializer.Deserialize(streamReader);
                     settings.IsDirty = false;
                 }
 
@@ -721,7 +724,7 @@ namespace ARK_Server_Manager.Lib
             // Save the profile
             //
             XmlSerializer serializer = new XmlSerializer(this.GetType());
-            using (var writer = new StreamWriter(GetProfilePath()))
+            using (var writer = new StreamWriter(File.Open(GetProfilePath(), FileMode.Create), System.Text.Encoding.UTF8))
             {
                 serializer.Serialize(writer, this);
             }
