@@ -81,7 +81,7 @@ namespace ARK_Server_Manager.Lib
             public string InstallDirectory;
             public IPEndPoint LocalEndpoint;
             public IPEndPoint SteamEndpoint;
-            public StatusCallback LocalCallback;
+            public StatusCallback UpdateCallback;
             public Func<Task> UnregisterAction;
 
             public async Task DisposeAsync()
@@ -117,7 +117,7 @@ namespace ARK_Server_Manager.Lib
                 InstallDirectory = installDirectory,
                 LocalEndpoint = localEndpoint, 
                 SteamEndpoint = steamEndpoint, 
-                LocalCallback = updateCallback
+                UpdateCallback = updateCallback
             };
 
             registration.UnregisterAction = async () => 
@@ -233,21 +233,23 @@ namespace ARK_Server_Manager.Lib
             {
                 foreach (var registration in this.serverRegistrations)
                 {
+                    ServerStatusUpdate statusUpdate = new ServerStatusUpdate();
                     try
                     {
-                        var endpoint = registration.LocalEndpoint;
-                        var callback = registration.LocalCallback;
-
-                        logger.Debug("Status check: {0}", endpoint);
-                        var statusUpdate = await GenerateServerStatusUpdateAsync(registration, endpoint);
-                        logger.Debug("Server status: {0}: {1}", endpoint, statusUpdate.Status);
-                        PostServerStatusUpdate(registration, callback, statusUpdate);
+                        logger.Debug("Start: {0}", registration.LocalEndpoint);
+                        statusUpdate = await GenerateServerStatusUpdateAsync(registration);
+                        
+                        PostServerStatusUpdate(registration, registration.UpdateCallback, statusUpdate);
                     }
                     catch (Exception ex)
                     {
                         // We don't want to stop other registration queries or break the ActionBlock
                         logger.Debug("Exception in local update: {0} \n {1}", ex.Message, ex.StackTrace);
                         Debugger.Break();
+                    }
+                    finally
+                    {
+                        logger.Debug("End: {0}: {1}", registration.LocalEndpoint, statusUpdate.Status);
                     }
                 }
             }
@@ -277,7 +279,7 @@ namespace ARK_Server_Manager.Lib
             });
         }
 
-        private static async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration, IPEndPoint specificEndpoint)
+        private static async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration)
         {
             //
             // First check the process status
@@ -306,7 +308,7 @@ namespace ARK_Server_Manager.Lib
             //
             ServerInfo localInfo;
             ReadOnlyCollection<Player> players;
-            localInfo = GetLocalNetworkStatus(specificEndpoint, out players);
+            localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
 
             if(localInfo != null)
             {
@@ -315,10 +317,15 @@ namespace ARK_Server_Manager.Lib
                 //
                 // Now that it's running, we can check the publication status.
                 //
+                logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
                 var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
                 if (serverInfo != null)
+                {                    
+                    currentStatus = ServerStatus.Published;
+                }
+                else
                 {
-                   currentStatus = ServerStatus.Published;
+                    logger.Debug("No public status returned for {0}", registration.SteamEndpoint);
                 }
             }
 

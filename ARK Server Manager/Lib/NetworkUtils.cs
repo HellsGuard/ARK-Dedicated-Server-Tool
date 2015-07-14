@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,6 +37,7 @@ namespace ARK_Server_Manager.Lib
 
     public static class NetworkUtils
     {
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         public static List<NetworkAdapterEntry> GetAvailableIPV4NetworkAdapters()
         {
             List<NetworkAdapterEntry> adapters = new List<NetworkAdapterEntry>();
@@ -171,7 +173,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));                
+                logger.Debug(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));                
             }
 
             return result;
@@ -225,7 +227,7 @@ namespace ARK_Server_Manager.Lib
                 var server = query.SelectToken("server");
                 if (server.Type == JTokenType.String)
                 {
-                    Debug.WriteLine(String.Format("Server at {0}:{1} returned status {2}", endpoint.Address, endpoint.Port, (string)server));
+                    logger.Debug(String.Format("Server at {0}:{1} returned status {2}", endpoint.Address, endpoint.Port, (string)server));
                 }
                 else
                 {
@@ -241,7 +243,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
+                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
             }
 
             return result;
