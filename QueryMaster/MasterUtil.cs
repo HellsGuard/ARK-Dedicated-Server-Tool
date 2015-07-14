@@ -82,8 +82,17 @@ namespace QueryMaster
                 filterStr.Append(@"\gamedata\" + filter.GameData);
             if (!string.IsNullOrEmpty(filter.GameDataOr))
                 filterStr.Append(@"\gamedataor\" + filter.GameDataOr);
-            if (!string.IsNullOrEmpty(filter.IpAddr))
-                filterStr.Append(@"\gameaddr\").Append(filter.IpAddr);
+
+            if (filter.IpAddr != null && filter.IpAddr.Length > 0)
+            {
+                foreach (var ipaddr in filter.IpAddr)
+                {
+                    if (!string.IsNullOrEmpty(ipaddr))
+                    {
+                        filterStr.Append(@"\gameaddr\").Append(ipaddr);
+                    }
+                }
+            }
             //filterStr.Append('\0');
             return filterStr.ToString();
         }

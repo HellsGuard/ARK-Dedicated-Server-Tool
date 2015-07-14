@@ -91,8 +91,8 @@ namespace ARK_Server_Manager.Lib
 
         public async Task CheckForUpdatesAsync()
         {
-            var result = await NetworkUtils.CheckForUpdatesAsync();
-            await TaskUtils.RunOnUIThreadAsync(() => this.AvailableVersion = result);
+            var result = await NetworkUtils.GetLatestAvailableVersion();
+            await TaskUtils.RunOnUIThreadAsync(() => this.AvailableVersion = result.Current);
         }
     }
 }

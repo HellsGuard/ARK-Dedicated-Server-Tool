@@ -110,7 +110,7 @@ namespace ARK_Server_Manager.Lib
                 IPEndPoint localServerQueryEndPoint;
                 IPEndPoint steamServerQueryEndPoint;
                 GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
-                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.profileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessLocalUpdate, ProcessSteamUpdate);
+                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.profileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }
 
@@ -356,45 +356,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private void ProcessSteamUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
-        {
-            if(!Object.ReferenceEquals(registration, this.updateRegistration))
-            {
-                return;
-            }
-
-            TaskUtils.RunOnUIThreadAsync(() =>
-            {
-                if (this.Status == ServerStatus.Running)
-                {
-                    switch (update.Status)
-                    {
-                        case ServerStatusWatcher.ServerStatus.Stopped:
-                        case ServerStatusWatcher.ServerStatus.Initializing:
-                        case ServerStatusWatcher.ServerStatus.NotInstalled:
-                            if (this.Status == ServerStatus.Running)
-                            {
-                                this.Steam = SteamStatus.WaitingForPublication;
-                            }
-                            else
-                            {
-                                this.Steam = SteamStatus.Unavailable;
-                            }
-                            break;
-
-                        case ServerStatusWatcher.ServerStatus.Running:
-                            this.Steam = SteamStatus.Available;
-                            break;
-                    }
-                }
-                else
-                {
-                    this.Steam = SteamStatus.Unavailable;
-                }
-            }).DoNotWait();
-        }
-
-        private void ProcessLocalUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
+        private void ProcessStatusUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
         {
             if(!Object.ReferenceEquals(registration, this.updateRegistration))
             {
@@ -422,6 +384,12 @@ namespace ARK_Server_Manager.Lib
 
                     case ServerStatusWatcher.ServerStatus.Running:
                         this.Status = ServerStatus.Running;
+                        this.Steam = SteamStatus.WaitingForPublication;
+                        break;
+
+                    case ServerStatusWatcher.ServerStatus.Published:
+                        this.Status = ServerStatus.Running;
+                        this.Steam = SteamStatus.Available;
                         break;
                 }
 

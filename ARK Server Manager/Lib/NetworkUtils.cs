@@ -95,24 +95,156 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static async Task<Version> CheckForUpdatesAsync()
+        public class AvailableVersion
         {
-            var newVersion = new Version();
+            public bool IsValid
+            {
+                get;
+                set;
+            }
+
+            public Version Current
+            {
+                get;
+                set;
+            }
+
+            public Version Upcoming
+            {
+                get;
+                set;
+            }
+
+            public string UpcomingETA
+            {
+                get;
+                set;
+            }
+        }
+
+        private static bool ParseArkVersionString(string versionString, out Version ver)
+        {
+            var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match(versionString);
+            if (versionMatch.Success)
+            {
+                return Version.TryParse(versionMatch.Groups["version"].Value, out ver);
+            }
+
+            ver = new Version();
+            return false;
+        }
+
+        public static async Task<AvailableVersion> GetLatestAvailableVersion()
+        {
+            AvailableVersion result = new AvailableVersion();
             try
             {
-                using(var client = new WebClient())
+                string jsonString;                
+                using (var client = new WebClient())
                 {
-                    var versionString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl);
-                    Version.TryParse(versionString, out newVersion);
+                    jsonString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl);
+                }
+                JObject query = JObject.Parse(jsonString);
+
+                var availableVersion = query.SelectToken("version.current");
+                var upcomingVersion = query.SelectToken("version.upcoming.version");
+                var upcomingETA = query.SelectToken("version.upcoming.version.eta");
+
+                if (availableVersion != null)
+                {
+                    Version ver;
+                    result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
+                    result.Current = ver;
+                }
+
+                if (upcomingVersion != null)
+                {
+                    Version ver;
+                    ParseArkVersionString((string)availableVersion, out ver);
+                    result.Upcoming = ver;
+                }
+
+                if (upcomingETA != null)
+                {
+                    result.UpcomingETA = (string)upcomingETA;
+                }                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));                
+            }
+
+            return result;
+        }
+
+        public class ServerNetworkInfo
+        {
+            public string Name
+            {
+                get;
+                set;
+            }
+
+            public Version Version
+            {
+                get;
+                set;
+            }
+
+            public string Map
+            {
+                get;
+                set;
+            }
+
+            public int Players
+            {
+                get;
+                set;
+            }
+
+            public int MaxPlayers
+            {
+                get;
+                set;
+            }
+        }
+
+        public static async Task<ServerNetworkInfo> GetServerNetworkInfo(IPEndPoint endpoint)
+        {
+            ServerNetworkInfo result = null;
+            try
+            {
+                string jsonString;
+                using (var client = new WebClient())
+                {
+                    jsonString = await client.DownloadStringTaskAsync(String.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
+                }
+
+                JObject query = JObject.Parse(jsonString);
+                var server = query.SelectToken("server");
+                if (server.Type == JTokenType.String)
+                {
+                    Debug.WriteLine(String.Format("Server at {0}:{1} returned status {2}", endpoint.Address, endpoint.Port, (string)server));
+                }
+                else
+                {
+                    result = new ServerNetworkInfo();
+                    result.Name = (string)query.SelectToken("server.name");
+                    Version ver;
+                    ParseArkVersionString((string)query.SelectToken("server.version"), out ver);
+                    result.Version = ver;
+                    result.Map = (string)query.SelectToken("server.map");
+                    result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
+                    result.MaxPlayers = Int32.Parse((string)query.SelectToken("server.playerMax"));
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));
-                
+                Debug.WriteLine(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
             }
 
-            return newVersion;
+            return result;
         }
     }
 }

@@ -20,7 +20,6 @@ namespace ARK_Server_Manager.Lib
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private const int SteamStatusQueryDelay = 10000; // milliseconds
         private const int LocalStatusQueryDelay = 2500; // milliseconds
 
         private enum ServerProcessStatus
@@ -61,7 +60,12 @@ namespace ARK_Server_Manager.Lib
             /// <summary>
             /// The server is responding on its port
             /// </summary>
-            Running
+            Running,
+            
+            /// <summary>
+            /// The server appears on the Steam Master servers
+            /// </summary>
+            Published,
         }
 
         public struct ServerStatusUpdate
@@ -78,7 +82,6 @@ namespace ARK_Server_Manager.Lib
             public IPEndPoint LocalEndpoint;
             public IPEndPoint SteamEndpoint;
             public StatusCallback LocalCallback;
-            public StatusCallback SteamCallback;
             public Func<Task> UnregisterAction;
 
             public async Task DisposeAsync()
@@ -94,7 +97,6 @@ namespace ARK_Server_Manager.Lib
         {
             eventQueue = new ActionBlock<Func<Task>>(async f => await f.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
             eventQueue.Post(DoLocalUpdate);
-            eventQueue.Post(DoSteamUpdate);
         }
 
         static ServerStatusWatcher()
@@ -108,15 +110,14 @@ namespace ARK_Server_Manager.Lib
             private set;
         }
 
-        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> localUpdateAction, Action<IAsyncDisposable, ServerStatusUpdate> steamUpdateAction)
+        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> updateCallback)
         {
             var registration = new ServerStatusUpdateRegistration 
             { 
                 InstallDirectory = installDirectory,
                 LocalEndpoint = localEndpoint, 
                 SteamEndpoint = steamEndpoint, 
-                LocalCallback = localUpdateAction,
-                SteamCallback = steamUpdateAction
+                LocalCallback = updateCallback
             };
 
             registration.UnregisterAction = async () => 
@@ -220,7 +221,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch(Exception ex)
             {
-                Debugger.Break();
+                logger.Debug("Exception while checking process status: {0}\n{1}", ex.Message, ex.StackTrace);
             }
 
             return ServerProcessStatus.Stopped;
@@ -237,9 +238,9 @@ namespace ARK_Server_Manager.Lib
                         var endpoint = registration.LocalEndpoint;
                         var callback = registration.LocalCallback;
 
-                        logger.Debug("L check: {0}", endpoint);
+                        logger.Debug("Status check: {0}", endpoint);
                         var statusUpdate = await GenerateServerStatusUpdateAsync(registration, endpoint);
-                        logger.Debug("L status: {0}: {1}", endpoint, statusUpdate.Status);
+                        logger.Debug("Server status: {0}: {1}", endpoint, statusUpdate.Status);
                         PostServerStatusUpdate(registration, callback, statusUpdate);
                     }
                     catch (Exception ex)
@@ -299,20 +300,50 @@ namespace ARK_Server_Manager.Lib
                     break;
             }
 
+            ServerStatus currentStatus = ServerStatus.Initializing;
             //
-            // Only if the process was running do we then perform network checks.
+            // If the process was running do we then perform network checks.
             //
+            ServerInfo localInfo;
+            ReadOnlyCollection<Player> players;
+            localInfo = GetLocalNetworkStatus(specificEndpoint, out players);
+
+            if(localInfo != null)
+            {
+                currentStatus = ServerStatus.Running;
+
+                //
+                // Now that it's running, we can check the publication status.
+                //
+                var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
+                if (serverInfo != null)
+                {
+                   currentStatus = ServerStatus.Published;
+                }
+            }
+
+            var statusUpdate = new ServerStatusUpdate
+            {
+                Process = process,
+                Status = currentStatus,
+                ServerInfo = localInfo,
+                Players = players
+            };
+
+            return await Task.FromResult(statusUpdate);
+        }
+
+        private static ServerInfo GetLocalNetworkStatus(IPEndPoint specificEndpoint, out ReadOnlyCollection<Player> players)
+        {
             var server = ServerQuery.GetServerInstance(EngineType.Source, specificEndpoint);
             ServerInfo serverInfo = null;
-            ReadOnlyCollection<Player> players = null;
-            var serverStatus = ServerStatus.Initializing;
+            players = null;
             try
             {
                 serverInfo = server.GetInfo();
-                serverStatus = ServerStatus.Running;
             }
             catch (SocketException ex)
-            {                
+            {
                 logger.Debug("GetInfo failed: {0}: {1}", specificEndpoint, ex.Message);
                 // Common when the server is unreachable.  Ignore it.
             }
@@ -320,7 +351,7 @@ namespace ARK_Server_Manager.Lib
             if (serverInfo != null)
             {
                 try
-                {                    
+                {
                     players = server.GetPlayers();
                 }
                 catch (SocketException)
@@ -329,73 +360,7 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            var statusUpdate = new ServerStatusUpdate
-            {
-                Process = process,
-                Status = serverStatus,
-                ServerInfo = serverInfo,
-                Players = players
-            };
-
-            return await Task.FromResult(statusUpdate);
-        }
-
-        private async Task DoSteamUpdate()
-        {
-            MasterServer masterServer = null;
-            try
-            { 
-                masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
-
-                foreach(var registration in this.serverRegistrations)
-                {
-                    var finishedSteamProcessing = new TaskCompletionSource<ServerStatusUpdate>();
-                    ServerStatusUpdate statusUpdate = new ServerStatusUpdate { Status = ServerStatus.NotInstalled };
-
-                    logger.Debug("S check: {0}", registration.SteamEndpoint);
-                    //
-                    // The code in here is called repeatedly by the QueryMaster code.
-                    //
-                    masterServer.GetAddresses(Region.Rest_of_the_world, async endPoints =>
-                        {
-                            DebugUtils.WriteFormatThreadSafeAsync(String.Format("Received {0} entries", endPoints.Count)).DoNotWait();
-
-                            foreach (var endPoint in endPoints)
-                            {
-                                if (endPoint.Address.Equals(masterServer.SeedEndpoint.Address))
-                                {                                    
-                                    if(!finishedSteamProcessing.TrySetResult(statusUpdate))
-                                    {
-                                        logger.Debug("No steam results returned.");
-                                    }
-                                }
-                                else if (registration.SteamEndpoint.Equals(endPoint))
-                                {
-                                    statusUpdate = await GenerateServerStatusUpdateAsync(registration, endPoint);
-                                    logger.Debug("S status: {0}: {1}", endPoint, statusUpdate.Status);
-                                    finishedSteamProcessing.TrySetResult(statusUpdate);
-                                    break;
-                                }
-                                else
-                                {
-                                    logger.Debug("Non-matching endpoint {0} returned.", endPoint);
-                                }
-                            }
-                        }, new IpFilter() {  IpAddr = registration.SteamEndpoint.Address.ToString() });
-
-                    statusUpdate = await finishedSteamProcessing.Task;
-                    PostServerStatusUpdate(registration, registration.SteamCallback, statusUpdate);
-                }                
-            }
-            finally
-            {
-                if(masterServer != null)
-                {
-                    masterServer.Dispose();
-                }
-
-                Task.Delay(SteamStatusQueryDelay).ContinueWith(_ => this.eventQueue.Post(DoSteamUpdate)).DoNotWait();
-            }
+            return serverInfo;
         }
     }
 }
