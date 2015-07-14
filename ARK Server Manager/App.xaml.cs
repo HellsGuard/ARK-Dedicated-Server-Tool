@@ -1,5 +1,8 @@
 using ARK_Server_Manager.Lib;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,13 +45,25 @@ namespace ARK_Server_Manager
 
         static App()
         {
+            ReconfigureLogging();            
             App.Version = App.GetDeployedVersion();
+        }
+
+        public static void ReconfigureLogging()
+        {            
+            string logDir = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir);
+            System.IO.Directory.CreateDirectory(logDir);
+            var statusWatcherTarget = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
+            statusWatcherTarget.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
+
+            var debugTarget = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
+            debugTarget.FileName = Path.Combine(logDir, "ASM_Debug.log");
+
+            LogManager.ReconfigExistingLoggers();
         }   
 
         protected override void OnStartup(StartupEventArgs e)
-        {           
-            //System.Configuration.ConfigurationSettings.AppSettings.
-            
+        {                                  
             // Initial configuration setting
             if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
@@ -73,6 +88,7 @@ namespace ARK_Server_Manager
                         else if(confirm == MessageBoxResult.Yes)
                         {
                             Config.Default.DataDir = dialog.FileName;
+                            ReconfigureLogging();
                             break;
                         }
                         else

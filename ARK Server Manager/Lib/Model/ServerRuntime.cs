@@ -231,6 +231,7 @@ namespace ARK_Server_Manager.Lib
                             try
                             {
                                 this.Status = ServerStatus.Stopping;
+                                this.Steam = SteamStatus.Unavailable;
                                 process.Exited += handler;
                                 process.CloseMainWindow();
                                 await ts.Task;
@@ -247,6 +248,7 @@ namespace ARK_Server_Manager.Lib
                     finally
                     {
                         this.Status = ServerStatus.Stopped;
+                        this.Steam = SteamStatus.Unavailable;
                     }
                     break;
             }            
@@ -363,24 +365,31 @@ namespace ARK_Server_Manager.Lib
 
             TaskUtils.RunOnUIThreadAsync(() =>
             {
-                switch (update.Status)
+                if (this.Status == ServerStatus.Running)
                 {
-                    case ServerStatusWatcher.ServerStatus.Stopped:
-                    case ServerStatusWatcher.ServerStatus.Initializing:
-                    case ServerStatusWatcher.ServerStatus.NotInstalled:
-                        if (this.Status == ServerStatus.Running)
-                        {
-                            this.Steam = SteamStatus.WaitingForPublication;
-                        }
-                        else
-                        {
-                            this.Steam = SteamStatus.Unavailable;
-                        }
-                        break;
+                    switch (update.Status)
+                    {
+                        case ServerStatusWatcher.ServerStatus.Stopped:
+                        case ServerStatusWatcher.ServerStatus.Initializing:
+                        case ServerStatusWatcher.ServerStatus.NotInstalled:
+                            if (this.Status == ServerStatus.Running)
+                            {
+                                this.Steam = SteamStatus.WaitingForPublication;
+                            }
+                            else
+                            {
+                                this.Steam = SteamStatus.Unavailable;
+                            }
+                            break;
 
-                    case ServerStatusWatcher.ServerStatus.Running:
-                        this.Steam = SteamStatus.Available;
-                        break;
+                        case ServerStatusWatcher.ServerStatus.Running:
+                            this.Steam = SteamStatus.Available;
+                            break;
+                    }
+                }
+                else
+                {
+                    this.Steam = SteamStatus.Unavailable;
                 }
             }).DoNotWait();
         }
@@ -398,14 +407,17 @@ namespace ARK_Server_Manager.Lib
                 {
                     case ServerStatusWatcher.ServerStatus.NotInstalled:
                         this.Status = ServerStatus.Uninstalled;
+                        this.Steam = SteamStatus.Unavailable;
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Initializing:
                         this.Status = ServerStatus.Initializing;
+                        this.Steam = SteamStatus.Unavailable;
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Stopped:
                         this.Status = ServerStatus.Stopped;
+                        this.Steam = SteamStatus.Unavailable;
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Running:

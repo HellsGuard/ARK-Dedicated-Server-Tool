@@ -117,6 +117,7 @@ namespace ARK_Server_Manager
                             // Update the config
                             Config.Default.DataDir = dialog.FileName;
                             Config.Default.ConfigDirectory = newConfigDirectory;
+                            App.ReconfigureLogging();
                         }
                         catch(Exception ex)
                         {
