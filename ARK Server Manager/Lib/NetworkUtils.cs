@@ -148,27 +148,30 @@ namespace ARK_Server_Manager.Lib
                 }
                 JObject query = JObject.Parse(jsonString);
 
-                var availableVersion = query.SelectToken("version.current");
-                var upcomingVersion = query.SelectToken("version.upcoming.version");
-                var upcomingETA = query.SelectToken("version.upcoming.version.eta");
+                var availableVersion = query.SelectToken("current");
+                var upcomingVersion = query.SelectToken("upcoming.version");
+                var upcomingStatus = query.SelectToken("upcoming.status");
 
                 if (availableVersion != null)
                 {
                     Version ver;
-                    result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
+                    result.IsValid = Version.TryParse(availableVersion.ToString(), out ver);
+
+                    //result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
                     result.Current = ver;
                 }
 
                 if (upcomingVersion != null)
                 {
                     Version ver;
-                    ParseArkVersionString((string)availableVersion, out ver);
+                    Version.TryParse(availableVersion.ToString(), out ver);
+                    //ParseArkVersionString((string)availableVersion, out ver);
                     result.Upcoming = ver;
                 }
 
-                if (upcomingETA != null)
+                if (upcomingStatus != null)
                 {
-                    result.UpcomingETA = (string)upcomingETA;
+                    result.UpcomingETA = (string)upcomingStatus;
                 }                
             }
             catch (Exception ex)
@@ -234,7 +237,7 @@ namespace ARK_Server_Manager.Lib
                     result = new ServerNetworkInfo();
                     result.Name = (string)query.SelectToken("server.name");
                     Version ver;
-                    ParseArkVersionString((string)query.SelectToken("server.version"), out ver);
+                    Version.TryParse((string)query.SelectToken("server.version"), out ver);
                     result.Version = ver;
                     result.Map = (string)query.SelectToken("server.map");
                     result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
