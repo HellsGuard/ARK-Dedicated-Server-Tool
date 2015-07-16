@@ -12,6 +12,9 @@
             <TextBox TabIndex="0" Grid.Column="1" Text="{Binding ConsoleInput, UpdateSourceTrigger=Explicit}" KeyUp="ConsoleInput_KeyUp" VerticalContentAlignment="Center"/>
         </Grid>
         
+        <ListBox DockPanel.Dock="Right" MinWidth="150">
+            
+        </ListBox>
         <RichTextBox DockPanel.Dock="Top" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsTabStop="False">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">

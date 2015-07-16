@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SteamKit2;
 
 namespace ARK_Server_Manager
 {
@@ -31,9 +32,10 @@ namespace ARK_Server_Manager
             Connected,
         };
 
-        private struct ConsoleOutput
+        private struct ConsoleCommand
         {
             public ConsoleStatus status;
+            public string command;
             public IEnumerable<string> lines;
         };
 
@@ -42,7 +44,7 @@ namespace ARK_Server_Manager
         private readonly string password;
 
         ActionBlock<string> InputProcessor;
-        ActionBlock<ConsoleOutput> OutputProcessor;
+        ActionBlock<ConsoleCommand> OutputProcessor;
 
         private Rcon console;
         CancellationTokenSource terminateConsole = new CancellationTokenSource();
@@ -79,7 +81,7 @@ namespace ARK_Server_Manager
 
             this.InputProcessor = new ActionBlock<string>(new Func<string, Task>(ProcessInput), 
                                                           new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1, CancellationToken = terminateConsole.Token });
-            this.OutputProcessor = new ActionBlock<ConsoleOutput>(new Func<ConsoleOutput, Task>(ProcessOutput),
+            this.OutputProcessor = new ActionBlock<ConsoleCommand>(new Func<ConsoleCommand, Task>(ProcessOutput),
                                               new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1, 
                                                                                   CancellationToken = terminateConsole.Token, 
                                                                                   TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() });
@@ -87,16 +89,66 @@ namespace ARK_Server_Manager
             Task.Factory.StartNew(async () => await StartConnectionAsync());
         }
 
-        private Task ProcessOutput(ConsoleOutput output)
+        private Task ProcessOutput(ConsoleCommand command)
         {
+            //
+            // Handle results
+            HandleCommand(command);
+
+            //
+            // Format output
+            //
             Paragraph p = new Paragraph();
-            foreach(var line in output.lines)
+            foreach(var element in FormatCommandInput(command))
             {
-                p.Inlines.Add(line);
+                p.Inlines.Add(element);
+            }
+            p.Inlines.Add(new LineBreak());
+            foreach (var element in FormatCommandOutput(command))
+            {
+                p.Inlines.Add(element);
             }
 
             ConsoleContent.Blocks.Add(p);
             return Task.FromResult<bool>(true);
+        }
+
+        private void HandleCommand(ConsoleCommand command)
+        {
+#if false
+            if(command.command.StartsWith("listplayers"))
+            {
+                foreach(var line in command.lines)
+                {
+                    var elements = line.Split(',');
+                    if(elements.Length > 0)
+                    {
+                        long steamId;
+                        if(Int64.TryParse(elements[elements.Length-1], out steamId))
+                        {
+                            using(dynamic steamUser = WebAPI.GetInterface("ISteamUser"))
+                            {
+                                steamUser.GetPlayerSummaries();
+                            }   
+                        }
+                    }
+                }
+            }
+#endif
+        }
+
+        private IEnumerable<Inline> FormatCommandInput(ConsoleCommand command)
+        {
+            yield return new Bold(new Run("> " + command.command));
+        }
+
+        private IEnumerable<Inline> FormatCommandOutput(ConsoleCommand command)
+        {
+            foreach(var output in command.lines)
+            {
+                yield return new Run(output);
+                yield return new LineBreak();
+            }
         }
 
         private Task ProcessInput(string arg)
@@ -106,9 +158,10 @@ namespace ARK_Server_Manager
             var result = this.console.SendCommand(arg);
             var lines = result.Split(splitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim());
 
-            ConsoleOutput output = new ConsoleOutput
+            ConsoleCommand output = new ConsoleCommand
             {
                 status = ConsoleStatus.Connected,
+                command = arg,
                 lines = lines
             };
 

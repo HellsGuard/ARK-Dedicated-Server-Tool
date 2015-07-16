@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>71</ApplicationRevision>
+    <ApplicationRevision>72</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -310,6 +310,10 @@
     <ProjectReference Include="..\QueryMaster\QueryMaster.csproj">
       <Project>{4ca9c894-518f-42d7-bbe2-cfdfe7a03f8a}</Project>
       <Name>QueryMaster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteamKit2\SteamKit2.csproj">
+      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
+      <Name>SteamKit2</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFSharp.Globalizer\WPFSharp.Globalizer.csproj">
       <Project>{715461e8-4e54-4993-80a8-8e72892135e0}</Project>
