@@ -62,11 +62,17 @@ namespace ARK_Server_Manager
         private static void ServerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ssc = (ServerSettingsControl)d;
+            var oldserver = (Server)e.OldValue;
             var server = (Server)e.NewValue;
             if (server != null)
             {
                 TaskUtils.RunOnUIThreadAsync(() =>
                     {
+                        if(oldserver != null)
+                        {
+                            oldserver.Profile.Save();
+                        }
+
                         ssc.Settings = server.Profile;
                         ssc.Runtime = server.Runtime;
                         ssc.ReinitializeNetworkAdapters();

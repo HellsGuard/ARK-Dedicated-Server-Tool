@@ -128,6 +128,17 @@ namespace ARK_Server_Manager
 
         protected override void OnExit(ExitEventArgs e)
         {
+            foreach(var server in ServerManager.Instance.Servers)
+            {
+                try
+                {
+                    server.Profile.Save();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(String.Format("Failed to save profile {0}.  {1}\n{2}", server.Profile.ProfileName, ex.Message, ex.StackTrace), "Failed to save profile", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
             Config.Default.Save();
             base.OnExit(e);
         }
