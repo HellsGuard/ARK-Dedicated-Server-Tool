@@ -123,29 +123,59 @@ namespace ARK_Server_Manager.Lib
             }
         }
         
-        public async Task AttachToProfile(ServerProfile settings)
+        public async Task AttachToProfile(ServerProfile profile)
         {
+            AttachToProfileCore(profile);
+            GetProfilePropertyChanges(profile);
+        }
+
+        private void AttachToProfileCore(ServerProfile profile)
+        {
+            UnregisterForUpdates();
+
             this.profileSnapshot = new ProfileSnapshot
             {
-                InstallDirectory = settings.InstallDirectory,
-                QueryPort = settings.ServerPort,
-                ServerConnectionPort = settings.ServerConnectionPort,
-                ServerIP = settings.ServerIP,
-                LastInstalledVersion = settings.LastInstalledVersion,
-                ProfileName = settings.ProfileName,
-                RCONEnabled = settings.RCONEnabled,
-                RCONPort = settings.RCONPort,
-                ServerName = settings.ServerName,
-                ServerArgs = settings.GetServerArgs()
+                InstallDirectory = profile.InstallDirectory,
+                QueryPort = profile.ServerPort,
+                ServerConnectionPort = profile.ServerConnectionPort,
+                ServerIP = profile.ServerIP,
+                LastInstalledVersion = profile.LastInstalledVersion,
+                ProfileName = profile.ProfileName,
+                RCONEnabled = profile.RCONEnabled,
+                RCONPort = profile.RCONPort,
+                ServerName = profile.ServerName,
+                ServerArgs = profile.GetServerArgs()
             };
 
             Version lastInstalled;
-            if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
+            if (Version.TryParse(profile.LastInstalledVersion, out lastInstalled))
             {
                 this.Version = lastInstalled;
             }
 
             RegisterForUpdates();
+
+        }
+        List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
+
+        private void GetProfilePropertyChanges(ServerProfile profile)
+        {
+            foreach(var notifier in profileNotifiers)
+            {
+                notifier.Dispose();
+            }
+
+            profileNotifiers.Clear();
+            profileNotifiers.AddRange(PropertyChangeNotifier.GetNotifiers(
+                profile,
+                new[] { 
+                    ServerProfile.InstallDirectoryProperty,
+                    ServerProfile.ServerPortProperty,
+                    ServerProfile.ServerConnectionPortProperty,
+                    ServerProfile.ServerIPProperty
+                },
+                (s, p) => AttachToProfileCore(profile)));
+
         }
 
         public string GetServerExe()

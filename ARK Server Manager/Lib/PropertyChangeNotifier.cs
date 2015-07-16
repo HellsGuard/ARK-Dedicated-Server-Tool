@@ -43,6 +43,16 @@ namespace ARK_Server_Manager.Lib
             BindingOperations.SetBinding(this, ValueProperty, binding);
         }
 
+        public static IEnumerable<PropertyChangeNotifier> GetNotifiers(DependencyObject propertySource, IEnumerable<DependencyProperty> properties, DependencyPropertyChangedEventHandler handler)
+        {
+            foreach(var property in properties)
+            {
+                var notifier = new PropertyChangeNotifier(propertySource, property);
+                notifier.ValueChanged += handler;
+                yield return notifier;
+            }
+        }
+
         #endregion // Constructor
 
         #region PropertySource
@@ -81,7 +91,9 @@ namespace ARK_Server_Manager.Lib
         {
             PropertyChangeNotifier notifier = (PropertyChangeNotifier)d;
             if (null != notifier.ValueChanged)
-                notifier.ValueChanged(notifier, EventArgs.Empty);
+            {
+                notifier.ValueChanged(notifier.PropertySource, e);
+            }
         }
 
         /// <summary>
@@ -107,7 +119,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Events
 
-        public event EventHandler ValueChanged;
+        public event DependencyPropertyChangedEventHandler ValueChanged;
 
         #endregion // Events
 

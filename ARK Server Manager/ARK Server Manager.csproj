@@ -149,7 +149,7 @@
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
-    <Compile Include="Lib\PropertyChangedNotifier.cs" />
+    <Compile Include="Lib\PropertyChangeNotifier.cs" />
     <Compile Include="Lib\Serialization\IniFile.cs" />
     <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
