@@ -105,8 +105,11 @@ namespace ARK_Server_Manager
             //
             // Filter out self-assigned addresses
             //
-            adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));           
-            this.NetworkInterfaces = adapters;            
+            adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));
+
+            var savedServerIp = this.Settings.ServerIP;
+            this.NetworkInterfaces = adapters;
+            this.Settings.ServerIP = savedServerIp;
 
 
             //
