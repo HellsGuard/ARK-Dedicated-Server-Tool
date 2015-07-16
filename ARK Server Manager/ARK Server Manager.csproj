@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>52</ApplicationRevision>
+    <ApplicationRevision>73</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -86,6 +86,10 @@
     <ApplicationIcon>Art\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EO.Wpf, Version=4.0.12.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <HintPath>..\packages\EO.Wpf.4.0.12\lib\EO.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -107,6 +111,10 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -135,19 +143,29 @@
     <Compile Include="GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lib\DinoSpawn.cs" />
+    <Compile Include="Lib\DebugUtils.cs" />
+    <Compile Include="Lib\IAsyncDisposable.cs" />
+    <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
-    <Compile Include="Lib\IniFile.cs" />
-    <Compile Include="Lib\Level.cs" />
+    <Compile Include="Lib\PropertyChangedNotifier.cs" />
+    <Compile Include="Lib\Serialization\IniFile.cs" />
+    <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
     <Compile Include="Lib\PasswordUtils.cs" />
     <Compile Include="Lib\Server.cs" />
-    <Compile Include="Lib\ServerSettings.cs" />
+    <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
+    <Compile Include="Lib\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
-    <Compile Include="Lib\ServerRuntime.cs" />
+    <Compile Include="Lib\Model\ServerRuntime.cs" />
+    <Compile Include="Lib\ViewModel\DifficultyOffsetValueConverter.cs" />
+    <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\LevelIndexToDisplayOffsetConverter.cs" />
+    <Compile Include="RCONWindow.xaml.cs">
+      <DependentUpon>RCONWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
@@ -219,6 +237,10 @@
       <SubType>Designer</SubType>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
     </Page>
+    <Page Include="RCONWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ServerSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -265,7 +287,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -289,6 +313,10 @@
       <Project>{4ca9c894-518f-42d7-bbe2-cfdfe7a03f8a}</Project>
       <Name>QueryMaster</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SteamKit2\SteamKit2.csproj">
+      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
+      <Name>SteamKit2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFSharp.Globalizer\WPFSharp.Globalizer.csproj">
       <Project>{715461e8-4e54-4993-80a8-8e72892135e0}</Project>
       <Name>WPFSharp.Globalizer</Name>
@@ -309,6 +337,7 @@
   <ItemGroup>
     <Resource Include="Art\bgGrad1.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforePublish">
     <Exec Command="&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\bin\signtool.exe&quot; sign /f &quot;$(ProjectDir)Ark Server Manager_TemporaryKey.pfx&quot; /p &quot;b@}l@;jDVT4S&quot; /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />

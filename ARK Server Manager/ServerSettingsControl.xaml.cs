@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
@@ -29,40 +30,65 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        public static readonly DependencyProperty SettingsProperty = 
-            DependencyProperty.Register("Settings", typeof(ServerSettingsViewModel), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SettingsProperty =
+            DependencyProperty.Register("Settings", typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = 
-            DependencyProperty.Register("Runtime", typeof(ServerRuntimeViewModel), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty WhitelistUserProperty = 
-            DependencyProperty.Register("WhitelistUser", typeof(string), typeof(ServerSettingsControl), new PropertyMetadata(String.Empty));
+            DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty NetworkInterfacesProperty = 
             DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
-        public static readonly DependencyProperty AvailableVersionProperty =
-            DependencyProperty.Register("AvailableVersion", typeof(NetworkUtils.AvailableVersion), typeof(ServerSettingsControl), new PropertyMetadata(new NetworkUtils.AvailableVersion()));
+        public static readonly DependencyProperty ServerProperty =
+            DependencyProperty.Register("Server", typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
 
         CancellationTokenSource upgradeCancellationSource;
+        RCONWindow rconWindow;
 
-        public NetworkUtils.AvailableVersion AvailableVersion
+        public ServerManager ServerManager
         {
-            get { return (NetworkUtils.AvailableVersion)GetValue(AvailableVersionProperty); }
-            set { SetValue(AvailableVersionProperty, value); }
+            get { return (ServerManager)GetValue(ServerManagerProperty); }
+            set { SetValue(ServerManagerProperty, value); }
         }
 
-        public string WhitelistUser
+        // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ServerManagerProperty =
+            DependencyProperty.Register("ServerManager", typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
+
+        
+        public Server Server
         {
-            get { return (string)GetValue(WhitelistUserProperty); }
-            set { SetValue(WhitelistUserProperty, value); }
+            get { return (Server)GetValue(ServerProperty); }
+            set { SetValue(ServerProperty, value); }
+        }
+
+        private static void ServerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ssc = (ServerSettingsControl)d;
+            var oldserver = (Server)e.OldValue;
+            var server = (Server)e.NewValue;
+            if (server != null)
+            {
+                TaskUtils.RunOnUIThreadAsync(() =>
+                    {
+                        if(oldserver != null)
+                        {
+                            oldserver.Profile.Save();
+                        }
+
+                        ssc.Settings = server.Profile;
+                        ssc.Runtime = server.Runtime;
+                        ssc.ReinitializeNetworkAdapters();
+                    }).DoNotWait();
+            }
         }
         
-        public ServerSettingsViewModel Settings
+        public ServerProfile Settings
         {
-            get { return GetValue(SettingsProperty) as ServerSettingsViewModel; }
+            get { return GetValue(SettingsProperty) as ServerProfile; }
             set { SetValue(SettingsProperty, value); }
         }
 
-        public ServerRuntimeViewModel Runtime
+        public ServerRuntime Runtime
         {
-            get { return GetValue(RuntimeProperty) as ServerRuntimeViewModel; }
+            get { return GetValue(RuntimeProperty) as ServerRuntime; }
             set { SetValue(RuntimeProperty, value); }
         }
 
@@ -72,37 +98,11 @@ namespace ARK_Server_Manager
             set { SetValue(NetworkInterfacesProperty, value); }
         }
 
-        internal ServerSettingsControl(ServerSettings settings)
+        public ServerSettingsControl()
         {
             InitializeComponent();
-            ReinitializeFromSettings(settings);
-            ReinitializeNetworkAdapters();
-            CheckForUpdatesAsync();
+            this.ServerManager = ServerManager.Instance;           
         }
-
-        private void ReinitializeFromSettings(ServerSettings settings)
-        {
-            this.Settings = new ServerSettingsViewModel(settings);
-            this.Runtime = new ServerRuntimeViewModel(settings);
-        }
-           
-#if false
-        private void WhitelistAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (!String.IsNullOrWhiteSpace(this.WhitelistUser))
-            {
-                Settings.Whitelist.Add(this.WhitelistUser);
-            }
-        }
-
-        private void WhitelistRemove_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WhitelistControl.SelectedIndex >= 0)
-            {
-                Settings.Whitelist.RemoveAt(this.WhitelistControl.SelectedIndex);
-            }
-        }
-#endif
 
         private void ReinitializeNetworkAdapters()
         {
@@ -111,8 +111,11 @@ namespace ARK_Server_Manager
             //
             // Filter out self-assigned addresses
             //
-            adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));           
-            this.NetworkInterfaces = adapters;            
+            adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));
+
+            var savedServerIp = this.Settings.ServerIP;
+            this.NetworkInterfaces = adapters;
+            this.Settings.ServerIP = savedServerIp;
 
 
             //
@@ -130,78 +133,60 @@ namespace ARK_Server_Manager
             else if(adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null) 
             {
                 MessageBox.Show(
-                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP), 
-                    "Local IP invalid", 
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Error);            
+                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP),
+                    "Local IP invalid",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }        
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
-            if(this.Runtime.Model.ExecutionStatus == ServerRuntime.ServerStatus.Updating)
+            switch(this.Runtime.Status)
             {
-                // Cancel the current upgrade
-                upgradeCancellationSource.Cancel();
-            }
-            else
-            {
-                if(this.Runtime.Model.IsRunning)
-                {
+                case ServerRuntime.ServerStatus.Stopped:
+                case ServerRuntime.ServerStatus.Uninstalled:
+                    break;
+
+                case ServerRuntime.ServerStatus.Running:
+                case ServerRuntime.ServerStatus.Initializing:
                     var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if(result == MessageBoxResult.No)
                     {
                         return;
                     }
-                }
 
-                // Start the upgrade
-                upgradeCancellationSource = new CancellationTokenSource();
-                if(await this.Runtime.Model.UpgradeAsync(upgradeCancellationSource.Token, validate: true))
-                {
-                    if (AvailableVersion != null && AvailableVersion.Current != null)
-                    {
-                        this.Settings.Model.LastInstalledVersion = AvailableVersion.Current.ToString();
-                        this.Runtime.Model.InstalledVersion = AvailableVersion.Current;
-                    }
-                }
+                    break;
 
-            }                       
+                case ServerRuntime.ServerStatus.Updating:
+                    upgradeCancellationSource.Cancel();
+                    upgradeCancellationSource = null;
+                    return;
+            }
+
+            this.upgradeCancellationSource = new CancellationTokenSource();
+            await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);            
         }
 
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Runtime.Model.IsRunning)
+            switch(this.Runtime.Status)
             {
-                var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                {
-                    return;
-                }
+                case ServerRuntime.ServerStatus.Initializing:
+                case ServerRuntime.ServerStatus.Running:
+                    var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
 
-                await this.Runtime.Model.StopAsync();
-            }
-            else
-            {
-                this.Settings.Model.Save();
-                await this.Runtime.Model.StartAsync();
-            }
-        }
+                    await this.Server.StopAsync();
+                    break;
 
-        private void SelectSaveDirectory_Click(object sender, RoutedEventArgs e)
-        {            
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            dialog.Title = "Select Save Directory";
-            if (!String.IsNullOrWhiteSpace(Settings.SaveDirectory))
-            {
-                dialog.InitialDirectory = Settings.SaveDirectory;
-            }
-
-            var result = dialog.ShowDialog();            
-            if(result == CommonFileDialogResult.Ok)
-            {
-                Settings.SaveDirectory = dialog.FileName;
+                case ServerRuntime.ServerStatus.Stopped:
+                    this.Settings.Save();
+                    await this.Server.StartAsync();
+                    break;
             }
         }
 
@@ -240,11 +225,9 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var settings = ServerSettings.LoadFrom(dialog.FileName);
-                    if (settings != null)
-                    {
-                        ReinitializeFromSettings(settings);
-                    }
+                    this.Server.ImportFromPath(dialog.FileName);
+                    this.Settings = this.Server.Profile;
+                    this.Runtime = this.Server.Runtime;
                 }
                 catch (Exception ex)
                 {
@@ -255,7 +238,7 @@ namespace ARK_Server_Manager
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Model.Save();
+            Settings.Save();
         }
 
         private void CopyProfile_Click(object sender, RoutedEventArgs e)
@@ -268,7 +251,7 @@ namespace ARK_Server_Manager
 
         private void ShowCmd_Click(object sender, RoutedEventArgs e)
         {
-            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.Model.GetServerExe(), this.Settings.Model.GetServerArgs()));
+            var cmdLine = new CommandLine(String.Format("{0} {1}", this.Runtime.GetServerExe(), this.Settings.GetServerArgs()));
             cmdLine.ShowDialog();
         }
 
@@ -329,38 +312,43 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_Clear(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Dino);
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
         }
 
         private void DinoLevels_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Dino);
+            this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Dino);
         }
 
         private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ClearLevelProgression(ServerSettings.LevelProgression.Player);
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
         }
 
         private void PlayerLevels_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetLevelProgressionToDefault(ServerSettings.LevelProgression.Player);
+            this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Player);
         }
 
         private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.Model.ResetDinoSpawnsToDefault();
+            this.Settings.ResetDinoSpawnsToDefault();
         }
 
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
-            await CheckForUpdatesAsync();
+            await ServerManager.Instance.CheckForUpdatesAsync();
         }
 
-        private async Task CheckForUpdatesAsync()
+        private void OpenRCON_Click(object sender, RoutedEventArgs e)
         {
-            var result = await NetworkUtils.CheckForUpdatesAsync();
-            await App.Current.Dispatcher.BeginInvoke(new Action(() => this.AvailableVersion = result));
+            if(this.rconWindow == null || !this.rconWindow.IsLoaded)
+            {
+                this.rconWindow = new RCONWindow(this.Settings.ProfileName, new IPEndPoint(IPAddress.Parse(this.Settings.ServerIP), this.Settings.RCONPort), this.Settings.AdminPassword);                
+            }
+
+            this.rconWindow.Show();
+            this.rconWindow.Focus();
         }
     }
 }

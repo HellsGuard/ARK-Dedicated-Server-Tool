@@ -1,173 +1,373 @@
 ﻿using QueryMaster;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace ARK_Server_Manager.Lib
 {
+    using NLog;
+    using StatusCallback = Action<IAsyncDisposable, ARK_Server_Manager.Lib.ServerStatusWatcher.ServerStatusUpdate>;
+
     public class ServerStatusWatcher
     {
-        public ConcurrentDictionary<IPEndPoint, ServerInfo> SteamWatches = new ConcurrentDictionary<IPEndPoint, ServerInfo>();
-        public ConcurrentDictionary<IPEndPoint, ServerInfo> LocalWatches = new ConcurrentDictionary<IPEndPoint, ServerInfo>();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private Task steamWatchTask;
-        private Task localWatchTask;
-        
-        public ServerStatusWatcher()
+        private const int LocalStatusQueryDelay = 2500; // milliseconds
+
+        private enum ServerProcessStatus
         {
-            steamWatchTask = Task.Factory.StartNew(async () => await StartSteamWatch());
-            localWatchTask = Task.Factory.StartNew(async () => await StartLocalWatch());
+            /// <summary>
+            /// The server binary could not be found
+            /// </summary>
+            NotInstalled,
+
+            /// <summary>
+            /// The server binary was found, but the process was not.
+            /// </summary>
+            Stopped,
+
+            /// <summary>
+            /// The server process was found
+            /// </summary>
+            Running,
         }
 
-        /// <summary>
-        /// Gets the status of a server from the local machine
-        /// </summary>
-        /// <param name="server">The server's private address</param>
-        /// <returns>The server info, or null.</returns>
-        public ServerInfo GetLocalServerInfo(IPEndPoint server)
+        public enum ServerStatus
         {
-            ServerInfo info = LocalWatches.GetOrAdd(server, (ServerInfo)null);
-            return info;
-        }
+            /// <summary>
+            /// The server binary couldnot be found.
+            /// </summary>
+            NotInstalled,
 
-        /// <summary>
-        /// Gets the status of a server from the Steam master server
-        /// </summary>
-        /// <param name="server">The server's public address</param>
-        /// <returns>The server info, or null.</returns>
-        public ServerInfo GetSteamServerInfo(IPEndPoint server)
-        {
-            ServerInfo info = SteamWatches.GetOrAdd(server, (ServerInfo)null);
-            return info;
-        }
+            /// <summary>
+            /// The server binary was found, but the process was not
+            /// </summary>
+            Stopped,
 
-        private async Task StartLocalWatch()
-        {
-            while(true)
-            {
-                if(this.LocalWatches.Count > 0)
-                {
-                    Debug.WriteLine("Watching local servers.");
-                    foreach(var endPoint in LocalWatches.Keys)
-                    {
-                        try
-                        {
-                            var server = ServerQuery.GetServerInstance(EngineType.Source, endPoint);                            
-                            var serverInfo = server.GetInfo();
-                            this.LocalWatches[endPoint] = serverInfo;
-                        }
-                        catch(SocketException)
-                        {
-                            this.LocalWatches[endPoint] = null;
-                        }
-                    }
-                }
+            /// <summary>
+            /// The server process was found, but the server is not responding on its port
+            /// </summary>
+            Initializing,
 
-                await Task.Delay(5000);
-            }
-        }
-        private async Task StartSteamWatch()
-        {
-            MasterServer masterServer = null; ;
-            while(true)
-            {
-                if (masterServer != null)
-                {
-                    masterServer.Dispose();
-                    masterServer = null;
-                }
-
-                if(this.LocalWatches.Values.Count(info => info != null) > 0)
-                {
-                    var app = App.Current;
-                    if (app != null)
-                    {
-                        await app.Dispatcher.BeginInvoke(new Action(() => Debug.WriteLine("Starting Steam data stream...")));
-                    }
+            /// <summary>
+            /// The server is responding on its port
+            /// </summary>
+            Running,
             
-                    masterServer = MasterQuery.GetMasterServerInstance(EngineType.Source);
+            /// <summary>
+            /// The server appears on the Steam Master servers
+            /// </summary>
+            Published,
+        }
 
-                    foreach(var steamServer in this.SteamWatches.Keys.ToArray())
+        public struct ServerStatusUpdate
+        {
+            public Process Process;
+            public ServerStatus Status;
+            public ServerInfo ServerInfo;
+            public ReadOnlyCollection<Player> Players;
+        }
+
+        private class ServerStatusUpdateRegistration  : IAsyncDisposable
+        {
+            public string InstallDirectory;
+            public IPEndPoint LocalEndpoint;
+            public IPEndPoint SteamEndpoint;
+            public StatusCallback UpdateCallback;
+            public Func<Task> UnregisterAction;
+
+            public async Task DisposeAsync()
+            {
+                await UnregisterAction();
+            }
+        }
+
+        private readonly List<ServerStatusUpdateRegistration> serverRegistrations = new List<ServerStatusUpdateRegistration>();
+        private readonly ActionBlock<Func<Task>> eventQueue;
+
+        private ServerStatusWatcher()
+        {
+            eventQueue = new ActionBlock<Func<Task>>(async f => await f.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
+            eventQueue.Post(DoLocalUpdate);
+        }
+
+        static ServerStatusWatcher()
+        {
+            ServerStatusWatcher.Instance = new ServerStatusWatcher();
+        }
+
+        public static ServerStatusWatcher Instance
+        {
+            get;
+            private set;
+        }
+
+        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> updateCallback)
+        {
+            var registration = new ServerStatusUpdateRegistration 
+            { 
+                InstallDirectory = installDirectory,
+                LocalEndpoint = localEndpoint, 
+                SteamEndpoint = steamEndpoint, 
+                UpdateCallback = updateCallback
+            };
+
+            registration.UnregisterAction = async () => 
+                {
+                    var tcs = new TaskCompletionSource<bool>();
+                    eventQueue.Post(() => 
                     {
-                        var finishedSteamProcessing = new TaskCompletionSource<bool>();
-                        var gotServer = false;
-                        
-                        //
-                        // The code in here is called repeatedly by the QueryMaster code.
-                        //
-                        masterServer.GetAddresses(Region.Rest_of_the_world, endPoints =>
-                            {
-                                var currentApp = App.Current;
-                                if (currentApp != null)                                
-                                {
-                                    var dispatcher = currentApp.Dispatcher;
-                                    if (dispatcher != null)
-                                    {
-                                        dispatcher.BeginInvoke(new Action(() => Debug.WriteLine(String.Format("Received {0} entries", endPoints.Count))));
-                                    }
-                                }
-
-                                foreach (var endPoint in endPoints)
-                                {
-                                    if (endPoint.Address.Equals(masterServer.SeedEndpoint.Address))
-                                    {
-                                        finishedSteamProcessing.TrySetResult(true);
-                                    }
-                                    else if (SteamWatches.ContainsKey(endPoint))
-                                    {
-                                        gotServer = true;
-                                        finishedSteamProcessing.TrySetResult(true);
-                                    }
-                                }
-                            }, new IpFilter() { IpAddr = steamServer.Address.ToString() });
-
-                        await finishedSteamProcessing.Task;
-
-                        try
+                        if(serverRegistrations.Contains(registration))
                         {
-                            if (gotServer)
-                            {
-                                var server = ServerQuery.GetServerInstance(EngineType.Source, steamServer);
-                                if (server != null)
-                                {
-                                    var serverInfo = server.GetInfo();
-                                    if (serverInfo != null)
-                                    {
-                                        SteamWatches[steamServer] = serverInfo;
-                                    }
-                                    else
-                                    {
-                                        SteamWatches[steamServer] = null;
-                                    }
-                                }
-                                else
-                                {
-                                    SteamWatches[steamServer] = null;
-                                }
-                            }
-                            else
-                            {
-                                SteamWatches[steamServer] = null;
-                            }
+                            logger.Debug("Removing registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
+                            serverRegistrations.Remove(registration);
                         }
-                        catch (Exception ex)
+                        tcs.TrySetResult(true);
+                        return Task.FromResult(true);
+                    });
+
+                    await tcs.Task;
+                };
+
+            eventQueue.Post(() =>
+                {
+                    if(!serverRegistrations.Contains(registration))
+                    {
+                        logger.Debug("Adding registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
+                        serverRegistrations.Add(registration);
+                    }
+                    return Task.FromResult(true);
+                }
+            );
+
+            return registration;
+        }
+
+        private static ServerProcessStatus GetServerProcessStatus(ServerStatusUpdateRegistration updateContext, out Process serverProcess)
+        {
+            serverProcess = null;
+            if (String.IsNullOrWhiteSpace(updateContext.InstallDirectory))
+            {
+                return ServerProcessStatus.NotInstalled;
+            }
+
+            var serverExePath = Path.Combine(updateContext.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            if(!File.Exists(serverExePath))
+            {
+                return ServerProcessStatus.NotInstalled;
+            }
+
+            //
+            // The server appears to be installed, now determine if it is running or stopped.
+            //
+            try
+            {
+                foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
+                {
+                    var commandLineBuilder = new StringBuilder();
+
+                    using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
+                    {
+                        foreach (var @object in searcher.Get())
                         {
-                            Debug.WriteLine(String.Format("Unexpected exception getting server info: {0}\n{1}", ex.Message, ex.StackTrace));
-                            SteamWatches[steamServer] = null;
+                            commandLineBuilder.Append(@object["CommandLine"] + " ");
+                        }
+                    }
+
+                    var commandLine = commandLineBuilder.ToString();
+
+                    if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
+                    {
+                        // Does this match our server exe and port?
+                        var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.LocalEndpoint.Port);
+                        if (commandLine.Contains(serverArgMatch))
+                        {
+                            // Was an IP set on it?
+                            var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty);
+                            if (commandLine.Contains(anyIpArgMatch))
+                            {
+                                // If we have a specific IP, check for it.
+                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.LocalEndpoint.Address.ToString());
+                                if (!commandLine.Contains(ipArgMatch))
+                                {
+                                    // Specific IP set didn't match
+                                    continue;
+                                }
+
+                                // Specific IP matched
+                            }
+
+                            // Either specific IP matched or no specific IP was set and we will claim this is ours.
+
+                            process.EnableRaisingEvents = true;
+                            if (process.HasExited)
+                            {
+                                return ServerProcessStatus.Stopped;
+                            }
+
+                            serverProcess = process;
+                            return ServerProcessStatus.Running;
                         }
                     }
                 }
-
-                await Task.Delay(10000);
             }
+            catch(Exception ex)
+            {
+                logger.Debug("Exception while checking process status: {0}\n{1}", ex.Message, ex.StackTrace);
+            }
+
+            return ServerProcessStatus.Stopped;
+        }
+
+        private async Task DoLocalUpdate()
+        {
+            try
+            {
+                foreach (var registration in this.serverRegistrations)
+                {
+                    ServerStatusUpdate statusUpdate = new ServerStatusUpdate();
+                    try
+                    {
+                        logger.Debug("Start: {0}", registration.LocalEndpoint);
+                        statusUpdate = await GenerateServerStatusUpdateAsync(registration);
+                        
+                        PostServerStatusUpdate(registration, registration.UpdateCallback, statusUpdate);
+                    }
+                    catch (Exception ex)
+                    {
+                        // We don't want to stop other registration queries or break the ActionBlock
+                        logger.Debug("Exception in local update: {0} \n {1}", ex.Message, ex.StackTrace);
+                        Debugger.Break();
+                    }
+                    finally
+                    {
+                        logger.Debug("End: {0}: {1}", registration.LocalEndpoint, statusUpdate.Status);
+                    }
+                }
+            }
+            finally
+            {
+                Task.Delay(LocalStatusQueryDelay).ContinueWith(_ => eventQueue.Post(DoLocalUpdate)).DoNotWait();
+            }
+            return;
+        }
+
+        private void PostServerStatusUpdate(ServerStatusUpdateRegistration registration, StatusCallback callback, ServerStatusUpdate statusUpdate)
+        {
+            eventQueue.Post(() =>
+            {
+                if (this.serverRegistrations.Contains(registration))
+                {
+                    try
+                    {
+                        callback(registration, statusUpdate);
+                    }
+                    catch (Exception ex)
+                    {
+                        DebugUtils.WriteFormatThreadSafeAsync("Exception during local status update callback: {0}\n{1}", ex.Message, ex.StackTrace).DoNotWait();
+                    }
+                }
+                return TaskUtils.FinishedTask;
+            });
+        }
+
+        private static async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration)
+        {
+            //
+            // First check the process status
+            //
+            Process process;
+            var processStatus = GetServerProcessStatus(registration, out process);
+            switch(processStatus)
+            {
+                case ServerProcessStatus.NotInstalled:
+                    return new ServerStatusUpdate { Status = ServerStatus.NotInstalled };
+
+                case ServerProcessStatus.Stopped:
+                    return new ServerStatusUpdate { Status = ServerStatus.Stopped };
+
+                case ServerProcessStatus.Running:
+                    break;
+
+                default:
+                    Debugger.Break();
+                    break;
+            }
+
+            ServerStatus currentStatus = ServerStatus.Initializing;
+            //
+            // If the process was running do we then perform network checks.
+            //
+            ServerInfo localInfo;
+            ReadOnlyCollection<Player> players;
+            localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
+
+            if(localInfo != null)
+            {
+                currentStatus = ServerStatus.Running;
+
+                //
+                // Now that it's running, we can check the publication status.
+                //
+                logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
+                var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
+                if (serverInfo != null)
+                {                    
+                    currentStatus = ServerStatus.Published;
+                }
+                else
+                {
+                    logger.Debug("No public status returned for {0}", registration.SteamEndpoint);
+                }
+            }
+
+            var statusUpdate = new ServerStatusUpdate
+            {
+                Process = process,
+                Status = currentStatus,
+                ServerInfo = localInfo,
+                Players = players
+            };
+
+            return await Task.FromResult(statusUpdate);
+        }
+
+        private static ServerInfo GetLocalNetworkStatus(IPEndPoint specificEndpoint, out ReadOnlyCollection<Player> players)
+        {
+            var server = ServerQuery.GetServerInstance(EngineType.Source, specificEndpoint);
+            ServerInfo serverInfo = null;
+            players = null;
+            try
+            {
+                serverInfo = server.GetInfo();
+            }
+            catch (SocketException ex)
+            {
+                logger.Debug("GetInfo failed: {0}: {1}", specificEndpoint, ex.Message);
+                // Common when the server is unreachable.  Ignore it.
+            }
+
+            if (serverInfo != null)
+            {
+                try
+                {
+                    players = server.GetPlayers();
+                }
+                catch (SocketException)
+                {
+                    // Common when the server is unreachable.  Ignore it.
+                }
+            }
+
+            return serverInfo;
         }
     }
 }

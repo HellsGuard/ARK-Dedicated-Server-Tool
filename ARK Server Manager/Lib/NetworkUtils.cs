@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,6 +37,7 @@ namespace ARK_Server_Manager.Lib
 
     public static class NetworkUtils
     {
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         public static List<NetworkAdapterEntry> GetAvailableIPV4NetworkAdapters()
         {
             List<NetworkAdapterEntry> adapters = new List<NetworkAdapterEntry>();
@@ -122,10 +124,21 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static async Task<AvailableVersion> CheckForUpdatesAsync()
+        private static bool ParseArkVersionString(string versionString, out Version ver)
+        {
+            var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match(versionString);
+            if (versionMatch.Success)
+            {
+                return Version.TryParse(versionMatch.Groups["version"].Value, out ver);
+            }
+
+            ver = new Version();
+            return false;
+        }
+
+        public static async Task<AvailableVersion> GetLatestAvailableVersion()
         {
             AvailableVersion result = new AvailableVersion();
-
             try
             {
                 string jsonString;                
@@ -135,45 +148,105 @@ namespace ARK_Server_Manager.Lib
                 }
                 JObject query = JObject.Parse(jsonString);
 
-                var availableVersion = query.SelectToken("version.current");
-                var upcomingVersion = query.SelectToken("version.upcoming.version");
-                var upcomingETA = query.SelectToken("version.upcoming.version.eta");
+                var availableVersion = query.SelectToken("current");
+                var upcomingVersion = query.SelectToken("upcoming.version");
+                var upcomingStatus = query.SelectToken("upcoming.status");
 
                 if (availableVersion != null)
                 {
-                    var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match((string)availableVersion);
-                    if (versionMatch.Success)
-                    {
-                        Version ver;
-                        if (Version.TryParse(versionMatch.Groups["version"].Value, out ver))
-                        {
-                            result.IsValid = true;
-                            result.Current = ver;
-                        }
-                    }
+                    Version ver;
+                    result.IsValid = Version.TryParse(availableVersion.ToString(), out ver);
+
+                    //result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
+                    result.Current = ver;
                 }
 
                 if (upcomingVersion != null)
                 {
-                    var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match((string)upcomingVersion);
-                    if (versionMatch.Success)
-                    {
-                        Version ver;
-                        if (Version.TryParse(versionMatch.Value, out ver))
-                        {
-                            result.Upcoming = ver;
-                        }
-                    }
+                    Version ver;
+                    Version.TryParse(availableVersion.ToString(), out ver);
+                    //ParseArkVersionString((string)availableVersion, out ver);
+                    result.Upcoming = ver;
                 }
 
-                if (upcomingETA != null)
+                if (upcomingStatus != null)
                 {
-                    result.UpcomingETA = (string)upcomingETA;
+                    result.UpcomingETA = (string)upcomingStatus;
                 }                
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));
+                logger.Debug(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));                
+            }
+
+            return result;
+        }
+
+        public class ServerNetworkInfo
+        {
+            public string Name
+            {
+                get;
+                set;
+            }
+
+            public Version Version
+            {
+                get;
+                set;
+            }
+
+            public string Map
+            {
+                get;
+                set;
+            }
+
+            public int Players
+            {
+                get;
+                set;
+            }
+
+            public int MaxPlayers
+            {
+                get;
+                set;
+            }
+        }
+
+        public static async Task<ServerNetworkInfo> GetServerNetworkInfo(IPEndPoint endpoint)
+        {
+            ServerNetworkInfo result = null;
+            try
+            {
+                string jsonString;
+                using (var client = new WebClient())
+                {
+                    jsonString = await client.DownloadStringTaskAsync(String.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
+                }
+
+                JObject query = JObject.Parse(jsonString);
+                var server = query.SelectToken("server");
+                if (server.Type == JTokenType.String)
+                {
+                    logger.Debug(String.Format("Server at {0}:{1} returned status {2}", endpoint.Address, endpoint.Port, (string)server));
+                }
+                else
+                {
+                    result = new ServerNetworkInfo();
+                    result.Name = (string)query.SelectToken("server.name");
+                    Version ver;
+                    Version.TryParse((string)query.SelectToken("server.version"), out ver);
+                    result.Version = ver;
+                    result.Map = (string)query.SelectToken("server.map");
+                    result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
+                    result.MaxPlayers = Int32.Parse((string)query.SelectToken("server.playerMax"));
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
             }
 
             return result;

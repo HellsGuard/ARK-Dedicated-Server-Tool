@@ -71,6 +71,6 @@ namespace QueryMaster
         /// </summary>
         public string GameDataOr { get; set; }
 
-        public string IpAddr { get; set; }
+        public string[] IpAddr { get; set; }
     }
 }

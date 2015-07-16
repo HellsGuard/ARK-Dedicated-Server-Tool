@@ -8,11 +8,13 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
+             xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
              mc:Ignorable="d"
+             d:DesignWidth="800"
              x:Name="SettingsControl">
     <UserControl.Resources>
-        <lib:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
-        <lib:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
+        <vm:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
+        <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
@@ -359,6 +361,13 @@
                 <Label Content="Show Command..." />
             </StackPanel>
         </ContentControl>
+        <ContentControl x:Key="OpenRCONButtonContent">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Art/Command.png" Width="16" Margin="5,0,5,0"/>
+                <Label Content="Console"/>
+            </StackPanel>
+        </ContentControl>
+
         <DataTemplate x:Key="PlayerLevelItemTemplate">
             <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
                 <Grid>
@@ -419,7 +428,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid DataContext="{Binding Settings}" Grid.Row="0" Height="38">
+                <Grid DataContext="{Binding Profile}" Grid.Row="0" Height="38">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
@@ -466,20 +475,8 @@
                         <Border Grid.Column="1" Height="29.95" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
                                 <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left"/>
-                                <Label FontSize="15" HorizontalAlignment="Left">
-                                    <Label.Style>
-                                        <Style TargetType="{x:Type Label}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="True">
-                                                    <Setter Property="Content" Value="{Binding ElementName=SettingsControl, Path=AvailableVersion.Current}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=AvailableVersion.IsValid}" Value="False">
-                                                    <Setter Property="Content" Value="Unknown"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
+                                <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left"/>
+
                                 <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center"
                                         ToolTip="Check for new versions">
                                     <Image Source="Art/Refresh.png" Width="16" Height="16" />
@@ -527,7 +524,7 @@
 
                     </Button>
 
-                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Settings}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
+                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Profile}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="true">
                             <Label DockPanel.Dock="Left" Content="Installation Location:" FontSize="15" VerticalAlignment="Center"/>
                             <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5"/>
@@ -658,7 +655,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Margin="5" Width="50" Content="Logs" IsEnabled="False"/>
+                        <Button Margin="5" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Content="{StaticResource OpenRCONButtonContent}"  Click="OpenRCON_Click"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -670,7 +667,7 @@
                     <GradientStop Color="#FFEAE8E6" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <ScrollViewer DataContext="{Binding Settings}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
+            <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
                 <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
@@ -686,6 +683,7 @@
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -719,7 +717,7 @@
                             </DockPanel>
 
                             <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
-                                          ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank.">
+                                          ToolTip="Sets the local (private) IP the server will listen on.  This should be your primary network card which routes to the public internet.">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -739,16 +737,21 @@
                             <local:AnnotatedSlider Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
         						ToolTip="Sets the maximum number of players which can join this server."/>
 
-                            <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5"/>
-                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="3" Label="Idle Player Timeout:" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+                            
+                            <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="3" IsChecked="{Binding RCONEnabled}" Content="Enable Remote Console" VerticalAlignment="Center" Margin="5"/>
+                            <Label Grid.Column="2" Grid.Row="3" Content="RCON Port:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="3" Grid.Row="3" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" />
+                            
+                            <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5"/>
+                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="Idle Player Timeout:" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time until idle players are kicked from the server."
                                 IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
 
-                            <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="4" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+                            <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="5" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time between server auto-saves."/>
 
 
-                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -760,30 +763,12 @@
                                 </Grid>
                             </GroupBox>
 
-                            <Label Grid.Column="0" Grid.Row="6" Content="Additional Args:" VerticalAlignment="Center"/>
-                            <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="6" LastChildFill="True">
+                            <Label Grid.Column="0" Grid.Row="7" Content="Additional Args:" VerticalAlignment="Center"/>
+                            <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="7" LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click"/>
                                 <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
                             </DockPanel>
-
-                            <!--
-                            <GroupBox Header="Whitelist" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Height="150" BorderBrush="#FFD4C2B0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ListBox IsEnabled="false" Name="WhitelistControl" Grid.Column="0" Grid.RowSpan="3" ItemsSource="{Binding Whitelist}"/>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBox IsEnabled="false" Height="28" Margin="5" Text="{Binding ElementName=SettingsControl, Path=WhitelistUser}"/>
-                                        <Button IsEnabled="false" Margin="5" Content="{StaticResource AddWhitelistButtonContent}" Click="WhitelistAdd_Click" />
-                                        <Button IsEnabled="false" Margin="5" Content="{StaticResource RemoveWhitelistButtonContent}" Click="WhitelistRemove_Click" />
-                                    </StackPanel>
-                                </Grid>
-                                
-                            </GroupBox>
-                            -->
                         </Grid>
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
@@ -792,9 +777,9 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode"/>
-                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP"/>
-                                <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads"/>
+                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
                             </StackPanel>
@@ -806,10 +791,10 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat"/>
-                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications"/>
+                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -819,11 +804,11 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair"/>
-                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD"/>
-                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View"/>
-                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location"/>
-                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP"/>
+                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -833,7 +818,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry"/>
+                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -901,8 +886,9 @@
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
                                 <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Harvest Ammount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -919,9 +905,15 @@
                                 <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
-                                <CheckBox IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay"/>
-                                <local:AnnotatedSlider Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
-                                <local:AnnotatedSlider Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay" HorizontalAlignment="Left"/>
+                                    </GroupBox.Header>
+                                    <StackPanel Orientation="Vertical">
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -931,7 +923,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5"/>
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left"/>
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
@@ -980,7 +972,6 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="XP Total" Width="75" DisplayMemberBinding="{Binding XPTotal}"/>
                                                 <GridViewColumn Header="Engram Total" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
                                             </GridView>
                                         </ListView.View>
@@ -989,7 +980,7 @@
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="Custom Player Levels"/>
+                                            <Label Content="Custom Dino Levels"/>
                                             <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
                                                     ToolTip="Delete all levels">
                                                 <Image Source="Art/Delete.png" Width="16"/>
@@ -1030,7 +1021,6 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="XP Total" Width="75" DisplayMemberBinding="{Binding XPTotal}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
