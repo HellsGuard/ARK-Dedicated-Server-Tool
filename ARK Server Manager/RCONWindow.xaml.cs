@@ -128,7 +128,7 @@ namespace ARK_Server_Manager
                         {
                             using(dynamic steamUser = WebAPI.GetInterface("ISteamUser"))
                             {
-                                steamUser.GetPlayerSummaries();
+                                steamUser.GetPlayerSummaries(steamids: steamId);
                             }   
                         }
                     }

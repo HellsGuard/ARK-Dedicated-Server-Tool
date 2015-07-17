@@ -28,6 +28,11 @@ namespace ARK_Server_Manager.Lib
             : this(propertySource, new PropertyPath(property))
         {
         }
+        public PropertyChangeNotifier(DependencyObject propertySource, DependencyProperty property, DependencyPropertyChangedEventHandler handler)
+            : this(propertySource, property)
+        {
+            this.ValueChanged += handler;
+        }
 
         public PropertyChangeNotifier(DependencyObject propertySource, PropertyPath property)
         {
@@ -47,8 +52,7 @@ namespace ARK_Server_Manager.Lib
         {
             foreach(var property in properties)
             {
-                var notifier = new PropertyChangeNotifier(propertySource, property);
-                notifier.ValueChanged += handler;
+                var notifier = new PropertyChangeNotifier(propertySource, property, handler);
                 yield return notifier;
             }
         }
