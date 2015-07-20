@@ -50,7 +50,7 @@ namespace ARK_Server_Manager.Lib
             Connected,
         };
 
-        private struct ConsoleCommand
+        public struct ConsoleCommand
         {
             public ConsoleStatus status;
             public string command;

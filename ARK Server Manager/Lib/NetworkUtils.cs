@@ -226,7 +226,19 @@ namespace ARK_Server_Manager.Lib
                     jsonString = await client.DownloadStringTaskAsync(String.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
                 }
 
+                if(jsonString == null)
+                {
+                    logger.Debug(String.Format("Server info request returned null string for {0}:{1}", endpoint.Address, endpoint.Port));
+                    return result;
+                }
+
                 JObject query = JObject.Parse(jsonString);
+                if(query == null)
+                {
+                    logger.Debug(String.Format("Server info request failed to parse for {0}:{1} - '{2}'", endpoint.Address, endpoint.Port, jsonString));
+                    return null;
+                }
+
                 var server = query.SelectToken("server");
                 if (server.Type == JTokenType.String)
                 {
