@@ -256,7 +256,13 @@ namespace ARK_Server_Manager.Lib
                     result = new ServerNetworkInfo();
                     result.Name = (string)query.SelectToken("server.name");
                     Version ver;
-                    Version.TryParse((string)query.SelectToken("server.version"), out ver);
+                    string versionString = (string)query.SelectToken("server.version");
+                    if (versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+
+                    Version.TryParse(versionString, out ver);
                     result.Version = ver;
                     result.Map = (string)query.SelectToken("server.map");
                     result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
