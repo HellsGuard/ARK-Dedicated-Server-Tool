@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ARK_Server_Manager.Lib.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -102,6 +103,11 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register("RCONPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
         public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register("ServerMap", typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register("GlobalSpoilingTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register("GlobalCorpseDecompositionTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register("OverrideMaxExperiencePointsDino", typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register("OverrideMaxExperiencePointsPlayer", typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        public static readonly DependencyProperty GlobalItemDecompositionTimeMultiplierProperty = DependencyProperty.Register("GlobalItemDecompositionTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat
@@ -488,6 +494,41 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(XPMultiplierProperty, value); }
         }
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalSpoilingTimeMultiplier
+        {
+            get { return (float)GetValue(GlobalSpoilingTimeMultiplierProperty); }
+            set { SetValue(GlobalSpoilingTimeMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalItemDecompositionTimeMultiplier
+        {
+            get { return (float)GetValue(GlobalItemDecompositionTimeMultiplierProperty); }
+            set { SetValue(GlobalItemDecompositionTimeMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalCorpseDecompositionTimeMultiplier
+        {
+            get { return (float)GetValue(GlobalCorpseDecompositionTimeMultiplierProperty); }
+            set { SetValue(GlobalCorpseDecompositionTimeMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int OverrideMaxExperiencePointsPlayer
+        {
+            get { return (int)GetValue(OverrideMaxExperiencePointsPlayerProperty); }
+            set { SetValue(OverrideMaxExperiencePointsPlayerProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int OverrideMaxExperiencePointsDino
+        {
+            get { return (int)GetValue(OverrideMaxExperiencePointsDinoProperty); }
+            set { SetValue(OverrideMaxExperiencePointsDinoProperty, value); }
+        }             
+        
         public bool EnableDinoSpawns
         {
             get { return (bool)GetValue(EnableDinoSpawnsProperty); }
@@ -689,8 +730,9 @@ namespace ARK_Server_Manager.Lib
 
         private static ServerProfile LoadFromINIFiles(string path)
         {
+            var file = IniFile.ReadFromFile(new IniDefinition(), path);
             ServerProfile settings;
-            IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
+            SystemIniFile iniFile = new SystemIniFile(Path.GetDirectoryName(path));
             settings = new ServerProfile();
             iniFile.Deserialize(settings);
 
@@ -768,7 +810,7 @@ namespace ARK_Server_Manager.Lib
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
             Directory.CreateDirectory(configDir);
 
-            var iniFile = new IniFile(configDir);            
+            var iniFile = new SystemIniFile(configDir);            
             iniFile.Serialize(this);
 
             //

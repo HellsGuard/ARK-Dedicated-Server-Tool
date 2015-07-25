@@ -819,7 +819,8 @@
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
                                 <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left"/>
-                                <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -835,6 +836,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -893,6 +895,9 @@
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Spoiling Time:" Value="{Binding GlobalSpoilingTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Item Decomp Time:" Value="{Binding GlobalItemDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Corpse Decomp Time:" Value="{Binding GlobalCorpseDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
