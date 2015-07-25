@@ -105,8 +105,8 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register("GlobalSpoilingTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register("GlobalCorpseDecompositionTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register("OverrideMaxExperiencePointsDino", typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
-        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register("OverrideMaxExperiencePointsPlayer", typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register("OverrideMaxExperiencePointsDino", typeof(int), typeof(ServerProfile), new PropertyMetadata(100000));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register("OverrideMaxExperiencePointsPlayer", typeof(int), typeof(ServerProfile), new PropertyMetadata(100000));
         public static readonly DependencyProperty GlobalItemDecompositionTimeMultiplierProperty = DependencyProperty.Register("GlobalItemDecompositionTimeMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
@@ -535,6 +535,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableDinoSpawnsProperty, value); }
         }
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "DinoSpawnWeightMultipliers", ConditionedOn = "EnableDinoSpawns")]
         public DinoSpawnList DinoSpawns
         {
             get { return (DinoSpawnList)GetValue(DinoSpawnsProperty); }
@@ -738,12 +739,6 @@ namespace ARK_Server_Manager.Lib
 
             var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
 
-            //
-            // Dino spawn weights
-            //
-            var dinoSpawnWeightSources = strings.Where(s => s.StartsWith("DinoSpawnWeightMultipliers="));
-            settings.DinoSpawns = DinoSpawnList.FromINIValues(dinoSpawnWeightSources);
-            
             // 
             // Levels
             //
@@ -813,30 +808,20 @@ namespace ARK_Server_Manager.Lib
             var iniFile = new SystemIniFile(configDir);            
             iniFile.Serialize(this);
 
-            //
-            // Write the Game.ini, but only if the user enabled Dino Spawns.
-            //
-            var values = new List<string>();
-            if (this.EnableDinoSpawns)
-            {
-                values.AddRange(this.DinoSpawns.ToINIValues());
-            }
-
+            var values = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+            var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") &&
+                                                   !s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
             if(this.EnableLevelProgressions)            
             {
                 //
                 // These must be added in this order: Player, then Dinos, per the ARK INI file format.
                 //
-                values.Add(this.PlayerLevels.ToINIValueForXP());
-                values.Add(this.DinoLevels.ToINIValueForXP());
-                values.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
+                filteredValues.Add(this.PlayerLevels.ToINIValueForXP());
+                filteredValues.Add(this.DinoLevels.ToINIValueForXP());
+                filteredValues.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
             }
 
-            if (this.EnableDinoSpawns || this.EnableLevelProgressions)
-            {
-                // WARNING: This will delete everything in this section before writing the new values.
-                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
-            }            
+            iniFile.IniWriteSection(IniFileSections.GameMode, filteredValues.ToArray(), IniFiles.Game);
         }
 
         public string GetServerArgs()

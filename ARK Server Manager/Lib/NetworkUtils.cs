@@ -155,17 +155,24 @@ namespace ARK_Server_Manager.Lib
                 if (availableVersion != null)
                 {
                     Version ver;
-                    result.IsValid = Version.TryParse(availableVersion.ToString(), out ver);
-
-                    //result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
+                    string versionString = availableVersion.ToString();
+                    if(versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+                    result.IsValid = Version.TryParse(versionString, out ver);
                     result.Current = ver;
                 }
 
                 if (upcomingVersion != null)
                 {
                     Version ver;
-                    Version.TryParse(availableVersion.ToString(), out ver);
-                    //ParseArkVersionString((string)availableVersion, out ver);
+                    string versionString = upcomingVersion.ToString();
+                    if (versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+                    Version.TryParse(versionString, out ver);
                     result.Upcoming = ver;
                 }
 

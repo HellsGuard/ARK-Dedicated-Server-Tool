@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class DinoSpawnList : SortableObservableCollection<DinoSpawn>
+    public class DinoSpawnList : SortableObservableCollection<DinoSpawn>, IIniValuesCollection
     {
         public void AddRange(IEnumerable<DinoSpawn> spawns)
         {
@@ -30,6 +30,13 @@ namespace ARK_Server_Manager.Lib
             var values = new List<string>();
             values.AddRange(this.Select(d => String.Format("DinoSpawnWeightMultipliers={0}", d.ToINIValue())));
             return values;
+        }
+
+        public IEnumerable<string> ToIniValues()
+        {
+            var values = new List<string>();
+            values.AddRange(this.Select(d => String.Format("DinoSpawnWeightMultipliers={0}", d.ToINIValue())));
+            return values;            
         }
     }
 
