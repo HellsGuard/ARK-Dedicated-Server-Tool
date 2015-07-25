@@ -2,377 +2,222 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ARK_Server_Manager.Lib
+namespace ARK_Server_Manager.Lib.Serialization
 {
-    public enum IniFiles
+    public class IniSection
     {
-        GameUserSettings,
-        Game
-    }
-
-    public enum IniFileSections
-    {
-        ServerSettings,
-        SessionSettings,
-        GameSession,
-        GameMode,
-        MessageOfTheDay,
-        MultiHome
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=true)]
-    public class IniFileEntryAttribute : Attribute
-    {
-        public IniFiles File;
-
-        /// <summary>
-        /// The section of the ini file.
-        /// </summary>
-        public IniFileSections Section;
-
-        /// <summary>
-        /// The key within the section.
-        /// </summary>
-        public string Key;
-
-        /// <summary>
-        /// If true, the value of booleans will be inverted when read or written.
-        /// </summary>
-        public bool InvertBoolean;
-
-        /// <summary>
-        /// If true, will also write a true boolean value when the underlying field is non-default (or empty for strings), otherwise a false value will be written.
-        /// </summary>
-        public bool WriteBoolValueIfNonEmpty;
-
-        /// <summary>
-        /// Clear the section before writing this value.
-        /// </summary>
-        public bool ClearSection;
-
-        /// <summary>
-        /// Only write the attributed value if the named field is true.
-        /// </summary>
-        public string ConditionedOn;
-        
-        /// <summary>
-        /// Attribute for the IniFile serializer
-        /// </summary>
-        /// <param name="File">The file into which the setting should be serialized.</param>
-        /// <param name="Section">The section in the ini file.</param>
-        /// <param name="Key">The key within the section.  Defaults to the same name as the attributed field.</param>
-        public IniFileEntryAttribute(IniFiles File, IniFileSections Section, string Key = "")
+        public IniSection(string sectionName)
         {
-            this.File = File;
-            this.Section = Section;
-            this.Key = Key;
-        }
-    }
-
-    /// <summary>
-    /// Class for reading/writing INI files
-    /// </summary>
-    /// <remarks>
-    /// From http://www.codeproject.com/Articles/1966/An-INI-file-handling-class-using-C
-    /// </remarks>
-    class IniFile
-    {
-        private readonly Dictionary<IniFileSections, string> SectionNames = new Dictionary<IniFileSections, string>()
-        {
-            { IniFileSections.GameMode, "/script/shootergame.shootergamemode" },
-            { IniFileSections.GameSession, "/Script/Engine.GameSession"},
-            { IniFileSections.MessageOfTheDay, "MessageOfTheDay" },
-            { IniFileSections.MultiHome, "MultiHome" },
-            { IniFileSections.ServerSettings, "ServerSettings" },
-            { IniFileSections.SessionSettings, "SessionSettings" },
-        };
-
-        private readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
-        {
-            { IniFiles.GameUserSettings, "GameUserSettings.ini" },
-            { IniFiles.Game, "Game.ini" }
-        };
-
-        public string basePath;
-
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section,
-            string key, string val, string filePath);
-
-
-        [DllImport("kernel32")]
-        private static extern int WritePrivateProfileSection(string section, string data, string filePath);
-
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section,
-                 string key, string def, StringBuilder retVal,
-            int size, string filePath);
-
-        [DllImport("kernel32", CharSet=CharSet.Auto)]
-        private static extern int GetPrivateProfileSection(string section, char[] retVal, int size, string filePath);
-
-        /// <summary>
-        /// INIFile Constructor.
-        /// </summary>
-        /// <PARAM name="INIPath"></PARAM>
-        public IniFile(string INIPath)
-        {
-            basePath = INIPath;
+            this.SectionName = sectionName;
+            this.Entries = new List<IniEntry>();
+            this.Fields = new Dictionary<string, List<IniFieldEntry>>();
         }
 
-        /// <summary>
-        /// Writes the specified object's fields to the INI file, based on the field attributes.
-        /// </summary>
-        /// <param name="obj"></param>
-        public void Serialize(object obj)
+        public class IniFieldEntry
         {
-            var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
-            foreach(var field in fields)
+            public int Order
             {
-                var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);   
-                foreach(var attribute in attributes)
-                {
-                    var attr = attribute as IniFileEntryAttribute;
-                    var value = field.GetValue(obj);
-                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+                get;
+                set;
+            }
 
-                    if(attr.ClearSection)
-                    {
-                        IniWriteValue(attr.Section, null, null, IniFiles.GameUserSettings);
-                    }
-
-
-                    if(!String.IsNullOrEmpty(attr.ConditionedOn))
-                    {
-                        var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
-                        var conditionValue = conditionField.GetValue(obj);
-                        if(conditionValue is bool && (bool)conditionValue == false)
-                        {
-                            // The condition value was not set to true, so clear this attribute instead of writing it
-                            IniWriteValue(attr.Section, keyName, null, attr.File);
-                            continue;
-                        }
-                    }
-
-                    if(attr.WriteBoolValueIfNonEmpty)
-                    {
-                        if(value == null)
-                        {
-                            IniWriteValue(attr.Section, keyName, "False", attr.File);
-                        }
-                        else
-                        {                           
-                            if(value is string)
-                            {
-                                var strValue = value as string;
-                                IniWriteValue(attr.Section, keyName, String.IsNullOrEmpty(strValue) ? "False" : "True", attr.File);
-                            }
-                            else
-                            {
-                                // Not supported
-                                throw new NotSupportedException("Unexpected IniFileEntry value type.");
-                            }                            
-                        }
-                    }
-                    else
-                    {
-                        if (attr.InvertBoolean && value is Boolean)
-                        {
-                            IniWriteValue(attr.Section, keyName, Convert.ToString(!(bool)(value)), attr.File);
-                        }
-                        else
-                        {
-                            IniWriteValue(attr.Section, keyName, Convert.ToString(value), attr.File);
-                        }
-                    }
-                }
+            public IniEntry Entry
+            {
+                get;
+                set;
             }
         }
 
-        public void Deserialize(object obj)
+        public string SectionName
         {
-            var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
-            foreach (var field in fields)
+            get;
+            set;
+        }
+
+        public List<IniEntry> Entries
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, List<IniFieldEntry>> Fields
+        {
+            get;
+            set;
+        }
+
+        internal static IEnumerable<IniSection> ReadAllSections(IEnumerator<IniFileStream.Line> iniLines, IniDefinition definition)
+        {
+            IniSection currentSection = null;
+            int ordinal = 0;
+            do
             {
-                var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
-                bool extraBoolValue = false;
-                foreach (var attribute in attributes)
+                switch (iniLines.Current.Type)
                 {
-                    var attr = attribute as IniFileEntryAttribute;
-                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
-
-                    if (attr.WriteBoolValueIfNonEmpty)
-                    {
-                        // Don't really need to do anything here, we don't care about this on reading it.
-                        // extraBoolValue = Convert.ToBoolean(IniReadValue(SectionNames[attr.Section], attr.Key));
-                    }
-                    else
-                    {
-                        var iniValue = IniReadValue(SectionNames[attr.Section], keyName, FileNames[attr.File]);
-                        var fieldType = field.PropertyType;
-
-                        if (fieldType == typeof(string))
+                    case IniFileStream.LineType.SectionHeader:
+                        if(currentSection != null)
                         {
-                            field.SetValue(obj, iniValue);
+                            yield return currentSection;
                         }
-                        else
-                        {
-                            // Update the ConditionedOn flag, if this field has one.
-                            if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
-                            {
-                                var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
-                                if (String.IsNullOrWhiteSpace(iniValue))
-                                {
-                                    conditionField.SetValue(obj, false);
-                                }
-                                else
-                                {
-                                    conditionField.SetValue(obj, true);
-                                }
-                            }
 
-                            if (String.IsNullOrWhiteSpace(iniValue))
-                            {                                
-
-                                // Skip non-string values which are not found
-                                continue;
-                            }
-
-                            if (fieldType == typeof(bool))
-                            {
-                                var boolValue = false;
-                                bool.TryParse(iniValue, out boolValue);
-                                if (attr.InvertBoolean)
-                                {
-                                    boolValue = !boolValue;
-                                }
-
-                                field.SetValue(obj, boolValue);
-                            }
-                            else if (fieldType == typeof(int))
-                            {
-                                int intValue;
-                                int.TryParse(iniValue, out intValue);
-                                field.SetValue(obj, intValue);
-                            }
-                            else if (fieldType == typeof(float))
-                            {
-                                float floatValue;
-                                float.TryParse(iniValue, out floatValue);
-                                field.SetValue(obj, floatValue);
-                            }
-                            else
-                            {
-                                throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), attr.Key, attr.Section));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Write Data to the INI File
-        /// </summary>
-        /// <PARAM name="Section"></PARAM>
-        /// Section name
-        /// <PARAM name="Key"></PARAM>
-        /// Key Name
-        /// <PARAM name="Value"></PARAM>
-        /// Value Name
-        public void IniWriteValue(string Section, string Key, string Value, string pathSuffix = "")
-        {
-            WritePrivateProfileString(Section, Key, Value, Path.Combine(this.basePath, pathSuffix));
-        }
-
-        public void IniWriteValue(IniFileSections Section, string Key, string Value, IniFiles File)
-        {
-            IniWriteValue(SectionNames[Section], Key, Value, FileNames[File]);
-        }
-
-        /// <summary>
-        /// Read Data Value From the Ini File
-        /// </summary>
-        /// <PARAM name="Section"></PARAM>
-        /// <PARAM name="Key"></PARAM>
-        /// <PARAM name="Path"></PARAM>
-        /// <returns></returns>
-        public string IniReadValue(string Section, string Key, string pathSuffix = "")
-        {
-            const int MaxValueSize = 2048;
-            StringBuilder temp = new StringBuilder(MaxValueSize);
-            int i = GetPrivateProfileString(Section, Key, "", temp,
-                                            MaxValueSize, Path.Combine(this.basePath, pathSuffix));
-            return temp.ToString();
-        }
-
-        public string[] IniReadSection(IniFileSections Section, IniFiles File)
-        {
-            return IniReadSection(SectionNames[Section], FileNames[File]);
-        }
-
-        public string[] IniReadSection(string Section, string pathSuffix = "")
-        {
-            const int MaxSectionSize = 65536;
-            var temp = new char[MaxSectionSize];
-            int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, Path.Combine(this.basePath, pathSuffix));
-            return MultiStringToArray(temp);
-        }
-
-        public void IniWriteSection(IniFileSections Section, string[] values, IniFiles File)
-        {
-            IniWriteSection(SectionNames[Section], values, FileNames[File]);
-        }
-
-        public void IniWriteSection(string Section, string[] values, string pathSuffix = "")
-        {
-            WritePrivateProfileSection(Section, StringArrayToMultiString(values), Path.Combine(this.basePath, pathSuffix));
-        }
-
-        static string StringArrayToMultiString(params string[] values)
-        {
-            if (values == null) throw new ArgumentNullException("values");
-            StringBuilder multiString = new StringBuilder();
-
-            if (values.Length == 0)
-            {
-                multiString.Append('\0');
-            }
-            else
-            {
-                foreach (string s in values)
-                {
-                    multiString.Append(s);
-                    multiString.Append('\0');
-                }
-            }
-            return multiString.ToString();
-        }
-
-        static string[] MultiStringToArray(char[] multistring)
-        {
-            List<string> stringList = new List<string>();
-            int i = 0;
-            while (i < multistring.Length)
-            {
-                int j = i;
-                if (multistring[j++] == '\0') break;
-                while (j < multistring.Length)
-                {
-                    if (multistring[j++] == '\0')
-                    {
-                        stringList.Add(new string(multistring, i, j - i - 1));
-                        i = j;
+                        currentSection = new IniSection(iniLines.Current.Value);
                         break;
+
+                    default:
+                        var baseEntry = IniEntry.FromLine(iniLines.Current);
+                        currentSection.Entries.Add(baseEntry);
+
+                        if (!baseEntry.IsBlank && !baseEntry.IsComment)
+                        {
+                            IniSectionDefinition sectionDefinition;
+                            definition.Sections.TryGetValue(currentSection.SectionName, out sectionDefinition);
+                            var fieldEntry = new IniFieldEntry { Order = ordinal++, Entry = GetFieldEntry(sectionDefinition, baseEntry) };
+
+                            List<IniFieldEntry> fieldEntries;
+                            if (!currentSection.Fields.TryGetValue(baseEntry.Key, out fieldEntries))
+                            {
+                                fieldEntries = new List<IniFieldEntry>();
+                                currentSection.Fields[baseEntry.Key] = fieldEntries;
+                            }
+
+                            fieldEntries.Add(fieldEntry);
+                        }
+                        break;
+                }
+            } while (iniLines.MoveNext());
+
+            yield return currentSection;
+        }
+
+        private static IniEntry GetFieldEntry(IniSectionDefinition definition, IniEntry baseEntry)
+        {
+            IniFieldDefinition fieldDefinition;
+            if (definition != null &&
+                definition.Fields.TryGetValue(baseEntry.Key, out fieldDefinition) && 
+                fieldDefinition.IsCompound)
+            {
+                return CompoundIniEntry.FromIniEntry(baseEntry);
+            }
+
+            return baseEntry;            
+        }
+    }
+
+    public class IniFile
+    {
+        public IniDefinition Definition
+        {
+            get;
+            set;
+        }
+
+        public List<IniFileStream.Line> HeaderLines
+        {
+            get;
+            set;
+        }
+        public List<IniSection> Sections
+        {
+            get;
+            set;
+        }
+
+        public static IniFile ReadFromFile(IniDefinition definition, string file)
+        {
+            var iniFileStream = IniFileStream.FromFile(file);
+            var lines = iniFileStream.GetLines().GetEnumerator();
+            var result = new IniFile()
+            {
+                HeaderLines = new List<IniFileStream.Line>(),
+                Definition = definition,
+                Sections = new List<IniSection>()
+            };
+
+            //
+            // Read any header comments
+            //
+            bool hasElement = lines.MoveNext();
+            while(hasElement && lines.Current.Type != IniFileStream.LineType.SectionHeader)
+            {
+                result.HeaderLines.Add(lines.Current);
+                hasElement = lines.MoveNext();
+            }
+
+            if (hasElement)
+            {
+                result.Sections.AddRange(IniSection.ReadAllSections(lines, definition));
+            }
+
+            return result;
+        }
+
+        public void WriteToFile(string file)
+        {
+
+        }
+    }
+    
+    public class IniFileStream
+    {
+        public enum LineType
+        {
+            SectionHeader,
+            Value,
+            Blank,
+            Comment,
+        };
+
+        public struct Line
+        {
+            public LineType Type
+            {
+                get;
+                set;
+            }
+
+            public string Value
+            {
+                get;
+                set;
+            }
+        }
+
+        private StreamReader stream;
+
+        public IEnumerable<Line> GetLines()
+        {
+            using (stream)
+            {
+                while (!stream.EndOfStream)
+                {
+                    var line = stream.ReadLine().Trim();
+                    if (String.IsNullOrWhiteSpace(line))
+                    {
+                        yield return new Line { Type = LineType.Blank };
+                    }
+                    else if (line.StartsWith("[") && line.EndsWith("]"))
+                    {
+                        yield return new Line { Type = LineType.SectionHeader, Value = line };
+                    }
+                    else if (line.StartsWith("#"))
+                    {
+                        yield return new Line { Type = LineType.Comment, Value = line };
+                    }
+                    else
+                    {
+                        yield return new Line { Type = LineType.Value, Value = line };
                     }
                 }
             }
+        }
 
-            return stringList.ToArray();
+        public static IniFileStream FromFile(string file)
+        {
+            var stream = File.OpenText(file);
+            return new IniFileStream { stream = stream };
         }
     }
 }
