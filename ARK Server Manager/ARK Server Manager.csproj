@@ -146,11 +146,13 @@
     <Compile Include="Lib\ActionQueue.cs" />
     <Compile Include="Lib\DebugUtils.cs" />
     <Compile Include="Lib\IAsyncDisposable.cs" />
+    <Compile Include="Lib\Model\AggregateIniValueList.cs" />
     <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Model\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
     <Compile Include="Lib\PropertyChangeNotifier.cs" />
+    <Compile Include="Lib\Serialization\AggregateIniValue.cs" />
     <Compile Include="Lib\Serialization\CompoundIniEntry.cs" />
     <Compile Include="Lib\Serialization\IIniValuesCollection.cs" />
     <Compile Include="Lib\Serialization\IniDefinition.cs" />

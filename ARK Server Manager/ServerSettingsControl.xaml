@@ -868,7 +868,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding DinoNameTag}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                         <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
