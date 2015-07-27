@@ -291,7 +291,7 @@ namespace ARK_Server_Manager.Lib
                                 var section = IniReadSection(attr.Section, attr.File);
                                 var filteredSection = section.Where(s => s.StartsWith(attr.Key + "="));
                                 var factoryMethod = fieldType.GetMethod("FromINIValues", BindingFlags.Static | BindingFlags.Public);
-                                var result = factoryMethod.Invoke(null, new [] { filteredSection });
+                                var result = factoryMethod.Invoke(null, new object[] { attr.Key, filteredSection });
                                 field.SetValue(obj, result);
                             }
                             else

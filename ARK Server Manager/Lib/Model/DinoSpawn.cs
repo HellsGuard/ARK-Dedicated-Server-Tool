@@ -9,24 +9,9 @@ using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib
 {   
-    public class DinoSpawnList : AggregateIniValueList<DinoSpawn>
-    {
-        public DinoSpawnList() 
-            : base(DinoSpawn.FromINIValue, "DinoSpawnWeightMultipliers")
-        {
-
-        }
-
-        public static DinoSpawnList FromINIValues(IEnumerable<string> iniValues)
-        {
-            var spawns = new DinoSpawnList();
-            spawns.InitializeFromINIValues(iniValues);
-            return spawns;
-        }
-    }
-
     public class DinoSpawn : AggregateIniValue
     {
+        public const string AggregateValueName = "DinoSpawnWeightMultipliers";
         public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register("SpawnLimitPercentage", typeof(float), typeof(DinoSpawn), new PropertyMetadata(10.0F));
         public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register("DinoNameTag", typeof(string), typeof(DinoSpawn), new PropertyMetadata("--SET ME--"));
         public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register("SpawnWeightMultiplier", typeof(float), typeof(DinoSpawn), new PropertyMetadata(0.0F));

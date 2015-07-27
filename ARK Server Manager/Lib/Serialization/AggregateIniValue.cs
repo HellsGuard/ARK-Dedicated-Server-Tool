@@ -20,6 +20,13 @@ namespace ARK_Server_Manager.Lib
     {
         private readonly List<PropertyInfo> properties = new List<PropertyInfo>();
 
+        public static T FromINIValue<T>(string value) where T : AggregateIniValue, new()
+        {
+            var result = new T();
+            result.InitializeFromINIValue(value);
+            return result;
+        }
+
         public string ToINIValue()
         {
             GetPropertyInfos();

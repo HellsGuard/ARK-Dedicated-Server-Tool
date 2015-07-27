@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 namespace ARK_Server_Manager.Lib
 {
     public class AggregateIniValueList<T> : SortableObservableCollection<T>, IIniValuesCollection
-         where T : AggregateIniValue
+         where T : AggregateIniValue, new()
     {
-        private Func<string, T> valueFactory;
         private string aggregateValueName;
 
-        protected AggregateIniValueList(Func<string, T> valueFactory, string aggregateValueName)
+        public AggregateIniValueList(string aggregateValueName)
         {
-            this.valueFactory = valueFactory;
             this.aggregateValueName = aggregateValueName;
         }
 
@@ -28,7 +26,7 @@ namespace ARK_Server_Manager.Lib
 
         protected void InitializeFromINIValues(IEnumerable<string> iniValues)
         {
-            this.AddRange(iniValues.Select(v => valueFactory(v)));
+            this.AddRange(iniValues.Select(v => AggregateIniValue.FromINIValue<T>(v)));
         }
 
         public IEnumerable<string> ToIniValues()
@@ -36,6 +34,13 @@ namespace ARK_Server_Manager.Lib
             var values = new List<string>();
             values.AddRange(this.Select(d => String.Format("{0}={1}", this.aggregateValueName, d.ToINIValue())));
             return values;
+        }
+
+        public static AggregateIniValueList<T> FromINIValues(string aggregateValueName, IEnumerable<string> iniValues)
+        {
+            var spawns = new AggregateIniValueList<T>(aggregateValueName);
+            spawns.InitializeFromINIValues(iniValues);
+            return spawns;
         }
     }
 

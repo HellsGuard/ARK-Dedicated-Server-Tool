@@ -92,7 +92,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register("StructureResistanceMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register("XPMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty EnableDinoSpawnsProperty = DependencyProperty.Register("EnableDinoSpawns", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register("DinoSpawns", typeof(DinoSpawnList), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register("DinoSpawns", typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register("EnableLevelProgressions", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register("PlayerLevels", typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
         public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register("DinoLevels", typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
@@ -535,10 +535,10 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableDinoSpawnsProperty, value); }
         }
 
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "DinoSpawnWeightMultipliers", ConditionedOn = "EnableDinoSpawns")]
-        public DinoSpawnList DinoSpawns
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, DinoSpawn.AggregateValueName, ConditionedOn = "EnableDinoSpawns")]
+        public AggregateIniValueList<DinoSpawn> DinoSpawns
         {
-            get { return (DinoSpawnList)GetValue(DinoSpawnsProperty); }
+            get { return (AggregateIniValueList<DinoSpawn>)GetValue(DinoSpawnsProperty); }
             set { SetValue(DinoSpawnsProperty, value); }
         }
 
@@ -614,7 +614,7 @@ namespace ARK_Server_Manager.Lib
             AdminPassword = PasswordUtils.GeneratePassword(16);
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.DinoSpawns = new DinoSpawnList();
+            this.DinoSpawns = new AggregateIniValueList<DinoSpawn>(DinoSpawn.AggregateValueName);
             GetDefaultDirectories();
         }
 

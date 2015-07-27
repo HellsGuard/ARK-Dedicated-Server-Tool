@@ -147,6 +147,7 @@
     <Compile Include="Lib\DebugUtils.cs" />
     <Compile Include="Lib\IAsyncDisposable.cs" />
     <Compile Include="Lib\Model\AggregateIniValueList.cs" />
+    <Compile Include="Lib\Model\ClassMultiplier.cs" />
     <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Model\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
