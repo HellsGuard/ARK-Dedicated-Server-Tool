@@ -153,7 +153,7 @@ namespace ARK_Server_Manager.Lib
                     if (collection != null)
                     {
                         var filteredSection = IniReadSection(attr.Section, attr.File)
-                                                    .Where(s => !s.StartsWith(attr.Key + "="))
+                                                    .Where(s => !s.StartsWith(keyName + "="))
                                                     .ToArray();
                         IniWriteSection(attr.Section, filteredSection, attr.File);
                     }
@@ -195,7 +195,7 @@ namespace ARK_Server_Manager.Lib
                         if(collection != null)
                         {
                             // Remove all the values in the collection with this key name
-                            var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(attr.Key + "="));
+                            var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
                             var result = filteredSection
                                             .Concat(collection.ToIniValues())
                                             .ToArray();
@@ -289,14 +289,14 @@ namespace ARK_Server_Manager.Lib
                             else if (fieldType.FindInterfaces((t, c) => t == typeof(IIniValuesCollection), null).FirstOrDefault() != null)
                             {
                                 var section = IniReadSection(attr.Section, attr.File);
-                                var filteredSection = section.Where(s => s.StartsWith(attr.Key + "="));
+                                var filteredSection = section.Where(s => s.StartsWith(keyName + "="));
                                 var factoryMethod = fieldType.GetMethod("FromINIValues", BindingFlags.Static | BindingFlags.Public);
-                                var result = factoryMethod.Invoke(null, new object[] { attr.Key, filteredSection });
+                                var result = factoryMethod.Invoke(null, new object[] { keyName, filteredSection });
                                 field.SetValue(obj, result);
                             }
                             else
                             {
-                                throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), attr.Key, attr.Section));
+                                throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
                             }
                         }
                     }

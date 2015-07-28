@@ -206,5 +206,10 @@ namespace ARK_Server_Manager.Lib
         {
             return String.Format("OverridePlayerLevelEngramPoints={0}", this.EngramPoints);
         }
+
+        internal Level Duplicate()
+        {
+            return new Level { XPRequired = this.XPRequired, EngramPoints = this.EngramPoints };
+        }
     }
 }

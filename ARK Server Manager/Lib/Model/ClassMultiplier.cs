@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ARK_Server_Manager.Lib.Model
+namespace ARK_Server_Manager.Lib
 {
     public class ClassMultiplier : AggregateIniValue
     {
@@ -15,12 +15,14 @@ namespace ARK_Server_Manager.Lib.Model
             DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(0F));
 
 
+        [AggregateIniValueEntry]
         public string ClassName
         {
             get { return (string)GetValue(ClassNameProperty); }
             set { SetValue(ClassNameProperty, value); }
         }
 
+        [AggregateIniValueEntry]
         public float Multiplier
         {
             get { return (float)GetValue(MultiplierProperty); }

@@ -335,6 +335,11 @@ namespace ARK_Server_Manager
             this.Settings.ResetDinoSpawnsToDefault();
         }
 
+        private void TamedDinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.ResetTamedDinoClassDamageMultipliersToDefault();
+        }
+
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             await ServerManager.Instance.CheckForUpdatesAsync();

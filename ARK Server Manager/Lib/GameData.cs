@@ -8,7 +8,7 @@ namespace ARK_Server_Manager.Lib
 {
     public static class GameData
     {
-        public static readonly DinoSpawn[] DinoSpawns = new DinoSpawn[] 
+        private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[] 
             {
                 new DinoSpawn { DinoNameTag = "Anky",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { DinoNameTag = "Ant",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
@@ -42,7 +42,48 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { DinoNameTag = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
             };
 
-        public static readonly Level[] LevelProgression = new Level[]
+        public static IEnumerable<DinoSpawn> DinoSpawns => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
+
+        private static readonly ClassMultiplier[] tamedDinoClassDamageMultipliers = new ClassMultiplier[]
+        {
+            new ClassMultiplier { ClassName="Ankylo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Ant_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Argent_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Bat_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="BoaFrill_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Carno_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Coel_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dilo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dimorph_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dodo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dolphin_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Mammoth_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Megalodon_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Para_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Phiomia_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Piranha_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Plesiosaur_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Ptero_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Ptero_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Raptor_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Rex_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Saber_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Sarco_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Sauropod_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Scorpion_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="SpiderL_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="SpiderS_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Spino_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Trike_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Turtle_Character_BP_C", Multiplier = 1.0f }
+        };
+
+        public static IEnumerable<ClassMultiplier> TamedDinoClassDamageMultipliers => tamedDinoClassDamageMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+       
+        private static readonly Level[] levelProgression = new Level[]
             {             
                 new Level {XPRequired=5	    , EngramPoints=8  },
                 new Level {XPRequired=20	, EngramPoints=8  },
@@ -144,5 +185,7 @@ namespace ARK_Server_Manager.Lib
                 new Level {XPRequired=97316	, EngramPoints=33 },
                 new Level {XPRequired=99422	, EngramPoints=33 },
             };
+
+        public static IEnumerable<Level> LevelProgression => levelProgression.Select(l => l.Duplicate());
     }
 }

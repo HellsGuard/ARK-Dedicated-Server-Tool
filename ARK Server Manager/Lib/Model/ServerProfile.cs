@@ -24,14 +24,54 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class ServerProfile : DependencyObject
     {
-
-        // Using a DependencyProperty as the backing store for ProfileName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
+        public static readonly DependencyProperty InstallDirectoryProperty = DependencyProperty.Register(nameof(InstallDirectory), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty LastInstalledVersionProperty = DependencyProperty.Register(nameof(LastInstalledVersion), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
+        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
 
         public string ProfileName
         {
             get { return (string)GetValue(ProfileNameProperty); }
             set { SetValue(ProfileNameProperty, value); }
+        }
+
+        public string InstallDirectory
+        {
+            get { return (string)GetValue(InstallDirectoryProperty); }
+            set { SetValue(InstallDirectoryProperty, value); }
+        }
+
+        public string LastInstalledVersion
+        {
+            get { return (string)GetValue(LastInstalledVersionProperty); }
+            set { SetValue(LastInstalledVersionProperty, value); }
+        }
+
+        public string AdditionalArgs
+        {
+            get { return (string)GetValue(AdditionalArgsProperty); }
+            set { SetValue(AdditionalArgsProperty, value); }
+        }
+
+        public bool RCONEnabled
+        {
+            get { return (bool)GetValue(RCONEnabledProperty); }
+            set { SetValue(RCONEnabledProperty, value); }
+        }
+
+        public int RCONPort
+        {
+            get { return (int)GetValue(RCONPortProperty); }
+            set { SetValue(RCONPortProperty, value); }
+        }
+
+        public string ServerMap
+        {
+            get { return (string)GetValue(ServerMapProperty); }
+            set { SetValue(ServerMapProperty, value); }
         }
 
         #region Server properties
@@ -96,12 +136,6 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register(nameof(PlayerLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
         public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register(nameof(DinoLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
-        public static readonly DependencyProperty InstallDirectoryProperty = DependencyProperty.Register(nameof(InstallDirectory), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty LastInstalledVersionProperty = DependencyProperty.Register(nameof(LastInstalledVersion), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
-        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register(nameof(IsDirty), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalSpoilingTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalCorpseDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
@@ -535,12 +569,33 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableDinoSpawnsProperty, value); }
         }
 
+        [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, DinoSpawn.AggregateValueName, ConditionedOn = nameof(EnableDinoSpawns))]
         public AggregateIniValueList<DinoSpawn> DinoSpawns
         {
             get { return (AggregateIniValueList<DinoSpawn>)GetValue(DinoSpawnsProperty); }
             set { SetValue(DinoSpawnsProperty, value); }
         }
+
+        public bool EnableTamedDinoClassDamageMultipliers
+        {
+            get { return (bool)GetValue(EnableTamedDinoClassDamageMultipliersProperty); }
+            set { SetValue(EnableTamedDinoClassDamageMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableTamedDinoClassDamageMultipliersProperty =
+            DependencyProperty.Register(nameof(EnableTamedDinoClassDamageMultipliers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(EnableTamedDinoClassDamageMultipliers))]        
+        public AggregateIniValueList<ClassMultiplier> TamedDinoClassDamageMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassDamageMultipliersProperty); }
+            set { SetValue(TamedDinoClassDamageMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty =
+            DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
         public bool EnableLevelProgressions
         {
@@ -558,42 +613,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (LevelList)GetValue(DinoLevelsProperty); }
             set { SetValue(DinoLevelsProperty, value); }
-        }
-
-        public string InstallDirectory
-        {
-            get { return (string)GetValue(InstallDirectoryProperty); }
-            set { SetValue(InstallDirectoryProperty, value); }
-        }
-
-        public string LastInstalledVersion
-        {
-            get { return (string)GetValue(LastInstalledVersionProperty); }
-            set { SetValue(LastInstalledVersionProperty, value); }
-        }
-
-        public string AdditionalArgs
-        {
-            get { return (string)GetValue(AdditionalArgsProperty); }
-            set { SetValue(AdditionalArgsProperty, value); }
-        }
-
-        public bool RCONEnabled
-        {
-            get { return (bool)GetValue(RCONEnabledProperty); }
-            set { SetValue(RCONEnabledProperty, value); }
-        }
-
-        public int RCONPort
-        {
-            get { return (int)GetValue(RCONPortProperty); }
-            set { SetValue(RCONPortProperty, value); }
-        }
-
-        public string ServerMap
-        {
-            get { return (string)GetValue(ServerMapProperty); }
-            set { SetValue(ServerMapProperty, value); }
         }
         
         #endregion
@@ -615,6 +634,7 @@ namespace ARK_Server_Manager.Lib
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
             this.DinoSpawns = new AggregateIniValueList<DinoSpawn>(DinoSpawn.AggregateValueName);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers));
             GetDefaultDirectories();
         }
 
@@ -622,6 +642,12 @@ namespace ARK_Server_Manager.Lib
         {            
             this.DinoSpawns.Clear();
             this.DinoSpawns.AddRange(GameData.DinoSpawns);
+        }
+
+        public void ResetTamedDinoClassDamageMultipliersToDefault()
+        {
+            this.TamedDinoClassDamageMultipliers.Clear();
+            this.TamedDinoClassDamageMultipliers.AddRange(GameData.TamedDinoClassDamageMultipliers);
         }
 
         public enum LevelProgression
@@ -685,6 +711,12 @@ namespace ARK_Server_Manager.Lib
                     settings.EnableDinoSpawns = false;
                 }
 
+                if(settings.TamedDinoClassDamageMultipliers.Count == 0)
+                {
+                    settings.ResetTamedDinoClassDamageMultipliersToDefault();
+                    settings.EnableTamedDinoClassDamageMultipliers = false;
+                }
+
                 if (settings.PlayerLevels.Count == 0)
                 {
                     settings.ResetLevelProgressionToDefault(LevelProgression.Player);
@@ -710,6 +742,16 @@ namespace ARK_Server_Manager.Lib
                 else
                 {
                     settings.EnableDinoSpawns = true;
+                }
+
+                if (settings.TamedDinoClassDamageMultipliers.Count == 0)
+                {
+                    settings.ResetTamedDinoClassDamageMultipliersToDefault();
+                    settings.EnableTamedDinoClassDamageMultipliers = false;
+                }
+                else
+                {
+                    settings.EnableTamedDinoClassDamageMultipliers = true;
                 }
 
                 if (settings.PlayerLevels.Count == 0)
@@ -919,6 +961,7 @@ namespace ARK_Server_Manager.Lib
         {
             var settings = new ServerProfile();
             settings.ResetDinoSpawnsToDefault();
+            settings.ResetTamedDinoClassDamageMultipliersToDefault();
             settings.ResetLevelProgressionToDefault(LevelProgression.Player);
             settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
             return settings;

@@ -27,6 +27,18 @@ namespace ARK_Server_Manager.Lib
             return result;
         }
 
+        public T Duplicate<T>() where T : AggregateIniValue, new()
+        {
+            GetPropertyInfos();
+            var result = new T();
+            foreach (var prop in this.properties)
+            {
+                prop.SetValue(result, prop.GetValue(this));
+            }
+
+            return result;
+        }
+
         public string ToINIValue()
         {
             GetPropertyInfos();
