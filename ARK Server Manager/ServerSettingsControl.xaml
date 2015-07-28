@@ -14,7 +14,9 @@
              x:Name="SettingsControl">
     <UserControl.Resources>
         <vm:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
-        <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
+        <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />     
+        <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
+        <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
@@ -901,7 +903,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
@@ -932,7 +934,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
@@ -963,7 +965,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
@@ -994,7 +996,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
@@ -1016,6 +1018,37 @@
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableHarvestResourceItemAmountClassMultipliersCheckbox" Content="Custom Harvest Amount Multipliers" IsChecked="{Binding HarvestResourceItemAmountClassMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" 
+                                                    ToolTip="Reset harvest to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Amount" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>

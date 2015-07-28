@@ -336,8 +336,12 @@ namespace ARK_Server_Manager.Lib
         {
             const int MaxValueSize = 2048;
             StringBuilder temp = new StringBuilder(MaxValueSize);
-            int i = GetPrivateProfileString(Section, Key, "", temp,
-                                            MaxValueSize, Path.Combine(this.basePath, pathSuffix));
+            var file = Path.Combine(this.basePath, pathSuffix);
+            if (File.Exists(file))
+            {
+                int i = GetPrivateProfileString(Section, Key, "", temp,
+                                                MaxValueSize, file);
+            }
             return temp.ToString();
         }
 
@@ -350,7 +354,12 @@ namespace ARK_Server_Manager.Lib
         {
             const int MaxSectionSize = 65536;
             var temp = new char[MaxSectionSize];
-            int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, Path.Combine(this.basePath, pathSuffix));
+            var file = Path.Combine(this.basePath, pathSuffix);
+            if (File.Exists(file))
+            {
+                int i = GetPrivateProfileSection(Section, temp, MaxSectionSize, file);
+            }
+
             return MultiStringToArray(temp);
         }
 

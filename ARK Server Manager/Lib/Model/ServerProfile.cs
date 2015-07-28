@@ -616,9 +616,19 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoClassResistanceMultipliersProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for DinoClassResistanceMultipliers.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DinoClassResistanceMultipliersProperty =
             DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty =
+            DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
 
 
@@ -663,6 +673,7 @@ namespace ARK_Server_Manager.Lib
             this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             GetDefaultDirectories();
         }
 
@@ -720,10 +731,27 @@ namespace ARK_Server_Manager.Lib
                     settings = (ServerProfile)serializer.Deserialize(streamReader);
                     settings.IsDirty = false;
                 }
+
+                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
+                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+                if (File.Exists(profileIniPath))
+                {
+                    settings = LoadFromINIFiles(profileIniPath, settings);
+                }
+                else if(File.Exists(configIniPath))
+                {                    
+                    settings = LoadFromINIFiles(configIniPath, settings);
+                }
+            }
+            else
+            {
+                settings = LoadFromINIFiles(path, settings);
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
             }
 
-            var iniFile = settings == null ? path : Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
-            settings = LoadFromINIFiles(iniFile, settings);
+            //
+            // TODO: Refactor this out
+            //
             if (settings.PlayerLevels.Count == 0)
             {
                 settings.ResetLevelProgressionToDefault(LevelProgression.Player);
@@ -742,8 +770,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
-        {
-            var file = IniFile.ReadFromFile(new IniDefinition(), path);            
+        {         
             SystemIniFile iniFile = new SystemIniFile(Path.GetDirectoryName(path));
             settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings);
@@ -764,8 +791,7 @@ namespace ARK_Server_Manager.Lib
                     settings.DinoLevels = LevelList.FromINIValues(levelRampOverrides[1], null);
                 }
             }
-          
-            settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
+                      
             return settings;
         }
 
@@ -796,6 +822,12 @@ namespace ARK_Server_Manager.Lib
                     {
                         File.Delete(this.LastSaveLocation);
                     }
+
+                    var iniDir = Path.ChangeExtension(this.LastSaveLocation, null);
+                    if (Directory.Exists(iniDir))
+                    {
+                        Directory.Delete(iniDir, recursive: true);
+                    }
                 }
                 catch(IOException)
                 {
@@ -811,18 +843,40 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
+        public string GetProfileIniDir()
+        {
+            return Path.Combine(Path.GetDirectoryName(GetProfilePath()), this.ProfileName);
+        }
+
         public void SaveINIFiles()
         {
+            //
+            // Save alongside the .profile
+            //
+            string profileIniDir = GetProfileIniDir();
+            Directory.CreateDirectory(profileIniDir);
+            SaveINIFile(profileIniDir);
+
+            //
+            // Save to the installation location
+            //
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
             Directory.CreateDirectory(configDir);
+            SaveINIFile(configDir);
+        }
 
-            var iniFile = new SystemIniFile(configDir);            
+        private void SaveINIFile(string profileIniDir)
+        {
+            var iniFile = new SystemIniFile(profileIniDir);
             iniFile.Serialize(this);
 
+            //
+            // TODO: Refactor this into SystemIniFile
+            //
             var values = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
             var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") &&
-                                                   !s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
-            if(this.EnableLevelProgressions)            
+!s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
+            if (this.EnableLevelProgressions)
             {
                 //
                 // These must be added in this order: Player, then Dinos, per the ARK INI file format.
@@ -934,6 +988,7 @@ namespace ARK_Server_Manager.Lib
             settings.TamedDinoClassDamageMultipliers.Reset();
             settings.DinoClassResistanceMultipliers.Reset();
             settings.DinoClassDamageMultipliers.Reset();
+            settings.HarvestResourceItemAmountClassMultipliers.Reset();
             settings.ResetLevelProgressionToDefault(LevelProgression.Player);
             settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
             return settings;

@@ -355,6 +355,11 @@ namespace ARK_Server_Manager
             this.Settings.DinoClassResistanceMultipliers.Reset();
         }
 
+        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
+        }
+
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             await ServerManager.Instance.CheckForUpdatesAsync();

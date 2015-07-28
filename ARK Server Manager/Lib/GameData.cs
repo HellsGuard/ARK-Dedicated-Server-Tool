@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -82,6 +84,42 @@ namespace ARK_Server_Manager.Lib
         };
 
         public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+
+        private static readonly ClassMultiplier[] standardResourceMultipliers = new ClassMultiplier[]
+        {
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Sauro_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Charcoal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Chitin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ChitinOrKeratin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ChitinPaste_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Craftable_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Crystal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Electronics_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Fibers_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Flint_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Gasoline_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Gunpowder_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Hide_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Keratin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Metal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Obsidian_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Oil_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_RareFlower_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Silicon_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Sparkpowder_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Stone_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Temp_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Thatch_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C", Multiplier=1.0f }
+        };
+
+        public static IEnumerable<ClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
        
         private static readonly Level[] levelProgression = new Level[]
             {             
