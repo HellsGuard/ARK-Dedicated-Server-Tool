@@ -12,10 +12,10 @@ namespace ARK_Server_Manager.Lib
     public class DinoSpawn : AggregateIniValue
     {
         public const string AggregateValueName = "DinoSpawnWeightMultipliers";
-        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register("SpawnLimitPercentage", typeof(float), typeof(DinoSpawn), new PropertyMetadata(10.0F));
-        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register("DinoNameTag", typeof(string), typeof(DinoSpawn), new PropertyMetadata("--SET ME--"));
-        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register("SpawnWeightMultiplier", typeof(float), typeof(DinoSpawn), new PropertyMetadata(0.0F));
-        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register("OverrideSpawnLimitPercentage", typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
+        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(10.0F));
+        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata("--SET ME--"));
+        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(0.0F));
+        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
 
         [XmlElement(ElementName="Name")]
         [AggregateIniValueEntry]

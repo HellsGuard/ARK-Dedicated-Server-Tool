@@ -10,9 +10,9 @@ namespace ARK_Server_Manager.Lib.Model
     public class ClassMultiplier : AggregateIniValue
     {
         public static readonly DependencyProperty ClassNameProperty =
-            DependencyProperty.Register("ClassName", typeof(string), typeof(ClassMultiplier), new PropertyMetadata(""));
+            DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(ClassMultiplier), new PropertyMetadata(""));
         public static readonly DependencyProperty MultiplierProperty =
-            DependencyProperty.Register("Multiplier", typeof(float), typeof(ClassMultiplier), new PropertyMetadata(0F));
+            DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(0F));
 
 
         public string ClassName

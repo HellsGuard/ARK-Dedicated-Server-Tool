@@ -20,9 +20,9 @@ namespace ARK_Server_Manager.Lib
         public static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static readonly DependencyProperty StatusProperty =
-            DependencyProperty.Register("Status", typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
+            DependencyProperty.Register(nameof(Status), typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
         public static readonly DependencyProperty PlayersProperty =
-            DependencyProperty.Register("Players", typeof(SortableObservableCollection<PlayerInfo>), typeof(ServerRCON), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Players), typeof(SortableObservableCollection<PlayerInfo>), typeof(ServerRCON), new PropertyMetadata(null));
 
         public ConsoleStatus Status
         {

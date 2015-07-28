@@ -36,17 +36,17 @@ namespace ARK_Server_Manager.Lib
     {
 
         public static readonly DependencyProperty RemovePrereqProperty =
-            DependencyProperty.Register("RemovePrereq", typeof(bool), typeof(Engram), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(RemovePrereq), typeof(bool), typeof(Engram), new PropertyMetadata(false));
         public static readonly DependencyProperty LevelRequirementProperty =
-            DependencyProperty.Register("LevelRequirement", typeof(int), typeof(Engram), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(LevelRequirement), typeof(int), typeof(Engram), new PropertyMetadata(0));
         public static readonly DependencyProperty PointsCostProperty =
-            DependencyProperty.Register("PointsCost", typeof(int), typeof(Engram), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(PointsCost), typeof(int), typeof(Engram), new PropertyMetadata(0));
         public static readonly DependencyProperty HiddenProperty =
-            DependencyProperty.Register("Hidden", typeof(bool), typeof(Engram), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(Hidden), typeof(bool), typeof(Engram), new PropertyMetadata(false));
         public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
+            DependencyProperty.Register(nameof(Name), typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ClassNameProperty =
-            DependencyProperty.Register("ClassName", typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
+            DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
         public string Name
         {
             get { return (string)GetValue(NameProperty); }

@@ -59,7 +59,7 @@ namespace ARK_Server_Manager
 
         // Using a DependencyProperty as the backing store for ServerName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ServerNameProperty =
-            DependencyProperty.Register("ServerName", typeof(string), typeof(RCONWindow), new PropertyMetadata("(Unknown)"));
+            DependencyProperty.Register(nameof(ServerName), typeof(string), typeof(RCONWindow), new PropertyMetadata("(Unknown)"));
 
         public string ConsoleInput
         {
@@ -69,7 +69,7 @@ namespace ARK_Server_Manager
 
         // Using a DependencyProperty as the backing store for ConsoleInput.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConsoleInputProperty =
-            DependencyProperty.Register("ConsoleInput", typeof(string), typeof(RCONWindow), new PropertyMetadata(String.Empty, OnInputChanged));
+            DependencyProperty.Register(nameof(ConsoleInput), typeof(string), typeof(RCONWindow), new PropertyMetadata(String.Empty, OnInputChanged));
 
         public RCONWindow(string serverName, IPEndPoint endpoint, string authPassword)
         {

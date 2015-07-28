@@ -43,12 +43,12 @@ namespace ARK_Server_Manager.Lib
 
         #region Model Properties
 
-        public static readonly DependencyProperty SteamProperty = DependencyProperty.Register("Steam", typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
-        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
-        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register("MaxPlayers", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
-        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
-        public static readonly DependencyProperty VersionProperty = DependencyProperty.Register("Version", typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
-        public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register("ProfileSnapshot", typeof(RuntimeProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
+        public static readonly DependencyProperty SteamProperty = DependencyProperty.Register(nameof(Steam), typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(nameof(Status), typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty VersionProperty = DependencyProperty.Register(nameof(Version), typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
+        public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register(nameof(ProfileSnapshot), typeof(RuntimeProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
 
         public SteamStatus Steam
         {
