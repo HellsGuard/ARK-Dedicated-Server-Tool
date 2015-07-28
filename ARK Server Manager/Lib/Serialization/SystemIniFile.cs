@@ -153,7 +153,7 @@ namespace ARK_Server_Manager.Lib
                     if (collection != null)
                     {
                         var filteredSection = IniReadSection(attr.Section, attr.File)
-                                                    .Where(s => !s.StartsWith(keyName + "="))
+                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + "="))
                                                     .ToArray();
                         IniWriteSection(attr.Section, filteredSection, attr.File);
                     }
@@ -194,12 +194,15 @@ namespace ARK_Server_Manager.Lib
                     {
                         if(collection != null)
                         {
-                            // Remove all the values in the collection with this key name
-                            var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
-                            var result = filteredSection
-                                            .Concat(collection.ToIniValues())
-                                            .ToArray();
-                            IniWriteSection(attr.Section, result, attr.File);
+                            if (collection.IsEnabled)
+                            {
+                                // Remove all the values in the collection with this key name
+                                var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
+                                var result = filteredSection
+                                                .Concat(collection.ToIniValues())
+                                                .ToArray();
+                                IniWriteSection(attr.Section, result, attr.File);
+                            }
                         }
                         else if (attr.InvertBoolean && value is Boolean)
                         {
@@ -235,8 +238,15 @@ namespace ARK_Server_Manager.Lib
                     {
                         var iniValue = IniReadValue(SectionNames[attr.Section], keyName, FileNames[attr.File]);
                         var fieldType = field.PropertyType;
+                        var collection = field.GetValue(obj) as IIniValuesCollection;
 
-                        if (fieldType == typeof(string))
+                        if(collection != null)
+                        {
+                            var section = IniReadSection(attr.Section, attr.File);
+                            var filteredSection = section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
+                            collection.FromIniValues(filteredSection);
+                        }
+                        else if (fieldType == typeof(string))
                         {
                             field.SetValue(obj, iniValue);
                         }
@@ -285,15 +295,7 @@ namespace ARK_Server_Manager.Lib
                                 float floatValue;
                                 float.TryParse(iniValue, out floatValue);
                                 field.SetValue(obj, floatValue);
-                            }
-                            else if (fieldType.FindInterfaces((t, c) => t == typeof(IIniValuesCollection), null).FirstOrDefault() != null)
-                            {
-                                var section = IniReadSection(attr.Section, attr.File);
-                                var filteredSection = section.Where(s => s.StartsWith(keyName + "="));
-                                var factoryMethod = fieldType.GetMethod("FromINIValues", BindingFlags.Static | BindingFlags.Public);
-                                var result = factoryMethod.Invoke(null, new object[] { keyName, filteredSection });
-                                field.SetValue(obj, result);
-                            }
+                            }                           
                             else
                             {
                                 throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));

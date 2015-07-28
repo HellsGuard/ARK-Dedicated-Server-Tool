@@ -131,8 +131,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty TamedDinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register(nameof(StructureResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register(nameof(XPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty EnableDinoSpawnsProperty = DependencyProperty.Register(nameof(EnableDinoSpawns), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register(nameof(DinoSpawns), typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register(nameof(DinoSpawnWeightMultipliers), typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register(nameof(PlayerLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
         public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register(nameof(DinoLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
@@ -563,31 +562,16 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OverrideMaxExperiencePointsDinoProperty, value); }
         }             
         
-        public bool EnableDinoSpawns
-        {
-            get { return (bool)GetValue(EnableDinoSpawnsProperty); }
-            set { SetValue(EnableDinoSpawnsProperty, value); }
-        }
-
         [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, DinoSpawn.AggregateValueName, ConditionedOn = nameof(EnableDinoSpawns))]
-        public AggregateIniValueList<DinoSpawn> DinoSpawns
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<DinoSpawn> DinoSpawnWeightMultipliers
         {
             get { return (AggregateIniValueList<DinoSpawn>)GetValue(DinoSpawnsProperty); }
             set { SetValue(DinoSpawnsProperty, value); }
         }
 
-        public bool EnableTamedDinoClassDamageMultipliers
-        {
-            get { return (bool)GetValue(EnableTamedDinoClassDamageMultipliersProperty); }
-            set { SetValue(EnableTamedDinoClassDamageMultipliersProperty, value); }
-        }
-
-        public static readonly DependencyProperty EnableTamedDinoClassDamageMultipliersProperty =
-            DependencyProperty.Register(nameof(EnableTamedDinoClassDamageMultipliers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
         [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(EnableTamedDinoClassDamageMultipliers))]        
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]        
         public AggregateIniValueList<ClassMultiplier> TamedDinoClassDamageMultipliers
         {
             get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassDamageMultipliersProperty); }
@@ -596,6 +580,47 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty =
             DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> TamedDinoClassResistanceMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassResistanceMultipliersProperty); }
+            set { SetValue(TamedDinoClassResistanceMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoClassResistanceMultipliersProperty =
+            DependencyProperty.Register(nameof(TamedDinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> DinoClassDamageMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassDamageMultipliersProperty); }
+            set { SetValue(DinoClassDamageMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty DinoClassDamageMultipliersProperty =
+            DependencyProperty.Register(nameof(DinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> DinoClassResistanceMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassResistanceMultipliersProperty); }
+            set { SetValue(DinoClassResistanceMultipliersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DinoClassResistanceMultipliers.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DinoClassResistanceMultipliersProperty =
+            DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
 
         public bool EnableLevelProgressions
         {
@@ -633,21 +658,12 @@ namespace ARK_Server_Manager.Lib
             AdminPassword = PasswordUtils.GeneratePassword(16);
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.DinoSpawns = new AggregateIniValueList<DinoSpawn>(DinoSpawn.AggregateValueName);
-            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers));
+            this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             GetDefaultDirectories();
-        }
-
-        public void ResetDinoSpawnsToDefault()
-        {            
-            this.DinoSpawns.Clear();
-            this.DinoSpawns.AddRange(GameData.DinoSpawns);
-        }
-
-        public void ResetTamedDinoClassDamageMultipliersToDefault()
-        {
-            this.TamedDinoClassDamageMultipliers.Clear();
-            this.TamedDinoClassDamageMultipliers.AddRange(GameData.TamedDinoClassDamageMultipliers);
         }
 
         public enum LevelProgression
@@ -693,7 +709,7 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerProfile LoadFrom(string path)
         {
-            ServerProfile settings;
+            ServerProfile settings = null;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
@@ -704,79 +720,32 @@ namespace ARK_Server_Manager.Lib
                     settings = (ServerProfile)serializer.Deserialize(streamReader);
                     settings.IsDirty = false;
                 }
-
-                if (settings.DinoSpawns.Count == 0)
-                {
-                    settings.ResetDinoSpawnsToDefault();
-                    settings.EnableDinoSpawns = false;
-                }
-
-                if(settings.TamedDinoClassDamageMultipliers.Count == 0)
-                {
-                    settings.ResetTamedDinoClassDamageMultipliersToDefault();
-                    settings.EnableTamedDinoClassDamageMultipliers = false;
-                }
-
-                if (settings.PlayerLevels.Count == 0)
-                {
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
-                    settings.EnableLevelProgressions = false;
-                }
-
-                //
-                // Since these are not inserted the normal way, we force a recomputation here.
-                //
-                settings.PlayerLevels.UpdateTotals();
-                settings.DinoLevels.UpdateTotals();
             }
-            else
+
+            var iniFile = settings == null ? path : Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+            settings = LoadFromINIFiles(iniFile, settings);
+            if (settings.PlayerLevels.Count == 0)
             {
-                settings = LoadFromINIFiles(path);
-
-                if (settings.DinoSpawns.Count == 0)
-                {
-                    settings.ResetDinoSpawnsToDefault();
-                    settings.EnableDinoSpawns = false;
-                }
-                else
-                {
-                    settings.EnableDinoSpawns = true;
-                }
-
-                if (settings.TamedDinoClassDamageMultipliers.Count == 0)
-                {
-                    settings.ResetTamedDinoClassDamageMultipliersToDefault();
-                    settings.EnableTamedDinoClassDamageMultipliers = false;
-                }
-                else
-                {
-                    settings.EnableTamedDinoClassDamageMultipliers = true;
-                }
-
-                if (settings.PlayerLevels.Count == 0)
-                {
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
-                    settings.EnableLevelProgressions = false;
-                }
-                else
-                {
-                    settings.EnableLevelProgressions = true;
-                }
+                settings.ResetLevelProgressionToDefault(LevelProgression.Player);
+                settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+                settings.EnableLevelProgressions = false;
             }
 
+            //
+            // Since these are not inserted the normal way, we force a recomputation here.
+            //
+            settings.PlayerLevels.UpdateTotals();
+            settings.DinoLevels.UpdateTotals();
 
             settings.LastSaveLocation = path;
             return settings;
         }
 
-        private static ServerProfile LoadFromINIFiles(string path)
+        private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
         {
-            var file = IniFile.ReadFromFile(new IniDefinition(), path);
-            ServerProfile settings;
+            var file = IniFile.ReadFromFile(new IniDefinition(), path);            
             SystemIniFile iniFile = new SystemIniFile(Path.GetDirectoryName(path));
-            settings = new ServerProfile();
+            settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings);
 
             var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
@@ -960,8 +929,11 @@ namespace ARK_Server_Manager.Lib
         internal static ServerProfile FromDefaults()
         {
             var settings = new ServerProfile();
-            settings.ResetDinoSpawnsToDefault();
-            settings.ResetTamedDinoClassDamageMultipliersToDefault();
+            settings.DinoSpawnWeightMultipliers.Reset();
+            settings.TamedDinoClassResistanceMultipliers.Reset();
+            settings.TamedDinoClassDamageMultipliers.Reset();
+            settings.DinoClassResistanceMultipliers.Reset();
+            settings.DinoClassDamageMultipliers.Reset();
             settings.ResetLevelProgressionToDefault(LevelProgression.Player);
             settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
             return settings;

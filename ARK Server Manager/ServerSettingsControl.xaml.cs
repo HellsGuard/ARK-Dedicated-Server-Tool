@@ -332,12 +332,27 @@ namespace ARK_Server_Manager
 
         private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.ResetDinoSpawnsToDefault();
+            this.Settings.DinoSpawnWeightMultipliers.Reset();
         }
 
         private void TamedDinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.ResetTamedDinoClassDamageMultipliersToDefault();
+            this.Settings.TamedDinoClassDamageMultipliers.Reset();
+        }
+
+        private void TamedDinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.TamedDinoClassResistanceMultipliers.Reset();
+        }
+
+        private void DinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoClassDamageMultipliers.Reset();
+        }
+
+        private void DinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoClassResistanceMultipliers.Reset();
         }
 
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)

@@ -42,9 +42,9 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { DinoNameTag = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
             };
 
-        public static IEnumerable<DinoSpawn> DinoSpawns => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
+        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
-        private static readonly ClassMultiplier[] tamedDinoClassDamageMultipliers = new ClassMultiplier[]
+        private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
         {
             new ClassMultiplier { ClassName="Ankylo_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Ant_Character_BP_C", Multiplier = 1.0f },
@@ -81,7 +81,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Turtle_Character_BP_C", Multiplier = 1.0f }
         };
 
-        public static IEnumerable<ClassMultiplier> TamedDinoClassDamageMultipliers => tamedDinoClassDamageMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+        public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
        
         private static readonly Level[] levelProgression = new Level[]
             {             
