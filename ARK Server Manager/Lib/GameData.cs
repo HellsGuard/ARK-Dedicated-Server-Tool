@@ -67,7 +67,6 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Piranha_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Plesiosaur_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Ptero_Character_BP_C", Multiplier = 1.0f },
-            new ClassMultiplier { ClassName="Ptero_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Raptor_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Rex_Character_BP_C", Multiplier = 1.0f },
