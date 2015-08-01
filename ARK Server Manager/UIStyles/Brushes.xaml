@@ -1,0 +1,32 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+	<SolidColorBrush x:Key="_BlueButton" Color="#FF0073c6"/>
+	<SolidColorBrush x:Key="_BlueBright" Color="#FF0094c8"/>
+	<SolidColorBrush x:Key="_BlueLuminous" Color="#FF43A4C1"/>
+	<SolidColorBrush x:Key="_BlueDark" Color="#FF253858"/>
+	<SolidColorBrush x:Key="_GrayLightBG" Color="#FFa4a899"/>
+	<SolidColorBrush x:Key="_GrayTextLight" Color="#FFc3c3c3"/>
+	<SolidColorBrush x:Key="_GrayMainBG" Color="#FF404040"/>
+	<SolidColorBrush x:Key="_DisabledGray50" Color="#FF888888"/>
+
+	<Color x:Key="_BlueButtonC">#FF0073c6</Color>
+	<Color x:Key="_BlueBrightC">#FF0094c8</Color>
+	<Color x:Key="_BlueLuminousC">#FF43A4C1</Color>
+	<Color x:Key="_BlueDarkC">#FF253858</Color>
+	<Color x:Key="_GrayLightBGC">#FFa4a899</Color>
+	<Color x:Key="_GrayTextLightC">#FFc3c3c3</Color>
+	<Color x:Key="_GrayMainBGC">#FF404040</Color>
+	<Color x:Key="_DisabledGray50pct">#FF888888</Color>
+	<RadialGradientBrush x:Key="_TextBoxGradientBorder" RadiusX="2" RadiusY="2">
+		<GradientStop Color="#FF4C4C4C" Offset="0.427"/>
+		<GradientStop Color="#FF797979" Offset="0.142"/>
+	</RadialGradientBrush>
+	<SolidColorBrush x:Key="_DisabledGray50Br" Color="Gray"/>
+	<SolidColorBrush x:Key="_MainControlSelected" Color="#FF405970"/>
+	<SolidColorBrush x:Key="_MainControlText" Color="#FFCBCBCB"/>
+	<SolidColorBrush x:Key="MainControlGray" Color="#FF505050"/>
+	<FontFamily x:Key="LabelFont">/ARK Server Manager;component/Fonts/#Montserrat</FontFamily>
+	<!-- Resource dictionary entries should be defined here. -->
+</ResourceDictionary>

@@ -84,7 +84,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="68*"/>
+            <RowDefinition Height="653*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Background="#FF4F4F4F">
             <TextBox DockPanel.Dock="Left" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="8,4,10,7" Text="{DynamicResource MainWindow_Title}" BorderThickness="0"/>
@@ -133,7 +134,7 @@
             <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
         </DockPanel>
-        <TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" Style="{DynamicResource TabControlStyle1}" SelectionChanged="Tabs_SelectionChanged">
+        <TabControl Name="Tabs" Grid.Row ="2" Margin="0,0,0,-5" Style="{DynamicResource TabControlStyle1}" SelectionChanged="Tabs_SelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Style.Triggers>
@@ -173,5 +174,6 @@
                 </TabItem.Header>
             </TabItem>
         </TabControl>
+        <Button Content="Go To UI Tests" HorizontalAlignment="Left" Height="32" Margin="162,26,0,0" Grid.Row="1" VerticalAlignment="Top" Width="118" Click="GoToUITestsClick"/>
     </Grid>
 </Window>

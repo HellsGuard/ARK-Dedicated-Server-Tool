@@ -1,0 +1,14 @@
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\3rd party.txt
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\changes.txt
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\gpl.txt
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\lgpl.txt
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\license.txt
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\SteamKit2.XML
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\SteamKit2.dll
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\SteamKit2.pdb
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\protobuf-net.dll
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\protobuf-net.pdb
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\bin\Debug\protobuf-net.xml
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\obj\Debug\SteamKit2.csprojResolveAssemblyReference.cache
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\obj\Debug\SteamKit2.dll
+C:\Users\Jason\Documents\GitHub\ARK-Dedicated-Server-Tool\SteamKit2\obj\Debug\SteamKit2.pdb

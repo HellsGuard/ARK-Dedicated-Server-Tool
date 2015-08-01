@@ -144,6 +144,13 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+		// TODO: REMOVE THIS METHOD WHEN UI TESTS ARE NO LONGER NEEDED
+        private void GoToUITestsClick(object sender, System.Windows.RoutedEventArgs e)
+        {			
+   			UITests testPage = new UITests();
+            testPage.Show();
+        }
     }
 
     public class IpValidationRule : ValidationRule
