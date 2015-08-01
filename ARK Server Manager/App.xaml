@@ -1,0 +1,18 @@
+﻿<globalizer:GlobalizedApplication x:Class="ARK_Server_Manager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+             StartupUri="AutoUpdate.xaml">
+	<globalizer:GlobalizedApplication.Resources>
+		<SolidColorBrush x:Key="LtBeige" Color="#FFE6DFD8"/>
+		<SolidColorBrush x:Key="MedBeige" Color="#FFD8CCBC"/>
+		<Style x:Key="BorderLabel" TargetType="{x:Type Border}">
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Width" Value="Auto"/>
+			<Setter Property="Height" Value="Auto"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource MedBeige}"/>
+			<Setter Property="Background" Value="{DynamicResource LtBeige}"/>
+		</Style>
+		<SolidColorBrush x:Key="DkBeige" Color="#FFBFA786"/>
+	</globalizer:GlobalizedApplication.Resources>
+</globalizer:GlobalizedApplication>

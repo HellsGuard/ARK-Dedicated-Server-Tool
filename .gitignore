@@ -1,0 +1,20 @@
+*.suo
+*.swp
+*.user
+*.pfx
+*~
+packages/
+ARK Dedicated Server Tool/bin/
+ARK Dedicated Server Tool/obj/
+Ark Server Manager/bin/
+Ark Server Manager/obj/
+Ark Server Manager/publish/
+ARK Dedicated Server Tool Updater/bin/
+ARK Dedicated Server Tool Updater/obj/
+ARK Dedicated Server Tool Updater/publish/
+WPFSharp.Globalizer/bin/
+WPFSharp.Globalizer/obj/
+QueryMaster/bin/
+QueryMaster/obj/
+SteamKit2/bin/
+SteamKit2/obj/

@@ -1,0 +1,27 @@
+﻿<Window x:Class="ARK_Server_Manager.RCONWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding ServerName}" Height="600" Width="800" ResizeMode="CanResizeWithGrip" Icon="Art/favicon.ico">
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Input:"/>
+            <TextBox TabIndex="0" Grid.Column="1" Text="{Binding ConsoleInput, UpdateSourceTrigger=Explicit}" KeyUp="ConsoleInput_KeyUp" VerticalContentAlignment="Center"/>
+        </Grid>
+        
+        <ListBox DockPanel.Dock="Right" MinWidth="150">
+            
+        </ListBox>
+        <RichTextBox DockPanel.Dock="Top" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsTabStop="False">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+            <FlowDocument Name="ConsoleContent"/>
+        </RichTextBox>
+    </DockPanel>
+</Window>
