@@ -10,8 +10,8 @@ namespace ARK_Server_Manager.Lib
 {
     public class Server : DependencyObject, IDisposable
     {
-        public static readonly DependencyProperty ProfileProperty = DependencyProperty.Register("Profile", typeof(ServerProfile), typeof(Server), new PropertyMetadata((ServerProfile)null));
-        public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(Server), new PropertyMetadata((ServerRuntime)null));
+        public static readonly DependencyProperty ProfileProperty = DependencyProperty.Register(nameof(Profile), typeof(ServerProfile), typeof(Server), new PropertyMetadata((ServerProfile)null));
+        public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register(nameof(Runtime), typeof(ServerRuntime), typeof(Server), new PropertyMetadata((ServerRuntime)null));
 
         public ServerProfile Profile
         {

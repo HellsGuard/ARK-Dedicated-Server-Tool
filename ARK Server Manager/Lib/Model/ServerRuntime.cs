@@ -43,11 +43,12 @@ namespace ARK_Server_Manager.Lib
 
         #region Model Properties
 
-        public static readonly DependencyProperty SteamProperty = DependencyProperty.Register("Steam", typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
-        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
-        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register("MaxPlayers", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
-        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
-        public static readonly DependencyProperty VersionProperty = DependencyProperty.Register("Version", typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
+        public static readonly DependencyProperty SteamProperty = DependencyProperty.Register(nameof(Steam), typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(nameof(Status), typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty VersionProperty = DependencyProperty.Register(nameof(Version), typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
+        public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register(nameof(ProfileSnapshot), typeof(RuntimeProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
 
         public SteamStatus Steam
         {
@@ -78,10 +79,16 @@ namespace ARK_Server_Manager.Lib
             get { return (Version)GetValue(VersionProperty); }
             protected set { SetValue(VersionProperty, value); }
         }
-                
+
+        public RuntimeProfileSnapshot ProfileSnapshot
+        {
+            get { return (RuntimeProfileSnapshot)GetValue(ProfileSnapshotProperty); }
+            set { SetValue(ProfileSnapshotProperty, value); }
+        }
+
         #endregion
 
-        private struct ProfileSnapshot
+        public struct RuntimeProfileSnapshot
         {
             public string ServerName;
             public string InstallDirectory;
@@ -93,9 +100,9 @@ namespace ARK_Server_Manager.Lib
             public bool RCONEnabled;
             public int RCONPort;
             public string ServerArgs;
+            public string AdminPassword;
         };
 
-        private ProfileSnapshot profileSnapshot;
         private IAsyncDisposable updateRegistration;
         private Process serverProcess;
 
@@ -110,7 +117,7 @@ namespace ARK_Server_Manager.Lib
                 IPEndPoint localServerQueryEndPoint;
                 IPEndPoint steamServerQueryEndPoint;
                 GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
-                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.profileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
+                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }
 
@@ -123,34 +130,68 @@ namespace ARK_Server_Manager.Lib
             }
         }
         
-        public async Task AttachToProfile(ServerProfile settings)
+        public async Task AttachToProfile(ServerProfile profile)
         {
-            this.profileSnapshot = new ProfileSnapshot
+            AttachToProfileCore(profile);
+            GetProfilePropertyChanges(profile);
+        }
+
+        private void AttachToProfileCore(ServerProfile profile)
+        {
+            UnregisterForUpdates();
+
+            this.ProfileSnapshot = new RuntimeProfileSnapshot
             {
-                InstallDirectory = settings.InstallDirectory,
-                QueryPort = settings.ServerPort,
-                ServerConnectionPort = settings.ServerConnectionPort,
-                ServerIP = settings.ServerIP,
-                LastInstalledVersion = settings.LastInstalledVersion,
-                ProfileName = settings.ProfileName,
-                RCONEnabled = settings.RCONEnabled,
-                RCONPort = settings.RCONPort,
-                ServerName = settings.ServerName,
-                ServerArgs = settings.GetServerArgs()
+                InstallDirectory = profile.InstallDirectory,
+                QueryPort = profile.ServerPort,
+                ServerConnectionPort = profile.ServerConnectionPort,
+                ServerIP = profile.ServerIP,
+                LastInstalledVersion = profile.LastInstalledVersion,
+                ProfileName = profile.ProfileName,
+                RCONEnabled = profile.RCONEnabled,
+                RCONPort = profile.RCONPort,
+                ServerName = profile.ServerName,
+                ServerArgs = profile.GetServerArgs(),
+                AdminPassword = profile.AdminPassword
             };
 
             Version lastInstalled;
-            if (Version.TryParse(settings.LastInstalledVersion, out lastInstalled))
+            if (Version.TryParse(profile.LastInstalledVersion, out lastInstalled))
             {
                 this.Version = lastInstalled;
             }
 
             RegisterForUpdates();
+
+        }
+        List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
+
+        private void GetProfilePropertyChanges(ServerProfile profile)
+        {
+            foreach(var notifier in profileNotifiers)
+            {
+                notifier.Dispose();
+            }
+
+            profileNotifiers.Clear();
+            profileNotifiers.AddRange(PropertyChangeNotifier.GetNotifiers(
+                profile,
+                new[] { 
+                    ServerProfile.InstallDirectoryProperty,
+                    ServerProfile.ServerPortProperty,
+                    ServerProfile.ServerConnectionPortProperty,
+                    ServerProfile.ServerIPProperty
+                },
+                (s, p) =>
+                {
+                    if (Status == ServerStatus.Stopped || Status == ServerStatus.Uninstalled || Status == ServerStatus.Unknown) { AttachToProfileCore(profile); }
+                }));
+
         }
 
         public string GetServerExe()
         {
-            return Path.Combine(this.profileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+            return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
         }
 
         public async Task StartAsync()
@@ -166,7 +207,7 @@ namespace ARK_Server_Manager.Lib
                 case ServerStatus.Running:
                 case ServerStatus.Initializing:
                 case ServerStatus.Stopping:
-                    Debug.WriteLine("Server {0} already running.", profileSnapshot.ProfileName);
+                    Debug.WriteLine("Server {0} already running.", this.ProfileSnapshot.ProfileName);
                     return;
             }
 
@@ -174,17 +215,17 @@ namespace ARK_Server_Manager.Lib
             this.Status = ServerStatus.Initializing;
             
             var serverExe = GetServerExe();
-            var serverArgs = this.profileSnapshot.ServerArgs;
+            var serverArgs = this.ProfileSnapshot.ServerArgs;
 
             if (Config.Default.ManageFirewallAutomatically)
             {
-                var ports = new List<int>() { this.profileSnapshot.QueryPort, this.profileSnapshot.ServerConnectionPort };
-                if(this.profileSnapshot.RCONEnabled)
+                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerConnectionPort };
+                if (this.ProfileSnapshot.RCONEnabled)
                 {
-                    ports.Add(this.profileSnapshot.RCONPort);
+                    ports.Add(this.ProfileSnapshot.RCONPort);
                 }
 
-                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.profileSnapshot.ServerName))
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))
                 {
                     var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)
@@ -203,7 +244,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (System.ComponentModel.Win32Exception ex)
             {
-                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.profileSnapshot.InstallDirectory), serverExe, ex);
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.ProfileSnapshot.InstallDirectory), serverExe, ex);
             }
             finally
             {
@@ -273,8 +314,8 @@ namespace ARK_Server_Manager.Lib
 
                 // Run the SteamCMD to install the server
                 var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-                Directory.CreateDirectory(this.profileSnapshot.InstallDirectory);
-                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.profileSnapshot.InstallDirectory, validate ? "validate" : String.Empty);
+                Directory.CreateDirectory(this.ProfileSnapshot.InstallDirectory);
+                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : String.Empty);
                 var process = Process.Start(steamCmdPath, steamArgs);
                 process.EnableRaisingEvents = true;
                 var ts = new TaskCompletionSource<bool>();
@@ -314,15 +355,15 @@ namespace ARK_Server_Manager.Lib
             //
 
             IPAddress localServerIpAddress;
-            if (!String.IsNullOrWhiteSpace(this.profileSnapshot.ServerIP) && IPAddress.TryParse(this.profileSnapshot.ServerIP, out localServerIpAddress))
+            if (!String.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerIP) && IPAddress.TryParse(this.ProfileSnapshot.ServerIP, out localServerIpAddress))
             {
                 // Use the explicit Server IP
-                localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.profileSnapshot.QueryPort));
+                localServerQueryEndPoint = new IPEndPoint(localServerIpAddress, Convert.ToUInt16(this.ProfileSnapshot.QueryPort));
             }
             else
             {
                 // No Server IP specified, use Loopback
-                localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.profileSnapshot.QueryPort));
+                localServerQueryEndPoint = new IPEndPoint(IPAddress.Loopback, Convert.ToUInt16(this.ProfileSnapshot.QueryPort));
             }
 
             //
@@ -335,7 +376,7 @@ namespace ARK_Server_Manager.Lib
                 if (IPAddress.TryParse(Config.Default.MachinePublicIP, out steamServerIpAddress))
                 {
                     // Use the Public IP explicitly specified
-                    steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.profileSnapshot.QueryPort));
+                    steamServerQueryEndPoint = new IPEndPoint(steamServerIpAddress, Convert.ToUInt16(this.ProfileSnapshot.QueryPort));
                 }
                 else
                 {
@@ -345,7 +386,7 @@ namespace ARK_Server_Manager.Lib
                         var addresses = Dns.GetHostAddresses(Config.Default.MachinePublicIP);
                         if (addresses.Length > 0)
                         {
-                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.profileSnapshot.QueryPort));
+                            steamServerQueryEndPoint = new IPEndPoint(addresses[0], Convert.ToUInt16(this.ProfileSnapshot.QueryPort));
                         }
                     }
                     catch (Exception ex)

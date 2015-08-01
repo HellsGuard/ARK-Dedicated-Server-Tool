@@ -14,7 +14,9 @@
              x:Name="SettingsControl">
     <UserControl.Resources>
         <vm:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
-        <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
+        <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />     
+        <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
+        <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
@@ -819,7 +821,8 @@
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
                                 <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left"/>
-                                <local:AnnotatedSlider Label="XP:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -835,6 +838,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -846,14 +850,14 @@
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding EnableDinoSpawns}" Margin="0,5,5,5"/>
+                                            <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding DinoSpawnWeightMultipliers.IsEnabled}" Margin="0,5,5,5"/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" Click="DinoSpawn_Reset" 
                                                     ToolTip="Reset spawns to game defaults">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding DinoSpawns}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListBox ItemsSource="{Binding DinoSpawnWeightMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
@@ -866,10 +870,134 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Name}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding DinoNameTag}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                         <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
                                                         <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableTamedDinoClassDamageMultipliersCheckbox" Content="Custom Tamed Dino Damage Multipliers" IsChecked="{Binding TamedDinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoClassDamageMultipliersCheckbox, Path=IsChecked}" Click="TamedDinoClassDamageMultipliers_Reset" 
+                                                    ToolTip="Reset damage to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding TamedDinoClassDamageMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableTamedDinoClassDamageMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableTamedDinoClassResistanceMultipliersCheckbox" Content="Custom Tamed Dino Resistance Multipliers" IsChecked="{Binding TamedDinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" Click="TamedDinoClassResistanceMultipliers_Reset" 
+                                                    ToolTip="Reset resistances to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding TamedDinoClassResistanceMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableTamedDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableDinoClassDamageMultipliersCheckbox" Content="Custom Wild Dino Damage Multipliers" IsChecked="{Binding DinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoClassDamageMultipliersCheckbox, Path=IsChecked}" Click="DinoClassDamageMultipliers_Reset" 
+                                                    ToolTip="Reset damage to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding DinoClassDamageMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoClassDamageMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableDinoClassResistanceMultipliersCheckbox" Content="Custom Wild Dino Resistance Multipliers" IsChecked="{Binding DinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" Click="DinoClassResistanceMultipliers_Reset" 
+                                                    ToolTip="Reset resistances to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding DinoClassResistanceMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
@@ -890,9 +1018,43 @@
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="EnableHarvestResourceItemAmountClassMultipliersCheckbox" Content="Custom Harvest Amount Multipliers" IsChecked="{Binding HarvestResourceItemAmountClassMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" 
+                                                    ToolTip="Reset harvest to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <ListBox ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Amount" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
                                 <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Spoiling Time:" Value="{Binding GlobalSpoilingTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Item Decomp Time:" Value="{Binding GlobalItemDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Global Corpse Decomp Time:" Value="{Binding GlobalCorpseDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                             </StackPanel>
                         </Grid>
                     </Expander>

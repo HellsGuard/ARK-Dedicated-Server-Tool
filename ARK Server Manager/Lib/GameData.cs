@@ -1,43 +1,126 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace ARK_Server_Manager.Lib
 {
     public static class GameData
     {
-        public static readonly DinoSpawn[] DinoSpawns = new DinoSpawn[] 
+        private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[] 
             {
-                new DinoSpawn { Name = "Anky",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Argent",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Bat",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Bronto",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Carno",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Coel",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Dilo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Dodo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Mammoth",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Mega",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Para",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Phiomia",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Piranha",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Ptera",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Raptor",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Rex",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Sabertooth", SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Sarco",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Scorpion",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Stego",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Spino",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Spider",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Titanboa",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Trike",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { Name = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
+                new DinoSpawn { DinoNameTag = "Anky",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Ant",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Argent",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Bat",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Bronto",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Carno",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Coel",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Dilo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Dimo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Dodo",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Dolphin",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Flyingant",  SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },                
+                new DinoSpawn { DinoNameTag = "Mammoth",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Mega",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Para",       SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Phiomia",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Piranha",    SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Plesiosaur", SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Ptera",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Raptor",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Rex",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Sabertooth", SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Sarco",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Scorpion",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Stego",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Spino",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Spider",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Titanboa",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Trike",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
             };
 
-        public static readonly Level[] LevelProgression = new Level[]
+        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
+
+        private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
+        {
+            new ClassMultiplier { ClassName="Ankylo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Ant_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Argent_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Bat_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="BoaFrill_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Carno_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Coel_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dilo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dimorph_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dodo_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Dolphin_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Mammoth_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Megalodon_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Para_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Phiomia_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Piranha_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Plesiosaur_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Ptero_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Raptor_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Rex_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Saber_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Sarco_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Sauropod_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Scorpion_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="SpiderL_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="SpiderS_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Spino_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Trike_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Turtle_Character_BP_C", Multiplier = 1.0f }
+        };
+
+        public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+
+        private static readonly ClassMultiplier[] standardResourceMultipliers = new ClassMultiplier[]
+        {
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Sauro_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Charcoal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Chitin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ChitinOrKeratin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_ChitinPaste_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Craftable_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Crystal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Electronics_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Fibers_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Flint_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Gasoline_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Gunpowder_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Hide_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Keratin_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Metal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Obsidian_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Oil_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_RareFlower_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Silicon_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Sparkpowder_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Stone_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Temp_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Thatch_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C", Multiplier=1.0f }
+        };
+
+        public static IEnumerable<ClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+       
+        private static readonly Level[] levelProgression = new Level[]
             {             
                 new Level {XPRequired=5	    , EngramPoints=8  },
                 new Level {XPRequired=20	, EngramPoints=8  },
@@ -139,5 +222,7 @@ namespace ARK_Server_Manager.Lib
                 new Level {XPRequired=97316	, EngramPoints=33 },
                 new Level {XPRequired=99422	, EngramPoints=33 },
             };
+
+        public static IEnumerable<Level> LevelProgression => levelProgression.Select(l => l.Duplicate());
     }
 }

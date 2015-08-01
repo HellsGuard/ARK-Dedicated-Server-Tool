@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ARK_Server_Manager.Lib.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,9 +24,13 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class ServerProfile : DependencyObject
     {
-
-        // Using a DependencyProperty as the backing store for ProfileName.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register("ProfileName", typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
+        public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
+        public static readonly DependencyProperty InstallDirectoryProperty = DependencyProperty.Register(nameof(InstallDirectory), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty LastInstalledVersionProperty = DependencyProperty.Register(nameof(LastInstalledVersion), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
+        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
 
         public string ProfileName
         {
@@ -33,75 +38,109 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ProfileNameProperty, value); }
         }
 
+        public string InstallDirectory
+        {
+            get { return (string)GetValue(InstallDirectoryProperty); }
+            set { SetValue(InstallDirectoryProperty, value); }
+        }
+
+        public string LastInstalledVersion
+        {
+            get { return (string)GetValue(LastInstalledVersionProperty); }
+            set { SetValue(LastInstalledVersionProperty, value); }
+        }
+
+        public string AdditionalArgs
+        {
+            get { return (string)GetValue(AdditionalArgsProperty); }
+            set { SetValue(AdditionalArgsProperty, value); }
+        }
+
+        public bool RCONEnabled
+        {
+            get { return (bool)GetValue(RCONEnabledProperty); }
+            set { SetValue(RCONEnabledProperty, value); }
+        }
+
+        public int RCONPort
+        {
+            get { return (int)GetValue(RCONPortProperty); }
+            set { SetValue(RCONPortProperty, value); }
+        }
+
+        public string ServerMap
+        {
+            get { return (string)GetValue(ServerMapProperty); }
+            set { SetValue(ServerMapProperty, value); }
+        }
+
         #region Server properties
 
-        public static readonly DependencyProperty EnableGlobalVoiceChatProperty = DependencyProperty.Register("EnableGlobalVoiceChat", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty EnableProximityChatProperty = DependencyProperty.Register("EnableProximityChat", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty EnableTributeDownloadsProperty = DependencyProperty.Register("EnableTributeDownloads", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty EnableFlyerCarryProperty = DependencyProperty.Register("EnableFlyerCarry", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty EnableStructureDecayProperty = DependencyProperty.Register("EnableStructureDecay", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty EnablePlayerLeaveNotificationsProperty = DependencyProperty.Register("EnablePlayerLeaveNotifications", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty EnablePlayerJoinedNotificationsProperty = DependencyProperty.Register("EnablePlayerJoinedNotifications", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty EnableHardcoreProperty = DependencyProperty.Register("EnableHardcore", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty EnablePVPProperty = DependencyProperty.Register("EnablePVP", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty AllowCrosshairProperty = DependencyProperty.Register("AllowCrosshair", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty AllowHUDProperty = DependencyProperty.Register("AllowHUD", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty AllowThirdPersonViewProperty = DependencyProperty.Register("AllowThirdPersonView", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty AllowMapPlayerLocationProperty = DependencyProperty.Register("AllowMapPlayerLocation", typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        public static readonly DependencyProperty AllowPVPGammaProperty = DependencyProperty.Register("AllowPVPGamma", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty ServerPasswordProperty = DependencyProperty.Register("ServerPassword", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty AdminPasswordProperty = DependencyProperty.Register("AdminPassword", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register("MaxPlayers", typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
-        public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register("DifficultyOffset", typeof(float), typeof(ServerProfile), new PropertyMetadata(0.25f));
-        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register("MaxStructuresVisible", typeof(float), typeof(ServerProfile), new PropertyMetadata(1300f));
-        public static readonly DependencyProperty ServerNameProperty = DependencyProperty.Register("ServerName", typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerName));
-        public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register("ServerPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(27015));
-        public static readonly DependencyProperty ServerConnectionPortProperty = DependencyProperty.Register("ServerConnectionPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(7777));
-        public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register("ServerIP", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty MOTDProperty = DependencyProperty.Register("MOTD", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty MOTDDurationProperty = DependencyProperty.Register("MOTDDuration", typeof(int), typeof(ServerProfile), new PropertyMetadata(20));
-        public static readonly DependencyProperty EnableKickIdlePlayersProperty = DependencyProperty.Register("EnableKickIdlePlayers", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty KickIdlePlayersPeriodProperty = DependencyProperty.Register("KickIdlePlayersPeriod", typeof(float), typeof(ServerProfile), new PropertyMetadata(2400.0f));
-        public static readonly DependencyProperty AutoSavePeriodMinutesProperty = DependencyProperty.Register("AutoSavePeriodMinutes", typeof(float), typeof(ServerProfile), new PropertyMetadata(15.0f));
-        public static readonly DependencyProperty TamingSpeedMultiplierProperty = DependencyProperty.Register("TamingSpeedMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty HarvestAmountMultiplierProperty = DependencyProperty.Register("HarvestAmountMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerCharacterWaterDrainMultiplierProperty = DependencyProperty.Register("PlayerCharacterWaterDrainMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerCharacterFoodDrainMultiplierProperty = DependencyProperty.Register("PlayerCharacterFoodDrainMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register("DinoCharacterFoodDrainMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register("PlayerCharacterStaminaDrainMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register("DinoCharacterStaminaDrainMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register("PlayerCharacterHealthRecoveryMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register("DinoCharacterHealthRecoveryMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoCountMultiplierProperty = DependencyProperty.Register("DinoCountMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty HarvestHealthMultiplierProperty = DependencyProperty.Register("HarvestHealthMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PvEStructureDecayDestructionPeriodProperty = DependencyProperty.Register("PvEStructureDecayDestructionPeriod", typeof(float), typeof(ServerProfile), new PropertyMetadata(0f));
-        public static readonly DependencyProperty PvEStructureDecayPeriodMultiplierProperty = DependencyProperty.Register("PvEStructureDecayPeriodMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty ResourcesRespawnPeriodMultiplierProperty = DependencyProperty.Register("ResourcesRespawnPeriodMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty ClampResourceHarvestDamageProperty = DependencyProperty.Register("ClampResourceHarvestDamage", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty DayCycleSpeedScaleProperty = DependencyProperty.Register("DayCycleSpeedScale", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty NightTimeSpeedScaleProperty = DependencyProperty.Register("NightTimeSpeedScale", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DayTimeSpeedScaleProperty = DependencyProperty.Register("DayTimeSpeedScale", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoDamageMultiplierProperty = DependencyProperty.Register("DinoDamageMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty TamedDinoDamageMultiplierProperty = DependencyProperty.Register("TamedDinoDamageMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerDamageMultiplierProperty = DependencyProperty.Register("PlayerDamageMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty StructureDamageMultiplierProperty = DependencyProperty.Register("StructureDamageMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty PlayerResistanceMultiplierProperty = DependencyProperty.Register("PlayerResistanceMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty DinoResistanceMultiplierProperty = DependencyProperty.Register("DinoResistanceMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty TamedDinoResistanceMultiplierProperty = DependencyProperty.Register("TamedDinoResistanceMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register("StructureResistanceMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register("XPMultiplier", typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty EnableDinoSpawnsProperty = DependencyProperty.Register("EnableDinoSpawns", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register("DinoSpawns", typeof(DinoSpawnList), typeof(ServerProfile), new PropertyMetadata(null));
-        public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register("EnableLevelProgressions", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register("PlayerLevels", typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
-        public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register("DinoLevels", typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
-        public static readonly DependencyProperty InstallDirectoryProperty = DependencyProperty.Register("InstallDirectory", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty LastInstalledVersionProperty = DependencyProperty.Register("LastInstalledVersion", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register("AdditionalArgs", typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register("RCONEnabled", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register("RCONPort", typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
-        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register("ServerMap", typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
-        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableGlobalVoiceChatProperty = DependencyProperty.Register(nameof(EnableGlobalVoiceChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableProximityChatProperty = DependencyProperty.Register(nameof(EnableProximityChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableTributeDownloadsProperty = DependencyProperty.Register(nameof(EnableTributeDownloads), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableFlyerCarryProperty = DependencyProperty.Register(nameof(EnableFlyerCarry), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableStructureDecayProperty = DependencyProperty.Register(nameof(EnableStructureDecay), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnablePlayerLeaveNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerLeaveNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnablePlayerJoinedNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerJoinedNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableHardcoreProperty = DependencyProperty.Register(nameof(EnableHardcore), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnablePVPProperty = DependencyProperty.Register(nameof(EnablePVP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty AllowCrosshairProperty = DependencyProperty.Register(nameof(AllowCrosshair), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty AllowHUDProperty = DependencyProperty.Register(nameof(AllowHUD), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowThirdPersonViewProperty = DependencyProperty.Register(nameof(AllowThirdPersonView), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty AllowMapPlayerLocationProperty = DependencyProperty.Register(nameof(AllowMapPlayerLocation), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowPVPGammaProperty = DependencyProperty.Register(nameof(AllowPVPGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty ServerPasswordProperty = DependencyProperty.Register(nameof(ServerPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty AdminPasswordProperty = DependencyProperty.Register(nameof(AdminPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
+        public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register(nameof(DifficultyOffset), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.25f));
+        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register(nameof(MaxStructuresVisible), typeof(float), typeof(ServerProfile), new PropertyMetadata(1300f));
+        public static readonly DependencyProperty ServerNameProperty = DependencyProperty.Register(nameof(ServerName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerName));
+        public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register(nameof(ServerPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(27015));
+        public static readonly DependencyProperty ServerConnectionPortProperty = DependencyProperty.Register(nameof(ServerConnectionPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(7777));
+        public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register(nameof(ServerIP), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty MOTDProperty = DependencyProperty.Register(nameof(MOTD), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty MOTDDurationProperty = DependencyProperty.Register(nameof(MOTDDuration), typeof(int), typeof(ServerProfile), new PropertyMetadata(20));
+        public static readonly DependencyProperty EnableKickIdlePlayersProperty = DependencyProperty.Register(nameof(EnableKickIdlePlayers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty KickIdlePlayersPeriodProperty = DependencyProperty.Register(nameof(KickIdlePlayersPeriod), typeof(float), typeof(ServerProfile), new PropertyMetadata(2400.0f));
+        public static readonly DependencyProperty AutoSavePeriodMinutesProperty = DependencyProperty.Register(nameof(AutoSavePeriodMinutes), typeof(float), typeof(ServerProfile), new PropertyMetadata(15.0f));
+        public static readonly DependencyProperty TamingSpeedMultiplierProperty = DependencyProperty.Register(nameof(TamingSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty HarvestAmountMultiplierProperty = DependencyProperty.Register(nameof(HarvestAmountMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerCharacterWaterDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterWaterDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterStaminaDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterStaminaDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterHealthRecoveryMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterHealthRecoveryMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoCountMultiplierProperty = DependencyProperty.Register(nameof(DinoCountMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty HarvestHealthMultiplierProperty = DependencyProperty.Register(nameof(HarvestHealthMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PvEStructureDecayDestructionPeriodProperty = DependencyProperty.Register(nameof(PvEStructureDecayDestructionPeriod), typeof(float), typeof(ServerProfile), new PropertyMetadata(0f));
+        public static readonly DependencyProperty PvEStructureDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEStructureDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty ResourcesRespawnPeriodMultiplierProperty = DependencyProperty.Register(nameof(ResourcesRespawnPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty ClampResourceHarvestDamageProperty = DependencyProperty.Register(nameof(ClampResourceHarvestDamage), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty DayCycleSpeedScaleProperty = DependencyProperty.Register(nameof(DayCycleSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty NightTimeSpeedScaleProperty = DependencyProperty.Register(nameof(NightTimeSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DayTimeSpeedScaleProperty = DependencyProperty.Register(nameof(DayTimeSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoDamageMultiplierProperty = DependencyProperty.Register(nameof(DinoDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty TamedDinoDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerDamageMultiplierProperty = DependencyProperty.Register(nameof(PlayerDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty StructureDamageMultiplierProperty = DependencyProperty.Register(nameof(StructureDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty PlayerResistanceMultiplierProperty = DependencyProperty.Register(nameof(PlayerResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(DinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty TamedDinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register(nameof(StructureResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register(nameof(XPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register(nameof(DinoSpawnWeightMultipliers), typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register(nameof(PlayerLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
+        public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register(nameof(DinoLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
+        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register(nameof(IsDirty), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalSpoilingTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalCorpseDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(100000));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(100000));
+        public static readonly DependencyProperty GlobalItemDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalItemDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat
@@ -285,7 +324,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableKickIdlePlayersProperty, value); }
         }
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = "EnableKickIdlePlayers")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableKickIdlePlayers))]
         public float KickIdlePlayersPeriod
         {
             get { return (float)GetValue(KickIdlePlayersPeriodProperty); }
@@ -488,17 +527,110 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(XPMultiplierProperty, value); }
         }
 
-        public bool EnableDinoSpawns
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalSpoilingTimeMultiplier
         {
-            get { return (bool)GetValue(EnableDinoSpawnsProperty); }
-            set { SetValue(EnableDinoSpawnsProperty, value); }
+            get { return (float)GetValue(GlobalSpoilingTimeMultiplierProperty); }
+            set { SetValue(GlobalSpoilingTimeMultiplierProperty, value); }
         }
 
-        public DinoSpawnList DinoSpawns
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalItemDecompositionTimeMultiplier
         {
-            get { return (DinoSpawnList)GetValue(DinoSpawnsProperty); }
+            get { return (float)GetValue(GlobalItemDecompositionTimeMultiplierProperty); }
+            set { SetValue(GlobalItemDecompositionTimeMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalCorpseDecompositionTimeMultiplier
+        {
+            get { return (float)GetValue(GlobalCorpseDecompositionTimeMultiplierProperty); }
+            set { SetValue(GlobalCorpseDecompositionTimeMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int OverrideMaxExperiencePointsPlayer
+        {
+            get { return (int)GetValue(OverrideMaxExperiencePointsPlayerProperty); }
+            set { SetValue(OverrideMaxExperiencePointsPlayerProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int OverrideMaxExperiencePointsDino
+        {
+            get { return (int)GetValue(OverrideMaxExperiencePointsDinoProperty); }
+            set { SetValue(OverrideMaxExperiencePointsDinoProperty, value); }
+        }             
+        
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<DinoSpawn> DinoSpawnWeightMultipliers
+        {
+            get { return (AggregateIniValueList<DinoSpawn>)GetValue(DinoSpawnsProperty); }
             set { SetValue(DinoSpawnsProperty, value); }
         }
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]        
+        public AggregateIniValueList<ClassMultiplier> TamedDinoClassDamageMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassDamageMultipliersProperty); }
+            set { SetValue(TamedDinoClassDamageMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty =
+            DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> TamedDinoClassResistanceMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassResistanceMultipliersProperty); }
+            set { SetValue(TamedDinoClassResistanceMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoClassResistanceMultipliersProperty =
+            DependencyProperty.Register(nameof(TamedDinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> DinoClassDamageMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassDamageMultipliersProperty); }
+            set { SetValue(DinoClassDamageMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty DinoClassDamageMultipliersProperty =
+            DependencyProperty.Register(nameof(DinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> DinoClassResistanceMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassResistanceMultipliersProperty); }
+            set { SetValue(DinoClassResistanceMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty DinoClassResistanceMultipliersProperty =
+            DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<ClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        {
+            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty =
+            DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+
+
 
         public bool EnableLevelProgressions
         {
@@ -516,42 +648,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (LevelList)GetValue(DinoLevelsProperty); }
             set { SetValue(DinoLevelsProperty, value); }
-        }
-
-        public string InstallDirectory
-        {
-            get { return (string)GetValue(InstallDirectoryProperty); }
-            set { SetValue(InstallDirectoryProperty, value); }
-        }
-
-        public string LastInstalledVersion
-        {
-            get { return (string)GetValue(LastInstalledVersionProperty); }
-            set { SetValue(LastInstalledVersionProperty, value); }
-        }
-
-        public string AdditionalArgs
-        {
-            get { return (string)GetValue(AdditionalArgsProperty); }
-            set { SetValue(AdditionalArgsProperty, value); }
-        }
-
-        public bool RCONEnabled
-        {
-            get { return (bool)GetValue(RCONEnabledProperty); }
-            set { SetValue(RCONEnabledProperty, value); }
-        }
-
-        public int RCONPort
-        {
-            get { return (int)GetValue(RCONPortProperty); }
-            set { SetValue(RCONPortProperty, value); }
-        }
-
-        public string ServerMap
-        {
-            get { return (string)GetValue(ServerMapProperty); }
-            set { SetValue(ServerMapProperty, value); }
         }
         
         #endregion
@@ -572,14 +668,13 @@ namespace ARK_Server_Manager.Lib
             AdminPassword = PasswordUtils.GeneratePassword(16);
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.DinoSpawns = new DinoSpawnList();
+            this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             GetDefaultDirectories();
-        }
-
-        public void ResetDinoSpawnsToDefault()
-        {            
-            this.DinoSpawns.Clear();
-            this.DinoSpawns.AddRange(GameData.DinoSpawns);
         }
 
         public enum LevelProgression
@@ -625,7 +720,7 @@ namespace ARK_Server_Manager.Lib
 
         public static ServerProfile LoadFrom(string path)
         {
-            ServerProfile settings;
+            ServerProfile settings = null;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
@@ -637,71 +732,51 @@ namespace ARK_Server_Manager.Lib
                     settings.IsDirty = false;
                 }
 
-                if (settings.DinoSpawns.Count == 0)
+                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
+                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+                if (File.Exists(profileIniPath))
                 {
-                    settings.ResetDinoSpawnsToDefault();
-                    settings.EnableDinoSpawns = false;
+                    settings = LoadFromINIFiles(profileIniPath, settings);
                 }
-
-                if (settings.PlayerLevels.Count == 0)
-                {
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
-                    settings.EnableLevelProgressions = false;
+                else if(File.Exists(configIniPath))
+                {                    
+                    settings = LoadFromINIFiles(configIniPath, settings);
                 }
-
-                //
-                // Since these are not inserted the normal way, we force a recomputation here.
-                //
-                settings.PlayerLevels.UpdateTotals();
-                settings.DinoLevels.UpdateTotals();
             }
             else
             {
-                settings = LoadFromINIFiles(path);
-
-                if (settings.DinoSpawns.Count == 0)
-                {
-                    settings.ResetDinoSpawnsToDefault();
-                    settings.EnableDinoSpawns = false;
-                }
-                else
-                {
-                    settings.EnableDinoSpawns = true;
-                }
-
-                if (settings.PlayerLevels.Count == 0)
-                {
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-                    settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
-                    settings.EnableLevelProgressions = false;
-                }
-                else
-                {
-                    settings.EnableLevelProgressions = true;
-                }
+                settings = LoadFromINIFiles(path, settings);
+                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
             }
 
+            //
+            // TODO: Refactor this out
+            //
+            if (settings.PlayerLevels.Count == 0)
+            {
+                settings.ResetLevelProgressionToDefault(LevelProgression.Player);
+                settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+                settings.EnableLevelProgressions = false;
+            }
+
+            //
+            // Since these are not inserted the normal way, we force a recomputation here.
+            //
+            settings.PlayerLevels.UpdateTotals();
+            settings.DinoLevels.UpdateTotals();
 
             settings.LastSaveLocation = path;
             return settings;
         }
 
-        private static ServerProfile LoadFromINIFiles(string path)
-        {
-            ServerProfile settings;
-            IniFile iniFile = new IniFile(Path.GetDirectoryName(path));
-            settings = new ServerProfile();
+        private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
+        {         
+            SystemIniFile iniFile = new SystemIniFile(Path.GetDirectoryName(path));
+            settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings);
 
             var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
 
-            //
-            // Dino spawn weights
-            //
-            var dinoSpawnWeightSources = strings.Where(s => s.StartsWith("DinoSpawnWeightMultipliers="));
-            settings.DinoSpawns = DinoSpawnList.FromINIValues(dinoSpawnWeightSources);
-            
             // 
             // Levels
             //
@@ -716,8 +791,7 @@ namespace ARK_Server_Manager.Lib
                     settings.DinoLevels = LevelList.FromINIValues(levelRampOverrides[1], null);
                 }
             }
-          
-            settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
+                      
             return settings;
         }
 
@@ -748,6 +822,12 @@ namespace ARK_Server_Manager.Lib
                     {
                         File.Delete(this.LastSaveLocation);
                     }
+
+                    var iniDir = Path.ChangeExtension(this.LastSaveLocation, null);
+                    if (Directory.Exists(iniDir))
+                    {
+                        Directory.Delete(iniDir, recursive: true);
+                    }
                 }
                 catch(IOException)
                 {
@@ -763,38 +843,50 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
+        public string GetProfileIniDir()
+        {
+            return Path.Combine(Path.GetDirectoryName(GetProfilePath()), this.ProfileName);
+        }
+
         public void SaveINIFiles()
         {
+            //
+            // Save alongside the .profile
+            //
+            string profileIniDir = GetProfileIniDir();
+            Directory.CreateDirectory(profileIniDir);
+            SaveINIFile(profileIniDir);
+
+            //
+            // Save to the installation location
+            //
             string configDir = Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath);
             Directory.CreateDirectory(configDir);
+            SaveINIFile(configDir);
+        }
 
-            var iniFile = new IniFile(configDir);            
+        private void SaveINIFile(string profileIniDir)
+        {
+            var iniFile = new SystemIniFile(profileIniDir);
             iniFile.Serialize(this);
 
             //
-            // Write the Game.ini, but only if the user enabled Dino Spawns.
+            // TODO: Refactor this into SystemIniFile
             //
-            var values = new List<string>();
-            if (this.EnableDinoSpawns)
-            {
-                values.AddRange(this.DinoSpawns.ToINIValues());
-            }
-
-            if(this.EnableLevelProgressions)            
+            var values = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+            var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") &&
+!s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
+            if (this.EnableLevelProgressions)
             {
                 //
                 // These must be added in this order: Player, then Dinos, per the ARK INI file format.
                 //
-                values.Add(this.PlayerLevels.ToINIValueForXP());
-                values.Add(this.DinoLevels.ToINIValueForXP());
-                values.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
+                filteredValues.Add(this.PlayerLevels.ToINIValueForXP());
+                filteredValues.Add(this.DinoLevels.ToINIValueForXP());
+                filteredValues.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
             }
 
-            if (this.EnableDinoSpawns || this.EnableLevelProgressions)
-            {
-                // WARNING: This will delete everything in this section before writing the new values.
-                iniFile.IniWriteSection(IniFileSections.GameMode, values.ToArray(), IniFiles.Game);
-            }            
+            iniFile.IniWriteSection(IniFileSections.GameMode, filteredValues.ToArray(), IniFiles.Game);
         }
 
         public string GetServerArgs()
@@ -891,7 +983,12 @@ namespace ARK_Server_Manager.Lib
         internal static ServerProfile FromDefaults()
         {
             var settings = new ServerProfile();
-            settings.ResetDinoSpawnsToDefault();
+            settings.DinoSpawnWeightMultipliers.Reset();
+            settings.TamedDinoClassResistanceMultipliers.Reset();
+            settings.TamedDinoClassDamageMultipliers.Reset();
+            settings.DinoClassResistanceMultipliers.Reset();
+            settings.DinoClassDamageMultipliers.Reset();
+            settings.HarvestResourceItemAmountClassMultipliers.Reset();
             settings.ResetLevelProgressionToDefault(LevelProgression.Player);
             settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
             return settings;

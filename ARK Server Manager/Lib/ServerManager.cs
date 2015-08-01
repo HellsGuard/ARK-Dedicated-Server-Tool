@@ -26,8 +26,8 @@ namespace ARK_Server_Manager.Lib
             private set;
         }
 
-        public static readonly DependencyProperty ServersProperty = DependencyProperty.Register("Servers", typeof(ObservableCollection<Server>), typeof(ServerManager), new PropertyMetadata(new ObservableCollection<Server>()));
-        public static readonly DependencyProperty AvailableVersionProperty = DependencyProperty.Register("AvailableVersion", typeof(Version), typeof(ServerManager), new PropertyMetadata(new Version()));
+        public static readonly DependencyProperty ServersProperty = DependencyProperty.Register(nameof(Servers), typeof(ObservableCollection<Server>), typeof(ServerManager), new PropertyMetadata(new ObservableCollection<Server>()));
+        public static readonly DependencyProperty AvailableVersionProperty = DependencyProperty.Register(nameof(AvailableVersion), typeof(Version), typeof(ServerManager), new PropertyMetadata(new Version()));
 
         public ObservableCollection<Server> Servers
         {

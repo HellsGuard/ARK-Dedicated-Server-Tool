@@ -31,13 +31,13 @@ namespace ARK_Server_Manager
     partial class ServerSettingsControl : UserControl
     {
         public static readonly DependencyProperty SettingsProperty =
-            DependencyProperty.Register("Settings", typeof(ServerProfile), typeof(ServerSettingsControl));
+            DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = 
-            DependencyProperty.Register("Runtime", typeof(ServerRuntime), typeof(ServerSettingsControl));
+            DependencyProperty.Register(nameof(Runtime), typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty NetworkInterfacesProperty = 
-            DependencyProperty.Register("NetworkInterfaces", typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
+            DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
         public static readonly DependencyProperty ServerProperty =
-            DependencyProperty.Register("Server", typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
+            DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
 
         CancellationTokenSource upgradeCancellationSource;
         RCONWindow rconWindow;
@@ -50,7 +50,7 @@ namespace ARK_Server_Manager
 
         // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ServerManagerProperty =
-            DependencyProperty.Register("ServerManager", typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
 
         
         public Server Server
@@ -332,7 +332,32 @@ namespace ARK_Server_Manager
 
         private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
         {
-            this.Settings.ResetDinoSpawnsToDefault();
+            this.Settings.DinoSpawnWeightMultipliers.Reset();
+        }
+
+        private void TamedDinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.TamedDinoClassDamageMultipliers.Reset();
+        }
+
+        private void TamedDinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.TamedDinoClassResistanceMultipliers.Reset();
+        }
+
+        private void DinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoClassDamageMultipliers.Reset();
+        }
+
+        private void DinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoClassResistanceMultipliers.Reset();
+        }
+
+        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
         }
 
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)

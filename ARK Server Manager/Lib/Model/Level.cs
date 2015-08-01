@@ -155,17 +155,15 @@ namespace ARK_Server_Manager.Lib
     public class Level : DependencyObject
     {
         public static readonly DependencyProperty EngramTotalProperty =
-            DependencyProperty.Register("EngramTotal", typeof(int), typeof(Level), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty XPTotalProperty =
-            DependencyProperty.Register("XPTotal", typeof(int), typeof(Level), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty EngramPointsProperty =
-            DependencyProperty.Register("EngramPoints", typeof(int), typeof(Level), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty XPRequiredProperty =
-            DependencyProperty.Register("XPRequired", typeof(int), typeof(Level), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(XPRequired), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty LevelIndexProperty =
-            DependencyProperty.Register("LevelIndex", typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty ActualLevelProperty =
-            DependencyProperty.Register("ActualLevel", typeof(int), typeof(Level), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
         
         public int LevelIndex
         {
@@ -207,6 +205,11 @@ namespace ARK_Server_Manager.Lib
         public string GetINIValueForEngramPointsEarned()
         {
             return String.Format("OverridePlayerLevelEngramPoints={0}", this.EngramPoints);
+        }
+
+        internal Level Duplicate()
+        {
+            return new Level { XPRequired = this.XPRequired, EngramPoints = this.EngramPoints };
         }
     }
 }
