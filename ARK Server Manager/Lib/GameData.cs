@@ -41,6 +41,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { DinoNameTag = "Spider",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { DinoNameTag = "Titanboa",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { DinoNameTag = "Trike",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { DinoNameTag = "Trilobite",  SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { DinoNameTag = "Turtle",     SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F }
             };
 
@@ -79,6 +80,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Spino_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Stego_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Trike_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Trilobite_Character_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Turtle_Character_BP_C", Multiplier = 1.0f }
         };
 

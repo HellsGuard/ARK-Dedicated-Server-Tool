@@ -72,6 +72,14 @@ namespace ARK_Server_Manager.Lib
             return result.ToString();
         }
 
+        internal static object SortKeySelector(AggregateIniValue arg)
+        {
+            return arg.GetSortKey();
+        }
+
+        public abstract bool IsEquivalent(AggregateIniValue other);
+        public abstract string GetSortKey();
+
         private void GetPropertyInfos()
         {
             if (this.properties.Count == 0)

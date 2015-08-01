@@ -58,12 +58,11 @@ namespace ARK_Server_Manager.Lib
             this.AddRange(iniValues.Select(v => AggregateIniValue.FromINIValue<T>(v)));
             this.IsEnabled = (this.Count != 0);
 
-            // If we initialized from the INI but read no values, populate from defaults, but leave this "disabled"
-            if(this.Count == 0)
-            {
-                Reset();
-            }
+            // Add any default values which were missing
+            var defaultItemsToAdd = this.resetFunc().Where(r => !this.Any(v => v.IsEquivalent(r))).ToArray();
+            this.AddRange(defaultItemsToAdd);
+
+            this.Sort(AggregateIniValue.SortKeySelector);
         }
     }
-
 }

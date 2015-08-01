@@ -736,7 +736,10 @@
 
                             <Label Grid.Column="0" Grid.Row="2" Content="Map"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ServerMap}" VerticalContentAlignment="Center"/>
-                            <local:AnnotatedSlider Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
+                            <Label Grid.Column="2" Grid.Row="2" Content="Spectator Password:"/>
+                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center"/>
+
+                            <local:AnnotatedSlider Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
         						ToolTip="Sets the maximum number of players which can join this server."/>
 
                             
@@ -781,9 +784,19 @@
                             <StackPanel>
                                 <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left"/>
                                 <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" HorizontalAlignment="Left"/>
+
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5"/>
+                                    </GroupBox.Header>
+                                    <StackPanel>
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -843,6 +856,7 @@
                                 <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Max Tamed Dinos:" Value="{Binding MaxTamedDinos}" Suffix="x" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500"/>
                                 <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
@@ -1066,6 +1080,7 @@
                             <StackPanel Grid.Column="0">
                                 <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="PvP Zone Structure Damage:" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
                                 <GroupBox>
                                     <GroupBox.Header>

@@ -520,6 +520,48 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(StructureResistanceMultiplierProperty, value); }
         }
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float PvPZoneStructureDamageMultiplier
+        {
+            get { return (float)GetValue(PvPZoneStructureDamageMultiplierProperty); }
+            set { SetValue(PvPZoneStructureDamageMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty PvPZoneStructureDamageMultiplierProperty = DependencyProperty.Register(nameof(PvPZoneStructureDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(6.0f));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventDownloadSurvivors
+        {
+            get { return (bool)GetValue(PreventDownloadSurvivorsProperty); }
+            set { SetValue(PreventDownloadSurvivorsProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventDownloadSurvivorsProperty = DependencyProperty.Register(nameof(PreventDownloadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventDownloadItems
+        {
+            get { return (bool)GetValue(PreventDownloadItemsProperty); }
+            set { SetValue(PreventDownloadItemsProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventDownloadItemsProperty = DependencyProperty.Register(nameof(PreventDownloadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventDownloadDinos
+        {
+            get { return (bool)GetValue(PreventDownloadDinosProperty); }
+            set { SetValue(PreventDownloadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventDownloadDinosProperty = DependencyProperty.Register(nameof(PreventDownloadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float XPMultiplier
         {
@@ -560,8 +602,29 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (int)GetValue(OverrideMaxExperiencePointsDinoProperty); }
             set { SetValue(OverrideMaxExperiencePointsDinoProperty, value); }
-        }             
-        
+        }
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int MaxTamedDinos
+        {
+            get { return (int)GetValue(MaxTamedDinosProperty); }
+            set { SetValue(MaxTamedDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxTamedDinosProperty = DependencyProperty.Register(nameof(MaxTamedDinos), typeof(int), typeof(ServerProfile), new PropertyMetadata(4000));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public string SpectatorPassword
+        {
+            get { return (string)GetValue(SpectatorPasswordProperty); }
+            set { SetValue(SpectatorPasswordProperty, value); }
+        }
+
+        public static readonly DependencyProperty SpectatorPasswordProperty = DependencyProperty.Register(nameof(SpectatorPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+
+
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public AggregateIniValueList<DinoSpawn> DinoSpawnWeightMultipliers

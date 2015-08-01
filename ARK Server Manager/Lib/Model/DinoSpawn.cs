@@ -52,5 +52,15 @@ namespace ARK_Server_Manager.Lib
             newSpawn.InitializeFromINIValue(iniValue);
             return newSpawn;
         }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.DinoNameTag, ((DinoSpawn)other).DinoNameTag, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override string GetSortKey()
+        {
+            return this.DinoNameTag;
+        }
     }
 }

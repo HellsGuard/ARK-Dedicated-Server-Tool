@@ -14,6 +14,15 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty MultiplierProperty =
             DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(0F));
 
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.ClassName, ((ClassMultiplier)other).ClassName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override string GetSortKey()
+        {
+            return this.ClassName;
+        }
 
         [AggregateIniValueEntry]
         public string ClassName
