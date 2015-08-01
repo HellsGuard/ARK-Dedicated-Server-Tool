@@ -4,15 +4,23 @@
              xmlns:globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
              StartupUri="AutoUpdate.xaml">
 	<globalizer:GlobalizedApplication.Resources>
-		<SolidColorBrush x:Key="LtBeige" Color="#FFE6DFD8"/>
-		<SolidColorBrush x:Key="MedBeige" Color="#FFD8CCBC"/>
-		<Style x:Key="BorderLabel" TargetType="{x:Type Border}">
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="Width" Value="Auto"/>
-			<Setter Property="Height" Value="Auto"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource MedBeige}"/>
-			<Setter Property="Background" Value="{DynamicResource LtBeige}"/>
-		</Style>
-		<SolidColorBrush x:Key="DkBeige" Color="#FFBFA786"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="UIStyles/Brushes.xaml"/>
+				<ResourceDictionary Source="UIStyles/MainControlListBox.xaml"/>
+				<ResourceDictionary Source="UIStyles/GlowSlider.xaml"/>
+				<ResourceDictionary Source="Eraseme.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<SolidColorBrush x:Key="LtBeige" Color="#FFE6DFD8"/>
+			<SolidColorBrush x:Key="MedBeige" Color="#FFD8CCBC"/>
+			<Style x:Key="BorderLabel" TargetType="{x:Type Border}">
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Width" Value="Auto"/>
+				<Setter Property="Height" Value="Auto"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource MedBeige}"/>
+				<Setter Property="Background" Value="{DynamicResource LtBeige}"/>
+			</Style>
+			<SolidColorBrush x:Key="DkBeige" Color="#FFBFA786"/>
+		</ResourceDictionary>
 	</globalizer:GlobalizedApplication.Resources>
 </globalizer:GlobalizedApplication>
