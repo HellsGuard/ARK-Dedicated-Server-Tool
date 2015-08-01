@@ -693,6 +693,16 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty =
             DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<EngramEntry> OverrideNamedEngramEntries
+        {
+            get { return (AggregateIniValueList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
+            set { SetValue(OverrideNamedEngramEntriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(AggregateIniValueList<EngramEntry>), typeof(ServerProfile), new PropertyMetadata(null));
+
 
 
         public bool EnableLevelProgressions
@@ -737,6 +747,7 @@ namespace ARK_Server_Manager.Lib
             this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             GetDefaultDirectories();
         }
 

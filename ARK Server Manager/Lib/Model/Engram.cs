@@ -16,36 +16,48 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EngramLevelRequirementProperty = DependencyProperty.Register(nameof(EngramLevelRequirement), typeof(int), typeof(EngramEntry), new PropertyMetadata(1));
         public static readonly DependencyProperty RemoveEngramPreReqProperty = DependencyProperty.Register(nameof(RemoveEngramPreReq), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
 
+        [AggregateIniValueEntry]
         public string EngramClassName
         {
             get { return (string)GetValue(EngramClassNameProperty); }
             set { SetValue(EngramClassNameProperty, value); }
         }
 
+        [AggregateIniValueEntry]
         public bool EngramHidden
         {
             get { return (bool)GetValue(EngramHiddenProperty); }
             set { SetValue(EngramHiddenProperty, value); }
         }
 
+        [AggregateIniValueEntry]
         public int EngramPointsCost
         {
             get { return (int)GetValue(EngramPointsCostProperty); }
             set { SetValue(EngramPointsCostProperty, value); }
         }
 
+        [AggregateIniValueEntry]
         public int EngramLevelRequirement
         {
             get { return (int)GetValue(EngramLevelRequirementProperty); }
             set { SetValue(EngramLevelRequirementProperty, value); }
         }
 
+        [AggregateIniValueEntry]
         public bool RemoveEngramPreReq
         {
             get { return (bool)GetValue(RemoveEngramPreReqProperty); }
             set { SetValue(RemoveEngramPreReqProperty, value); }
         }
-        
+
+        public static EngramEntry FromINIValue(string iniValue)
+        {
+            var newSpawn = new EngramEntry();
+            newSpawn.InitializeFromINIValue(iniValue);
+            return newSpawn;
+        }
+
         public override bool IsEquivalent(AggregateIniValue other)
         {
             return String.Equals(this.EngramClassName, ((EngramEntry)other).EngramClassName, StringComparison.OrdinalIgnoreCase);

@@ -375,5 +375,10 @@ namespace ARK_Server_Manager
             this.rconWindow.Show();
             this.rconWindow.Focus();
         }
+
+        private void Engrams_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.OverrideNamedEngramEntries.Reset();
+        }
     }
 }
