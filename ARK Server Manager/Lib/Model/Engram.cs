@@ -8,77 +8,52 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class EngramList : SortableObservableCollection<Engram>
+    public class EngramEntry : AggregateIniValue
     {
-        public void AddRange(IEnumerable<Engram> spawns)
+        public static readonly DependencyProperty EngramClassNameProperty = DependencyProperty.Register(nameof(EngramClassName), typeof(string), typeof(EngramEntry), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty EngramHiddenProperty = DependencyProperty.Register(nameof(EngramHidden), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
+        public static readonly DependencyProperty EngramPointsCostProperty = DependencyProperty.Register(nameof(EngramPointsCost), typeof(int), typeof(EngramEntry), new PropertyMetadata(1));
+        public static readonly DependencyProperty EngramLevelRequirementProperty = DependencyProperty.Register(nameof(EngramLevelRequirement), typeof(int), typeof(EngramEntry), new PropertyMetadata(1));
+        public static readonly DependencyProperty RemoveEngramPreReqProperty = DependencyProperty.Register(nameof(RemoveEngramPreReq), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
+
+        public string EngramClassName
         {
-            foreach (var spawn in spawns)
-            {
-                base.Add(spawn);
-            }
+            get { return (string)GetValue(EngramClassNameProperty); }
+            set { SetValue(EngramClassNameProperty, value); }
         }
 
-        public static EngramList FromINIValues(IEnumerable<string> iniValues)
+        public bool EngramHidden
         {
-            var spawns = new EngramList();
-            //spawns.AddRange(iniValues.Select(v => Engram.FromINIValue(v)));
-            return spawns;
+            get { return (bool)GetValue(EngramHiddenProperty); }
+            set { SetValue(EngramHiddenProperty, value); }
         }
 
-        public List<string> ToINIValues()
+        public int EngramPointsCost
         {
-            var values = new List<string>();
-            //values.AddRange(this.Select(d => String.Format("OverrideNamedEngramEntries={0}", d.ToINIValue())));
-            return values;
-        }
-    }
-    public class Engram : DependencyObject
-    {
-
-        public static readonly DependencyProperty RemovePrereqProperty =
-            DependencyProperty.Register(nameof(RemovePrereq), typeof(bool), typeof(Engram), new PropertyMetadata(false));
-        public static readonly DependencyProperty LevelRequirementProperty =
-            DependencyProperty.Register(nameof(LevelRequirement), typeof(int), typeof(Engram), new PropertyMetadata(0));
-        public static readonly DependencyProperty PointsCostProperty =
-            DependencyProperty.Register(nameof(PointsCost), typeof(int), typeof(Engram), new PropertyMetadata(0));
-        public static readonly DependencyProperty HiddenProperty =
-            DependencyProperty.Register(nameof(Hidden), typeof(bool), typeof(Engram), new PropertyMetadata(false));
-        public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register(nameof(Name), typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty ClassNameProperty =
-            DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(Engram), new PropertyMetadata(String.Empty));
-        public string Name
-        {
-            get { return (string)GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
-        }
-        public string ClassName
-        {
-            get { return (string)GetValue(ClassNameProperty); }
-            set { SetValue(ClassNameProperty, value); }
+            get { return (int)GetValue(EngramPointsCostProperty); }
+            set { SetValue(EngramPointsCostProperty, value); }
         }
 
-        public bool Hidden
+        public int EngramLevelRequirement
         {
-            get { return (bool)GetValue(HiddenProperty); }
-            set { SetValue(HiddenProperty, value); }
+            get { return (int)GetValue(EngramLevelRequirementProperty); }
+            set { SetValue(EngramLevelRequirementProperty, value); }
         }
 
-        public int PointsCost
+        public bool RemoveEngramPreReq
         {
-            get { return (int)GetValue(PointsCostProperty); }
-            set { SetValue(PointsCostProperty, value); }
+            get { return (bool)GetValue(RemoveEngramPreReqProperty); }
+            set { SetValue(RemoveEngramPreReqProperty, value); }
         }
-        public int LevelRequirement
+        
+        public override bool IsEquivalent(AggregateIniValue other)
         {
-            get { return (int)GetValue(LevelRequirementProperty); }
-            set { SetValue(LevelRequirementProperty, value); }
+            return String.Equals(this.EngramClassName, ((EngramEntry)other).EngramClassName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool RemovePrereq
+        public override string GetSortKey()
         {
-            get { return (bool)GetValue(RemovePrereqProperty); }
-            set { SetValue(RemovePrereqProperty, value); }
+            return this.EngramClassName;
         }
     }
 }
