@@ -117,7 +117,29 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="PrimalItemResource_Stone_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Temp_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Thatch_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C", Multiplier=1.0f }
+            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_RawMeat_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_RawPrimeMeat_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Amarberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Azulberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Mejoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Narcoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Stimberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Berry_Tintoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Veggie_Citronal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Veggie_Longrass_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Veggie_Rockarrot_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Veggie_Savoroot_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Amarberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Azulberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Mejoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Narcoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Stimberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Tintoberry_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Citronal_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Longrass_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Rockarrot_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName = "PrimalItemConsumable_Seed_Savoroot_C", Multiplier=1.0f }
         };
 
         public static IEnumerable<ClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ClassMultiplier>());

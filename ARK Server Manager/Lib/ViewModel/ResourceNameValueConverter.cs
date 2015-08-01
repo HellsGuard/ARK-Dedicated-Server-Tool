@@ -9,7 +9,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var strVal = value as string;
-            return strVal.Substring("PrimalItemResource_".Length, strVal.Length - "PrimalItemResource__C".Length);
+            var firstIndex = strVal.IndexOf('_');
+            var lastIndex = strVal.LastIndexOf('_');
+            var subStr = strVal.Substring(firstIndex + 1, lastIndex - firstIndex - 1).Replace('_', ' ');
+            return subStr;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
