@@ -155,17 +155,24 @@ namespace ARK_Server_Manager.Lib
                 if (availableVersion != null)
                 {
                     Version ver;
-                    result.IsValid = Version.TryParse(availableVersion.ToString(), out ver);
-
-                    //result.IsValid = ParseArkVersionString((string)availableVersion, out ver);
+                    string versionString = availableVersion.ToString();
+                    if(versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+                    result.IsValid = Version.TryParse(versionString, out ver);
                     result.Current = ver;
                 }
 
                 if (upcomingVersion != null)
                 {
                     Version ver;
-                    Version.TryParse(availableVersion.ToString(), out ver);
-                    //ParseArkVersionString((string)availableVersion, out ver);
+                    string versionString = upcomingVersion.ToString();
+                    if (versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+                    Version.TryParse(versionString, out ver);
                     result.Upcoming = ver;
                 }
 
@@ -226,7 +233,19 @@ namespace ARK_Server_Manager.Lib
                     jsonString = await client.DownloadStringTaskAsync(String.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
                 }
 
+                if(jsonString == null)
+                {
+                    logger.Debug(String.Format("Server info request returned null string for {0}:{1}", endpoint.Address, endpoint.Port));
+                    return result;
+                }
+
                 JObject query = JObject.Parse(jsonString);
+                if(query == null)
+                {
+                    logger.Debug(String.Format("Server info request failed to parse for {0}:{1} - '{2}'", endpoint.Address, endpoint.Port, jsonString));
+                    return null;
+                }
+
                 var server = query.SelectToken("server");
                 if (server.Type == JTokenType.String)
                 {
@@ -237,7 +256,13 @@ namespace ARK_Server_Manager.Lib
                     result = new ServerNetworkInfo();
                     result.Name = (string)query.SelectToken("server.name");
                     Version ver;
-                    Version.TryParse((string)query.SelectToken("server.version"), out ver);
+                    string versionString = (string)query.SelectToken("server.version");
+                    if (versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+
+                    Version.TryParse(versionString, out ver);
                     result.Version = ver;
                     result.Map = (string)query.SelectToken("server.map");
                     result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));

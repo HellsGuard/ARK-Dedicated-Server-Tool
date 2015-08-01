@@ -28,6 +28,11 @@ namespace ARK_Server_Manager.Lib
             : this(propertySource, new PropertyPath(property))
         {
         }
+        public PropertyChangeNotifier(DependencyObject propertySource, DependencyProperty property, DependencyPropertyChangedEventHandler handler)
+            : this(propertySource, property)
+        {
+            this.ValueChanged += handler;
+        }
 
         public PropertyChangeNotifier(DependencyObject propertySource, PropertyPath property)
         {
@@ -41,6 +46,15 @@ namespace ARK_Server_Manager.Lib
             binding.Mode = BindingMode.OneWay;
             binding.Source = propertySource;
             BindingOperations.SetBinding(this, ValueProperty, binding);
+        }
+
+        public static IEnumerable<PropertyChangeNotifier> GetNotifiers(DependencyObject propertySource, IEnumerable<DependencyProperty> properties, DependencyPropertyChangedEventHandler handler)
+        {
+            foreach(var property in properties)
+            {
+                var notifier = new PropertyChangeNotifier(propertySource, property, handler);
+                yield return notifier;
+            }
         }
 
         #endregion // Constructor
@@ -74,14 +88,16 @@ namespace ARK_Server_Manager.Lib
         /// <summary>
         /// Identifies the <see cref=”Value”/> dependency property
         /// </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value",
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value),
         typeof(object), typeof(PropertyChangeNotifier), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChanged)));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             PropertyChangeNotifier notifier = (PropertyChangeNotifier)d;
             if (null != notifier.ValueChanged)
-                notifier.ValueChanged(notifier, EventArgs.Empty);
+            {
+                notifier.ValueChanged(notifier.PropertySource, e);
+            }
         }
 
         /// <summary>
@@ -107,7 +123,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Events
 
-        public event EventHandler ValueChanged;
+        public event DependencyPropertyChangedEventHandler ValueChanged;
 
         #endregion // Events
 

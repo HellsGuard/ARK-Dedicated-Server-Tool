@@ -46,7 +46,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public class AnnotatedTextBox : TextBox
     {
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(AnnotatedTextBox));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(nameof(Label), typeof(string), typeof(AnnotatedTextBox));
 
         public string Label
         {

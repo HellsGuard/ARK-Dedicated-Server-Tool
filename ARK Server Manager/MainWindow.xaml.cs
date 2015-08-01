@@ -26,9 +26,9 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register("IsIpValid", typeof(bool), typeof(MainWindow));
-        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register("CurrentConfig", typeof(Config), typeof(MainWindow));
-        public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register("ServerManager", typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register(nameof(IsIpValid), typeof(bool), typeof(MainWindow));
+        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(MainWindow));
+        public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
         
         public static MainWindow Instance
         {
