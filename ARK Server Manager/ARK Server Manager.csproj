@@ -90,6 +90,7 @@
       <HintPath>..\packages\EO.Wpf.4.0.12\lib\EO.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -183,6 +184,12 @@
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ServerStatusWatcher.cs" />
+    <Compile Include="Testing\UITests.xaml.cs">
+      <DependentUpon>UITests.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFControls\AnnotatedGlowSlider.xaml.cs">
+      <DependentUpon>AnnotatedGlowSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -193,6 +200,34 @@
     <Page Include="AutoUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Eraseme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Testing\UITests.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIStyles\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIStyles\GlowSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIStyles\MainControlListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIStyles\MainTabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFControls\AnnotatedGlowSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Resource Include="Art\NewFile_6276.png" />
     <Resource Include="Art\Open_6529.png" />
@@ -245,11 +280,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
-    </Page>
     <Page Include="RCONWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -266,6 +296,52 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <BlendEmbeddedFont Include="Fonts\Montserrat-Bold.otf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\Montserrat-Regular.otf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\Montserrat-Black.otf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\Montserrat-Hairline.otf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\Montserrat-Light.otf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+    <Resource Include="UIStyles\iStock_000003783032Medium.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -355,6 +431,7 @@
   <Target Name="BeforePublish">
     <Exec Command="&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\bin\signtool.exe&quot; sign /f &quot;$(ProjectDir)Ark Server Manager_TemporaryKey.pfx&quot; /p &quot;b@}l@;jDVT4S&quot; /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
   </Target>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
