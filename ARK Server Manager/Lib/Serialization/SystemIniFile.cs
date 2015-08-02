@@ -317,7 +317,9 @@ namespace ARK_Server_Manager.Lib
         /// Value Name
         public void IniWriteValue(string Section, string Key, string Value, string pathSuffix = "")
         {
-            WritePrivateProfileString(Section, Key, Value, Path.Combine(this.basePath, pathSuffix));
+            var filePath = Path.Combine(this.basePath, pathSuffix);
+            EnsureUTF16(filePath);
+            WritePrivateProfileString(Section, Key, Value, filePath);
         }
 
         public void IniWriteValue(IniFileSections Section, string Key, string Value, IniFiles File)
@@ -370,7 +372,40 @@ namespace ARK_Server_Manager.Lib
 
         public void IniWriteSection(string Section, string[] values, string pathSuffix = "")
         {
-            WritePrivateProfileSection(Section, StringArrayToMultiString(values), Path.Combine(this.basePath, pathSuffix));
+            var filePath = Path.Combine(this.basePath, pathSuffix);
+            EnsureUTF16(filePath);
+
+            WritePrivateProfileSection(Section, StringArrayToMultiString(values), filePath);
+        }
+
+        private void EnsureUTF16(string filePath)
+        {
+            var bytes = new byte[2];
+            int bytesRead = 0;
+            using (var file = File.Open(filePath, FileMode.OpenOrCreate))
+            {
+                bytesRead = file.Read(bytes, 0, bytes.Length);
+            }
+
+            if(bytesRead < 2 || bytes[0] != 0xFF || bytes[1] != 0xFE)
+            {
+                var tempFilePath = Path.GetTempFileName();
+                using (var newFile = File.Create(tempFilePath))
+                {
+                    newFile.Write(new byte[] { 0xFF, 0xFE }, 0, 2);
+                    var sourceText = File.ReadAllLines(filePath);
+                    foreach(var line in sourceText)
+                    {
+                        var utf16le = UnicodeEncoding.Unicode.GetBytes(line);
+                        newFile.Write(utf16le, 0, utf16le.Length);
+                        var newLine = UnicodeEncoding.Unicode.GetBytes(new[] { '\n' });
+                        newFile.Write(newLine, 0, newLine.Length);                       
+                    }
+                }
+
+                File.Delete(filePath);
+                File.Move(tempFilePath, filePath);
+            }
         }
 
         static string StringArrayToMultiString(params string[] values)
