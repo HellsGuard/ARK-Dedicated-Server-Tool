@@ -8,8 +8,17 @@ namespace ARK_Server_Manager.Lib.ViewModel
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var strVal = value as string;
-            return strVal.Substring(strVal.IndexOf('_') + 1);
+            try
+            {
+                var strVal = value as string;
+                var firstIndex = strVal.IndexOf('_') + 1;
+                var length = strVal.LastIndexOf('_') - firstIndex;
+                return strVal.Substring(firstIndex, length);
+            }
+            catch
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
