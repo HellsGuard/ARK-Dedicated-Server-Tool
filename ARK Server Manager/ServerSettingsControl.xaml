@@ -787,7 +787,7 @@
                                 <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
 
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
-        							Suffix="%" Minimum="50" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="10" />
+        							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" />
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5"/>
