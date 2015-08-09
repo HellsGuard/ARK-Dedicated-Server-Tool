@@ -21,7 +21,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             var sliderValue = System.Convert.ToDouble(value);
             sliderValue = (double)sliderValue - (double)MinValue;
             var scaledValue = sliderValue / (double)(MaxValue - MinValue);
-            scaledValue = Math.Max(0, scaledValue);
+            scaledValue = Math.Max(0.01, scaledValue);
             return scaledValue;
         }
     }

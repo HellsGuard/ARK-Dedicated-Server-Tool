@@ -246,6 +246,12 @@ namespace ARK_Server_Manager.Lib
                     return null;
                 }
 
+                var status = query.SelectToken("status");
+                if(status == null || !(bool)status)
+                {
+                    logger.Debug($"Server at {endpoint.Address}:{endpoint.Port} returned no status or a status of false.");
+                    return null;
+                }
                 var server = query.SelectToken("server");
                 if (server.Type == JTokenType.String)
                 {

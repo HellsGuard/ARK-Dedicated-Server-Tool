@@ -170,6 +170,17 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableFlyerCarryProperty, value); }
         }
 
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AllowCaveBuildingPvE
+        {
+            get { return (bool)GetValue(AllowCaveBuildingPvEProperty); }
+            set { SetValue(AllowCaveBuildingPvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowCaveBuildingPvEProperty = DependencyProperty.Register(nameof(AllowCaveBuildingPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecay
         {
@@ -875,9 +886,12 @@ namespace ARK_Server_Manager.Lib
             // Save the profile
             //
             XmlSerializer serializer = new XmlSerializer(this.GetType());
-            using (var writer = new StreamWriter(File.Open(GetProfilePath(), FileMode.Create), System.Text.Encoding.UTF8))
+            using (var stream = File.Open(GetProfilePath(), FileMode.Create))
             {
-                serializer.Serialize(writer, this);
+                using (var writer = new StreamWriter(stream, System.Text.Encoding.UTF8))
+                {
+                    serializer.Serialize(writer, this);
+                }
             }
 
             //
