@@ -121,5 +121,14 @@ namespace ARK_Server_Manager
             var index = this.ServerManager.AddNew();
             ((EO.Wpf.TabControl)e.Source).SelectedIndex = index;
         }
+
+        private void Donate_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Ark Server Manager is an open-source project, provided completely free of charge.  You can still donate if you would like; however you are under no obligation.  If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like.  Would you like to donate now?", "Make a donation?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var process = Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=cliff%2es%2ehudson%40gmail%2ecom&lc=US&item_name=Ark%20Server%20Manager&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
+            }
+        }
     }
 }

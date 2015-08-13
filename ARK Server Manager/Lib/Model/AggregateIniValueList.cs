@@ -21,6 +21,14 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public void AddRange(IEnumerable<T> values)
+        {
+            foreach (var value in values)
+            {
+                base.Add(value);
+            }
+        }
+
         public string IniCollectionKey { get; }
 
         private Func<IEnumerable<T>> resetFunc;
@@ -31,13 +39,6 @@ namespace ARK_Server_Manager.Lib
             this.resetFunc = resetFunc;
         }
 
-        public void AddRange(IEnumerable<T> spawns)
-        {
-            foreach (var spawn in spawns)
-            {
-                base.Add(spawn);
-            }
-        }
 
         public void Reset()
         {

@@ -18,6 +18,7 @@
         <vm:EngramClassNameToDisplayNameConverter x:Key="EngramClassNameToDisplayNameConverter" />
         <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
         <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
+        <vm:DinoSettingsList x:Key="BaseDinoSettings"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
@@ -799,6 +800,26 @@
                                         <CheckBox IsChecked="{Binding PreventDownloadDinos}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5"/>
+                                    </GroupBox.Header>
+                                    <StackPanel>
+                                        <local:AnnotatedSlider Label="Increase Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />
+                                        <local:AnnotatedSlider Label="Increase Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" />
+                                        <local:AnnotatedSlider Label="Increase Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />                                        
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5"/>
+                                    </GroupBox.Header>
+                                    <StackPanel>
+                                        <CheckBox IsChecked="{Binding AutoPvEUseSystemTime}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <local:AnnotatedSlider Label="Start Time" Value="{Binding AutoPvEStartTimeSeconds}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" />
+                                        <local:AnnotatedSlider Label="Stop Time" Value="{Binding AutoPvEStopTimeSeconds}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" />
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -866,6 +887,38 @@
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
+                                            <Label Content="Dino Customization"/>
+                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}">Spawn Multipliers</CheckBox>
+                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Tamed Damage</CheckBox>
+                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Tamed Resistance</CheckBox>
+                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Wild Damage</CheckBox>
+                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Wild Resistance</CheckBox>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <DataGrid Name="DinoSettingsGrid" ItemsSource="{Binding DinoSettings}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding FriendlyName, Mode=TwoWay}" Header="Name"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}" Header="Spawnable"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}" Header="Tameable"/>
+                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" 
+                                                                    SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" 
+                                                                    SelectedValuePath="ClassName"                                                                     
+                                                                    DisplayMemberPath="FriendlyName" 
+                                                                    Header="Replace With"/>
+                                            <DataGridTextColumn Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" Header="Spawn Weight" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Header="Override Limit" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}" Header="Spawn Limit" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}" Header="Tamed Damage" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" Header="Tamed Resistance" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" Header="Wild Damage" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Header="Wild Resistance" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+
+                                <!--<GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding DinoSpawnWeightMultipliers.IsEnabled}" Margin="0,5,5,5"/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" Click="DinoSpawn_Reset" 
                                                     ToolTip="Reset spawns to game defaults">
@@ -895,8 +948,8 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </GroupBox>
-                                <GroupBox  HorizontalAlignment="Stretch">
+                                </GroupBox>-->
+                                <!--<GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableTamedDinoClassDamageMultipliersCheckbox" Content="Custom Tamed Dino Damage Multipliers" IsChecked="{Binding TamedDinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
@@ -926,8 +979,8 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </GroupBox>
-                                <GroupBox  HorizontalAlignment="Stretch">
+                                </GroupBox>-->
+                                <!--<GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableTamedDinoClassResistanceMultipliersCheckbox" Content="Custom Tamed Dino Resistance Multipliers" IsChecked="{Binding TamedDinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
@@ -957,8 +1010,8 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </GroupBox>
-                                <GroupBox  HorizontalAlignment="Stretch">
+                                </GroupBox>-->
+                                <!--<GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableDinoClassDamageMultipliersCheckbox" Content="Custom Wild Dino Damage Multipliers" IsChecked="{Binding DinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
@@ -988,8 +1041,8 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </GroupBox>
-                                <GroupBox  HorizontalAlignment="Stretch">
+                                </GroupBox>-->
+                                <!--<GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableDinoClassResistanceMultipliersCheckbox" Content="Custom Wild Dino Resistance Multipliers" IsChecked="{Binding DinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
@@ -1019,7 +1072,7 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </GroupBox>
+                                </GroupBox>-->
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1032,6 +1085,8 @@
                                 <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Player):" Value="{Binding ResourceNoReplenishRadiusPlayers}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Structure):" Value="{Binding ResourceNoReplenishRadiusStructures}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
                                 <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <GroupBox  HorizontalAlignment="Stretch">

@@ -46,6 +46,18 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
+
+
+        public string ClassName
+        {
+            get { return (string)GetValue(ClassNameProperty); }
+            set { SetValue(ClassNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+
+
+
         public static DinoSpawn FromINIValue(string iniValue)
         {
             var newSpawn = new DinoSpawn();

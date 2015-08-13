@@ -25,6 +25,9 @@
         <DockPanel Grid.Row="0" Background="#FF4F4F4F">
             <TextBox DockPanel.Dock="Left" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="8,4,10,7" Text="{DynamicResource MainWindow_Title}" BorderThickness="0"/>
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="Like what you see and want to show your appreciation?  Donate here!">
+                    <Image Source="Art/Donate.png" />
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Settings" Click="Settings_Click">
                     <Image Source="Art/Settings.png" Width="16"/>
                 </Button>

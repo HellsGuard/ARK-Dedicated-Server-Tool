@@ -336,7 +336,7 @@ namespace ARK_Server_Manager.Lib
         /// <returns></returns>
         public string IniReadValue(string Section, string Key, string pathSuffix = "")
         {
-            const int MaxValueSize = 2048;
+            const int MaxValueSize = 16384;
             StringBuilder temp = new StringBuilder(MaxValueSize);
             var file = Path.Combine(this.basePath, pathSuffix);
             if (File.Exists(file))
@@ -354,7 +354,7 @@ namespace ARK_Server_Manager.Lib
 
         public string[] IniReadSection(string Section, string pathSuffix = "")
         {
-            const int MaxSectionSize = 65536;
+            const int MaxSectionSize = 262144;
             var temp = new char[MaxSectionSize];
             var file = Path.Combine(this.basePath, pathSuffix);
             if (File.Exists(file))
