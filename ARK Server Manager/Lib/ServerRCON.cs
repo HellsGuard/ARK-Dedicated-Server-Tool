@@ -1,5 +1,5 @@
-﻿using NLog;
-using QueryMaster;
+﻿using ARK_Server_Manager.Lib.ViewModel.RCON;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,15 +35,7 @@ namespace ARK_Server_Manager.Lib
             get { return (SortableObservableCollection<PlayerInfo>)GetValue(PlayersProperty); }
             set { SetValue(PlayersProperty, value); }
         }
-        
-        public class PlayerInfo
-        {
-            public string Name;
-            public ImageSource Avatar;
-            public long Score;
-            public TimeSpan ConnectionTime;
-        }
-        
+                
         public enum ConsoleStatus
         {
             Disconnected,
@@ -63,7 +55,7 @@ namespace ARK_Server_Manager.Lib
         private readonly ActionBlock<ConsoleCommand> outputProcessor;
         private ServerRuntime.RuntimeProfileSnapshot snapshot;
         private readonly PropertyChangeNotifier runtimeChangedNotifier;
-        private Rcon console;
+        private QueryMaster.Rcon console;
 
         public ServerRCON(Server server)
         {
@@ -83,7 +75,10 @@ namespace ARK_Server_Manager.Lib
                                                   TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext()
                                               });
 
-            this.Players = new SortableObservableCollection<PlayerInfo>();            
+            this.Players = new SortableObservableCollection<PlayerInfo>();
+
+            this.snapshot = server.Runtime.ProfileSnapshot;
+            commandProcessor.PostAction(() => Reconnect());
         }
 
         public Task<bool> IssueCommand(string userCommand)
@@ -153,26 +148,29 @@ namespace ARK_Server_Manager.Lib
 
         private void HandleCommand(ConsoleCommand command)
         {
-#if false
             if(command.command.StartsWith("listplayers"))
-            {
+            {                               
                 foreach(var line in command.lines)
-                {
+                {                    
                     var elements = line.Split(',');
                     if(elements.Length > 0)
                     {
-                        long steamId;
-                        if(Int64.TryParse(elements[elements.Length-1], out steamId))
+                        var newPlayer = new ViewModel.RCON.PlayerInfo()
                         {
-                            using(dynamic steamUser = WebAPI.GetInterface("ISteamUser"))
-                            {
-                                steamUser.GetPlayerSummaries(steamids: steamId);
-                            }   
+                            SteamName = elements[0].Substring(elements[0].IndexOf('.')+1),
+                            SteamId = Int64.Parse(elements[1])
+                        };
+
+                        var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
+                        if(existingPlayer == null)
+                        {
+                            this.Players.Add(newPlayer);
+                            newPlayer.GetSteamInfoAsync();
                         }
                     }
                 }
             }
-#endif
+
         }
 
         private static readonly char[] splitChars = new char[] { '\n' };
@@ -222,7 +220,7 @@ namespace ARK_Server_Manager.Lib
             try
             {
                 var endpoint = new IPEndPoint(IPAddress.Parse(this.snapshot.ServerIP), this.snapshot.RCONPort);    
-                var server = ServerQuery.GetServerInstance(EngineType.Source, endpoint);
+                var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint);
                 this.console = server.GetControl(this.snapshot.AdminPassword);
                 return true;
             }

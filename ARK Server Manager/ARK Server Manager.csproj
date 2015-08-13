@@ -180,7 +180,9 @@
     <Compile Include="Lib\ViewModel\EngramClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\ViewModel\DinoNameValueConverter.cs" />
     <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\NullValueConverter.cs" />
     <Compile Include="Lib\ViewModel\LevelIndexToDisplayOffsetConverter.cs" />
+    <Compile Include="Lib\ViewModel\RCON\PlayerInfo.cs" />
     <Compile Include="Lib\ViewModel\ResourceNameValueConverter.cs" />
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
@@ -259,6 +261,7 @@
     <Resource Include="Art\favicon.ico" />
     <Resource Include="Art\Refresh.png" />
     <Resource Include="Art\Donate.png" />
+    <Resource Include="Art\NoAvatar.png" />
     <Content Include="Globalization\en-US\en-US.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

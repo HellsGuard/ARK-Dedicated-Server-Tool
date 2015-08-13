@@ -369,7 +369,7 @@ namespace ARK_Server_Manager
         {
             if(this.rconWindow == null || !this.rconWindow.IsLoaded)
             {
-                this.rconWindow = new RCONWindow(this.Settings.ProfileName, new IPEndPoint(IPAddress.Parse(this.Settings.ServerIP), this.Settings.RCONPort), this.Settings.AdminPassword);                
+                this.rconWindow = new RCONWindow(this.Server);                
             }
 
             this.rconWindow.Show();
