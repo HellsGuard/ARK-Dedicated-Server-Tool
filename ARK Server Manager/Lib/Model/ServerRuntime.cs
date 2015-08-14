@@ -145,7 +145,7 @@ namespace ARK_Server_Manager.Lib
                 InstallDirectory = profile.InstallDirectory,
                 QueryPort = profile.ServerPort,
                 ServerConnectionPort = profile.ServerConnectionPort,
-                ServerIP = profile.ServerIP,
+                ServerIP = String.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
                 LastInstalledVersion = profile.LastInstalledVersion,
                 ProfileName = profile.ProfileName,
                 RCONEnabled = profile.RCONEnabled,

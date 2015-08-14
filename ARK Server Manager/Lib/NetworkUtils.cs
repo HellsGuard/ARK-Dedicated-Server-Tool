@@ -22,6 +22,12 @@ namespace ARK_Server_Manager.Lib
             this.Description = description;
         }
 
+        public NetworkAdapterEntry(string address, string description)
+        {
+            this.IPAddress = address;
+            this.Description = description;
+        }
+
         public string IPAddress
         {
             get;

@@ -1243,7 +1243,7 @@
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
-                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="200" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
@@ -1300,7 +1300,7 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="+" Width="Auto">
@@ -1356,7 +1356,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="200" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="+" Width="Auto">

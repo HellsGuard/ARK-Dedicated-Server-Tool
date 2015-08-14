@@ -153,7 +153,7 @@ namespace ARK_Server_Manager.Lib
                 foreach(var line in command.lines)
                 {                    
                     var elements = line.Split(',');
-                    if(elements.Length > 0)
+                    if(elements.Length == 2)
                     {
                         var newPlayer = new ViewModel.RCON.PlayerInfo()
                         {
