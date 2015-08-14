@@ -179,7 +179,9 @@
     <Compile Include="Lib\ViewModel\DinoSettingsList.cs" />
     <Compile Include="Lib\ViewModel\EngramClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\ViewModel\DinoNameValueConverter.cs" />
+    <Compile Include="Lib\ViewModel\TimeValidationRule.cs" />
     <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\SecondsToTimeValueConverter.cs" />
     <Compile Include="Lib\ViewModel\NullValueConverter.cs" />
     <Compile Include="Lib\ViewModel\LevelIndexToDisplayOffsetConverter.cs" />
     <Compile Include="Lib\ViewModel\RCON\PlayerInfo.cs" />

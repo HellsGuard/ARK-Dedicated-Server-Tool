@@ -19,6 +19,8 @@
         <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
         <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
         <vm:DinoSettingsList x:Key="BaseDinoSettings"/>
+        <vm:TimeValidationRule x:Key="TimeValidationRule"/>
+        <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
             <Setter Property="Template">
@@ -794,31 +796,74 @@
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5"/>
                                     </GroupBox.Header>
-                                    <StackPanel>
-                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                    <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5"/>
                                     </GroupBox.Header>
-                                    <StackPanel>
-                                        <local:AnnotatedSlider Label="Increase Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />
-                                        <local:AnnotatedSlider Label="Increase Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" />
-                                        <local:AnnotatedSlider Label="Increase Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />                                        
+                                    <StackPanel  IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}">
+                                        <local:AnnotatedSlider Label="Increase Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />
+                                        <local:AnnotatedSlider Label="Increase Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" />
+                                        <local:AnnotatedSlider Label="Increase Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />                                        
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5"/>
                                     </GroupBox.Header>
-                                    <StackPanel>
-                                        <CheckBox IsChecked="{Binding AutoPvEUseSystemTime}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                        <local:AnnotatedSlider Label="Start Time" Value="{Binding AutoPvEStartTimeSeconds}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" />
-                                        <local:AnnotatedSlider Label="Stop Time" Value="{Binding AutoPvEStopTimeSeconds}" IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}" Suffix="seconds" Minimum="0" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" />
-                                    </StackPanel>
+                                    <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                                        <Label    Grid.Column="1" Content="Start Time:"  Margin="10,0,0,0"/>
+                                        <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The start time in hours and minutes from midnight" >
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <StackPanel>
+                                                        <!-- Placeholder for the TextBox itself -->
+                                                        <AdornedElementPlaceholder x:Name="textBox"/>
+                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Text>
+                                                <Binding Path="AutoPvEStartTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
+                                                    <Binding.ValidationRules>
+                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <Label   Grid.Column="3" Content="Stop Time:" Margin="10,0,0,0"/>
+                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The stop time in hours and minutes from midnight" >
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <StackPanel>
+                                                        <!-- Placeholder for the TextBox itself -->
+                                                        <AdornedElementPlaceholder x:Name="textBox"/>
+                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Text>
+                                                <Binding Path="AutoPvEStopTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
+                                                    <Binding.ValidationRules>
+                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </Grid>
                                 </GroupBox>
                             </StackPanel>
                         </Grid>
