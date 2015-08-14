@@ -23,6 +23,13 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Kick" />
+                                <MenuItem Header="Banned" IsCheckable="True" />
+                                <MenuItem Header="Whitelisted" IsCheckable="True" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -44,11 +51,6 @@
                             </Image.Style>-->
                         </Image>
                         <Label Grid.Row="0" Grid.Column="1" Content="{Binding SteamName}" ToolTip="{Binding SteamId}"/>
-                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="Kick"/>
-                            <Button Content="Ban"/>
-                            <Button Content="Chat"/>
-                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

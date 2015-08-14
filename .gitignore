@@ -3,6 +3,7 @@
 *.user
 *.pfx
 *~
+*.dll
 packages/
 ARK Dedicated Server Tool/bin/
 ARK Dedicated Server Tool/obj/

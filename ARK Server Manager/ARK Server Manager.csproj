@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>99</ApplicationRevision>
+    <ApplicationRevision>100</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -179,6 +179,8 @@
     <Compile Include="Lib\ViewModel\DinoSettingsList.cs" />
     <Compile Include="Lib\ViewModel\EngramClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\ViewModel\DinoNameValueConverter.cs" />
+    <Compile Include="Lib\ViewModel\EnumConverter.cs" />
+    <Compile Include="Lib\ViewModel\IdListValidationRule.cs" />
     <Compile Include="Lib\ViewModel\TimeValidationRule.cs" />
     <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
     <Compile Include="Lib\ViewModel\SecondsToTimeValueConverter.cs" />

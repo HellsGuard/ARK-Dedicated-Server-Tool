@@ -25,6 +25,12 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class ServerProfile : DependencyObject
     {
+        public enum MapSourceType
+        {
+            ByName,
+            ById,
+        };
+
         public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
         public static readonly DependencyProperty InstallDirectoryProperty = DependencyProperty.Register(nameof(InstallDirectory), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty LastInstalledVersionProperty = DependencyProperty.Register(nameof(LastInstalledVersion), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -32,6 +38,16 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
         public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
+
+
+
+        public MapSourceType MapSource
+        {
+            get { return (MapSourceType)GetValue(MapSourceProperty); }
+            set { SetValue(MapSourceProperty, value); }
+        }
+
+        public static readonly DependencyProperty MapSourceProperty = DependencyProperty.Register(nameof(MapSource), typeof(MapSourceType), typeof(ServerProfile), new PropertyMetadata(MapSourceType.ByName));
 
         public string ProfileName
         {
@@ -74,6 +90,15 @@ namespace ARK_Server_Manager.Lib
             get { return (string)GetValue(ServerMapProperty); }
             set { SetValue(ServerMapProperty, value); }
         }
+
+        public int ServerMapModId
+        {
+            get { return (int)GetValue(ServerMapModIdProperty); }
+            set { SetValue(ServerMapModIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerMapModIdProperty = DependencyProperty.Register(nameof(ServerMapModId), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+
 
         #region Server properties
 
@@ -737,6 +762,15 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SpectatorPasswordProperty = DependencyProperty.Register(nameof(SpectatorPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ActiveMods")]
+        public string ServerModIds
+        {
+            get { return (string)GetValue(ServerModIdsProperty); }
+            set { SetValue(ServerModIdsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerModIdsProperty = DependencyProperty.Register(nameof(ServerModIds), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1114,7 +1148,15 @@ namespace ARK_Server_Manager.Lib
         public string GetServerArgs()
         {
             var serverArgs = new StringBuilder();
-            serverArgs.Append(this.ServerMap);
+
+            if (this.MapSource == MapSourceType.ByName)
+            {
+                serverArgs.Append(this.ServerMap);
+            }
+            else
+            {
+                serverArgs.Append($"-MapModID={this.ServerMapModId}");
+            }
 
             // These are used to match the server to the profile.
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
