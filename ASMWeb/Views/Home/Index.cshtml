@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-2 form-inline">
+        <label for="apiKey">API Key:</label> 
+        <input id="apiKey" class="form-control"/>
+    </div>    
+    <div class="col-md-2 form-inline">
+        <label for="apiHost">API Host:</label>
+        <input id="apiHost" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <button type="button" onclick="makeRequest()">Execute</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 form-group">
+        <label for="output">Output:</label>
+        <textarea id="output"></textarea>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/ASM/arkbar.js" )></script>
+    <script type="text/javascript" src="~/Scripts/CodeBehind/Home/Index.js")></script>
+}
