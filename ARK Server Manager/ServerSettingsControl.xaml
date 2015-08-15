@@ -757,7 +757,21 @@
                             <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="5" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time between server auto-saves."/>
 
-                            <GroupBox Header="Maps and Mods" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                                <GroupBox.Style>
+                                    <Style TargetType="{x:Type GroupBox}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="True">
+                                                <Setter Property="Header" Value="Survival of the Fittest enabled.  Maps and Mods disabled."/>
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="False">
+                                                <Setter Property="Header" Value="Maps and Mods"/>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25"/>
@@ -1390,6 +1404,33 @@
                                     </ListView>
                                 </GroupBox>
                             </StackPanel>
+                        </Grid>
+                    </Expander>
+                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                        <Expander.Header>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Survival of the Fittest" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                        </Expander.Header>
+                        <Grid Margin ="10">
+                            <GroupBox>
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center">Enable Survival of the Fittest</CheckBox>
+                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="Load an existing profile, or import one directly from an existing server.">
+                                            <Image Source="Art/Help.png" Height="16" Margin="0" />
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox.Header>
+                                <StackPanel IsEnabled="{Binding ElementName=EnableSOTF, Path=IsChecked}">
+                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" ToolTip="If checked, players cannot be spectators after they die.">Disable Death Spectator</CheckBox>
+                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" ToolTip="If checked, only admins can join as spectators once the game has started.">Only Admin Rejoin As Spectator</CheckBox>
+                                    <local:AnnotatedSlider Label="Max Players in Tribe:" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="players" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The maximum number of players allowed in a tribe."/>
+                                    <local:AnnotatedSlider Label="Tribe Required for Game:" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="tribes" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The number of tribes requires for the game to start."/>
+                                    <local:AnnotatedSlider Label="Ring of Death Collapse Time:" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="seconds" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="The game length before Sudden Death."/>
+                                    <local:AnnotatedSlider Label="Auto-start Delay Time:" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="seconds" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the minimum number of tribes has been achieved before the game starts."/>
+                                    <local:AnnotatedSlider Label="Auto-restart Delay Time:" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="seconds"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the last game has ended before the new game will start."/>
+                                    <local:AnnotatedSlider Label="Sudden Death Time:" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="seconds" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="The amount of time Sudden Death will be in effect until the game is declared a draw."/>
+                                </StackPanel>
+                            </GroupBox>
                         </Grid>
                     </Expander>
                 </StackPanel>

@@ -35,9 +35,24 @@
                     <Image Source="Art/Help.png" Width="16"/>
                 </Button>
             </StackPanel>
-            <Label  DockPanel.Dock="Right" Margin="5,4,5,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <Label  DockPanel.Dock="Right" Margin="10,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" >
+            <Button  DockPanel.Dock="Right" Background="#00AA00" Foreground="White" Margin="5" Padding="5" Content="Upgrade" Click="Upgrade_Click" VerticalAlignment="Center" >
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NewASMAvailable}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding NewASMAvailable}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Label  DockPanel.Dock="Right" Margin="5,4,5,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+            <Label  DockPanel.Dock="Right" Margin="10,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
                 <TextBox FontSize="12" Height="25"  Width="250" VerticalAlignment="Bottom" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
                     <Validation.ErrorTemplate>
                         <ControlTemplate>
@@ -56,12 +71,12 @@
                        </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <Button Width="22" Height="22" VerticalAlignment="Bottom" Margin="2,0,0,8" Click="RefreshPublicIP_Click"
+                <Button Width="22" Height="22" VerticalAlignment="Center" Margin="2,0,0,8" Click="RefreshPublicIP_Click"
                         ToolTip="Attempt to determine your current public IP">
                     <Image Source="Art/Refresh.png"/>
                 </Button>
             </StackPanel>
-            <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+            <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
         </DockPanel>
         <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" 

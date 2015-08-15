@@ -738,10 +738,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AutoPvEStopTimeSecondsProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoPvEStopTimeSecondsProperty = DependencyProperty.Register(nameof(AutoPvEStopTimeSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
-
-
-
+        public static readonly DependencyProperty AutoPvEStopTimeSecondsProperty = DependencyProperty.Register(nameof(AutoPvEStopTimeSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));      
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public int MaxTamedDinos
@@ -761,8 +758,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SpectatorPasswordProperty = DependencyProperty.Register(nameof(SpectatorPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ActiveMods")]
+        
         public string ServerModIds
         {
             get { return (string)GetValue(ServerModIdsProperty); }
@@ -898,6 +894,99 @@ namespace ARK_Server_Manager.Lib
 
         #endregion
 
+        #region Survival of the Fittest Options
+
+
+
+        public bool SOTF_Enabled
+        {
+            get { return (bool)GetValue(SOTF_EnabledProperty); }
+            set { SetValue(SOTF_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+
+        public bool SOTF_DisableDeathSPectator
+        {
+            get { return (bool)GetValue(SOTF_DisableDeathSPectatorProperty); }
+            set { SetValue(SOTF_DisableDeathSPectatorProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_DisableDeathSPectatorProperty = DependencyProperty.Register(nameof(SOTF_DisableDeathSPectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_OnlyAdminRejoinAsSpectator
+        {
+            get { return (bool)GetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty); }
+            set { SetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_OnlyAdminRejoinAsSpectatorProperty = DependencyProperty.Register(nameof(SOTF_OnlyAdminRejoinAsSpectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_MaxNumberOfPlayersInTribe
+        {
+            get { return (int)GetValue(SOTF_MaxNumberOfPlayersInTribeProperty); }
+            set { SetValue(SOTF_MaxNumberOfPlayersInTribeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(SOTF_MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(2));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleNumOfTribesToStartGame", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleNumOfTribesToStartGame
+        {
+            get { return (int)GetValue(SOTF_BattleNumOfTribesToStartGameProperty); }
+            set { SetValue(SOTF_BattleNumOfTribesToStartGameProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleNumOfTribesToStartGameProperty = DependencyProperty.Register(nameof(SOTF_BattleNumOfTribesToStartGame), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "TimeToCollapseROD", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_TimeToCollapseROD
+        {
+            get { return (int)GetValue(SOTF_TimeToCollapseRODProperty); }
+            set { SetValue(SOTF_TimeToCollapseRODProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_TimeToCollapseRODProperty = DependencyProperty.Register(nameof(SOTF_TimeToCollapseROD), typeof(int), typeof(ServerProfile), new PropertyMetadata(9000));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoStartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleAutoStartGameInterval
+        {
+            get { return (int)GetValue(SOTF_BattleAutoStartGameIntervalProperty); }
+            set { SetValue(SOTF_BattleAutoStartGameIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleAutoStartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoStartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoRestartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleAutoRestartGameInterval
+        {
+            get { return (int)GetValue(SOTF_BattleAutoRestartGameIntervalProperty); }
+            set { SetValue(SOTF_BattleAutoRestartGameIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleAutoRestartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoRestartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(45));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleSuddenDeathInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleSuddenDeathInterval
+        {
+            get { return (int)GetValue(SOTF_BattleSuddenDeathIntervalProperty); }
+            set { SetValue(SOTF_BattleSuddenDeathIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
+
+
+
+        #endregion
         [XmlIgnore()]
         public bool IsDirty
         {
@@ -1149,13 +1238,20 @@ namespace ARK_Server_Manager.Lib
         {
             var serverArgs = new StringBuilder();
 
-            if (this.MapSource == MapSourceType.ByName)
+            if (this.SOTF_Enabled)
             {
-                serverArgs.Append(this.ServerMap);
+                serverArgs.Append(Config.Default.DefaultServerMap);
             }
             else
             {
-                serverArgs.Append($"-MapModID={this.ServerMapModId}");
+                if (this.MapSource == MapSourceType.ByName)
+                {
+                    serverArgs.Append(this.ServerMap);
+                }
+                else
+                {
+                    serverArgs.Append($"-MapModID={this.ServerMapModId}");
+                }
             }
 
             // These are used to match the server to the profile.
@@ -1171,57 +1267,32 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?RCONPort=").Append(this.RCONPort);
             }
 
-#if false
-            serverArgs.Append("?GlobalVoiceChat=").Append(this.EnableGlobalVoiceChat);
-            serverArgs.Append("?ProximityChat=").Append(this.EnableProximityChat);
-            serverArgs.Append("?NoTributeDownloads=").Append(!this.EnableTributeDownloads);
-            serverArgs.Append("?bAllowFlyerCarryPVE=").Append(this.EnableFlyerCarry);
-            serverArgs.Append("?bDisableStructureDecayPVE=").Append(!this.EnableStructureDecay);
-            serverArgs.Append("?AlwaysNotifyPlayerLeft=").Append(this.EnablePlayerLeaveNotifications);
-            serverArgs.Append("?DontAlwaysNotifyPlayerJoined=").Append(!this.EnablePlayerJoinedNotifications);
-            serverArgs.Append("?ServerHardcore=").Append(this.EnableHardcore);           
-            serverArgs.Append("?ServerPVE=").Append(!this.EnablePVP);
-
-            serverArgs.Append("?ServerCrosshair=").Append(this.AllowCrosshair);
-            serverArgs.Append("?ServerForceNoHud=").Append(!this.AllowHUD);
-            serverArgs.Append("?AllowThirdPersonPlayer=").Append(this.AllowThirdPersonView);
-            serverArgs.Append("?ShowMapPlayerLocation=").Append(this.AllowMapPlayerLocation);
-            serverArgs.Append("?EnablePVPGamma=").Append(this.AllowPVPGamma);
-
-
-            serverArgs.Append("?ServerPassword=").Append(this.ServerPassword);
-            serverArgs.Append("?ServerAdminPassword=").Append(this.AdminPassword);
-            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
-            serverArgs.Append("?DifficultyOffset=").Append(this.DifficultyOffset);
-            serverArgs.Append("?MaxStructuresInRange=").Append(this.MaxStructuresVisible);
-            
-            serverArgs.Append("?SessionName=").Append('"').Append(this.ServerName).Append('"');
-            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
-            if(!String.IsNullOrWhiteSpace(this.ServerIP))
-            {
-                serverArgs.Append("?MultiHome=").Append(this.ServerIP);
-            }
-            
-            if(!String.IsNullOrWhiteSpace(this.SaveDirectory))
-            {
-                // TODO: This doesn't appear to work 
-                serverArgs.Append("?\"AltSaveDirectoryName=").Append(this.SaveDirectory).Append('"');
-            }
-
-            if(!String.IsNullOrWhiteSpace(this.MOTD))
-            {
-                // TODO: This needs to go into the MessageOfTheDay INI file section
-                serverArgs.Append("?MOTD=").Append('"').Append(this.MOTD).Append('"');
-            }
-#endif
-
             // Currently this setting does not seem to get picked up from the INI file.
             serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
             serverArgs.Append("?Port=").Append(this.ServerConnectionPort);
 
             serverArgs.Append("?listen");
 
+            if (!this.SOTF_Enabled && !String.IsNullOrEmpty(this.ServerModIds))
+            {
+                serverArgs.Append($"?GameModIds={this.ServerModIds}");
+            }
+
             serverArgs.Append(this.AdditionalArgs);
+
+            if(this.SOTF_Enabled)
+            {
+                serverArgs.Append(" -TotalConversionMod=496735411");
+                if(this.SOTF_DisableDeathSPectator)
+                {
+                    serverArgs.Append(" -DisableDeathSpectator");
+                }
+
+                if(this.SOTF_OnlyAdminRejoinAsSpectator)
+                {
+                    serverArgs.Append(" -OnlyAdminRejoinAsSpectator");
+                }
+            }
 
             serverArgs.Append(' ');
             serverArgs.Append(Config.Default.ServerCommandLineStandardArgs);

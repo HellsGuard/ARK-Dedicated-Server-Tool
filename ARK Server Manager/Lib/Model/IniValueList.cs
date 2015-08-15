@@ -52,7 +52,7 @@ namespace ARK_Server_Manager.Lib
         public void FromIniValues(IEnumerable<string> values)
         {
             this.Clear();
-            this.AddRange(values.Select(this.FromIniValue));
+            this.AddRange(values.Select(v => v.Substring(v.IndexOf('=') + 1)).Select(this.FromIniValue));
             this.IsEnabled = (this.Count != 0);
 
             // Add any default values which were missing

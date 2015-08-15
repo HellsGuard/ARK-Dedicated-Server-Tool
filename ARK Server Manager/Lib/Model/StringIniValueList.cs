@@ -8,8 +8,18 @@ namespace ARK_Server_Manager.Lib
 {
     public class StringIniValueList : IniValueList<string>
     {
-        public StringIniValueList(string iniKeyNale, Func<IEnumerable<string>> resetFunc) : base(iniKeyNale, resetFunc, String.Equals, m => m, m => m, m => m)
+        public StringIniValueList(string iniKeyNale, Func<IEnumerable<string>> resetFunc) : base(iniKeyNale, resetFunc, String.Equals, m => m, ToIniValueInternal, FromIniValueInternal)
         {
+        }
+
+        private static string ToIniValueInternal(string val)
+        {
+            return "\"" + val + "\"";            
+        }
+
+        private static string FromIniValueInternal(string iniVal)
+        {
+            return iniVal.Trim('"');            
         }
     }
 }

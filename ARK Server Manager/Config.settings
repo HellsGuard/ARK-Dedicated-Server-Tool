@@ -98,5 +98,11 @@
     <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://api.ark.bar/server/{0}/{1}</Value>
     </Setting>
+    <Setting Name="LatestASMVersionUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://s3-us-west-2.amazonaws.com/arkservermanager/release/latest.txt</Value>
+    </Setting>
+    <Setting Name="UpdateCheckTime" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

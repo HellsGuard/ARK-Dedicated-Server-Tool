@@ -80,12 +80,12 @@ namespace ARK_Server_Manager.Lib
 
             // Get SteamCmd.exe if necessary
             string steamCmdPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdExe);
-            if(!File.Exists(steamCmdPath))
+            if (!File.Exists(steamCmdPath))
             {
                 var steamZipPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdZip);
-                using(var webClient = new WebClient())
+                using (var webClient = new WebClient())
                 {
-                    using(var cancelRegistration = cancellationToken.Register(webClient.CancelAsync))
+                    using (var cancelRegistration = cancellationToken.Register(webClient.CancelAsync))
                     {
                         await webClient.DownloadFileTaskAsync(Config.Default.SteamCmdUrl, steamZipPath);
                     }
@@ -94,24 +94,24 @@ namespace ARK_Server_Manager.Lib
                 reporter.Report(statuses[Status.UnzippingSteamCmd]);
                 ZipFile.ExtractToDirectory(steamZipPath, steamCmdDirectory);
                 File.Delete(steamZipPath);
-            }
 
-            // Run the SteamCmd updater
-            reporter.Report(statuses[Status.RunningSteamCmd]);
-            var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
-            process.EnableRaisingEvents = true;
-            var ts = new TaskCompletionSource<bool>();            
-            using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))  
-            {
-                process.Exited += (s, e) => 
-                    {
-                        ts.TrySetResult(process.ExitCode == 0);
-                    };
-                process.ErrorDataReceived += (s, e) =>
-                    {
-                        ts.TrySetException(new Exception(e.Data));
-                    };
-                await ts.Task;
+                // Run the SteamCmd updater
+                reporter.Report(statuses[Status.RunningSteamCmd]);
+                var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
+                process.EnableRaisingEvents = true;
+                var ts = new TaskCompletionSource<bool>();
+                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
+                {
+                    process.Exited += (s, e) =>
+                        {
+                            ts.TrySetResult(process.ExitCode == 0);
+                        };
+                    process.ErrorDataReceived += (s, e) =>
+                        {
+                            ts.TrySetException(new Exception(e.Data));
+                        };
+                    await ts.Task;
+                }
             }
 
             return;
@@ -121,7 +121,7 @@ namespace ARK_Server_Manager.Lib
         {
             reporter.Report(statuses[Status.CheckForNewServerVersion]);
             reporter.Report(statuses[Status.DownloadNewServerVersion]);
-            return;
+            await TaskUtils.FinishedTask;
         }
 
         public struct Update

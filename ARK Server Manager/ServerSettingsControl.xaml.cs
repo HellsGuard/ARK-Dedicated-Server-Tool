@@ -380,5 +380,14 @@ namespace ARK_Server_Manager
         {
             this.Settings.OverrideNamedEngramEntries.Reset();
         }
+
+        private void HelpSOTF_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Survival of the Fittest is a total conversion mod.  In order to enable it, you will need to first install it (we don't yet support installing it for you.)  Would you like to open the installation instructions web page now?", "Go to SOTF web page?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                Process.Start("http://steamcommunity.com/app/346110/discussions/10/530649887204866610/");
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace ARK_Server_Manager
 {
@@ -54,6 +55,27 @@ namespace ARK_Server_Manager
             set { SetValue(ServerManagerProperty, value); }
         }
 
+        public Version LatestASMVersion
+        {
+            get { return (Version)GetValue(LatestASMVersionProperty); }
+            set { SetValue(LatestASMVersionProperty, value); }
+        }
+
+        public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
+
+
+
+        public bool NewASMAvailable
+        {
+            get { return (bool)GetValue(NewASMAvailableProperty); }
+            set { SetValue(NewASMAvailableProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+
+        ActionQueue versionChecker;
+
         public MainWindow()
         {
             this.CurrentConfig = Config.Default;
@@ -63,6 +85,7 @@ namespace ARK_Server_Manager
             this.ServerManager = ServerManager.Instance;
 
             this.DataContext = this;
+            this.versionChecker = new ActionQueue();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -86,9 +109,39 @@ namespace ARK_Server_Manager
                     }
 
                     Tabs.SelectedIndex = 0;
-                }).DoNotWait();            
+                }).DoNotWait();
+
+            this.versionChecker.PostAction(CheckForUpdates).DoNotWait();
         }
 
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            this.versionChecker.DisposeAsync().DoNotWait();
+        }
+
+        private async Task CheckForUpdates()
+        {
+            var newVersion = await NetworkUtils.GetLatestASMVersion();
+            TaskUtils.RunOnUIThreadAsync(() =>
+            {
+                try
+                {
+                    var appVersion = new Version();
+                    Version.TryParse(App.Version, out appVersion);
+
+                    this.LatestASMVersion = newVersion;
+                    this.NewASMAvailable = appVersion < newVersion;
+                }
+                catch (Exception)
+                {
+                // Ignore.
+            }
+            }).DoNotWait();
+
+            await Task.Delay(Config.Default.UpdateCheckTime * 60 * 1000);
+            this.versionChecker.PostAction(CheckForUpdates).DoNotWait();
+        }
         public void Settings_Click(object sender, RoutedEventArgs args)
         {
             var settingsWindow = new SettingsWindow();
@@ -128,6 +181,15 @@ namespace ARK_Server_Manager
             if (result == MessageBoxResult.Yes)
             {
                 var process = Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=cliff%2es%2ehudson%40gmail%2ecom&lc=US&item_name=Ark%20Server%20Manager&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
+            }
+        }
+
+        private void Upgrade_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show($"Version {this.LatestASMVersion} is now available.  To upgrade the application must close.  Close and upgrade now?", "Upgrade available", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                this.Close();
             }
         }
     }
