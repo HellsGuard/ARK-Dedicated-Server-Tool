@@ -28,10 +28,10 @@ namespace ARK_Server_Manager.Lib
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             this.workQueue.Post(() => 
-                {
-                    var result = action.Invoke();
+                {                    
                     try
                     {
+                        var result = action.Invoke();
                         Task.Run(() => tcs.TrySetResult(result));
                     }
                     catch(Exception ex)
