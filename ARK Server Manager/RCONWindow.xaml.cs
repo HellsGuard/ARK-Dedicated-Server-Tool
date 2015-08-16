@@ -147,7 +147,7 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.SteamId}"); },
-                    canExecute: (player) => false; // player != null && player.IsOnline
+                    canExecute: (player) => false // player != null && player.IsOnline
                 );
             }
         }

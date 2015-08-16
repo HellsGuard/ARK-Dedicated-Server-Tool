@@ -325,7 +325,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch(Exception ex)
             {
-                _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command, ex.Message, ex.ToString());
+                _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command.rawCommand, ex.Message, ex.ToString());
                 command.status = ConsoleStatus.Disconnected;
                 this.outputProcessor.Post(command);
                 return false;
