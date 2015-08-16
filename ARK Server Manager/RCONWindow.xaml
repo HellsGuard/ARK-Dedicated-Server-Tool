@@ -66,10 +66,15 @@
                         <Setter.Value>
                             <ContextMenu>
                                 <MenuItem Header="Kick" Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="Kill">
+                                    <MenuItem Header="Confirm" Command="{Binding Source={StaticResource proxy}, Path=Data.KillPlayerCommand}" CommandParameter="{Binding}"/>
+                                </MenuItem>
+                                <Separator/>
                                 <MenuItem Header="Banned" IsCheckable="{Binding IsBanned}" Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
                                 <MenuItem Header="Whitelisted" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
                                 <Separator/>
-                                <MenuItem Header="View Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="View Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="View Tribe..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
@@ -106,20 +111,15 @@
                                     <Label.Style>
                                         <Style TargetType="Label">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ArkData.Tribe.Name, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
+                                                <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
                                                     <Setter Property="Content" Value="No tribe"/>
                                                     <Setter Property="FontStyle" Value="Italic"/>
                                                     <Setter Property="Foreground" Value="LightGray"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding ArkData.Tribe.Name, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
+                                                <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
                                                     <Setter Property="Content" Value="{Binding ArkData.Tribe.Name}"/>
                                                     <Setter Property="FontStyle" Value="Normal"/>
-                                                    <Setter Property="Foreground" Value="{x:Null}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ArkData.Tribe, Converter={StaticResource IsNullValueConverter}}" Value="True">
-                                                    <Setter Property="Content" Value="No tribe"/>
-                                                    <Setter Property="FontStyle" Value="Italic"/>
-                                                    <Setter Property="Foreground" Value="LightGray"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

@@ -28,19 +28,21 @@ namespace ARK_Server_Manager
             finally
             {
 
-                var exception = e.ExceptionObject as Exception;
-                var details = new StringBuilder();
-                details.AppendLine("ARK Server Manager Crash Report");
-                details.AppendLine("Please report this crash to ChronosWS or HellsGuard on Steam").AppendLine();
-                details.Append("Assembly: ").Append(Assembly.GetExecutingAssembly().ToString()).AppendLine();
-                details.Append("Crash Dump: ").AppendLine(crashFile);
-                details.AppendLine("Exception Message:");
-                details.AppendLine(exception.Message).AppendLine();
-                details.AppendLine("Stack Trace:");
-                details.AppendLine(exception.StackTrace);
-                File.WriteAllText(file, details.ToString());
+                try
+                {
+                    var exception = e.ExceptionObject as Exception;
+                    var details = new StringBuilder();
+                    details.AppendLine("ARK Server Manager Crash Report");
+                    details.AppendLine("Please report this crash to ChronosWS or HellsGuard on Steam").AppendLine();
+                    details.Append("Assembly: ").Append(Assembly.GetExecutingAssembly().ToString()).AppendLine();
+                    details.Append("Crash Dump: ").AppendLine(crashFile);
+                    details.AppendLine("Exception Message:");
+                    details.AppendLine(exception.Message).AppendLine();
+                    details.AppendLine("Stack Trace:");
+                    details.AppendLine(exception.StackTrace);
+                    File.WriteAllText(file, details.ToString());
 
-                var result = MessageBox.Show(String.Format(@"
+                    var result = MessageBox.Show(String.Format(@"
 OOPS!  ARK Server Manager has suffered from an internal error and must shut down.
 This is probably a bug and should be reported.  The error files are below:
 Error File: {0}
@@ -50,9 +52,14 @@ will now be opened in notepad.
 ", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
 
-                if (result == MessageBoxResult.OK)
+                    if (result == MessageBoxResult.OK)
+                    {
+                        Process.Start("notepad.exe", file);
+                    }
+                }
+                catch(Exception ex)
                 {
-                    Process.Start("notepad.exe", file);
+                    try { File.WriteAllText(file, $"Exception trying to write exception: {ex.Message} : {ex.StackTrace} "); } catch { }
                 }
             }
         }

@@ -26,7 +26,7 @@ namespace ARK_Server_Manager
     public enum InputMode
     {
         Command,
-        Broadcast,
+        Global,
         //Chat
     }
 
@@ -141,13 +141,25 @@ namespace ARK_Server_Manager
             this.ConsoleInput.Focus();
         }
 
+        public ICommand KillPlayerCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.SteamId}"); },
+                    canExecute: (player) => false; // player != null && player.IsOnline
+                );
+            }
+        }
+
         public ICommand KickPlayerCommand
         {
             get
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { this.ServerRCON.IssueCommand($"KickPlayer {player.SteamId}"); },
-                    canExecute: (player) => { return true; });
+                    canExecute: (player) => player != null && player.IsOnline
+                    );
             }
         }
 
@@ -157,7 +169,8 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { var command = player.IsBanned ? "Unban" : "Ban" ;  this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
-                    canExecute: (player) => { return true; });
+                    canExecute: (player) => true
+                    );
             }
         }
 
@@ -167,7 +180,8 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
-                    canExecute: (player) => { return true; });
+                    canExecute: (player) => true
+                );
             }
         }
 
@@ -177,7 +191,20 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { Process.Start($"http://steamcommunity.com/profiles/{player.SteamId}"); },
-                    canExecute: (player) => { return true; });
+                    canExecute: (player) => true 
+                );
+            }
+        }
+
+        public ICommand ViewPlayerTribeCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => { },
+                    canExecute: (player) => false //player != null && !String.IsNullOrWhiteSpace(player.TribeName
+                    );
+
             }
         }
 
@@ -250,7 +277,10 @@ namespace ARK_Server_Manager
                 yield return new RCONOutput_Command($"> {command.rawCommand}");
             }
 
-            yield return new LineBreak();
+            if(!command.suppressOutput && command.lines.Count() > 0)
+            {
+                yield return new LineBreak();
+            }
         }
 
         private void AddCommentsBlock(params string[] lines)
@@ -316,10 +346,13 @@ namespace ARK_Server_Manager
                         "   DestroyAll <class name> - Destroys ALL creatures of the specified class",
                         "   destroyallenemies - Destroys ALL dinosaurs on the map",
                         "   DisallowPlayerToJoinNoCheck <player> - Removes the specified player from the whitelist",
+                        "   giveitemnumtoplayer <player> <itemnum> <quantity> <quality> <recipe> - Gives items to a player",
                         "   KickPlayer <steam id> - Kicks the specified user from the server",
+                        "   KillPlayer <steam id> - Kills the player (and mount), without leaving a body",
                         "   ListPlayers - Lists the current players",
                         "   PlayersOnly - Toggles all creature movement and crafting",
                         "   saveworld - Saves the world to disk",
+                        "   serverchat <message> - Sends a message to global chat",
                         "   SetMessageOfTheDay <message> - Sets the message of the day",
                         "   settimeofday <hour>:<minute>[:<second>] - Sets the time using 24-hour format",
                         "   slomo <factor> - Sets the passage of time.  Lower values slow time",
@@ -339,8 +372,8 @@ namespace ARK_Server_Manager
 
                     switch (effectiveMode)
                     {
-                        case InputMode.Broadcast:
-                            this.ServerRCON.IssueCommand($"broadcast {commandText}");
+                        case InputMode.Global:
+                            this.ServerRCON.IssueCommand($"serverchat {commandText}");
                             break;
 
                         case InputMode.Command:
