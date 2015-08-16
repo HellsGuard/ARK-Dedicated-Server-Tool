@@ -9,7 +9,7 @@ namespace ARK_Server_Manager.Lib
 {
     public class NPCReplacement : AggregateIniValue
     {
-        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(FromClassName), typeof(string), typeof(NPCReplacement), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty FromClassNameProperty = DependencyProperty.Register(nameof(FromClassName), typeof(string), typeof(NPCReplacement), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ToClassNameProperty = DependencyProperty.Register(nameof(ToClassName), typeof(string), typeof(NPCReplacement), new PropertyMetadata(String.Empty));
 
         public override bool IsEquivalent(AggregateIniValue other)
@@ -22,11 +22,16 @@ namespace ARK_Server_Manager.Lib
             return this.FromClassName;
         }
 
+        public override bool ShouldSave()
+        {
+            return (!String.Equals(FromClassName, ToClassName, StringComparison.OrdinalIgnoreCase));
+        }
+
         [AggregateIniValueEntry]
         public string FromClassName
         {
-            get { return (string)GetValue(ClassNameProperty); }
-            set { SetValue(ClassNameProperty, value); }
+            get { return (string)GetValue(FromClassNameProperty); }
+            set { SetValue(FromClassNameProperty, value); }
         }
 
         [AggregateIniValueEntry]

@@ -49,7 +49,8 @@ namespace ARK_Server_Manager.Lib
         public IEnumerable<string> ToIniValues()
         {
             var values = new List<string>();
-            values.AddRange(this.Select(d => String.Format("{0}={1}", this.IniCollectionKey, d.ToINIValue())));
+            values.AddRange(this.Where(d => d.ShouldSave())
+                                .Select(d => String.Format("{0}={1}", this.IniCollectionKey, d.ToINIValue())));
             return values;
         }
 

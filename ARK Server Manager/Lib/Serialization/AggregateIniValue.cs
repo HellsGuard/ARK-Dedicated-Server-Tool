@@ -79,6 +79,7 @@ namespace ARK_Server_Manager.Lib
 
         public abstract bool IsEquivalent(AggregateIniValue other);
         public abstract string GetSortKey();
+        public virtual bool ShouldSave() { return true; }
 
         private void GetPropertyInfos()
         {
