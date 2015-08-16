@@ -44,7 +44,6 @@ namespace ARK_Server_Manager
 
                     if (u.CompletionPercent >= 100 || u.Cancelled)
                     {
-                        await Task.Delay(1000);
                         await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
                                 var mainWindow = new MainWindow();
