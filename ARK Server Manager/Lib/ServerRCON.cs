@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -42,15 +43,22 @@ namespace ARK_Server_Manager.Lib
             Connected,
         };
 
-        public struct ConsoleCommand
+        public class ConsoleCommand
         {
             public ConsoleStatus status;
+            public string rawCommand;
+
             public string command;
-            public IEnumerable<string> lines;
+            public string args;
+            
+            public bool suppressCommand;
+            public bool suppressOutput;
+            public IEnumerable<string> lines = new string[0];
         };
 
         private const int ConnectionRetryDelay = 2000;
-
+        private const int ListPlayersPeriod = 5000;
+        private const int GetChatPeriod = 500;
         private readonly ActionQueue commandProcessor;
         private readonly ActionBlock<ConsoleCommand> outputProcessor;
         private ServerRuntime.RuntimeProfileSnapshot snapshot;
@@ -79,11 +87,27 @@ namespace ARK_Server_Manager.Lib
 
             this.snapshot = server.Runtime.ProfileSnapshot;
             commandProcessor.PostAction(() => Reconnect());
+            commandProcessor.PostAction(AutoPlayerList);
+            commandProcessor.PostAction(AutoGetChat);
+        }
+
+        private async Task AutoPlayerList()
+        {
+            this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = "listplayers", suppressCommand = true, suppressOutput = true })).DoNotWait();
+            await Task.Delay(ListPlayersPeriod);
+            commandProcessor.PostAction(AutoPlayerList).DoNotWait();
+        }
+
+        private async Task AutoGetChat()
+        {
+            this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = "getchat", suppressCommand = true, suppressOutput = false })).DoNotWait();
+            await Task.Delay(GetChatPeriod);
+            commandProcessor.PostAction(AutoGetChat).DoNotWait();
         }
 
         public Task<bool> IssueCommand(string userCommand)
         {
-            return this.commandProcessor.PostAction(() => ProcessInput(userCommand));
+            return this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = userCommand }));
         }
 
         public async Task DisposeAsync()
@@ -148,8 +172,17 @@ namespace ARK_Server_Manager.Lib
 
         private void HandleCommand(ConsoleCommand command)
         {
-            if(command.command.StartsWith("listplayers"))
-            {                               
+            //
+            // Change the connection state as appropriate
+            //
+            TaskUtils.RunOnUIThreadAsync(() => { this.Status = command.status; }).DoNotWait();
+
+            //
+            // Perform per-command special processing to extract data
+            //
+            if(command.command.Equals("listplayers", StringComparison.OrdinalIgnoreCase))
+            {
+                var newPlayerList = new List<PlayerInfo>();                
                 foreach(var line in command.lines)
                 {                    
                     var elements = line.Split(',');
@@ -157,54 +190,128 @@ namespace ARK_Server_Manager.Lib
                     {
                         var newPlayer = new ViewModel.RCON.PlayerInfo()
                         {
-                            SteamName = elements[0].Substring(elements[0].IndexOf('.')+1),
-                            SteamId = Int64.Parse(elements[1])
+                            SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
+                            SteamId = Int64.Parse(elements[1]),
+                            IsOnline = true
                         };
 
+                        newPlayerList.Add(newPlayer);
+
                         var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
-                        if(existingPlayer == null)
+                        if (existingPlayer == null)
                         {
-                            this.Players.Add(newPlayer);
-                            newPlayer.GetSteamInfoAsync();
+                            TaskUtils.RunOnUIThreadAsync(() => { this.Players.Add(newPlayer); }).DoNotWait();
+                        }
+                        else
+                        {
+                            TaskUtils.RunOnUIThreadAsync(() => { existingPlayer.IsOnline = true; }).DoNotWait();
                         }
                     }
                 }
-            }
 
+                var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
+                foreach(var player in droppedPlayers)
+                {
+                    TaskUtils.RunOnUIThreadAsync(() => { player.IsOnline = false; }).DoNotWait();                    
+                }
+
+                TaskUtils.RunOnUIThreadAsync(() => { this.Players.Sort(p => p.IsOnline); }).DoNotWait();
+
+                if(this.Players.Count == 0 || newPlayerList.Count > 0)
+                {
+                    commandProcessor.PostAction(UpdatePlayerDetails);
+                }
+            }
+            else if(command.command.Equals("getchat", StringComparison.OrdinalIgnoreCase))
+            {
+                // TODO: Extract the player name from the chat
+                var line = command.lines.FirstOrDefault();
+                if(line != null)
+                {
+                    if(line == NoResponseOutput)
+                    {
+                        command.suppressOutput = true;
+                    }
+                }
+            }
+            else if (command.command.Equals("broadcast", StringComparison.OrdinalIgnoreCase))
+            {
+                command.suppressOutput = true;
+            }
         }
 
-        private static readonly char[] splitChars = new char[] { '\n' };
-        private bool ProcessInput(string command)
+        private async Task UpdatePlayerDetails()
+        {
+            var savedArksPath = Path.Combine(snapshot.InstallDirectory, Config.Default.SavedArksRelativePath);
+            var arkData = await ArkData.ArkDataContainer.CreateAsync(savedArksPath);
+            await arkData.LoadSteamAsync(Config.Default.SteamAPIKey);
+            TaskUtils.RunOnUIThreadAsync(() =>
+            {
+                foreach (var playerData in arkData.Players)
+                {
+                    var playerToUpdate = this.Players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
+                    if (playerToUpdate != null)
+                    {
+                        playerToUpdate.UpdateArkData(playerData).DoNotWait();
+                    }
+                    else
+                    {
+                        var newPlayer = new PlayerInfo() { SteamId = Int64.Parse(playerData.SteamId), SteamName = playerData.SteamName };
+                        newPlayer.UpdateArkData(playerData).DoNotWait();
+                        this.Players.Add(newPlayer);
+                    }
+                }
+            }).DoNotWait();           
+        }
+
+        private static readonly char[] lineSplitChars = new char[] { '\n' };
+        private static readonly char[] argsSplitChars = new char[] { ' ' };
+        private const string NoResponseMatch = "Server received, But no response!!";
+        public const string NoResponseOutput = "NO_RESPONSE";
+        
+        private bool ProcessInput(ConsoleCommand command)
         {
             try
             {
+                var args = command.rawCommand.Split(argsSplitChars, 2);
+                command.command = args[0];
+                if(args.Length > 1)
+                {
+                    command.args = args[1];
+                }
+
                 string result = String.Empty;
                 if (this.console == null)
                 {
                     // Try connecting to the server
                     if (!Reconnect())
                     {
+                        command.status = ConsoleStatus.Disconnected;
+                        this.outputProcessor.Post(command);
                         return false;
                     }
                 }
 
-                result = this.console.SendCommand(command);
+                result = this.console.SendCommand(command.rawCommand);
 
-                var lines = result.Split(splitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim());
+                var lines = result.Split(lineSplitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
 
-                ConsoleCommand output = new ConsoleCommand
+                if(lines.Length == 1 && lines[0].StartsWith(NoResponseMatch))
                 {
-                    status = ConsoleStatus.Connected,
-                    command = command,
-                    lines = lines
-                };
+                    lines[0] = NoResponseOutput;
+                }
 
-                this.outputProcessor.Post(output);
+                command.status = ConsoleStatus.Connected;
+                command.lines = lines;
+
+                this.outputProcessor.Post(command);
                 return true;
             }
             catch(Exception ex)
             {
                 _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command, ex.Message, ex.ToString());
+                command.status = ConsoleStatus.Disconnected;
+                this.outputProcessor.Post(command);
                 return false;
             }            
         }

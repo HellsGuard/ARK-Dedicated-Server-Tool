@@ -349,5 +349,23 @@ namespace ARK_Server_Manager {
                 return ((int)(this["UpdateCheckTime"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("97D490F696FA0B36EB7141B458040113")]
+        public string SteamAPIKey {
+            get {
+                return ((string)(this["SteamAPIKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Saved\\SavedArks")]
+        public string SavedArksRelativePath {
+            get {
+                return ((string)(this["SavedArksRelativePath"]));
+            }
+        }
     }
 }

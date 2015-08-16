@@ -1,64 +1,170 @@
 ﻿<Window x:Class="ARK_Server_Manager.RCONWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"   
+        xmlns:rcon="clr-namespace:ARK_Server_Manager.Lib.ViewModel.RCON"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
-        Title="{Binding ServerName}" Height="600" Width="800" ResizeMode="CanResizeWithGrip" Icon="Art/favicon.ico">
+        xmlns:local="clr-namespace:ARK_Server_Manager"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Name="RCON"
+        Title="{Binding Server.Profile.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip" Icon="Art/favicon.ico">
     <Window.Resources>
         <vm:NullValueConverter x:Key="NullValueConverter"/>
+        <vm:IsNullValueConverter x:Key="IsNullValueConverter"/>
+        <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
+        <ObjectDataProvider MethodName="GetValues"
+            ObjectType="{x:Type sys:Enum}"
+            x:Key="InputModes">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:InputMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Bottom">
+        <Grid DockPanel.Dock="Bottom" Margin="2,1,2,2">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Input:"/>
-            <TextBox TabIndex="0" Grid.Column="1" KeyUp="ConsoleInput_KeyUp" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="0" Content="Mode:"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Source={StaticResource InputModes}}" SelectedItem="{Binding CurrentInputMode, Mode=TwoWay}" Margin="0,0,2,0"/>
+            <TextBox Name="ConsoleInput" TabIndex="0" Grid.Column="2" KeyUp="ConsoleInput_KeyUp" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True"/>
         </Grid>
-        
-        <ListBox DockPanel.Dock="Right" MinWidth="150" ItemsSource="{Binding ServerRCON.Players}">
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightGray" Margin="2">
+            <StackPanel  Orientation="Horizontal" Margin="2,2,2,1">
+                <Label Content="Status:"/>
+                <Label Content="{Binding ServerRCON.Status}">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Connected">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Disconnected">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <Label Content="Players:" Margin="5,0,0,0"/>
+                <Label Content="{Binding Server.Runtime.Players}"/>
+                <Label Content="/"/>
+                <Label Content="{Binding Server.Runtime.MaxPlayers}"/>
+            </StackPanel>
+        </Border>
+        <ListBox DockPanel.Dock="Right" MinWidth="200" BorderBrush="LightGray" ItemsSource="{Binding ServerRCON.Players}" Margin="1,1,2,1" HorizontalContentAlignment="Stretch">
             <ListBox.Resources>
+                <vm:BindingProxy x:Key="proxy" Data="{Binding ElementName=RCON}"/>
                 <BitmapImage x:Key="NoAvatar" UriSource="Art/NoAvatar.png" />
             </ListBox.Resources>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ContextMenu>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Header="Kick" />
-                                <MenuItem Header="Banned" IsCheckable="True" />
-                                <MenuItem Header="Whitelisted" IsCheckable="True" />
+                                <MenuItem Header="Kick" Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="Banned" IsCheckable="{Binding IsBanned}" Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="Whitelisted" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
+                                <Separator/>
+                                <MenuItem Header="View Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
                             </ContextMenu>
-                        </Grid.ContextMenu>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.RowSpan="3" Grid.Row="0" Grid.Column="0" Source="{Binding AvatarImage, Converter={StaticResource ResourceKey=NullValueConverter}, ConverterParameter={StaticResource ResourceKey=NoAvatar}}" Width="32" Height="32" Stretch="Uniform">
-                            <!--<Image.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AvatarImage}" Value="{x:Null}">
-                                            <Setter Property="Image.Source" Value="{StaticResource ResourceKey=NoAvatar}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>-->
-                        </Image>
-                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding SteamName}" ToolTip="{Binding SteamId}"/>
-                    </Grid>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type rcon:PlayerInfo}">
+                    <Border BorderThickness="2" Padding="1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                        <Setter Property="BorderBrush" Value="LightGreen"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                        <Setter Property="BorderBrush" Value="Gray"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding AvatarImage, Converter={StaticResource ResourceKey=NullValueConverter}, ConverterParameter={StaticResource ResourceKey=NoAvatar}}" Width="48" Height="48" Stretch="Uniform"/>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+                                <Label Content="{Binding SteamName}" ToolTip="{Binding SteamId}" Padding="0,-1,0,-1" Background="AliceBlue" VerticalContentAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" Margin="0" >
+                                    <Label Content="{Binding ArkData.CharacterName}" Padding="0,-1,0,-1"/>
+                                    <TextBlock Text="{Binding ArkData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
+                                </StackPanel>
+                                <Label Padding="0,-1,0,-1">
+                                    <Label.Style>
+                                        <Style TargetType="Label">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ArkData.Tribe.Name, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
+                                                    <Setter Property="Content" Value="No tribe"/>
+                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                    <Setter Property="Foreground" Value="LightGray"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ArkData.Tribe.Name, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
+                                                    <Setter Property="Content" Value="{Binding ArkData.Tribe.Name}"/>
+                                                    <Setter Property="FontStyle" Value="Normal"/>
+                                                    <Setter Property="Foreground" Value="{x:Null}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ArkData.Tribe, Converter={StaticResource IsNullValueConverter}}" Value="True">
+                                                    <Setter Property="Content" Value="No tribe"/>
+                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                    <Setter Property="Foreground" Value="LightGray"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <RichTextBox DockPanel.Dock="Top" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsTabStop="False">
+            <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_Command}">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_NoResponse}">
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="Foreground" Value="LightGray"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_CommandOutput}">
+                    <Setter Property="FontStyle" Value="Normal"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_CommandTime}">
+                    <Setter Property="FontStyle" Value="Normal"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_ConnectionChanged}">
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_Broadcast}">
+                    <Setter Property="FontStyle" Value="Normal"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="Orange"/>
+                </Style>
+                <Style TargetType="{x:Type local:RCONOutput_Comment}">
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                    <Setter Property="Foreground" Value="Green"/>
                 </Style>
             </RichTextBox.Resources>
             <FlowDocument Name="ConsoleContent"/>

@@ -29,9 +29,10 @@ namespace ARK_Server_Manager.Lib
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             this.workQueue.Post(() => 
                 {
+                    var result = action.Invoke();
                     try
                     {
-                        Task.Run(() => tcs.TrySetResult(action.Invoke()));
+                        Task.Run(() => tcs.TrySetResult(result));
                     }
                     catch(Exception ex)
                     {
