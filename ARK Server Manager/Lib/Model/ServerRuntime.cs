@@ -314,25 +314,15 @@ namespace ARK_Server_Manager.Lib
 
                 // Run the SteamCMD to install the server
                 var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-                Directory.CreateDirectory(this.ProfileSnapshot.InstallDirectory);
-                var steamArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : String.Empty);
-                var process = Process.Start(steamCmdPath, steamArgs);
-                process.EnableRaisingEvents = true;
-                var ts = new TaskCompletionSource<bool>();
-                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
+                var success = await ServerUpdater.UpgradeServerAsync(validate, this.ProfileSnapshot.InstallDirectory, steamCmdPath, Config.Default.SteamCmdInstallServerArgsFormat, cancellationToken);
+                if (success && ServerManager.Instance.AvailableVersion != null)
                 {
-                    process.Exited += (s, e) => ts.TrySetResult(process.ExitCode == 0);
-                    process.ErrorDataReceived += (s, e) => ts.TrySetException(new Exception(e.Data));
-                    var success = await ts.Task;
-                    if(success && ServerManager.Instance.AvailableVersion != null)
-                    {
-                        this.Version = ServerManager.Instance.AvailableVersion;
-                    }
-
-                    return success;
+                    this.Version = ServerManager.Instance.AvailableVersion;
                 }
+
+                return success;
             }
-            catch(TaskCanceledException)
+            catch (TaskCanceledException)
             {
                 return false;
             }
@@ -340,8 +330,8 @@ namespace ARK_Server_Manager.Lib
             {
                 this.Status = ServerStatus.Stopped;
             }
-        }
-    
+        }       
+
         public void Dispose()
         {
             this.updateRegistration.DisposeAsync().DoNotWait();

@@ -110,5 +110,14 @@
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
     </Setting>
+    <Setting Name="SteamUserName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SteamPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ASMDownloadUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/ARK%20Server%20Manager.application</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

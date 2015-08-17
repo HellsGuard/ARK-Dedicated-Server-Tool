@@ -32,7 +32,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>119</ApplicationRevision>
+    <ApplicationRevision>123</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -45,7 +45,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -86,6 +86,9 @@
   <PropertyGroup>
     <ApplicationIcon>Art\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ARK_Server_Manager.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ArkData">
       <HintPath>..\..\ArkData\ArkData\bin\Debug\ArkData.dll</HintPath>
@@ -120,7 +123,7 @@
       <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -162,6 +165,7 @@
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
     <Compile Include="Lib\Model\StringIniValueList.cs" />
+    <Compile Include="Lib\ModManager.cs" />
     <Compile Include="Lib\PropertyChangeNotifier.cs" />
     <Compile Include="Lib\Serialization\AggregateIniValue.cs" />
     <Compile Include="Lib\Serialization\CompoundIniEntry.cs" />
@@ -176,6 +180,11 @@
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />
+    <Compile Include="Lib\ServerUpdater\ServerUpdater.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs" />
+    <Compile Include="Lib\ServerUpdater\ServerUpdaterGenerator.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
     <Compile Include="Lib\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />

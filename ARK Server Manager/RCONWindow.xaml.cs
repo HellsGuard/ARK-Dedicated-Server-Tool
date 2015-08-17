@@ -1,26 +1,16 @@
 ﻿using ARK_Server_Manager.Lib;
+using ARK_Server_Manager.Lib.ViewModel;
+using ARK_Server_Manager.Lib.ViewModel.RCON;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using SteamKit2;
-using ARK_Server_Manager.Lib.ViewModel;
-using ARK_Server_Manager.Lib.ViewModel.RCON;
-using System.Diagnostics;
-using System.ComponentModel;
 using System.Windows.Interactivity;
 
 namespace ARK_Server_Manager
@@ -220,7 +210,16 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        Process.Start($"{App.GetProfileLogDir(this.Server.Runtime.ProfileSnapshot.ProfileName)}");
+                        string logsDir = String.Empty;
+                        try
+                        {
+                            logsDir = App.GetProfileLogDir(this.Server.Runtime.ProfileSnapshot.ProfileName);
+                            Process.Start(logsDir);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show($"Unable to open the logs directory at {logsDir}.  Please make sure this directory exists and that you have permission to access it.\nException: {ex.Message}", "Can't open logs", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     },
                     canExecute: (sort) => true
                 );

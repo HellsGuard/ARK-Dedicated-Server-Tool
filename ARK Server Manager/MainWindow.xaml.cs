@@ -1,24 +1,11 @@
 ﻿using ARK_Server_Manager.Lib;
 using EO.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
 
 namespace ARK_Server_Manager
 {
@@ -150,6 +137,7 @@ namespace ARK_Server_Manager
 
         public void Help_Click(object sender, RoutedEventArgs args)
         {
+            //ServerUpdaterGenerator.GenerateUpdaterExe();
         }
 
         public void Servers_Remove(object sender, TabItemCloseEventArgs args)
@@ -189,7 +177,22 @@ namespace ARK_Server_Manager
             var result = MessageBox.Show($"Version {this.LatestASMVersion} is now available.  To upgrade the application must close.  Close and upgrade now?", "Upgrade available", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
             {
-                this.Close();
+                try
+                {
+                    var applicationFile = Path.Combine(Path.GetTempPath(), "ASM.application");
+                    var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
+                    File.WriteAllText(updateFilePath, $"timeout 2\n{applicationFile}");
+                    using (var client = new WebClient())
+                    {
+                        client.DownloadFile(Config.Default.ASMDownloadUrl, applicationFile);
+                    }
+                    Process.Start(updateFilePath);
+                    Application.Current.Shutdown(0);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Unable to run the update process.  Please report this!\nException {ex.Message}: {ex.StackTrace}", "Update failed!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

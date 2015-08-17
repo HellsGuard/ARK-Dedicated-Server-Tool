@@ -367,5 +367,39 @@ namespace ARK_Server_Manager {
                 return ((string)(this["SavedArksRelativePath"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamUserName {
+            get {
+                return ((string)(this["SteamUserName"]));
+            }
+            set {
+                this["SteamUserName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamPassword {
+            get {
+                return ((string)(this["SteamPassword"]));
+            }
+            set {
+                this["SteamPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/ARK%20Server%20Manager.applicati" +
+            "on")]
+        public string ASMDownloadUrl {
+            get {
+                return ((string)(this["ASMDownloadUrl"]));
+            }
+        }
     }
 }

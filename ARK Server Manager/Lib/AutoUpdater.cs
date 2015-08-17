@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.CodeDom;
+using Microsoft.CSharp;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -50,9 +52,6 @@ namespace ARK_Server_Manager.Lib
             {
                 await InstallSteamCmdAsync(reporter, cancellationToken);
                 reporter.Report(statuses[Status.InstallSteamCmdComplete]);
-
-                await GetLatestServerVersion(reporter, cancellationToken);
-                reporter.Report(statuses[Status.DownloadNewServerComplete]);
 
                 reporter.Report(statuses[Status.Complete]);
             }
@@ -116,13 +115,6 @@ namespace ARK_Server_Manager.Lib
 
             return;
         }
-                        
-        private async Task GetLatestServerVersion(IProgress<Update> reporter, CancellationToken cancellationToken)
-        {
-            reporter.Report(statuses[Status.CheckForNewServerVersion]);
-            reporter.Report(statuses[Status.DownloadNewServerVersion]);
-            await TaskUtils.FinishedTask;
-        }
 
         public struct Update
         {
@@ -154,6 +146,11 @@ namespace ARK_Server_Manager.Lib
             public float CompletionPercent;
             public bool Cancelled;
             public string FailureText;
+        }
+
+        public static void GenerateServerUpdater()
+        {
+            
         }
     }
 }

@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using WPFSharp.Globalizer;
+using SteamKit2;
 
 namespace ARK_Server_Manager
 {
@@ -140,6 +141,7 @@ namespace ARK_Server_Manager
                 Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
             }
 
+            
             base.OnStartup(e);
         }
 

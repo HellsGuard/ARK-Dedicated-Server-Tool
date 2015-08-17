@@ -63,7 +63,7 @@ namespace ARK_Server_Manager.Lib
         private const int ListPlayersPeriod = 5000;
         private const int GetChatPeriod = 1000;
         private readonly ActionQueue commandProcessor;
-        private readonly ActionBlock<ConsoleCommand> outputProcessor;
+        private readonly ActionQueue outputProcessor;
         private ServerRuntime.RuntimeProfileSnapshot snapshot;
         private readonly PropertyChangeNotifier runtimeChangedNotifier;
         private QueryMaster.Rcon console;
@@ -85,15 +85,10 @@ namespace ARK_Server_Manager.Lib
                 commandProcessor.PostAction(() => Reconnect());
             });
 
-            this.commandProcessor = new ActionQueue();
+            this.commandProcessor = new ActionQueue(TaskScheduler.Default);
 
             // This is on the UI thread so we can do things like update dependency properties and whatnot.
-            this.outputProcessor = new ActionBlock<ConsoleCommand>(new Func<ConsoleCommand, Task>(ProcessOutput),
-                                              new ExecutionDataflowBlockOptions
-                                              {
-                                                  MaxDegreeOfParallelism = 1,
-                                                  TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext()
-                                              });
+            this.outputProcessor = new ActionQueue(TaskScheduler.FromCurrentSynchronizationContext());
 
             this.Players = new SortableObservableCollection<PlayerInfo>();
 
@@ -163,7 +158,7 @@ namespace ARK_Server_Manager.Lib
         public async Task DisposeAsync()
         {
             await this.commandProcessor.DisposeAsync();
-            this.outputProcessor.Complete();
+            await this.outputProcessor.DisposeAsync();
             this.runtimeChangedNotifier.Dispose();
         }
 
@@ -195,14 +190,13 @@ namespace ARK_Server_Manager.Lib
         //
         // This is bound to the UI thread
         //
-        private Task ProcessOutput(ConsoleCommand command)
+        private void ProcessOutput(ConsoleCommand command)
         {
             //
             // Handle results
             //
             HandleCommand(command);
             NotifyCommand(command);
-            return TaskUtils.FinishedTask;
         }
 
         //
@@ -231,7 +225,7 @@ namespace ARK_Server_Manager.Lib
             //
             // Change the connection state as appropriate
             //
-            TaskUtils.RunOnUIThreadAsync(() => { this.Status = command.status; }).DoNotWait();
+            this.Status = command.status;
 
             //
             // Perform per-command special processing to extract data
@@ -254,6 +248,12 @@ namespace ARK_Server_Manager.Lib
                             SteamId = Int64.Parse(elements[1]),
                             IsOnline = true
                         };
+
+                        if(newPlayerList.FirstOrDefault(p => p.SteamId == newPlayer.SteamId) != null)
+                        {
+                            // We received a duplicate.  Ignore it.
+                            continue;
+                        }
 
                         newPlayerList.Add(newPlayer);
 
@@ -385,7 +385,7 @@ namespace ARK_Server_Manager.Lib
                     if (!Reconnect())
                     {
                         command.status = ConsoleStatus.Disconnected;
-                        this.outputProcessor.Post(command);
+                        this.outputProcessor.PostAction(() => ProcessOutput(command));
                         return false;
                     }
                 }
@@ -410,14 +410,14 @@ namespace ARK_Server_Manager.Lib
                 command.status = ConsoleStatus.Connected;
                 command.lines = lines;
 
-                this.outputProcessor.Post(command);
+                this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return true;
             }
             catch(Exception ex)
             {
                 _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command.rawCommand, ex.Message, ex.ToString());
                 command.status = ConsoleStatus.Disconnected;
-                this.outputProcessor.Post(command);
+                this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return false;
             }            
         }
