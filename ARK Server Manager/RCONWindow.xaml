@@ -41,6 +41,9 @@
                     <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
                         <MenuItem Header="_File" VerticalAlignment="Stretch">
                             <MenuItem Header="View Logs..." Command="{Binding ViewLogsCommand}"/>
+                            <MenuItem Header="Clear Logs">
+                                <MenuItem Header="Confirm" Command="{Binding ClearLogsCommand}"/>
+                            </MenuItem>
                         </MenuItem>
                     </Menu>
 

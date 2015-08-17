@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,7 +74,9 @@ namespace ARK_Server_Manager.Lib
             this.runtimeChangedNotifier = new PropertyChangeNotifier(server.Runtime, ServerRuntime.ProfileSnapshotProperty, (s, d) =>
             {
                 var oldSnapshot = this.snapshot;
-                var newSnapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;                
+                if (d == null || d.NewValue == null) return;
+
+                var newSnapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
                 this.snapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
 
                 bool reinitLoggers = !String.Equals(this.snapshot.ProfileName, newSnapshot.ProfileName);
@@ -379,18 +382,8 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 string result = String.Empty;
-                if (this.console == null)
-                {
-                    // Try connecting to the server
-                    if (!Reconnect())
-                    {
-                        command.status = ConsoleStatus.Disconnected;
-                        this.outputProcessor.PostAction(() => ProcessOutput(command));
-                        return false;
-                    }
-                }
 
-                result = this.console.SendCommand(command.rawCommand);
+                result = SendCommand(command.rawCommand);
 
                 var lines = result.Split(lineSplitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
 
@@ -420,6 +413,33 @@ namespace ARK_Server_Manager.Lib
                 this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return false;
             }            
+        }
+
+        const int MaxCommandRetries = 5;
+        const int RetryDelay = 100;
+        private string SendCommand(string command)
+        {
+            int retries = 0;
+            Exception lastException = null;        
+            while (retries < MaxCommandRetries)
+            {
+                try
+                {
+                    if (this.console == null) Reconnect();
+                    var result = this.console.SendCommand(command);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    // Re will simply retry
+                    lastException = ex;
+                }
+                Task.Delay(RetryDelay).Wait();
+                Reconnect();
+                retries++;
+            }
+
+            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}\n{lastException.StackTrace}", lastException);
         }
 
         private bool Reconnect()

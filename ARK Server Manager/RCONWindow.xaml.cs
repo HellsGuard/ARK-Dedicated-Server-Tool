@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -201,6 +202,37 @@ namespace ARK_Server_Manager
                 "Type /help to get help");
 
             this.ConsoleInput.Focus();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.ServerRCON.DisposeAsync().DoNotWait();
+            base.OnClosing(e);
+        }
+
+        public ICommand ClearLogsCommand
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        string logsDir = String.Empty;
+                        try
+                        {
+                            logsDir = App.GetProfileLogDir(this.Server.Runtime.ProfileSnapshot.ProfileName);
+                            Directory.Delete(logsDir, true);
+                        }
+                        catch (Exception)
+                        {
+                            // Ignore any failures here, best effort only.
+                        }
+
+                        MessageBox.Show($"Logs in {logsDir} deleted.", "Logs deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    },
+                    canExecute: (sort) => true
+                );
+            }
         }
 
         public ICommand ViewLogsCommand

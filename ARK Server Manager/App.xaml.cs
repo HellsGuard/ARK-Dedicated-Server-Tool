@@ -74,25 +74,31 @@ namespace ARK_Server_Manager
         public static Logger GetProfileLogger(string profileName, string name)
         {
             var loggerName = $"{profileName}_{name}";
+
+            Logger logger = null;
             var config = LogManager.Configuration;
-            var logFile = new FileTarget();
-            config.AddTarget(loggerName, logFile);
+            if (config.FindTargetByName(loggerName) == null)
+            {            
+                var logFile = new FileTarget();
+                config.AddTarget(loggerName, logFile);
 
-            var logFilePath = GetProfileLogDir(profileName);
-            logFile.FileName = Path.Combine(logFilePath, $"{name}.log");
-            logFile.Layout = "${time} ${message}";
-            var datePlaceholder = "{#}";
-            logFile.ArchiveFileName = Path.Combine(logFilePath, $"{name}.{datePlaceholder}.log");
-            logFile.ArchiveNumbering = ArchiveNumberingMode.DateAndSequence;
-            logFile.ArchiveEvery = FileArchivePeriod.Day;
-            logFile.ArchiveDateFormat = "yyyyMMdd";
+                var logFilePath = GetProfileLogDir(profileName);
+                logFile.FileName = Path.Combine(logFilePath, $"{name}.log");
+                logFile.Layout = "${time} ${message}";
+                var datePlaceholder = "{#}";
+                logFile.ArchiveFileName = Path.Combine(logFilePath, $"{name}.{datePlaceholder}.log");
+                logFile.ArchiveNumbering = ArchiveNumberingMode.DateAndSequence;
+                logFile.ArchiveEvery = FileArchivePeriod.Day;
+                logFile.ArchiveDateFormat = "yyyyMMdd";
 
-            var rule = new LoggingRule(loggerName, LogLevel.Info, logFile);
-            config.LoggingRules.Add(rule);
+                var rule = new LoggingRule(loggerName, LogLevel.Info, logFile);
+                config.LoggingRules.Add(rule);
 
-            LogManager.Configuration = config;
+                LogManager.Configuration = config;
+            }
 
-            return LogManager.GetLogger(loggerName);
+            logger = LogManager.GetLogger(loggerName);
+            return logger;
         }
 
         protected override void OnStartup(StartupEventArgs e)
