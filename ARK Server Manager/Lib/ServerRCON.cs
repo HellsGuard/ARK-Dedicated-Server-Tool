@@ -18,9 +18,7 @@ using System.Windows.Media.Imaging;
 namespace ARK_Server_Manager.Lib
 {
     public class ServerRCON : DependencyObject, IAsyncDisposable
-    {
-        public static Logger _logger = LogManager.GetCurrentClassLogger();
-
+    {        
         public static readonly DependencyProperty StatusProperty =
             DependencyProperty.Register(nameof(Status), typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
         public static readonly DependencyProperty PlayersProperty =
@@ -43,6 +41,11 @@ namespace ARK_Server_Manager.Lib
             Disconnected,
             Connected,
         };
+
+        private Logger chatLogger;
+        private Logger allLogger;
+        private Logger eventLogger;
+        private Logger _logger;
 
         public class ConsoleCommand
         {
@@ -69,7 +72,16 @@ namespace ARK_Server_Manager.Lib
         {
             this.runtimeChangedNotifier = new PropertyChangeNotifier(server.Runtime, ServerRuntime.ProfileSnapshotProperty, (s, d) =>
             {
+                var oldSnapshot = this.snapshot;
+                var newSnapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;                
                 this.snapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
+
+                bool reinitLoggers = !String.Equals(this.snapshot.ProfileName, newSnapshot.ProfileName);
+                if (reinitLoggers)
+                {
+                    ReinitializeLoggers();
+                }
+
                 commandProcessor.PostAction(() => Reconnect());
             });
 
@@ -86,9 +98,43 @@ namespace ARK_Server_Manager.Lib
             this.Players = new SortableObservableCollection<PlayerInfo>();
 
             this.snapshot = server.Runtime.ProfileSnapshot;
+            ReinitializeLoggers();
             commandProcessor.PostAction(() => Reconnect());
             commandProcessor.PostAction(AutoPlayerList);
             commandProcessor.PostAction(AutoGetChat);
+        }
+
+        private void ReinitializeLoggers()
+        {
+            this.allLogger = App.GetProfileLogger(this.snapshot.ProfileName, "RCON_All");
+            this.chatLogger = App.GetProfileLogger(this.snapshot.ProfileName, "RCON_Chat");
+            this.eventLogger = App.GetProfileLogger(this.snapshot.ProfileName, "RCON_Event");
+            this._logger = App.GetProfileLogger(this.snapshot.ProfileName, "RCON_Debug");
+        }
+
+        private enum LogEventType
+        {
+            All,
+            Chat,
+            Event
+        }
+
+        private void LogEvent(LogEventType eventType, string message)
+        {
+            switch(eventType)
+            {
+                case LogEventType.All:
+                    this.allLogger.Info(message);
+                    return;
+
+                case LogEventType.Chat:
+                    this.chatLogger.Info(message);
+                    return;
+
+                case LogEventType.Event:
+                    this.eventLogger.Info(message);
+                    return;
+            }
         }
 
         private Task AutoPlayerList()
@@ -104,7 +150,7 @@ namespace ARK_Server_Manager.Lib
         {
             return this.commandProcessor.PostAction(() =>
             {
-                ProcessInput(new ConsoleCommand() { rawCommand = "getchat", suppressCommand = true, suppressOutput = false });
+                ProcessInput(new ConsoleCommand() { rawCommand = "getchat", suppressCommand = true, suppressOutput = true });
                 Task.Delay(GetChatPeriod).ContinueWith(t => commandProcessor.PostAction(AutoGetChat)).DoNotWait();
             });
         }
@@ -159,6 +205,9 @@ namespace ARK_Server_Manager.Lib
             return TaskUtils.FinishedTask;
         }
 
+        //
+        // This is bound to the UI thread
+        //
         private void NotifyCommand(ConsoleCommand command)
         {
             foreach (var listener in commandListeners)
@@ -174,6 +223,9 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        //
+        // This is bound to the UI thread
+        //
         private void HandleCommand(ConsoleCommand command)
         {
             //
@@ -186,52 +238,69 @@ namespace ARK_Server_Manager.Lib
             //
             if(command.command.Equals("listplayers", StringComparison.OrdinalIgnoreCase))
             {
+                var output = new List<string>();
                 //
                 // Update the visible player list
                 //
-                TaskUtils.RunOnUIThreadAsync(() =>
-                {
-                    var newPlayerList = new List<PlayerInfo>();                
-                    foreach(var line in command.lines)
-                    {                    
-                        var elements = line.Split(',');
-                        if(elements.Length == 2)
+                var newPlayerList = new List<PlayerInfo>();                
+                foreach(var line in command.lines)
+                {                    
+                    var elements = line.Split(',');
+                    if(elements.Length == 2)
+                    {
+                        var newPlayer = new ViewModel.RCON.PlayerInfo()
                         {
-                            var newPlayer = new ViewModel.RCON.PlayerInfo()
-                            {
-                                SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
-                                SteamId = Int64.Parse(elements[1]),
-                                IsOnline = true
-                            };
+                            SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
+                            SteamId = Int64.Parse(elements[1]),
+                            IsOnline = true
+                        };
 
-                            newPlayerList.Add(newPlayer);
+                        newPlayerList.Add(newPlayer);
 
-                            var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
-                            if (existingPlayer == null)
-                            {
-                                this.Players.Add(newPlayer);
-                            }
-                            else
-                            {
-                                existingPlayer.IsOnline = true;
-                            }
+                        var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
+                        bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
+
+                        if (existingPlayer == null)
+                        {
+                            this.Players.Add(newPlayer);
+                        }
+                        else
+                        {
+                            existingPlayer.IsOnline = true;
+                        }
+
+                        if(playerJoined)
+                        {
+                            var message = $"Player '{newPlayer.SteamName}' joined the game.";
+                            output.Add(message);
+                            LogEvent(LogEventType.Event, message);
+                            LogEvent(LogEventType.All, message);
                         }
                     }
-
+                }
                
-                    var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
-                    foreach (var player in droppedPlayers)
+                var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
+                foreach (var player in droppedPlayers)
+                {
+                    if(player.IsOnline)
                     {
+                        var message = $"Player '{player.SteamName}' left the game.";
+                        output.Add(message);
+                        LogEvent(LogEventType.Event, message);
+                        LogEvent(LogEventType.All, message);
                         player.IsOnline = false;
                     }
+                }
 
-                    this.Players.Sort(p => !p.IsOnline);
+                this.Players.Sort(p => !p.IsOnline);
 
-                    if (this.Players.Count == 0 || newPlayerList.Count > 0)
-                    {
-                        commandProcessor.PostAction(UpdatePlayerDetails);
-                    }
-                }).DoNotWait();
+                if (this.Players.Count == 0 || newPlayerList.Count > 0)
+                {
+                    commandProcessor.PostAction(UpdatePlayerDetails);
+                }
+
+                command.suppressOutput = false;
+                command.lines = output;
             }
             else if(command.command.Equals("getchat", StringComparison.OrdinalIgnoreCase))
             {
@@ -243,15 +312,23 @@ namespace ARK_Server_Manager.Lib
                 }
                 else
                 {
+                    command.suppressOutput = false;   
                     command.lines = lines;
+                    foreach(var line in lines)
+                    {
+                        LogEvent(LogEventType.Chat, line);
+                        LogEvent(LogEventType.All, line);
+                    }
                 }
             }
             else if (command.command.Equals("broadcast", StringComparison.OrdinalIgnoreCase))
             {
+                LogEvent(LogEventType.Chat, command.rawCommand);
                 command.suppressOutput = true;
             }
             else if (command.command.Equals("serverchat", StringComparison.OrdinalIgnoreCase))
             {
+                LogEvent(LogEventType.Chat, command.rawCommand);
                 command.suppressOutput = true;
             }
         }
@@ -289,6 +366,11 @@ namespace ARK_Server_Manager.Lib
         {
             try
             {
+                if (!command.suppressCommand)
+                {
+                    LogEvent(LogEventType.All, command.rawCommand);
+                }
+
                 var args = command.rawCommand.Split(argsSplitChars, 2);
                 command.command = args[0];
                 if(args.Length > 1)
@@ -311,6 +393,14 @@ namespace ARK_Server_Manager.Lib
                 result = this.console.SendCommand(command.rawCommand);
 
                 var lines = result.Split(lineSplitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
+
+                if (!command.suppressOutput)
+                {
+                    foreach (var line in lines)
+                    {
+                        LogEvent(LogEventType.All, line);
+                    }
+                }
 
                 if(lines.Length == 1 && lines[0].StartsWith(NoResponseMatch))
                 {

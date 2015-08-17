@@ -757,7 +757,7 @@
                             <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="5" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time between server auto-saves."/>
 
-                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
                                 <GroupBox.Style>
                                     <Style TargetType="{x:Type GroupBox}">
                                         <Style.Triggers>
@@ -776,18 +776,19 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25"/>
                                         <RowDefinition Height="25"/>
-                                        <RowDefinition Height="25"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <RadioButton Name="MapNameCheckbox" Grid.Column="0" Grid.Row="0" Content="Map Name or Local Mod Prefix:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ByName}"/>
-                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameCheckbox, Path=IsChecked}" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap).  Use Map Mod Id instead if your mod is on the workshop."/>
-                                    <RadioButton Name="MapIdCheckbox" Grid.Column="0" Grid.Row="1" Content="Map Mod Id:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ById}"/>
-                                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerMapModId}" Width="100"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapIdCheckbox, Path=IsChecked}" ToolTip="The id of the mod which contains the map."/>
-                                    <Label Grid.Column="0" Grid.Row="2"   Content="Additional Mods:"/>
-                                    <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied.">
+                                    <!--<RadioButton Name="VanillaMapCheckBox" Grid.Column="0" Grid.Row="0" Content="Map or Map Mod Path:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ByName}"/>-->
+                                    <Label Grid.Column="0" Grid.Row="0"   Content="Map or Map Mod Path:"/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=VanillaMapCheckBox, Path=IsChecked}" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap).  Use Map Mod Id instead if your mod is on the workshop."/>
+
+                                    <!--<RadioButton IsEnabled="False" Name="MapIdCheckbox" Grid.Column="0" Grid.Row="1" Content="Map Mod Id:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ById}"/>
+                                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerMapModId}" Width="100"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapIdCheckbox, Path=IsChecked}" ToolTip="The id of the mod which contains the map."/>-->
+                                    <Label Grid.Column="0" Grid.Row="1"   Content="Mod IDs:"/>
+                                    <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied.">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <StackPanel>

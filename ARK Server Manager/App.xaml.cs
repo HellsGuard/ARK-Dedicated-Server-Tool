@@ -50,8 +50,10 @@ namespace ARK_Server_Manager
         }
 
         public static void ReconfigureLogging()
-        {            
+        {               
             string logDir = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir);
+            LogManager.Configuration.Variables["logDir"] = logDir;
+
             System.IO.Directory.CreateDirectory(logDir);
             var statusWatcherTarget = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
             statusWatcherTarget.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
@@ -61,6 +63,36 @@ namespace ARK_Server_Manager
 
             LogManager.ReconfigExistingLoggers();
         }   
+
+        public static string GetProfileLogDir(string profileName)
+        {
+            var logFilePath = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, profileName);
+            return logFilePath;
+        }
+
+        public static Logger GetProfileLogger(string profileName, string name)
+        {
+            var loggerName = $"{profileName}_{name}";
+            var config = LogManager.Configuration;
+            var logFile = new FileTarget();
+            config.AddTarget(loggerName, logFile);
+
+            var logFilePath = GetProfileLogDir(profileName);
+            logFile.FileName = Path.Combine(logFilePath, $"{name}.log");
+            logFile.Layout = "${time} ${message}";
+            var datePlaceholder = "{#}";
+            logFile.ArchiveFileName = Path.Combine(logFilePath, $"{name}.{datePlaceholder}.log");
+            logFile.ArchiveNumbering = ArchiveNumberingMode.DateAndSequence;
+            logFile.ArchiveEvery = FileArchivePeriod.Day;
+            logFile.ArchiveDateFormat = "yyyyMMdd";
+
+            var rule = new LoggingRule(loggerName, LogLevel.Info, logFile);
+            config.LoggingRules.Add(rule);
+
+            LogManager.Configuration = config;
+
+            return LogManager.GetLogger(loggerName);
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {                                  

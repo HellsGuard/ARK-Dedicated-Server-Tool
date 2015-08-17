@@ -5,12 +5,16 @@
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Name="RCON"
         Title="{Binding Server.Profile.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip" Icon="Art/favicon.ico">
     <Window.Resources>
         <vm:NullValueConverter x:Key="NullValueConverter"/>
         <vm:IsNullValueConverter x:Key="IsNullValueConverter"/>
         <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
+        <vm:EnumConverter x:Key="EnumConverter"/>
+        <vm:EnumFlagsConverter x:Key="EnumFlagsConverter"/>
+        <local:ScrollToBottomAction x:Key="ScrollToBottomAction" />
         <ObjectDataProvider MethodName="GetValues"
             ObjectType="{x:Type sys:Enum}"
             x:Key="InputModes">
@@ -18,6 +22,7 @@
                 <x:Type TypeName="local:InputMode" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <SolidColorBrush x:Key="HeaderBrush" Color="#FFF0F0F0"/>
     </Window.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Margin="2,1,2,2">
@@ -30,30 +35,61 @@
             <ComboBox Grid.Column="1" ItemsSource="{Binding Source={StaticResource InputModes}}" SelectedItem="{Binding CurrentInputMode, Mode=TwoWay}" Margin="0,0,2,0"/>
             <TextBox Name="ConsoleInput" TabIndex="0" Grid.Column="2" KeyUp="ConsoleInput_KeyUp" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True"/>
         </Grid>
-        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightGray" Margin="2">
-            <StackPanel  Orientation="Horizontal" Margin="2,2,2,1">
-                <Label Content="Status:"/>
-                <Label Content="{Binding ServerRCON.Status}">
-                    <Label.Style>
-                        <Style TargetType="{x:Type Label}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Connected">
-                                    <Setter Property="Foreground" Value="Green"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Disconnected">
-                                    <Setter Property="Foreground" Value="Red"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-                <Label Content="Players:" Margin="5,0,0,0"/>
-                <Label Content="{Binding Server.Runtime.Players}"/>
-                <Label Content="/"/>
-                <Label Content="{Binding Server.Runtime.MaxPlayers}"/>
-            </StackPanel>
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightGray" Margin="2" Background="{StaticResource HeaderBrush}">
+            <DockPanel Margin="2,2,2,1" LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
+                        <MenuItem Header="_File" VerticalAlignment="Stretch">
+                            <MenuItem Header="View Logs..." Command="{Binding ViewLogsCommand}"/>
+                        </MenuItem>
+                    </Menu>
+
+                    <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
+                        <MenuItem Header="_Console" VerticalAlignment="Stretch">
+                            <MenuItem Header="Auto-scroll" IsCheckable="True" IsChecked="{Binding ScrollOnNewInput}"/>
+                        </MenuItem>
+                    </Menu>
+
+                    <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
+                        <MenuItem Header="_Players">
+                            <MenuItem Header="Sort">
+                                <MenuItem Header="By Online"    IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Online}" IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Online}"/>
+                                <MenuItem Header="By Name"      IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Name}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Name}"/>
+                                <MenuItem Header="By Tribe"     IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Tribe}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Tribe}"/>
+                            </MenuItem>
+                            <MenuItem Header="_Filter">
+                                <MenuItem Header="Show Online"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Online}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Online, Mode=OneWay}"/>
+                                <MenuItem Header="Show Offline"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Offline}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Offline, Mode=OneWay}"/>
+                                <MenuItem Header="Show Banned"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Banned}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Banned, Mode=OneWay}"/>
+                                <MenuItem Header="Show Whitelisted"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Label Content="Status:"/>
+                    <Label Content="{Binding ServerRCON.Status}">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Connected">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Disconnected">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="Players:" Margin="5,0,0,0"/>
+                    <Label Content="{Binding Server.Runtime.Players}"/>
+                    <Label Content="/"/>
+                    <Label Content="{Binding Server.Runtime.MaxPlayers}"/>
+                </StackPanel>
+            </DockPanel>
         </Border>
         <ListBox DockPanel.Dock="Right" MinWidth="200" BorderBrush="LightGray" ItemsSource="{Binding ServerRCON.Players}" Margin="1,1,2,1" HorizontalContentAlignment="Stretch">
             <ListBox.Resources>
@@ -131,7 +167,12 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-            <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
+        <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged" >
+                    <local:ScrollToBottomAction IsEnabled="{Binding ScrollOnNewInput}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0"/>

@@ -758,7 +758,8 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SpectatorPasswordProperty = DependencyProperty.Register(nameof(SpectatorPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "ActiveMods")]
         public string ServerModIds
         {
             get { return (string)GetValue(ServerModIdsProperty); }
@@ -1244,6 +1245,7 @@ namespace ARK_Server_Manager.Lib
             }
             else
             {
+#if false
                 if (this.MapSource == MapSourceType.ByName)
                 {
                     serverArgs.Append(this.ServerMap);
@@ -1252,6 +1254,9 @@ namespace ARK_Server_Manager.Lib
                 {
                     serverArgs.Append($"-MapModID={this.ServerMapModId}");
                 }
+#else
+                serverArgs.Append(this.ServerMap);
+#endif
             }
 
             // These are used to match the server to the profile.
