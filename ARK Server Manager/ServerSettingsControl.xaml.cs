@@ -389,5 +389,10 @@ namespace ARK_Server_Manager
                 Process.Start("http://steamcommunity.com/app/346110/discussions/10/530649887204866610/");
             }
         }
+
+        private void TestUpdater_Click(object sender, RoutedEventArgs e)
+        {
+            this.Settings.UpdateAutoUpdateSettings();
+        }
     }
 }

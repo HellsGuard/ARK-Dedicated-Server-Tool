@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -157,6 +158,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty TamedDinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register(nameof(StructureResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register(nameof(XPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
         public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register(nameof(DinoSpawnWeightMultipliers), typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register(nameof(PlayerLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
@@ -985,6 +987,23 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
 
+        public int AutoUpdatePeriod
+        {
+            get { return (int)GetValue(AutoUpdatePeriodProperty); }
+            set { SetValue(AutoUpdatePeriodProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoUpdatePeriodProperty = DependencyProperty.Register(nameof(AutoUpdatePeriod), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
+
+
+
+        public bool EnableAutoStart
+        {
+            get { return (bool)GetValue(EnableAutoStartProperty); }
+            set { SetValue(EnableAutoStartProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableAutoStartProperty = DependencyProperty.Register(nameof(EnableAutoStart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
 
         #endregion
@@ -1235,6 +1254,11 @@ namespace ARK_Server_Manager.Lib
             iniFile.IniWriteSection(IniFileSections.GameMode, filteredValues.ToArray(), IniFiles.Game);
         }
 
+        public string GetServerExe()
+        {
+            return Path.Combine(this.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+        }
+
         public string GetServerArgs()
         {
             var serverArgs = new StringBuilder();
@@ -1305,10 +1329,34 @@ namespace ARK_Server_Manager.Lib
             return serverArgs.ToString();
         }
 
-        public object this[string propertyName]
+        public void UpdateAutoUpdateSettings()
         {
-            get { return this.GetType().GetField(propertyName).GetValue(this); }
-            set { this.GetType().GetField(propertyName).SetValue(this, value); this.IsDirty = true; }
+            var schedulerKey = GetSchedulerKey();
+            ServerScheduler.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetServerExe(), GetServerArgs());
+            ServerScheduler.ScheduleUpdates(schedulerKey,
+                this.AutoUpdatePeriod,
+                Path.Combine(this.InstallDirectory, Config.Default.SchedulerWorkDir),
+                this.ServerIP,
+                this.RCONPort,
+                this.AdminPassword,
+                this.InstallDirectory,
+                AutoUpdater.GetSteamCMDPath()
+                );
+        }
+
+        private string GetSchedulerKey()
+        {
+            using (var hashAlgo = MD5.Create())
+            {
+                var hash = Encoding.UTF8.GetBytes(this.InstallDirectory);
+                StringBuilder builder = new StringBuilder();
+                foreach(var b in hash)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
 
         private void GetDefaultDirectories()

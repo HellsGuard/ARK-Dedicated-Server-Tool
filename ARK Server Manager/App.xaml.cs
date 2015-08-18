@@ -42,6 +42,16 @@ namespace ARK_Server_Manager
         {
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
+
+            //
+            // Migrate settings when we update.
+            //
+            if(Config.Default.UpgradeConfig)
+            {
+                Config.Default.Upgrade();
+                Config.Default.UpgradeConfig = false;
+                Config.Default.Save();
+            }            
         }
 
         static App()

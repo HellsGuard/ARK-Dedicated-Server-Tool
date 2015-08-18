@@ -116,6 +116,12 @@ namespace ARK_Server_Manager.Lib
             return;
         }
 
+        public static string GetSteamCMDPath()
+        {
+            var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
+            return steamCmdPath;
+        }
+
         public struct Update
         {
             public Update(string statusKey, float completionPercent)

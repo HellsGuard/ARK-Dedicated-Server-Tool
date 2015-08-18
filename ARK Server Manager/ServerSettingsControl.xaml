@@ -22,6 +22,7 @@
         <vm:TimeValidationRule x:Key="TimeValidationRule"/>
         <vm:IdListValidationRule x:Key="IdListValidationRule"/>
         <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
+        <vm:MinutesToTimeValueConverter x:Key="MinutesToTimeValueConverter"/>
         <vm:EnumConverter x:Key="EnumConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="local:AnnotatedTextBox">
@@ -750,11 +751,12 @@
                             <TextBox Grid.Column="1" Grid.Row="2" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" />
                             
                             <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5"/>
-                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="Idle Player Timeout:" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time until idle players are kicked from the server."
                                 IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
 
-                            <local:AnnotatedSlider Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="5" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+                            <Label Grid.Column="0" Grid.Row="5" Content="Auto Save Period:"/>
+                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Label="" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time between server auto-saves."/>
 
                             <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
@@ -827,6 +829,47 @@
                                 <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
                             </DockPanel>
+                        </Grid>
+                    </Expander>
+                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                        <Expander.Header>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Automatic Management" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                        </Expander.Header>
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0"  Orientation="Horizontal" Margin="9,0,0,5">
+                                <CheckBox IsChecked="{Binding EnableAutoStart}" Content="Auto-start Server" ToolTip="Automatically start the server when the machine starts."/>
+                            </StackPanel>
+                            <GroupBox Grid.Row="1">
+                                <GroupBox.Header>
+                                    <CheckBox Content="Enable Periodic Auto-Updates" IsChecked="{Binding EnableAutoUpdates}" ToolTip="Automatically check for updates periodically and upgrade the server."/>
+                                </GroupBox.Header>
+                                <StackPanel Orientation="Horizontal" Margin="2">
+                                    <Label Content="Update Period"/>
+                                    <TextBox Margin="0,0,0,0" Width="75">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <StackPanel>
+                                                    <!-- Placeholder for the TextBox itself -->
+                                                    <AdornedElementPlaceholder x:Name="textBox"/>
+                                                    <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                        <TextBox.Text>
+                                            <Binding Path="AutoUpdatePeriod" Converter="{StaticResource MinutesToTimeValueConverter}">
+                                                <Binding.ValidationRules>
+                                                    <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Button Content="Test" Click="TestUpdater_Click"/>
+                                </StackPanel>
+                            </GroupBox>
                         </Grid>
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">

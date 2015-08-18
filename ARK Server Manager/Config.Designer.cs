@@ -334,7 +334,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://s3-us-west-2.amazonaws.com/arkservermanager/release/latest.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/latest.txt")]
         public string LatestASMVersionUrl {
             get {
                 return ((string)(this["LatestASMVersionUrl"]));
@@ -394,11 +394,31 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/ARK%20Server%20Manager.applicati" +
-            "on")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/latest.zip")]
         public string ASMDownloadUrl {
             get {
                 return ((string)(this["ASMDownloadUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpgradeConfig {
+            get {
+                return ((bool)(this["UpgradeConfig"]));
+            }
+            set {
+                this["UpgradeConfig"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASMScheduler")]
+        public string SchedulerWorkDir {
+            get {
+                return ((string)(this["SchedulerWorkDir"]));
             }
         }
     }

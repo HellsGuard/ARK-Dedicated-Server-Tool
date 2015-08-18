@@ -13,26 +13,25 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <ExpressionBlendVersion>12.0.50716.0</ExpressionBlendVersion>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://arkservermanager.s3.amazonaws.com/release/</InstallUrl>
+    <MapFileExtensions>false</MapFileExtensions>
     <SupportUrl>http://steamcommunity.com/sharedfiles/filedetails/%3fid=468312476</SupportUrl>
     <ErrorReportUrl>http://steamcommunity.com/sharedfiles/filedetails/%3fid=468312476</ErrorReportUrl>
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>125</ApplicationRevision>
+    <ApplicationRevision>126</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -98,6 +97,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.4.0\lib\net40\Microsoft.Win32.TaskScheduler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -180,10 +183,14 @@
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />
+    <Compile Include="Lib\ServerScheduler.cs" />
     <Compile Include="Lib\ServerUpdater\ServerUpdater.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs" />
+    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Lib\ServerUpdater\ServerUpdaterConstants.cs" />
     <Compile Include="Lib\ServerUpdater\ServerUpdaterGenerator.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
     <Compile Include="Lib\TaskUtils.cs" />
@@ -201,6 +208,7 @@
     <Compile Include="Lib\ViewModel\IsNullOrWhiteSpaceValueConverter.cs" />
     <Compile Include="Lib\ViewModel\IsNullValueConverter.cs" />
     <Compile Include="Lib\ViewModel\RelayCommand.cs" />
+    <Compile Include="Lib\ViewModel\MinutesToTimeValueConverter.cs" />
     <Compile Include="Lib\ViewModel\TimeValidationRule.cs" />
     <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
     <Compile Include="Lib\ViewModel\SecondsToTimeValueConverter.cs" />

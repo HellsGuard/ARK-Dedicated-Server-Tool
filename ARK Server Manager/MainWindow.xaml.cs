@@ -3,7 +3,10 @@ using EO.Wpf;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -137,7 +140,6 @@ namespace ARK_Server_Manager
 
         public void Help_Click(object sender, RoutedEventArgs args)
         {
-            //ServerUpdaterGenerator.GenerateUpdaterExe();
         }
 
         public void Servers_Remove(object sender, TabItemCloseEventArgs args)
@@ -172,6 +174,15 @@ namespace ARK_Server_Manager
             }
         }
 
+        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeleteFile(string name);
+
+        private bool Unblock(string fileName)
+        {
+            return DeleteFile(fileName + ":Zone.Identifier");
+        }
+
         private void Upgrade_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show($"Version {this.LatestASMVersion} is now available.  To upgrade the application must close.  Close and upgrade now?", "Upgrade available", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -179,14 +190,33 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var applicationFile = Path.Combine(Path.GetTempPath(), "ASM.application");
+                    var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
+                    var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
                     var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
-                    File.WriteAllText(updateFilePath, $"timeout 2\n{applicationFile}");
+                    var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var backupPath = currentInstallPath + "_bak";
+                    
+                    // Grab the latest bits
                     using (var client = new WebClient())
                     {
-                        client.DownloadFile(Config.Default.ASMDownloadUrl, applicationFile);
+                        client.DownloadFile(Config.Default.ASMDownloadUrl, applicationZip);
+                        Unblock(applicationZip);
                     }
-                    Process.Start(updateFilePath);
+
+                    // Extract them
+                    try { Directory.Delete(extractPath, true); } catch { }
+                    ZipFile.ExtractToDirectory(applicationZip, extractPath);
+
+                    // Replace the current installation
+                    File.WriteAllText(updateFilePath, $"timeout 2 \r\nrmdir /s /q {backupPath} \r\n rename {currentInstallPath} {Path.GetFileName(backupPath)}  \r\nxcopy /e /y {extractPath} {currentInstallPath}\\ \r\nrmdir /s /q {backupPath}\r\nstart \"\" \"{Assembly.GetExecutingAssembly().Location}\" \r\nexit");
+                    var startInfo = new ProcessStartInfo()
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = $"/K {updateFilePath}",
+                        WorkingDirectory = Path.GetTempPath()
+                    };
+
+                    Process.Start(startInfo);
                     Application.Current.Shutdown(0);
                 }
                 catch(Exception ex)

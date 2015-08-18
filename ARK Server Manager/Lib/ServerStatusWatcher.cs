@@ -172,17 +172,7 @@ namespace ARK_Server_Manager.Lib
             {
                 foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
                 {
-                    var commandLineBuilder = new StringBuilder();
-
-                    using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
-                    {
-                        foreach (var @object in searcher.Get())
-                        {
-                            commandLineBuilder.Append(@object["CommandLine"] + " ");
-                        }
-                    }
-
-                    var commandLine = commandLineBuilder.ToString();
+                    var commandLine = ServerUpdater.GetCommandLineForProcess(process.Id);
 
                     if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
                     {
