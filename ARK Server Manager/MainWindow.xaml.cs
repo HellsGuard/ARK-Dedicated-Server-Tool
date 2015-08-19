@@ -210,7 +210,7 @@ namespace ARK_Server_Manager
                     var startInfo = new ProcessStartInfo()
                     {
                         FileName = "cmd.exe",
-                        Arguments = $"/K {updateFilePath}",
+                        Arguments = $"/K \"{updateFilePath}\"",
                         WorkingDirectory = Path.GetTempPath()
                     };
 
