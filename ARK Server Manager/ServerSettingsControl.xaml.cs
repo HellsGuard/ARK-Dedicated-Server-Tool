@@ -270,7 +270,13 @@ namespace ARK_Server_Manager
             }
 
             Settings.Save();
-            Settings.UpdateAutoUpdateSettings();
+            if (this.IsAdministrator)
+            {
+                if (!Settings.UpdateAutoUpdateSettings())
+                {
+                    MessageBox.Show("Failed to update scheduled tasks.  Ensure you have administrator rights on this machine and try again.  If the problem persists, please report this as a bug.", "Update schedule failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }           
         }
 
         private void CopyProfile_Click(object sender, RoutedEventArgs e)
@@ -426,7 +432,7 @@ namespace ARK_Server_Manager
         {
             if(!this.Settings.UpdateAutoUpdateSettings())
             {
-                MessageBox.Show("Failed to update scheduled tasks.  Ensure you have administrator rights on this machine and try again.  If the problem persists, please report this as a bug.", "Update schedule failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                
             }
         }
 

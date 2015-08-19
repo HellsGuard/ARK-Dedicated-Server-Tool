@@ -1192,7 +1192,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     serializer.Serialize(writer, this);
                 }
-            }
+            }                
 
             //
             // Write the INI files

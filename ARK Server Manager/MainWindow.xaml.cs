@@ -53,8 +53,6 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
 
-
-
         public bool NewASMAvailable
         {
             get { return (bool)GetValue(NewASMAvailableProperty); }
