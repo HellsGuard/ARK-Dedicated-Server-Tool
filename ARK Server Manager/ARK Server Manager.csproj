@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>132</ApplicationRevision>
+    <ApplicationRevision>134</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -185,12 +185,8 @@
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />
     <Compile Include="Lib\ServerScheduler.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerUpdater.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
+    <Compile Include="Lib\ServerUpdater\ServerUpdater.cs" />
+    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs" />
     <Compile Include="Lib\ServerUpdater\ServerUpdaterConstants.cs" />
     <Compile Include="Lib\ServerUpdater\ServerUpdaterGenerator.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />

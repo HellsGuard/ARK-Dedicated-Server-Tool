@@ -13,6 +13,7 @@ namespace ARK_Server_Manager.Lib
     {
         private const string TaskFolder = "\\ArkServerManager";
 
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
    
         public static bool ScheduleCacheUpdater(string cacheDir, string steamCmdDir, int autoUpdatePeriod)
         {
@@ -40,6 +41,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             var script = builder.ToString();
+            
             return ScriptUtils.RunElevatedShellScript(script);
         }
 
@@ -61,7 +63,7 @@ namespace ARK_Server_Manager.Lib
             {
                 builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{serverUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL LIMITED ");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
-                builder.AppendLine($"schtasks /Run /TN ArkServerManager\\{schedulerKey}");
+                builder.AppendLine($"schtasks /Run /TN {schedulerKey}");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
             }
 

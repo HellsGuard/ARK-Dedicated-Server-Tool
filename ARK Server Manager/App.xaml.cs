@@ -51,12 +51,9 @@ namespace ARK_Server_Manager
                 Config.Default.Upgrade();
                 Config.Default.UpgradeConfig = false;
                 Config.Default.Save();
-            }            
-        }
+            }
 
-        static App()
-        {
-            ReconfigureLogging();            
+            ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
         }
 
@@ -66,11 +63,14 @@ namespace ARK_Server_Manager
             LogManager.Configuration.Variables["logDir"] = logDir;
 
             System.IO.Directory.CreateDirectory(logDir);
-            var statusWatcherTarget = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
-            statusWatcherTarget.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
+            var target = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
+            target.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
 
-            var debugTarget = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
-            debugTarget.FileName = Path.Combine(logDir, "ASM_Debug.log");
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
+            target.FileName = Path.Combine(logDir, "ASM_Debug.log");
+
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("scripts");
+            target.FileName = Path.Combine(logDir, "ASM_Scripts.log");
 
             LogManager.ReconfigExistingLoggers();
         }   

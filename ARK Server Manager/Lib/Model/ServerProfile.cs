@@ -1403,7 +1403,7 @@ namespace ARK_Server_Manager.Lib
                     builder.Append(b.ToString("x2"));
                 }
 
-                return builder.ToString();
+                return builder.ToString().Substring(0, 16);
             }
         }
 

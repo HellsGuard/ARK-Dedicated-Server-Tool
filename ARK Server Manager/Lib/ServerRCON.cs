@@ -84,8 +84,6 @@ namespace ARK_Server_Manager.Lib
                 {
                     ReinitializeLoggers();
                 }
-
-                commandProcessor.PostAction(() => Reconnect());
             });
 
             this.commandProcessor = new ActionQueue(TaskScheduler.Default);
@@ -97,7 +95,6 @@ namespace ARK_Server_Manager.Lib
 
             this.snapshot = server.Runtime.ProfileSnapshot;
             ReinitializeLoggers();
-            commandProcessor.PostAction(() => Reconnect());
             commandProcessor.PostAction(AutoPlayerList);
             commandProcessor.PostAction(AutoGetChat);
         }
@@ -415,7 +412,7 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
-        const int MaxCommandRetries = 5;
+        const int MaxCommandRetries = 10;
         const int RetryDelay = 100;
         private string SendCommand(string command)
         {
@@ -423,21 +420,40 @@ namespace ARK_Server_Manager.Lib
             Exception lastException = null;        
             while (retries < MaxCommandRetries)
             {
+                if (this.console != null)
+                {
+                    try
+                    {
+                        var result = this.console.SendCommand(command);
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Re will simply retry
+                        lastException = ex;
+                    }
+
+                    Task.Delay(RetryDelay).Wait();
+                }
+
                 try
                 {
-                    if (this.console == null) Reconnect();
-                    var result = this.console.SendCommand(command);
-                    return result;
+                    Reconnect();
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    // Re will simply retry
                     lastException = ex;
                 }
-                Task.Delay(RetryDelay).Wait();
-                Reconnect();
+
                 retries++;
             }
+
+            _logger.Debug("Failed to connect to RCON at {0}:{1} with {2}: {3}\n{4}",
+                   this.snapshot.ServerIP,
+                   this.snapshot.RCONPort,
+                   this.snapshot.AdminPassword,
+                   lastException.Message,
+                   lastException.StackTrace);
 
             throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}\n{lastException.StackTrace}", lastException);
         }
@@ -450,23 +466,10 @@ namespace ARK_Server_Manager.Lib
                 this.console = null;
             }
           
-            try
-            {
-                var endpoint = new IPEndPoint(IPAddress.Parse(this.snapshot.ServerIP), this.snapshot.RCONPort);    
-                var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint);
-                this.console = server.GetControl(this.snapshot.AdminPassword);
-                return true;
-            }
-            catch(Exception ex)
-            {
-                _logger.Debug("Failed to connect to RCON at {0}:{1} with {2}: {3}\n{4}", 
-                    this.snapshot.ServerIP, 
-                    this.snapshot.RCONPort, 
-                    this.snapshot.AdminPassword, 
-                    ex.Message, 
-                    ex.StackTrace);
-                return false;
-            }
+            var endpoint = new IPEndPoint(IPAddress.Parse(this.snapshot.ServerIP), this.snapshot.RCONPort);    
+            var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint);
+            this.console = server.GetControl(this.snapshot.AdminPassword);
+            return true;
         }
     }
 }

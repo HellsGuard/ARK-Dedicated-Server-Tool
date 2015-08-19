@@ -125,8 +125,8 @@ namespace ARK_Server_Manager
                 }
                 catch (Exception)
                 {
-                // Ignore.
-            }
+                    // Ignore.
+                }
             }).DoNotWait();
 
             await Task.Delay(Config.Default.UpdateCheckTime * 60 * 1000);
@@ -208,7 +208,7 @@ namespace ARK_Server_Manager
                     ZipFile.ExtractToDirectory(applicationZip, extractPath);
 
                     // Replace the current installation
-                    File.WriteAllText(updateFilePath, $"timeout 2 \r\nrmdir /s /q {backupPath} \r\n rename {currentInstallPath} {Path.GetFileName(backupPath)}  \r\nxcopy /e /y {extractPath} {currentInstallPath}\\ \r\nrmdir /s /q {backupPath}\r\nstart \"\" \"{Assembly.GetExecutingAssembly().Location}\" \r\nexit");
+                    File.WriteAllText(updateFilePath, $"timeout 2 \r\nrmdir /s /q \"{backupPath}\" \r\n rename \"{currentInstallPath}\" \"{Path.GetFileName(backupPath)}\"  \r\nxcopy /e /y \"{extractPath}\" \"{currentInstallPath}\\\" \r\nrmdir /s /q \"{backupPath}\"\r\nstart \"\" \"{Assembly.GetExecutingAssembly().Location}\" \r\nexit");
                     var startInfo = new ProcessStartInfo()
                     {
                         FileName = "cmd.exe",
