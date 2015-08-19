@@ -40,6 +40,7 @@ namespace ARK_Server_Manager.Lib
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
             }
 
+            builder.AppendLine("EXIT 0");
             var script = builder.ToString();
             
             return ScriptUtils.RunElevatedShellScript(script);
@@ -67,6 +68,7 @@ namespace ARK_Server_Manager.Lib
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
             }
 
+            builder.AppendLine("EXIT 0");
             var script = builder.ToString();
             return ScriptUtils.RunElevatedShellScript(script);
         }
@@ -80,8 +82,9 @@ namespace ARK_Server_Manager.Lib
             {
                 builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL LIMITED");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
-            }            
+            }
 
+            builder.AppendLine("EXIT 0");
             var script = builder.ToString();
             bool result = ScriptUtils.RunElevatedShellScript(script);
             return result;
