@@ -116,6 +116,8 @@ namespace ARK_Server_Manager.Lib
             return;
         }
 
+        public static bool IsServerCacheAutoUpdateEnabled => Config.Default.ServerCacheUpdatePeriod != 0 && Directory.Exists(Config.Default.ServerCacheDir);
+
         public static string GetSteamCMDPath()
         {
             var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);

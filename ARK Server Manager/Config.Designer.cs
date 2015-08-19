@@ -421,5 +421,29 @@ namespace ARK_Server_Manager {
                 return ((string)(this["SchedulerWorkDir"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServerCacheDir {
+            get {
+                return ((string)(this["ServerCacheDir"]));
+            }
+            set {
+                this["ServerCacheDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ServerCacheUpdatePeriod {
+            get {
+                return ((int)(this["ServerCacheUpdatePeriod"]));
+            }
+            set {
+                this["ServerCacheUpdatePeriod"] = value;
+            }
+        }
     }
 }

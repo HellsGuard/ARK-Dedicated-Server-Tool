@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>126</ApplicationRevision>
+    <ApplicationRevision>132</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -170,6 +170,7 @@
     <Compile Include="Lib\Model\StringIniValueList.cs" />
     <Compile Include="Lib\ModManager.cs" />
     <Compile Include="Lib\PropertyChangeNotifier.cs" />
+    <Compile Include="Lib\ScriptUtils.cs" />
     <Compile Include="Lib\Serialization\AggregateIniValue.cs" />
     <Compile Include="Lib\Serialization\CompoundIniEntry.cs" />
     <Compile Include="Lib\Serialization\IIniValuesCollection.cs" />
@@ -235,6 +236,9 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Content Include="Lib\ServerUpdater\mcrcon.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Page Include="AnnotatedSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -415,6 +419,12 @@
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
     </None>
     <None Include="DeployToAWS.cmd" />
+    <None Include="Lib\ServerUpdater\AutoUpdateFromCache.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Lib\ServerUpdater\AutoUpdateServerCache.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

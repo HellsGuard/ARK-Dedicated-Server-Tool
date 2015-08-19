@@ -1,6 +1,7 @@
 ﻿using QueryMaster;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ARK_Server_Manager.Lib
 {
-    static partial class ServerUpdaterApp
+    partial class ServerUpdaterApp
     { 
         static QueryMaster.Server server;
 
@@ -18,6 +19,12 @@ namespace ARK_Server_Manager.Lib
             if (args.Length == 0)
             {
                 WriteHelpAndExit();
+            }
+            else if(String.Equals(args[0], "Cache"))
+            {
+                var result = UpdateCache();
+                Environment.Exit(result ? 0 : -1);
+
             }
             else if (String.Equals(args[0], "Auto", StringComparison.OrdinalIgnoreCase))
             {
@@ -56,26 +63,26 @@ namespace ARK_Server_Manager.Lib
             var runningProcesses = Process.GetProcessesByName("ShooterGameServer.exe");
             var expectedExePath = ServerUpdater.NormalizePath(Path.Combine(InstallDirectory, "ShooterGame", "Binaries", "Win64", "ShooterGameServer.exe"));
             Process process = null;
-            foreach(var runningProcess in runningProcesses)
+            foreach (var runningProcess in runningProcesses)
             {
                 var runningPath = ServerUpdater.NormalizePath(runningProcess.Modules[0].FileName);
-                if(String.Equals(expectedExePath, runningPath))
+                if (String.Equals(expectedExePath, runningPath))
                 {
                     process = runningProcess;
                     break;
                 }
             }
 
-            if(process == null)
+            if (process == null)
             {
-                Console.WriteLine($"ERROR: Unable to find process for {InstallDirectory}");
+                Console.WriteLine("ERROR: Unable to find process for " + InstallDirectory);
                 Environment.Exit(-1);
             }
 
             var serverCommandLine = ServerUpdater.GetCommandLineForProcess(process.Id);
             if (String.IsNullOrEmpty(serverCommandLine))
             {
-                Console.WriteLine($"ERROR: Unable to retrieve command-line for process {process.Id}");
+                Console.WriteLine("ERROR: Unable to retrieve command-line for process " + process.Id);
                 Environment.Exit(-1);
             }
 
@@ -96,14 +103,8 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            //
-            // Run the update.
-            //
-            Console.WriteLine("Running the update");
-            var result = ServerUpdater.UpgradeServerAsync(false, InstallDirectory, SteamCmdPath, "+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1}\" +quit", null, CancellationToken.None).Result;
-            if (!result)
+            if(!UpdateCache())
             {
-                Console.WriteLine("Failed to update.");
                 Environment.Exit(-1);
             }
 
@@ -121,6 +122,59 @@ namespace ARK_Server_Manager.Lib
             Console.WriteLine("TODO: Reschedule update");
 
             Environment.Exit(0);
+        }
+
+        private static bool UpdateCache()
+        {
+            //
+            // Run the update.
+            //
+            Console.WriteLine("Running the update");
+            bool gotNewVersion = false;
+            bool downloadSuccessful = false;
+            DataReceivedEventHandler outputHandler = (s, e) =>
+            {
+                Console.WriteLine(e.Data);
+                if(!gotNewVersion && e.Data.Contains("downloading,"))
+                {
+                    gotNewVersion = true;
+                }
+
+                if(e.Data.StartsWith("Success!"))
+                {
+                    downloadSuccessful = true;
+                }
+            };
+
+            var result = ServerUpdater.UpgradeServerAsync(false, InstallDirectory, SteamCmdPath, "+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1}\" +quit", null, CancellationToken.None).Result;
+            if (!result || !downloadSuccessful)
+            {
+                Console.WriteLine("Failed to update.");
+                return false;
+            }
+            else
+            {
+                File.WriteAllText(GetLatestCacheTimeFile(), DateTime.Now.ToString("o", CultureInfo.CurrentCulture));
+                return true;
+            }
+        }
+
+        private static DateTime GetLatestCacheTime()
+        {
+            try
+            {
+                var time = File.ReadAllText(GetLatestCacheTimeFile());
+                return DateTime.Parse(time, CultureInfo.CurrentCulture , DateTimeStyles.RoundtripKind);
+            }
+            catch
+            {
+                return DateTime.MinValue;
+            }
+        }
+
+        private static string GetLatestCacheTimeFile()
+        {
+            return Path.Combine(ServerCacheDir, "LastUpdatedTime.txt");
         }
 
         private static void WriteHelpAndExit()

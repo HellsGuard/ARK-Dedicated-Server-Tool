@@ -987,6 +987,18 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
 
+
+
+
+        public bool EnableAutoUpdate
+        {
+            get { return (bool)GetValue(EnableAutoUpdateProperty); }
+            set { SetValue(EnableAutoUpdateProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableAutoUpdateProperty = DependencyProperty.Register(nameof(EnableAutoUpdate), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
         public int AutoUpdatePeriod
         {
             get { return (int)GetValue(AutoUpdatePeriodProperty); }
@@ -1004,6 +1016,17 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EnableAutoStartProperty = DependencyProperty.Register(nameof(EnableAutoStart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+
+        public int ServerUpdateGraceMinutes
+        {
+            get { return (int)GetValue(ServerUpdateGraceMinutesProperty); }
+            set { SetValue(ServerUpdateGraceMinutesProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerUpdateGraceMinutesProperty = DependencyProperty.Register(nameof(ServerUpdateGraceMinutes), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
+
 
 
         #endregion
@@ -1201,6 +1224,14 @@ namespace ARK_Server_Manager.Lib
 
                 this.LastSaveLocation = GetProfilePath();
             }
+
+            SaveLauncher();
+        }
+
+        private void SaveLauncher()
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherPath()));
+            File.WriteAllText(GetLauncherPath(), $"start \"\" \"{GetServerExe()}\" {GetServerArgs()}");
         }
 
         public string GetProfilePath()
@@ -1211,6 +1242,11 @@ namespace ARK_Server_Manager.Lib
         public string GetProfileIniDir()
         {
             return Path.Combine(Path.GetDirectoryName(GetProfilePath()), this.ProfileName);
+        }
+
+        public string GetLauncherPath()
+        {
+            return Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
         }
 
         public void SaveINIFiles()
@@ -1329,19 +1365,31 @@ namespace ARK_Server_Manager.Lib
             return serverArgs.ToString();
         }
 
-        public void UpdateAutoUpdateSettings()
+        public bool UpdateAutoUpdateSettings()
         {
+            SaveLauncher();
+
             var schedulerKey = GetSchedulerKey();
-            ServerScheduler.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetServerExe(), GetServerArgs());
-            ServerScheduler.ScheduleUpdates(schedulerKey,
-                this.AutoUpdatePeriod,
-                Path.Combine(this.InstallDirectory, Config.Default.SchedulerWorkDir),
+            if(!ServerScheduler.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetLauncherPath(), String.Empty))
+            {
+                return false;
+            }
+            
+            if(!ServerScheduler.ScheduleUpdates(
+                schedulerKey,
+                this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
+                Config.Default.ServerCacheDir,
+                this.InstallDirectory,
                 this.ServerIP,
                 this.RCONPort,
                 this.AdminPassword,
-                this.InstallDirectory,
-                AutoUpdater.GetSteamCMDPath()
-                );
+                this.ServerUpdateGraceMinutes
+                ))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private string GetSchedulerKey()

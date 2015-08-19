@@ -1,8 +1,8 @@
 ﻿namespace ARK_Server_Manager.Lib
 {
-    static partial class ServerUpdaterApp
+    partial class ServerUpdaterApp
     {
-        static string OutputLocation = null;
+        static string ServerCacheDir = null;
         static string ServerIP = null;
         static int RCONPort = 0;
         static string AdminPass = null;

@@ -833,21 +833,50 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Automatic Management" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left" TextWrapping="Wrap" Text="Automatic Management" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="Why can't I use this?" Click="NeedAdmin_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </DockPanel>
                         </Expander.Header>
                         <Grid Margin="10">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="True">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+
+                            </Grid.Style>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0"  Orientation="Horizontal" Margin="9,0,0,5">
-                                <CheckBox IsChecked="{Binding EnableAutoStart}" Content="Auto-start Server" ToolTip="Automatically start the server when the machine starts."/>
+                            <StackPanel Grid.Row="0"  Orientation="Horizontal" Margin="9,0,0,5" Height="20">
+                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server" ToolTip="Automatically start the server when the machine starts." />
                             </StackPanel>
-                            <GroupBox Grid.Row="1">
+                            <GroupBox Grid.Row="1" HorizontalAlignment="Stretch">
                                 <GroupBox.Header>
-                                    <CheckBox Content="Enable Periodic Auto-Updates" IsChecked="{Binding EnableAutoUpdates}" ToolTip="Automatically check for updates periodically and upgrade the server."/>
+                                    <CheckBox Name="EnableAutoUpdatesCheckbox" Content="Enable Periodic Auto-Updates" IsChecked="{Binding EnableAutoUpdate}" ToolTip="Automatically check for updates periodically and upgrade the server."/>
                                 </GroupBox.Header>
-                                <StackPanel Orientation="Horizontal" Margin="2">
+                                <StackPanel Orientation="Horizontal"  Margin="2" HorizontalAlignment="Stretch">
                                     <Label Content="Update Period"/>
                                     <TextBox Margin="0,0,0,0" Width="75">
                                         <Validation.ErrorTemplate>
@@ -867,7 +896,7 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Button Content="Test" Click="TestUpdater_Click"/>
+                                    <local:AnnotatedSlider HorizontalAlignment="Stretch"  Margin="5,0,0,0" Width="400"  Label="Restart Grace Period:" LabelRelativeWidth="125" SuffixRelativeWidth="55"  Value="{Binding ServerUpdateGraceMinutes}" SmallChange="1" LargeChange="5" Minimum="0" Maximum="60" Suffix="minutes" />
                                 </StackPanel>
                             </GroupBox>
                         </Grid>

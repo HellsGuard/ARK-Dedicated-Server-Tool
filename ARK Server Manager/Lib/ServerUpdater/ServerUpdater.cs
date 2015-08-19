@@ -19,7 +19,7 @@ namespace ARK_Server_Manager.Lib
             {
                 FileName = steamCmdPath,
                 Arguments = steamArgs,
-                UseShellExecute = outputHandler != null,
+                UseShellExecute = false,
                 RedirectStandardOutput = outputHandler != null,
             };
             
