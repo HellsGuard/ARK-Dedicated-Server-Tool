@@ -445,5 +445,41 @@ namespace ARK_Server_Manager {
                 this["ServerCacheUpdatePeriod"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int RCON_PlayerListSort {
+            get {
+                return ((int)(this["RCON_PlayerListSort"]));
+            }
+            set {
+                this["RCON_PlayerListSort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int RCON_PlayerListFilter {
+            get {
+                return ((int)(this["RCON_PlayerListFilter"]));
+            }
+            set {
+                this["RCON_PlayerListFilter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RCON_AdminName {
+            get {
+                return ((string)(this["RCON_AdminName"]));
+            }
+            set {
+                this["RCON_AdminName"] = value;
+            }
+        }
     }
 }

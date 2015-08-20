@@ -59,8 +59,7 @@ namespace ARK_Server_Manager
             set { SetValue(NewASMAvailableProperty, value); }
         }
 
-        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
+        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));   
 
         ActionQueue versionChecker;
 
@@ -119,7 +118,7 @@ namespace ARK_Server_Manager
                     Version.TryParse(App.Version, out appVersion);
 
                     this.LatestASMVersion = newVersion;
-                    this.NewASMAvailable = appVersion < newVersion;
+                    this.NewASMAvailable = true;// appVersion < newVersion;
                 }
                 catch (Exception)
                 {

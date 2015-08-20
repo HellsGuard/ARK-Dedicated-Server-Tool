@@ -38,7 +38,7 @@
         <Button Grid.Column="2" Grid.Row="1" Margin="5" Content="{StaticResource LocationButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
 
 
-        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsEnabled="{Binding IsAdministrator}">
             <GroupBox.Header>
                 Server Cache
             </GroupBox.Header>

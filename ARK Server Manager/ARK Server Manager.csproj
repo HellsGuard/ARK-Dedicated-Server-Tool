@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>140</ApplicationRevision>
+    <ApplicationRevision>141</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -179,7 +179,7 @@
     <Compile Include="Lib\Serialization\SystemIniFile.cs" />
     <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
-    <Compile Include="Lib\PasswordUtils.cs" />
+    <Compile Include="Lib\SecurityUtils.cs" />
     <Compile Include="Lib\Serialization\IniFile.cs" />
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />

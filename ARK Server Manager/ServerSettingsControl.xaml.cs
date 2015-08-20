@@ -114,10 +114,7 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             this.ServerManager = ServerManager.Instance;
-
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            this.IsAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            this.IsAdministrator = SecurityUtils.IsAdministrator();
         }
 
         private void ReinitializeNetworkAdapters()

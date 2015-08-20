@@ -1042,8 +1042,8 @@ namespace ARK_Server_Manager.Lib
 
         private ServerProfile()
         {
-            ServerPassword = PasswordUtils.GeneratePassword(16);
-            AdminPassword = PasswordUtils.GeneratePassword(16);
+            ServerPassword = SecurityUtils.GeneratePassword(16);
+            AdminPassword = SecurityUtils.GeneratePassword(16);
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);

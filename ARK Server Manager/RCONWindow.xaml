@@ -70,7 +70,9 @@
                     </Menu>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Label Content="Status:"/>
+                    <Label Content="Admin Name:"/>
+                    <TextBox Text="{Binding CurrentConfig.RCON_AdminName}" Width="100" ToolTip="This is the name used to prefix serverchat messages sent from the console."/>
+                    <Label Content="Status:" Margin="10,0,0,0"/>
                     <Label Content="{Binding ServerRCON.Status}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
@@ -171,11 +173,13 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
+            <!--
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged" >
                     <local:ScrollToBottomAction IsEnabled="{Binding ScrollOnNewInput}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            -->
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0"/>

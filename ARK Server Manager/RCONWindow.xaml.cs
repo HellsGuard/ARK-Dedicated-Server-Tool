@@ -18,9 +18,9 @@ namespace ARK_Server_Manager
 {
     public enum PlayerSortType
     {
-        Online,
-        Name,
-        Tribe
+        Online = 0,
+        Name = 1,
+        Tribe = 2
     }
 
     [Flags]
@@ -151,6 +151,13 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(RCONWindow), new PropertyMetadata(null));
 
+        public Config CurrentConfig
+        {
+            get { return (Config)GetValue(CurrentConfigProperty); }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(RCONWindow), new PropertyMetadata(Config.Default));
 
         public ServerRCON ServerRCON
         {
@@ -158,9 +165,7 @@ namespace ARK_Server_Manager
             set { SetValue(ServerRCONProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));
-
-
+        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));    
 
         public InputMode CurrentInputMode
         {
@@ -174,8 +179,10 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             this.Server = server;
+            this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
+            this.PlayerSorting = (PlayerSortType)Config.Default.RCON_PlayerListSort;
             this.ServerRCON = new ServerRCON(server);
-            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);
+            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);            
             this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
             this.PlayersView.Filter = p =>
             {
@@ -266,6 +273,7 @@ namespace ARK_Server_Manager
                     execute: (sort) => 
                     {
                         this.PlayersView.SortDescriptions.Clear();
+                        Config.Default.RCON_PlayerListSort = (int)this.PlayerSorting;
                         switch(sort)
                         {
                             case PlayerSortType.Name:
@@ -294,6 +302,7 @@ namespace ARK_Server_Manager
                     execute: (filter) => 
                     {
                         this.PlayerFiltering ^= filter;
+                        Config.Default.RCON_PlayerListFilter = (int)this.PlayerFiltering;
                         this.PlayersView.Refresh();
                     },
                     canExecute: (filter) => true
@@ -535,7 +544,14 @@ namespace ARK_Server_Manager
                             break;
 
                         case InputMode.Global:
-                            this.ServerRCON.IssueCommand($"serverchat {commandText}");
+                            if (!String.IsNullOrWhiteSpace(Config.Default.RCON_AdminName))
+                            {
+                                this.ServerRCON.IssueCommand($"serverchat [{Config.Default.RCON_AdminName}] {commandText}");
+                            }
+                            else
+                            {
+                                this.ServerRCON.IssueCommand($"serverchat {commandText}");
+                            }
                             break;
 
                         case InputMode.Command:
