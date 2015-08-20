@@ -118,7 +118,7 @@ namespace ARK_Server_Manager
                     Version.TryParse(App.Version, out appVersion);
 
                     this.LatestASMVersion = newVersion;
-                    this.NewASMAvailable = true;// appVersion < newVersion;
+                    this.NewASMAvailable = appVersion < newVersion;
                 }
                 catch (Exception)
                 {
