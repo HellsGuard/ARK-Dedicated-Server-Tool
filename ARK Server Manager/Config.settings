@@ -140,5 +140,11 @@
     <Setting Name="RCON_AdminName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="GLOBAL_EnableServerCache" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HelpUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.com</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

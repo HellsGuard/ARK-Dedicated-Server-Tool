@@ -132,11 +132,13 @@ namespace ARK_Server_Manager
         public void Settings_Click(object sender, RoutedEventArgs args)
         {
             var settingsWindow = new SettingsWindow();
+            settingsWindow.Owner = this;
             settingsWindow.ShowDialog();
         }
 
         public void Help_Click(object sender, RoutedEventArgs args)
         {
+            Process.Start(Config.Default.HelpUrl);
         }
 
         public void Servers_Remove(object sender, TabItemCloseEventArgs args)

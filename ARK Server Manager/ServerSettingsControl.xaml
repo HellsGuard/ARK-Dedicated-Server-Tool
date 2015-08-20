@@ -1059,6 +1059,10 @@
                                             <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Tamed Resistance</CheckBox>
                                             <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Wild Damage</CheckBox>
                                             <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Wild Resistance</CheckBox>
+                                            <Button Width="22" Height="22" Margin ="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="DinoCustomization_Reset" 
+                                                    ToolTip="Reset grid to game defaults">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <DataGrid Name="DinoSettingsGrid" ItemsSource="{Binding DinoSettings}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1">

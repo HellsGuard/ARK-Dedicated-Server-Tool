@@ -173,13 +173,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
-            <!--
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged" >
                     <local:ScrollToBottomAction IsEnabled="{Binding ScrollOnNewInput}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            -->
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0"/>

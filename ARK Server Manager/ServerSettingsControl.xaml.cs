@@ -437,5 +437,10 @@ namespace ARK_Server_Manager
         {
             MessageBox.Show("Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services.  To do this, the Server Manager must run with administrator privileges.  Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.", "Needs Administrator Access", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoSettings.Reset();
+        }
     }
 }

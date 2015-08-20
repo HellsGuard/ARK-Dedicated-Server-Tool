@@ -481,5 +481,26 @@ namespace ARK_Server_Manager {
                 this["RCON_AdminName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GLOBAL_EnableServerCache {
+            get {
+                return ((bool)(this["GLOBAL_EnableServerCache"]));
+            }
+            set {
+                this["GLOBAL_EnableServerCache"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.com")]
+        public string HelpUrl {
+            get {
+                return ((string)(this["HelpUrl"]));
+            }
+        }
     }
 }
