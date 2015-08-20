@@ -37,13 +37,13 @@ namespace ARK_Server_Manager
                     return;
                 }
 
-                if (!ServerScheduler.ScheduleCacheUpdater(Config.Default.ServerCacheDir, AutoUpdater.GetSteamCMDPath(), Config.Default.ServerCacheUpdatePeriod))
+                if (!ServerScheduler.ScheduleCacheUpdater(Config.Default.ServerCacheDir, Updater.GetSteamCMDPath(), Config.Default.GLOBAL_EnableServerCache ? Config.Default.ServerCacheUpdatePeriod : 0))
                 {
                     MessageBox.Show("Failed to update the cache task.  Ensure you have administrative rights and try again.", "Update task failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    if (Config.Default.ServerCacheUpdatePeriod == 0)
+                    if (!Config.Default.GLOBAL_EnableServerCache || (Config.Default.ServerCacheUpdatePeriod == 0))
                     {
                         MessageBox.Show("Server cache updating disabled.", "Updates disabled", MessageBoxButton.OK, MessageBoxImage.Information);
                     }

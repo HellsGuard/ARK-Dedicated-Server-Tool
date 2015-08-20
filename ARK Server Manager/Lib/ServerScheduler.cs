@@ -43,7 +43,7 @@ namespace ARK_Server_Manager.Lib
             builder.AppendLine("EXIT 0");
             var script = builder.ToString();
             
-            return ScriptUtils.RunElevatedShellScript(script);
+            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleCacheUpdater), script);
         }
 
         public static bool ScheduleUpdates(string updateKey, int autoUpdatePeriod, string cacheDir, string installDir, string rconIP, int rconPort, string rconPass, int graceMinutes)
@@ -70,7 +70,7 @@ namespace ARK_Server_Manager.Lib
 
             builder.AppendLine("EXIT 0");
             var script = builder.ToString();
-            return ScriptUtils.RunElevatedShellScript(script);
+            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleUpdates), script);
         }
 
         public static bool ScheduleAutoStart(string updateKey, bool enableAutoStart, string command, string args)
@@ -86,7 +86,7 @@ namespace ARK_Server_Manager.Lib
 
             builder.AppendLine("EXIT 0");
             var script = builder.ToString();
-            bool result = ScriptUtils.RunElevatedShellScript(script);
+            bool result = ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoStart), script);
             return result;
         }
         private static bool PlaceMCRcon(string dir)

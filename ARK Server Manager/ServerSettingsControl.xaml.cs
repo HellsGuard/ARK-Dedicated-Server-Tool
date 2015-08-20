@@ -251,14 +251,14 @@ namespace ARK_Server_Manager
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (Settings.EnableAutoUpdate && !AutoUpdater.IsServerCacheAutoUpdateEnabled)
+            if (Settings.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
             {
                 var result = MessageBox.Show("Auto-updates is enabled but the Server Cache update is not yet configured.  The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers.  You must first configure the cache, then you may enable automatic updating.  Would you like to configure the cache now?", "Server cache not configured", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if(result == MessageBoxResult.Yes)
                 {
                     var settingsWindow = new SettingsWindow();
                     settingsWindow.ShowDialog();
-                    if(!AutoUpdater.IsServerCacheAutoUpdateEnabled)
+                    if(!Updater.IsServerCacheAutoUpdateEnabled)
                     {
                         MessageBox.Show("The server cache was not configured.  Disabling auto-updates.", "Server cache not configured", MessageBoxButton.OK, MessageBoxImage.Warning);
                         Settings.EnableAutoUpdate = false;

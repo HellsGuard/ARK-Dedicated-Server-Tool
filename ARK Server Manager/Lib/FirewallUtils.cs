@@ -26,7 +26,7 @@ netsh advfirewall firewall add rule name = ""{1} UDP"" action = allow program = 
 IF ERRORLEVEL 1 EXIT 1
 ", exeName, ruleName, String.Join(",", ports));
 
-            return ScriptUtils.RunElevatedShellScript(rulesCommand);           
+            return ScriptUtils.RunElevatedShellScript(nameof(EnsurePortsOpen), rulesCommand);           
         }       
     }
 }

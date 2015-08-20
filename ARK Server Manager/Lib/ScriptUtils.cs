@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -10,36 +11,52 @@ namespace ARK_Server_Manager.Lib
 
         static int NextScriptId = 0;
 
-        public static bool RunElevatedShellScript(string script)
+        public static bool RunElevatedShellScript(string scriptName, string script)
         {
-            return RunShellScript(script, withElevation: true);
+            return RunShellScript(scriptName, script, withElevation: true);
         }
 
-        public static bool RunShellScript(string script, bool withElevation = false)
+        public static bool RunShellScript(string scriptName, string script, bool withElevation = false, bool waitForExit = true, bool deleteOnExit = true, bool includePID = false)
         {
-            string tempPath = Path.ChangeExtension(Path.GetTempFileName(), ".cmd");
-            string wrapperPath = Path.ChangeExtension(Path.GetTempFileName(), ".cmd");
-            string outPath = Path.ChangeExtension(Path.GetTempFileName(), ".out");
-            string errorPath = Path.ChangeExtension(Path.GetTempFileName(), ".error");
+            var scriptNameBase = includePID ? $"{scriptName}_{Process.GetCurrentProcess().Id}" : scriptName;
+           
+            string baseScriptPath = Path.Combine(Path.GetTempPath(), $"{scriptNameBase}.cmd");
+            string scriptWrapperPath = Path.Combine(Path.GetTempPath(), $"{scriptNameBase}_wrapper.cmd");
+
+            string scriptLogPath = null;
+            string scriptErrorPath = null;
+
+            scriptLogPath = Path.ChangeExtension(baseScriptPath, ".out");
+            scriptErrorPath = Path.ChangeExtension(baseScriptPath, ".error");
 
             _logger.Debug($"Running Script (Elevation {withElevation}) : {script}");
 
             var scriptId = NextScriptId++;
             try
             {
-                File.WriteAllText(tempPath, script);
-                File.WriteAllText(wrapperPath, $"CMD /C \"{tempPath}\" > \"{outPath}\" 2> \"{errorPath}\"");
+                var builder = new StringBuilder();
+
+                // Change to the UTF8 code page
+                builder.AppendLine("chcp 65001");
+                builder.Append(script);
+
+                File.WriteAllText(baseScriptPath, builder.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+
+                //
+                // Wrap to capture logging (necessary for running administrator scripts from non-admin contexts)
+                //
+                File.WriteAllText(scriptWrapperPath, $"CMD /C {baseScriptPath.AsQuoted()} > {scriptLogPath.AsQuoted()} 2> {scriptErrorPath.AsQuoted()}");
+
+                //
+                // Launch the process
+                //
                 ProcessStartInfo psInfo = new ProcessStartInfo()
                 {
-                    FileName = $"\"{wrapperPath}\"",
+                    FileName = $"{scriptWrapperPath.AsQuoted()}",
                     UseShellExecute = true,
-                    CreateNoWindow = true
+                    CreateNoWindow = true,
+                    Verb = withElevation ? "runas" : String.Empty
                 };
-
-                if(withElevation)
-                {
-                    psInfo.Verb = "runas";
-                }
 
                 var process = new Process
                 {
@@ -48,16 +65,25 @@ namespace ARK_Server_Manager.Lib
                 };
 
                 process.Start();
-                process.WaitForExit();
 
-                try
+                //
+                // If we wait, copy the log files when the process is done.
+                //
+                if (waitForExit)
                 {
-                    _logger.Debug($"SCRIPT {scriptId} OUTPUT: {File.ReadAllText(outPath)}");
-                    _logger.Debug($"SCRIPT {scriptId} ERROR: {File.ReadAllText(errorPath)}");
-                }
-                catch { }
+                    process.WaitForExit();
 
-                return process.ExitCode == 0;
+                    try
+                    {
+                        _logger.Debug($"SCRIPT {scriptId} OUTPUT: {File.ReadAllText(scriptLogPath)}");
+                        _logger.Debug($"SCRIPT {scriptId} ERROR: {File.ReadAllText(scriptErrorPath)}");
+                    }
+                    catch { }
+
+                    return process.ExitCode == 0;
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -67,12 +93,22 @@ namespace ARK_Server_Manager.Lib
             }
             finally
             {
-                File.Delete(tempPath);
-                File.Delete(wrapperPath);
-                File.Delete(outPath);
-                File.Delete(errorPath);
+                //
+                // If we aren't waiting, we can't delete because we will kill the scripts before cmd.exe gets a chance to run them.
+                //
+                if (waitForExit && deleteOnExit)
+                {                    
+                    File.Delete(baseScriptPath);
+                    File.Delete(scriptWrapperPath);
+                    File.Delete(scriptLogPath);
+                    File.Delete(scriptErrorPath);
+                }
             }
         }
 
+        public static string AsQuoted(this string parameter)
+        {
+            return "\"" + parameter + "\"";
+        }
     }
 }
