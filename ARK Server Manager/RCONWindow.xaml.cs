@@ -362,7 +362,7 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { var command = player.IsBanned ? "Unban" : "Ban" ;  this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
+                    execute: (player) => { var command = player.IsBanned ? "unbanplayer" : "banplayer" ;  this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
                     canExecute: (player) => true
                     );
             }
@@ -373,7 +373,7 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
+                    execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
                     canExecute: (player) => true
                 );
             }
@@ -533,7 +533,7 @@ namespace ARK_Server_Manager
                     AddCommentsBlock(
                         "Known commands:",
                         "   AllowPlayerToJoinNoCheck <player> - Adds the specified player to the whitelist",
-                        "   Ban <player> - Adds the specified player to the banned list",
+                        "   banplayer <steam id> - Adds the specified player to the banned list",
                         "   Broadcast <message> - Sends a message to everyone",
                         "   DestroyAll <class name> - Destroys ALL creatures of the specified class",
                         "   destroyallenemies - Destroys ALL dinosaurs on the map",
@@ -548,7 +548,7 @@ namespace ARK_Server_Manager
                         "   SetMessageOfTheDay <message> - Sets the message of the day",
                         "   settimeofday <hour>:<minute>[:<second>] - Sets the time using 24-hour format",
                         "   slomo <factor> - Sets the passage of time.  Lower values slow time",
-                        "   Unban <player> - Remove the specified player from the banned list",
+                        "   unbanplayer <steam id> - Remove the specified player from the banned list",
                         "where:",
                         "   <player> specifies the character name of the player",
                         "   <steam id> is the long numerical id of the player"
