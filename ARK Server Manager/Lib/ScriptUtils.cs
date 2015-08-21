@@ -24,10 +24,7 @@ namespace ARK_Server_Manager.Lib
             string scriptWrapperPath = Path.Combine(Path.GetTempPath(), $"{scriptNameBase}_wrapper.cmd");
 
             string scriptLogPath = null;
-            string scriptErrorPath = null;
-
             scriptLogPath = Path.ChangeExtension(baseScriptPath, ".out");
-            scriptErrorPath = Path.ChangeExtension(baseScriptPath, ".error");
 
             _logger.Debug($"Running Script (Elevation {withElevation}) : {script}");
 
@@ -39,7 +36,7 @@ namespace ARK_Server_Manager.Lib
                 //
                 // Wrap to capture logging (necessary for running administrator scripts from non-admin contexts)
                 //
-                File.WriteAllText(scriptWrapperPath, $"CMD /C {baseScriptPath.AsQuoted()} > {scriptLogPath.AsQuoted()} 2> {scriptErrorPath.AsQuoted()}");
+                WriteCommandScript(scriptWrapperPath, $"CMD /C {baseScriptPath.AsQuoted()} > {scriptLogPath.AsQuoted()} 2>&1");
 
                 //
                 // Launch the process
@@ -70,7 +67,6 @@ namespace ARK_Server_Manager.Lib
                     try
                     {
                         _logger.Debug($"SCRIPT {scriptId} OUTPUT: {File.ReadAllText(scriptLogPath)}");
-                        _logger.Debug($"SCRIPT {scriptId} ERROR: {File.ReadAllText(scriptErrorPath)}");
                     }
                     catch { }
 
@@ -95,7 +91,6 @@ namespace ARK_Server_Manager.Lib
                     File.Delete(baseScriptPath);
                     File.Delete(scriptWrapperPath);
                     File.Delete(scriptLogPath);
-                    File.Delete(scriptErrorPath);
                 }
             }
         }
