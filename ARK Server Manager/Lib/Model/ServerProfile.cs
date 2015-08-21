@@ -1029,6 +1029,22 @@ namespace ARK_Server_Manager.Lib
 
 
 
+        public bool ServerForceUpdate
+        {
+            get { return (bool)GetValue(ServerForceUpdateProperty); }
+            set { SetValue(ServerForceUpdateProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerForceUpdateProperty = DependencyProperty.Register(nameof(ServerForceUpdate), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public string ServerForceUpdateTime
+        {
+            get { return (string)GetValue(ServerForceUpdateTimeProperty); }
+            set { SetValue(ServerForceUpdateTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerForceUpdateTimeProperty = DependencyProperty.Register(nameof(ServerForceUpdateTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+
         #endregion
         [XmlIgnore()]
         public bool IsDirty
@@ -1322,7 +1338,7 @@ namespace ARK_Server_Manager.Lib
             // This flag is broken in the INI        
             if(this.EnableFlyerCarry)
             {
-                serverArgs.Append("AllowFlyerCarryPVE=True");
+                serverArgs.Append("?AllowFlyerCarryPVE=True");
             }
             // These are used to match the server to the profile.
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
@@ -1379,16 +1395,19 @@ namespace ARK_Server_Manager.Lib
             {
                 return false;
             }
-            
-            if(!ServerScheduler.ScheduleUpdates(
-                schedulerKey,
-                this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
-                Config.Default.ServerCacheDir,
-                this.InstallDirectory,
-                this.ServerIP,
-                this.RCONPort,
-                this.AdminPassword,
-                this.ServerUpdateGraceMinutes
+
+            TimeSpan serverForceUpdateTime;
+            if (!ServerScheduler.ScheduleUpdates(
+                    schedulerKey,
+                    this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
+                    Config.Default.ServerCacheDir,
+                    this.InstallDirectory,
+                    this.ServerIP,
+                    this.RCONPort,
+                    this.AdminPassword,
+                    this.ServerUpdateGraceMinutes,
+                    this.ServerForceUpdate ? (TimeSpan.TryParseExact(this.ServerForceUpdateTime, "g", null, out serverForceUpdateTime) ? serverForceUpdateTime : (TimeSpan?)null)
+                                           : null
                 ))
             {
                 return false;

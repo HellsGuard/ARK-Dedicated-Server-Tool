@@ -34,13 +34,7 @@ namespace ARK_Server_Manager.Lib
             var scriptId = NextScriptId++;
             try
             {
-                var builder = new StringBuilder();
-
-                // Change to the UTF8 code page
-                builder.AppendLine("chcp 65001");
-                builder.Append(script);
-
-                File.WriteAllText(baseScriptPath, builder.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+                WriteCommandScript(baseScriptPath, script);
 
                 //
                 // Wrap to capture logging (necessary for running administrator scripts from non-admin contexts)
@@ -60,8 +54,8 @@ namespace ARK_Server_Manager.Lib
 
                 var process = new Process
                 {
-                    EnableRaisingEvents = true,                   
-                    StartInfo = psInfo,                    
+                    EnableRaisingEvents = true,
+                    StartInfo = psInfo,
                 };
 
                 process.Start();
@@ -104,6 +98,17 @@ namespace ARK_Server_Manager.Lib
                     File.Delete(scriptErrorPath);
                 }
             }
+        }
+
+        public static void WriteCommandScript(string destinationPath, string script)
+        {
+            var builder = new StringBuilder();
+
+            // Change to the UTF8 code page
+            builder.AppendLine("chcp 65001");
+            builder.Append(script);
+
+            File.WriteAllText(destinationPath, builder.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         }
 
         public static string AsQuoted(this string parameter)

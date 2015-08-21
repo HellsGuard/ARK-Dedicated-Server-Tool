@@ -870,34 +870,61 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0"  Orientation="Horizontal" Margin="9,0,0,5" Height="20">
-                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server" ToolTip="Automatically start the server when the machine starts." />
+                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server On Boot" ToolTip="Automatically start the server when the machine starts." />
                             </StackPanel>
                             <GroupBox Grid.Row="1" HorizontalAlignment="Stretch">
                                 <GroupBox.Header>
                                     <CheckBox Name="EnableAutoUpdatesCheckbox" Content="Enable Periodic Auto-Updates" IsChecked="{Binding EnableAutoUpdate}" ToolTip="Automatically check for updates periodically and upgrade the server."/>
                                 </GroupBox.Header>
-                                <StackPanel Orientation="Horizontal"  Margin="2" HorizontalAlignment="Stretch">
-                                    <Label Content="Update Period"/>
-                                    <TextBox Margin="0,0,0,0" Width="75">
-                                        <Validation.ErrorTemplate>
-                                            <ControlTemplate>
-                                                <StackPanel>
-                                                    <!-- Placeholder for the TextBox itself -->
-                                                    <AdornedElementPlaceholder x:Name="textBox"/>
-                                                    <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                                </StackPanel>
-                                            </ControlTemplate>
-                                        </Validation.ErrorTemplate>
-                                        <TextBox.Text>
-                                            <Binding Path="AutoUpdatePeriod" Converter="{StaticResource MinutesToTimeValueConverter}">
-                                                <Binding.ValidationRules>
-                                                    <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                    <local:AnnotatedSlider HorizontalAlignment="Stretch"  Margin="5,0,0,0" Width="400"  Label="Restart Grace Period:" LabelRelativeWidth="125" SuffixRelativeWidth="55"  Value="{Binding ServerUpdateGraceMinutes}" SmallChange="1" LargeChange="5" Minimum="0" Maximum="60" Suffix="minutes" />
-                                </StackPanel>
+                                <Grid IsEnabled="{Binding ElementName=EnableAutoUpdatesCheckbox, Path=IsChecked}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0"  Orientation="Horizontal"  Margin="2" HorizontalAlignment="Stretch">
+                                        <Label Content="Update every:"/>
+                                        <TextBox Margin="0,0,0,0" Width="75" ToolTip="The number of hours and minutes between update checks.">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <StackPanel>
+                                                        <!-- Placeholder for the TextBox itself -->
+                                                        <AdornedElementPlaceholder x:Name="textBox"/>
+                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Text>
+                                                <Binding Path="AutoUpdatePeriod" Converter="{StaticResource MinutesToTimeValueConverter}">
+                                                    <Binding.ValidationRules>
+                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <local:AnnotatedSlider HorizontalAlignment="Stretch"  Margin="5,0,0,0" Width="400"  Label="Restart Grace Period:" LabelRelativeWidth="125" SuffixRelativeWidth="55"  Value="{Binding ServerUpdateGraceMinutes}" SmallChange="1" LargeChange="5" Minimum="0" Maximum="60" Suffix="minutes" ToolTip="The amount of time to broadcast messages about the upgrade before shutting down and upgrading the server."/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding ServerForceUpdate}"  Content="Force Updates and Restart at:"/>
+                                        <TextBox Margin="0,0,0,0" Width="75" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="The hour and minute of the day to force an update and restart.">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <StackPanel>
+                                                        <!-- Placeholder for the TextBox itself -->
+                                                        <AdornedElementPlaceholder x:Name="textBox"/>
+                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Text>
+                                                <Binding Path="ServerForceUpdateTime">
+                                                    <Binding.ValidationRules>
+                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                </Grid>
                             </GroupBox>
                         </Grid>
                     </Expander>
@@ -1059,7 +1086,7 @@
                                             <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Tamed Resistance</CheckBox>
                                             <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Wild Damage</CheckBox>
                                             <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Wild Resistance</CheckBox>
-                                            <Button Width="22" Height="22" Margin ="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="DinoCustomization_Reset" 
+                                            <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" 
                                                     ToolTip="Reset grid to game defaults">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>

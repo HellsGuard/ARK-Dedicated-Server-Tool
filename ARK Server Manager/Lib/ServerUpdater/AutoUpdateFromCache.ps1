@@ -22,6 +22,9 @@
     [string]$mcrconPath = "mcrcon.exe",
 
     [Parameter(Mandatory = $False)]
+    [string]$force = $False,
+
+    [Parameter(Mandatory = $False)]
     [string]$LastUpdatedTimeFileName = "LastUpdated.txt",
 
     [Parameter(Mandatory = $False)]
@@ -34,6 +37,7 @@
 & whoami
 
 $updateInProgressFile = "$($InstallDirectory)\UpdateInProgress.txt"
+$forceUpdateFile = "$($InstallDirectory)\ForceUpdate.txt"
 
 function Send-RCON($message)
 {
@@ -56,6 +60,12 @@ else
     try
     {
         Get-Date | Out-File $updateInProgressFile
+
+        if(Test-Path $forceUpdateFile)
+        {
+            $force = $True
+            Remove-Item $forceUpdateFile -Force
+        }
 
         #
         # Wait for the cache to be available.  NOTE: This doesn't prevent a download from starting while we are copying...
@@ -84,7 +94,7 @@ else
         Write-Host "Cache Time: $($cacheTime)"
         Write-Host "Local Time: $($localTime)"
 
-        if($cacheTime -gt $localTime)
+        if($force -or ($cacheTime -gt $localTime))
         {
             # Find the process
             $process = Get-WmiObject Win32_Process -Filter "name = 'ShooterGameServer.exe'" | Where {$_.CommandLine -match "$($InstallDirectory -replace "\\", "\\")" }
