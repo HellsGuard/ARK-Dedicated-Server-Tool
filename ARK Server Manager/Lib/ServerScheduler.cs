@@ -72,6 +72,7 @@ namespace ARK_Server_Manager.Lib
 
             var builder = new StringBuilder();
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
+            builder.AppendLine($"schtasks /Delete /TN {forceSchedulerKey} /F");
             if (autoUpdatePeriod != 0)
             {
                 builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{serverUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL LIMITED ");
@@ -80,6 +81,7 @@ namespace ARK_Server_Manager.Lib
                 if(forceRestartTime.HasValue)
                 {
                     builder.AppendLine($"schTasks /Create /TN {forceSchedulerKey} /TR \"'{forceServerUpdateCmdPath}'\" /SC DAILY /ST {forceRestartTime.Value.Hours:D2}:{forceRestartTime.Value.Minutes:D2} /NP");
+                    builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
                 }
                 builder.AppendLine($"schtasks /Run /TN {schedulerKey}");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                

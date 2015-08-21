@@ -104,6 +104,7 @@ namespace ARK_Server_Manager
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
+            RCONWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
         }
 

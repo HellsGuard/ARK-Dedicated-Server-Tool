@@ -402,13 +402,14 @@ namespace ARK_Server_Manager
 
         private void OpenRCON_Click(object sender, RoutedEventArgs e)
         {
-            if(this.rconWindow == null || !this.rconWindow.IsLoaded)
+            var window = RCONWindow.GetRCONForServer(this.Server);
+            window.Show();
+            if(window.WindowState == WindowState.Minimized)
             {
-                this.rconWindow = new RCONWindow(this.Server);                
+                window.WindowState = WindowState.Normal;
             }
 
-            this.rconWindow.Show();
-            this.rconWindow.Focus();
+            window.Focus();
         }
 
         private void Engrams_Reset(object sender, RoutedEventArgs e)

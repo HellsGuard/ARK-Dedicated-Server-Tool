@@ -211,6 +211,31 @@ namespace ARK_Server_Manager
             this.ConsoleInput.Focus();
         }
 
+        private static Dictionary<Server, RCONWindow> RCONWindows = new Dictionary<Server, RCONWindow>();
+
+        public static RCONWindow GetRCONForServer(Server server)
+        {
+            RCONWindow window;
+            if(!RCONWindows.TryGetValue(server, out window) || !window.IsLoaded)
+            {
+                window = new RCONWindow(server);
+                RCONWindows[server] = window;
+            }
+
+            return window;
+        }
+
+        public static void CloseAllWindows()
+        {
+            foreach(var window in RCONWindows.Values)
+            {
+                if(window.IsLoaded)
+                {
+                    window.Close();
+                }
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             this.ServerRCON.DisposeAsync().DoNotWait();

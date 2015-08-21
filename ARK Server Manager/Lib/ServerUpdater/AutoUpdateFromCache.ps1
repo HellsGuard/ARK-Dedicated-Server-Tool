@@ -22,7 +22,10 @@
     [string]$mcrconPath = "mcrcon.exe",
 
     [Parameter(Mandatory = $False)]
-    [string]$force = $False,
+    [bool]$force = $False,
+
+    [Parameter(Mandatory = $False)]
+    [string]$WorldFileRoot = "TheIsland",
 
     [Parameter(Mandatory = $False)]
     [string]$LastUpdatedTimeFileName = "LastUpdated.txt",
@@ -120,7 +123,22 @@ else
                 Start-Sleep -Seconds 15
                 Send-RCON "broadcast [SERVER] Rebooting for upgrade..."                
 
-                Stop-Process -Id $process.ProcessId -Force                
+                Stop-Process -Id $process.ProcessId -Force                                                
+            }
+
+            $worldSource = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot).ark"
+            if(Test-Path $worldSource)
+            {
+                Write-Host "Creating World Backup"
+                try
+                {                
+                    $backupFile = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot)_$(Get-Date -format dd.MM.yyyy_HH.mm.ss)_ASMBackup.ark"
+                    Copy-Item -LiteralPath $worldSource -Destination $backupFile
+                }
+                catch
+                {
+                    Write-Host "Unable to create backup."
+                }
             }
 
             Write-Host "Updating..."
