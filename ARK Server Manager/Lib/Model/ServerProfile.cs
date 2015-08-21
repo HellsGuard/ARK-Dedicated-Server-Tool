@@ -1319,6 +1319,11 @@ namespace ARK_Server_Manager.Lib
 #endif
             }
 
+            // This flag is broken in the INI        
+            if(this.EnableFlyerCarry)
+            {
+                serverArgs.Append("AllowFlyerCarryPVE=True");
+            }
             // These are used to match the server to the profile.
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
             if (!String.IsNullOrEmpty(this.ServerIP))
