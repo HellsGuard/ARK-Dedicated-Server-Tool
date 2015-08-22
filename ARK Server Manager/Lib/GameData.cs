@@ -50,7 +50,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="SpiderL_Character_BP_C", DinoNameTag = "Uberspider", SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
             };
 
-        public static string NameTagForClass(string entry) => (entry == "FlyingAnt_Character_BP_C" ? dinoSpawns.First(d => d.ClassName == "Ant_Character_BP_C") : dinoSpawns.First(d => d.ClassName == entry)).DinoNameTag;
+        public static string NameTagForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? String.Empty : dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
 
         public static string FriendlyNameForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? "Flying Ant" : dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
 
