@@ -1126,8 +1126,7 @@ namespace ARK_Server_Manager.Lib
                 
                 using (var reader = File.OpenRead(path))
                 {
-                    var streamReader = new StreamReader(reader, System.Text.Encoding.UTF8);
-                    settings = (ServerProfile)serializer.Deserialize(streamReader);
+                    settings = (ServerProfile)serializer.Deserialize(reader);
                     settings.IsDirty = false;
                 }
 
@@ -1204,11 +1203,8 @@ namespace ARK_Server_Manager.Lib
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var stream = File.Open(GetProfilePath(), FileMode.Create))
             {
-                using (var writer = new StreamWriter(stream, System.Text.Encoding.UTF8))
-                {
-                    serializer.Serialize(writer, this);
-                }
-            }                
+                serializer.Serialize(stream, this);
+            }                        
 
             //
             // Write the INI files
