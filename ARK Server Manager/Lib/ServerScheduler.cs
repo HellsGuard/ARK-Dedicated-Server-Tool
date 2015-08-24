@@ -99,7 +99,15 @@ namespace ARK_Server_Manager.Lib
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
             if (enableAutoStart)
             {
-                builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
+                if (String.IsNullOrWhiteSpace(args))
+                {
+                    builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
+                }
+                else
+                {
+                    builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
+                }
+                    
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
             }
 
