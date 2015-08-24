@@ -1145,13 +1145,13 @@ namespace ARK_Server_Manager.Lib
 
                 var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
                 var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
-                if (File.Exists(profileIniPath))
+                if (File.Exists(configIniPath))                    
                 {
-                    settings = LoadFromINIFiles(profileIniPath, settings);
-                }
-                else if(File.Exists(configIniPath))
-                {                    
                     settings = LoadFromINIFiles(configIniPath, settings);
+                }
+                else if (File.Exists(profileIniPath))
+                {                    
+                    settings = LoadFromINIFiles(profileIniPath, settings);
                 }
             }
             else
@@ -1195,6 +1195,7 @@ namespace ARK_Server_Manager.Lib
             var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
             if (levelRampOverrides.Length > 0)
             {
+                settings.EnableLevelProgressions = true;
                 settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
 
                 if(levelRampOverrides.Length > 1)
