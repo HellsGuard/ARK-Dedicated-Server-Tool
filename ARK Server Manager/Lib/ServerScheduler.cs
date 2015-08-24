@@ -36,7 +36,7 @@ namespace ARK_Server_Manager.Lib
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
             if (autoUpdatePeriod != 0)
             {
-                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{cacheUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL LIMITED ");
+                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{cacheUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL HIGHEST ");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
             }
 
@@ -75,12 +75,12 @@ namespace ARK_Server_Manager.Lib
             builder.AppendLine($"schtasks /Delete /TN {forceSchedulerKey} /F");
             if (autoUpdatePeriod != 0)
             {
-                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{serverUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL LIMITED ");
+                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{serverUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL HIGHEST ");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
 
                 if(forceRestartTime.HasValue)
                 {
-                    builder.AppendLine($"schTasks /Create /TN {forceSchedulerKey} /TR \"'{forceServerUpdateCmdPath}'\" /SC DAILY /ST {forceRestartTime.Value.Hours:D2}:{forceRestartTime.Value.Minutes:D2} /NP");
+                    builder.AppendLine($"schTasks /Create /TN {forceSchedulerKey} /TR \"'{forceServerUpdateCmdPath}'\" /SC DAILY /ST {forceRestartTime.Value.Hours:D2}:{forceRestartTime.Value.Minutes:D2} /NP /RL HIGHEST");
                     builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
                 }
                 builder.AppendLine($"schtasks /Run /TN {schedulerKey}");
@@ -99,7 +99,7 @@ namespace ARK_Server_Manager.Lib
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
             if (enableAutoStart)
             {
-                builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL LIMITED");
+                builder.AppendLine($"schtasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
                 builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
             }
 

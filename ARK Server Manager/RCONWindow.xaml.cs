@@ -208,6 +208,14 @@ namespace ARK_Server_Manager
                 "Right click on players in the list to access player commands",
                 "Type /help to get help");
 
+            if (!(this.Server.Profile.RCONWindowExtents.Width == 0 || this.Server.Profile.RCONWindowExtents.Height == 0))
+            {
+                this.Left = this.Server.Profile.RCONWindowExtents.Left;
+                this.Top = this.Server.Profile.RCONWindowExtents.Top;
+                this.Width = this.Server.Profile.RCONWindowExtents.Width;
+                this.Height = this.Server.Profile.RCONWindowExtents.Height;
+            }
+
             this.ConsoleInput.Focus();
         }
 
@@ -397,6 +405,18 @@ namespace ARK_Server_Manager
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { },
                     canExecute: (player) => false //player != null && !String.IsNullOrWhiteSpace(player.TribeName
+                    );
+
+            }
+        }
+
+        public ICommand CopySteamIDCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => { System.Windows.Clipboard.SetText(player.SteamId.ToString()); MessageBox.Show($"{player.SteamName}'s SteamID copied to the clipboard", "SteamID copied", MessageBoxButton.OK); },
+                    canExecute: (player) => player != null
                     );
 
             }
@@ -593,6 +613,18 @@ namespace ARK_Server_Manager
 
                 textBox.Text = String.Empty;
             }
+        }
+
+        private void RCON_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Rect savedRect = this.Server.Profile.RCONWindowExtents;
+            this.Server.Profile.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+        }
+
+        private void RCON_LocationChanged(object sender, EventArgs e)
+        {
+            Rect savedRect = this.Server.Profile.RCONWindowExtents;
+            this.Server.Profile.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
         }
     }
 }

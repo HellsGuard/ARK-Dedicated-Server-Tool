@@ -307,7 +307,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DifficultyOffsetProperty, value); }
         }
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "MaxStructuresInRange")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NewMaxStructuresInRange")]
         public float MaxStructuresVisible
         {
             get { return (float)GetValue(MaxStructuresVisibleProperty); }
@@ -1046,6 +1046,19 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty ServerForceUpdateTimeProperty = DependencyProperty.Register(nameof(ServerForceUpdateTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
 
         #endregion
+
+        #region RCON Settings
+
+        public Rect RCONWindowExtents
+        {
+            get { return (Rect)GetValue(RCONWindowExtentsProperty); }
+            set { SetValue(RCONWindowExtentsProperty, value); }
+        }
+
+        public static readonly DependencyProperty RCONWindowExtentsProperty = DependencyProperty.Register(nameof(RCONWindowExtents), typeof(Rect), typeof(ServerProfile), new PropertyMetadata(new Rect(0f, 0f, 0f, 0f)));
+
+        #endregion
+
         [XmlIgnore()]
         public bool IsDirty
         {
