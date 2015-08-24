@@ -39,6 +39,8 @@
 
 & whoami
 
+$forceUpdateFile = "$($InstallDirectory)\ForceUpdate.txt"
+
 function Send-RCON($message)
 {
     Write-Host "RCON: $($message)"
@@ -54,6 +56,12 @@ try
 {
     $lockFilePath = "$($ServerCache)\$($CacheUpdateInProgressFileName)"
     while($True) { try { $lockFile = [System.IO.File]::Open($lockFilePath, 'CreateNew', 'Write', 'None');  break; } catch { Write-Host "Waiting for lock file"; Start-Sleep -Seconds 10; } }
+
+    if(Test-Path $forceUpdateFile)
+    {
+        $force = $True
+        Remove-Item $forceUpdateFile -Force
+    }
 
     $localLastUpdatedFile = "$($InstallDirectory)\$($LastUpdatedTimeFileName)"
     if(Test-Path $localLastUpdatedFile)
@@ -73,7 +81,7 @@ try
     Write-Host "Cache Time: $($cacheTime)"
     Write-Host "Local Time: $($localTime)"
 
-    if($cacheTime -gt $localTime)
+    if($force -or ($cacheTime -gt $localTime))
     {
         # Find the process
         $process = Get-WmiObject Win32_Process -Filter "name = 'ShooterGameServer.exe'" | Where {$_.CommandLine -match "$($InstallDirectory -replace "\\", "\\")" }
@@ -100,6 +108,21 @@ try
             Send-RCON "broadcast [SERVER] Rebooting for upgrade..."                
 
             Stop-Process -Id $process.ProcessId -Force                
+        }
+
+        $worldSource = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot).ark"
+        if(Test-Path $worldSource)
+        {
+            Write-Host "Creating World Backup"
+            try
+            {                
+                $backupFile = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot)_$(Get-Date -format dd.MM.yyyy_HH.mm.ss)_ASMBackup.ark"
+                Copy-Item -LiteralPath $worldSource -Destination $backupFile
+            }
+            catch
+            {
+                Write-Host "Unable to create backup."
+            }
         }
 
         Write-Host "Updating..."
