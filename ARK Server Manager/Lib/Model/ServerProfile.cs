@@ -199,6 +199,16 @@ namespace ARK_Server_Manager.Lib
         }
 
 
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEDisableFriendlyFire")]
+        public bool DisableFriendlyFirePvE
+        {
+            get { return (bool)GetValue(DisableFriendlyFirePvEProperty); }
+            set { SetValue(DisableFriendlyFirePvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableFriendlyFirePvEProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AllowCaveBuildingPvE
         {
@@ -1437,7 +1447,8 @@ namespace ARK_Server_Manager.Lib
                     builder.Append(b.ToString("x2"));
                 }
 
-                return builder.ToString().Substring(0, 16);
+                var hashStr = builder.ToString();
+                return hashStr.Substring(0, Math.Min(hashStr.Length, 16));
             }
         }
 

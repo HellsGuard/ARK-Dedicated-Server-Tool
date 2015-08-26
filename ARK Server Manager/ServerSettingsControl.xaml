@@ -937,7 +937,7 @@
                                 <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left"/>
                                 <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
                                 <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left"/>
-
+                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" />
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" />
                                 <GroupBox  HorizontalAlignment="Stretch">
