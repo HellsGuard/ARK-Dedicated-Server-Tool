@@ -53,6 +53,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     CanSpawn = true,
                     ReplacementClass = entry,
                     CanTame = true,
+                    CanSetSpawnMultipliers = !String.IsNullOrEmpty(GameData.NameTagForClass(entry)),
                     SpawnWeightMultiplier = 1.0f,
                     OverrideSpawnLimitPercentage = false,
                     SpawnLimitPercentage = 1.0f,
@@ -150,14 +151,17 @@ namespace ARK_Server_Manager.Lib.ViewModel
                        
             foreach(var entry in this)
             {
-                this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                if (!String.IsNullOrWhiteSpace(entry.NameTag))
                 {
-                    ClassName = entry.ClassName,
-                    DinoNameTag = entry.NameTag,
-                    OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
-                    SpawnLimitPercentage = entry.SpawnLimitPercentage,
-                    SpawnWeightMultiplier = entry.SpawnWeightMultiplier
-                });
+                    this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                    {
+                        ClassName = entry.ClassName,
+                        DinoNameTag = entry.NameTag,
+                        OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
+                        SpawnLimitPercentage = entry.SpawnLimitPercentage,
+                        SpawnWeightMultiplier = entry.SpawnWeightMultiplier
+                    });
+                }
 
                 if(!entry.CanTame)
                 {

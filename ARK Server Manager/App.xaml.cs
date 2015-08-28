@@ -42,19 +42,41 @@ namespace ARK_Server_Manager
         {
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
-
-            //
-            // Migrate settings when we update.
-            //
-            if(Config.Default.UpgradeConfig)
-            {
-                Config.Default.Upgrade();
-                Config.Default.UpgradeConfig = false;
-                Config.Default.Save();
-            }
+            MigrateSettings();
 
             ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
+        }
+
+        private static void MigrateSettings()
+        {
+            //
+            // Migrate settings when we update.
+            //
+            if (Config.Default.UpgradeConfig)
+            {
+                Config.Default.Upgrade();
+                Config.Default.Reload();
+                Config.Default.UpgradeConfig = false;
+
+#if false
+                object previousEnableSettingsCache = null;
+                try { previousEnableSettingsCache = Config.Default.GetPreviousVersion(nameof(Config.Default.GLOBAL_EnableServerCache)); }
+                catch (SettingsPropertyNotFoundException) { /* this would get thrown if we were renaming a property, see http://www.codeproject.com/Articles/247333/Renaming-User-Settings-properties-between-software */ }
+
+                if (previousEnableSettingsCache == null)
+                {
+                    int serverupdatePeriod = 0;
+                    Int32.TryParse(Config.Default.GetPreviousVersion(nameof(Config.Default.ServerCacheUpdatePeriod)).ToString(), out serverupdatePeriod);
+                    if (!String.IsNullOrWhiteSpace(Config.Default.GetPreviousVersion(nameof(Config.Default.ServerCacheDir)).ToString()) &&
+                       serverupdatePeriod > 0)
+                    {
+                        Config.Default.GLOBAL_EnableServerCache = true;
+                    }
+                }
+#endif
+                Config.Default.Save();
+            }
         }
 
         public static void ReconfigureLogging()

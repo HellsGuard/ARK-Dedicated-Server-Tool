@@ -59,8 +59,7 @@ namespace ARK_Server_Manager
             set { SetValue(NewASMAvailableProperty, value); }
         }
 
-        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
+        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));   
 
         ActionQueue versionChecker;
 
@@ -105,6 +104,7 @@ namespace ARK_Server_Manager
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
+            RCONWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
         }
 
@@ -133,11 +133,13 @@ namespace ARK_Server_Manager
         public void Settings_Click(object sender, RoutedEventArgs args)
         {
             var settingsWindow = new SettingsWindow();
+            settingsWindow.Owner = this;
             settingsWindow.ShowDialog();
         }
 
         public void Help_Click(object sender, RoutedEventArgs args)
         {
+            Process.Start(Config.Default.HelpUrl);
         }
 
         public void Servers_Remove(object sender, TabItemCloseEventArgs args)
@@ -172,14 +174,7 @@ namespace ARK_Server_Manager
             }
         }
 
-        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool DeleteFile(string name);
-
-        private bool Unblock(string fileName)
-        {
-            return DeleteFile(fileName + ":Zone.Identifier");
-        }
+      
 
         private void Upgrade_Click(object sender, RoutedEventArgs e)
         {
@@ -188,34 +183,7 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
-                    var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
-                    var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
-                    var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    var backupPath = currentInstallPath + "_bak";
-                    
-                    // Grab the latest bits
-                    using (var client = new WebClient())
-                    {
-                        client.DownloadFile(Config.Default.ASMDownloadUrl, applicationZip);
-                        Unblock(applicationZip);
-                    }
-
-                    // Extract them
-                    try { Directory.Delete(extractPath, true); } catch { }
-                    ZipFile.ExtractToDirectory(applicationZip, extractPath);
-
-                    // Replace the current installation
-                    File.WriteAllText(updateFilePath, $"timeout 2 \r\nrmdir /s /q \"{backupPath}\" \r\n rename \"{currentInstallPath}\" \"{Path.GetFileName(backupPath)}\"  \r\nxcopy /e /y \"{extractPath}\" \"{currentInstallPath}\\\" \r\nrmdir /s /q \"{backupPath}\"\r\nstart \"\" \"{Assembly.GetExecutingAssembly().Location}\" \r\nexit");
-                    var startInfo = new ProcessStartInfo()
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = $"/K \"{updateFilePath}\"",
-                        WorkingDirectory = Path.GetTempPath()
-                    };
-
-                    Process.Start(startInfo);
-                    Application.Current.Shutdown(0);
+                    Updater.UpdateASM();
                 }
                 catch(Exception ex)
                 {

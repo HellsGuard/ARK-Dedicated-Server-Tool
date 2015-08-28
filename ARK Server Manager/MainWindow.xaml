@@ -22,8 +22,63 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="#FF4F4F4F">
-            <TextBox DockPanel.Dock="Left" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="8,4,10,7" Text="{DynamicResource MainWindow_Title}" BorderThickness="0"/>
+        <DockPanel Grid.Row="0" Background="#FF4F4F4F" LastChildFill="False">
+            <Grid DockPanel.Dock="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Text="ARK Server Manager" BorderThickness="0"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="Upgrade to {0} now!" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding NewASMAvailable}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding NewASMAvailable}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid VerticalAlignment="Top" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Margin="0" Background="#FF4F4F4F" Foreground="White" FontSize="10" Content="My Public IP:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <TextBox FontSize="12"  Height="22" Width="250" VerticalAlignment="Bottom" Margin="0" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <StackPanel>
+                                    <!-- Placeholder for the TextBox itself -->
+                                    <AdornedElementPlaceholder x:Name="textBox"/>
+                                    <TextBlock Text="Invalid IP address or hostname" Background="Red" Foreground="White"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+                        <TextBox.Text>
+                            <Binding Path="CurrentConfig.MachinePublicIP" ElementName="Main">
+                                <Binding.ValidationRules>
+                                    <vm:IpValidationRule ValidatesOnTargetUpdated="true" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Button Grid.Row="1" Width="22" Height="22" VerticalAlignment="Center" Margin="5,0,0,0" Click="RefreshPublicIP_Click"
+                        ToolTip="Attempt to determine your current public IP">
+                        <Image Source="Art/Refresh.png"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="Like what you see and want to show your appreciation?  Donate here!">
                     <Image Source="Art/Donate.png" />
@@ -35,48 +90,7 @@
                     <Image Source="Art/Help.png" Width="16"/>
                 </Button>
             </StackPanel>
-            <Button  DockPanel.Dock="Right" Background="#00AA00" Foreground="White" Margin="5" Padding="5" Content="Upgrade" Click="Upgrade_Click" VerticalAlignment="Center" >
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding NewASMAvailable}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding NewASMAvailable}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Label  DockPanel.Dock="Right" Margin="5,4,5,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-
-            <Label  DockPanel.Dock="Right" Margin="10,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
-                <TextBox FontSize="12" Height="25"  Width="250" VerticalAlignment="Bottom" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <StackPanel>
-                                <!-- Placeholder for the TextBox itself -->
-                                <AdornedElementPlaceholder x:Name="textBox"/>
-                                <TextBlock Text="Invalid IP address or hostname" Background="Red" Foreground="White"/>
-                            </StackPanel>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
-                    <TextBox.Text>                    
-                        <Binding Path="CurrentConfig.MachinePublicIP" ElementName="Main">
-                            <Binding.ValidationRules>
-                                <vm:IpValidationRule ValidatesOnTargetUpdated="true" />
-                            </Binding.ValidationRules>
-                       </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <Button Width="22" Height="22" VerticalAlignment="Center" Margin="2,0,0,8" Click="RefreshPublicIP_Click"
-                        ToolTip="Attempt to determine your current public IP">
-                    <Image Source="Art/Refresh.png"/>
-                </Button>
-            </StackPanel>
-            <Label DockPanel.Dock="Right" Margin="2,4,0,2" Background="#FF4F4F4F" Foreground="White" FontSize="20" Content="My Public IP:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+ 
 
         </DockPanel>
         <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" 

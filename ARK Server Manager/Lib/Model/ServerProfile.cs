@@ -199,6 +199,16 @@ namespace ARK_Server_Manager.Lib
         }
 
 
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEDisableFriendlyFire")]
+        public bool DisableFriendlyFirePvE
+        {
+            get { return (bool)GetValue(DisableFriendlyFirePvEProperty); }
+            set { SetValue(DisableFriendlyFirePvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableFriendlyFirePvEProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AllowCaveBuildingPvE
         {
@@ -307,7 +317,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DifficultyOffsetProperty, value); }
         }
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "MaxStructuresInRange")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NewMaxStructuresInRange")]
         public float MaxStructuresVisible
         {
             get { return (float)GetValue(MaxStructuresVisibleProperty); }
@@ -1029,7 +1039,36 @@ namespace ARK_Server_Manager.Lib
 
 
 
+        public bool ServerForceUpdate
+        {
+            get { return (bool)GetValue(ServerForceUpdateProperty); }
+            set { SetValue(ServerForceUpdateProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerForceUpdateProperty = DependencyProperty.Register(nameof(ServerForceUpdate), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public string ServerForceUpdateTime
+        {
+            get { return (string)GetValue(ServerForceUpdateTimeProperty); }
+            set { SetValue(ServerForceUpdateTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerForceUpdateTimeProperty = DependencyProperty.Register(nameof(ServerForceUpdateTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+
         #endregion
+
+        #region RCON Settings
+
+        public Rect RCONWindowExtents
+        {
+            get { return (Rect)GetValue(RCONWindowExtentsProperty); }
+            set { SetValue(RCONWindowExtentsProperty, value); }
+        }
+
+        public static readonly DependencyProperty RCONWindowExtentsProperty = DependencyProperty.Register(nameof(RCONWindowExtents), typeof(Rect), typeof(ServerProfile), new PropertyMetadata(new Rect(0f, 0f, 0f, 0f)));
+
+        #endregion
+
         [XmlIgnore()]
         public bool IsDirty
         {
@@ -1042,8 +1081,8 @@ namespace ARK_Server_Manager.Lib
 
         private ServerProfile()
         {
-            ServerPassword = PasswordUtils.GeneratePassword(16);
-            AdminPassword = PasswordUtils.GeneratePassword(16);
+            ServerPassword = SecurityUtils.GeneratePassword(16);
+            AdminPassword = SecurityUtils.GeneratePassword(16);
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
@@ -1110,20 +1149,19 @@ namespace ARK_Server_Manager.Lib
                 
                 using (var reader = File.OpenRead(path))
                 {
-                    var streamReader = new StreamReader(reader, System.Text.Encoding.UTF8);
-                    settings = (ServerProfile)serializer.Deserialize(streamReader);
+                    settings = (ServerProfile)serializer.Deserialize(reader);
                     settings.IsDirty = false;
                 }
 
                 var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
                 var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
-                if (File.Exists(profileIniPath))
+                if (File.Exists(configIniPath))                    
                 {
-                    settings = LoadFromINIFiles(profileIniPath, settings);
-                }
-                else if(File.Exists(configIniPath))
-                {                    
                     settings = LoadFromINIFiles(configIniPath, settings);
+                }
+                else if (File.Exists(profileIniPath))
+                {                    
+                    settings = LoadFromINIFiles(profileIniPath, settings);
                 }
             }
             else
@@ -1167,6 +1205,7 @@ namespace ARK_Server_Manager.Lib
             var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
             if (levelRampOverrides.Length > 0)
             {
+                settings.EnableLevelProgressions = true;
                 settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
 
                 if(levelRampOverrides.Length > 1)
@@ -1188,11 +1227,8 @@ namespace ARK_Server_Manager.Lib
             XmlSerializer serializer = new XmlSerializer(this.GetType());
             using (var stream = File.Open(GetProfilePath(), FileMode.Create))
             {
-                using (var writer = new StreamWriter(stream, System.Text.Encoding.UTF8))
-                {
-                    serializer.Serialize(writer, this);
-                }
-            }                
+                serializer.Serialize(stream, this);
+            }                        
 
             //
             // Write the INI files
@@ -1319,6 +1355,11 @@ namespace ARK_Server_Manager.Lib
 #endif
             }
 
+            // This flag is broken in the INI        
+            if(this.EnableFlyerCarry)
+            {
+                serverArgs.Append("?AllowFlyerCarryPVE=True");
+            }
             // These are used to match the server to the profile.
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
             if (!String.IsNullOrEmpty(this.ServerIP))
@@ -1374,16 +1415,19 @@ namespace ARK_Server_Manager.Lib
             {
                 return false;
             }
-            
-            if(!ServerScheduler.ScheduleUpdates(
-                schedulerKey,
-                this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
-                Config.Default.ServerCacheDir,
-                this.InstallDirectory,
-                this.ServerIP,
-                this.RCONPort,
-                this.AdminPassword,
-                this.ServerUpdateGraceMinutes
+
+            TimeSpan serverForceUpdateTime;
+            if (!ServerScheduler.ScheduleUpdates(
+                    schedulerKey,
+                    this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
+                    Config.Default.ServerCacheDir,
+                    this.InstallDirectory,
+                    this.ServerIP,
+                    this.RCONPort,
+                    this.AdminPassword,
+                    this.ServerUpdateGraceMinutes,
+                    this.ServerForceUpdate ? (TimeSpan.TryParseExact(this.ServerForceUpdateTime, "g", null, out serverForceUpdateTime) ? serverForceUpdateTime : (TimeSpan?)null)
+                                           : null
                 ))
             {
                 return false;
@@ -1403,7 +1447,8 @@ namespace ARK_Server_Manager.Lib
                     builder.Append(b.ToString("x2"));
                 }
 
-                return builder.ToString().Substring(0, 16);
+                var hashStr = builder.ToString();
+                return hashStr.Substring(0, Math.Min(hashStr.Length, 16));
             }
         }
 

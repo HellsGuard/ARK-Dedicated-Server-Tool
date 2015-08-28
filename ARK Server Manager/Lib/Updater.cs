@@ -11,13 +11,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.CodeDom;
 using Microsoft.CSharp;
+using System.Windows;
+using System.Runtime.InteropServices;
 
 namespace ARK_Server_Manager.Lib
 {
     /// <summary>
     /// Checks for an updates this program
     /// </summary>
-    class AutoUpdater
+    class Updater
     {
 
         enum Status
@@ -116,12 +118,55 @@ namespace ARK_Server_Manager.Lib
             return;
         }
 
-        public static bool IsServerCacheAutoUpdateEnabled => Config.Default.ServerCacheUpdatePeriod != 0 && Directory.Exists(Config.Default.ServerCacheDir);
+        public static bool IsServerCacheAutoUpdateEnabled => Config.Default.GLOBAL_EnableServerCache && Config.Default.ServerCacheUpdatePeriod != 0 && Directory.Exists(Config.Default.ServerCacheDir);
 
         public static string GetSteamCMDPath()
         {
             var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
             return steamCmdPath;
+        }
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeleteFile(string name);
+
+        private static bool Unblock(string fileName)
+        {
+            return DeleteFile(fileName + ":Zone.Identifier");
+        }
+
+        public static void UpdateASM()
+        {
+            var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
+            var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
+            var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
+            var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var backupPath = currentInstallPath + "_bak";
+
+            // Grab the latest bits
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(Config.Default.ASMDownloadUrl, applicationZip);
+                Unblock(applicationZip);
+            }
+
+            // Extract them
+            try { Directory.Delete(extractPath, true); } catch { }
+            ZipFile.ExtractToDirectory(applicationZip, extractPath);
+
+            // Replace the current installation
+            var script = new StringBuilder();
+            
+            script.AppendLine("timeout 2");
+            script.AppendLine($"rmdir /s /q {backupPath.AsQuoted()}");
+            script.AppendLine($"rename {currentInstallPath.AsQuoted()} {Path.GetFileName(backupPath).AsQuoted()}");
+            script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
+            script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()}");
+            script.AppendLine("exit");
+
+            ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
+
+            Application.Current.Shutdown(0);
         }
 
         public struct Update

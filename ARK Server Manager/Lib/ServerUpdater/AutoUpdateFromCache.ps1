@@ -22,18 +22,24 @@
     [string]$mcrconPath = "mcrcon.exe",
 
     [Parameter(Mandatory = $False)]
+    [bool]$force = $False,
+
+    [Parameter(Mandatory = $False)]
+    [string]$WorldFileRoot = "TheIsland",
+
+    [Parameter(Mandatory = $False)]
     [string]$LastUpdatedTimeFileName = "LastUpdated.txt",
 
     [Parameter(Mandatory = $False)]
     [string]$LastCheckedTimeFileName = "LastChecked.txt",
 
     [Parameter(Mandatory = $False)]
-    [string]$CacheUpdateInProgressFileName = "CacheUpdateInProgress.txt"
+    [string]$CacheUpdateInProgressFileName = "UpdateInProgress.txt"
 )
 
 & whoami
 
-$updateInProgressFile = "$($InstallDirectory)\UpdateInProgress.txt"
+$forceUpdateFile = "$($InstallDirectory)\ForceUpdate.txt"
 
 function Send-RCON($message)
 {
@@ -45,89 +51,96 @@ function Write-Server($minutes)
 {    
     Send-RCON "broadcast [SERVER] Update available.  Rebooting in $($minutes) minutes..."
 }
-
      
-if(Test-Path $updateInProgressFile)
+try
 {
-    Write-Host "Update already in progress.  If this is in error, delete $($updateInProgressFile) and re-run."
-}
-else
-{
-    try
+    $lockFilePath = "$($ServerCache)\$($CacheUpdateInProgressFileName)"
+    while($True) { try { $lockFile = [System.IO.File]::Open($lockFilePath, 'CreateNew', 'Write', 'None');  break; } catch { Write-Host "Waiting for lock file"; Start-Sleep -Seconds 10; } }
+
+    if(Test-Path $forceUpdateFile)
     {
-        Get-Date | Out-File $updateInProgressFile
+        $force = $True
+        Remove-Item $forceUpdateFile -Force
+    }
 
-        #
-        # Wait for the cache to be available.  NOTE: This doesn't prevent a download from starting while we are copying...
-        #
-        while(Test-Path "$($ServerCache)\$($CacheUpdateInProgressFileName)")
+    $localLastUpdatedFile = "$($InstallDirectory)\$($LastUpdatedTimeFileName)"
+    if(Test-Path $localLastUpdatedFile)
+    {
+        [string]$timeString = Get-Content $localLastUpdatedFile
+        $localTime = [System.DateTime]::Parse($timeString, [System.Globalization.CultureInfo]::CurrentCulture, [System.Globalization.DateTimeStyles]::RoundtripKind);
+    }
+    else
+    {
+        $localTime = [System.DateTime]::MinValue
+    }
+
+    $cacheLastUpdatedFile = "$($ServerCache)\$($LastUpdatedTimeFileName)"
+    [string]$timeString = Get-Content $cacheLastUpdatedFile
+    $cacheTime = [System.DateTime]::Parse($timeString, [System.Globalization.CultureInfo]::CurrentCulture, [System.Globalization.DateTimeStyles]::RoundtripKind);
+
+    Write-Host "Cache Time: $($cacheTime)"
+    Write-Host "Local Time: $($localTime)"
+
+    if($force -or ($cacheTime -gt $localTime))
+    {
+        # Find the process
+        $process = Get-WmiObject Win32_Process -Filter "name = 'ShooterGameServer.exe'" | Where {$_.CommandLine -match "$($InstallDirectory -replace "\\", "\\")" }
+        if($process -ne $null)
         {
-            Write-Host "Waiting for cache..."
-            Start-Sleep -Seconds 5
-        }
-
-        $localLastUpdatedFile = "$($InstallDirectory)\$($LastUpdatedTimeFileName)"
-        if(Test-Path $localLastUpdatedFile)
-        {
-            [string]$timeString = Get-Content $localLastUpdatedFile
-            $localTime = [System.DateTime]::Parse($timeString, [System.Globalization.CultureInfo]::CurrentCulture, [System.Globalization.DateTimeStyles]::RoundtripKind);
-        }
-        else
-        {
-            $localTime = [System.DateTime]::MinValue
-        }
-
-        $cacheLastUpdatedFile = "$($ServerCache)\$($LastUpdatedTimeFileName)"
-        [string]$timeString = Get-Content $cacheLastUpdatedFile
-        $cacheTime = [System.DateTime]::Parse($timeString, [System.Globalization.CultureInfo]::CurrentCulture, [System.Globalization.DateTimeStyles]::RoundtripKind);
-
-        Write-Host "Cache Time: $($cacheTime)"
-        Write-Host "Local Time: $($localTime)"
-
-        if($cacheTime -gt $localTime)
-        {
-            # Find the process
-            $process = Get-WmiObject Win32_Process -Filter "name = 'ShooterGameServer.exe'" | Where {$_.CommandLine -match "$($InstallDirectory -replace "\\", "\\")" }
-            if($process -ne $null)
+            $minutesLeft = $graceMinutes
+            while($minutesLeft -gt 0)
             {
-                $minutesLeft = $graceMinutes
-                while($minutesLeft -gt 0)
+                Write-Server($minutesLeft);
+                if($minutesLeft > 10)
                 {
-                    Write-Server($minutesLeft);
-                    if($minutesLeft > 10)
-                    {
-                        Start-Sleep -Seconds 300
-                        $minutesLeft = $minutesLeft - 5
-                    }
-                    else
-                    {
-                        Start-Sleep -Seconds 60
-                        $minutesLeft = $minutesLeft - 1
-                    }
+                    Start-Sleep -Seconds 300
+                    $minutesLeft = $minutesLeft - 5
                 }
-
-                Send-RCON "saveworld"
-                Start-Sleep -Seconds 15
-                Send-RCON "broadcast [SERVER] Rebooting for upgrade..."                
-
-                Stop-Process -Id $process.ProcessId -Force                
+                else
+                {
+                    Start-Sleep -Seconds 60
+                    $minutesLeft = $minutesLeft - 1
+                }
             }
 
-            Write-Host "Updating..."
-            New-Item "$($ServerCache)\ShooterGame\Saved" -ItemType Directory -Force
-            New-Item "$($ServerCache)\ShooterGame\Content\Mods" -ItemType Directory -Force
-            & robocopy "$($ServerCache)" "$($InstallDirectory)" /E /XD ShooterGame\Saved ShooterGame\Content\Mods steamapps /XF UpdateCache.CMD
-            Write-Host "Update complete.  Restarting..."
-            
-            runas /trustlevel:0x20000 "$InstallDirectory\ShooterGame\Saved\Config\WindowsServer\RunServer.cmd"
+            Send-RCON "saveworld"
+            Start-Sleep -Seconds 15
+            Send-RCON "broadcast [SERVER] Rebooting for upgrade..."                
+
+            Stop-Process -Id $process.ProcessId -Force                
         }
-        else
+
+        $worldSource = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot).ark"
+        if(Test-Path $worldSource)
         {
-            Write-Host "No update needed."
+            Write-Host "Creating World Backup"
+            try
+            {                
+                $backupFile = "$($InstallDirectory)\ShooterGame\Saved\SavedArks\$($WorldFileRoot)_$(Get-Date -format dd.MM.yyyy_HH.mm.ss)_ASMBackup.ark"
+                Copy-Item -LiteralPath $worldSource -Destination $backupFile
+            }
+            catch
+            {
+                Write-Host "Unable to create backup."
+            }
         }
+
+        Write-Host "Updating..."
+        New-Item "$($ServerCache)\ShooterGame\Saved" -ItemType Directory -Force
+        New-Item "$($ServerCache)\ShooterGame\Content\Mods" -ItemType Directory -Force
+        
+        & robocopy `"$ServerCache`" `"$InstallDirectory`" /E /XD ShooterGame\Saved ShooterGame\Content\Mods steamapps /XF UpdateCache.CMD $CacheUpdateInProgressFileName
+        Write-Host "Update complete.  Restarting..."
+            
+        runas /trustlevel:0x20000 "$InstallDirectory\ShooterGame\Saved\Config\WindowsServer\RunServer.cmd"
     }
-    finally
+    else
     {
-        Remove-Item $updateInProgressFile -Force
+        Write-Host "No update needed."
     }
+}
+finally
+{
+    $lockFile.Close()
+    Remove-Item $lockFilePath -Force
 }

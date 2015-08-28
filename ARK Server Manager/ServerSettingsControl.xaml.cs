@@ -114,10 +114,7 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             this.ServerManager = ServerManager.Instance;
-
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            this.IsAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            this.IsAdministrator = SecurityUtils.IsAdministrator();
         }
 
         private void ReinitializeNetworkAdapters()
@@ -254,14 +251,14 @@ namespace ARK_Server_Manager
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (Settings.EnableAutoUpdate && !AutoUpdater.IsServerCacheAutoUpdateEnabled)
+            if (Settings.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
             {
                 var result = MessageBox.Show("Auto-updates is enabled but the Server Cache update is not yet configured.  The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers.  You must first configure the cache, then you may enable automatic updating.  Would you like to configure the cache now?", "Server cache not configured", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if(result == MessageBoxResult.Yes)
                 {
                     var settingsWindow = new SettingsWindow();
                     settingsWindow.ShowDialog();
-                    if(!AutoUpdater.IsServerCacheAutoUpdateEnabled)
+                    if(!Updater.IsServerCacheAutoUpdateEnabled)
                     {
                         MessageBox.Show("The server cache was not configured.  Disabling auto-updates.", "Server cache not configured", MessageBoxButton.OK, MessageBoxImage.Warning);
                         Settings.EnableAutoUpdate = false;
@@ -405,13 +402,14 @@ namespace ARK_Server_Manager
 
         private void OpenRCON_Click(object sender, RoutedEventArgs e)
         {
-            if(this.rconWindow == null || !this.rconWindow.IsLoaded)
+            var window = RCONWindow.GetRCONForServer(this.Server);
+            window.Show();
+            if(window.WindowState == WindowState.Minimized)
             {
-                this.rconWindow = new RCONWindow(this.Server);                
+                window.WindowState = WindowState.Normal;
             }
 
-            this.rconWindow.Show();
-            this.rconWindow.Focus();
+            window.Focus();
         }
 
         private void Engrams_Reset(object sender, RoutedEventArgs e)
@@ -439,6 +437,11 @@ namespace ARK_Server_Manager
         private void NeedAdmin_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services.  To do this, the Server Manager must run with administrator privileges.  Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.", "Needs Administrator Access", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoSettings.Reset();
         }
     }
 }

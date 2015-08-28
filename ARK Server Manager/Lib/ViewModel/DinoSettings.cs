@@ -49,6 +49,15 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(CanSpawnProperty, value); }
         }
 
+        public bool CanSetSpawnMultipliers
+        {
+            get { return (bool)GetValue(CanSetSpawnMultipliersProperty); }
+            set { SetValue(CanSetSpawnMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty CanSetSpawnMultipliersProperty = DependencyProperty.Register(nameof(CanSetSpawnMultipliers), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
+
+
         public string ReplacementClass
         {
             get { return (string)GetValue(ReplacementClassProperty); }

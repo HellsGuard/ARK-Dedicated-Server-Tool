@@ -7,7 +7,9 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Name="RCON"
-        Title="{Binding Server.Profile.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip" Icon="Art/favicon.ico">
+        Title="{Binding Server.Profile.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip"
+        SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"
+        Icon="Art/favicon.ico">
     <Window.Resources>
         <vm:NullValueConverter x:Key="NullValueConverter"/>
         <vm:IsNullValueConverter x:Key="IsNullValueConverter"/>
@@ -70,7 +72,9 @@
                     </Menu>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Label Content="Status:"/>
+                    <Label Content="Admin Name:"/>
+                    <TextBox Text="{Binding CurrentConfig.RCON_AdminName}" Width="100" ToolTip="This is the name used to prefix serverchat messages sent from the console."/>
+                    <Label Content="Status:" Margin="10,0,0,0"/>
                     <Label Content="{Binding ServerRCON.Status}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
@@ -114,6 +118,7 @@
                                 <Separator/>
                                 <MenuItem Header="View Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
                                 <MenuItem Header="View Tribe..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
+                                <MenuItem Header="Copy SteamID..." Command="{Binding Source={StaticResource proxy}, Path=Data.CopySteamIDCommand}" CommandParameter="{Binding}"/>                                
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

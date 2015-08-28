@@ -13,19 +13,17 @@
     [string]$LastCheckedTimeFileName = "LastChecked.txt",
 
     [Parameter(Mandatory = $False)]
-    [string]$CacheUpdateInProgressFileName = "CacheUpdateInProgress.txt"
+    [string]$CacheUpdateInProgressFileName = "UpdateInProgress.txt"
 )
 
 try
 {
-    Get-Date | Out-File "$($ServerCache)\$($CacheUpdateInProgressFileName)"
+    $lockFilePath = "$($ServerCache)\$($CacheUpdateInProgressFileName)"
+    while($True) { try { $lockFile = [System.IO.File]::Open($lockFilePath, 'CreateNew', 'Write', 'None');  break; } catch { Write-Host "Waiting for lock file"; Start-Sleep -Seconds 10; } }
+
     New-Item $ServerCache -ItemType Directory -Force
 
-    $commandLine = """$($SteamCmd)"" +login anonymous +force_install_dir ""$($ServerCache)""  ""+app_update 376030"" +quit"
-
-    Write-Host "Executing $commandLine"
-
-    $steamCmdOutput = & "$($SteamCmd)" +login anonymous +force_install_dir "$($ServerCache)"  "+app_update 376030" +quit
+    $steamCmdOutput = & $SteamCmd +login anonymous +force_install_dir `"$ServerCache`" `"+app_update 376030`" +quit
     $downloadMatch = $steamCmdOutput | Select-String "downloading,"
     $successMatch = $steamCmdOutput | Select-String "Success!"
 
@@ -67,6 +65,7 @@ try
 }
 finally
 {
-    Remove-Item "$($ServerCache)\$($CacheUpdateInProgressFileName)" -Force
+    $lockFile.Close()
+    Remove-Item $lockFilePath -Force
 }
 

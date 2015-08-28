@@ -21,7 +21,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class AutoUpdate : Window
     {
-        AutoUpdater updater = new AutoUpdater();
+        Updater updater = new Updater();
         CancellationTokenSource cancelSource;
         public AutoUpdate()
         {
@@ -31,7 +31,7 @@ namespace ARK_Server_Manager
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cancelSource = new CancellationTokenSource();
-            updater.UpdateAsync(new Progress<AutoUpdater.Update>(async u =>
+            updater.UpdateAsync(new Progress<Updater.Update>(async u =>
                 {
                     this.StatusLabel.Content = this.FindResource(u.StatusKey);
                     this.CompletionProgress.Value = u.CompletionPercent;

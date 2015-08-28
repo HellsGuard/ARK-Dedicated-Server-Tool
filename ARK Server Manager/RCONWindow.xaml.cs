@@ -18,9 +18,9 @@ namespace ARK_Server_Manager
 {
     public enum PlayerSortType
     {
-        Online,
-        Name,
-        Tribe
+        Online = 0,
+        Name = 1,
+        Tribe = 2
     }
 
     [Flags]
@@ -151,6 +151,13 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(RCONWindow), new PropertyMetadata(null));
 
+        public Config CurrentConfig
+        {
+            get { return (Config)GetValue(CurrentConfigProperty); }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(RCONWindow), new PropertyMetadata(Config.Default));
 
         public ServerRCON ServerRCON
         {
@@ -158,9 +165,7 @@ namespace ARK_Server_Manager
             set { SetValue(ServerRCONProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));
-
-
+        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));    
 
         public InputMode CurrentInputMode
         {
@@ -174,8 +179,10 @@ namespace ARK_Server_Manager
         {
             InitializeComponent();
             this.Server = server;
+            this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
+            this.PlayerSorting = (PlayerSortType)Config.Default.RCON_PlayerListSort;
             this.ServerRCON = new ServerRCON(server);
-            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);
+            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);            
             this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
             this.PlayersView.Filter = p =>
             {
@@ -201,7 +208,40 @@ namespace ARK_Server_Manager
                 "Right click on players in the list to access player commands",
                 "Type /help to get help");
 
+            if (!(this.Server.Profile.RCONWindowExtents.Width == 0 || this.Server.Profile.RCONWindowExtents.Height == 0))
+            {
+                this.Left = this.Server.Profile.RCONWindowExtents.Left;
+                this.Top = this.Server.Profile.RCONWindowExtents.Top;
+                this.Width = this.Server.Profile.RCONWindowExtents.Width;
+                this.Height = this.Server.Profile.RCONWindowExtents.Height;
+            }
+
             this.ConsoleInput.Focus();
+        }
+
+        private static Dictionary<Server, RCONWindow> RCONWindows = new Dictionary<Server, RCONWindow>();
+
+        public static RCONWindow GetRCONForServer(Server server)
+        {
+            RCONWindow window;
+            if(!RCONWindows.TryGetValue(server, out window) || !window.IsLoaded)
+            {
+                window = new RCONWindow(server);
+                RCONWindows[server] = window;
+            }
+
+            return window;
+        }
+
+        public static void CloseAllWindows()
+        {
+            foreach(var window in RCONWindows.Values)
+            {
+                if(window.IsLoaded)
+                {
+                    window.Close();
+                }
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -266,6 +306,7 @@ namespace ARK_Server_Manager
                     execute: (sort) => 
                     {
                         this.PlayersView.SortDescriptions.Clear();
+                        Config.Default.RCON_PlayerListSort = (int)this.PlayerSorting;
                         switch(sort)
                         {
                             case PlayerSortType.Name:
@@ -294,6 +335,7 @@ namespace ARK_Server_Manager
                     execute: (filter) => 
                     {
                         this.PlayerFiltering ^= filter;
+                        Config.Default.RCON_PlayerListFilter = (int)this.PlayerFiltering;
                         this.PlayersView.Refresh();
                     },
                     canExecute: (filter) => true
@@ -328,7 +370,7 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { var command = player.IsBanned ? "Unban" : "Ban" ;  this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
+                    execute: (player) => { var command = player.IsBanned ? "unbanplayer" : "banplayer" ;  this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
                     canExecute: (player) => true
                     );
             }
@@ -339,7 +381,7 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.ArkData.CharacterName}"); },
+                    execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
                     canExecute: (player) => true
                 );
             }
@@ -363,6 +405,18 @@ namespace ARK_Server_Manager
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { },
                     canExecute: (player) => false //player != null && !String.IsNullOrWhiteSpace(player.TribeName
+                    );
+
+            }
+        }
+
+        public ICommand CopySteamIDCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => { System.Windows.Clipboard.SetText(player.SteamId.ToString()); MessageBox.Show($"{player.SteamName}'s SteamID copied to the clipboard", "SteamID copied", MessageBoxButton.OK); },
+                    canExecute: (player) => player != null
                     );
 
             }
@@ -499,7 +553,7 @@ namespace ARK_Server_Manager
                     AddCommentsBlock(
                         "Known commands:",
                         "   AllowPlayerToJoinNoCheck <player> - Adds the specified player to the whitelist",
-                        "   Ban <player> - Adds the specified player to the banned list",
+                        "   banplayer <steam id> - Adds the specified player to the banned list",
                         "   Broadcast <message> - Sends a message to everyone",
                         "   DestroyAll <class name> - Destroys ALL creatures of the specified class",
                         "   destroyallenemies - Destroys ALL dinosaurs on the map",
@@ -514,7 +568,7 @@ namespace ARK_Server_Manager
                         "   SetMessageOfTheDay <message> - Sets the message of the day",
                         "   settimeofday <hour>:<minute>[:<second>] - Sets the time using 24-hour format",
                         "   slomo <factor> - Sets the passage of time.  Lower values slow time",
-                        "   Unban <player> - Remove the specified player from the banned list",
+                        "   unbanplayer <steam id> - Remove the specified player from the banned list",
                         "where:",
                         "   <player> specifies the character name of the player",
                         "   <steam id> is the long numerical id of the player"
@@ -535,7 +589,14 @@ namespace ARK_Server_Manager
                             break;
 
                         case InputMode.Global:
-                            this.ServerRCON.IssueCommand($"serverchat {commandText}");
+                            if (!String.IsNullOrWhiteSpace(Config.Default.RCON_AdminName))
+                            {
+                                this.ServerRCON.IssueCommand($"serverchat [{Config.Default.RCON_AdminName}] {commandText}");
+                            }
+                            else
+                            {
+                                this.ServerRCON.IssueCommand($"serverchat {commandText}");
+                            }
                             break;
 
                         case InputMode.Command:
@@ -552,6 +613,18 @@ namespace ARK_Server_Manager
 
                 textBox.Text = String.Empty;
             }
+        }
+
+        private void RCON_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Rect savedRect = this.Server.Profile.RCONWindowExtents;
+            this.Server.Profile.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+        }
+
+        private void RCON_LocationChanged(object sender, EventArgs e)
+        {
+            Rect savedRect = this.Server.Profile.RCONWindowExtents;
+            this.Server.Profile.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
         }
     }
 }

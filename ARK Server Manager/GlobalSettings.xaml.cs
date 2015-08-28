@@ -37,6 +37,14 @@ namespace ARK_Server_Manager
             set;
         }
 
+        public bool IsAdministrator
+        {
+            get { return (bool)GetValue(IsAdministratorProperty); }
+            set { SetValue(IsAdministratorProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(GlobalSettings), new PropertyMetadata(false));
+        
         public GlobalSettings()
         {
             this.Version = GetDeplployedVersion();
@@ -45,6 +53,8 @@ namespace ARK_Server_Manager
             this.DataContext = this;
 
             InitializeComponent();
+
+            this.IsAdministrator = SecurityUtils.IsAdministrator();
         }
 
         private string GetDeplployedVersion()

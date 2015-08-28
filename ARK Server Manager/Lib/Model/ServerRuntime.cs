@@ -371,7 +371,7 @@ namespace ARK_Server_Manager.Lib
                 this.Status = ServerStatus.Updating;
 
                 // Run the SteamCMD to install the server
-                var steamCmdPath = AutoUpdater.GetSteamCMDPath();
+                var steamCmdPath = Updater.GetSteamCMDPath();
                 //DataReceivedEventHandler dataReceived = (s, e) => Console.WriteLine(e.Data);
                 var success = await ServerUpdater.UpgradeServerAsync(validate, this.ProfileSnapshot.InstallDirectory, steamCmdPath, Config.Default.SteamCmdInstallServerArgsFormat, null /* dataReceived*/, cancellationToken);
                 if (success && ServerManager.Instance.AvailableVersion != null)
