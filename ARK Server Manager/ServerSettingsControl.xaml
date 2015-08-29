@@ -1058,6 +1058,34 @@
                                 <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
                                 <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="Per-Level Stat Multipliers"/>
+                                    </GroupBox.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <local:AnnotatedSlider Label="Health:" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Stamina:" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Oxygen:" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Food:" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>                                            
+                                            <local:AnnotatedSlider Label="Water:" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Weight:" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Speed:" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Fortitude:" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Crafting:" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1111,6 +1139,62 @@
                                             <DataGridTextColumn Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Header="Wild Resistance" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
+                                </GroupBox>
+
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="Tamed Dino Per-Level Stat Multipliers"/>
+                                    </GroupBox.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoTamed[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox>
+
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="Wild Dino Per-Level Stat Multipliers"/>
+                                    </GroupBox.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoWild[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoWild[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoWild[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoWild[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </GroupBox>
 
                                 <!--<GroupBox  HorizontalAlignment="Stretch">

@@ -25,7 +25,9 @@ namespace ARK_Server_Manager.Lib
     [XmlRoot("ArkServerProfile")]
     [Serializable()]
     public class ServerProfile : DependencyObject
-    {
+    { 
+         private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         public enum MapSourceType
         {
             ByName,
@@ -997,9 +999,6 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
 
-
-
-
         public bool EnableAutoUpdate
         {
             get { return (bool)GetValue(EnableAutoUpdateProperty); }
@@ -1007,7 +1006,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EnableAutoUpdateProperty = DependencyProperty.Register(nameof(EnableAutoUpdate), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
 
         public int AutoUpdatePeriod
         {
@@ -1017,8 +1015,6 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoUpdatePeriodProperty = DependencyProperty.Register(nameof(AutoUpdatePeriod), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
 
-
-
         public bool EnableAutoStart
         {
             get { return (bool)GetValue(EnableAutoStartProperty); }
@@ -1027,8 +1023,6 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableAutoStartProperty = DependencyProperty.Register(nameof(EnableAutoStart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
-
-
         public int ServerUpdateGraceMinutes
         {
             get { return (int)GetValue(ServerUpdateGraceMinutesProperty); }
@@ -1036,8 +1030,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerUpdateGraceMinutesProperty = DependencyProperty.Register(nameof(ServerUpdateGraceMinutes), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
-
-
 
         public bool ServerForceUpdate
         {
@@ -1054,6 +1046,36 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerForceUpdateTimeProperty = DependencyProperty.Register(nameof(ServerForceUpdateTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PerLevelStatsMultiplier_Player
+        {
+            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_PlayerProperty); }
+            set { SetValue(PerLevelStatsMultiplier_PlayerProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed
+        {
+            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamedProperty); }
+            set { SetValue(PerLevelStatsMultiplier_DinoTamedProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamedProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PerLevelStatsMultiplier_DinoWild
+        {
+            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoWildProperty); }
+            set { SetValue(PerLevelStatsMultiplier_DinoWildProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
 
         #endregion
 
@@ -1095,6 +1117,9 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
+            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerStatsMultipliers);
+            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerStatsMultipliers);
+            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerStatsMultipliers);
 
             GetDefaultDirectories();
         }
@@ -1409,6 +1434,13 @@ namespace ARK_Server_Manager.Lib
         public bool UpdateAutoUpdateSettings()
         {
             SaveLauncher();
+
+            if (!ServerScheduler.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
+            {
+               _logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
+                return false;
+            }
+
 
             var schedulerKey = GetSchedulerKey();
             if(!ServerScheduler.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetLauncherPath(), String.Empty))

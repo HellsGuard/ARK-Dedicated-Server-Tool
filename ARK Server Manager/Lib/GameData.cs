@@ -490,6 +490,27 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",               EngramLevelRequirement=25, EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
         };
 
+        public enum StatsMultiplier
+        {
+            Health = 0,
+            Stamina = 1,
+            Torpidity = 2,
+            Oxygen = 3,
+            Food = 4,
+            Water = 5,
+            Temperature = 6,
+            Weight = 7,
+            MeleeDamageMultiplier = 8,
+            SpeedMultiplier = 9,
+            TemperatureFortitude = 10,
+            CraftingSpeedMultiplier = 11
+        };
+
         public static IEnumerable<Level> LevelProgression => levelProgression.Select(l => l.Duplicate());
+
+        internal static IEnumerable<float> GetPerStatsMultipliers()
+        {
+            return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
     }
 }

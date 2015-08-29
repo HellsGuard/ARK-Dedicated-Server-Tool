@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>167</ApplicationRevision>
+    <ApplicationRevision>172</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -160,6 +160,8 @@
     <Compile Include="Lib\Extensions\CollectionViewExtensions.cs" />
     <Compile Include="Lib\IAsyncDisposable.cs" />
     <Compile Include="Lib\Model\AggregateIniValueList.cs" />
+    <Compile Include="Lib\Model\FloatIniValueArray.cs" />
+    <Compile Include="Lib\Model\IniValueArray.cs" />
     <Compile Include="Lib\Model\IniValueList.cs" />
     <Compile Include="Lib\Model\NPCReplacement.cs" />
     <Compile Include="Lib\Model\ClassMultiplier.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Lib\Model\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
+    <Compile Include="Lib\Model\StatsMultipliers.cs" />
     <Compile Include="Lib\Model\StringIniValueList.cs" />
     <Compile Include="Lib\ModManager.cs" />
     <Compile Include="Lib\PropertyChangeNotifier.cs" />
@@ -174,13 +177,16 @@
     <Compile Include="Lib\Serialization\AggregateIniValue.cs" />
     <Compile Include="Lib\Serialization\CompoundIniEntry.cs" />
     <Compile Include="Lib\Serialization\IIniValuesCollection.cs" />
+    <Compile Include="Lib\Serialization\Ini.cs" />
     <Compile Include="Lib\Serialization\IniDefinition.cs" />
     <Compile Include="Lib\Serialization\IniEntry.cs" />
+    <Compile Include="Lib\Serialization\IniFileStream.cs" />
     <Compile Include="Lib\Serialization\SystemIniFile.cs" />
     <Compile Include="Lib\Model\Level.cs" />
     <Compile Include="Lib\NetworkUtils.cs" />
     <Compile Include="Lib\SecurityUtils.cs" />
     <Compile Include="Lib\Serialization\IniFile.cs" />
+    <Compile Include="Lib\Serialization\ValueArray.cs" />
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />

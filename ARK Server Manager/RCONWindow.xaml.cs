@@ -208,12 +208,24 @@ namespace ARK_Server_Manager
                 "Right click on players in the list to access player commands",
                 "Type /help to get help");
 
-            if (!(this.Server.Profile.RCONWindowExtents.Width == 0 || this.Server.Profile.RCONWindowExtents.Height == 0))
+            if (this.Server.Profile.RCONWindowExtents.Width > 50 && this.Server.Profile.RCONWindowExtents.Height > 50)
             {
                 this.Left = this.Server.Profile.RCONWindowExtents.Left;
                 this.Top = this.Server.Profile.RCONWindowExtents.Top;
                 this.Width = this.Server.Profile.RCONWindowExtents.Width;
                 this.Height = this.Server.Profile.RCONWindowExtents.Height;
+
+                //
+                // Fix issues where the console was saved while offscreen.
+                if(this.Left == -32000)
+                {
+                    this.Left = 0;
+                }
+
+                if(this.Top == -32000)
+                {
+                    this.Top = 0;
+                }
             }
 
             this.ConsoleInput.Focus();
@@ -617,14 +629,20 @@ namespace ARK_Server_Manager
 
         private void RCON_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Rect savedRect = this.Server.Profile.RCONWindowExtents;
-            this.Server.Profile.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+            if (this.WindowState != WindowState.Minimized)
+            {
+                Rect savedRect = this.Server.Profile.RCONWindowExtents;
+                this.Server.Profile.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+            }
         }
 
         private void RCON_LocationChanged(object sender, EventArgs e)
         {
-            Rect savedRect = this.Server.Profile.RCONWindowExtents;
-            this.Server.Profile.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+            if (this.WindowState != WindowState.Minimized && this.Left != -32000 && this.Top != -32000)
+            {
+                Rect savedRect = this.Server.Profile.RCONWindowExtents;
+                this.Server.Profile.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+            }
         }
     }
 }

@@ -54,7 +54,7 @@ namespace ARK_Server_Manager.Lib
         /// Clear the section before writing this value.
         /// </summary>
         public bool ClearSection;
-
+     
         /// <summary>
         /// Only write the attributed value if the named field is true.
         /// </summary>
@@ -197,7 +197,8 @@ namespace ARK_Server_Manager.Lib
                             if (collection.IsEnabled)
                             {
                                 // Remove all the values in the collection with this key name
-                                var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
+                                var filteredSection = collection.IsArray ? IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "["))
+                                                                         : IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
                                 var result = filteredSection
                                                 .Concat(collection.ToIniValues())
                                                 .ToArray();
@@ -223,7 +224,6 @@ namespace ARK_Server_Manager.Lib
             foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
-                bool extraBoolValue = false;
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
@@ -243,7 +243,8 @@ namespace ARK_Server_Manager.Lib
                         if(collection != null)
                         {
                             var section = IniReadSection(attr.Section, attr.File);
-                            var filteredSection = section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
+                            var filteredSection = collection.IsArray ? section.Where(s => s.StartsWith(collection.IniCollectionKey + "[")) :
+                                                                       section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
                             collection.FromIniValues(filteredSection);
                         }
                         else if (fieldType == typeof(string))
