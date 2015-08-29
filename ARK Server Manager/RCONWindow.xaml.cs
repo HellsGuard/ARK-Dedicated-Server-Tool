@@ -143,13 +143,13 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty PlayerFilteringProperty = DependencyProperty.Register(nameof(PlayerFiltering), typeof(PlayerFilterType), typeof(RCONWindow), new PropertyMetadata(PlayerFilterType.Online | PlayerFilterType.Offline | PlayerFilterType.Banned | PlayerFilterType.Whitelisted));
 
 
-        public Server Server
+        public RCONParameters RCONParameters
         {
-            get { return (Server)GetValue(ServerProperty); }
+            get { return (RCONParameters)GetValue(ServerProperty); }
             set { SetValue(ServerProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(RCONWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(RCONParameters), typeof(RCONParameters), typeof(RCONWindow), new PropertyMetadata(null));
 
         public Config CurrentConfig
         {
@@ -175,13 +175,13 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty CurrentInputModeProperty = DependencyProperty.Register(nameof(CurrentInputMode), typeof(InputMode), typeof(RCONWindow), new PropertyMetadata(InputMode.Command));
 
-        public RCONWindow(Server server)
+        public RCONWindow(RCONParameters parameters)
         {
             InitializeComponent();
-            this.Server = server;
+            this.RCONParameters = parameters;
             this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
             this.PlayerSorting = (PlayerSortType)Config.Default.RCON_PlayerListSort;
-            this.ServerRCON = new ServerRCON(server);
+            this.ServerRCON = new ServerRCON(parameters);
             this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);            
             this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
             this.PlayersView.Filter = p =>
@@ -208,12 +208,12 @@ namespace ARK_Server_Manager
                 "Right click on players in the list to access player commands",
                 "Type /help to get help");
 
-            if (this.Server.Profile.RCONWindowExtents.Width > 50 && this.Server.Profile.RCONWindowExtents.Height > 50)
+            if (this.RCONParameters.RCONWindowExtents.Width > 50 && this.RCONParameters.RCONWindowExtents.Height > 50)
             {
-                this.Left = this.Server.Profile.RCONWindowExtents.Left;
-                this.Top = this.Server.Profile.RCONWindowExtents.Top;
-                this.Width = this.Server.Profile.RCONWindowExtents.Width;
-                this.Height = this.Server.Profile.RCONWindowExtents.Height;
+                this.Left = this.RCONParameters.RCONWindowExtents.Left;
+                this.Top = this.RCONParameters.RCONWindowExtents.Top;
+                this.Width = this.RCONParameters.RCONWindowExtents.Width;
+                this.Height = this.RCONParameters.RCONWindowExtents.Height;
 
                 //
                 // Fix issues where the console was saved while offscreen.
@@ -238,11 +238,26 @@ namespace ARK_Server_Manager
             RCONWindow window;
             if(!RCONWindows.TryGetValue(server, out window) || !window.IsLoaded)
             {
-                window = new RCONWindow(server);
+                window = new RCONWindow(new RCONParameters()
+                {
+                    AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
+                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    ProfileName = server.Profile.ProfileName,
+                    RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
+                    ServerIP = server.Runtime.ProfileSnapshot.ServerIP,
+                    RCONWindowExtents = server.Profile.RCONWindowExtents,
+                    MaxPlayers = server.Runtime.MaxPlayers,
+                    Server = server
+                });
                 RCONWindows[server] = window;
             }
 
             return window;
+        }
+
+        public static RCONWindow GetRCON(RCONParameters parameters)
+        {
+            return new RCONWindow(parameters);
         }
 
         public static void CloseAllWindows()
@@ -272,7 +287,7 @@ namespace ARK_Server_Manager
                         string logsDir = String.Empty;
                         try
                         {
-                            logsDir = App.GetProfileLogDir(this.Server.Runtime.ProfileSnapshot.ProfileName);
+                            logsDir = App.GetProfileLogDir(this.RCONParameters.ProfileName);
                             Directory.Delete(logsDir, true);
                         }
                         catch (Exception)
@@ -297,7 +312,7 @@ namespace ARK_Server_Manager
                         string logsDir = String.Empty;
                         try
                         {
-                            logsDir = App.GetProfileLogDir(this.Server.Runtime.ProfileSnapshot.ProfileName);
+                            logsDir = App.GetProfileLogDir(this.RCONParameters.ProfileName);
                             Process.Start(logsDir);
                         }
                         catch(Exception ex)
@@ -631,8 +646,8 @@ namespace ARK_Server_Manager
         {
             if (this.WindowState != WindowState.Minimized)
             {
-                Rect savedRect = this.Server.Profile.RCONWindowExtents;
-                this.Server.Profile.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+                Rect savedRect = this.RCONParameters.RCONWindowExtents;
+                this.RCONParameters.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
             }
         }
 
@@ -640,8 +655,12 @@ namespace ARK_Server_Manager
         {
             if (this.WindowState != WindowState.Minimized && this.Left != -32000 && this.Top != -32000)
             {
-                Rect savedRect = this.Server.Profile.RCONWindowExtents;
-                this.Server.Profile.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+                Rect savedRect = this.RCONParameters.RCONWindowExtents;
+                this.RCONParameters.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+                if (this.RCONParameters.Server != null)
+                {
+                    this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.RCONWindowExtents;
+                }
             }
         }
     }

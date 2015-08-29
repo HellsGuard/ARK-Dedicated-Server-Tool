@@ -508,7 +508,7 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<Level> LevelProgression => levelProgression.Select(l => l.Duplicate());
 
-        internal static IEnumerable<float> GetPerStatsMultipliers()
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers()
         {
             return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
         }

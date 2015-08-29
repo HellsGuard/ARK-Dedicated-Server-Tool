@@ -83,6 +83,9 @@
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="Like what you see and want to show your appreciation?  Donate here!">
                     <Image Source="Art/Donate.png" />
                 </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="RCON" Click="RCON_Click">
+                    <Image Source="Art/Command.png" Width="16"/>
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Settings" Click="Settings_Click">
                     <Image Source="Art/Settings.png" Width="16"/>
                 </Button>

@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>172</ApplicationRevision>
+    <ApplicationRevision>173</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -169,6 +169,7 @@
     <Compile Include="Lib\Model\Engram.cs" />
     <Compile Include="Lib\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
+    <Compile Include="Lib\Model\RCONParameters.cs" />
     <Compile Include="Lib\Model\StatsMultipliers.cs" />
     <Compile Include="Lib\Model\StringIniValueList.cs" />
     <Compile Include="Lib\ModManager.cs" />
@@ -222,6 +223,9 @@
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OpenRCON.xaml.cs">
+      <DependentUpon>OpenRCON.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RCONWindow.xaml.cs">
       <DependentUpon>RCONWindow.xaml</DependentUpon>
     </Compile>
@@ -254,6 +258,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OpenRCON.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
