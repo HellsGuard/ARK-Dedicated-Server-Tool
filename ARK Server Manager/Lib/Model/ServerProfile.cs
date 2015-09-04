@@ -228,6 +228,46 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableStructureDecayProperty, value); }
         }
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PvPStructureDecay
+        {
+            get { return (bool)GetValue(PvPStructureDecayProperty); }
+            set { SetValue(PvPStructureDecayProperty, value); }
+        }
+
+        public static readonly DependencyProperty PvPStructureDecayProperty = DependencyProperty.Register(nameof(PvPStructureDecay), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float PvEDinoDecayPeriodMultiplier
+        {
+            get { return (float)GetValue(PvEDinoDecayPeriodMultiplierProperty); }
+            set { SetValue(PvEDinoDecayPeriodMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty PvEDinoDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEDinoDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AdminLogging
+        {
+            get { return (bool)GetValue(AdminLoggingProperty); }
+            set { SetValue(AdminLoggingProperty, value); }
+        }
+
+        public static readonly DependencyProperty AdminLoggingProperty = DependencyProperty.Register(nameof(AdminLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool DisableDinoDecayPvE
+        {
+            get { return (bool)GetValue(DisableDinoDecayPvEProperty); }
+            set { SetValue(DisableDinoDecayPvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableDinoDecayPvEProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AlwaysNotifyPlayerLeft")]
         public bool EnablePlayerLeaveNotifications
         {
