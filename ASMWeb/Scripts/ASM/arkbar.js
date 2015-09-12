@@ -32,3 +32,4 @@ var ArkBar;
     ArkBar.HostConnection = HostConnection;
 })(ArkBar || (ArkBar = {}));
 ;
+//# sourceMappingURL=arkbar.js.map

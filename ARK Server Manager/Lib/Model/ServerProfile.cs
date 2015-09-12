@@ -257,6 +257,24 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty AdminLoggingProperty = DependencyProperty.Register(nameof(AdminLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
 
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL))]
+        public string BanListURL
+        {
+            get { return (string)GetValue(BanListURLProperty); }
+            set { SetValue(BanListURLProperty, value); }
+        }
+
+        public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("http://playark.com/banlist.txt"));
+
+        public bool EnableBanListURL
+        {
+            get { return (bool)GetValue(EnableBanListURLProperty); }
+            set { SetValue(EnableBanListURLProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableBanListURLProperty = DependencyProperty.Register(nameof(EnableBanListURL), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool DisableDinoDecayPvE
@@ -330,6 +348,17 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(AllowPVPGammaProperty); }
             set { SetValue(AllowPVPGammaProperty, value); }
         }
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool DisablePvEGamma
+        {
+            get { return (bool)GetValue(DisablePvEGammaProperty); }
+            set { SetValue(DisablePvEGammaProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisablePvEGammaProperty = DependencyProperty.Register(nameof(DisablePvEGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPassword")]        
         public string ServerPassword

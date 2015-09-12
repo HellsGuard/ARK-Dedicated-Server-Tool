@@ -742,7 +742,9 @@
         					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
                             -->
-
+                            <CheckBox Grid.Column="0" Grid.Row="2" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list url specified will be used."/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding BanListURL}" ToolTip="The URL of the global ban list to use" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
+                            
                             <Label Grid.Column="2" Grid.Row="2" Content="Spectator Password:"/>
                             <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center"/>
                             <local:AnnotatedSlider Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
@@ -1056,6 +1058,7 @@
                                 <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left"/>
                                 <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left"/>
                                 <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding DisablePvEGamma}" Content="Disable Player Gamma Settings in PvE" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
