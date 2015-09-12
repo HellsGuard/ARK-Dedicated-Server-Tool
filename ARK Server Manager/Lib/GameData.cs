@@ -475,7 +475,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_ThatchWall_C",               EngramLevelRequirement=3,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
 
             new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Left_C",    EngramLevelRequirement=3,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Right_C",    EngramLevelRequirement=3,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Right_C",   EngramLevelRequirement=3,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ThatchRoof_C",               EngramLevelRequirement=3,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
 
             new EngramEntry { EngramClassName="EngramEntry_ThatchWallWithDoor_C",       EngramLevelRequirement=2,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
