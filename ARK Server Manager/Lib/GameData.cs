@@ -283,7 +283,6 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_ArrowTranq_C",               EngramLevelRequirement=20, EngramPointsCost=8,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_BearTrap_C",                 EngramLevelRequirement=25, EngramPointsCost=9,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_BearTrap_Large_C",           EngramLevelRequirement=25, EngramPointsCost=12, EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ArrowTranq_C",               EngramLevelRequirement=20, EngramPointsCost=8,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_BloodExtractor_C",           EngramLevelRequirement=5,  EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Bookshelf_C",                EngramLevelRequirement=20, EngramPointsCost=15, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Bow_C",                      EngramLevelRequirement=15, EngramPointsCost=11, EngramHidden=false, RemoveEngramPreReq=false },
