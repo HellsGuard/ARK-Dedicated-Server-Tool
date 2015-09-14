@@ -454,7 +454,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" FontSize="15" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                        <Label Grid.Column="0" FontSize="15" Content="Profile:" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
+                        ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
                         <TextBox Margin="5,5,2,5" Grid.Column="1" Text="{Binding ProfileName}" VerticalContentAlignment="Center"
     					ToolTip="The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field."/>
                     </Grid>
@@ -474,17 +475,17 @@
                         <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" 
 						Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="Installed Version:" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left"  VerticalAlignment="Center" />
+                                <Label FontSize="15" Content="Installed Version:" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="The version of the Ark server that is currently downloaded." />
+                                <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left"  VerticalAlignment="Center" ToolTip="The version of the Ark server that is currently downloaded." />
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left"/>
+                                <Label FontSize="15" Content="Latest Available Version:" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="The version of the Ark server that is currently available for download."/>
+                                <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left" ToolTip="The version of the Ark server that is currently available for download."/>
 
                                 <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center"
-                                        ToolTip="Check for new versions">
+                                        ToolTip="Refresh the latest version of the Ark server that is currently available to download.">
                                     <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                 </Button>
                             </StackPanel>
@@ -512,7 +513,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
                                         <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="Upgrade to the latest version." />
+                                        <Setter Property="ToolTip" Value="Upgrade to the latest version of the Ark server that is currently available to download." />
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
@@ -520,12 +521,12 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
                                         <Setter Property="Content" Value="{StaticResource CancelInstallButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="Cancel the server upgrade." />
+                                        <Setter Property="ToolTip" Value="Cancel the Ark server upgrade." />
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
                                         <Setter Property="Content" Value="{StaticResource InstallButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="Install the server." />
+                                        <Setter Property="ToolTip" Value="Install the latest version of the Ark server." />
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -536,8 +537,8 @@
 
                     <Border HorizontalAlignment="Stretch" DataContext="{Binding Profile}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="true">
-                            <Label DockPanel.Dock="Left" Content="Installation Location:" FontSize="15" VerticalAlignment="Center"/>
-                            <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5" BorderThickness="0"/>
+                            <Label DockPanel.Dock="Left" Content="Installation Location:" FontSize="15" VerticalAlignment="Center" ToolTip="The folder that contains the Ark server game and configuration files."/>
+                            <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5" BorderThickness="0" ToolTip="The folder that contains the Ark Server game and configuration files."/>
                         </DockPanel>
                     </Border>
                     <Button DataContext="{Binding Runtime}"  Margin="5" Grid.Column="2" Grid.Row="2" Content="{StaticResource LocationButtonContent}"  Click="SelectInstallDirectory_Click">
@@ -557,6 +558,7 @@
                                         <Setter Property="IsEnabled" Value="False"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                        <Setter Property="ToolTip" Value="Update the folder that contains the Ark server game and configuration files." />
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
@@ -566,6 +568,7 @@
                                         <Setter Property="IsEnabled" Value="False"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                        <Setter Property="ToolTip" Value="Update the folder that contains the Ark server game and configuration files." />
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -582,14 +585,14 @@
 
                         <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="Status:"/>
-                                <Label FontSize="15" Content="{Binding Status}" ToolTip="This is the status of the server on your local network."/>
+                                <Label FontSize="15" Content="Status:" ToolTip="The status of the Ark server on your local network."/>
+                                <Label FontSize="15" Content="{Binding Status}" ToolTip="The status of the Ark server on your local network."/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="Availability:"/>
-                                <Label FontSize="15" ToolTip="This is the status of the server on Steam.">
+                                <Label FontSize="15" Content="Availability:" ToolTip="The status of the Ark server on Steam."/>
+                                <Label FontSize="15" ToolTip="The status of the Ark server on Steam.">
                                     <Label.Style>
                                         <Style TargetType="{x:Type Label}">
                                             <Style.Triggers>
@@ -616,10 +619,10 @@
                         </Border>
                         <Border Grid.Column="2" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="Players:"/>
-                                <Label FontSize="15" Content="{Binding Players}"/>
-                                <Label FontSize="15" Content="/" Width="20"/>
-                                <Label FontSize="15" Content="{Binding MaxPlayers}"/>
+                                <Label FontSize="15" Content="Players:" ToolTip="The current number of players connected to the Ark server."/>
+                                <Label FontSize="15" Content="{Binding Players}" ToolTip="The current number of players connected to the Ark server."/>
+                                <Label FontSize="15" Content="/" Width="20" ToolTip="The current number of players connected to the Ark server."/>
+                                <Label FontSize="15" Content="{Binding MaxPlayers}" ToolTip="The current number of players connected to the Ark server."/>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -630,14 +633,17 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
                                             <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                            <Setter Property="ToolTip" Value="Stop the Ark server." />
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
                                             <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                            <Setter Property="ToolTip" Value="Stop the Ark server." />
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
                                             <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                            <Setter Property="ToolTip" Value="Stop the Ark server." />
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
@@ -646,6 +652,7 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
                                             <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
+                                            <Setter Property="ToolTip" Value="Start the Ark server." />
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
@@ -664,7 +671,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Margin="5" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Content="{StaticResource OpenRCONButtonContent}" Width="80"  Click="OpenRCON_Click"/>
+                        <Button Margin="5" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Content="{StaticResource OpenRCONButtonContent}" Width="80"  Click="OpenRCON_Click" ToolTip="Open the RCON window."/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -703,32 +710,32 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Content="Server Name:"/>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Server Name:" ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
                             <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The public name of the server, as seen in Steam and Ark."/>
-                            <Label Grid.Column="2" Grid.Row="0" Content="Server Password:"/>
+        						ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
+                            <Label Grid.Column="2" Grid.Row="0" Content="Server Password:" ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
                             <TextBox Grid.Column="3" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
-                            <Label Grid.Column="4" Grid.Row="0" Content="Admin Password:"/>
+                            <Label Grid.Column="4" Grid.Row="0" Content="Admin Password:" ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
                             <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Ths password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
+        						ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
 
-                            <Label Grid.Column="0" Grid.Row="1" Content="Server Port:"/>
+                            <Label Grid.Column="0" Grid.Row="1" Content="Server Port:" ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
                             <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
-                            <Label Grid.Column="2" Grid.Row="1" Content="Query Port:"/>
+                            <Label Grid.Column="2" Grid.Row="1" Content="Query Port:" ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
                             <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
 
                             <DockPanel Grid.Column="4" Grid.Row="1">
-                                <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="1" Content="Local IP:"/>
-                                <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs">
+                                <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="1" Content="Local IP:" ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet."/>
+                                <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs.">
                                     <Image Source="Art/Refresh.png" Width="16" />
                                 </Button>
                             </DockPanel>
 
                             <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
-                                          ToolTip="Sets the local (private) IP the server will listen on.  This should be your primary network card which routes to the public internet.">
+                                          ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet.">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -742,21 +749,21 @@
         					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
                             -->
-                            <CheckBox Grid.Column="0" Grid.Row="2" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list url specified will be used."/>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding BanListURL}" ToolTip="The URL of the global ban list to use" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
+                            <CheckBox Grid.Column="0" Grid.Row="2" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list URL specified will be used."/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding BanListURL}" ToolTip="The URL of the ban list to use." IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
                             
-                            <Label Grid.Column="2" Grid.Row="2" Content="Spectator Password:"/>
-                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center"/>
+                            <Label Grid.Column="2" Grid.Row="2" Content="Spectator Password:" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
+                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
                             <local:AnnotatedSlider Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
         						ToolTip="Sets the maximum number of players which can join this server."/>
 
 
-                            <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5"/>
+                            <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If checked, the idle timeout period will be used."/>
                             <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time until idle players are kicked from the server."
                                 IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
 
-                            <Label Grid.Column="0" Grid.Row="5" Content="Auto Save Period:"/>
+                            <Label Grid.Column="0" Grid.Row="5" Content="Auto Save Period:" ToolTip="The time between server auto-saves."/>
                             <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Label="" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time between server auto-saves."/>
 
@@ -770,8 +777,8 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="Enable RCON Port" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150"/>
-                                    <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left"/>
+                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="Enable RCON Port" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="If checked, the RCON port will be enabled."/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="The port that RCON will use on your server."/>
                                     <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="Log Admin to Chat" Margin="5" ToolTip="If checked, admin commands will be echoed to chat"/>
                                 </Grid>
                             </GroupBox>
@@ -802,13 +809,13 @@
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <!--<RadioButton Name="VanillaMapCheckBox" Grid.Column="0" Grid.Row="0" Content="Map or Map Mod Path:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ByName}"/>-->
-                                    <Label Grid.Column="0" Grid.Row="0"   Content="Map or Map Mod Path:" Grid.ColumnSpan="2"/>
+                                    <Label Grid.Column="0" Grid.Row="0"   Content="Map or Map Mod Path:" Grid.ColumnSpan="2" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it."/>
                                     <!--<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=VanillaMapCheckBox, Path=IsChecked}" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap).  Use Map Mod Id instead if your mod is on the workshop."/>-->
                                     <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it."/>
 
                                     <!--<RadioButton IsEnabled="False" Name="MapIdCheckbox" Grid.Column="0" Grid.Row="1" Content="Map Mod Id:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ById}"/>
                                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerMapModId}" Width="100"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapIdCheckbox, Path=IsChecked}" ToolTip="The id of the mod which contains the map."/>-->
-                                    <Label Grid.Column="0" Grid.Row="1"   Content="Mod IDs:" Grid.ColumnSpan="2"/>
+                                    <Label Grid.Column="0" Grid.Row="1"   Content="Mod IDs:" Grid.ColumnSpan="2" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied."/>
                                     <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied.">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
@@ -837,13 +844,13 @@
                                     </Grid.RowDefinitions>
                                     <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
         						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
-                                    <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" />
+                                    <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" ToolTip="The time the Message of the Day will be shown for when the user connects to the server." />
                                 </Grid>
                             </GroupBox>
 
-                            <Label Grid.Column="0" Grid.Row="9" Content="Additional Args:" VerticalAlignment="Center"/>
+                            <Label Grid.Column="0" Grid.Row="9" Content="Additional Args:" VerticalAlignment="Center" ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient"/>
                             <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="9" LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click"/>
+                                <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click" ToolTip="View the command line start command for the server."/>
                                 <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
                             </DockPanel>
@@ -952,35 +959,35 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" />
+                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left" ToolTip="Enables hardcore mode (players can not respawn, a new character must be created)."/>
+                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left" ToolTip="Enabled Player vs Player mode (players are able to deal damage to or kill each other. In PvP players can also damage or destroy another tribe's buildings or kill their dinos)."/>
+                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left" ToolTip="If checked, allows building in caves when PvE mode is enabled."/>
+                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" ToolTip="If checked, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled." />
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
-        							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" />
+        							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop." />
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5"/>
+                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5" ToolTip="If checked, this will allow downloading external survivors/items/dinos into your server."/>
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
-                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the survivor downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the item downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the dino downloads are disabled."/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5"/>
+                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5" ToolTip="If checked, enables the increase PvP respawn interval settings."/>
                                     </GroupBox.Header>
                                     <StackPanel  IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}">
-                                        <local:AnnotatedSlider Label="Increase Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />
-                                        <local:AnnotatedSlider Label="Increase Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" />
-                                        <local:AnnotatedSlider Label="Increase Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" />
+                                        <local:AnnotatedSlider Label="Interval Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="The time period the respawn check lasts after the player is killed by a team." />
+                                        <local:AnnotatedSlider Label="Interval Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" ToolTip="The multiplier value of the base amount to determine the respawn time." />
+                                        <local:AnnotatedSlider Label="Interval Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="The base time period used to detemine the respawn time." />
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5"/>
+                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5" ToolTip="If checked, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times."/>
                                     </GroupBox.Header>
                                     <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
                                         <Grid.ColumnDefinitions>
@@ -990,9 +997,9 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-                                        <Label    Grid.Column="1" Content="Start Time:"  Margin="10,0,0,0"/>
-                                        <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The start time in hours and minutes from midnight" >
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="If checked, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time."/>
+                                        <Label    Grid.Column="1" Content="Start Time:"  Margin="10,0,0,0" ToolTip="The start time in hours and minutes from midnight to enable PvE mode."/>
+                                        <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The start time in hours and minutes from midnight to enable PvE mode." >
                                             <Validation.ErrorTemplate>
                                                 <ControlTemplate>
                                                     <StackPanel>
@@ -1010,8 +1017,8 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Label   Grid.Column="3" Content="Stop Time:" Margin="10,0,0,0"/>
-                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The stop time in hours and minutes from midnight" >
+                                        <Label   Grid.Column="3" Content="Stop Time:" Margin="10,0,0,0" ToolTip="The stop time in hours and minutes from midnight to disable PvE mode."/>
+                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The stop time in hours and minutes from midnight to disable PvE mode." >
                                             <Validation.ErrorTemplate>
                                                 <ControlTemplate>
                                                     <StackPanel>
@@ -1040,10 +1047,10 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat" HorizontalAlignment="Left" ToolTip="If enabled, voice chat becomes global and everyone on the server can hear."/>
+                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat" HorizontalAlignment="Left" ToolTip="If enabled, only players near each other can see their chat messages."/>
+                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications" HorizontalAlignment="Left" ToolTip="If enabled, players will always get notified if someone joins the server."/>
+                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications" HorizontalAlignment="Left" ToolTip="If enabled, players will always get notified if someone leaves the server."/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1053,12 +1060,12 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left"/>
-                                <CheckBox IsChecked="{Binding DisablePvEGamma}" Content="Disable Player Gamma Settings in PvE" HorizontalAlignment="Left"/>
+                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair" HorizontalAlignment="Left" ToolTip="If enabled, shows each player a crosshair."/>
+                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD" HorizontalAlignment="Left" ToolTip="If enabled, allows the player to see the HUD."/>
+                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left" ToolTip="if Enabled, allows players to view themselves in third person."/>
+                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left" ToolTip="If enabled, shows each player their position on the map."/>
+                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left" ToolTip="If enabled, allows gamma changes in PvP mode."/>
+                                <CheckBox IsChecked="{Binding DisablePvEGamma}" Content="Disable Player Gamma Settings in PvE" HorizontalAlignment="Left" ToolTip="If enabled, prevents gamma changes in PvE mode."/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1068,15 +1075,15 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left"/>
-                                <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
-                                <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left" ToolTip="If checked, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE."/>
+                                <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it."/>
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="Set the maximum XP cap of players."/>
+                                <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage players deal with their attacks. Higher values increase damage. Lower values decrease it."/>
+                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage players receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
+                                <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' water consumption. Higher values increase water consumption (player characters get thirsty faster)."/>
+                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' food consumption. Higher values increase food consumption (player characters get hungry faster)."/>
+                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster)."/>
+                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster)."/>
 
                                 <GroupBox>
                                     <GroupBox.Header>
@@ -1088,20 +1095,20 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Stamina:" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Oxygen:" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Food:" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Water:" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Health:" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
+                                            <local:AnnotatedSlider Label="Stamina:" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
+                                            <local:AnnotatedSlider Label="Oxygen:" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
+                                            <local:AnnotatedSlider Label="Food:" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
+                                            <local:AnnotatedSlider Label="Water:" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Weight:" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Speed:" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Fortitude:" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Crafting:" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
+                                            <local:AnnotatedSlider Label="Weight:" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
+                                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
+                                            <local:AnnotatedSlider Label="Speed:" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
+                                            <local:AnnotatedSlider Label="Fortitude:" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
+                                            <local:AnnotatedSlider Label="Crafting:" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
@@ -1114,30 +1121,30 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000"/>
-                                <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Max Tamed Dinos:" Value="{Binding MaxTamedDinos}" Suffix="x" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500"/>
-                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="Disable Dino Decay PvE" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="If checked, wild dinos in PvE will *not* expire if left alone."/>
-                                <local:AnnotatedSlider Label="PvE Dino Decay Period:" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Multiplier on the base time before wild dinos will expire in PvE if left alone.  Only works when Disable Dino Decay PvE is unchecked."/>
+                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="Set the maximum XP cap of dinos."/>
+                                <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage wild dinos deal with their attacks. Higher values increase damage. Lower values decrease it."/>
+                                <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage tamed dinos deal with their attacks. Higher values increase damage. Lower values decrease it."/>
+                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage wild dinos receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
+                                <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage tamed dinos receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
+                                <local:AnnotatedSlider Label="Max Tamed Dinos:" Value="{Binding MaxTamedDinos}" Suffix="x" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" ToolTip="Set the maximum number of tamed dinos of the server."/>
+                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' food consumption. Higher values increase food consumption (dinos get hungry faster)."/>
+                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' stamina consumption. Higher values increase stamina consumption (dinos get tired faster)."/>
+                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' health recovery. Higher values increase the recovery rate (dinos heal faster)."/>
+                                <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark."/>
+                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="Disable Dino Decay PvE" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="If checked, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player."/>
+                                <local:AnnotatedSlider Label="PvE Dino Decay Period:" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked."/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Dino Customization"/>
-                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}">Spawn Multipliers</CheckBox>
-                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Tamed Damage</CheckBox>
-                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Tamed Resistance</CheckBox>
-                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}">Wild Damage</CheckBox>
-                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}">Wild Resistance</CheckBox>
+                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the spawn multiplier columns.">Spawn Multipliers</CheckBox>
+                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the tamed dino damage multiplier column.">Tamed Damage</CheckBox>
+                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the tamed dino resistance multiplier column.">Tamed Resistance</CheckBox>
+                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the wild dino damage multiplier column.">Wild Damage</CheckBox>
+                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the wild dino resistance multiplier column.">Wild Resistance</CheckBox>
                                             <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" 
-                                                    ToolTip="Reset grid to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                                    ToolTip="Reset all dino customizations back to defaults.">
+                                                <Image Source="Art/Refresh.png" Width="16" />
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -1172,20 +1179,20 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
+                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
+                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
+                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dinor food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
+                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
-                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoTamed[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
-                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
+                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
+                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
+                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoTamed[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
+                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
+                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
@@ -1200,20 +1207,20 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoWild[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoWild[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
+                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
+                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoWild[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
+                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
+                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
+                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoWild[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoWild[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
-                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoWild[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
-                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False"/>
+                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoWild[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
+                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
+                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
+                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoWild[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
+                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
+                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
@@ -1384,19 +1391,19 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Player):" Value="{Binding ResourceNoReplenishRadiusPlayers}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Structure):" Value="{Binding ResourceNoReplenishRadiusStructures}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left"/>
-                                <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Taming Speed:" Value="{Binding TamingSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinosaur taming speed. Higher values make taming faster."/>
+                                <local:AnnotatedSlider Label="Harvest Amount:" Value="{Binding HarvestAmountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for yields from all harvesting activities (chopping down trees, picking berries, carving carcasses, mining rocks, etc). Higher values increase the amount of materials harvested with each strike."/>
+                                <local:AnnotatedSlider Label="Resource Respawn:" Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the respawn rate for resource nodes (trees, rocks, bushes, etc). Lower values cause nodes to respawn more frequently."/>
+                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Player):" Value="{Binding ResourceNoReplenishRadiusPlayers}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor to allow resources to regrow closer or farther away from players. Lower values decrease the distance resources will regrow from the player."/>
+                                <local:AnnotatedSlider Label="Suppress Replenish Radius (Structure):" Value="{Binding ResourceNoReplenishRadiusStructures}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor to allow resources to regrow closer or farther away from structures. Lower values decrease the distance resources will regrow from the structure."/>
+                                <CheckBox Content="Clamp Resource Harvest Damage" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left" ToolTip="Is enabled, clamps how much harvesting damage you can do to a resource to the remaining health of the resource."/>
+                                <local:AnnotatedSlider Label="Harvest Health:" Value="{Binding HarvestHealthMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc). Higher values increase the amount of damage (e.g. number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields."/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableHarvestResourceItemAmountClassMultipliersCheckbox" Content="Custom Harvest Amount Multipliers" IsChecked="{Binding HarvestResourceItemAmountClassMultipliers.IsEnabled}" Margin="0,5,5,5"/>
+                                            <CheckBox x:Name="EnableHarvestResourceItemAmountClassMultipliersCheckbox" Content="Custom Harvest Amount Multipliers" IsChecked="{Binding HarvestResourceItemAmountClassMultipliers.IsEnabled}" Margin="0,5,5,5" ToolTip="If enabled, allows per-resource scale factors to be applied to each resource."/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" 
-                                                    ToolTip="Reset harvest to game defaults">
+                                                    ToolTip="Reset all harvest customizations back to defaults.">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1422,12 +1429,12 @@
                                         </ListBox.ItemTemplate>
                                     </ListBox>
                                 </GroupBox>
-                                <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Global Spoiling Time:" Value="{Binding GlobalSpoilingTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Global Item Decomp Time:" Value="{Binding GlobalItemDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Global Corpse Decomp Time:" Value="{Binding GlobalCorpseDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Day Cycle Speed:" Value="{Binding DayCycleSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it."/>
+                                <local:AnnotatedSlider Label="Day Time Speed:" Value="{Binding DayTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the passage of time in the Ark during the day. This value determines the length of each day, relative to the length of each night. Lowering this value increases the length of each day."/>
+                                <local:AnnotatedSlider Label="Night Time Speed:" Value="{Binding NightTimeSpeedScale}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the passage of time in the Ark during night time. This value determines the length of each night, relative to the length of each day. Lowering this value increases the length of each night."/>
+                                <local:AnnotatedSlider Label="Global Spoiling Time:" Value="{Binding GlobalSpoilingTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Scales the spoiling time of perishables globally. Higher values prolong the time."/>
+                                <local:AnnotatedSlider Label="Global Item Decomp Time:" Value="{Binding GlobalItemDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Scales the decomposition time of dropped items, loot bags etc globally. Higher values prolong the time."/>
+                                <local:AnnotatedSlider Label="Global Corpse Decomp Time:" Value="{Binding GlobalCorpseDecompositionTimeMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Scales the decomposition time of corpses (player and dino), globally. Higher values prolong the time."/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1437,18 +1444,18 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
-                                <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage structures receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
+                                <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage structures deal with their attacks (e.g. spiked walls). Higher values increase damage. Lower values decrease it."/>
                                 <CheckBox Content="Enable PvP Structure Decay" IsChecked="{Binding PvPStructureDecay}" Margin="5" ToolTip="If checked, structures in PvP will automatically decay if left unused after a period of time."/>
-                                <local:AnnotatedSlider Label="PvP Zone Structure Damage:" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"/>
+                                <local:AnnotatedSlider Label="PvP Zone Structure Damage:" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage structures take within caves/cave entrances, in PvP."/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left"/>
+                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left" ToolTip="If checked, enables decay of player structures in PvE."/>
                                     </GroupBox.Header>
                                     <StackPanel Orientation="Vertical">
-                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
-                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" />
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the time required for player structures to decay in PvE mode." />
+                                        <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the decay rate of player structures in PvE mode." />
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
@@ -1462,8 +1469,8 @@
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="Enable Engram Overrides" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="Reset Engrams">
+                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="Enable Engram Overrides" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="If checked, enables engram customizations."/>
+                                        <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="Reset all engram customizations back to defaults.">
                                             <Image Source="Art/Refresh.png" Width="16"/>
                                         </Button>
                                     </StackPanel>
@@ -1512,15 +1519,15 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left"/>
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left" ToolTip="If checked, enables player and dino level customizations."/>
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Custom Player Levels"/>
-                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all levels">
+                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all existing player levels.">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset levels to game defaults">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to defaults.">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1531,7 +1538,7 @@
                                                 <GridViewColumn Header="+" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="Add a level after this one">
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="Add a new player level after this one.">
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -1540,7 +1547,7 @@
                                                 <GridViewColumn Header="-" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="Remove this level">
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="Remove this player level.">
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -1571,11 +1578,11 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Custom Dino Levels"/>
                                             <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
-                                                    ToolTip="Delete all levels">
+                                                    ToolTip="Delete all existing dino levels.">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    ToolTip="Reset levels to game defaults">
+                                                    ToolTip="Reset all dino level customizations back to defaults.">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1587,7 +1594,7 @@
                                                 <GridViewColumn Header="+" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddDinoLevel_Click" Margin="2" ToolTip="Add a level after this one" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddDinoLevel_Click" Margin="2" ToolTip="Add a new dino level after this one" >
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -1596,7 +1603,7 @@
                                                 <GridViewColumn Header="-" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemoveDinoLevel_Click" Margin="2" ToolTip="Remove this level" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemoveDinoLevel_Click" Margin="2" ToolTip="Remove this dino level" >
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
@@ -1625,7 +1632,7 @@
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center">Enable Survival of the Fittest</CheckBox>
+                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" ToolTip="If checked, configures the server as a 'Survival of the Fittest' server.">Enable Survival of the Fittest</CheckBox>
                                         <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="Load an existing profile, or import one directly from an existing server.">
                                             <Image Source="Art/Help.png" Height="16" Margin="0" />
                                         </Button>
