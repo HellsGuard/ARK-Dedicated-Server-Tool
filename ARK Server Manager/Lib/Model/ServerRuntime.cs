@@ -102,6 +102,7 @@ namespace ARK_Server_Manager.Lib
             public int RCONPort;
             public string ServerArgs;
             public string AdminPassword;
+            public bool UseRawSockets;
         };
 
         private IAsyncDisposable updateRegistration;
@@ -153,7 +154,8 @@ namespace ARK_Server_Manager.Lib
                 RCONPort = profile.RCONPort,
                 ServerName = profile.ServerName,
                 ServerArgs = profile.GetServerArgs(),
-                AdminPassword = profile.AdminPassword
+                AdminPassword = profile.AdminPassword,
+                UseRawSockets = profile.UseRawSockets
             };
 
             Version lastInstalled;
@@ -224,6 +226,11 @@ namespace ARK_Server_Manager.Lib
                 if (this.ProfileSnapshot.RCONEnabled)
                 {
                     ports.Add(this.ProfileSnapshot.RCONPort);
+                }
+
+                if(this.ProfileSnapshot.UseRawSockets)
+                {
+                    ports.Add(this.ProfileSnapshot.ServerConnectionPort + 1);
                 }
 
                 if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))

@@ -710,63 +710,110 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Content="Server Name:" ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
-                            <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
-                            <Label Grid.Column="2" Grid.Row="0" Content="Server Password:" ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
-                            <TextBox Grid.Column="3" Grid.Row="0"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="Name and Passwords" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Server Name:" ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="5"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                             ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
+
+                                    <Label Grid.Column="0" Grid.Row="1" Content="Server Password:" ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
+                                    <TextBox Grid.Column="1" Grid.Row="1"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
-                            <Label Grid.Column="4" Grid.Row="0" Content="Admin Password:" ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
-                            <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                    <Label Grid.Column="2" Grid.Row="1" Content="Admin Password:" ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
+                                    <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
-
-                            <Label Grid.Column="0" Grid.Row="1" Content="Server Port:" ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                    <Label Grid.Column="4" Grid.Row="1" Content="Spectator Password:" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
+                                    <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.ColumnSpan="6" Header="Networking" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Server Port:" ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
-                            <Label Grid.Column="2" Grid.Row="1" Content="Query Port:" ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
-                            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+                                    <Label Grid.Column="2" Grid.Row="0" Content="Query Port:" ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
+                                    <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
-
-                            <DockPanel Grid.Column="4" Grid.Row="1">
-                                <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="1" Content="Local IP:" ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet."/>
-                                <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs.">
-                                    <Image Source="Art/Refresh.png" Width="16" />
-                                </Button>
-                            </DockPanel>
-
-                            <ComboBox Grid.Column="5" Grid.Row="1" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
+                                    <DockPanel Grid.Column="4" Grid.Row="0">
+                                        <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="0" Content="Local IP:" ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet."/>
+                                        <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs.">
+                                            <Image Source="Art/Refresh.png" Width="16" />
+                                        </Button>
+                                    </DockPanel>
+                                    <ComboBox Grid.Column="5" Grid.Row="0" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
                                           ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet.">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="{Binding IPAddress}"/>
-                                            <Label Content="{Binding Description}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{Binding IPAddress}"/>
+                                                    <Label Content="{Binding Description}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="Use Raw Sockets" IsChecked="{Binding UseRawSockets}" VerticalAlignment="Center" Margin="5" ToolTip="Allow direct P2P connections instead of through steam.  Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding."/>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="Login Options" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list URL specified will be used."/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding BanListURL}" ToolTip="The URL of the ban list to use." IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
+
+                                    <local:AnnotatedSlider Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
+        						ToolTip="Sets the maximum number of players which can join this server."/>
+
+
+                                    <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If checked, the idle timeout period will be used."/>
+                                    <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="The time until idle players are kicked from the server."
+                                IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
+
+                                </Grid>
+                            </GroupBox>
+
+
                             <!--
         					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
         						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
                             -->
-                            <CheckBox Grid.Column="0" Grid.Row="2" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list URL specified will be used."/>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding BanListURL}" ToolTip="The URL of the ban list to use." IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
                             
-                            <Label Grid.Column="2" Grid.Row="2" Content="Spectator Password:" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
-                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
-                            <local:AnnotatedSlider Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
-        						ToolTip="Sets the maximum number of players which can join this server."/>
-
-
-                            <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If checked, the idle timeout period will be used."/>
-                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time until idle players are kicked from the server."
-                                IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
-
-                            <Label Grid.Column="0" Grid.Row="5" Content="Auto Save Period:" ToolTip="The time between server auto-saves."/>
-                            <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Label="" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time between server auto-saves."/>
-
                             <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="Admin Console (RCON)">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -893,11 +940,15 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0"  Orientation="Horizontal" Margin="9,0,0,5" Height="20">
-                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server On Boot" ToolTip="Automatically start the server when the machine starts." />
+                            <local:AnnotatedSlider Margin="10,0,0,0"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="The time between server auto-saves."/>
+
+                            <StackPanel Grid.Row="1"  Orientation="Horizontal" Margin="9,0,0,5" Height="20">
+                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server On Boot" ToolTip="Automatically start the server when the machine starts." />                                
                             </StackPanel>
-                            <GroupBox Grid.Row="1" HorizontalAlignment="Stretch">
+                            <GroupBox Grid.Row="2" HorizontalAlignment="Stretch">
                                 <GroupBox.Header>
                                     <CheckBox Name="EnableAutoUpdatesCheckbox" Content="Enable Periodic Auto-Updates" IsChecked="{Binding EnableAutoUpdate}" ToolTip="Automatically check for updates periodically and upgrade the server."/>
                                 </GroupBox.Header>
@@ -1449,6 +1500,7 @@
                                 <CheckBox Content="Enable PvP Structure Decay" IsChecked="{Binding PvPStructureDecay}" Margin="5" ToolTip="If checked, structures in PvP will automatically decay if left unused after a period of time."/>
                                 <local:AnnotatedSlider Label="PvP Zone Structure Damage:" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage structures take within caves/cave entrances, in PvP."/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
+                                <local:AnnotatedSlider Label="Max Platform Saddle Structures:" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items" ToolTip="The maximum number of platformed creatures or rafts allowed on the server."/>
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left" ToolTip="If checked, enables decay of player structures in PvE."/>

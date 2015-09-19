@@ -276,6 +276,24 @@ namespace ARK_Server_Manager.Lib
 
 
 
+        public bool UseRawSockets
+        {
+            get { return (bool)GetValue(UseRawSocketsProperty); }
+            set { SetValue(UseRawSocketsProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseRawSocketsProperty = DependencyProperty.Register(nameof(UseRawSockets), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int MaxPlatformSaddleStructureLimit
+        {
+            get { return (int)GetValue(MaxPlatformSaddleStructureLimitProperty); }
+            set { SetValue(MaxPlatformSaddleStructureLimitProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxPlatformSaddleStructureLimitProperty = DependencyProperty.Register(nameof(MaxPlatformSaddleStructureLimit), typeof(int), typeof(ServerProfile), new PropertyMetadata(4096));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool DisableDinoDecayPvE
         {
@@ -1465,6 +1483,11 @@ namespace ARK_Server_Manager.Lib
             {
                 serverArgs.Append("?RCONEnabled=true");
                 serverArgs.Append("?RCONPort=").Append(this.RCONPort);
+            }
+
+            if(this.UseRawSockets)
+            {
+                serverArgs.Append("?bRawSockets");
             }
 
             // Currently this setting does not seem to get picked up from the INI file.
