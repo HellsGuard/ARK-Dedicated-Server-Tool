@@ -91,7 +91,7 @@ try
             while($minutesLeft -gt 0)
             {
                 Write-Server($minutesLeft);
-                if($minutesLeft > 10)
+                if($minutesLeft -gt 10)
                 {
                     Start-Sleep -Seconds 300
                     $minutesLeft = $minutesLeft - 5
