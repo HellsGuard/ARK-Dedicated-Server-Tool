@@ -286,6 +286,17 @@ namespace ARK_Server_Manager.Lib
 
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float PerPlatformMaxStructuresMultiplier
+        {
+            get { return (float)GetValue(PerPlatformMaxStructuresMultiplierProperty); }
+            set { SetValue(PerPlatformMaxStructuresMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerPlatformMaxStructuresMultiplierProperty = DependencyProperty.Register(nameof(PerPlatformMaxStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.25f));
+
+
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public int MaxPlatformSaddleStructureLimit
         {
             get { return (int)GetValue(MaxPlatformSaddleStructureLimitProperty); }
