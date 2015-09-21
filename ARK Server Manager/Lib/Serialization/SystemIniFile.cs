@@ -54,7 +54,12 @@ namespace ARK_Server_Manager.Lib
         /// Clear the section before writing this value.
         /// </summary>
         public bool ClearSection;
-     
+
+        /// <summary>
+        /// If true, the value will always be written with quotes
+        /// </summary>
+        public bool QuotedString;
+
         /// <summary>
         /// Only write the attributed value if the named field is true.
         /// </summary>
@@ -211,7 +216,13 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            IniWriteValue(attr.Section, keyName, Convert.ToString(value), attr.File);
+                            var strValue = Convert.ToString(value);
+                            if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
+                            {
+                                strValue = "\"" + strValue + "\"";
+                            }
+
+                            IniWriteValue(attr.Section, keyName, strValue, attr.File);
                         }
                     }
                 }
