@@ -709,6 +709,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="Name and Passwords" >
                                 <Grid>
@@ -883,7 +884,12 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Header="Auto Saves" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
+                                <local:AnnotatedSlider Margin="5"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="The time between server auto-saves."/>
+                            </GroupBox>
+
+                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -895,12 +901,21 @@
                                 </Grid>
                             </GroupBox>
 
-                            <Label Grid.Column="0" Grid.Row="9" Content="Additional Args:" VerticalAlignment="Center" ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient"/>
-                            <DockPanel Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="9" LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click" ToolTip="View the command line start command for the server."/>
-                                <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
-                            </DockPanel>
+                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Command Line">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Additional Args:" VerticalAlignment="Center" ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient"/>
+                                <DockPanel Grid.Column="1" LastChildFill="True">
+                                    <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click" ToolTip="View the command line start command for the server."/>
+                                    <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
+        						    ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
+                                </DockPanel>
+                                </Grid>
+                            </GroupBox>
                         </Grid>
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
@@ -942,8 +957,6 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <local:AnnotatedSlider Margin="10,0,0,0"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time between server auto-saves."/>
 
                             <StackPanel Grid.Row="1"  Orientation="Horizontal" Margin="9,0,0,5" Height="20">
                                 <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center"  Content="Auto-start Server On Boot" ToolTip="Automatically start the server when the machine starts." />                                
