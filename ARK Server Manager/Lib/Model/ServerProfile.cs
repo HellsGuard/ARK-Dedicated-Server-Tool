@@ -303,7 +303,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxPlatformSaddleStructureLimitProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxPlatformSaddleStructureLimitProperty = DependencyProperty.Register(nameof(MaxPlatformSaddleStructureLimit), typeof(int), typeof(ServerProfile), new PropertyMetadata(4096));
+        public static readonly DependencyProperty MaxPlatformSaddleStructureLimitProperty = DependencyProperty.Register(nameof(MaxPlatformSaddleStructureLimit), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool DisableDinoDecayPvE
