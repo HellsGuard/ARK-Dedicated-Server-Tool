@@ -316,10 +316,10 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Crossbow_C",                 EngramLevelRequirement=25, EngramPointsCost=12, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Electronics_C",              EngramLevelRequirement=40, EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
 
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformLarge_C",    EngramLevelRequirement=40, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformMedium_C",   EngramLevelRequirement=40, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformSmall_C",    EngramLevelRequirement=40, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorTrack_C",            EngramLevelRequirement=40, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformLarge_C",    EngramLevelRequirement=65, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformMedium_C",   EngramLevelRequirement=65, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformSmall_C",    EngramLevelRequirement=65, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_ElevatorTrack_C",            EngramLevelRequirement=65, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
 
             new EngramEntry { EngramClassName="EngramEntry_Fabricator_C",               EngramLevelRequirement=40, EngramPointsCost=24, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_FeedingTrough_C",            EngramLevelRequirement=15, EngramPointsCost=12, EngramHidden=false, RemoveEngramPreReq=false },
@@ -422,7 +422,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesia_C",            EngramLevelRequirement=60, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Ptero_C",             EngramLevelRequirement=35, EngramPointsCost=15, EngramHidden=false, RemoveEngramPreReq=false },
 
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesio_Platform_C",   EngramLevelRequirement=75, EngramPointsCost=50, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesio_Platform_C",   EngramLevelRequirement=80, EngramPointsCost=50, EngramHidden=false, RemoveEngramPreReq=false },
 
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Raptor_C",            EngramLevelRequirement=15, EngramPointsCost=9,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Rex_C",               EngramLevelRequirement=60, EngramPointsCost=40, EngramHidden=false, RemoveEngramPreReq=false },
