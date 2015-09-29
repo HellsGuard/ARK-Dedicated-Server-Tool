@@ -1217,7 +1217,7 @@
                                             <DataGridTextColumn Binding="{Binding FriendlyName, Mode=TwoWay}" Header="Name"/>
                                             <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}" Header="Spawnable"/>
                                             <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}" Header="Tameable"/>
-                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" 
+                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}"
                                                                     SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" 
                                                                     SelectedValuePath="ClassName"                                                                     
                                                                     DisplayMemberPath="FriendlyName" 

@@ -1575,15 +1575,17 @@ namespace ARK_Server_Manager.Lib
         {
             using (var hashAlgo = MD5.Create())
             {
-                var hash = Encoding.UTF8.GetBytes(this.InstallDirectory);
+                var hashStr = Encoding.UTF8.GetBytes(this.InstallDirectory);
+                var hash = hashAlgo.ComputeHash(hashStr);
                 StringBuilder builder = new StringBuilder();
                 foreach(var b in hash)
                 {
                     builder.Append(b.ToString("x2"));
                 }
 
-                var hashStr = builder.ToString();
-                return hashStr.Substring(0, Math.Min(hashStr.Length, 16));
+                var outputStr = builder.ToString();
+                
+                return outputStr;
             }
         }
 
