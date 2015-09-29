@@ -541,7 +541,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodCeiling_C",              EngramLevelRequirement=10, EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_WoodCeilingWithTrapdoor_C",  EngramLevelRequirement=15, EngramPointsCost=9,  EngramHidden=false, RemoveEngramPreReq=false },
 
-            new EngramEntry { EngramClassName="EngramEntry_WoodChair_C",                EngramLevelRequirement=5,  EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_WoodChair_C",                EngramLevelRequirement=10,  EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
 
             new EngramEntry { EngramClassName="EngramEntry_WoodDoor_C",                 EngramLevelRequirement=10, EngramPointsCost=4,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_WoodFenceFoundation_C",      EngramLevelRequirement=15, EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
