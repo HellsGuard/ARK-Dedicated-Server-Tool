@@ -1593,7 +1593,10 @@
                                             <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all existing player levels.">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to defaults.">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to ASM defaults.">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to official defaults.">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1648,7 +1651,11 @@
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    ToolTip="Reset all dino level customizations back to defaults.">
+                                                    ToolTip="Reset all dino level customizations back to ASM defaults.">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
+                                                    ToolTip="Reset all dino level customizations back to official defaults.">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
