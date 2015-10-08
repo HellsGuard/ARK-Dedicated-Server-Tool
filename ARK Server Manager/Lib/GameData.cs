@@ -331,6 +331,12 @@ namespace ARK_Server_Manager.Lib
                 new Level {XPRequired=27105 , EngramPoints=0},
                 new Level {XPRequired=31505 , EngramPoints=0},
                 new Level {XPRequired=36005 , EngramPoints=0},
+                new Level {XPRequired=41000 , EngramPoints=0},
+                new Level {XPRequired=47000 , EngramPoints=0},
+                new Level {XPRequired=55000 , EngramPoints=0},
+                new Level {XPRequired=65000 , EngramPoints=0},
+                new Level {XPRequired=80000 , EngramPoints=0},
+                new Level {XPRequired=98000 , EngramPoints=0},
             };
 
         private static readonly Level[] levelProgressionPlayerOfficial = new Level[]
@@ -420,6 +426,9 @@ namespace ARK_Server_Manager.Lib
                 new Level {XPRequired=289681, EngramPoints=50},
                 new Level {XPRequired=323189, EngramPoints=50},
                 new Level {XPRequired=360886, EngramPoints=50},
+                new Level {XPRequired=403318, EngramPoints=60},
+                new Level {XPRequired=451484, EngramPoints=60},
+                new Level {XPRequired=506186, EngramPoints=60},
             };
 
         public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
