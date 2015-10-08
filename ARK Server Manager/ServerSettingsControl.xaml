@@ -1519,6 +1519,7 @@
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
                                 <local:AnnotatedSlider Label="Per-Platform Structures Multiplier:" Value="{Binding PerPlatformMaxStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="x" ToolTip="Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle."/>
                                 <local:AnnotatedSlider Label="Max Platform Saddle Structures:" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items" ToolTip="The maximum number of platformed creatures or rafts allowed on the entire server."/>
+                                <CheckBox Content="Allow Unaligned Dinos on Flyer Platform" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" Margin="5" ToolTip="If checked, non-allied dinos are able to stand on the Quetal platforms."/>
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left" ToolTip="If checked, enables decay of player structures in PvE."/>

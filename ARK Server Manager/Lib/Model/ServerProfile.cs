@@ -176,6 +176,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty CropGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(CropGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty LayEggIntervalMultiplierProperty = DependencyProperty.Register(nameof(LayEggIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty PoopIntervalMultiplierProperty = DependencyProperty.Register(nameof(PoopIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty FlyerPlatformAllowUnalignedDinoBasingProperty = DependencyProperty.Register(nameof(FlyerPlatformAllowUnalignedDinoBasing), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
@@ -772,6 +773,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(PoopIntervalMultiplierProperty); }
             set { SetValue(PoopIntervalMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bFlyerPlatformAllowUnalignedDinoBasing")]
+        public bool FlyerPlatformAllowUnalignedDinoBasing
+        {
+            get { return (bool)GetValue(FlyerPlatformAllowUnalignedDinoBasingProperty); }
+            set { SetValue(FlyerPlatformAllowUnalignedDinoBasingProperty, value); }
         }
 
 
