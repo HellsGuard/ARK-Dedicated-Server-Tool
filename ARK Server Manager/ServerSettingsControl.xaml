@@ -710,6 +710,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="Name and Passwords" >
                                 <Grid>
@@ -901,7 +902,22 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Command Line">
+                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Server Options">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the anti speedhack detection will be disabled."/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the player-move-physics will be displayed."/>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="Command Line">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>

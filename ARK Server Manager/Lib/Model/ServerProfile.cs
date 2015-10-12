@@ -1219,6 +1219,22 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty DisableAntiSpeedHackDetectionProperty = DependencyProperty.Register(nameof(DisableAntiSpeedHackDetection), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisableAntiSpeedHackDetection
+        {
+            get { return (bool)GetValue(DisableAntiSpeedHackDetectionProperty); }
+            set { SetValue(DisableAntiSpeedHackDetectionProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisablePlayerMovePhysicsOptimizationProperty = DependencyProperty.Register(nameof(DisablePlayerMovePhysicsOptimization), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisablePlayerMovePhysicsOptimization
+        {
+            get { return (bool)GetValue(DisablePlayerMovePhysicsOptimizationProperty); }
+            set { SetValue(DisablePlayerMovePhysicsOptimizationProperty, value); }
+        }
+
         #endregion
 
         #region RCON Settings
@@ -1570,6 +1586,16 @@ namespace ARK_Server_Manager.Lib
                 {
                     serverArgs.Append(" -OnlyAdminRejoinAsSpectator");
                 }
+            }
+
+            if (this.DisableAntiSpeedHackDetection)
+            {
+                serverArgs.Append(" -noantispeedhack");
+            }
+
+            if (this.DisablePlayerMovePhysicsOptimization)
+            {
+                serverArgs.Append(" -nocombineclientmoves");
             }
 
             serverArgs.Append(' ');
