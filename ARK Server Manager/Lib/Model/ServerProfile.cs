@@ -1081,6 +1081,14 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_OnlyAdminRejoinAsSpectatorProperty = DependencyProperty.Register(nameof(SOTF_OnlyAdminRejoinAsSpectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
+        public bool SOTF_GamePlayLogging
+        {
+            get { return (bool)GetValue(SOTF_GamePlayLoggingProperty); }
+            set { SetValue(SOTF_GamePlayLoggingProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_GamePlayLoggingProperty = DependencyProperty.Register(nameof(SOTF_GamePlayLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_MaxNumberOfPlayersInTribe
@@ -1218,6 +1226,22 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty DisableAntiSpeedHackDetectionProperty = DependencyProperty.Register(nameof(DisableAntiSpeedHackDetection), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisableAntiSpeedHackDetection
+        {
+            get { return (bool)GetValue(DisableAntiSpeedHackDetectionProperty); }
+            set { SetValue(DisableAntiSpeedHackDetectionProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisablePlayerMovePhysicsOptimizationProperty = DependencyProperty.Register(nameof(DisablePlayerMovePhysicsOptimization), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisablePlayerMovePhysicsOptimization
+        {
+            get { return (bool)GetValue(DisablePlayerMovePhysicsOptimizationProperty); }
+            set { SetValue(DisablePlayerMovePhysicsOptimizationProperty, value); }
+        }
 
         #endregion
 
@@ -1588,6 +1612,21 @@ namespace ARK_Server_Manager.Lib
                 {
                     serverArgs.Append(" -OnlyAdminRejoinAsSpectator");
                 }
+
+                if(this.SOTF_GamePlayLogging)
+                {
+                    serverArgs.Append(" -gameplaylogging");
+                }
+            }
+
+            if (this.DisableAntiSpeedHackDetection)
+            {
+                serverArgs.Append(" -noantispeedhack");
+            }
+
+            if (this.DisablePlayerMovePhysicsOptimization)
+            {
+                serverArgs.Append(" -nocombineclientmoves");
             }
 
             serverArgs.Append(' ');

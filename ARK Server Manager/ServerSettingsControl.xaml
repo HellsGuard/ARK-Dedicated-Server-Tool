@@ -710,6 +710,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="Name and Passwords" >
                                 <Grid>
@@ -901,7 +902,22 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Command Line">
+                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Server Options">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the anti speedhack detection will be disabled."/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the player-move-physics will be displayed."/>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="Command Line">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -1725,6 +1741,7 @@
                                     <local:AnnotatedSlider Label="Auto-start Delay Time:" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="seconds" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the minimum number of tribes has been achieved before the game starts."/>
                                     <local:AnnotatedSlider Label="Auto-restart Delay Time:" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="seconds"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the last game has ended before the new game will start."/>
                                     <local:AnnotatedSlider Label="Sudden Death Time:" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="seconds" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="The amount of time Sudden Death will be in effect until the game is declared a draw."/>
+                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" ToolTip="If checked, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.">Enable Game Play Logging</CheckBox>
                                 </StackPanel>
                             </GroupBox>
                         </Grid>
