@@ -911,9 +911,11 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the anti speedhack detection will be disabled."/>
-                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the player-move-physics will be displayed."/>
+                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the Valve anti-cheat system will be disabled. Please use this with caution!"/>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the anti speedhack detection will be disabled."/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the player-move-physics will be disabled."/>
                                 </Grid>
                             </GroupBox>
 

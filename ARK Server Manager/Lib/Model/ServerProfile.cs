@@ -1243,6 +1243,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisablePlayerMovePhysicsOptimizationProperty, value); }
         }
 
+        public static readonly DependencyProperty DisableValveAntiCheatSystemProperty = DependencyProperty.Register(nameof(DisableValveAntiCheatSystem), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisableValveAntiCheatSystem
+        {
+            get { return (bool)GetValue(DisableValveAntiCheatSystemProperty); }
+            set { SetValue(DisableValveAntiCheatSystemProperty, value); }
+        }
+
         #endregion
 
         #region RCON Settings
@@ -1617,6 +1625,11 @@ namespace ARK_Server_Manager.Lib
                 {
                     serverArgs.Append(" -gameplaylogging");
                 }
+            }
+
+            if (this.DisableValveAntiCheatSystem)
+            {
+                serverArgs.Append(" -insecure");
             }
 
             if (this.DisableAntiSpeedHackDetection)
