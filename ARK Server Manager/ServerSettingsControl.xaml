@@ -795,14 +795,14 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0" Grid.Row="0" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If checked, the ban list URL specified will be used."/>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If enabled, the ban list URL specified will be used."/>
                                     <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding BanListURL}" ToolTip="The URL of the ban list to use." IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
 
                                     <local:AnnotatedSlider Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
         						ToolTip="Sets the maximum number of players which can join this server."/>
 
 
-                                    <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If checked, the idle timeout period will be used."/>
+                                    <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If enabled, the idle timeout period will be used."/>
                                     <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="The time until idle players are kicked from the server."
                                 IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
@@ -826,9 +826,9 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="Enable RCON Port" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="If checked, the RCON port will be enabled."/>
+                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="Enable RCON Port" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="If enabled, the RCON port will be enabled."/>
                                     <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="The port that RCON will use on your server."/>
-                                    <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="Log Admin to Chat" Margin="5" ToolTip="If checked, admin commands will be echoed to chat"/>
+                                    <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="Log Admin to Chat" Margin="5" ToolTip="If enabled, admin commands will be echoed to chat"/>
                                 </Grid>
                             </GroupBox>
 
@@ -913,9 +913,9 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the Valve anti-cheat system will be disabled. Please use this with caution!"/>
-                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the anti speedhack detection will be disabled."/>
-                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If checked, the player-move-physics will be disabled."/>
+                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!"/>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the anti speedhack detection will be disabled."/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the player-move-physics will be disabled."/>
                                 </Grid>
                             </GroupBox>
 
@@ -1043,23 +1043,23 @@
                             <StackPanel>
                                 <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left" ToolTip="Enables hardcore mode (players can not respawn, a new character must be created)."/>
                                 <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left" ToolTip="Enabled Player vs Player mode (players are able to deal damage to or kill each other. In PvP players can also damage or destroy another tribe's buildings or kill their dinos)."/>
-                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left" ToolTip="If checked, allows building in caves when PvE mode is enabled."/>
-                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" ToolTip="If checked, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled." />
+                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left" ToolTip="If enabled, allows building in caves when PvE mode is enabled."/>
+                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" ToolTip="If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled." />
                                 <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop." />
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5" ToolTip="If checked, this will allow downloading external survivors/items/dinos into your server."/>
+                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5" ToolTip="If enabled, this will allow downloading external survivors/items/dinos into your server."/>
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
-                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the survivor downloads are disabled."/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the item downloads are disabled."/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if checked, the dino downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if enabled, the survivor downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if enabled, the item downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="if enabled, the dino downloads are disabled."/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5" ToolTip="If checked, enables the increase PvP respawn interval settings."/>
+                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5" ToolTip="If enabled, enables the increase PvP respawn interval settings."/>
                                     </GroupBox.Header>
                                     <StackPanel  IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}">
                                         <local:AnnotatedSlider Label="Interval Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="The time period the respawn check lasts after the player is killed by a team." />
@@ -1069,7 +1069,7 @@
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5" ToolTip="If checked, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times."/>
+                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5" ToolTip="If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times."/>
                                     </GroupBox.Header>
                                     <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
                                         <Grid.ColumnDefinitions>
@@ -1079,7 +1079,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="If checked, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time."/>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="If enabled, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time."/>
                                         <Label    Grid.Column="1" Content="Start Time:"  Margin="10,0,0,0" ToolTip="The start time in hours and minutes from midnight to enable PvE mode."/>
                                         <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The start time in hours and minutes from midnight to enable PvE mode." >
                                             <Validation.ErrorTemplate>
@@ -1157,7 +1157,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left" ToolTip="If checked, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE."/>
+                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left" ToolTip="If enabled, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE."/>
                                 <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it."/>
                                 <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="Set the maximum XP cap of players."/>
                                 <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage players deal with their attacks. Higher values increase damage. Lower values decrease it."/>
@@ -1213,7 +1213,7 @@
                                 <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' stamina consumption. Higher values increase stamina consumption (dinos get tired faster)."/>
                                 <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' health recovery. Higher values increase the recovery rate (dinos heal faster)."/>
                                 <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark."/>
-                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="Disable Dino Decay PvE" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="If checked, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player."/>
+                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="Disable Dino Decay PvE" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player."/>
                                 <local:AnnotatedSlider Label="PvE Dino Decay Period:" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked."/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
@@ -1543,15 +1543,15 @@
                             <StackPanel Grid.Column="0">
                                 <local:AnnotatedSlider Label="Structure Resistance:" Value="{Binding StructureResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage structures receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
                                 <local:AnnotatedSlider Label="Structure Damage:" Value="{Binding StructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage structures deal with their attacks (e.g. spiked walls). Higher values increase damage. Lower values decrease it."/>
-                                <CheckBox Content="Enable PvP Structure Decay" IsChecked="{Binding PvPStructureDecay}" Margin="5" ToolTip="If checked, structures in PvP will automatically decay if left unused after a period of time."/>
+                                <CheckBox Content="Enable PvP Structure Decay" IsChecked="{Binding PvPStructureDecay}" Margin="5" ToolTip="If enabled, structures in PvP will automatically decay if left unused after a period of time."/>
                                 <local:AnnotatedSlider Label="PvP Zone Structure Damage:" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage structures take within caves/cave entrances, in PvP."/>
                                 <local:AnnotatedSlider Label="Max Structures Visible:" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items"/>
                                 <local:AnnotatedSlider Label="Per-Platform Structures Multiplier:" Value="{Binding PerPlatformMaxStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="x" ToolTip="Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle."/>
                                 <local:AnnotatedSlider Label="Max Platform Saddle Structures:" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="items" ToolTip="The maximum number of platformed creatures or rafts allowed on the entire server."/>
-                                <CheckBox Content="Allow Unaligned Dinos on Flyer Platform" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" Margin="5" ToolTip="If checked, non-allied dinos are able to stand on the Quetal platforms."/>
+                                <CheckBox Content="Allow Unaligned Dinos on Flyer Platform" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" Margin="5" ToolTip="If enabled, non-allied dinos are able to stand on the Quetal platforms."/>
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left" ToolTip="If checked, enables decay of player structures in PvE."/>
+                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="Enable Structure Decay PvE" HorizontalAlignment="Left" ToolTip="If enabled, enables decay of player structures in PvE."/>
                                     </GroupBox.Header>
                                     <StackPanel Orientation="Vertical">
                                         <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Period:" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="?" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the time required for player structures to decay in PvE mode." />
@@ -1569,7 +1569,7 @@
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="Enable Engram Overrides" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="If checked, enables engram customizations."/>
+                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="Enable Engram Overrides" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="If enabled, enables engram customizations."/>
                                         <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="Reset all engram customizations back to defaults.">
                                             <Image Source="Art/Refresh.png" Width="16"/>
                                         </Button>
@@ -1619,7 +1619,7 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left" ToolTip="If checked, enables player and dino level customizations."/>
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left" ToolTip="If enabled, enables player and dino level customizations."/>
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
@@ -1739,22 +1739,22 @@
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" ToolTip="If checked, configures the server as a 'Survival of the Fittest' server.">Enable Survival of the Fittest</CheckBox>
+                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" ToolTip="If enabled, configures the server as a 'Survival of the Fittest' server.">Enable Survival of the Fittest</CheckBox>
                                         <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="Load an existing profile, or import one directly from an existing server.">
                                             <Image Source="Art/Help.png" Height="16" Margin="0" />
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
                                 <StackPanel IsEnabled="{Binding ElementName=EnableSOTF, Path=IsChecked}">
-                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" ToolTip="If checked, players cannot be spectators after they die.">Disable Death Spectator</CheckBox>
-                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" ToolTip="If checked, only admins can join as spectators once the game has started.">Only Admin Rejoin As Spectator</CheckBox>
+                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" ToolTip="If enabled, players cannot be spectators after they die.">Disable Death Spectator</CheckBox>
+                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" ToolTip="If enabled, only admins can join as spectators once the game has started.">Only Admin Rejoin As Spectator</CheckBox>
                                     <local:AnnotatedSlider Label="Max Players in Tribe:" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="players" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The maximum number of players allowed in a tribe."/>
                                     <local:AnnotatedSlider Label="Tribe Required for Game:" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="tribes" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The number of tribes requires for the game to start."/>
                                     <local:AnnotatedSlider Label="Ring of Death Collapse Time:" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="seconds" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="The game length before Sudden Death."/>
                                     <local:AnnotatedSlider Label="Auto-start Delay Time:" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="seconds" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the minimum number of tribes has been achieved before the game starts."/>
                                     <local:AnnotatedSlider Label="Auto-restart Delay Time:" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="seconds"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the last game has ended before the new game will start."/>
                                     <local:AnnotatedSlider Label="Sudden Death Time:" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="seconds" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="The amount of time Sudden Death will be in effect until the game is declared a draw."/>
-                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" ToolTip="If checked, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.">Enable Game Play Logging</CheckBox>
+                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" ToolTip="If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.">Enable Game Play Logging</CheckBox>
                                 </StackPanel>
                             </GroupBox>
                         </Grid>
