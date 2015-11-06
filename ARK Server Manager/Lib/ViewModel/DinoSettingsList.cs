@@ -63,6 +63,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     WildResistanceMultiplier = 1.0f,
                 });
             }
+
+            // sort the collection by the friendly name.
+            this.Sort(row => row.FriendlyName);
         }
 
         public void RenderToView()

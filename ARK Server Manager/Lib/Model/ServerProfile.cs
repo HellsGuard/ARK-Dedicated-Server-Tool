@@ -1074,6 +1074,15 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float StructureDamageRepairCooldown
+        {
+            get { return (float)GetValue(StructureDamageRepairCooldownProperty); }
+            set { SetValue(StructureDamageRepairCooldownProperty, value); }
+        }
+
+        public static readonly DependencyProperty StructureDamageRepairCooldownProperty = DependencyProperty.Register(nameof(StructureDamageRepairCooldown), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.0f));
+
         #endregion
 
         #region Survival of the Fittest Options
@@ -1274,6 +1283,22 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(DisableValveAntiCheatSystemProperty); }
             set { SetValue(DisableValveAntiCheatSystemProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForceAllStructureLockingProperty = DependencyProperty.Register(nameof(ForceAllStructureLocking), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool ForceAllStructureLocking
+        {
+            get { return (bool)GetValue(ForceAllStructureLockingProperty); }
+            set { SetValue(ForceAllStructureLockingProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoDestroyOldStructuresMultiplierProperty = DependencyProperty.Register(nameof(AutoDestroyOldStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.0f));
+
+        public float AutoDestroyOldStructuresMultiplier
+        {
+            get { return (float)GetValue(AutoDestroyOldStructuresMultiplierProperty); }
+            set { SetValue(AutoDestroyOldStructuresMultiplierProperty, value); }
         }
 
         #endregion
@@ -1618,6 +1643,16 @@ namespace ARK_Server_Manager.Lib
             if(this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
+            }
+
+            if (this.ForceAllStructureLocking)
+            {
+                serverArgs.Append("?ForceAllStructureLocking=true");
+            }
+
+            if (this.AutoDestroyOldStructuresMultiplier >= 1.0f)
+            {
+                serverArgs.AppendFormat("?AutoDestroyOldStructuresMultiplier={0}", AutoDestroyOldStructuresMultiplier);
             }
 
             // Currently this setting does not seem to get picked up from the INI file.
