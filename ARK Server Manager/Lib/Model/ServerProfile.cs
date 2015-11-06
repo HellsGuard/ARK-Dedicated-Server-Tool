@@ -1650,7 +1650,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?ForceAllStructureLocking=true");
             }
 
-            if (this.AutoDestroyOldStructuresMultiplier > 1.0f)
+            if (this.AutoDestroyOldStructuresMultiplier >= 1.0f)
             {
                 serverArgs.AppendFormat("?AutoDestroyOldStructuresMultiplier={0}", AutoDestroyOldStructuresMultiplier);
             }
