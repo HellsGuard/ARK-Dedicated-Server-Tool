@@ -181,6 +181,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty MatingIntervalMultiplierProperty = DependencyProperty.Register(nameof(MatingIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty EggHatchSpeedMultiplierProperty = DependencyProperty.Register(nameof(EggHatchSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty BabyMatureSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyMatureSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty BabyFoodConsumptionSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyFoodConsumptionSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat
@@ -805,6 +806,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(BabyMatureSpeedMultiplierProperty); }
             set { SetValue(BabyMatureSpeedMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BabyFoodConsumptionSpeedMultiplier
+        {
+            get { return (float)GetValue(BabyFoodConsumptionSpeedMultiplierProperty); }
+            set { SetValue(BabyFoodConsumptionSpeedMultiplierProperty, value); }
         }
 
 
