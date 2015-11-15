@@ -1091,6 +1091,24 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty StructureDamageRepairCooldownProperty = DependencyProperty.Register(nameof(StructureDamageRepairCooldown), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.0f));
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWar")]
+        public bool AllowTribeWarPvE
+        {
+            get { return (bool)GetValue(AllowTribeWarPvEProperty); }
+            set { SetValue(AllowTribeWarPvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowTribeWarPvEProperty = DependencyProperty.Register(nameof(AllowTribeWarPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWarCancel")]
+        public bool AllowTribeWarCancelPvE
+        {
+            get { return (bool)GetValue(AllowTribeWarCancelPvEProperty); }
+            set { SetValue(AllowTribeWarCancelPvEProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowTribeWarCancelPvEProperty = DependencyProperty.Register(nameof(AllowTribeWarCancelPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
         #endregion
 
         #region Survival of the Fittest Options

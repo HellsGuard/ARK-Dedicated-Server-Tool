@@ -12,6 +12,7 @@ namespace ARK_Server_Manager.Lib
     {
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[] 
             {
+                new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag = "Angler",          DinoName = "Angler Fish",         CommonName = "Angler",              SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag = "Anky",            DinoName = "Ankylosaurus",        CommonName = "Ankylo",              SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag = "Ant",             DinoName = "Titanomyrma Drone",   CommonName = "Titanomyrma Drone",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Argentavis_Character_BP_C",      DinoNameTag = "Argent",          DinoName = "Argentavis",          CommonName = "Argentavis",          SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
@@ -28,6 +29,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag = "Dolphin",         DinoName = "Ichthyosaurus",       CommonName = "Ichthy",              SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag = "Dragonfly",       DinoName = "Meganeura",           CommonName = "Meganeura",           SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag = "Gigant",          DinoName = "Giganotosaurus",      CommonName = "Giganotosaurus",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag = "Kairuku",         DinoName = "Kairuku",             CommonName = "Kairuku",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag = "Elite Carno",     DinoName = "Alpha Carnotaurus",   CommonName = "Alpha Carnotaurus",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag = "Elite Raptor",    DinoName = "Alpha Raptor",        CommonName = "Alpha Raptor",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag = "Elite Rex",       DinoName = "Alpha Tyrannosaurus", CommonName = "Alpha T-Rex",         SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
@@ -68,6 +70,7 @@ namespace ARK_Server_Manager.Lib
 
         private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
         {
+            new ClassMultiplier { ClassName="Angler_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Ankylo_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Ant_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Argentavis_Character_BP_C", Multiplier = 1.0f },
@@ -85,6 +88,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Dragonfly_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Gigant_Character_BP_C", Multiplier = 1.0f },
+            new ClassMultiplier { ClassName="Kairuku_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Mammoth_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="Megalodon_Character_BP_C", Multiplier = 1.0f },
             new ClassMultiplier { ClassName="MegaCarno_Character_BP_C", Multiplier = 1.0f },
@@ -460,6 +464,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_C4Ammo_C",                   EngramLevelRequirement=55, EngramPointsCost=12, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Campfire_C",                 EngramLevelRequirement=2,  EngramPointsCost=3,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Canteen_C",                  EngramLevelRequirement=50, EngramPointsCost=24, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_CatapultTurret_C",           EngramLevelRequirement=30, EngramPointsCost=25, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ChitinBoots_C",              EngramLevelRequirement=35, EngramPointsCost=15, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ChitinGloves_C",             EngramLevelRequirement=35, EngramPointsCost=15, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ChitinHelmet_C",             EngramLevelRequirement=30, EngramPointsCost=18, EngramHidden=false, RemoveEngramPreReq=false },
@@ -561,6 +566,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_MetalWallWithWindow_C",      EngramLevelRequirement=45, EngramPointsCost=18, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_MetalWindow_C",              EngramLevelRequirement=50, EngramPointsCost=18, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_MinersHelmet_C",             EngramLevelRequirement=65, EngramPointsCost=35, EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_MinigunTurret_C",            EngramLevelRequirement=85, EngramPointsCost=80, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_MiracleGro_C",               EngramLevelRequirement=35, EngramPointsCost=20, EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_MortarAndPestle_C",          EngramLevelRequirement=5,  EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Narcotic_C",                 EngramLevelRequirement=5,  EngramPointsCost=6,  EngramHidden=false, RemoveEngramPreReq=false },
