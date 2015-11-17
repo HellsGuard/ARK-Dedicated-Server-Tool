@@ -29,7 +29,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag = "Dolphin",         DinoName = "Ichthyosaurus",       CommonName = "Ichthy",              SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag = "Dragonfly",       DinoName = "Meganeura",           CommonName = "Meganeura",           SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag = "Gigant",          DinoName = "Giganotosaurus",      CommonName = "Giganotosaurus",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
-                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag = "Kairuku",         DinoName = "Kairuku",             CommonName = "Kairuku",      SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
+                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag = "Kairuku",         DinoName = "Kairuku",             CommonName = "Kairuku",             SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag = "Elite Carno",     DinoName = "Alpha Carnotaurus",   CommonName = "Alpha Carnotaurus",   SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag = "Elite Raptor",    DinoName = "Alpha Raptor",        CommonName = "Alpha Raptor",        SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
                 new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag = "Elite Rex",       DinoName = "Alpha Tyrannosaurus", CommonName = "Alpha T-Rex",         SpawnWeightMultiplier = 0.1F, OverrideSpawnLimitPercentage = true, SpawnLimitPercentage = 1.0F },
@@ -129,6 +129,7 @@ namespace ARK_Server_Manager.Lib
 
         private static readonly ClassMultiplier[] standardResourceMultipliers = new ClassMultiplier[]
         {
+            new ClassMultiplier { ClassName="PrimalItemResource_AnglerGel_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C", Multiplier=1.0f },
@@ -152,6 +153,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="PrimalItemResource_Oil_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Pelt_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Polymer_C", Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_Organic_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_RareFlower_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C", Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Silicon_C", Multiplier=1.0f },
