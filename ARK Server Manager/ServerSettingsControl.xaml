@@ -905,17 +905,22 @@
                             <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Server Options">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="67*"/>
+                                        <ColumnDefinition Width="45*"/>
+                                        <ColumnDefinition Width="69*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!"/>
-                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the anti speedhack detection will be disabled."/>
-                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" ToolTip="If enabled, the player-move-physics will be disabled."/>
+                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!" Height="14" Width="223"/>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,5,0,5" ToolTip="If enabled, the anti speedhack detection will be disabled." Height="16" Width="199"/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the player-move-physics will be disabled." Height="14" Width="243"/>
+                                    <CheckBox x:Name="EnableServerAdminLogs" Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableServerAdminLogs}" Content="Enable Server Admin Logs" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the Server Admin Logs (including RCON support) will be turned on." Height="14" Width="158"/>
+                                    <Label Grid.Column="1" Grid.Row="3"   Content="RCON Server Log Buffer:" ToolTip="Sets the max length of RCON game log buffer (default 600)."/>
+                                    <TextBox Grid.Column="2" Grid.Row="3" IsEnabled="{Binding ElementName=EnableServerAdminLogs, Path=IsChecked}" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="Sets the max length of RCON game log buffer (default 600)."/>
                                 </Grid>
                             </GroupBox>
 
@@ -1129,6 +1134,7 @@
                                         <CheckBox IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="Allow Cancelling Tribe Warfare" Margin="5,0,0,0" ToolTip="If enabled, tribes are able to cancel an agreed-upon war before it has actually started."/>
                                     </StackPanel>
                                 </GroupBox>
+                                <CheckBox IsChecked="{Binding AllowCustomRecipes}" Content="Allow Custom Recipes" HorizontalAlignment="Left" ToolTip="If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results)." />
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1571,6 +1577,7 @@
                                 </GroupBox>
                                 <local:AnnotatedSlider Label="Auto Destroy Old Structures Multiplier:" Value="{Binding AutoDestroyOldStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="x" ToolTip="Server option to allow Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed (defined as a multiplier of the Allow Claim period). Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it."/>
                                 <CheckBox Content="Force All Structure Locking" IsChecked="{Binding ForceAllStructureLocking}" Margin="5" ToolTip="If enabled, allow Locking all item containers."/>
+                                <CheckBox Content="Passive Defenses Damage Riderless Dinos" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" Margin="5" ToolTip="If enabled, spike walls will damage wild/riderless Dinos."/>
                             </StackPanel>
                         </Grid>
                     </Expander>
