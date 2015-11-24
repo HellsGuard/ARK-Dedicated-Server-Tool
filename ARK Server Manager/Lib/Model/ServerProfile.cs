@@ -1713,7 +1713,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?ForceAllStructureLocking=true");
             }
 
-            serverArgs.AppendFormat("?AutoDestroyOldStructuresMultiplier={0}", AutoDestroyOldStructuresMultiplier);
+            serverArgs.Append("?AutoDestroyOldStructuresMultiplier=").Append(this.AutoDestroyOldStructuresMultiplier);
 
             // Currently this setting does not seem to get picked up from the INI file.
             serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);

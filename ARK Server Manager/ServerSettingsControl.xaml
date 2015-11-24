@@ -905,9 +905,9 @@
                             <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Server Options">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="67*"/>
-                                        <ColumnDefinition Width="45*"/>
-                                        <ColumnDefinition Width="69*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -1575,7 +1575,7 @@
                                         <local:AnnotatedSlider IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="Structure Decay Multiplier:" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the decay rate of player structures in PvE mode." />
                                     </StackPanel>
                                 </GroupBox>
-                                <local:AnnotatedSlider Label="Auto Destroy Old Structures Multiplier:" Value="{Binding AutoDestroyOldStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="x" ToolTip="Server option to allow Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed (defined as a multiplier of the Allow Claim period). Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it."/>
+                                <local:AnnotatedSlider Label="Auto Destroy Old Structures Multiplier:" Value="{Binding AutoDestroyOldStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="x" ToolTip="Allows Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed. Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it."/>
                                 <CheckBox Content="Force All Structure Locking" IsChecked="{Binding ForceAllStructureLocking}" Margin="5" ToolTip="If enabled, allow Locking all item containers."/>
                                 <CheckBox Content="Passive Defenses Damage Riderless Dinos" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" Margin="5" ToolTip="If enabled, spike walls will damage wild/riderless Dinos."/>
                             </StackPanel>
