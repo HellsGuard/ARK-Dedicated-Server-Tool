@@ -1162,23 +1162,40 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Settings" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_PlayerSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="Enable Flyer-Carry" HorizontalAlignment="Left" ToolTip="If enabled, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE."/>
-                                <local:AnnotatedSlider Label="XP Multiplier:" Value="{Binding XPMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it."/>
-                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsPlayer}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="Set the maximum XP cap of players."/>
-                                <local:AnnotatedSlider Label="Damage:" Value="{Binding PlayerDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage players deal with their attacks. Higher values increase damage. Lower values decrease it."/>
-                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding PlayerResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage players receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
-                                <local:AnnotatedSlider Label="Water Drain:" Value="{Binding PlayerCharacterWaterDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' water consumption. Higher values increase water consumption (player characters get thirsty faster)."/>
-                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding PlayerCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' food consumption. Higher values increase food consumption (player characters get hungry faster)."/>
-                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding PlayerCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster)."/>
-                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster)."/>
+                                <CheckBox IsChecked="{Binding EnableFlyerCarry}" Content="{DynamicResource ServerSettings_EnableFlyerCarryLabel}" HorizontalAlignment="Left" 
+                                          ToolTip="{DynamicResource ServerSettings_EnableFlyerCarryTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_XPMultiplierLabel}" Value="{Binding XPMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_XPMultiplierTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsPlayer}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
+                                                       Suffix="{DynamicResource ServerSettings_MaxXPUnits}"
+                                                       ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DamageLabel}" Value="{Binding PlayerDamageMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ResistanceLabel}" Value="{Binding PlayerResistanceMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" 
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_WaterDrainLabel}" Value="{Binding PlayerCharacterWaterDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_WaterDrainTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding PlayerCharacterFoodDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding PlayerCharacterStaminaDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}"
+                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}"/>
 
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <Label Content="Per-Level Stat Multipliers"/>
+                                        <Label Content="{DynamicResource ServerSettings_PlayerPerLevelStatMultipliersLabel}"/>
                                     </GroupBox.Header>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1186,20 +1203,32 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
-                                            <local:AnnotatedSlider Label="Stamina:" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
-                                            <local:AnnotatedSlider Label="Oxygen:" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
-                                            <local:AnnotatedSlider Label="Food:" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
-                                            <local:AnnotatedSlider Label="Water:" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatHealthLabel}" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatHealthTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatStaminaLabel}" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatStaminaTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTorpidityLabel}" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatTorpidityTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatOxygenLabel}" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatOxygenTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFoodLabel}" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatFoodTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWaterLabel}" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatWaterTooltip}"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
-                                            <local:AnnotatedSlider Label="Weight:" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
-                                            <local:AnnotatedSlider Label="Damage:" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
-                                            <local:AnnotatedSlider Label="Speed:" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
-                                            <local:AnnotatedSlider Label="Fortitude:" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
-                                            <local:AnnotatedSlider Label="Crafting:" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for player character crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTempLabel}" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatTempTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWeightLabel}" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatWeightTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatDamageLabel}" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatDamageTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatSpeedLabel}" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatSpeedTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFortitudeLabel}" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatFortitudeTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatCraftingLabel}" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                                   ToolTip="{DynamicResource ServerSettings_StatCraftingTooltip}"/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>

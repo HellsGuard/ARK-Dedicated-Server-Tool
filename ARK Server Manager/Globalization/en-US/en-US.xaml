@@ -47,11 +47,16 @@
 
     <sys:String x:Key="LanguageSelectionLabel">_Language</sys:String>
 
+    <sys:String x:Key="SliderUnits_Multiplier">x</sys:String>
+    <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
+    <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
+    <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
+    
     <!--
     Server Settings
     
     These are the profile settings, grouped by section.
-    -->
+    -->   
 
     <!-- Server Settings - General -->    
     <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
@@ -267,5 +272,55 @@
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">If enabled, allows gamma changes in PvP mode.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvELabel">Disable Player Gamma Settings in PvE</sys:String>
     <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvETooltip">If enabled, prevents gamma changes in PvE mode.</sys:String>
+
+    <!-- Server Settings - Player Settings -->
+    <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryLabel">Enable Flyer-Carry</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryTooltip">If enabled, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierLabel">XP Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierTooltip">Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPLabel">Max XP:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPTooltip">Set the maximum XP cap of players.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPUnits">xp</sys:String>
+    <sys:String x:Key="ServerSettings_DamageLabel">Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_DamageTooltip">Specifies the scaling factor for the damage players deal with their attacks. Higher values increase damage. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceLabel">Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceTooltip">Specifies the scaling factor for the resistance to damage players receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainLabel">Water Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for player characters' water consumption. Higher values increase water consumption (player characters get thirsty faster).</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainLabel">Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for player characters' food consumption. Higher values increase food consumption (player characters get hungry faster).</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainLabel">Stamina Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster).</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryLabel">Health Recovery:</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster).</sys:String>
+
+    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_StatHealthLabel">Health:</sys:String>
+    <sys:String x:Key="ServerSettings_StatHealthTooltip">Specifies the multiplier for health gain per level. Higher values increase health faster; lower values increase health more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaLabel">Stamina:</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaTooltip">Specifies the multiplier for stamina gain per level. Higher values increase stamina faster; lower values increase stamina more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityLabel">Torpidity:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityTooltip">Specifies the multiplier for torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenLabel">Oxygen:</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenTooltip">Specifies the multiplier for oxygen efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodLabel">Food:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodTooltip">Specifies the multiplier for food efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterLabel">Water:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterTooltip">Specifies the multiplier for water efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempLabel">Temperature:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempTooltip">Specifies the multiplier for temperature tolerance gain per level. Higher values increase tolerance faster; lower values increase tolerance more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightLabel">Weight:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightTooltip">Specifies the multiplier for carrying capacity gain per level. Higher values increase carrying capacity faster; lower values increase carryign capacity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageLabel">Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageTooltip">Specifies the multiplier for damage gain per level. Higher values increase damage dealt faster; lower values increase damage dealt more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedLabel">Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedTooltip">Specifies the multiplier for speed gain per level. Higher values increase speed faster; lower values increase speed more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeLabel">Fortitude:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeTooltip">Specifies the multiplier for fortitude gain per level. Higher values increase fortitude faster; lower values increase the fortitude more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase  crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
+
+
 
 </Globalization:GlobalizationResourceDictionary>
