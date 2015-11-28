@@ -370,4 +370,48 @@
     <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Specifies the multiplier for time that baby dinos mature into adults. Higher values decrease the time it take baby dinos to mature into adults.</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Baby Food Consumption Speed:</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often.</sys:String>
+    
+    <!-- Server Settings - Environment -->
+    <sys:String x:Key="ServerSettings_EnvironmentLabel">Mating Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedLabel">Taming Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedTooltip">Specifies the scaling factor for dinosaur taming speed. Higher values make taming faster.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountLabel">Harvest Amount:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountTooltip">Specifies the scaling factor for yields from all harvesting activities (chopping down trees, picking berries, carving carcasses, mining rocks, etc). Higher values increase the amount of materials harvested with each strike.</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnLabel">Resource Respawn:</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnTooltip">Specifies the scaling factor for the respawn rate for resource nodes (trees, rocks, bushes, etc). Lower values cause nodes to respawn more frequently.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerLabel">Suppress Replenish Radius (Player):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerTooltip">Specifies the scaling factor to allow resources to regrow closer or farther away from players. Lower values decrease the distance resources will regrow from the player.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureLabel">Suppress Replenish Radius (Structure):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureTooltip">Specifies the scaling factor to allow resources to regrow closer or farther away from structures. Lower values decrease the distance resources will regrow from the structure.</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageLabel">Clamp Resource Harvest Damage</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">If enabled, clamps how much harvesting damage you can do to a resource to the remaining health of the resource.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthLabel">Harvest Health:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthTooltip">Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc). Higher values increase the amount of damage (e.g. number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
+
+    <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Day Cycle Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it.</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">Day Time Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during the day. This value determines the length of each day, relative to the length of each night. Lowering this value increases the length of each day.</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">Night Time Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during night time. This value determines the length of each night, relative to the length of each day. Lowering this value increases the length of each night.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Global Spoiling Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Scales the spoiling time of perishables globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">Global Item Decomp Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">Scales the decomposition time of dropped items, loot bags etc globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeLabel">Global Corpse Decomp Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeTooltip">Scales the decomposition time of corpses (player and dino), globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedLabel">Crop Decay Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedTooltip">Scales the decay time of crops. Lower values prolong the decay.</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedLabel">Crop Growth Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedTooltip">Scales the growth time of crops. Higher values make crops grow faster.</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalLabel">Lay Egg Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Scales the egg laying interval of dinos. Lower values cause dinos to lay eggs more frequently.</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalLabel">Poop Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Scales the defecation interval of players and dinos. Lower values cause players and dinos to defecation more frequently.</sys:String>
+
 </Globalization:GlobalizationResourceDictionary>
