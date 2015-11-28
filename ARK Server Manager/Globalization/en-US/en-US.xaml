@@ -253,4 +253,19 @@
     <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">Enable 'Player Joined' Notifications</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
 
+    <!-- Server Settings - HUD and Visuals -->
+    <sys:String x:Key="ServerSettings_HUDAndVisualsLabel">HUD and Visuals</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairLabel">Allow Crosshair</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairTooltip">If enabled, shows each player a crosshair.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDLabel">Allow HUD</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDTooltip">If enabled, allows the player to see the HUD.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewLabel">Allow Third-Person View</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewTooltip">If enabled, allows players to view themselves in third person.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">Allow Map Player Location</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">If enabled, shows each player their position on the map.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Allow Player Gamma Settings in PvP</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">If enabled, allows gamma changes in PvP mode.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvELabel">Disable Player Gamma Settings in PvE</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvETooltip">If enabled, prevents gamma changes in PvE mode.</sys:String>
+
 </Globalization:GlobalizationResourceDictionary>

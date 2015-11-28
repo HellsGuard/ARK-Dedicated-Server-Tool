@@ -1147,16 +1147,16 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="HUD and Visuals" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_HUDAndVisualsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="Allow Crosshair" HorizontalAlignment="Left" ToolTip="If enabled, shows each player a crosshair."/>
-                                <CheckBox IsChecked="{Binding AllowHUD}" Content="Allow HUD" HorizontalAlignment="Left" ToolTip="If enabled, allows the player to see the HUD."/>
-                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="Allow Third-Person View" HorizontalAlignment="Left" ToolTip="If enabled, allows players to view themselves in third person."/>
-                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="Allow Map Player Location" HorizontalAlignment="Left" ToolTip="If enabled, shows each player their position on the map."/>
-                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="Allow Player Gamma Settings in PvP" HorizontalAlignment="Left" ToolTip="If enabled, allows gamma changes in PvP mode."/>
-                                <CheckBox IsChecked="{Binding DisablePvEGamma}" Content="Disable Player Gamma Settings in PvE" HorizontalAlignment="Left" ToolTip="If enabled, prevents gamma changes in PvE mode."/>
+                                <CheckBox IsChecked="{Binding AllowCrosshair}" Content="{DynamicResource ServerSettings_AllowCrosshairLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowCrosshairTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowHUD}" Content="{DynamicResource ServerSettings_AllowHUDLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowHUDTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowThirdPersonView}" Content="{DynamicResource ServerSettings_AllowThirdPersonViewLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowThirdPersonViewTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="{DynamicResource ServerSettings_AllowMapPlayerLocationLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowMapPlayerLocationTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvPTooltip}"/>
+                                <CheckBox IsChecked="{Binding DisablePvEGamma}" Content="{DynamicResource ServerSettings_DisablePlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePlayerGammaInPvETooltip}"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
