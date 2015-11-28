@@ -1461,14 +1461,14 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Engrams" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_EngramsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="Enable Engram Overrides" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="If enabled, enables engram customizations."/>
-                                        <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="Reset all engram customizations back to defaults.">
+                                        <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="{DynamicResource ServerSettings_EnableEngramsOverrideLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableEngramsOverrideTooltip}"/>
+                                        <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetEngramsLabel}">
                                             <Image Source="Art/Refresh.png" Width="16"/>
                                         </Button>
                                     </StackPanel>
@@ -1476,29 +1476,29 @@
                                 <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
-                                            <GridViewColumn Header="Level" Width="Auto">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="Cost">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox Text="{Binding EngramPointsCost}" Width="75" VerticalContentAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="Hidden" Width="100">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsHiddenColumnLabel}" Width="100">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding EngramHidden}" HorizontalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="Remove Prereqs" Width="100">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="100">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
