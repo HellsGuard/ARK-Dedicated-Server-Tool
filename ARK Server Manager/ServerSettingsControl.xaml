@@ -1631,28 +1631,28 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Survival of the Fittest" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_SOTFLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" ToolTip="If enabled, configures the server as a 'Survival of the Fittest' server.">Enable Survival of the Fittest</CheckBox>
-                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="Load an existing profile, or import one directly from an existing server.">
+                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}"/>
+                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTFHelpTooltip}">
                                             <Image Source="Art/Help.png" Height="16" Margin="0" />
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
                                 <StackPanel IsEnabled="{Binding ElementName=EnableSOTF, Path=IsChecked}">
-                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" ToolTip="If enabled, players cannot be spectators after they die.">Disable Death Spectator</CheckBox>
-                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" ToolTip="If enabled, only admins can join as spectators once the game has started.">Only Admin Rejoin As Spectator</CheckBox>
-                                    <local:AnnotatedSlider Label="Max Players in Tribe:" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="players" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The maximum number of players allowed in a tribe."/>
-                                    <local:AnnotatedSlider Label="Tribe Required for Game:" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="tribes" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The number of tribes requires for the game to start."/>
-                                    <local:AnnotatedSlider Label="Ring of Death Collapse Time:" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="seconds" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="The game length before Sudden Death."/>
-                                    <local:AnnotatedSlider Label="Auto-start Delay Time:" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="seconds" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the minimum number of tribes has been achieved before the game starts."/>
-                                    <local:AnnotatedSlider Label="Auto-restart Delay Time:" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="seconds"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="The time after the last game has ended before the new game will start."/>
-                                    <local:AnnotatedSlider Label="Sudden Death Time:" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="seconds" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="The amount of time Sudden Death will be in effect until the game is declared a draw."/>
-                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" ToolTip="If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.">Enable Game Play Logging</CheckBox>
+                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
+                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
+                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
                                 </StackPanel>
                             </GroupBox>
                         </Grid>

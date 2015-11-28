@@ -53,6 +53,8 @@
     <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
     <sys:String x:Key="SliderUnits_Items">items</sys:String>
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
+    <sys:String x:Key="SliderUnits_Players">players</sys:String>
+    <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
     
     <!--
     Server Settings
@@ -481,5 +483,29 @@
     <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">Remove this level</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomDinoLevelsLabel">Custom Dino Levels</sys:String>
+
+    <!-- Server Settings - Survival of the Fittest -->
+    <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFTooltip">If enabled, configures the server as a 'Survival of the Fittest' server.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFHelpTooltip">Survival of the Fittest is a special total conversion mod which changes many of the rules.  See the web for more details.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorLabel">Disable Death Spectator</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorTooltip">If enabled, players cannot be spectators after they die.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorLabel">Only Admin Rejoin As Spectator</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorTooltip">If enabled, only admins can join as spectators once the game has started.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeLabel">Max Players in Tribe:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeTooltip">The maximum number of players allowed in a tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameLabel">Tribes Required for Game:</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameTooltip">The number of tribes requires for the game to start.</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeLabel">Ring of Death Collapse Time:</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeTooltip">The game length before Sudden Death.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeLabel">Auto-start Delay Time:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeTooltip">The time after the minimum number of tribes has been achieved before the game starts.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">Auto-restart Delay Time:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">The time after the last game has ended before the new game will start.</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">Sudden Death Time:</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">The amount of time Sudden Death will be in effect until the game is declared a draw.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">Enable Game Play Logging</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>
