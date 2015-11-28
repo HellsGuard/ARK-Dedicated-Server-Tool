@@ -1513,22 +1513,22 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Custom Level Progressions" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <CheckBox x:Name="EnableLevelsCheckbox" Content="Enable Custom Level Progressions" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left" ToolTip="If enabled, enables player and dino level customizations."/>
+                                <CheckBox x:Name="EnableLevelsCheckbox" Content="{DynamicResource ServerSettings_EnableCustomLevelProgressionsLabel}" IsChecked="{Binding EnableLevelProgressions}" Margin="0,5,5,5" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableCustomLevelProgressionsTooltip}"/>
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="Custom Player Levels"/>
-                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Delete all existing player levels.">
+                                            <Label Content="{DynamicResource ServerSettings_CustomPlayerLevelsLabel}"/>
+                                            <Button Width="22" Height="22" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to ASM defaults.">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_Reset" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToASMDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="Reset all player level customizations back to official defaults.">
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1536,40 +1536,40 @@
                                     <ListView x:Name="CustomPlayerLevelsView"  ItemsSource="{Binding PlayerLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="+" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="Add a new player level after this one.">
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddPlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="-" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="Remove this player level.">
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}">
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="Level" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
-                                                <GridViewColumn Header="XP Required" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="Engram Points">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramPointsColumnLabel}">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBox Text="{Binding EngramPoints}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="Engram Total" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramTotalColumnLabel}" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -1577,17 +1577,17 @@
                                 <GroupBox HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="Custom Dino Levels"/>
+                                            <Label Content="{DynamicResource ServerSettings_CustomDinoLevelsLabel}"/>
                                             <Button Width="22" Height="22" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" 
-                                                    ToolTip="Delete all existing dino levels.">
+                                                    ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_Reset"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    ToolTip="Reset all dino level customizations back to ASM defaults.">
+                                                    ToolTip="{DynamicResource ServerSettings_ResetToASMDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    ToolTip="Reset all dino level customizations back to official defaults.">
+                                                    ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1596,26 +1596,26 @@
                                     <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="+" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddDinoLevel_Click" Margin="2" ToolTip="Add a new dino level after this one" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="AddDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}" >
                                                                 <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="-" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemoveDinoLevel_Click" Margin="2" ToolTip="Remove this dino level" >
+                                                            <Button Grid.Column="0" Grid.Row="0" Click="RemoveDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}" >
                                                                 <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="Level" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
-                                                <GridViewColumn Header="XP Required" Width="Auto">
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="DinoLevels_Recalculate"/>
