@@ -688,7 +688,7 @@
                 <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Administration" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_AdministrationSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
@@ -713,7 +713,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="Name and Passwords" >
+                            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -727,21 +727,21 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Server Name:" ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource ServerSettings_ServerNameLabel}" ToolTip="{DynamicResource ServerSettings_ServerNameTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="5"  Text="{Binding ServerName}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-                                             ToolTip="The public name of the Ark server, as seen in Steam and Ark."/>
+                                             ToolTip="{DynamicResource ServerSettings_ServerNameTooltip}"/>
 
-                                    <Label Grid.Column="0" Grid.Row="1" Content="Server Password:" ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
+                                    <Label Grid.Column="0" Grid.Row="1" Content="{DynamicResource ServerSettings_ServerPasswordLabel}" ToolTip="{DynamicResource ServerSettings_ServerPasswordTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="1"  Text="{Binding ServerPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The password users must enter in order to access the server. If this is set, only people who know the password can access your server."/>
-                                    <Label Grid.Column="2" Grid.Row="1" Content="Admin Password:" ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
+        						        ToolTip="{DynamicResource ServerSettings_ServerPasswordTooltip}"/>
+                                    <Label Grid.Column="2" Grid.Row="1" Content="{DynamicResource ServerSettings_AdminPasswordLabel}" ToolTip="{DynamicResource ServerSettings_AdminPasswordTooltip}"/>
                                     <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding AdminPassword}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats."/>
-                                    <Label Grid.Column="4" Grid.Row="1" Content="Spectator Password:" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
-                                    <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="The password users must enter to use non-admin spectator mode on the server."/>
+        						        ToolTip="{DynamicResource ServerSettings_AdminPasswordTooltip}"/>
+                                    <Label Grid.Column="4" Grid.Row="1" Content="{DynamicResource ServerSettings_SpectatorPasswordLabel}" ToolTip="{DynamicResource ServerSettings_SpectatorPasswordTooltip}"/>
+                                    <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_SpectatorPasswordTooltip}"/>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Grid.Row="1" Grid.ColumnSpan="6" Header="Networking" >
+                            <GroupBox Grid.Row="1" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NetworkingLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -755,20 +755,20 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Server Port:" ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource ServerSettings_ServerPortLabel}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerConnectionPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine."/>
-                                    <Label Grid.Column="2" Grid.Row="0" Content="Query Port:" ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
+        						        ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}"/>
+                                    <Label Grid.Column="2" Grid.Row="0" Content="{DynamicResource ServerSettings_QueryPortLabel}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}"/>
                                     <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding ServerPort}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine."/>
+        						        ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}"/>
                                     <DockPanel Grid.Column="4" Grid.Row="0">
-                                        <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="0" Content="Local IP:" ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet."/>
-                                        <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="Refresh the available local IPs.">
+                                        <Label DockPanel.Dock="Left" Grid.Column="4" Grid.Row="0" Content="{DynamicResource ServerSettings_LocalIPLabel}" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}"/>
+                                        <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" Margin="5" Width="22" ToolTip="{DynamicResource ServerSettings_RefreshLocalIPTooltip}">
                                             <Image Source="Art/Refresh.png" Width="16" />
                                         </Button>
                                     </DockPanel>
                                     <ComboBox Grid.Column="5" Grid.Row="0" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress"
-                                          ToolTip="Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet.">
+                                          ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
@@ -778,11 +778,11 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="Use Raw Sockets" IsChecked="{Binding UseRawSockets}" VerticalAlignment="Center" Margin="5" ToolTip="Allow direct P2P connections instead of through steam.  Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding."/>
+                                    <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="Login Options" >
+                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_LoginOptionsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -796,16 +796,16 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0" Grid.Row="0" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="Use Ban List URL" VerticalAlignment="Center" ToolTip="If enabled, the ban list URL specified will be used."/>
-                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding BanListURL}" ToolTip="The URL of the ban list to use." IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" Name="EnableBanListCheckbox" Margin="5" IsChecked="{Binding EnableBanListURL}" Content="{DynamicResource ServerSettings_UseBanListLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseBanListTooltip}"/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding BanListURL}" ToolTip="{DynamicResource ServerSettings_BanListTooltip}" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
 
-                                    <local:AnnotatedSlider Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Label="Max Players:"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
-        						ToolTip="Sets the maximum number of players which can join this server."/>
+                                    <local:AnnotatedSlider Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Label="{DynamicResource ServerSettings_MaxPlayersLabel}"  Value="{Binding MaxPlayers}" Minimum="1" Maximum="127" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0" 
+        						        ToolTip="{DynamicResource ServerSettings_MaxPlayersTooltip}"/>
 
 
-                                    <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="Enable Idle Timeout" VerticalAlignment="Center" Margin="5" ToolTip="If enabled, the idle timeout period will be used."/>
-                                    <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="seconds"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time until idle players are kicked from the server."
+                                    <CheckBox x:Name="EnableKickIdlePlayersCheckbox" Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableKickIdlePlayers}" Content="{DynamicResource ServerSettings_EnableIdleTimeoutLabel}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource ServerSettings_EnableIdleTimeoutTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Label="" Suffix="{DynamicResource ServerSettings_IdleTimeoutUnits}"  Value="{Binding KickIdlePlayersPeriod}" Minimum="60" Maximum="7200" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="300" SmallChange="60" TickFrequency="300" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="{DynamicResource ServerSettings_IdleTimeoutTooltip}"
                                 IsEnabled="{Binding ElementName=EnableKickIdlePlayersCheckbox, Path=IsChecked}"/>
 
                                 </Grid>
@@ -817,7 +817,7 @@
         						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
                             -->
 
-                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="Admin Console (RCON)">
+                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -827,9 +827,9 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="Enable RCON Port" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="If enabled, the RCON port will be enabled."/>
-                                    <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="The port that RCON will use on your server."/>
-                                    <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="Log Admin to Chat" Margin="5" ToolTip="If enabled, admin commands will be echoed to chat"/>
+                                    <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="{DynamicResource ServerSettings_EnableRCONPortLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="{DynamicResource ServerSettings_EnableRCONPortTooltip}"/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONPortTooltip}"/>
+                                    <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" Margin="5" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -838,11 +838,11 @@
                                     <Style TargetType="{x:Type GroupBox}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="True">
-                                                <Setter Property="Header" Value="Survival of the Fittest enabled.  Maps and Mods disabled."/>
+                                                <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsSOTFLabel}"/>
                                                 <Setter Property="IsEnabled" Value="False"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="False">
-                                                <Setter Property="Header" Value="Maps and Mods"/>
+                                                <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsLabel}"/>
                                                 <Setter Property="IsEnabled" Value="True"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -858,15 +858,11 @@
                                         <ColumnDefinition Width="99"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <!--<RadioButton Name="VanillaMapCheckBox" Grid.Column="0" Grid.Row="0" Content="Map or Map Mod Path:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ByName}"/>-->
-                                    <Label Grid.Column="0" Grid.Row="0"   Content="Map or Map Mod Path:" Grid.ColumnSpan="2" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it."/>
-                                    <!--<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=VanillaMapCheckBox, Path=IsChecked}" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap).  Use Map Mod Id instead if your mod is on the workshop."/>-->
-                                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" ToolTip="The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it."/>
+                                    <Label Grid.Column="0" Grid.Row="0"   Content="{DynamicResource ServerSettings_MapPathLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
+                                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
 
-                                    <!--<RadioButton IsEnabled="False" Name="MapIdCheckbox" Grid.Column="0" Grid.Row="1" Content="Map Mod Id:" VerticalAlignment="Center" GroupName="MapGroup" IsChecked="{Binding MapSource, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=ById}"/>
-                                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ServerMapModId}" Width="100"  HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapIdCheckbox, Path=IsChecked}" ToolTip="The id of the mod which contains the map."/>-->
-                                    <Label Grid.Column="0" Grid.Row="1"   Content="Mod IDs:" Grid.ColumnSpan="2" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied."/>
-                                    <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" ToolTip="A comma-separated list of mod ids, in the order in which they should be applied.">
+                                    <Label Grid.Column="0" Grid.Row="1"   Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}"/>
+                                    <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <StackPanel>
@@ -886,24 +882,24 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Auto Saves" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
-                                <local:AnnotatedSlider Margin="5"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="Auto Save Period:" Suffix="minutes"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
-        						ToolTip="The time between server auto-saves."/>
+                            <GroupBox Header="{DynamicResource ServerSettings_AutoSavesLabel}" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
+                                <local:AnnotatedSlider Margin="5"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="{DynamicResource ServerSettings_AutoSavesPeriodLabel}" Suffix="{DynamicResource ServerSettings_AutoSavesPeriodUnits}"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
+        						ToolTip="{DynamicResource ServerSettings_AutoSavesPeriodTooltip}"/>
                             </GroupBox>
 
-                            <GroupBox Header="Message of the Day" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Header="{DynamicResource ServerSettings_MOTDLabel}" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding MOTD}" TextWrapping="Wrap" MaxLength="4096"
-        						ToolTip="The Message of the Day displayed to users when they connect to the server." SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
-                                    <local:AnnotatedSlider Grid.Row="1" Label="Duration:" Value="{Binding MOTDDuration}" Suffix="seconds" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" ToolTip="The time the Message of the Day will be shown for when the user connects to the server." />
+        						ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
+                                    <local:AnnotatedSlider Grid.Row="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="Server Options">
+                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_ServerOptionsLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -916,27 +912,27 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="Disable Valve Anti-Cheat System (VAC)" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!" Height="14" Width="223"/>
-                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="Disable Anti Speedhack Detection" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,5,0,5" ToolTip="If enabled, the anti speedhack detection will be disabled." Height="16" Width="199"/>
-                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="Disable Player-Move-Physics Optimization" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the player-move-physics will be disabled." Height="14" Width="243"/>
-                                    <CheckBox x:Name="EnableServerAdminLogs" Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableServerAdminLogs}" Content="Enable Server Admin Logs" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="If enabled, the Server Admin Logs (including RCON support) will be turned on." Height="14" Width="158"/>
-                                    <Label Grid.Column="1" Grid.Row="3"   Content="RCON Server Log Buffer:" ToolTip="Sets the max length of RCON game log buffer (default 600)."/>
-                                    <TextBox Grid.Column="2" Grid.Row="3" IsEnabled="{Binding ElementName=EnableServerAdminLogs, Path=IsChecked}" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="Sets the max length of RCON game log buffer (default 600)."/>
+                                    <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="{DynamicResource ServerSettings_DisableVACLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_DisableVACTooltip}" Height="14" Width="223"/>
+                                    <CheckBox x:Name="DisableAntiSpeedHackDetection" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="{DynamicResource ServerSettings_DisableAntiSpeedHackLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,5,0,5" ToolTip="{DynamicResource ServerSettings_DisableAntiSpeedHackTooltip}" Height="16" Width="199"/>
+                                    <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="2" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="{DynamicResource ServerSettings_DisablePMVOptimizationLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_DisablePMVOptimizationTooltip}" Height="14" Width="243"/>
+                                    <CheckBox x:Name="EnableServerAdminLogs" Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}" Height="14" Width="158"/>
+                                    <Label Grid.Column="1" Grid.Row="3"   Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
+                                    <TextBox Grid.Column="2" Grid.Row="3" IsEnabled="{Binding ElementName=EnableServerAdminLogs, Path=IsChecked}" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="Command Line">
+                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_CommandLineLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="1*"/>
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Additional Args:" VerticalAlignment="Center" ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient"/>
+                                    <Label Grid.Column="0" Content="{DynamicResource ServerSettings_AdditionalArgsLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AdditionalArgsTooltip}"/>
                                     <DockPanel Grid.Column="1" LastChildFill="True">
-                                        <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click" ToolTip="View the command line start command for the server."/>
+                                        <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" Margin="5" Click="ShowCmd_Click" ToolTip="{DynamicResource ServerSettings_ShowCommandButtonTooltip}"/>
                                         <TextBox DockPanel.Dock ="Right" VerticalAlignment="Center" Height="29" HorizontalAlignment="Stretch" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						    ToolTip="Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient" Margin="0.667,0,-0.667,0"/>
+        						    ToolTip="{DynamicResource ServerSettings_AdditionalArgsTooltip}" Margin="0.667,0,-0.667,0"/>
                                     </DockPanel>
                                 </Grid>
                             </GroupBox>
