@@ -1203,31 +1203,31 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatHealthLabel}" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatHealthLabel}" Value="{Binding PerLevelStatsMultiplier_Player[0]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatHealthTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatStaminaLabel}" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatStaminaLabel}" Value="{Binding PerLevelStatsMultiplier_Player[1]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatStaminaTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTorpidityLabel}" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTorpidityLabel}" Value="{Binding PerLevelStatsMultiplier_Player[2]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatTorpidityTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatOxygenLabel}" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatOxygenLabel}" Value="{Binding PerLevelStatsMultiplier_Player[3]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatOxygenTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFoodLabel}" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFoodLabel}" Value="{Binding PerLevelStatsMultiplier_Player[4]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatFoodTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWaterLabel}" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWaterLabel}" Value="{Binding PerLevelStatsMultiplier_Player[5]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatWaterTooltip}"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTempLabel}" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTempLabel}" Value="{Binding PerLevelStatsMultiplier_Player[6]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatTempTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWeightLabel}" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWeightLabel}" Value="{Binding PerLevelStatsMultiplier_Player[7]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatWeightTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatDamageLabel}" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatDamageLabel}" Value="{Binding PerLevelStatsMultiplier_Player[8]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatDamageTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatSpeedLabel}" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatSpeedLabel}" Value="{Binding PerLevelStatsMultiplier_Player[9]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatSpeedTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFortitudeLabel}" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFortitudeLabel}" Value="{Binding PerLevelStatsMultiplier_Player[10]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatFortitudeTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatCraftingLabel}" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatCraftingLabel}" Value="{Binding PerLevelStatsMultiplier_Player[11]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                                    ToolTip="{DynamicResource ServerSettings_StatCraftingTooltip}"/>
                                         </StackPanel>
                                     </Grid>
@@ -1237,61 +1237,73 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dino Settings" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_DinoSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <local:AnnotatedSlider Label="Max XP:" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="xp" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="Set the maximum XP cap of dinos."/>
-                                <local:AnnotatedSlider Label="Damage:" Value="{Binding DinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage wild dinos deal with their attacks. Higher values increase damage. Lower values decrease it."/>
-                                <local:AnnotatedSlider Label="Tamed Damage:" Value="{Binding TamedDinoDamageMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the damage tamed dinos deal with their attacks. Higher values increase damage. Lower values decrease it."/>
-                                <local:AnnotatedSlider Label="Resistance:" Value="{Binding DinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage wild dinos receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
-                                <local:AnnotatedSlider Label="Tamed Resistance:" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for the resistance to damage tamed dinos receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack."/>
-                                <local:AnnotatedSlider Label="Max Tamed Dinos:" Value="{Binding MaxTamedDinos}" Suffix="x" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" ToolTip="Set the maximum number of tamed dinos of the server."/>
-                                <local:AnnotatedSlider Label="Food Drain:" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' food consumption. Higher values increase food consumption (dinos get hungry faster)."/>
-                                <local:AnnotatedSlider Label="Stamina Drain:" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' stamina consumption. Higher values increase stamina consumption (dinos get tired faster)."/>
-                                <local:AnnotatedSlider Label="Health Recovery:" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dinos' health recovery. Higher values increase the recovery rate (dinos heal faster)."/>
-                                <local:AnnotatedSlider Label="Dino Spawns:" Value="{Binding DinoCountMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark."/>
-                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="Disable Dino Decay PvE" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player."/>
-                                <local:AnnotatedSlider Label="PvE Dino Decay Period:" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked."/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="{DynamicResource ServerSettings_MaxXPUnits}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
+                                                       ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DamageLabel}" Value="{Binding DinoDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedDamageLabel}" Value="{Binding TamedDinoDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ResistanceLabel}" Value="{Binding DinoResistanceMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedResistanceLabel}" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxTamedDinosLabel}" Value="{Binding MaxTamedDinos}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" 
+                                                       ToolTip=""/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoSpawnsLabel}" Value="{Binding DinoCountMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DinoSpawnsTooltip}"/>
+                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" 
+                                          ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="Dino Customization"/>
-                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the spawn multiplier columns.">Spawn Multipliers</CheckBox>
-                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the tamed dino damage multiplier column.">Tamed Damage</CheckBox>
-                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the tamed dino resistance multiplier column.">Tamed Resistance</CheckBox>
-                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the wild dino damage multiplier column.">Wild Damage</CheckBox>
-                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="Show/Hide the wild dino resistance multiplier column.">Wild Resistance</CheckBox>
+                                            <Label Content="{DynamicResource ServerSettings_DinoCustomizationLabel}"/>
+                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_SpawnMultipliersOptionTooltip}" Content="{DynamicResource ServerSettings_SpawnMultipliersOptionLabel}"/>
+                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedDamageOptionTooltip}" Content="{DynamicResource ServerSettings_TamedDamageOptionLabel}"/>
+                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
+                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}" Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
+                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
                                             <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" 
-                                                    ToolTip="Reset all dino customizations back to defaults.">
+                                                    ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16" />
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <DataGrid Name="DinoSettingsGrid" ItemsSource="{Binding DinoSettings}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Binding="{Binding FriendlyName, Mode=TwoWay}" Header="Name"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}" Header="Spawnable"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}" Header="Tameable"/>
+                                            <DataGridTextColumn Binding="{Binding FriendlyName, Mode=TwoWay}" Header="{DynamicResource ServerSettings_NameColumnLabel}"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}" Header="{DynamicResource ServerSettings_SpawnableColumnLabel}"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}" Header="{DynamicResource ServerSettings_TameableColumnLabel}"/>
                                             <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}"
                                                                     SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" 
                                                                     SelectedValuePath="ClassName"                                                                     
                                                                     DisplayMemberPath="FriendlyName" 
-                                                                    Header="Replace With"/>
-                                            <DataGridTextColumn Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" Header="Spawn Weight" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Header="Override Limit" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}" Header="Spawn Limit" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}" Header="Tamed Damage" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" Header="Tamed Resistance" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" Header="Wild Damage" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Header="Wild Resistance" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                                    Header="{DynamicResource ServerSettings_ReplacementColumnLabel}"/>
+                                            <DataGridTextColumn Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" Header="{DynamicResource ServerSettings_SpawnWeightColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Header="{DynamicResource ServerSettings_OverrideLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}" Header="{DynamicResource ServerSettings_SpawnLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}" Header="{DynamicResource ServerSettings_TamedDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" Header="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" Header="{DynamicResource ServerSettings_WildDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <DataGridTextColumn Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Header="{DynamicResource ServerSettings_WildResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
 
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <Label Content="Tamed Dino Per-Level Stat Multipliers"/>
+                                        <Label Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatMultipliersLabel}"/>
                                     </GroupBox.Header>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1299,27 +1311,27 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
-                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
-                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
-                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dinor food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
-                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatHealthLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[0]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatHealthTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatStaminaLabel}"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[1]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatStaminaTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTorpidityLabel}" Value="{Binding PerLevelStatsMultiplier_DinoTamed[2]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatTorpidityTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatOxygenLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[3]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatOxygenTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFoodLabel}"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[4]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatFoodTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWaterLabel}"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[5]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatWaterTooltip}"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoTamed[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
-                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
-                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
-                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoTamed[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for tamed dino speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
-                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoTamed[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
-                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for tamed dino crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTempLabel}"      Value="{Binding PerLevelStatsMultiplier_DinoTamed[6]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatTempTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWeightLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[7]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatWeightTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatDamageLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoTamed[8]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatDamageTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatSpeedLabel}"     Value="{Binding PerLevelStatsMultiplier_DinoTamed[9]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatSpeedTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFortitudeLabel}" Value="{Binding PerLevelStatsMultiplier_DinoTamed[10]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatFortitudeTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatCraftingLabel}"  Value="{Binding PerLevelStatsMultiplier_DinoTamed[11]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatCraftingTooltip}"/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
 
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <Label Content="Wild Dino Per-Level Stat Multipliers"/>
+                                        <Label Content="{DynamicResource ServerSettings_WildDinoPerLevelStatMultipliersLabel}"/>
                                     </GroupBox.Header>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1327,193 +1339,36 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <local:AnnotatedSlider Label="Health:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[0]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino health gain per level. Higher values increase the health faster; lower values increase the health slower."/>
-                                            <local:AnnotatedSlider Label="Stamina:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[1]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino stamina gain per level. Higher values increase the stamina faster; lower values increase the stamina slower."/>
-                                            <local:AnnotatedSlider Label="Torpidity:" Value="{Binding PerLevelStatsMultiplier_DinoWild[2]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity slower."/>
-                                            <local:AnnotatedSlider Label="Oxygen:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[3]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino oxygen gain per level. Higher values increase the oxygen faster; lower values increase the oxygen slower."/>
-                                            <local:AnnotatedSlider Label="Food:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[4]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino food gain per level. Higher values increase the food faster; lower values increase the food slower."/>
-                                            <local:AnnotatedSlider Label="Water:"     Value="{Binding PerLevelStatsMultiplier_DinoWild[5]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino water gain per level. Higher values increase the water faster; lower values increase the water slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatHealthLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoWild[0]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatHealthTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatStaminaLabel}"   Value="{Binding PerLevelStatsMultiplier_DinoWild[1]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatStaminaTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTorpidityLabel}" Value="{Binding PerLevelStatsMultiplier_DinoWild[2]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatTorpidityTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatOxygenLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoWild[3]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatOxygenTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFoodLabel}"      Value="{Binding PerLevelStatsMultiplier_DinoWild[4]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatFoodTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWaterLabel}"     Value="{Binding PerLevelStatsMultiplier_DinoWild[5]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatWaterTooltip}"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <local:AnnotatedSlider Label="Temperature:" Value="{Binding PerLevelStatsMultiplier_DinoWild[6]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino temperature gain per level. Higher values increase the temperature faster; lower values increase the temperature slower."/>
-                                            <local:AnnotatedSlider Label="Weight:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[7]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino weight gain per level. Higher values increase the weight faster; lower values increase the weight slower."/>
-                                            <local:AnnotatedSlider Label="Damage:"      Value="{Binding PerLevelStatsMultiplier_DinoWild[8]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino damage gain per level. Higher values increase the damage faster; lower values increase the damage slower."/>
-                                            <local:AnnotatedSlider Label="Speed:"       Value="{Binding PerLevelStatsMultiplier_DinoWild[9]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for wild dino speed gain per level. Higher values increase the speed faster; lower values increase the speed slower."/>
-                                            <local:AnnotatedSlider Label="Fortitude:"   Value="{Binding PerLevelStatsMultiplier_DinoWild[10]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino fortitude gain per level. Higher values increase the fortitude faster; lower values increase the fortitude slower."/>
-                                            <local:AnnotatedSlider Label="Crafting:"    Value="{Binding PerLevelStatsMultiplier_DinoWild[11]}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="Specifies the multiplier for wild dino crafting gain per level. Higher values increase the crafting faster; lower values increase the crafting slower."/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatTempLabel}"      Value="{Binding PerLevelStatsMultiplier_DinoWild[6]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatTempTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatWeightLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoWild[7]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatWeightTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatDamageLabel}"    Value="{Binding PerLevelStatsMultiplier_DinoWild[8]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatDamageTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatSpeedLabel}"     Value="{Binding PerLevelStatsMultiplier_DinoWild[9]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StatSpeedTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatFortitudeLabel}" Value="{Binding PerLevelStatsMultiplier_DinoWild[10]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatFortitudeTooltip}"/>
+                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StatCraftingLabel}"  Value="{Binding PerLevelStatsMultiplier_DinoWild[11]}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="False" ToolTip="{DynamicResource ServerSettings_StatCraftingTooltip}"/>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
 
                                 <GroupBox>
                                     <GroupBox.Header>
-                                        <Label Content="Dino Breeding Multipliers"/>
+                                        <Label Content="{DynamicResource ServerSettings_DinoBreedingMultipliersLabel}"/>
                                     </GroupBox.Header>
 
                                     <StackPanel Grid.Column="0">
-                                        <local:AnnotatedSlider Label="Mating Interval:"   Value="{Binding MatingIntervalMultiplier}"  Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for time between tamed dino mating. Lower values decrease the time between mating."/>
-                                        <local:AnnotatedSlider Label="Egg Hatch Speed:"   Value="{Binding EggHatchSpeedMultiplier}"   Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for time that fertilised eggs hatch. Higher values decrease the time an eggs hatches."/>
-                                        <local:AnnotatedSlider Label="Baby Mature Speed:" Value="{Binding BabyMatureSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for time that baby dinos mature into adults. Higher values decrease the time it take baby dinos to mature into adults."/>
-                                        <local:AnnotatedSlider Label="Baby Food Consumption Speed:" Value="{Binding BabyFoodConsumptionSpeedMultiplier}" Suffix="x" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often."/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MatingIntervalLabel}"   Value="{Binding MatingIntervalMultiplier}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MatingIntervalTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EggHatchSpeedLabel}"   Value="{Binding EggHatchSpeedMultiplier}"   Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EggHatchSpeedTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyMatureSpeedLabel}" Value="{Binding BabyMatureSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyMatureSpeedTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyFoodConsumptionSpeedLabel}" Value="{Binding BabyFoodConsumptionSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyFoodConsumptionSpeedTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
-                                <!--<GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableDinoSpawnsCheckbox" Content="Custom Dino Spawns" IsChecked="{Binding DinoSpawnWeightMultipliers.IsEnabled}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" Click="DinoSpawn_Reset" 
-                                                    ToolTip="Reset spawns to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding DinoSpawnWeightMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoSpawnsCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="1*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding DinoNameTag}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Spawn Weight" Value="{Binding SpawnWeightMultiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                        <CheckBox x:Name="OverrideSpawnLimitCheckbox" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" Content="Override Spawn Limit" IsChecked="{Binding OverrideSpawnLimitPercentage}" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" IsEnabled="{Binding ElementName=OverrideSpawnLimitCheckbox, Path=IsChecked}" Label="Spawn Limit" Value="{Binding SpawnLimitPercentage}" Suffix="%" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </GroupBox>-->
-                                <!--<GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableTamedDinoClassDamageMultipliersCheckbox" Content="Custom Tamed Dino Damage Multipliers" IsChecked="{Binding TamedDinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoClassDamageMultipliersCheckbox, Path=IsChecked}" Click="TamedDinoClassDamageMultipliers_Reset" 
-                                                    ToolTip="Reset damage to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding TamedDinoClassDamageMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableTamedDinoClassDamageMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
-                                                            <ColumnDefinition Width="1*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </GroupBox>-->
-                                <!--<GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableTamedDinoClassResistanceMultipliersCheckbox" Content="Custom Tamed Dino Resistance Multipliers" IsChecked="{Binding TamedDinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" Click="TamedDinoClassResistanceMultipliers_Reset" 
-                                                    ToolTip="Reset resistances to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding TamedDinoClassResistanceMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableTamedDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
-                                                            <ColumnDefinition Width="1*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </GroupBox>-->
-                                <!--<GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableDinoClassDamageMultipliersCheckbox" Content="Custom Wild Dino Damage Multipliers" IsChecked="{Binding DinoClassDamageMultipliers.IsEnabled}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoClassDamageMultipliersCheckbox, Path=IsChecked}" Click="DinoClassDamageMultipliers_Reset" 
-                                                    ToolTip="Reset damage to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding DinoClassDamageMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoClassDamageMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
-                                                            <ColumnDefinition Width="1*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Damage" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </GroupBox>-->
-                                <!--<GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableDinoClassResistanceMultipliersCheckbox" Content="Custom Wild Dino Resistance Multipliers" IsChecked="{Binding DinoClassResistanceMultipliers.IsEnabled}" Margin="0,5,5,5"/>
-                                            <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" Click="DinoClassResistanceMultipliers_Reset" 
-                                                    ToolTip="Reset resistances to game defaults">
-                                                <Image Source="Art/Refresh.png" Width="16"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding DinoClassResistanceMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableDinoClassResistanceMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
-                                                            <ColumnDefinition Width="1*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource DinoNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="Resistance" Value="{Binding Multiplier}" Suffix="x" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </GroupBox>-->
                             </StackPanel>
                         </Grid>
                     </Expander>

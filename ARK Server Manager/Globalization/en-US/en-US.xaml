@@ -280,22 +280,23 @@
     <sys:String x:Key="ServerSettings_XPMultiplierLabel">XP Multiplier:</sys:String>
     <sys:String x:Key="ServerSettings_XPMultiplierTooltip">Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_MaxXPLabel">Max XP:</sys:String>
-    <sys:String x:Key="ServerSettings_MaxXPTooltip">Set the maximum XP cap of players.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPTooltip">Set the maximum XP cap.</sys:String>
     <sys:String x:Key="ServerSettings_MaxXPUnits">xp</sys:String>
     <sys:String x:Key="ServerSettings_DamageLabel">Damage:</sys:String>
-    <sys:String x:Key="ServerSettings_DamageTooltip">Specifies the scaling factor for the damage players deal with their attacks. Higher values increase damage. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_DamageTooltip">Specifies the scaling factor for the damage dealt with attacks. Higher values increase damage. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_ResistanceLabel">Resistance:</sys:String>
-    <sys:String x:Key="ServerSettings_ResistanceTooltip">Specifies the scaling factor for the resistance to damage players receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceTooltip">Specifies the scaling factor for the resistance to damage received when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
     <sys:String x:Key="ServerSettings_WaterDrainLabel">Water Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for player characters' water consumption. Higher values increase water consumption (player characters get thirsty faster).</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for water consumption. Higher values increase water consumption (player characters get thirsty faster).</sys:String>
     <sys:String x:Key="ServerSettings_FoodDrainLabel">Food Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for player characters' food consumption. Higher values increase food consumption (player characters get hungry faster).</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for food consumption. Higher values increase food consumption (player characters get hungry faster).</sys:String>
     <sys:String x:Key="ServerSettings_StaminaDrainLabel">Stamina Drain:</sys:String>
     <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster).</sys:String>
     <sys:String x:Key="ServerSettings_HealthRecoveryLabel">Health Recovery:</sys:String>
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster).</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
+    
     <sys:String x:Key="ServerSettings_StatHealthLabel">Health:</sys:String>
     <sys:String x:Key="ServerSettings_StatHealthTooltip">Specifies the multiplier for health gain per level. Higher values increase health faster; lower values increase health more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_StatStaminaLabel">Stamina:</sys:String>
@@ -321,6 +322,52 @@
     <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
     <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase  crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
 
+    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Tamed Dinos:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
 
+    <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customization</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Spawn Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionTooltip">Show/Hide the spawn multiplier columns.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionLabel">Tamed Damage</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionTooltip">Show/Hide the tamed dino damage multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionLabel">Tamed Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionTooltip">Show/Hide the tamed dino resistance multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionLabel">Wild Damage</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionTooltip">Show/Hide the wild dino damage multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">Wild Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnableColumnLabel">Spawnable</sys:String>
+    <sys:String x:Key="ServerSettings_TameableColumnLabel">Tameable</sys:String>
+    <sys:String x:Key="ServerSettings_ReplacementColumnLabel">Replace With</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnWeightColumnLabel">Spawn Weight</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideLimitColumnLabel">Override Limit</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnLimitColumnLabel">Spawn Limit</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageColumnLabel">Tamed Damage</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">Tamed Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Wild Damage</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
 
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Tamed Dino Per-Level Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Wild Dino Per-Level Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Dino Breeding Multipliers</sys:String>
+
+    <sys:String x:Key="ServerSettings_MatingIntervalLabel">Mating Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Specifies the multiplier for time between tamed dino mating. Lower values decrease the time between mating.</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedLabel">Egg Hatch Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedTooltip">Specifies the multiplier for time that fertilised eggs hatch. Higher values decrease the time an eggs hatches.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedLabel">Baby Mature Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Specifies the multiplier for time that baby dinos mature into adults. Higher values decrease the time it take baby dinos to mature into adults.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Baby Food Consumption Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often.</sys:String>
 </Globalization:GlobalizationResourceDictionary>
