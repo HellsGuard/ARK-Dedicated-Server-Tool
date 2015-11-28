@@ -9,13 +9,18 @@
         Title="{DynamicResource MainWindow_Title}" Height="850" Width="1100" Loaded="Window_Loaded"
         Name="Main" Icon="Art/favicon.ico">
 	<Window.Resources>
-        <vm:IpValidationRule x:Key="IpValidationRule"/>
-		<SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
-		<SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
-        <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFECE1D4" Offset="1"/>
-            <GradientStop Color="#FFEAE8E6"/>
-        </LinearGradientBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <vm:IpValidationRule x:Key="IpValidationRule"/>
+            <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
+            <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFECE1D4" Offset="1"/>
+                <GradientStop Color="#FFEAE8E6"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,11 +33,11 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Text="ARK Server Manager" BorderThickness="0"/>
+                <TextBox Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Text="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="Version:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{DynamicResource MainWindow_VersionLabel}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="Upgrade to {0} now!" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
+                    <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="{DynamicResource MainWindow_UpdateToLabelFormat}" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Style.Triggers>
@@ -53,15 +58,15 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="0" Background="#FF4F4F4F" Foreground="White" FontSize="10" Content="My Public IP:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Label Grid.Row="0" Margin="0" Background="#FF4F4F4F" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_MyIpLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
-                    <TextBox FontSize="12"  Height="22" Width="250" VerticalAlignment="Bottom" Margin="0" VerticalContentAlignment="Center" ToolTip="The IP address players use to connect to your server.">
+                    <TextBox FontSize="12"  Height="22" Width="250" VerticalAlignment="Bottom" Margin="0" VerticalContentAlignment="Center" ToolTip="{DynamicResource MainWindow_MyIpTooltip}">
                         <Validation.ErrorTemplate>
                             <ControlTemplate>
                                 <StackPanel>
                                     <!-- Placeholder for the TextBox itself -->
                                     <AdornedElementPlaceholder x:Name="textBox"/>
-                                    <TextBlock Text="Invalid IP address or hostname" Background="Red" Foreground="White"/>
+                                    <TextBlock Text="{DynamicResource MainWindow_MyIpError}" Background="Red" Foreground="White"/>
                                 </StackPanel>
                             </ControlTemplate>
                         </Validation.ErrorTemplate>
@@ -74,22 +79,22 @@
                         </TextBox.Text>
                     </TextBox>
                     <Button Grid.Row="1" Width="22" Height="22" VerticalAlignment="Center" Margin="5,0,0,0" Click="RefreshPublicIP_Click"
-                        ToolTip="Attempt to determine your current public IP">
+                        ToolTip="{DynamicResource MainWindow_RefreshMyIpTooltip}">
                         <Image Source="Art/Refresh.png"/>
                     </Button>
                 </StackPanel>
             </Grid>
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="Like what you see and want to show your appreciation?  Donate here!">
+                <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                     <Image Source="Art/Donate.png" />
                 </Button>
-                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="RCON" Click="RCON_Click">
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
                     <Image Source="Art/Command.png" Width="16"/>
                 </Button>
-                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Settings" Click="Settings_Click">
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
                     <Image Source="Art/Settings.png" Width="16"/>
                 </Button>
-                <Button Background="#00ffffff" Margin="5" Padding="5" ToolTip="Help" Click="Help_Click">
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="Help_Click" ToolTip="{DynamicResource MainWindow_OpenHelpTooltip}">
                     <Image Source="Art/Help.png" Width="16"/>
                 </Button>
             </StackPanel>

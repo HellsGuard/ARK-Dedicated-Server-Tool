@@ -19,10 +19,23 @@
     <sys:String x:Key="AutoUpdater_Status_Complete">Complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Cancelled">Cancelled</sys:String>
     
-    <!-- Main Window -->
+    <!-- Main Window 
+        This is the portion of the main window at the top - the part which is not part of any profile.
+    -->   
     <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
+    <sys:String x:Key="MainWindow_ArkNameLabel">ARK Server Manager</sys:String>
+    <sys:String x:Key="MainWindow_VersionLabel">Version:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpLabel">My Public IP:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpTooltip">The IP address players use to connect to your server.</sys:String>
+    <sys:String x:Key="MainWindow_MyIpError">Invalid IP address or hostname</sys:String>
+    <sys:String x:Key="MainWindow_RefreshMyIpTooltip">Attempt to determine your current public IP</sys:String>
+    <sys:String x:Key="MainWindow_DonateTooltip">Like what you see and want to show your appreciation?  Donate here!</sys:String>
+    <sys:String x:Key="MainWindow_OpenRCONTooltip">Open remote console</sys:String>
+    <sys:String x:Key="MainWindow_OpenSettingsTooltip">Open Global Settings</sys:String>
+    <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
+    <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
 
-    <!-- Menu strings -->
+    <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
     <sys:String x:Key="Menu_File_Exit">_Exit</sys:String>
     <sys:String x:Key="Menu_Language">_Language</sys:String>
