@@ -44,7 +44,63 @@
     <sys:String x:Key="Menu_Language_Hebrew">_Hebrew</sys:String>
 
     <sys:String x:Key="LanguageSelectionLabel">_Language</sys:String>
+
+    <!--
+    Server Settings
     
+    These are the profile settings, grouped by section.
+    -->
+
+    <!-- Server Settings - General -->    
+    <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
+    <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionLabel">Latest Available Version:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionTooltip">The version of the Ark server that is currently available for download.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Refresh the latest version of the Ark server that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationLabel">Installation Location:</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationTooltip">The folder that contains the Ark server game and configuration files.</sys:String>
+    <sys:String x:Key="ServerSettings_StatusLabel">Status:</sys:String>
+    <sys:String x:Key="ServerSettings_StatusTooltip">The status of the Ark server on your local network.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityLabel">Availability:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityTooltip">The status of the Ark server on Steam.</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unknown">Unknown</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_SetPublicIP">Set Public IP</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unavailable">Unavailable</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Waiting">Waiting for publication</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Available">Available</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersLabel">Players:</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersTooltip">The current number of players connected to the Ark server.</sys:String>
+
+
+
+
+    <!-- Server Settings - General Buttons -->
+    <sys:String x:Key="ServerSettings_ImportButtonLabel">Import</sys:String>
+    <sys:String x:Key="ServerSettings_ImportButtonTooltip">Load an existing profile, or import one directly from an existing server.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonLabel">Save</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonTooltip">Save the current profile and write the .INI files for the server.</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonLabel">Stop</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonTooltip">Stop the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonLabel">Start</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonTooltip">Start the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonTooltip">Open the RCON window.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Upgrade</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Upgrade to the latest version of the Ark server that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonLabel">Install</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonTooltip">Install the latest version of the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonLabel">Cancel</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonTooltip">Cancel the Ark server upgrade.</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">Update the folder that contains the Ark server game and configuration files.</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonLabel">Validate</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Load an existing profile, or import one directly from an existing server.</sys:String>
+
+    <!-- Server Settings - Administration   -->
+    <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">Show Command...</sys:String>
+    <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">Load an existing profile, or import one directly from an existing server.</sys:String>
 
     <!-- Form strings -->
     <!-- The following line is commented out on purpose in this example in order to demonstrate the FallbackValue -->

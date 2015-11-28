@@ -113,6 +113,12 @@ namespace ARK_Server_Manager
         public ServerSettingsControl()
         {
             InitializeComponent();
+            var dictToRemove = this.Resources.MergedDictionaries.FirstOrDefault(d => d.Source.OriginalString.Contains(@"Globalization\en-US\en-US.xaml"));
+            if (dictToRemove != null)
+            {
+                this.Resources.MergedDictionaries.Remove(dictToRemove);
+            }
+
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
         }
