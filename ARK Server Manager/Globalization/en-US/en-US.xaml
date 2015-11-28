@@ -19,8 +19,10 @@
     <sys:String x:Key="AutoUpdater_Status_Complete">Complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Cancelled">Cancelled</sys:String>
     
-    <!-- Main Window 
-        This is the portion of the main window at the top - the part which is not part of any profile.
+    <!-- 
+    Main Window 
+    
+    This is the portion of the main window at the top - the part which is not part of any profile.
     -->   
     <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
     <sys:String x:Key="MainWindow_ArkNameLabel">ARK Server Manager</sys:String>
@@ -169,9 +171,23 @@
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsTooltip">Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
-
     <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">Show Command...</sys:String>
     <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">View the command line start command for the server.</sys:String>
+
+    <!-- Server Settings - Automatic Management -->
+    <sys:String x:Key="ServerSettings_AutomaticManagementLabel">Automatic Management</sys:String>
+    <sys:String x:Key="ServerSettings_NoAutoManagementButtonLabel">Why can't I use this?</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-start Server On Boot</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Enable Periodic Auto-Updates</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">Automatically check for updates periodically and upgrade the server.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodLabel">Update every:</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodTooltip">The number of hours and minutes between update checks.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodLabel">Restart Grace Period:</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodTooltip">The amount of time to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodUnits">minutes</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesLabel">Force Updates and Restart at:</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesTooltip">The hour and minute of the day to force an update and restart.</sys:String>
 
     <!-- Form strings -->
     <!-- The following line is commented out on purpose in this example in order to demonstrate the FallbackValue -->
