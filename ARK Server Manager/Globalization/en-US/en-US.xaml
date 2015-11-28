@@ -376,7 +376,7 @@
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often.</sys:String>
     
     <!-- Server Settings - Environment -->
-    <sys:String x:Key="ServerSettings_EnvironmentLabel">Mating Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_EnvironmentLabel">Environment</sys:String>
     <sys:String x:Key="ServerSettings_TamingSpeedLabel">Taming Speed:</sys:String>
     <sys:String x:Key="ServerSettings_TamingSpeedTooltip">Specifies the scaling factor for dinosaur taming speed. Higher values make taming faster.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountLabel">Harvest Amount:</sys:String>
