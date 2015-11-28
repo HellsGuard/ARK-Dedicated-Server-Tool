@@ -1039,39 +1039,39 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Rules" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_RulesLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="Enable Hardcore Mode" HorizontalAlignment="Left" ToolTip="Enables hardcore mode (players can not respawn, a new character must be created)."/>
-                                <CheckBox IsChecked="{Binding EnablePVP}" Content="Enable PvP" HorizontalAlignment="Left" ToolTip="Enabled Player vs Player mode (players are able to deal damage to or kill each other. In PvP players can also damage or destroy another tribe's buildings or kill their dinos)."/>
-                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="Enable PvE Cave Building" HorizontalAlignment="Left" ToolTip="If enabled, allows building in caves when PvE mode is enabled."/>
-                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="Disable PvE Friendly Fire" HorizontalAlignment="Left" ToolTip="If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled." />
-                                <local:AnnotatedSlider Label="Difficulty:" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
-        							Suffix="%" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop." />
+                                <CheckBox IsChecked="{Binding EnableHardcore}" Content="{DynamicResource ServerSettings_EnableHardcoreLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableHardcoreTooltip}"/>
+                                <CheckBox IsChecked="{Binding EnablePVP}" Content="{DynamicResource ServerSettings_EnablePvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvPTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="{DynamicResource ServerSettings_EnablePvECaveBuildingLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvECaveBuildingTooltip}"/>
+                                <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DifficultyLabel}" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
+        							Suffix="{DynamicResource ServerSettings_DifficultyUnits}" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_DifficultyTooltip}" />
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="Enable Tribute Downloads" Margin="0,5,5,5" ToolTip="If enabled, this will allow downloading external survivors/items/dinos into your server."/>
+                                        <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_EnableTributeLabel}"/>
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
-                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="No Survivor Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="If enabled, the survivor downloads are disabled."/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="No Item Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="If enabled, the item downloads are disabled."/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="No Dino Downloads" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="If enabled, the dino downloads are disabled."/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="Increase PvP Respawn Interval" Margin="0,5,5,5" ToolTip="If enabled, enables the increase PvP respawn interval settings."/>
+                                        <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="{DynamicResource ServerSettings_PvPRespawnLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PvPRespawnTooltip}"/>
                                     </GroupBox.Header>
                                     <StackPanel  IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}">
-                                        <local:AnnotatedSlider Label="Interval Check Period:" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="The time period the respawn check lasts after the player is killed by a team." />
-                                        <local:AnnotatedSlider Label="Interval Multiplier:" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="x" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" ToolTip="The multiplier value of the base amount to determine the respawn time." />
-                                        <local:AnnotatedSlider Label="Interval Base Amount:" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="seconds" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="The base time period used to detemine the respawn time." />
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalCheckPeriodLabel}" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="{DynamicResource ServerSettings_IntervalCheckPeriodUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalCheckPeriodTooltip}" />
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalMultiplierLabel}" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="{DynamicResource ServerSettings_IntervalMultiplierUnits}" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_IntervalMultiplierTooltip}" />
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalBaseLabel}" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="{DynamicResource ServerSettings_IntervalBaseUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalBaseTooltip}" />
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
-                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="PvE Schedule" Margin="0,5,5,5" ToolTip="If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times."/>
+                                        <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="{DynamicResource ServerSettings_PvEScheduleLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PvEScheduleTooltip}"/>
                                     </GroupBox.Header>
                                     <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
                                         <Grid.ColumnDefinitions>
@@ -1081,9 +1081,9 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="Use Server Time" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="If enabled, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time."/>
-                                        <Label    Grid.Column="1" Content="Start Time:"  Margin="10,0,0,0" ToolTip="The start time in hours and minutes from midnight to enable PvE mode."/>
-                                        <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The start time in hours and minutes from midnight to enable PvE mode." >
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="{DynamicResource ServerSettings_UseServerTimeLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseServerTimeTooltip}"/>
+                                        <Label    Grid.Column="1" Content="{DynamicResource ServerSettings_StartTimeLabel}"  Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}"/>
+                                        <TextBox  Grid.Column="2" FontSize="12"  Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}" >
                                             <Validation.ErrorTemplate>
                                                 <ControlTemplate>
                                                     <StackPanel>
@@ -1101,8 +1101,8 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Label   Grid.Column="3" Content="Stop Time:" Margin="10,0,0,0" ToolTip="The stop time in hours and minutes from midnight to disable PvE mode."/>
-                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="The stop time in hours and minutes from midnight to disable PvE mode." >
+                                        <Label   Grid.Column="3" Content="{DynamicResource ServerSettings_StopTimeLabel}" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}"/>
+                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,0,0,6" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}" >
                                             <Validation.ErrorTemplate>
                                                 <ControlTemplate>
                                                     <StackPanel>
@@ -1122,16 +1122,13 @@
                                         </TextBox>
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox  HorizontalAlignment="Stretch">
-                                    <GroupBox.Header>
-                                        PvE "Tribe Warfare" options
-                                    </GroupBox.Header>
+                                <GroupBox  HorizontalAlignment="Stretch" Header="{DynamicResource ServerSettings_TribeWarfareLabel}">
                                     <StackPanel>
-                                        <CheckBox Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="Allow Tribe Warfare" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="If enabled, capability for tribes to officially declare war on each other for mutually-agreed-upon period of time."/>
-                                        <CheckBox IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="Allow Cancelling Tribe Warfare" Margin="5,0,0,0" ToolTip="If enabled, tribes are able to cancel an agreed-upon war before it has actually started."/>
+                                        <CheckBox Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
+                                        <CheckBox IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
-                                <CheckBox IsChecked="{Binding AllowCustomRecipes}" Content="Allow Custom Recipes" HorizontalAlignment="Left" ToolTip="If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results)." />
+                                <CheckBox IsChecked="{Binding AllowCustomRecipes}" Content="{DynamicResource ServerSettings_AllowCustomRecipesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowCustomRecipesTooltip}" />
                             </StackPanel>
                         </Grid>
                     </Expander>

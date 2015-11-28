@@ -189,11 +189,57 @@
     <sys:String x:Key="ServerSettings_ForceUpdatesLabel">Force Updates and Restart at:</sys:String>
     <sys:String x:Key="ServerSettings_ForceUpdatesTooltip">The hour and minute of the day to force an update and restart.</sys:String>
 
-    <!-- Form strings -->
-    <!-- The following line is commented out on purpose in this example in order to demonstrate the FallbackValue -->
-    <!--<sys:String x:Key="Form_FirstName">First Name</sys:String>-->
-    <sys:String x:Key="Form_LastName">Last Name</sys:String>
-    <sys:String x:Key="Form_Age">Age</sys:String>
-    <sys:String x:Key="Form_Button_Clear">Clear</sys:String>
+    <!-- Server Settings - Rules -->
+    <sys:String x:Key="ServerSettings_RulesLabel">Rules</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreLabel">Enable Hardcore Mode</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Enables hardcore mode (players can not respawn, a new character must be created).</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPLabel">Enable PvP</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPTooltip">Enables Player vs Player mode (players are able to deal damage to or kill each other. In PvP players can also damage or destroy another tribe's buildings or kill their dinos).</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingLabel">Enable PvE Cave Building</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">If enabled, allows building in caves when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Disable PvE Friendly Fire</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyTooltip">Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">No Survivor Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">If enabled, the survivor downloads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">No Item Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">If enabled, the item downloads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">No Dino Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">If enabled, the dino downloads are disabled.</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvPRespawnLabel">Enable Tribute Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodLabel">Interval Check Period</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodTooltip">The time period the respawn check lasts after the player is killed by a team.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierLabel">Interval Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierTooltip">The multiplier value of the base amount to determine the respawn time.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierUnits">x</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseLabel">Interval Base Amount:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseTooltip">The base time period used to detemine the respawn time.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseUnits">seconds</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvEScheduleLabel">PvE Schedule</sys:String>
+    <sys:String x:Key="ServerSettings_PvEScheduleTooltip">If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times.</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeLabel">Use Server Time</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeTooltip">If enabled, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time.</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeLabel">Start Time:</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeTooltip">The start time in hours and minutes from midnight to enable PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeLabel">Stop Time:</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeTooltip">The stop time in hours and minutes from midnight to disable PvE mode.</sys:String>
+
+    <sys:String x:Key="ServerSettings_TribeWarfareLabel">PvE "Tribe Warfare" options</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareLabel">Allow Tribe Warfare</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareTooltip">If enabled, capability for tribes to officially declare war on each other for mutually-agreed-upon period of time.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareLabel">Allow Cancelling Tribe Warfare</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareTooltip">If enabled, tribes are able to cancel an agreed-upon war before it has actually started.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Allow Custom Recipes</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results).</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>
