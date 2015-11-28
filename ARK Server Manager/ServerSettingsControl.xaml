@@ -1134,14 +1134,14 @@
                     </Expander>
                     <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Chat and Notifications" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_ChatAndNotificationsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
-                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="Enable Global Voice Chat" HorizontalAlignment="Left" ToolTip="If enabled, voice chat becomes global and everyone on the server can hear."/>
-                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="Enable Proximity Text Chat" HorizontalAlignment="Left" ToolTip="If enabled, only players near each other can see their chat messages."/>
-                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="Enable 'Player Left' Notifications" HorizontalAlignment="Left" ToolTip="If enabled, players will always get notified if someone joins the server."/>
-                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="Enable 'Player Joined' Notifications" HorizontalAlignment="Left" ToolTip="If enabled, players will always get notified if someone leaves the server."/>
+                                <CheckBox IsChecked="{Binding EnableGlobalVoiceChat}" Content="{DynamicResource ServerSettings_EnableGlobalVoiceChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableGlobalVoiceChatTooltip}"/>
+                                <CheckBox IsChecked="{Binding EnableProximityChat}" Content="{DynamicResource ServerSettings_EnableProximityChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableProximityChatTooltip}"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerLeftLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerLeftTooltip}"/>
+                                <CheckBox IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerJoinedLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerJoinedTooltip}"/>
                             </StackPanel>
                         </Grid>
                     </Expander>

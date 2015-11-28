@@ -242,4 +242,15 @@
     <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Allow Custom Recipes</sys:String>
     <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results).</sys:String>
 
+    <!-- Server Settings - Chat and Notifications -->
+    <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatLabel">Enable Global Voice Chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatTooltip">If enabled, voice chat becomes global and everyone on the server can hear.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatLabel">Enable Proximity Text Chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">If enabled, only players near each other can see their chat messages.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftLabel">Enable 'Player Left' Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">If enabled, players will always get notified if someone joins the server.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">Enable 'Player Joined' Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
+
 </Globalization:GlobalizationResourceDictionary>
