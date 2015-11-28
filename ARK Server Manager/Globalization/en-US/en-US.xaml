@@ -51,6 +51,8 @@
     <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
     <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
     <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
+    <sys:String x:Key="SliderUnits_Items">items</sys:String>
+    <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     
     <!--
     Server Settings
@@ -413,5 +415,40 @@
     <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Scales the egg laying interval of dinos. Lower values cause dinos to lay eggs more frequently.</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalLabel">Poop Interval:</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Scales the defecation interval of players and dinos. Lower values cause players and dinos to defecation more frequently.</sys:String>
+
+    <!-- Server Settings - Structures -->
+    <sys:String x:Key="ServerSettings_StructuresLabel">Structures</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceLabel">Structure Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Specifies the scaling factor for the resistance to damage structures receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageLabel">Structure Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageTooltip">Specifies the scaling factor for the damage structures deal with their attacks (e.g. spiked walls). Higher values increase damage. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownLabel">Structure Damage Repair Cooldown:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownTooltip">Server option for cooldown period on structure repair from the last time damaged. Set to 0 to disable it, official default is 180 seconds.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayLabel">Enable PvP Structure Decay</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayTooltip">If enabled, structures in PvP will automatically decay if left unused after a period of time.</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageLabel">PvP Zone Structure Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageTooltip">Specifies the scaling factor for the damage structures take within caves/cave entrances, in PvP.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleLabel">Max Structures Visible:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleTooltip">The maximum number of structures which will be visible to the player.  Lower values may help with server speed.</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierLabel">Per-Platform Structures Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">Max Platform Saddle Structures:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">The maximum number of platformed creatures or rafts allowed on the entire server.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableStructureDecayLabel">Enable Structure Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">If enabled, enables decay of player structures in PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodLabel">Structure Decay Period:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">Specifies the time required for player structures to decay in PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">Structure Decay Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">Specifies the scaling factor for the decay rate of player structures in PvE mode.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Auto Destroy Old Structures Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">Allows Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed. Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Force All Structure Locking</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">If enabled, spike walls will damage wild/riderless Dinos.</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>
