@@ -221,7 +221,7 @@
     <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">No Dino Downloads</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">If enabled, the dino downloads are disabled.</sys:String>
 
-    <sys:String x:Key="ServerSettings_PvPRespawnLabel">Enable Tribute Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>
     <sys:String x:Key="ServerSettings_IntervalCheckPeriodLabel">Interval Check Period</sys:String>
     <sys:String x:Key="ServerSettings_IntervalCheckPeriodTooltip">The time period the respawn check lasts after the player is killed by a team.</sys:String>
@@ -258,9 +258,9 @@
     <sys:String x:Key="ServerSettings_EnableProximityChatLabel">Enable Proximity Text Chat</sys:String>
     <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">If enabled, only players near each other can see their chat messages.</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerLeftLabel">Enable 'Player Left' Notifications</sys:String>
-    <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">If enabled, players will always get notified if someone joins the server.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">Enable 'Player Joined' Notifications</sys:String>
-    <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">If enabled, players will always get notified if someone joins the server.</sys:String>
 
     <!-- Server Settings - HUD and Visuals -->
     <sys:String x:Key="ServerSettings_HUDAndVisualsLabel">HUD and Visuals</sys:String>
@@ -291,13 +291,13 @@
     <sys:String x:Key="ServerSettings_ResistanceLabel">Resistance:</sys:String>
     <sys:String x:Key="ServerSettings_ResistanceTooltip">Specifies the scaling factor for the resistance to damage received when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
     <sys:String x:Key="ServerSettings_WaterDrainLabel">Water Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for water consumption. Higher values increase water consumption (player characters get thirsty faster).</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for water consumption. Higher values increase water consumption (thirsty faster).</sys:String>
     <sys:String x:Key="ServerSettings_FoodDrainLabel">Food Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for food consumption. Higher values increase food consumption (player characters get hungry faster).</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for food consumption. Higher values increase food consumption (hungry faster).</sys:String>
     <sys:String x:Key="ServerSettings_StaminaDrainLabel">Stamina Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster).</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for stamina consumption. Higher values increase stamina consumption (tired faster).</sys:String>
     <sys:String x:Key="ServerSettings_HealthRecoveryLabel">Health Recovery:</sys:String>
-    <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster).</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
     
@@ -316,7 +316,7 @@
     <sys:String x:Key="ServerSettings_StatTempLabel">Temperature:</sys:String>
     <sys:String x:Key="ServerSettings_StatTempTooltip">Specifies the multiplier for temperature tolerance gain per level. Higher values increase tolerance faster; lower values increase tolerance more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_StatWeightLabel">Weight:</sys:String>
-    <sys:String x:Key="ServerSettings_StatWeightTooltip">Specifies the multiplier for carrying capacity gain per level. Higher values increase carrying capacity faster; lower values increase carryign capacity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightTooltip">Specifies the multiplier for carrying capacity gain per level. Higher values increase carrying capacity faster; lower values increase carrying capacity more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_StatDamageLabel">Damage:</sys:String>
     <sys:String x:Key="ServerSettings_StatDamageTooltip">Specifies the multiplier for damage gain per level. Higher values increase damage dealt faster; lower values increase damage dealt more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_StatSpeedLabel">Speed:</sys:String>
