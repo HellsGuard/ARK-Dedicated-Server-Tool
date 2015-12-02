@@ -250,6 +250,10 @@
 
     <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Allow Custom Recipes</sys:String>
     <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results).</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierLabel">Effectiveness Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierTooltip">Specifies the multiplier for the customer recipe effectiveness. Higher values increase the recipe effectiveness.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierLabel">Skill Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierTooltip">Specifies the multiplier for the customer recipe skill. Higher values increase the recipe skill.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>

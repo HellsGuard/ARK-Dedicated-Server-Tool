@@ -182,6 +182,8 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty BabyMatureSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyMatureSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty BabyFoodConsumptionSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyFoodConsumptionSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
+        public static readonly DependencyProperty CustomRecipeEffectivenessMultiplierProperty = DependencyProperty.Register(nameof(CustomRecipeEffectivenessMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty CustomRecipeSkillMultiplierProperty = DependencyProperty.Register(nameof(CustomRecipeSkillMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "GlobalVoiceChat")]
         public bool EnableGlobalVoiceChat
@@ -813,6 +815,21 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(BabyFoodConsumptionSpeedMultiplierProperty); }
             set { SetValue(BabyFoodConsumptionSpeedMultiplierProperty, value); }
+        }
+
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CustomRecipeEffectivenessMultiplier
+        {
+            get { return (float)GetValue(CustomRecipeEffectivenessMultiplierProperty); }
+            set { SetValue(CustomRecipeEffectivenessMultiplierProperty, value); }
+        }
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CustomRecipeSkillMultiplier
+        {
+            get { return (float)GetValue(CustomRecipeSkillMultiplierProperty); }
+            set { SetValue(CustomRecipeSkillMultiplierProperty, value); }
         }
 
 
