@@ -1188,7 +1188,7 @@
                                                             Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsPlayer}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
                                                             Suffix="{DynamicResource ServerSettings_MaxXPUnits}"
                                                             ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
-                                    <Button Grid.Column="1" Click="MaxXPPlayer_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXP}">
+                                    <Button Grid.Column="1" Click="MaxXPPlayer_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
                                 </Grid>
@@ -1268,7 +1268,7 @@
                                                            Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsDino}" 
                                                            Suffix="{DynamicResource ServerSettings_MaxXPUnits}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
                                                            ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
-                                    <Button Grid.Column="1" Click="MaxXPDino_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXP}">
+                                    <Button Grid.Column="1" Click="MaxXPDino_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
                                 </Grid>

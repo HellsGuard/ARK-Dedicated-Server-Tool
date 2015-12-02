@@ -26,9 +26,6 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class ServerProfile : DependencyObject
     {
-        private const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 275000;
-        private const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 873538;
-
         private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         public enum MapSourceType
@@ -170,8 +167,8 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register(nameof(IsDirty), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalSpoilingTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalCorpseDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(DEFAULT_MAX_EXPERIENCE_POINTS_DINO));
-        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_DINO));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER));
         public static readonly DependencyProperty GlobalItemDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalItemDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
         public static readonly DependencyProperty CropDecaySpeedMultiplierProperty = DependencyProperty.Register(nameof(CropDecaySpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
@@ -1873,12 +1870,12 @@ namespace ARK_Server_Manager.Lib
 
         public void ResetOverrideMaxExperiencePointsPlayer()
         {
-            OverrideMaxExperiencePointsPlayer = DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER;
+            OverrideMaxExperiencePointsPlayer = GameData.DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER;
         }
 
         public void ResetOverrideMaxExperiencePointsDino()
         {
-            OverrideMaxExperiencePointsDino = DEFAULT_MAX_EXPERIENCE_POINTS_DINO;
+            OverrideMaxExperiencePointsDino = GameData.DEFAULT_MAX_EXPERIENCE_POINTS_DINO;
         }
     }
 }
