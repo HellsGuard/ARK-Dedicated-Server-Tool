@@ -486,5 +486,21 @@ namespace ARK_Server_Manager
 
             this.Settings.DinoSettings.Reset();
         }
+
+        private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Click 'Yes' to confirm you want to reset the Max XP.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetOverrideMaxExperiencePointsPlayer();
+        }
+
+        private void MaxXPDino_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Click 'Yes' to confirm you want to reset the Max XP.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetOverrideMaxExperiencePointsDino();
+        }
     }
 }

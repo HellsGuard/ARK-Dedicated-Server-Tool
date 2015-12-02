@@ -290,6 +290,7 @@
     <sys:String x:Key="ServerSettings_MaxXPLabel">Max XP:</sys:String>
     <sys:String x:Key="ServerSettings_MaxXPTooltip">Set the maximum XP cap.</sys:String>
     <sys:String x:Key="ServerSettings_MaxXPUnits">xp</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMaxXP">Reset Max XP Cap to official default</sys:String>
     <sys:String x:Key="ServerSettings_DamageLabel">Damage:</sys:String>
     <sys:String x:Key="ServerSettings_DamageTooltip">Specifies the scaling factor for the damage dealt with attacks. Higher values increase damage. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_ResistanceLabel">Resistance:</sys:String>

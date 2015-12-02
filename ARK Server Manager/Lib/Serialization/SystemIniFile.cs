@@ -64,7 +64,12 @@ namespace ARK_Server_Manager.Lib
         /// Only write the attributed value if the named field is true.
         /// </summary>
         public string ConditionedOn;
-        
+
+        /// <summary>
+        /// If true, the value will be treated as a multiline value.
+        /// </summary>
+        public bool Multiline;
+
         /// <summary>
         /// Attribute for the IniFile serializer
         /// </summary>
@@ -222,7 +227,13 @@ namespace ARK_Server_Manager.Lib
                                 strValue = "\"" + strValue + "\"";
                             }
 
-                            IniWriteValue(attr.Section, keyName, strValue, attr.File);
+                            if (attr.Multiline)
+                            {
+                                // substitutes the NewLine string with "\n"
+                                strValue = strValue.Replace(Environment.NewLine, @"\n");
+                            }
+
+                            IniWriteValue(attr.Section, keyName, @strValue, attr.File);
                         }
                     }
                 }
@@ -260,7 +271,12 @@ namespace ARK_Server_Manager.Lib
                         }
                         else if (fieldType == typeof(string))
                         {
-                            field.SetValue(obj, iniValue);
+                            var stringValue = iniValue;
+                            if (attr.Multiline)
+                            {
+                                stringValue = stringValue.Replace(@"\n", Environment.NewLine);
+                            }
+                            field.SetValue(obj, stringValue);
                         }
                         else
                         {
