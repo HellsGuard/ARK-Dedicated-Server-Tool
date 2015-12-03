@@ -146,6 +146,10 @@
     <sys:String x:Key="ServerSettings_RCONPortTooltip">The port that RCON will use on your server.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Log Admin to Chat</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">If enabled, admin commands will be echoed to chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON Server Log Buffer:</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
 
     <sys:String x:Key="ServerSettings_MapsAndModsLabel">Maps and Mods</sys:String>
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
@@ -168,14 +172,13 @@
     <sys:String x:Key="ServerSettings_ServerOptionsLabel">Server Options</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACLabel">Disable Valve Anti-Cheat System (VAC)</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACTooltip">If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!</sys:String>
-    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti Speedhack Detection</sys:String>
-    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimization</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationTooltip">If enabled, the player-move-physics will be disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>
-    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
-    <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON Server Log Buffer:</sys:String>
-    <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti Speedhack Detection</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasLabel">Anti-Speed Hack Bias</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasTooltip">Adjust the speed hack detection bias. Default is 1.0, disabled is 0.0.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>

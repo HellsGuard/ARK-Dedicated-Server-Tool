@@ -1329,6 +1329,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableAntiSpeedHackDetectionProperty, value); }
         }
 
+        public static readonly DependencyProperty SpeedHackBiasProperty = DependencyProperty.Register(nameof(SpeedHackBias), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        public float SpeedHackBias
+        {
+            get { return (float)GetValue(SpeedHackBiasProperty); }
+            set { SetValue(SpeedHackBiasProperty, value); }
+        }
+
         public static readonly DependencyProperty DisablePlayerMovePhysicsOptimizationProperty = DependencyProperty.Register(nameof(DisablePlayerMovePhysicsOptimization), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
         public bool DisablePlayerMovePhysicsOptimization
@@ -1769,9 +1777,13 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -insecure");
             }
 
-            if (this.DisableAntiSpeedHackDetection)
+            if (this.DisableAntiSpeedHackDetection || this.SpeedHackBias == 0.0f)
             {
                 serverArgs.Append(" -noantispeedhack");
+            }
+            else if (this.SpeedHackBias != 1.0f)
+            {
+                serverArgs.Append($" -speedhackbias={this.SpeedHackBias}f");
             }
 
             if (this.DisablePlayerMovePhysicsOptimization)
