@@ -1178,28 +1178,38 @@
                                           ToolTip="{DynamicResource ServerSettings_EnableFlyerCarryTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_XPMultiplierLabel}" Value="{Binding XPMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_XPMultiplierTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsPlayer}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
-                                                       Suffix="{DynamicResource ServerSettings_MaxXPUnits}"
-                                                       ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_XPMultiplierTooltip}" Margin="0,0,22,0"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <local:AnnotatedSlider Grid.Column="0" 
+                                                            Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsPlayer}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
+                                                            Suffix="{DynamicResource ServerSettings_MaxXPUnits}"
+                                                            ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
+                                    <Button Grid.Column="1" Click="MaxXPPlayer_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
+                                </Grid>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DamageLabel}" Value="{Binding PlayerDamageMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ResistanceLabel}" Value="{Binding PlayerResistanceMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}" 
-                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_WaterDrainLabel}" Value="{Binding PlayerCharacterWaterDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_WaterDrainTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_WaterDrainTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding PlayerCharacterFoodDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding PlayerCharacterStaminaDrainMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding PlayerCharacterHealthRecoveryMultiplier}"  Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}"
-                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}"/>
+                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}" Margin="0,0,22,0"/>
 
                                 <GroupBox>
                                     <GroupBox.Header>
@@ -1249,30 +1259,51 @@
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="{DynamicResource ServerSettings_MaxXPUnits}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
-                                                       ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DamageLabel}" Value="{Binding DinoDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedDamageLabel}" Value="{Binding TamedDinoDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ResistanceLabel}" Value="{Binding DinoResistanceMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedResistanceLabel}" Value="{Binding TamedDinoResistanceMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxTamedDinosLabel}" Value="{Binding MaxTamedDinos}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" 
-                                                       ToolTip="{DynamicResource ServerSettings_MaxTamedDinosTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoSpawnsLabel}" Value="{Binding DinoCountMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_DinoSpawnsTooltip}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <local:AnnotatedSlider Grid.Column="0" 
+                                                           Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsDino}" 
+                                                           Suffix="{DynamicResource ServerSettings_MaxXPUnits}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" 
+                                                           ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
+                                    <Button Grid.Column="1" Click="MaxXPDino_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
+                                </Grid>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DamageLabel}" Value="{Binding DinoDamageMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedDamageLabel}" Value="{Binding TamedDinoDamageMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DamageTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ResistanceLabel}" Value="{Binding DinoResistanceMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TamedResistanceLabel}" Value="{Binding TamedDinoResistanceMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_ResistanceTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxTamedDinosLabel}" Value="{Binding MaxTamedDinos}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" 
+                                                       ToolTip="{DynamicResource ServerSettings_MaxTamedDinosTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding DinoCharacterFoodDrainMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding DinoCharacterStaminaDrainMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}" Margin="0,0,22,0"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoSpawnsLabel}" Value="{Binding DinoCountMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DinoSpawnsTooltip}" Margin="0,0,22,0"/>
                                 <CheckBox Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" 
                                           ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
-                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
-                                                       ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" 
+                                                       Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
+                                                       ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}" Margin="0,0,22,0"/>
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">

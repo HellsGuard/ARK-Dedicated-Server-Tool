@@ -10,6 +10,9 @@ namespace ARK_Server_Manager.Lib
 {
     public static class GameData
     {
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 275000;
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 873538;
+
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
             {
                 new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          DinoName="Angler Fish",         CommonName="Angler",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
