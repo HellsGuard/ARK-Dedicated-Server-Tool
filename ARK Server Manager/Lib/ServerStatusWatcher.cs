@@ -308,7 +308,8 @@ namespace ARK_Server_Manager.Lib
                 // Now that it's running, we can check the publication status.
                 //
                 logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
-                var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
+                //var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
+                var serverInfo = NetworkUtils.GetServerNetworkInfo2(registration.SteamEndpoint);
                 if (serverInfo != null)
                 {                    
                     currentStatus = ServerStatus.Published;

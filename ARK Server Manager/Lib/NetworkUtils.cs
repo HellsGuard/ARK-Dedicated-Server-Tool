@@ -350,5 +350,24 @@ namespace ARK_Server_Manager.Lib
 
             return result;
         }
+
+        public static ServerNetworkInfo GetServerNetworkInfo2(IPEndPoint endpoint)
+        {
+            ServerNetworkInfo result = null;
+            try
+            {
+                QueryMaster.ServerInfo serverInfo = null;
+                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.Game.ARKSurvivalEvolved, endpoint))
+                {
+                    serverInfo = server.GetInfo();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
+            }
+
+            return result;
+        }
     }
 }

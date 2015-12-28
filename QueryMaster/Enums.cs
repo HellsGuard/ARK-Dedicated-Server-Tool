@@ -208,7 +208,11 @@ namespace QueryMaster
         /// <summary>
         /// Smashball
         /// </summary>
-        Smashball = 17730
+        Smashball = 17730,
+        /// <summary>
+        /// ARK: Survival Evolved
+        /// </summary>
+        ARKSurvivalEvolved = 346110,
     }
 
     /// <summary>
