@@ -351,15 +351,52 @@ namespace ARK_Server_Manager.Lib
             return result;
         }
 
-        public static ServerNetworkInfo GetServerNetworkInfo2(IPEndPoint endpoint)
+        public static ServerNetworkInfo GetServerNetworkInfoDirect(IPEndPoint endpoint)
         {
             ServerNetworkInfo result = null;
+            QueryMaster.ServerInfo serverInfo = null;
+            ReadOnlyCollection<QueryMaster.Player> players = null;
+
             try
             {
-                QueryMaster.ServerInfo serverInfo = null;
-                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.Game.ARKSurvivalEvolved, endpoint))
+                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
                 {
                     serverInfo = server.GetInfo();
+                    players = server.GetPlayers();
+                }
+
+                if (serverInfo != null)
+                {
+                    result = new ServerNetworkInfo();
+                    result.Name = serverInfo.Name;
+                    result.Map = serverInfo.Map;
+                    result.Players = serverInfo.Players;
+                    result.MaxPlayers = serverInfo.MaxPlayers;
+
+                    // get the name and version of the server using regular expression.
+                    if (!string.IsNullOrWhiteSpace(result.Name))
+                    {
+                        var match = Regex.Match(result.Name, @" - \(v([0-9]+\.[0-9]*)\)");
+                        if (match.Success && match.Groups.Count >= 2)
+                        {
+                            // remove the version number from the name
+                            result.Name = result.Name.Replace(match.Groups[0].Value, "");
+
+                            // get the version number
+                            var serverVersion = match.Groups[1].Value;
+                            Version ver;
+                            if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out ver))
+                            {
+                                result.Version = ver;
+                            }
+                        }
+                    }
+                }
+
+                if (players != null)
+                {
+                    // set the number of players based on the player list, excludes any players in the list without a valid name.
+                    result.Players = players.Count(record => !string.IsNullOrWhiteSpace(record.Name));
                 }
             }
             catch (Exception ex)

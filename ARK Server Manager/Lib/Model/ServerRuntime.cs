@@ -503,7 +503,8 @@ namespace ARK_Server_Manager.Lib
                         }
                     }
 
-                    this.Players = update.ServerInfo.Players;
+                    // set the player count using the players list, as this should only contain the current valid players.
+                    this.Players = update.Players.Count;
                     this.MaxPlayers = update.ServerInfo.MaxPlayers;
                 }
 
