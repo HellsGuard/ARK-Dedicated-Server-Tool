@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
@@ -296,9 +297,8 @@ namespace ARK_Server_Manager.Lib
             //
             // If the process was running do we then perform network checks.
             //
-            ServerInfo localInfo;
             ReadOnlyCollection<Player> players;
-            localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
+            ServerInfo localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
 
             if(localInfo != null)
             {
@@ -308,7 +308,12 @@ namespace ARK_Server_Manager.Lib
                 // Now that it's running, we can check the publication status.
                 //
                 logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
-                var serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
+                // get the server information direct from the server.
+                var serverInfo = NetworkUtils.GetServerNetworkInfoDirect(registration.SteamEndpoint);
+                // check fi the server returned the information.
+                if (serverInfo == null)
+                    // server did not return any information, try to get the server information using 3rd party source.
+                    serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
                 if (serverInfo != null)
                 {                    
                     currentStatus = ServerStatus.Published;
@@ -332,29 +337,25 @@ namespace ARK_Server_Manager.Lib
 
         private static ServerInfo GetLocalNetworkStatus(IPEndPoint specificEndpoint, out ReadOnlyCollection<Player> players)
         {
-            var server = ServerQuery.GetServerInstance(EngineType.Source, specificEndpoint);
-            ServerInfo serverInfo = null;
             players = null;
+
+            ServerInfo serverInfo = null;
             try
             {
-                serverInfo = server.GetInfo();
+                using (var server = ServerQuery.GetServerInstance(EngineType.Source, specificEndpoint))
+                {
+                    serverInfo = server.GetInfo();
+                    players = server.GetPlayers();
+                }
+
+                // return the list of valid players only.
+                if (players != null)
+                    players = new ReadOnlyCollection<Player>(players.Where(record => !string.IsNullOrWhiteSpace(record.Name)).ToList());
             }
             catch (SocketException ex)
             {
                 logger.Debug("GetInfo failed: {0}: {1}", specificEndpoint, ex.Message);
                 // Common when the server is unreachable.  Ignore it.
-            }
-
-            if (serverInfo != null)
-            {
-                try
-                {
-                    players = server.GetPlayers();
-                }
-                catch (SocketException)
-                {
-                    // Common when the server is unreachable.  Ignore it.
-                }
             }
 
             return serverInfo;

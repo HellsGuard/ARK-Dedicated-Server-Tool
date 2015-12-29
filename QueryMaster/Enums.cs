@@ -208,7 +208,7 @@ namespace QueryMaster
         /// <summary>
         /// Smashball
         /// </summary>
-        Smashball = 17730
+        Smashball = 17730,
     }
 
     /// <summary>
