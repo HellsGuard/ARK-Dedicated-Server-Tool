@@ -222,7 +222,16 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableFriendlyFirePvEProperty, value); }
         }
 
-        public static readonly DependencyProperty DisableFriendlyFirePvEProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty DisableFriendlyFirePvEProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableFriendlyFire")]
+        public bool DisableFriendlyFirePvP
+        {
+            get { return (bool)GetValue(DisableFriendlyFirePvPProperty); }
+            set { SetValue(DisableFriendlyFirePvPProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableFriendlyFirePvPProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AllowCaveBuildingPvE
@@ -392,14 +401,14 @@ namespace ARK_Server_Manager.Lib
         }
 
 
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
-        public bool DisablePvEGamma
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisablePvEGamma", InvertBoolean = true)]
+        public bool AllowPvEGamma
         {
-            get { return (bool)GetValue(DisablePvEGammaProperty); }
-            set { SetValue(DisablePvEGammaProperty, value); }
+            get { return (bool)GetValue(AllowPvEGammaProperty); }
+            set { SetValue(AllowPvEGammaProperty, value); }
         }
 
-        public static readonly DependencyProperty DisablePvEGammaProperty = DependencyProperty.Register(nameof(DisablePvEGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty AllowPvEGammaProperty = DependencyProperty.Register(nameof(AllowPvEGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
 
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPassword")]        

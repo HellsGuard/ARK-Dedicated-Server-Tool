@@ -211,6 +211,8 @@
     <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">If enabled, allows building in caves when PvE mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Disable PvE Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyTooltip">Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop.</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
@@ -281,8 +283,8 @@
     <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">If enabled, shows each player their position on the map.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Allow Player Gamma Settings in PvP</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">If enabled, allows gamma changes in PvP mode.</sys:String>
-    <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvELabel">Disable Player Gamma Settings in PvE</sys:String>
-    <sys:String x:Key="ServerSettings_DisablePlayerGammaInPvETooltip">If enabled, prevents gamma changes in PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">Allow Player Gamma Settings in PvE</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">If enabled, allows gamma changes in PvE mode.</sys:String>
 
     <!-- Server Settings - Player Settings -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>
