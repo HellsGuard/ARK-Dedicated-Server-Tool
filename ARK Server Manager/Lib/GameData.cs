@@ -17,8 +17,8 @@ namespace ARK_Server_Manager.Lib
             {
                 new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          DinoName="Angler Fish",         CommonName="Angler",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            DinoName="Ankylosaurus",        CommonName="Ankylo",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             DinoName="Titanomyrma Drone",   CommonName="Titanomyrma Drone",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Argentavis_Character_BP_C",      DinoNameTag="Argent",          DinoName="Argentavis",          CommonName="Argentavis",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             DinoName="Titanomyrma",         CommonName="Titanomyrma",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          DinoName="Argentavis",          CommonName="Argentavis",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             DinoName="Onychonycteris",      CommonName="Onyc",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         DinoName="Gigantopithecus",     CommonName="Gigantopithecus",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        DinoName="Titanoboa",           CommonName="Titanoboa",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
@@ -67,9 +67,9 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          DinoName="Carbonemys",          CommonName="Carbonemys",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
             };
 
-        public static string NameTagForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? String.Empty : dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+        public static string NameTagForClass(string entry) => dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
 
-        public static string FriendlyNameForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? "Titanomyrma Soldier" : dinoSpawns.First(d => d.ClassName == entry).CommonName;
+        public static string FriendlyNameForClass(string entry) => dinoSpawns.First(d => d.ClassName == entry).CommonName;
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
@@ -78,7 +78,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Angler_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Ankylo_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Ant_Character_BP_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Argentavis_Character_BP_C",    Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Argent_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Bat_Character_BP_C",           Multiplier=1.0f },
             new ClassMultiplier { ClassName="BigFoot_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="BoaFrill_Character_BP_C",      Multiplier=1.0f },
@@ -92,7 +92,6 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Doed_Character_BP_C",          Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dolphin_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dragonfly_Character_BP_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C",     Multiplier=1.0f },
             new ClassMultiplier { ClassName="Gigant_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Kairuku_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Mammoth_Character_BP_C",       Multiplier=1.0f },
