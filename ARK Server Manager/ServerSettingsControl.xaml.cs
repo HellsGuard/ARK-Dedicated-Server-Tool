@@ -23,6 +23,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager
 {
@@ -255,31 +256,53 @@ namespace ARK_Server_Manager
             }            
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        // REVIEW: This is a sample Command implementation which replaces the original Save_Click command, for reference when refactoring.
+        public ICommand SaveCommand
         {
-            if (Settings.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
+            get
             {
-                var result = MessageBox.Show("Auto-updates is enabled but the Server Cache update is not yet configured.  The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers.  You must first configure the cache, then you may enable automatic updating.  Would you like to configure the cache now?", "Server cache not configured", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if(result == MessageBoxResult.Yes)
-                {
-                    var settingsWindow = new SettingsWindow();
-                    settingsWindow.ShowDialog();
-                    if(!Updater.IsServerCacheAutoUpdateEnabled)
+                return new RelayCommand<object>(
+                    execute: (parameter) =>
                     {
-                        MessageBox.Show("The server cache was not configured.  Disabling auto-updates.", "Server cache not configured", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        Settings.EnableAutoUpdate = false;
-                    }
-                }
-            }
+                        // NOTE: This parameter is of type object and must be cast in most cases before use.
+                        var settings = (Server)parameter;
+                        if (settings.Profile.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
+                        {
+                            var result = MessageBox.Show("Auto-updates is enabled but the Server Cache update is not yet configured.  The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers.  You must first configure the cache, then you may enable automatic updating.  Would you like to configure the cache now?", "Server cache not configured", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                var settingsWindow = new SettingsWindow();
+                                settingsWindow.ShowDialog();
+                                if (!Updater.IsServerCacheAutoUpdateEnabled)
+                                {
+                                    MessageBox.Show("The server cache was not configured.  Disabling auto-updates.", "Server cache not configured", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    settings.Profile.EnableAutoUpdate = false;
+                                }
+                            }
+                        }
 
-            Settings.Save();
-            if (this.IsAdministrator)
-            {
-                if (!Settings.UpdateAutoUpdateSettings())
-                {
-                    MessageBox.Show("Failed to update scheduled tasks.  Ensure you have administrator rights on this machine and try again.  If the problem persists, please report this as a bug.", "Update schedule failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }           
+                        settings.Profile.Save();
+
+                        // NOTE: Ideally a command would not depend on this control object, so IsAdministrator would need to be some globally accessible value, much like Updater's properties are.  Then
+                        //       command's implementation becomes context-free and we can move its implementation to a separate class of commands, and bind it in the Xaml using a StaticResource.
+                        if (this.IsAdministrator)
+                        {
+                            if (!settings.Profile.UpdateAutoUpdateSettings())
+                            {
+                                MessageBox.Show("Failed to update scheduled tasks.  Ensure you have administrator rights on this machine and try again.  If the problem persists, please report this as a bug.", "Update schedule failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    },
+                    canExecute: (parameter) =>
+                    {
+                        bool canSave = true;
+
+                        // NOTE: Some logic if necessary.  If this return's false, the associated object to which this command is bound (like the Save button in this case) will be automatically disabled,
+                        // eliminating any extra Xaml binding for the IsEnabled property.
+                        return canSave;
+                    }
+                );
+            }
         }
 
         private void CopyProfile_Click(object sender, RoutedEventArgs e)

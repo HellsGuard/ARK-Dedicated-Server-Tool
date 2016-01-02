@@ -465,7 +465,7 @@
                     </Grid>
                     <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
                         <Button Margin="5" Width="80"  Click="Load_Click" Content="{StaticResource ImportButtonContent}"  ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}"/>
-                        <Button Margin="5" Width="80" Click="Save_Click" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}"/>
+                        <Button Margin="5" Width="80" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}"  Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}"/>
                     </StackPanel>
 
 
