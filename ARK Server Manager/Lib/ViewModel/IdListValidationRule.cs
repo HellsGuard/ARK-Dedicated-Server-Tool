@@ -11,8 +11,16 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
             var strValue = (string)value;
+
             if (!String.IsNullOrWhiteSpace(strValue))
             {
+                // check if there are any spaces
+                if (strValue.Contains(" "))
+                {
+                    return new ValidationResult(false, "Spaces are not permitted");
+                }
+
+                // check for valid integers
                 var entries = strValue.Split(',');
 
                 int throwaway;
