@@ -11,7 +11,7 @@ namespace ARK_Server_Manager.Lib
         public FloatIniValueArray(string iniKeyName, Func<IEnumerable<float>> resetFunc) : base(iniKeyName, resetFunc, (a, b) => a == b, m => m, ToIniValueInternal, FromIniValueInternal)
         {
             this.Reset();
-            this.IsEnabled = true;
+            this.IsEnabled = false;
         }       
 
         private static string ToIniValueInternal(float val)

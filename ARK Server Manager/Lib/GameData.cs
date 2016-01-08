@@ -783,9 +783,24 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<Level> LevelProgressionPlayerOfficial => levelProgressionPlayerOfficial.Select(l => l.Duplicate());
 
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers()
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_Default()
         {
             return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed()
+        {
+            return new float[12] { 0.15f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.15f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Add()
+        {
+            return new float[12] { 0.15f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.15f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Affinity()
+        {
+            return new float[12] { 0.375f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.375f, 1.0f, 1.0f, 1.0f };
         }
     }
 }

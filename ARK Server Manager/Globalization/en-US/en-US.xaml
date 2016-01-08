@@ -308,6 +308,8 @@
     <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for stamina consumption. Higher values increase stamina consumption (tired faster).</sys:String>
     <sys:String x:Key="ServerSettings_HealthRecoveryLabel">Health Recovery:</sys:String>
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
     
@@ -373,8 +375,12 @@
     <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
 
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Tamed Dino Per-Level Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Tamed Dino Per-Level Add Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Tamed Dino Per-Level Affinity Stat Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Wild Dino Per-Level Stat Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Dino Breeding Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">If enabled, allows scale factors to be applied to each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">Reset all multipliers back to defaults.</sys:String>
 
     <sys:String x:Key="ServerSettings_MatingIntervalLabel">Mating Interval:</sys:String>
     <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Specifies the multiplier for time between tamed dino mating. Lower values decrease the time between mating.</sys:String>

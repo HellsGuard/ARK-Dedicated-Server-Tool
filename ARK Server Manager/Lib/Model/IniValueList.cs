@@ -82,6 +82,7 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     list[index] = this.FromIniValue(v.Substring(v.IndexOf('=') + 1).Trim());
+                    this.IsEnabled = true;
                 }
                 this.AddRange(list);
             }
