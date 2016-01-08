@@ -105,6 +105,7 @@
     <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">Update the folder that contains the Ark server game and configuration files.</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonLabel">Validate</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Verify the server content against the Steam version.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetSectionTooltip">Resets the section back to defaults.</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>

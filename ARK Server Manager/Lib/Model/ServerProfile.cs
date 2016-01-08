@@ -1929,14 +1929,191 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
 
+        #region Reset Methods
+        // individual value reset methods
         public void ResetOverrideMaxExperiencePointsPlayer()
         {
-            OverrideMaxExperiencePointsPlayer = GameData.DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER;
+            this.ClearValue(OverrideMaxExperiencePointsPlayerProperty);
         }
 
         public void ResetOverrideMaxExperiencePointsDino()
         {
-            OverrideMaxExperiencePointsDino = GameData.DEFAULT_MAX_EXPERIENCE_POINTS_DINO;
+            this.ClearValue(OverrideMaxExperiencePointsDinoProperty);
         }
+
+        // section reset methods
+        public void ResetChatAndNotificationSection()
+        {
+            this.ClearValue(EnableGlobalVoiceChatProperty);
+            this.ClearValue(EnableProximityChatProperty);
+            this.ClearValue(EnablePlayerLeaveNotificationsProperty);
+            this.ClearValue(EnablePlayerJoinedNotificationsProperty);
+        }
+
+        public void ResetCustomLevelsSection()
+        {
+            this.ClearValue(EnableLevelProgressionsProperty);
+
+            this.PlayerLevels = new LevelList();
+            this.ResetLevelProgressionToOfficial(LevelProgression.Player);
+
+            this.DinoLevels = new LevelList();
+            this.ResetLevelProgressionToOfficial(LevelProgression.Dino);
+        }
+
+        public void ResetDinoSettings()
+        {
+            this.ClearValue(OverrideMaxExperiencePointsDinoProperty);
+            this.ClearValue(DinoDamageMultiplierProperty);
+            this.ClearValue(TamedDinoDamageMultiplierProperty);
+            this.ClearValue(DinoResistanceMultiplierProperty);
+            this.ClearValue(TamedDinoResistanceMultiplierProperty);
+            this.ClearValue(MaxTamedDinosProperty);
+            this.ClearValue(DinoCharacterFoodDrainMultiplierProperty);
+            this.ClearValue(DinoCharacterStaminaDrainMultiplierProperty);
+            this.ClearValue(DinoCharacterHealthRecoveryMultiplierProperty);
+            this.ClearValue(DinoCountMultiplierProperty);
+            this.ClearValue(HarvestingDamageMultiplierDinoProperty);
+            this.ClearValue(DisableDinoDecayPvEProperty);
+            this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
+
+            this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
+            this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0]);
+            this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
+
+            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
+
+            this.ClearValue(MatingIntervalMultiplierProperty);
+            this.ClearValue(EggHatchSpeedMultiplierProperty);
+            this.ClearValue(BabyMatureSpeedMultiplierProperty);
+            this.ClearValue(BabyFoodConsumptionSpeedMultiplierProperty);
+        }
+
+        public void ResetEngramsSection()
+        {
+            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.OverrideNamedEngramEntries.Reset();
+        }
+
+        public void ResetEnvironmentSection()
+        {
+            this.ClearValue(TamingSpeedMultiplierProperty);
+            this.ClearValue(HarvestAmountMultiplierProperty);
+            this.ClearValue(ResourcesRespawnPeriodMultiplierProperty);
+            this.ClearValue(ResourceNoReplenishRadiusPlayersProperty);
+            this.ClearValue(ResourceNoReplenishRadiusStructuresProperty);
+            this.ClearValue(ClampResourceHarvestDamageProperty);
+            this.ClearValue(HarvestHealthMultiplierProperty);
+
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers.Reset();
+
+            this.ClearValue(DayCycleSpeedScaleProperty);
+            this.ClearValue(DayTimeSpeedScaleProperty);
+            this.ClearValue(NightTimeSpeedScaleProperty);
+            this.ClearValue(GlobalSpoilingTimeMultiplierProperty);
+            this.ClearValue(GlobalItemDecompositionTimeMultiplierProperty);
+            this.ClearValue(GlobalCorpseDecompositionTimeMultiplierProperty);
+            this.ClearValue(CropDecaySpeedMultiplierProperty);
+            this.ClearValue(CropGrowthSpeedMultiplierProperty);
+            this.ClearValue(LayEggIntervalMultiplierProperty);
+            this.ClearValue(PoopIntervalMultiplierProperty);
+        }
+
+        public void ResetHUDAndVisualsSection()
+        {
+            this.ClearValue(AllowCrosshairProperty);
+            this.ClearValue(AllowHUDProperty);
+            this.ClearValue(AllowThirdPersonViewProperty);
+            this.ClearValue(AllowMapPlayerLocationProperty);
+            this.ClearValue(AllowPVPGammaProperty);
+            this.ClearValue(AllowPvEGammaProperty);
+        }
+
+        public void ResetPlayerSettings()
+        {
+            this.ClearValue(EnableFlyerCarryProperty);
+            this.ClearValue(XPMultiplierProperty);
+            this.ClearValue(OverrideMaxExperiencePointsPlayerProperty);
+            this.ClearValue(PlayerDamageMultiplierProperty);
+            this.ClearValue(PlayerResistanceMultiplierProperty);
+            this.ClearValue(PlayerCharacterWaterDrainMultiplierProperty);
+
+            this.ClearValue(PlayerCharacterFoodDrainMultiplierProperty);
+            this.ClearValue(PlayerCharacterStaminaDrainMultiplierProperty);
+            this.ClearValue(PlayerCharacterHealthRecoveryMultiplierProperty);
+            this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
+
+            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
+        }
+
+        public void ResetRulesSection()
+        {
+            this.ClearValue(EnableHardcoreProperty);
+            this.ClearValue(EnablePVPProperty);
+            this.ClearValue(AllowCaveBuildingPvEProperty);
+            this.ClearValue(DisableFriendlyFirePvPProperty);
+            this.ClearValue(DisableFriendlyFirePvEProperty);
+            this.ClearValue(DifficultyOffsetProperty);
+            this.ClearValue(EnableTributeDownloadsProperty);
+            this.ClearValue(PreventDownloadSurvivorsProperty);
+            this.ClearValue(PreventDownloadItemsProperty);
+            this.ClearValue(PreventDownloadDinosProperty);
+            this.ClearValue(IncreasePvPRespawnIntervalProperty);
+            this.ClearValue(IncreasePvPRespawnIntervalCheckPeriodProperty);
+            this.ClearValue(IncreasePvPRespawnIntervalMultiplierProperty);
+            this.ClearValue(IncreasePvPRespawnIntervalBaseAmountProperty);
+            this.ClearValue(AutoPvETimerProperty);
+            this.ClearValue(AutoPvEUseSystemTimeProperty);
+            this.ClearValue(AutoPvEStartTimeSecondsProperty);
+            this.ClearValue(AutoPvEStopTimeSecondsProperty);
+            this.ClearValue(AllowTribeWarPvEProperty);
+            this.ClearValue(AllowTribeWarCancelPvEProperty);
+            this.ClearValue(AllowCustomRecipesProperty);
+            this.ClearValue(CustomRecipeEffectivenessMultiplierProperty);
+            this.ClearValue(CustomRecipeSkillMultiplierProperty);
+        }
+
+        public void ResetSOTFSection()
+        {
+            this.ClearValue(SOTF_EnabledProperty);
+            this.ClearValue(SOTF_DisableDeathSPectatorProperty);
+            this.ClearValue(SOTF_OnlyAdminRejoinAsSpectatorProperty);
+            this.ClearValue(SOTF_MaxNumberOfPlayersInTribeProperty);
+            this.ClearValue(SOTF_BattleNumOfTribesToStartGameProperty);
+            this.ClearValue(SOTF_TimeToCollapseRODProperty);
+            this.ClearValue(SOTF_BattleAutoStartGameIntervalProperty);
+            this.ClearValue(SOTF_BattleAutoRestartGameIntervalProperty);
+            this.ClearValue(SOTF_BattleSuddenDeathIntervalProperty);
+            this.ClearValue(SOTF_GamePlayLoggingProperty);
+        }
+
+        public void ResetStructuresSection()
+        {
+            this.ClearValue(StructureResistanceMultiplierProperty);
+            this.ClearValue(StructureDamageMultiplierProperty);
+            this.ClearValue(StructureDamageRepairCooldownProperty);
+            this.ClearValue(PvPStructureDecayProperty);
+            this.ClearValue(PvPZoneStructureDamageMultiplierProperty);
+            this.ClearValue(MaxStructuresVisibleProperty);
+            this.ClearValue(PerPlatformMaxStructuresMultiplierProperty);
+            this.ClearValue(MaxPlatformSaddleStructureLimitProperty);
+            this.ClearValue(FlyerPlatformAllowUnalignedDinoBasingProperty);
+            this.ClearValue(EnableStructureDecayProperty);
+            this.ClearValue(PvEStructureDecayDestructionPeriodProperty);
+            this.ClearValue(PvEStructureDecayPeriodMultiplierProperty);
+            this.ClearValue(AutoDestroyOldStructuresMultiplierProperty);
+            this.ClearValue(ForceAllStructureLockingProperty);
+            this.ClearValue(PassiveDefensesDamageRiderlessDinosProperty);
+        }
+        #endregion
     }
 }

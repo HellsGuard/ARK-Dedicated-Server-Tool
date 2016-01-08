@@ -956,7 +956,7 @@
                             </GroupBox>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionAutomaticManagement" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_AutomaticManagementLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
@@ -1055,9 +1055,16 @@
                             </GroupBox>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionRules" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_RulesLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_RulesLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionRules, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.RulesSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
@@ -1159,9 +1166,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionChatAndNotifications" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_ChatAndNotificationsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock TextWrapping="Wrap" Text="{DynamicResource ServerSettings_ChatAndNotificationsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionChatAndNotifications, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ChatAndNotificationsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
@@ -1172,9 +1186,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionHUDAndVisuals" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_HUDAndVisualsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_HUDAndVisualsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionHUDAndVisuals, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.HudAndVisualsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel>
@@ -1187,9 +1208,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionPlayerSettings" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_PlayerSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_PlayerSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionPlayerSettings, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerSettingsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
@@ -1268,9 +1296,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionDinoSettings" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_DinoSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_DinoSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionDinoSettings, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoSettingsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
@@ -1505,9 +1540,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionEnvironment" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_EnvironmentLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_EnvironmentLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionEnvironment, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.EnvironmentSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
@@ -1562,9 +1604,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionStructures" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_StructuresLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_StructuresLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionStructures, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.StructuresSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
@@ -1592,9 +1641,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionEngrams" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_EngramsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_EngramsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionEngrams, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.EngramsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <GroupBox>
@@ -1644,9 +1700,16 @@
                             </GroupBox>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionCustomLevels" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionCustomLevels, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.CustomLevelsSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <StackPanel Grid.Column="0">
@@ -1762,9 +1825,16 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionSOTF" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_SOTFLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_SOTFLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionSOTF, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SOTFSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
                             <GroupBox>
