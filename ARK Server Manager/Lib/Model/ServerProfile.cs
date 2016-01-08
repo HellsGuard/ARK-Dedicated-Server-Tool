@@ -1002,6 +1002,15 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HarvestingDamageMultiplierPlayerProperty = DependencyProperty.Register(nameof(HarvestingDamageMultiplierPlayer), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "DinoTurretDamageMultiplier")]
+        public float TurretDamageMultiplierDino
+        {
+            get { return (float)GetValue(TurretDamageMultiplierDinoProperty); }
+            set { SetValue(TurretDamageMultiplierDinoProperty, value); }
+        }
+
+        public static readonly DependencyProperty TurretDamageMultiplierDinoProperty = DependencyProperty.Register(nameof(TurretDamageMultiplierDino), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1974,6 +1983,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DinoCharacterHealthRecoveryMultiplierProperty);
             this.ClearValue(DinoCountMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierDinoProperty);
+            this.ClearValue(TurretDamageMultiplierDinoProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
 
