@@ -163,7 +163,7 @@ namespace ARK_Server_Manager.Lib
                     if (collection != null)
                     {
                         var filteredSection = IniReadSection(attr.Section, attr.File)
-                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + "="))
+                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
                                                     .ToArray();
                         IniWriteSection(attr.Section, filteredSection, attr.File);
                     }

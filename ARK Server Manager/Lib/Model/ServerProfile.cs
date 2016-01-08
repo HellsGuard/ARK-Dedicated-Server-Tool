@@ -984,6 +984,25 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty ServerModIdsProperty = DependencyProperty.Register(nameof(ServerModIds), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
 
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "DinoHarvestingDamageMultiplier")]
+        public float HarvestingDamageMultiplierDino
+        {
+            get { return (float)GetValue(HarvestingDamageMultiplierDinoProperty); }
+            set { SetValue(HarvestingDamageMultiplierDinoProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestingDamageMultiplierDinoProperty = DependencyProperty.Register(nameof(HarvestingDamageMultiplierDino), typeof(float), typeof(ServerProfile), new PropertyMetadata(3.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "PlayerHarvestingDamageMultiplier")]
+        public float HarvestingDamageMultiplierPlayer
+        {
+            get { return (float)GetValue(HarvestingDamageMultiplierPlayerProperty); }
+            set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestingDamageMultiplierPlayerProperty = DependencyProperty.Register(nameof(HarvestingDamageMultiplierPlayer), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public AggregateIniValueList<DinoSpawn> DinoSpawnWeightMultipliers
@@ -1000,8 +1019,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(TamedDinoClassDamageMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty =
-            DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty = DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
 
         [XmlIgnore]
@@ -1012,8 +1030,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(TamedDinoClassResistanceMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty TamedDinoClassResistanceMultipliersProperty =
-            DependencyProperty.Register(nameof(TamedDinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty TamedDinoClassResistanceMultipliersProperty = DependencyProperty.Register(nameof(TamedDinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
 
 
@@ -1025,8 +1042,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoClassDamageMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty DinoClassDamageMultipliersProperty =
-            DependencyProperty.Register(nameof(DinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty DinoClassDamageMultipliersProperty = DependencyProperty.Register(nameof(DinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
 
         [XmlIgnore]
@@ -1047,8 +1063,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoClassResistanceMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty DinoClassResistanceMultipliersProperty =
-            DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty DinoClassResistanceMultipliersProperty = DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1058,8 +1073,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty =
-            DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1322,6 +1336,26 @@ namespace ARK_Server_Manager.Lib
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed_Add
+        {
+            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty); }
+            set { SetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AddProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Add), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed_Affinity
+        {
+            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty); }
+            set { SetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty, value); }
+        }
+
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AffinityProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public FloatIniValueArray PerLevelStatsMultiplier_DinoWild
         {
             get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoWildProperty); }
@@ -1434,9 +1468,11 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers);
-            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers);
-            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers);
+            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
             GetDefaultDirectories();
         }
@@ -1671,8 +1707,7 @@ namespace ARK_Server_Manager.Lib
             // TODO: Refactor this into SystemIniFile
             //
             var values = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
-            var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") &&
-!s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
+            var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") && !s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
             if (this.EnableLevelProgressions)
             {
                 //
@@ -1886,6 +1921,11 @@ namespace ARK_Server_Manager.Lib
             settings.HarvestResourceItemAmountClassMultipliers.Reset();
             settings.ResetLevelProgressionToDefault(LevelProgression.Player);
             settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+            settings.PerLevelStatsMultiplier_DinoTamed.Reset();
+            settings.PerLevelStatsMultiplier_DinoTamed_Add.Reset();
+            settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
+            settings.PerLevelStatsMultiplier_DinoWild.Reset();
+            settings.PerLevelStatsMultiplier_Player.Reset();
             return settings;
         }
 

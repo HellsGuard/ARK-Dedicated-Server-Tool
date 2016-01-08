@@ -27,6 +27,32 @@ using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager
 {
+    public enum ServerSettingsResetAction
+    {
+        // Sections
+        AdministrationSection,
+        AutomaticManagementSection,
+        RulesSection,
+        ChatAndNotificationsSection,
+        HudAndVisualsSection,
+        PlayerSettingsSection,
+        DinoSettingsSection,
+        EnvironmentSection,
+        StructuresSection,
+        EngramsSection,
+        CustomLevelsSection,
+        SOTFSection,
+
+        // Properties
+        PlayerMaxXpProperty,
+        DinoMaxXpProperty,
+        PlayerPerLevelStatMultipliers,
+        DinoWildPerLevelStatMultipliers,
+        DinoTamedPerLevelStatMultipliers,
+        DinoTamedAddPerLevelStatMultipliers,
+        DinoTamedAffinityPerLevelStatMultipliers,
+    }
+
     /// <summary>
     /// Interaction logic for ServerSettings.xaml
     /// </summary>
@@ -524,6 +550,90 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.ResetOverrideMaxExperiencePointsDino();
+        }
+
+        public ICommand ResetActionCommand
+        {
+            get
+            {
+                return new RelayCommand<ServerSettingsResetAction>(
+                    execute: (action) =>
+                    {
+                        if (MessageBox.Show("Click 'Yes' to confirm you want to perform the reset.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                            return;
+
+                        switch (action)
+                        {
+                            // sections
+                            case ServerSettingsResetAction.AdministrationSection:
+                                break;
+
+                            case ServerSettingsResetAction.AutomaticManagementSection:
+                                break;
+
+                            case ServerSettingsResetAction.ChatAndNotificationsSection:
+                                break;
+
+                            case ServerSettingsResetAction.CustomLevelsSection:
+                                break;
+
+                            case ServerSettingsResetAction.DinoSettingsSection:
+                                break;
+
+                            case ServerSettingsResetAction.EngramsSection:
+                                break;
+
+                            case ServerSettingsResetAction.EnvironmentSection:
+                                break;
+
+                            case ServerSettingsResetAction.HudAndVisualsSection:
+                                break;
+
+                            case ServerSettingsResetAction.PlayerSettingsSection:
+                                break;
+
+                            case ServerSettingsResetAction.RulesSection:
+                                break;
+
+                            case ServerSettingsResetAction.SOTFSection:
+                                break;
+
+                            case ServerSettingsResetAction.StructuresSection:
+                                break;
+
+                            // Properties
+                            case ServerSettingsResetAction.PlayerMaxXpProperty:
+                                this.Settings.ResetOverrideMaxExperiencePointsPlayer();
+                                break;
+
+                            case ServerSettingsResetAction.DinoMaxXpProperty:
+                                this.Settings.ResetOverrideMaxExperiencePointsDino();
+                                break;
+
+                            case ServerSettingsResetAction.PlayerPerLevelStatMultipliers:
+                                this.Settings.PerLevelStatsMultiplier_Player.Reset();
+                                break;
+
+                            case ServerSettingsResetAction.DinoWildPerLevelStatMultipliers:
+                                this.Settings.PerLevelStatsMultiplier_DinoWild.Reset();
+                                break;
+
+                            case ServerSettingsResetAction.DinoTamedPerLevelStatMultipliers:
+                                this.Settings.PerLevelStatsMultiplier_DinoTamed.Reset();
+                                break;
+
+                            case ServerSettingsResetAction.DinoTamedAddPerLevelStatMultipliers:
+                                this.Settings.PerLevelStatsMultiplier_DinoTamed_Add.Reset();
+                                break;
+
+                            case ServerSettingsResetAction.DinoTamedAffinityPerLevelStatMultipliers:
+                                this.Settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
+                                break;
+                        }
+                    },
+                    canExecute: (action) => true
+                );
+            }
         }
     }
 }

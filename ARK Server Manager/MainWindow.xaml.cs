@@ -155,7 +155,7 @@ namespace ARK_Server_Manager
         {
             args.Canceled = true;
             var server = ServerManager.Instance.Servers[args.ItemIndex];
-            var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", server.Profile.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOTE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", server.Profile.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if(result == MessageBoxResult.Yes)
             {
                 ServerManager.Instance.Remove(server, deleteProfile: true);
