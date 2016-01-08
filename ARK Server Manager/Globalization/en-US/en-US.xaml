@@ -310,6 +310,8 @@
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
     
