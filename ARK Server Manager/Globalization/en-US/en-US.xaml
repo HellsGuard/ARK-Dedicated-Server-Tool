@@ -105,6 +105,7 @@
     <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">Update the folder that contains the Ark server game and configuration files.</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonLabel">Validate</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Verify the server content against the Steam version.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetSectionTooltip">Resets the section back to defaults.</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
@@ -310,6 +311,8 @@
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
     
