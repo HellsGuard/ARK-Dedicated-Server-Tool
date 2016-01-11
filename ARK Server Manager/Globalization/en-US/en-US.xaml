@@ -379,12 +379,15 @@
     <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Wild Damage</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
 
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Tamed Dino Per-Level Stat Multipliers</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Tamed Dino Per-Level Add Stat Multipliers</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Tamed Dino Per-Level Affinity Stat Multipliers</sys:String>
-    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Wild Dino Per-Level Stat Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Tamed)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Add</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Affinity</sys:String>
+    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Wild)</sys:String>
     <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Dino Breeding Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">If enabled, allows scale factors to be applied to each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAddMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Addition for each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Multiplier for each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">If enabled, allows scale factors to be applied to the Tamed Stat Increase for each stat.</sys:String>
     <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">Reset all multipliers back to defaults.</sys:String>
 
     <sys:String x:Key="ServerSettings_MatingIntervalLabel">Mating Interval:</sys:String>

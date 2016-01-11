@@ -1433,7 +1433,7 @@
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatMultipliersTooltip}"/>
+                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedMultipliersTooltip}"/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
@@ -1466,7 +1466,7 @@
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatAddMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatMultipliersTooltip}"/>
+                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatAddMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedAddMultipliersTooltip}"/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAddMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAddPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
@@ -1499,7 +1499,7 @@
                                 <GroupBox>
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatMultipliersTooltip}"/>
+                                            <CheckBox x:Name="EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip}"/>
                                             <Button Width="22" Height="22" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAffinityPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
