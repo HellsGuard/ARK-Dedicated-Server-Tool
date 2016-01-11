@@ -233,6 +233,15 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableFriendlyFirePvPProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableLootCrates")]
+        public bool DisableLootCrates
+        {
+            get { return (bool)GetValue(DisableLootCratesProperty); }
+            set { SetValue(DisableLootCratesProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableLootCratesProperty = DependencyProperty.Register(nameof(DisableLootCrates), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AllowCaveBuildingPvE
         {
@@ -2072,6 +2081,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowCaveBuildingPvEProperty);
             this.ClearValue(DisableFriendlyFirePvPProperty);
             this.ClearValue(DisableFriendlyFirePvEProperty);
+            this.ClearValue(DisableLootCratesProperty);
             this.ClearValue(DifficultyOffsetProperty);
             this.ClearValue(EnableTributeDownloadsProperty);
             this.ClearValue(PreventDownloadSurvivorsProperty);

@@ -212,6 +212,8 @@
     <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">If enabled, allows building in caves when PvE mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Disable PvE Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Disable Loot Crates</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>

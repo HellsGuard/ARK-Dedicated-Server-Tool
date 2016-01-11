@@ -1073,6 +1073,7 @@
                                 <CheckBox IsChecked="{Binding AllowCaveBuildingPvE}" Content="{DynamicResource ServerSettings_EnablePvECaveBuildingLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvECaveBuildingTooltip}"/>
                                 <CheckBox IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
                                 <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
+                                <CheckBox IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DifficultyLabel}" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="{DynamicResource ServerSettings_DifficultyUnits}" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_DifficultyTooltip}" />
                                 <GroupBox  HorizontalAlignment="Stretch">
