@@ -420,7 +420,7 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { Process.Start(player.ArkData.ProfileUrl); },
-                    canExecute: (player) => player != null && !String.IsNullOrWhiteSpace(player.ArkData.ProfileUrl)
+                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.ArkData.ProfileUrl)
                 );
             }
         }
@@ -435,7 +435,7 @@ namespace ARK_Server_Manager
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player != null
+                    canExecute: (player) => player != null && player.ArkData != null
                     );
             }
         }
@@ -450,7 +450,7 @@ namespace ARK_Server_Manager
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player != null && !String.IsNullOrWhiteSpace(player.TribeName)
+                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.TribeName)
                     );
             }
         }
