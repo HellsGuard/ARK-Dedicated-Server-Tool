@@ -414,14 +414,29 @@ namespace ARK_Server_Manager
             }
         }
 
+        public ICommand ViewPlayerSteamProfileCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => { Process.Start(player.ArkData.ProfileUrl); },
+                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.ArkData.ProfileUrl)
+                );
+            }
+        }
+
         public ICommand ViewPlayerProfileCommand
         {
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { Process.Start($"http://steamcommunity.com/profiles/{player.SteamId}"); },
-                    canExecute: (player) => true 
-                );
+                    execute: (player) => {
+                        var window = new PlayerProfile(player, this.RCONParameters.InstallDirectory);
+                        window.Owner = this;
+                        window.ShowDialog();
+                    },
+                    canExecute: (player) => player != null && player.ArkData != null
+                    );
             }
         }
 
@@ -430,10 +445,13 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { },
-                    canExecute: (player) => false //player != null && !String.IsNullOrWhiteSpace(player.TribeName
+                    execute: (player) => {
+                        var window = new TribeProfile(player, this.ServerRCON.Players, this.RCONParameters.InstallDirectory);
+                        window.Owner = this;
+                        window.ShowDialog();
+                    },
+                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.TribeName)
                     );
-
             }
         }
 
