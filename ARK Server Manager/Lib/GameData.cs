@@ -641,6 +641,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesia_C",            EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Ptero_C",             EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesio_Platform_C",   EngramLevelRequirement=80, EngramPointsCost=50,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Procop_C",            EngramLevelRequirement=50, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_C",             EngramLevelRequirement=60, EngramPointsCost=44,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_Platform_C",    EngramLevelRequirement=80, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Raptor_C",            EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
