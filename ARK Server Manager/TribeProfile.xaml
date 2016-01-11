@@ -13,6 +13,14 @@
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
+            <Style x:Key="OnlineListViewItemStyle" TargetType="{x:Type ListViewItem}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                        <Setter Property="Foreground" Value="Green"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="{StaticResource BeigeGradient}">
@@ -68,15 +76,15 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_TribeMembersSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>
                 <Grid>
-                    <ListView x:Name="TribeMembersListView" ItemsSource="{Binding ArkDataTribe.Players}" Height="200" HorizontalContentAlignment="Stretch">
+                    <ListView x:Name="TribeMembersListView" ItemsSource="{Binding TribePlayers}" Height="200" HorizontalContentAlignment="Stretch" ItemContainerStyle="{DynamicResource OnlineListViewItemStyle}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{DynamicResource Profile_SteamNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding SteamName}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_CharacterNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding CharacterName}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_LevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding Level}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_OnlineColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding Online}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_CreatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding FileCreated}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_UpdatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding FileUpdated}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_CharacterNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.CharacterName}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_LevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.Level}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_OnlineColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding IsOnline}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_CreatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.FileCreated}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_UpdatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.FileUpdated}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
