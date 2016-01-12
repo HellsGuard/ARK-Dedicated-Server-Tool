@@ -308,10 +308,6 @@ namespace ARK_Server_Manager.Lib
 
                 if (this.Players.Count == 0 || newPlayerList.Count > 0)
                 {
-                    var message = "Update Player Details requested.";
-                    output.Add(message);
-                    LogEvent(LogEventType.Event, message);
-                    LogEvent(LogEventType.All, message);
                     commandProcessor.PostAction(UpdatePlayerDetails);
                 }
 
