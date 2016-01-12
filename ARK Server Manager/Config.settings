@@ -149,5 +149,11 @@
     <Setting Name="HelpUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.com</Value>
     </Setting>
+    <Setting Name="OpenRCON_ServerIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OpenRCON_RCONPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">32330</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
