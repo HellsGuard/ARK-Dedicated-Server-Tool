@@ -11,20 +11,61 @@
         SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"
         Icon="Art/favicon.ico">
     <Window.Resources>
-        <vm:NullValueConverter x:Key="NullValueConverter"/>
-        <vm:IsNullValueConverter x:Key="IsNullValueConverter"/>
-        <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
-        <vm:EnumConverter x:Key="EnumConverter"/>
-        <vm:EnumFlagsConverter x:Key="EnumFlagsConverter"/>
-        <local:ScrollToBottomAction x:Key="ScrollToBottomAction" />
-        <ObjectDataProvider MethodName="GetValues"
-            ObjectType="{x:Type sys:Enum}"
-            x:Key="InputModes">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:InputMode" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <SolidColorBrush x:Key="HeaderBrush" Color="#FFF0F0F0"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <vm:NullValueConverter x:Key="NullValueConverter"/>
+            <vm:IsNullValueConverter x:Key="IsNullValueConverter"/>
+            <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
+            <vm:EnumConverter x:Key="EnumConverter"/>
+            <vm:EnumFlagsConverter x:Key="EnumFlagsConverter"/>
+            <local:ScrollToBottomAction x:Key="ScrollToBottomAction" />
+            <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type sys:Enum}"
+                x:Key="InputModes">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:InputMode" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <SolidColorBrush x:Key="HeaderBrush" Color="#FFF0F0F0"/>
+            <Style x:Key="ServerStatus" TargetType="{x:Type Label}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Connected">
+                        <Setter Property="Foreground" Value="Green"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Disconnected">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="OnlinePlayer" TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                        <Setter Property="BorderBrush" Value="LightGreen"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                        <Setter Property="BorderBrush" Value="Gray"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="Tribename" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
+                        <Setter Property="Content" Value="No tribe"/>
+                        <Setter Property="FontStyle" Value="Italic"/>
+                        <Setter Property="Foreground" Value="LightGray"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
+                        <Setter Property="Content" Value="{Binding ArkData.Tribe.Name}"/>
+                        <Setter Property="FontStyle" Value="Normal"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Margin="2,1,2,2">
@@ -33,7 +74,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Mode:"/>
+            <Label Grid.Column="0" Content="{DynamicResource RCON_ModeLabel}"/>
             <ComboBox Grid.Column="1" ItemsSource="{Binding Source={StaticResource InputModes}}" SelectedItem="{Binding CurrentInputMode, Mode=TwoWay}" Margin="0,0,2,0"/>
             <TextBox Name="ConsoleInput" TabIndex="0" Grid.Column="2" KeyUp="ConsoleInput_KeyUp" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True"/>
         </Grid>
@@ -41,59 +82,44 @@
             <DockPanel Margin="2,2,2,1" LastChildFill="False">
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                     <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
-                        <MenuItem Header="_File" VerticalAlignment="Stretch">
-                            <MenuItem Header="View Logs..." Command="{Binding ViewLogsCommand}"/>
-                            <MenuItem Header="Clear Logs">
-                                <MenuItem Header="Confirm" Command="{Binding ClearLogsCommand}"/>
+                        <MenuItem Header="{DynamicResource RCON_Menu_File}" VerticalAlignment="Stretch">
+                            <MenuItem Header="{DynamicResource RCON_Menu_ViewLogs}"    Command="{Binding ViewLogsCommand}"/>
+                            <MenuItem Header="{DynamicResource RCON_Menu_ClearLogs}">
+                                <MenuItem Header="{DynamicResource RCON_Menu_Confirm}" Command="{Binding ClearLogsCommand}"/>
                             </MenuItem>
                         </MenuItem>
                     </Menu>
 
                     <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
-                        <MenuItem Header="_Console" VerticalAlignment="Stretch">
-                            <MenuItem Header="Auto-scroll" IsCheckable="True" IsChecked="{Binding ScrollOnNewInput}"/>
+                        <MenuItem Header="{DynamicResource RCON_Menu_Console}" VerticalAlignment="Stretch">
+                            <MenuItem Header="{DynamicResource RCON_Menu_AutoScroll}" IsCheckable="True" IsChecked="{Binding ScrollOnNewInput}"/>
                         </MenuItem>
                     </Menu>
 
                     <Menu VerticalAlignment="Center" Margin="1" Background="{StaticResource HeaderBrush}">
-                        <MenuItem Header="_Players">
-                            <MenuItem Header="Sort">
-                                <MenuItem Header="By Online"    IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Online}" IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Online}"/>
-                                <MenuItem Header="By Name"      IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Name}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Name}"/>
-                                <MenuItem Header="By Tribe"     IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Tribe}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Tribe}"/>
+                        <MenuItem Header="{DynamicResource RCON_Menu_Players}">
+                            <MenuItem Header="{DynamicResource RCON_Menu_Sort}">
+                                <MenuItem Header="{DynamicResource RCON_Menu_SortOnline}"         IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Online}" IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Online}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_SortName}"           IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Name}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Name}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_SortTribe}"          IsCheckable="True" Command="{Binding SortPlayersCommand}" CommandParameter="{x:Static local:PlayerSortType.Tribe}"  IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Tribe}"/>
                             </MenuItem>
-                            <MenuItem Header="_Filter">
-                                <MenuItem Header="Show Online"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Online}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Online, Mode=OneWay}"/>
-                                <MenuItem Header="Show Offline"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Offline}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Offline, Mode=OneWay}"/>
-                                <MenuItem Header="Show Banned"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Banned}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Banned, Mode=OneWay}"/>
-                                <MenuItem Header="Show Whitelisted"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
+                            <MenuItem Header="{DynamicResource RCON_Menu_Filter}">
+                                <MenuItem Header="{DynamicResource RCON_Menu_FilterOnline}"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Online}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Online, Mode=OneWay}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_FilterOffline}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Offline}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Offline, Mode=OneWay}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_FilterBanned}"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Banned}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Banned, Mode=OneWay}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_FilterWhitelisted}"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}" IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
                             </MenuItem>
                         </MenuItem>
                     </Menu>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Label Content="Admin Name:"/>
-                    <TextBox Text="{Binding CurrentConfig.RCON_AdminName}" Width="100" ToolTip="This is the name used to prefix serverchat messages sent from the console."/>
-                    <Label Content="Status:" Margin="10,0,0,0"/>
-                    <Label Content="{Binding ServerRCON.Status}">
-                        <Label.Style>
-                            <Style TargetType="{x:Type Label}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Connected">
-                                        <Setter Property="Foreground" Value="Green"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ServerRCON.Status}" Value="Disconnected">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Label.Style>
-                    </Label>
-                    <Label Content="Players:" Margin="5,0,0,0"/>
+                    <Label Content="{DynamicResource RCON_AdminNameLabel}"/>
+                    <TextBox Text="{Binding CurrentConfig.RCON_AdminName}" Width="100" ToolTip="{DynamicResource RCON_AdminNameTooltip}"/>
+                    <Label Content="{DynamicResource RCON_StatusLabel}" Margin="10,0,0,0"/>
+                    <Label Content="{Binding ServerRCON.Status}" Style="{DynamicResource ServerStatus}"/>
+                    <Label Content="{DynamicResource RCON_PlayersLabel}" Margin="5,0,0,0"/>
                     <Label Content="{Binding ServerRCON.CountPlayers}"/>
-                    <Label Content="/"/>
+                    <Label Content="{DynamicResource RCON_PlayersSeparatorLabel}"/>
                     <Label Content="{Binding RCONParameters.MaxPlayers}"/>
                 </StackPanel>
             </DockPanel>
@@ -108,18 +134,18 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Header="Kick" Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
-                                <MenuItem Header="Kill">
-                                    <MenuItem Header="Confirm" Command="{Binding Source={StaticResource proxy}, Path=Data.KillPlayerCommand}" CommandParameter="{Binding}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_Kill}">
+                                    <MenuItem Header="{DynamicResource RCON_Menu_Confirm}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.KillPlayerCommand}" CommandParameter="{Binding}"/>
                                 </MenuItem>
                                 <Separator/>
-                                <MenuItem Header="Banned" IsCheckable="{Binding IsBanned}" Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
-                                <MenuItem Header="Whitelisted" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="{DynamicResource RCON_Menu_Kick}"                                              Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="{DynamicResource RCON_Menu_Banned}"      IsCheckable="{Binding IsBanned}"      Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="{DynamicResource RCON_Menu_Whitelisted}" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
                                 <Separator/>
-                                <MenuItem Header="View Steam Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerSteamProfileCommand}" CommandParameter="{Binding}" />
-                                <MenuItem Header="View Profile..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
-                                <MenuItem Header="View Tribe..." Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
-                                <MenuItem Header="Copy SteamID..." Command="{Binding Source={StaticResource proxy}, Path=Data.CopySteamIDCommand}" CommandParameter="{Binding}"/>                                
+                                <MenuItem Header="{DynamicResource RCON_Menu_ViewSteamProfile}"                                  Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerSteamProfileCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="{DynamicResource RCON_Menu_ViewProfile}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Header="{DynamicResource RCON_Menu_ViewTribe}"                                         Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
+                                <MenuItem Header="{DynamicResource RCON_Menu_CopySteamId}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.CopySteamIDCommand}" CommandParameter="{Binding}"/>                                
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
@@ -127,19 +153,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type rcon:PlayerInfo}">
-                    <Border BorderThickness="2" Padding="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
-                                        <Setter Property="BorderBrush" Value="LightGreen"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                                        <Setter Property="BorderBrush" Value="Gray"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                    <Border BorderThickness="2" Padding="1" Style="{DynamicResource OnlinePlayer}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"/>
@@ -152,24 +166,7 @@
                                     <Label Content="{Binding ArkData.CharacterName}" Padding="0,-1,0,-1"/>
                                     <TextBlock Text="{Binding ArkData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
                                 </StackPanel>
-                                <Label Padding="0,-1,0,-1">
-                                    <Label.Style>
-                                        <Style TargetType="Label">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
-                                                    <Setter Property="Content" Value="No tribe"/>
-                                                    <Setter Property="FontStyle" Value="Italic"/>
-                                                    <Setter Property="Foreground" Value="LightGray"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
-                                                    <Setter Property="Content" Value="{Binding ArkData.Tribe.Name}"/>
-                                                    <Setter Property="FontStyle" Value="Normal"/>
-                                                    <Setter Property="Foreground" Value="Black"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
+                                <Label Padding="0,-1,0,-1" Style="{DynamicResource Tribename}"/>
                             </StackPanel>
                         </Grid>
                     </Border>

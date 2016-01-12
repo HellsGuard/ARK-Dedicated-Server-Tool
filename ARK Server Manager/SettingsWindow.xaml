@@ -2,13 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ARK_Server_Manager"
-        Title="SettingsWindow" Height="441" Width="588" Icon="Art/favicon.ico" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Title="{DynamicResource Settings_Title}" Height="441" Width="588" Icon="Art/favicon.ico" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         >
     <Window.Resources>
-        <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFECE1D4" Offset="1"/>
-            <GradientStop Color="#FFEAE8E6"/>
-        </LinearGradientBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFECE1D4" Offset="1"/>
+                <GradientStop Color="#FFEAE8E6"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <local:GlobalSettings HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{StaticResource BeigeGradient}"/>

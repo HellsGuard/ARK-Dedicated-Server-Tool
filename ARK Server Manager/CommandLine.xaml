@@ -1,13 +1,18 @@
 ﻿<Window x:Class="ARK_Server_Manager.CommandLine"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Command Line"
+        Title="{DynamicResource CommandLine_Title}"
         Width="500" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Window.Resources>
-        <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFECE1D4" Offset="1"/>
-            <GradientStop Color="#FFEAE8E6"/>
-        </LinearGradientBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFECE1D4" Offset="1"/>
+                <GradientStop Color="#FFEAE8E6"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid Background="{StaticResource BeigeGradient}">
         <Grid.RowDefinitions>
@@ -15,6 +20,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Text="{Binding Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="5,5,5,0"/>
-        <Button Grid.Row="1" Content="Copy to clipboard" HorizontalAlignment="Center" Margin="5" Click="CopyToClipboard_Click"/>
+        <Button Grid.Row="1" Content="{DynamicResource CommandLine_CopyButtonLabel}" HorizontalAlignment="Center" Margin="5" Click="CopyToClipboard_Click"/>
     </Grid>
 </Window>
