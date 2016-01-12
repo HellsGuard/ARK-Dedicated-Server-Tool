@@ -1,18 +1,8 @@
 ﻿using ARK_Server_Manager.Lib.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ARK_Server_Manager
 {
@@ -21,8 +11,6 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class OpenRCON : Window
     {
-
-
         public string ServerIP
         {
             get { return (string)GetValue(ServerIPProperty); }
@@ -31,13 +19,13 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register(nameof(ServerIP), typeof(string), typeof(OpenRCON), new PropertyMetadata(IPAddress.Loopback.ToString()));
 
-        public int ServerPort
+        public int RCONPort
         {
-            get { return (int)GetValue(ServerPortProperty); }
-            set { SetValue(ServerPortProperty, value); }
+            get { return (int)GetValue(RCONPortProperty); }
+            set { SetValue(RCONPortProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register(nameof(ServerPort), typeof(int), typeof(OpenRCON), new PropertyMetadata(32330));
+        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(OpenRCON), new PropertyMetadata(32330));
 
         public string Password
         {
@@ -50,25 +38,42 @@ namespace ARK_Server_Manager
         public OpenRCON()
         {
             InitializeComponent();
+            LoadDefaults();
             this.DataContext = this;
         }
 
         public ICommand ConnectCommand => new RelayCommand<object>(
-            execute: _ =>
-            {
+            execute: _ => {
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
-                    ProfileName = $"Remote: {ServerIP}:{ServerPort}",
+                    ProfileName = $"Remote: {ServerIP}:{RCONPort}",
                     ServerIP = ServerIP,
-                    RCONPort = ServerPort,
+                    RCONPort = RCONPort,
                     AdminPassword = Password,
                     InstallDirectory = String.Empty,
                     RCONWindowExtents = Rect.Empty
                 });
                 window.Owner = this.Owner;
                 window.Show();
+
+                SaveDefaults();
                 this.Close();
             },
-            canExecute: _ => true);
+            canExecute: _ => true
+        );
+
+        private void LoadDefaults()
+        {
+            Config.Default.Reload();
+            if (!String.IsNullOrWhiteSpace(Config.Default.OpenRCON_ServerIP))
+                ServerIP = Config.Default.OpenRCON_ServerIP;
+            RCONPort = Config.Default.OpenRCON_RCONPort;
+        }
+        private void SaveDefaults()
+        {
+            Config.Default.OpenRCON_ServerIP = ServerIP;
+            Config.Default.OpenRCON_RCONPort = RCONPort;
+            Config.Default.Save();
+        }
     }
 }

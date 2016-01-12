@@ -18,7 +18,23 @@
     <sys:String x:Key="AutoUpdater_Status_DownloadNewServerComplete">Server download complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Complete">Complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Cancelled">Cancelled</sys:String>
-    
+    <sys:String x:Key="AutoUpdater_CancelButtonLabel">Cancel</sys:String>
+
+    <!-- CommandLine Window -->
+    <sys:String x:Key="CommandLine_Title">Command Line</sys:String>
+    <sys:String x:Key="CommandLine_CopyButtonLabel">Copy to clipboard</sys:String>
+
+    <!-- GlobalSettings Window -->
+    <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
+    <sys:String x:Key="GlobalSettings_VersionLabel">Version:</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
+    <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
+
     <!-- 
     Main Window 
     
@@ -560,5 +576,52 @@
     <sys:String x:Key="Profile_UpdatedColumnLabel">Last Updated</sys:String>
     <sys:String x:Key="Profile_NavigateSteamProfile">Click to open the steam profile in a browser</sys:String>
     <sys:String x:Key="Profile_NavigateProfile">Click to view the profile file in explorer</sys:String>
+
+    <!-- RCON window -->
+    <sys:String x:Key="RCON_Menu_File">_File</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewLogs">View Logs...</sys:String>
+    <sys:String x:Key="RCON_Menu_ClearLogs">Clear Logs</sys:String>
+    <sys:String x:Key="RCON_Menu_Confirm">Confirm</sys:String>
+    <sys:String x:Key="RCON_Menu_Console">_Console</sys:String>
+    <sys:String x:Key="RCON_Menu_AutoScroll">Auto-scroll</sys:String>
+    <sys:String x:Key="RCON_Menu_Players">_Players</sys:String>
+    <sys:String x:Key="RCON_Menu_Sort">Sort</sys:String>
+    <sys:String x:Key="RCON_Menu_SortOnline">By Online</sys:String>
+    <sys:String x:Key="RCON_Menu_SortName">By Name</sys:String>
+    <sys:String x:Key="RCON_Menu_SortTribe">By Tribe</sys:String>
+    <sys:String x:Key="RCON_Menu_Filter">_Filter</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOnline">Show Online</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
+
+    <sys:String x:Key="RCON_Menu_Kill">Kill</sys:String>
+    <sys:String x:Key="RCON_Menu_Kick">Kick</sys:String>
+    <sys:String x:Key="RCON_Menu_Banned">Banned</sys:String>
+    <sys:String x:Key="RCON_Menu_Whitelisted">Whitelisted</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewSteamProfile">View Steam Profile...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewProfile">View Profile...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewTribe">View Tribe...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopySteamId">Copy SteamID...</sys:String>
+
+    <sys:String x:Key="RCON_AdminNameLabel">Admin Name:</sys:String>
+    <sys:String x:Key="RCON_AdminNameTooltip">This is the name used to prefix serverchat messages sent from the console.</sys:String>
+    <sys:String x:Key="RCON_StatusLabel">Status:</sys:String>
+    <sys:String x:Key="RCON_PlayersLabel">Players:</sys:String>
+    <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
+    <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
+
+    <!-- Open RCON window -->
+    <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>
     
+    <sys:String x:Key="OpenRCON_IPLabel">Server IP:</sys:String>
+    <sys:String x:Key="OpenRCON_PortLabel">RCON Port:</sys:String>
+    <sys:String x:Key="OpenRCON_PasswordLabel">Admin Password:</sys:String>
+
+    <sys:String x:Key="OpenRCON_ConnectButtonLabel">Connect Button</sys:String>
+    <sys:String x:Key="OpenRCON_CancelButtonLabel">Cancel</sys:String>
+
+    <!-- Settings window -->
+    <sys:String x:Key="Settings_Title">Settings</sys:String>
+
 </Globalization:GlobalizationResourceDictionary>

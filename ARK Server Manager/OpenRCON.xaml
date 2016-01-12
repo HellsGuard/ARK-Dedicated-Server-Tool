@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         mc:Ignorable="d"
         Background="Beige"
-        Title="Open RCON Session" Width="250" Height="150" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top" ResizeMode="NoResize" WindowStyle="ToolWindow">
+        Title="{DynamicResource OpenRCON_Title}" Width="250" Height="150" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top" ResizeMode="NoResize" WindowStyle="ToolWindow">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -18,19 +25,19 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-        <Label Grid.Row="0" Grid.Column="0" Content="Server IP:"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerIP}" TabIndex="0"/>
-        
-        <Label Grid.Row="1" Grid.Column="0" Content="Server Port:"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ServerPort}" TabIndex="1"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Password:"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource OpenRCON_IPLabel}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerIP}" TabIndex="0"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource OpenRCON_PortLabel}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RCONPort}" TabIndex="1"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource OpenRCON_PasswordLabel}"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Password}" TabIndex="2"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-            <Button Content="Connect" Width="50" Margin="5" IsDefault="True" Command="{Binding ConnectCommand}"/>
-            <Button Content="Cancel" Width="50" Margin="5" IsCancel="True" />
+            <Button Content="{DynamicResource OpenRCON_ConnectButtonLabel}" Width="50" Margin="5" IsDefault="True" Command="{Binding ConnectCommand}"/>
+            <Button Content="{DynamicResource OpenRCON_CancelButtonLabel}" Width="50" Margin="5" IsCancel="True" />
         </StackPanel>
     </Grid>
 </Window>

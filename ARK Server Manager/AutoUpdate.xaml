@@ -13,11 +13,18 @@
         Width="381" 
         WindowStyle="ToolWindow" 
         SizeToContent="Height" Closing="Window_Closing">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch" Width="Auto">
             <ProgressBar x:Name="CompletionProgress" Height="10"/>
             <Label x:Name="StatusLabel" Content="Status" HorizontalContentAlignment="Center"/>
-            <Button Content="Cancel" Width="75" HorizontalAlignment="Center" IsCancel="True" Click="Button_Click"/>
+            <Button Content="{DynamicResource AutoUpdater_CancelButtonLabel}" Width="75" HorizontalAlignment="Center" IsCancel="True" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

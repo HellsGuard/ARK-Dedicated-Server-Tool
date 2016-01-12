@@ -511,5 +511,29 @@ namespace ARK_Server_Manager {
                 return ((string)(this["HelpUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OpenRCON_ServerIP {
+            get {
+                return ((string)(this["OpenRCON_ServerIP"]));
+            }
+            set {
+                this["OpenRCON_ServerIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32330")]
+        public int OpenRCON_RCONPort {
+            get {
+                return ((int)(this["OpenRCON_RCONPort"]));
+            }
+            set {
+                this["OpenRCON_RCONPort"] = value;
+            }
+        }
     }
 }
