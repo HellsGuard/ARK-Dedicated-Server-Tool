@@ -20,7 +20,8 @@ namespace ARK_Server_Manager
     {
         Online = 0,
         Name = 1,
-        Tribe = 2
+        Tribe = 2,
+        LastUpdated = 3,
     }
 
     [Flags]
@@ -347,7 +348,11 @@ namespace ARK_Server_Manager
                             case PlayerSortType.Tribe:
                                 this.PlayersView.ToggleSorting(nameof(PlayerInfo.TribeName));
                                 break;
-                        }                        
+
+                            case PlayerSortType.LastUpdated:
+                                this.PlayersView.ToggleSorting(nameof(PlayerInfo.LastUpdated), ListSortDirection.Descending);
+                                break;
+                        }
                     },
                     canExecute: (sort) => true
                 );

@@ -71,7 +71,15 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         }
 
         public static readonly DependencyProperty TribeNameProperty = DependencyProperty.Register(nameof(TribeName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
-       
+
+        public DateTime LastUpdated
+        {
+            get { return (DateTime)GetValue(LastUpdatedProperty); }
+            set { SetValue(LastUpdatedProperty, value); }
+        }
+
+        public static readonly DependencyProperty LastUpdatedProperty = DependencyProperty.Register(nameof(LastUpdated), typeof(DateTime), typeof(PlayerInfo), new PropertyMetadata(DateTime.MinValue));
+
         public Player ArkData
         {
             get { return (Player)GetValue(ArkDataProperty); }
@@ -82,9 +90,10 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 
         internal async Task UpdateArkData(Player arkData)
         {
+            this.ArkData = arkData;
+            this.LastUpdated = arkData.FileUpdated;
             this.TribeName = arkData.Tribe?.Name;
 
-            this.ArkData = arkData;
             BitmapImage avatarImage;
             if (!PlayerInfo.avatarImages.TryGetValue(this.SteamId, out avatarImage))
             {

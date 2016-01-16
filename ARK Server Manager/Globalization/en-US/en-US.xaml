@@ -589,6 +589,7 @@
     <sys:String x:Key="RCON_Menu_SortOnline">By Online</sys:String>
     <sys:String x:Key="RCON_Menu_SortName">By Name</sys:String>
     <sys:String x:Key="RCON_Menu_SortTribe">By Tribe</sys:String>
+    <sys:String x:Key="RCON_Menu_SortLastUpdated">By Last Updated</sys:String>
     <sys:String x:Key="RCON_Menu_Filter">_Filter</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOnline">Show Online</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
