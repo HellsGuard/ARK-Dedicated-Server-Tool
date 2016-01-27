@@ -795,7 +795,7 @@ namespace ARK_Server_Manager.Lib
 
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed()
         {
-            return new float[12] { 0.15f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.15f, 1.0f, 1.0f, 1.0f };
+            return new float[12] { 0.23f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.20f, 1.0f, 1.0f, 1.0f };
         }
 
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Add()
@@ -805,7 +805,7 @@ namespace ARK_Server_Manager.Lib
 
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Affinity()
         {
-            return new float[12] { 0.375f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.375f, 1.0f, 1.0f, 1.0f };
+            return new float[12] { 0.45f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.45f, 1.0f, 1.0f, 1.0f };
         }
     }
 }
