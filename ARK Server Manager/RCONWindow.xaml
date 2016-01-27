@@ -41,14 +41,25 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            <Style x:Key="OnlinePlayer" TargetType="Border">
+            <Style x:Key="PlayerStatus" TargetType="Border">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                    <DataTrigger Binding="{Binding IsOnline}"            Value="True">
                         <Setter Property="BorderBrush" Value="LightGreen"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsOnline}"      Value="False" />
+                            <Condition Binding="{Binding HasBan}"        Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="BorderBrush" Value="Red"/>
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsOnline}"      Value="False" />
+                            <Condition Binding="{Binding HasBan}"        Value="False" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="BorderBrush" Value="Gray"/>
-                    </DataTrigger>
+                    </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
             <Style x:Key="Tribename" TargetType="Label">
@@ -154,7 +165,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type rcon:PlayerInfo}">
-                    <Border BorderThickness="2" Padding="1" Style="{DynamicResource OnlinePlayer}">
+                    <Border BorderThickness="2" Padding="1" Style="{DynamicResource PlayerStatus}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"/>

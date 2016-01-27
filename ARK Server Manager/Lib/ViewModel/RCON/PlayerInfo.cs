@@ -86,11 +86,20 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 
         public static readonly DependencyProperty ArkDataProperty = DependencyProperty.Register(nameof(ArkData), typeof(Player), typeof(PlayerInfo), new PropertyMetadata(null));
 
+        public bool HasBan
+        {
+            get { return (bool)GetValue(HasBanProperty); }
+            set { SetValue(HasBanProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasBanProperty = DependencyProperty.Register(nameof(HasBan), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
+
         internal async Task UpdateArkDataAsync(Player arkData)
         {
             this.ArkData = arkData;
             this.LastUpdated = arkData.FileUpdated;
             this.TribeName = arkData.Tribe?.Name;
+            this.HasBan = arkData.CommunityBanned || arkData.VACBanned;
 
             BitmapImage avatarImage;
             if (!PlayerInfo.avatarImages.TryGetValue(this.SteamId, out avatarImage))
