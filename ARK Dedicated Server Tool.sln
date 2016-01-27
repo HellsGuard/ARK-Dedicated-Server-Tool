@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamKit2", "SteamKit2\Stea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMWeb", "ASMWeb\ASMWeb.csproj", "{6F4B2549-4BAA-410C-87CC-62B302C1C1A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkData", "ArkData\ArkData.csproj", "{D2EE1483-021F-4900-BBE8-88338D1386F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,14 @@ Global
 		{6F4B2549-4BAA-410C-87CC-62B302C1C1A7}.Release|x64.Build.0 = Release|Any CPU
 		{6F4B2549-4BAA-410C-87CC-62B302C1C1A7}.Release|x86.ActiveCfg = Release|Any CPU
 		{6F4B2549-4BAA-410C-87CC-62B302C1C1A7}.Release|x86.Build.0 = Release|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{D2EE1483-021F-4900-BBE8-88338D1386F4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
