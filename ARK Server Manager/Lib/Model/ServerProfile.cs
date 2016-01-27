@@ -1175,105 +1175,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PassiveDefensesDamageRiderlessDinosProperty = DependencyProperty.Register(nameof(PassiveDefensesDamageRiderlessDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        #endregion
-
-        #region Survival of the Fittest Options
-
-
-
-        public bool SOTF_Enabled
-        {
-            get { return (bool)GetValue(SOTF_EnabledProperty); }
-            set { SetValue(SOTF_EnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
-
-
-        public bool SOTF_DisableDeathSPectator
-        {
-            get { return (bool)GetValue(SOTF_DisableDeathSPectatorProperty); }
-            set { SetValue(SOTF_DisableDeathSPectatorProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_DisableDeathSPectatorProperty = DependencyProperty.Register(nameof(SOTF_DisableDeathSPectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
-        public bool SOTF_OnlyAdminRejoinAsSpectator
-        {
-            get { return (bool)GetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty); }
-            set { SetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_OnlyAdminRejoinAsSpectatorProperty = DependencyProperty.Register(nameof(SOTF_OnlyAdminRejoinAsSpectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
-        public bool SOTF_GamePlayLogging
-        {
-            get { return (bool)GetValue(SOTF_GamePlayLoggingProperty); }
-            set { SetValue(SOTF_GamePlayLoggingProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_GamePlayLoggingProperty = DependencyProperty.Register(nameof(SOTF_GamePlayLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_MaxNumberOfPlayersInTribe
-        {
-            get { return (int)GetValue(SOTF_MaxNumberOfPlayersInTribeProperty); }
-            set { SetValue(SOTF_MaxNumberOfPlayersInTribeProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(SOTF_MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(2));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleNumOfTribesToStartGame", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_BattleNumOfTribesToStartGame
-        {
-            get { return (int)GetValue(SOTF_BattleNumOfTribesToStartGameProperty); }
-            set { SetValue(SOTF_BattleNumOfTribesToStartGameProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_BattleNumOfTribesToStartGameProperty = DependencyProperty.Register(nameof(SOTF_BattleNumOfTribesToStartGame), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "TimeToCollapseROD", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_TimeToCollapseROD
-        {
-            get { return (int)GetValue(SOTF_TimeToCollapseRODProperty); }
-            set { SetValue(SOTF_TimeToCollapseRODProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_TimeToCollapseRODProperty = DependencyProperty.Register(nameof(SOTF_TimeToCollapseROD), typeof(int), typeof(ServerProfile), new PropertyMetadata(9000));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoStartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_BattleAutoStartGameInterval
-        {
-            get { return (int)GetValue(SOTF_BattleAutoStartGameIntervalProperty); }
-            set { SetValue(SOTF_BattleAutoStartGameIntervalProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_BattleAutoStartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoStartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoRestartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_BattleAutoRestartGameInterval
-        {
-            get { return (int)GetValue(SOTF_BattleAutoRestartGameIntervalProperty); }
-            set { SetValue(SOTF_BattleAutoRestartGameIntervalProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_BattleAutoRestartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoRestartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(45));
-
-
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleSuddenDeathInterval", ConditionedOn = nameof(SOTF_Enabled))]
-        public int SOTF_BattleSuddenDeathInterval
-        {
-            get { return (int)GetValue(SOTF_BattleSuddenDeathIntervalProperty); }
-            set { SetValue(SOTF_BattleSuddenDeathIntervalProperty, value); }
-        }
-
-        public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
 
         public bool EnableAutoUpdate
         {
@@ -1436,6 +1337,136 @@ namespace ARK_Server_Manager.Lib
             get { return (int)GetValue(RCONServerGameLogBufferProperty); }
             set { SetValue(RCONServerGameLogBufferProperty, value); }
         }
+
+        #endregion
+
+        #region Survival of the Fittest Options
+
+        public bool SOTF_Enabled
+        {
+            get { return (bool)GetValue(SOTF_EnabledProperty); }
+            set { SetValue(SOTF_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_DisableDeathSPectator
+        {
+            get { return (bool)GetValue(SOTF_DisableDeathSPectatorProperty); }
+            set { SetValue(SOTF_DisableDeathSPectatorProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_DisableDeathSPectatorProperty = DependencyProperty.Register(nameof(SOTF_DisableDeathSPectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_OnlyAdminRejoinAsSpectator
+        {
+            get { return (bool)GetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty); }
+            set { SetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_OnlyAdminRejoinAsSpectatorProperty = DependencyProperty.Register(nameof(SOTF_OnlyAdminRejoinAsSpectator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_GamePlayLogging
+        {
+            get { return (bool)GetValue(SOTF_GamePlayLoggingProperty); }
+            set { SetValue(SOTF_GamePlayLoggingProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_GamePlayLoggingProperty = DependencyProperty.Register(nameof(SOTF_GamePlayLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_MaxNumberOfPlayersInTribe
+        {
+            get { return (int)GetValue(SOTF_MaxNumberOfPlayersInTribeProperty); }
+            set { SetValue(SOTF_MaxNumberOfPlayersInTribeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(SOTF_MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(2));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleNumOfTribesToStartGame", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleNumOfTribesToStartGame
+        {
+            get { return (int)GetValue(SOTF_BattleNumOfTribesToStartGameProperty); }
+            set { SetValue(SOTF_BattleNumOfTribesToStartGameProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleNumOfTribesToStartGameProperty = DependencyProperty.Register(nameof(SOTF_BattleNumOfTribesToStartGame), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "TimeToCollapseROD", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_TimeToCollapseROD
+        {
+            get { return (int)GetValue(SOTF_TimeToCollapseRODProperty); }
+            set { SetValue(SOTF_TimeToCollapseRODProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_TimeToCollapseRODProperty = DependencyProperty.Register(nameof(SOTF_TimeToCollapseROD), typeof(int), typeof(ServerProfile), new PropertyMetadata(9000));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoStartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleAutoStartGameInterval
+        {
+            get { return (int)GetValue(SOTF_BattleAutoStartGameIntervalProperty); }
+            set { SetValue(SOTF_BattleAutoStartGameIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleAutoStartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoStartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoRestartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleAutoRestartGameInterval
+        {
+            get { return (int)GetValue(SOTF_BattleAutoRestartGameIntervalProperty); }
+            set { SetValue(SOTF_BattleAutoRestartGameIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleAutoRestartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoRestartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(45));
+
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleSuddenDeathInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        public int SOTF_BattleSuddenDeathInterval
+        {
+            get { return (int)GetValue(SOTF_BattleSuddenDeathIntervalProperty); }
+            set { SetValue(SOTF_BattleSuddenDeathIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
+
+        public bool SOTF_NoEvents
+        {
+            get { return (bool)GetValue(SOTF_NoEventsProperty); }
+            set { SetValue(SOTF_NoEventsProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_NoEventsProperty = DependencyProperty.Register(nameof(SOTF_NoEvents), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_NoBosses
+        {
+            get { return (bool)GetValue(SOTF_NoBossesProperty); }
+            set { SetValue(SOTF_NoBossesProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_NoBossesProperty = DependencyProperty.Register(nameof(SOTF_NoBosses), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool SOTF_BothBosses
+        {
+            get { return (bool)GetValue(SOTF_BothBossesProperty); }
+            set { SetValue(SOTF_BothBossesProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_BothBossesProperty = DependencyProperty.Register(nameof(SOTF_BothBosses), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public float SOTF_EvoEventInterval
+        {
+            get { return (float)GetValue(SOTF_EvoEventIntervalProperty); }
+            set { SetValue(SOTF_EvoEventIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_EvoEventIntervalProperty = DependencyProperty.Register(nameof(SOTF_EvoEventInterval), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        public float SOTF_RingStartTime
+        {
+            get { return (float)GetValue(SOTF_RingStartTimeProperty); }
+            set { SetValue(SOTF_RingStartTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_RingStartTimeProperty = DependencyProperty.Register(nameof(SOTF_RingStartTime), typeof(float), typeof(ServerProfile), new PropertyMetadata(1000.0f));
 
         #endregion
 
@@ -1742,6 +1773,9 @@ namespace ARK_Server_Manager.Lib
             if (this.SOTF_Enabled)
             {
                 serverArgs.Append(Config.Default.DefaultServerMap);
+
+                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
+                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
             else
             {
@@ -1809,6 +1843,12 @@ namespace ARK_Server_Manager.Lib
             if(this.SOTF_Enabled)
             {
                 serverArgs.Append(" -TotalConversionMod=496735411");
+
+                if (this.SOTF_GamePlayLogging)
+                {
+                    serverArgs.Append(" -gameplaylogging");
+                }
+
                 if(this.SOTF_DisableDeathSPectator)
                 {
                     serverArgs.Append(" -DisableDeathSpectator");
@@ -1819,9 +1859,18 @@ namespace ARK_Server_Manager.Lib
                     serverArgs.Append(" -OnlyAdminRejoinAsSpectator");
                 }
 
-                if(this.SOTF_GamePlayLogging)
+                if (this.SOTF_NoEvents)
                 {
-                    serverArgs.Append(" -gameplaylogging");
+                    serverArgs.Append(" -noevents");
+                }
+
+                if (this.SOTF_NoBosses)
+                {
+                    serverArgs.Append(" -nobosses");
+                }
+                else if (this.SOTF_BothBosses)
+                {
+                    serverArgs.Append(" -bothbosses");
                 }
             }
 
