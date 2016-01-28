@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ARK_Server_Manager.Lib.Serialization
 {
+#if false
     public class ValueArray<T> : List<T>
     {
         private string keyNameRoot;
@@ -43,4 +44,5 @@ namespace ARK_Server_Manager.Lib.Serialization
             //}
         }
     }
+#endif
 }

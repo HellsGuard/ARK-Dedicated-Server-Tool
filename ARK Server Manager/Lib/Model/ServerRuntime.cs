@@ -132,10 +132,11 @@ namespace ARK_Server_Manager.Lib
             }
         }
         
-        public async Task AttachToProfile(ServerProfile profile)
+        public Task AttachToProfile(ServerProfile profile)
         {
             AttachToProfileCore(profile);
             GetProfilePropertyChanges(profile);
+            return TaskUtils.FinishedTask;
         }
 
         private void AttachToProfileCore(ServerProfile profile)
@@ -197,12 +198,12 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
         }
 
-        public async Task StartAsync()
+        public Task StartAsync()
         {
             if(!System.Environment.Is64BitOperatingSystem)
             {
                 MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager cannot start the server.  You may still load and save profiles and settings files for use on other machines.", "64-bit OS Required", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return TaskUtils.FinishedTask;
             }
 
             switch(this.Status)
@@ -211,7 +212,7 @@ namespace ARK_Server_Manager.Lib
                 case ServerStatus.Initializing:
                 case ServerStatus.Stopping:
                     Debug.WriteLine("Server {0} already running.", this.ProfileSnapshot.ProfileName);
-                    return;
+                    return TaskUtils.FinishedTask;
             }
 
             UnregisterForUpdates();
@@ -238,7 +239,7 @@ namespace ARK_Server_Manager.Lib
                     var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)
                     {
-                        return;
+                        return TaskUtils.FinishedTask;
                     }
                 }
             }
@@ -259,7 +260,7 @@ namespace ARK_Server_Manager.Lib
                 RegisterForUpdates();
             }
             
-            return;            
+            return TaskUtils.FinishedTask;            
         }
 
         // Delegate type to be used as the Handler Routine for SCCH
