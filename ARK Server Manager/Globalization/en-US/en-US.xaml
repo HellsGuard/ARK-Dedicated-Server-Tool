@@ -547,6 +547,17 @@
     <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">The amount of time Sudden Death will be in effect until the game is declared a draw.</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">Enable Game Play Logging</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">Game Options</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsLabel">No Events</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsTooltip">If enabled, will cause no Evolution Events to be automatically triggered. Host can still trigger events manually with 'cheat ce evorain' etc.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesLabel">No Bosses</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">If enabled, will cause no bosses to be spawned</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesLabel">Both Bosses</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">If enabled and if bosses are used, this will spawn both the Broodmother and the Megapithecus at their respective times.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalLabel">Evolution Event Interval</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">Specifies the interval factor for the Evolution Events. Lower values decrease the time between events, higher values increase the time between events.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
 
     <!-- Player/Tribe Profile Window -->
     <sys:String x:Key="Profile_SteamSectionLabel">Steam Details</sys:String>
