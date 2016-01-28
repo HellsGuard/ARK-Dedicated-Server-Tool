@@ -1,11 +1,8 @@
 ﻿using ArkData;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -16,6 +13,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
     public class PlayerInfo : DependencyObject
     {
         static internal readonly ConcurrentDictionary<long, BitmapImage> avatarImages = new ConcurrentDictionary<long, BitmapImage>();
+
         public long SteamId
         {
             get { return (long)GetValue(SteamIDProperty); }
@@ -88,28 +86,41 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 
         public static readonly DependencyProperty ArkDataProperty = DependencyProperty.Register(nameof(ArkData), typeof(Player), typeof(PlayerInfo), new PropertyMetadata(null));
 
-        internal async Task UpdateArkData(Player arkData)
+        public bool HasBan
+        {
+            get { return (bool)GetValue(HasBanProperty); }
+            set { SetValue(HasBanProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasBanProperty = DependencyProperty.Register(nameof(HasBan), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
+
+        internal async Task UpdateArkDataAsync(Player arkData)
         {
             this.ArkData = arkData;
             this.LastUpdated = arkData.FileUpdated;
             this.TribeName = arkData.Tribe?.Name;
+            this.HasBan = arkData.CommunityBanned || arkData.VACBanned;
 
             BitmapImage avatarImage;
             if (!PlayerInfo.avatarImages.TryGetValue(this.SteamId, out avatarImage))
             {
-                var localFile = Path.Combine(Path.GetTempPath(), $"ASM.{this.SteamId}.tmp");
-                try
+                // check for a valid URL.
+                if (!String.IsNullOrWhiteSpace(arkData.AvatarUrl))
                 {
-                    using (var client = new WebClient())
+                    var localFile = Path.Combine(Path.GetTempPath(), $"ASM.{this.SteamId}.tmp");
+                    try
                     {
-                        await client.DownloadFileTaskAsync(arkData.AvatarUrl, localFile);
-                        avatarImage = new BitmapImage(new Uri(localFile, UriKind.Absolute));
-                        PlayerInfo.avatarImages[this.SteamId] = avatarImage;
+                        using (var client = new WebClient())
+                        {
+                            await client.DownloadFileTaskAsync(arkData.AvatarUrl, localFile);
+                            avatarImage = new BitmapImage(new Uri(localFile, UriKind.Absolute));
+                            PlayerInfo.avatarImages[this.SteamId] = avatarImage;
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    DebugUtils.WriteFormatThreadSafeAsync($"Failed to get avatar image from {arkData.AvatarUrl}: {ex.Message}: {ex.StackTrace}").DoNotWait();
+                    catch (Exception ex)
+                    {
+                        DebugUtils.WriteFormatThreadSafeAsync($"Failed to get avatar image from {arkData.AvatarUrl}: {ex.Message}: {ex.StackTrace}").DoNotWait();
+                    }
                 }
             }
 

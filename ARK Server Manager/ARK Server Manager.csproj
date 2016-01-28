@@ -88,9 +88,6 @@
     <StartupObject>ARK_Server_Manager.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArkData">
-      <HintPath>..\..\ArkData\ArkData\bin\Debug\ArkData.dll</HintPath>
-    </Reference>
     <Reference Include="EO.Wpf, Version=4.0.12.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <HintPath>..\packages\EO.Wpf.4.0.12\lib\EO.Wpf.dll</HintPath>
       <Private>True</Private>
@@ -480,6 +477,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArkData\ArkData.csproj">
+      <Project>{d2ee1483-021f-4900-bbe8-88338d1386f4}</Project>
+      <Name>ArkData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QueryMaster\QueryMaster.csproj">
       <Project>{4ca9c894-518f-42d7-bbe2-cfdfe7a03f8a}</Project>
       <Name>QueryMaster</Name>

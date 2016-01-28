@@ -359,12 +359,12 @@ namespace ARK_Server_Manager.Lib
                         var playerToUpdate = this.Players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
                         if (playerToUpdate != null)
                         {
-                            playerToUpdate.UpdateArkData(playerData).DoNotWait();
+                            playerToUpdate.UpdateArkDataAsync(playerData).DoNotWait();
                         }
                         else
                         {
                             var newPlayer = new PlayerInfo() { SteamId = Int64.Parse(playerData.SteamId), SteamName = playerData.SteamName };
-                            newPlayer.UpdateArkData(playerData).DoNotWait();
+                            newPlayer.UpdateArkDataAsync(playerData).DoNotWait();
                             this.Players.Add(newPlayer);
                         }
                     }
