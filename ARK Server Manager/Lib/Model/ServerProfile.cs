@@ -315,6 +315,14 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty UseRawSocketsProperty = DependencyProperty.Register(nameof(UseRawSockets), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
+        public bool UseBattlEye
+        {
+            get { return (bool)GetValue(UseBattlEyeProperty); }
+            set { SetValue(UseBattlEyeProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseBattlEyeProperty = DependencyProperty.Register(nameof(UseBattlEye), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float PerPlatformMaxStructuresMultiplier
@@ -324,8 +332,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerPlatformMaxStructuresMultiplierProperty = DependencyProperty.Register(nameof(PerPlatformMaxStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.25f));
-
-
 
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public int MaxPlatformSaddleStructureLimit
@@ -1540,7 +1546,6 @@ namespace ARK_Server_Manager.Lib
             list.AddRange(GameData.LevelProgression);
         }
 
-
         public void ResetLevelProgressionToOfficial(LevelProgression levelProgression)
         {
             LevelList list = GetLevelList(levelProgression);
@@ -1881,6 +1886,11 @@ namespace ARK_Server_Manager.Lib
                 {
                     serverArgs.Append(" -bothbosses");
                 }
+            }
+
+            if (this.UseBattlEye)
+            {
+                serverArgs.Append(" -BattlEye");
             }
 
             if (this.DisableValveAntiCheatSystem)
