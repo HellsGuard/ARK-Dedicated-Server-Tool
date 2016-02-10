@@ -33,12 +33,20 @@ namespace ARK_Server_Manager
         Banned          = 0x4,
         Whitelisted     = 0x8
     }
-    
+
     public enum InputMode
     {
         Command,
         Global,
         Broadcast,
+    }
+
+    public enum InputWindowMode
+    {
+        None,
+        ServerChatTo,
+        RenamePlayer,
+        RenameTribe,
     }
 
     public class ScrollToBottomAction : TriggerAction<RichTextBox>
@@ -179,6 +187,7 @@ namespace ARK_Server_Manager
         public RCONWindow(RCONParameters parameters)
         {
             InitializeComponent();
+            this.CurrentInputWindowMode = InputWindowMode.None;
             this.RCONParameters = parameters;
             this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
             this.PlayerSorting = (PlayerSortType)Config.Default.RCON_PlayerListSort;
@@ -204,7 +213,7 @@ namespace ARK_Server_Manager
             AddCommentsBlock(
                 "Enter commands or chat into the box at the bottom.",
                 "In Command mode, everything you enter will be a normal admin command",
-                "In Broadcast mode, everytihng you enter will be a global broadcast",
+                "In Broadcast mode, everything you enter will be a global broadcast",
                 "You may always prefix a command with / to be treated as a command and not chat.",
                 "Right click on players in the list to access player commands",
                 "Type /help to get help");
@@ -278,6 +287,83 @@ namespace ARK_Server_Manager
             base.OnClosing(e);
         }
 
+        private InputWindowMode CurrentInputWindowMode
+        {
+            get;
+            set;
+        }
+
+        public ICommand Button1Command
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        inputBox.Visibility = System.Windows.Visibility.Collapsed;
+                        dockPanel.IsEnabled = true;
+
+                        PlayerInfo player;
+                        var inputText = inputTextBox.Text;
+
+                        switch (this.CurrentInputWindowMode)
+                        {
+                            case InputWindowMode.ServerChatTo:
+                                player = inputBox.Tag as PlayerInfo;
+                                if (player != null)
+                                    this.ServerRCON.IssueCommand($"ServerChatTo \"{player.SteamId}\" {inputText}");
+                                break;
+
+                            case InputWindowMode.RenamePlayer:
+                                player = inputBox.Tag as PlayerInfo;
+                                if (player != null)
+                                    this.ServerRCON.IssueCommand($"RenamePlayer \"{player.ArkData.CharacterName}\" {inputText}");
+                                break;
+
+                            case InputWindowMode.RenameTribe:
+                                player = inputBox.Tag as PlayerInfo;
+                                if (player != null)
+                                    this.ServerRCON.IssueCommand($"RenameTribe \"{player.TribeName}\" {inputText}");
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        // Clear InputBox.
+                        inputTextBox.Text = String.Empty;
+                        this.CurrentInputWindowMode = InputWindowMode.None;
+                    },
+                    canExecute: (_) => true
+                );
+            }
+        }
+
+        public ICommand Button2Command
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        inputBox.Visibility = System.Windows.Visibility.Collapsed;
+                        dockPanel.IsEnabled = true;
+
+                        switch (this.CurrentInputWindowMode)
+                        {
+                            default:
+                                break;
+                        }
+
+                        // Clear InputBox.
+                        inputTextBox.Text = String.Empty;
+                        this.CurrentInputWindowMode = InputWindowMode.None;
+                    },
+                    canExecute: (_) => true
+                );
+            }
+        }
+
         public ICommand ClearLogsCommand
         {
             get
@@ -298,7 +384,7 @@ namespace ARK_Server_Manager
 
                         MessageBox.Show($"Logs in {logsDir} deleted.", "Logs deleted", MessageBoxButton.OK, MessageBoxImage.Information);
                     },
-                    canExecute: (sort) => true
+                    canExecute: (_) => this.RCONParameters.Server != null
                 );
             }
         }
@@ -321,7 +407,41 @@ namespace ARK_Server_Manager
                             MessageBox.Show($"Unable to open the logs directory at {logsDir}.  Please make sure this directory exists and that you have permission to access it.\nException: {ex.Message}", "Can't open logs", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     },
-                    canExecute: (sort) => true
+                    canExecute: (_) => this.RCONParameters.Server != null
+                );
+            }
+        }
+
+        public ICommand SaveWorldCommand
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        var message = "A world save is about to be performed, you may experience some lag during this process. Please be patient.";
+                        this.ServerRCON.IssueCommand($"broadcast {message}");
+
+                        this.ServerRCON.IssueCommand("saveworld");
+                    },
+                    canExecute: (_) => true
+                );
+            }
+        }
+
+        public ICommand DestroyWildDinosCommand
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        var message = "About to destroy all wild creatures, you may experience some lag during this process. Please be patient.";
+                        this.ServerRCON.IssueCommand($"broadcast {message}");
+
+                        this.ServerRCON.IssueCommand("DestroyWildDinos");
+                    },
+                    canExecute: (_) => true
                 );
             }
         }
@@ -375,13 +495,79 @@ namespace ARK_Server_Manager
             }
         }
 
+        public ICommand ChatPlayerCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => 
+                    {
+                        dockPanel.IsEnabled = false;
+
+                        CurrentInputWindowMode = InputWindowMode.ServerChatTo;
+                        inputBox.Tag = player;
+                        inputTitle.Text = $"Send a chat message to : {player.SteamName}";
+                        inputTextBox.Text = string.Empty;
+                        button1.Content = "Send";
+                        button2.Content = "Cancel";
+                        inputBox.Visibility = System.Windows.Visibility.Visible;
+                    },
+                    canExecute: (player) => true //player != null && player.IsOnline
+                );
+            }
+        }
+
+        public ICommand RenamePlayerCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => 
+                    {
+                        dockPanel.IsEnabled = false;
+
+                        CurrentInputWindowMode = InputWindowMode.RenamePlayer;
+                        inputBox.Tag = player;
+                        inputTitle.Text = $"Rename player : from {player.ArkData.CharacterName}";
+                        inputTextBox.Text = string.Empty;
+                        button1.Content = "Change";
+                        button2.Content = "Cancel";
+                        inputBox.Visibility = System.Windows.Visibility.Visible;
+                    },
+                    canExecute: (player) => player != null && player.IsOnline
+                );
+            }
+        }
+
+        public ICommand RenameTribeCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => 
+                    {
+                        dockPanel.IsEnabled = false;
+
+                        CurrentInputWindowMode = InputWindowMode.RenameTribe;
+                        inputBox.Tag = player;
+                        inputTitle.Text = $"Rename tribe : from {player.TribeName}";
+                        inputTextBox.Text = string.Empty;
+                        button1.Content = "Change";
+                        button2.Content = "Cancel";
+                        inputBox.Visibility = System.Windows.Visibility.Visible;
+                    },
+                    canExecute: (player) => player != null && player.IsOnline
+                );
+            }
+        }
+
         public ICommand KillPlayerCommand
         {
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.SteamId}"); },
-                    canExecute: (player) => false // player != null && player.IsOnline
+                    execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.ArkData.Id}"); },
+                    canExecute: (player) => false //player != null && player.IsOnline
                 );
             }
         }
@@ -465,8 +651,24 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { System.Windows.Clipboard.SetText(player.SteamId.ToString()); MessageBox.Show($"{player.SteamName}'s SteamID copied to the clipboard", "SteamID copied", MessageBoxButton.OK); },
+                    execute: (player) => { System.Windows.Clipboard.SetText(player.SteamId.ToString()); MessageBox.Show($"{player.SteamName}'s Steam ID copied to the clipboard", "Steam ID copied", MessageBoxButton.OK); },
                     canExecute: (player) => player != null
+                    );
+
+            }
+        }
+
+        public ICommand CopyPlayerIDCommand
+        {
+            get
+            {
+                return new RelayCommand<PlayerInfo>(
+                    execute: (player) => 
+                    {
+                        if (player.ArkData != null)
+                            System.Windows.Clipboard.SetText(player.ArkData.Id.ToString()); MessageBox.Show($"{player.SteamName}'s ingame UE4 ID copied to the clipboard", "Player ID copied", MessageBoxButton.OK);
+                    },
+                    canExecute: (player) => player != null && player.ArkData != null
                     );
 
             }
@@ -602,26 +804,37 @@ namespace ARK_Server_Manager
                 {
                     AddCommentsBlock(
                         "Known commands:",
-                        "   AllowPlayerToJoinNoCheck <player> - Adds the specified player to the whitelist",
-                        "   banplayer <steam id> - Adds the specified player to the banned list",
-                        "   Broadcast <message> - Sends a message to everyone",
-                        "   DestroyAll <class name> - Destroys ALL creatures of the specified class",
-                        "   destroyallenemies - Destroys ALL dinosaurs on the map",
-                        "   DisallowPlayerToJoinNoCheck <player> - Removes the specified player from the whitelist",
-                        "   giveitemnumtoplayer <player> <itemnum> <quantity> <quality> <recipe> - Gives items to a player",
-                        "   KickPlayer <steam id> - Kicks the specified user from the server",
-                        "   KillPlayer <steam id> - Kills the player (and mount), without leaving a body",
-                        "   ListPlayers - Lists the current players",
-                        "   PlayersOnly - Toggles all creature movement and crafting",
-                        "   saveworld - Saves the world to disk",
-                        "   serverchat <message> - Sends a message to global chat",
-                        "   SetMessageOfTheDay <message> - Sets the message of the day",
-                        "   settimeofday <hour>:<minute>[:<second>] - Sets the time using 24-hour format",
-                        "   slomo <factor> - Sets the passage of time.  Lower values slow time",
-                        "   unbanplayer <steam id> - Remove the specified player from the banned list",
+                        "   AllowPlayerToJoinNoCheck <steam id> - Adds the specified player to the server's whitelist.",
+                        "   BanPlayer <steam id> - Add the specified player to the server's banned list. ",
+                        "   Broadcast <message> - Broadcast a message to all players on the server. ",
+                        "   DestroyAll <class name> - Destroys ALL creatures of the specified class.",
+                        "   DestroyAllEnemies - Destroys all non-player creatures on the map, including tamed creatures. This does not prevent new ones from spawning as usual.",
+                        "   DestroyStructures - Destroys all structures owned by all players on the map.",
+                        "   DestroyWildDinos - Destroys all untamed creatures on the map. Useful for helping newly-released creatures to spawn.",
+                        "   DisallowPlayerToJoinNoCheck <steam id> - Removes the specified player from the server's whitelist.",
+                        "   DoExit - Shuts down the server as soon as possible.",
+                        "   GetChat - Returns the latest chat buffer (the same amount that the clients see).",
+                        "   GiveItemNumToPlayer <player id> <item id> <quantity> <quality> <blueprint> - Adds the specified item to the player's inventory (or its blueprint) in the specified quantity and with the specified quality.",
+                        "   GiveExpToPlayer <player id> <how much> <from tribe share> <prevent sharing with tribe> - Gives the specified player the specified amount of experience points.",
+                        "   KickPlayer <steam id> - Forcibly disconnect the specified player from the server.",
+                        "   KillPlayer <player id> - Kills the specified player.",
+                        "   ListPlayers - List all connected players and their Steam IDs.",
+                        "   PlayersOnly - Stops all creature movement in the game world and halts crafting. Players can still move normally. Repeat the command to disable its effects.",
+                        "   RenamePlayer \"<player>\" <new name> - Renames the player specified by their in-game string name.",
+                        "   RenameTribe \"<tribe>\" <new name> - Renames the tribe specified by it's string name.",
+                        "   SaveWorld - Forces the server to save the game world to disk in its current state.",
+                        "   ServerChat <message> - Sends a chat message to all currently connected players.",
+                        "   ServerChatTo \"<steam id>\" <message> - Sends a direct chat message to the player specified by their int64 encoded steam id.",
+                        "   ServerChatToPlayer \"<player>\" <message> - Sends a direct chat message to the player specified by their in-game player name.",
+                        "   SetMessageOfTheDay <message> - Sets the server's 'message of the day', displayed to players when they connect to it.",
+                        "   SetTimeOfDay <hour>:<minute>[:<second>] - Sets the game world's time of day to the specified time.",
+                        "   ShowMessageOfTheDay - Displays the message of the day.",
+                        "   Slomo <factor> - Sets the game speed multiplier. Lower values slow time, change back to 1 to set back to normal.",
+                        "   UnBanPlayer <steam id> - Remove the specified player from the server's banned list.",
                         "where:",
                         "   <player> specifies the character name of the player",
-                        "   <steam id> is the long numerical id of the player"
+                        "   <steam id> is the long numerical id of the player",
+                        "   <player id> specifies the ingame UE4 ID of the player"
                         );
                 }
                 else
