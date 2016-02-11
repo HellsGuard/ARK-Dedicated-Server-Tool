@@ -1890,7 +1890,7 @@ namespace ARK_Server_Manager.Lib
 
             if (this.UseBattlEye)
             {
-                serverArgs.Append(" -BattlEye");
+                serverArgs.Append(" -UseBattlEye");
             }
 
             if (this.DisableValveAntiCheatSystem)
