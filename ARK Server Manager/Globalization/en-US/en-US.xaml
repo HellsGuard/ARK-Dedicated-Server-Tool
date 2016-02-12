@@ -195,6 +195,8 @@
     <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasLabel">Anti-Speed Hack Bias</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasTooltip">Adjust the speed hack detection bias. Default is 1.0, disabled is 0.0.</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeLabel">Enable BattlEye Anti-Cheat System</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeTooltip">If enabled, the BattlEye Anti-Cheat System will be enabled.</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
@@ -595,6 +597,9 @@
     <sys:String x:Key="RCON_Menu_Confirm">Confirm</sys:String>
     <sys:String x:Key="RCON_Menu_Console">_Console</sys:String>
     <sys:String x:Key="RCON_Menu_AutoScroll">Auto-scroll</sys:String>
+    <sys:String x:Key="RCON_Menu_Server">_Server</sys:String>
+    <sys:String x:Key="RCON_Menu_SaveWorld">Save World</sys:String>
+    <sys:String x:Key="RCON_Menu_DestroyWildDinos">Destroy Wild Dinos</sys:String>
     <sys:String x:Key="RCON_Menu_Players">_Players</sys:String>
     <sys:String x:Key="RCON_Menu_Sort">Sort</sys:String>
     <sys:String x:Key="RCON_Menu_SortOnline">By Online</sys:String>
@@ -607,6 +612,9 @@
     <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
 
+    <sys:String x:Key="RCON_Menu_ChatPlayer">Chat to Player...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenamePlayer">Rename Player...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenameTribe">Rename Tribe...</sys:String>
     <sys:String x:Key="RCON_Menu_Kill">Kill</sys:String>
     <sys:String x:Key="RCON_Menu_Kick">Kick</sys:String>
     <sys:String x:Key="RCON_Menu_Banned">Banned</sys:String>
@@ -614,7 +622,8 @@
     <sys:String x:Key="RCON_Menu_ViewSteamProfile">View Steam Profile...</sys:String>
     <sys:String x:Key="RCON_Menu_ViewProfile">View Profile...</sys:String>
     <sys:String x:Key="RCON_Menu_ViewTribe">View Tribe...</sys:String>
-    <sys:String x:Key="RCON_Menu_CopySteamId">Copy SteamID...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopySteamId">Copy Steam ID...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopyPlayerId">Copy Player ID...</sys:String>
 
     <sys:String x:Key="RCON_AdminNameLabel">Admin Name:</sys:String>
     <sys:String x:Key="RCON_AdminNameTooltip">This is the name used to prefix serverchat messages sent from the console.</sys:String>
@@ -622,6 +631,9 @@
     <sys:String x:Key="RCON_PlayersLabel">Players:</sys:String>
     <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
     <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
+
+    <sys:String x:Key="RCON_Button_OK">OK</sys:String>
+    <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>
 
     <!-- Open RCON window -->
     <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>
