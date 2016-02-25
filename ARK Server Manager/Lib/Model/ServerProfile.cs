@@ -415,7 +415,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AllowPVPGammaProperty, value); }
         }
 
-
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisablePvEGamma", InvertBoolean = true)]
         public bool AllowPvEGamma
         {
@@ -1025,6 +1024,15 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TurretDamageMultiplierDinoProperty = DependencyProperty.Register(nameof(TurretDamageMultiplierDino), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int MaxTribeLogs
+        {
+            get { return (int)GetValue(MaxTribeLogsProperty); }
+            set { SetValue(MaxTribeLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxTribeLogsProperty = DependencyProperty.Register(nameof(MaxTribeLogs), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
 
 
         [XmlIgnore]
