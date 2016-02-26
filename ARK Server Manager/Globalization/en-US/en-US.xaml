@@ -167,6 +167,8 @@
     <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON Server Log Buffer:</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Maximum Tribe Logs:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
 
     <sys:String x:Key="ServerSettings_MapsAndModsLabel">Maps and Mods</sys:String>
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
