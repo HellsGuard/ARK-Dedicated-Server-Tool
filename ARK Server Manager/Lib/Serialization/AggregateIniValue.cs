@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -54,7 +55,7 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 var val = prop.GetValue(this);
-                var convertedVal = Convert.ToString(val);
+                var convertedVal = Convert.ToString(val, CultureInfo.GetCultureInfo("en-US"));
                 result.Append(prop.Name).Append('=');
                 if (prop.PropertyType == typeof(String))
                 {
@@ -105,7 +106,7 @@ namespace ARK_Server_Manager.Lib
                     var propInfo = this.properties.FirstOrDefault(p => String.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase));
                     if(propInfo != null)
                     {
-                        object convertedValue = Convert.ChangeType(val, propInfo.PropertyType);
+                        object convertedValue = Convert.ChangeType(val, propInfo.PropertyType, CultureInfo.GetCultureInfo("en-US"));
                         if(convertedValue.GetType() == typeof(String))
                         {
                             convertedValue = (convertedValue as string).Trim('"');

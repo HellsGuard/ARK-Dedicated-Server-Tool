@@ -651,7 +651,18 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { System.Windows.Clipboard.SetText(player.SteamId.ToString()); MessageBox.Show($"{player.SteamName}'s Steam ID copied to the clipboard", "Steam ID copied", MessageBoxButton.OK); },
+                    execute: (player) => 
+                    {
+                        try
+                        {
+                            System.Windows.Clipboard.SetText(player.SteamId.ToString());
+                            MessageBox.Show($"{player.SteamName}'s Steam ID copied to the clipboard", "Steam ID copied", MessageBoxButton.OK);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Clipboard could not be opened.  Another application may be using it.  Please try closing other applications and trying again.", "Copy to clipboard failed.", MessageBoxButton.OK);
+                        }
+                    },
                     canExecute: (player) => player != null
                     );
 
@@ -666,7 +677,17 @@ namespace ARK_Server_Manager
                     execute: (player) => 
                     {
                         if (player.ArkData != null)
-                            System.Windows.Clipboard.SetText(player.ArkData.Id.ToString()); MessageBox.Show($"{player.SteamName}'s ingame UE4 ID copied to the clipboard", "Player ID copied", MessageBoxButton.OK);
+                        {
+                            try
+                            {
+                                System.Windows.Clipboard.SetText(player.ArkData.Id.ToString());
+                                MessageBox.Show($"{player.SteamName}'s ingame UE4 ID copied to the clipboard", "Player ID copied", MessageBoxButton.OK);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Clipboard could not be opened.  Another application may be using it.  Please try closing other applications and trying again.", "Copy to clipboard failed.", MessageBoxButton.OK);
+                            }
+                        }
                     },
                     canExecute: (player) => player != null && player.ArkData != null
                     );

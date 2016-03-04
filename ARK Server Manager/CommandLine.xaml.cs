@@ -27,8 +27,15 @@ namespace ARK_Server_Manager
 
         private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Clipboard.SetText(this.DataContext as string);
-            MessageBox.Show("Done!", "Copied to clipboard", MessageBoxButton.OK);
+            try
+            {
+                System.Windows.Clipboard.SetText(this.DataContext as string);
+                MessageBox.Show("Done!", "Copied to clipboard", MessageBoxButton.OK);
+            }
+            catch
+            {
+                MessageBox.Show("Clipboard could not be opened.  Another application may be using it.  Please try closing other applications and trying again.", "Copy to clipboard failed.", MessageBoxButton.OK);
+            }            
         }
     }
 }

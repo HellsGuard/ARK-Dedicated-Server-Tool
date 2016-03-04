@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,12 @@ namespace ARK_Server_Manager.Lib
 
         private static string ToIniValueInternal(float val)
         {
-            return val.ToString();
+            return val.ToString(CultureInfo.GetCultureInfo("en-US"));
         }
 
         private static float FromIniValueInternal(string iniVal)
         {
-            return float.Parse(iniVal);
+            return float.Parse(iniVal, CultureInfo.GetCultureInfo("en-US"));
         }
 
         public override bool IsArray => true;

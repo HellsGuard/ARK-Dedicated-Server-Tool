@@ -18,6 +18,8 @@ using System.Windows;
 using System.Xml;
 using WPFSharp.Globalizer;
 using SteamKit2;
+using System.Threading;
+using System.Globalization;
 
 namespace ARK_Server_Manager
 {
@@ -40,6 +42,11 @@ namespace ARK_Server_Manager
 
         public App()
         {
+            //var culture = new CultureInfo("de-DE");
+            //Thread.CurrentThread.CurrentCulture = culture;
+            //Thread.CurrentThread.CurrentUICulture = culture;
+            //CultureInfo.DefaultThreadCurrentCulture = culture;
+            //CultureInfo.DefaultThreadCurrentUICulture = culture;
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
             MigrateSettings();
