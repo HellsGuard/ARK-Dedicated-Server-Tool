@@ -1860,6 +1860,8 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($"?GameModIds={this.ServerModIds}");
             }
 
+            if (!String.IsNullOrWhiteSpace(this.AdditionalArgs) && !this.AdditionalArgs.StartsWith(" "))
+                serverArgs.Append(" ");
             serverArgs.Append(this.AdditionalArgs);
 
             if(this.SOTF_Enabled)

@@ -163,11 +163,12 @@ namespace ARK_Server_Manager
             preferredIP.Description = "(Recommended) " + preferredIP.Description;
             if(String.IsNullOrWhiteSpace(this.Settings.ServerIP))
             {
-                if(preferredIP != null)
-                {
-                    this.Settings.ServerIP = preferredIP.IPAddress;
-                }
-            } 
+                // removed to enforce the 'Let ARK choose' option.
+                //if (preferredIP != null)
+                //{
+                //    this.Settings.ServerIP = preferredIP.IPAddress;
+                //}
+            }
             else if(adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null) 
             {
                 MessageBox.Show(
