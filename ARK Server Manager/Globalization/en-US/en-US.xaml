@@ -370,6 +370,8 @@
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Enable Allow Flyers in Caves</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>

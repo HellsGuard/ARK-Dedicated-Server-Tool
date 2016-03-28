@@ -1368,8 +1368,8 @@
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TurretDamageLabel}" Value="{Binding TurretDamageMultiplierDino}" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        ToolTip="{DynamicResource ServerSettings_TurretDamageTooltip}" Margin="0,0,22,0"/>
-                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" 
-                                          ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
+                                <CheckBox Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" Margin="5,5,5,5"  IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}"/>
+                                <CheckBox Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" 
                                                        Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" 
                                                        ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}" Margin="0,0,22,0"/>

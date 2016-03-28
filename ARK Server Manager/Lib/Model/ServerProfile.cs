@@ -108,6 +108,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EnableProximityChatProperty = DependencyProperty.Register(nameof(EnableProximityChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         public static readonly DependencyProperty EnableTributeDownloadsProperty = DependencyProperty.Register(nameof(EnableTributeDownloads), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty EnableFlyerCarryProperty = DependencyProperty.Register(nameof(EnableFlyerCarry), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableAllowCaveFlyersProperty = DependencyProperty.Register(nameof(EnableAllowCaveFlyers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty EnableStructureDecayProperty = DependencyProperty.Register(nameof(EnableStructureDecay), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public static readonly DependencyProperty EnablePlayerLeaveNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerLeaveNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         public static readonly DependencyProperty EnablePlayerJoinedNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerJoinedNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
@@ -211,6 +212,12 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(EnableFlyerCarryProperty); }
             set { SetValue(EnableFlyerCarryProperty, value); }
+        }
+
+        public bool EnableAllowCaveFlyers
+        {
+            get { return (bool)GetValue(EnableAllowCaveFlyersProperty); }
+            set { SetValue(EnableAllowCaveFlyersProperty, value); }
         }
 
 
@@ -1860,9 +1867,18 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($"?GameModIds={this.ServerModIds}");
             }
 
-            if (!String.IsNullOrWhiteSpace(this.AdditionalArgs) && !this.AdditionalArgs.StartsWith(" "))
-                serverArgs.Append(" ");
-            serverArgs.Append(this.AdditionalArgs);
+            if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
+            {
+                var addArgs = this.AdditionalArgs.TrimStart();
+                if (!addArgs.StartsWith("?"))
+                    serverArgs.Append(" ");
+                serverArgs.Append(addArgs);
+            }
+
+            if(this.EnableAllowCaveFlyers)
+            {
+                serverArgs.Append(" -ForceAllowCaveFlyers");
+            }
 
             if(this.SOTF_Enabled)
             {
