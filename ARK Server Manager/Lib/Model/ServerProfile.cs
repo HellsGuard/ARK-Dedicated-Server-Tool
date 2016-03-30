@@ -2034,6 +2034,11 @@ namespace ARK_Server_Manager.Lib
 
         #region Reset Methods
         // individual value reset methods
+        public void ResetMapName()
+        {
+            this.ClearValue(ServerMapProperty);
+        }
+
         public void ResetOverrideMaxExperiencePointsPlayer()
         {
             this.ClearValue(OverrideMaxExperiencePointsPlayerProperty);
@@ -2045,6 +2050,48 @@ namespace ARK_Server_Manager.Lib
         }
 
         // section reset methods
+        public void ResetAdministrationSection()
+        {
+            this.ClearValue(ServerNameProperty);
+            this.ClearValue(ServerPasswordProperty);
+            this.ClearValue(AdminPasswordProperty);
+            this.ClearValue(SpectatorPasswordProperty);
+
+            this.ClearValue(ServerConnectionPortProperty);
+            this.ClearValue(ServerPortProperty);
+            this.ClearValue(ServerIPProperty);
+            this.ClearValue(UseRawSocketsProperty);
+
+            this.ClearValue(EnableBanListURLProperty);
+            this.ClearValue(BanListURLProperty);
+            this.ClearValue(MaxPlayersProperty);
+            this.ClearValue(EnableKickIdlePlayersProperty);
+            this.ClearValue(KickIdlePlayersPeriodProperty);
+
+            this.ClearValue(RCONEnabledProperty);
+            this.ClearValue(RCONPortProperty);
+            this.ClearValue(AdminLoggingProperty);
+            this.ClearValue(EnableServerAdminLogsProperty);
+            this.ClearValue(RCONServerGameLogBufferProperty);
+
+            this.ClearValue(ServerMapProperty);
+            this.ClearValue(ServerModIdsProperty);
+
+            this.ClearValue(AutoSavePeriodMinutesProperty);
+
+            this.ClearValue(MOTDProperty);
+            this.ClearValue(MOTDDurationProperty);
+
+            this.ClearValue(DisableValveAntiCheatSystemProperty);
+            this.ClearValue(DisablePlayerMovePhysicsOptimizationProperty);
+            this.ClearValue(DisableAntiSpeedHackDetectionProperty);
+            this.ClearValue(SpeedHackBiasProperty);
+            this.ClearValue(UseBattlEyeProperty);
+            this.ClearValue(MaxTribeLogsProperty);
+
+            this.ClearValue(AdditionalArgsProperty);
+        }
+
         public void ResetChatAndNotificationSection()
         {
             this.ClearValue(EnableGlobalVoiceChatProperty);
@@ -2078,6 +2125,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DinoCountMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierDinoProperty);
             this.ClearValue(TurretDamageMultiplierDinoProperty);
+            this.ClearValue(EnableAllowCaveFlyersProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
 

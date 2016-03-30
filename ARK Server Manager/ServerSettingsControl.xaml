@@ -694,9 +694,16 @@
             </Border.Background>
             <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Auto" BorderBrush="Black">
                 <StackPanel Margin="10,5,10,5" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <Expander IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionAdministration" IsExpanded="True" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_AdministrationSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_AdministrationSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                        IsEnabled="{Binding ElementName=SectionAdministration, Path=IsExpanded}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.AdministrationSection}">
+                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                </Button>
+                            </StackPanel>
                         </Expander.Header>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
@@ -883,13 +890,19 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="34"/>
                                         <ColumnDefinition Width="99"/>
+                                        <ColumnDefinition Width="400"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0"   Content="{DynamicResource ServerSettings_MapPathLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
-                                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ServerMap}" Width="200"  HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource ServerSettings_MapPathLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
+                                    <TextBox Name="MapNameTextbox"  Grid.Column="2" Grid.Row="0" Text="{Binding ServerMap}" Width="400" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
+                                    <Button Grid.Column="3" Grid.Row="0" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameTooltip}" HorizontalAlignment="Left"
+                                        IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}"
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameProperty}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
 
                                     <Label Grid.Column="0" Grid.Row="1"   Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}"/>
-                                    <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
+                                    <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <StackPanel>
