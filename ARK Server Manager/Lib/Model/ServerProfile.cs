@@ -331,6 +331,35 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty UseBattlEyeProperty = DependencyProperty.Register(nameof(UseBattlEye), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
 
+        public static readonly DependencyProperty EnableExtinctionEventProperty = DependencyProperty.Register(nameof(EnableExtinctionEvent), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool EnableExtinctionEvent
+        {
+            get { return (bool)GetValue(EnableExtinctionEventProperty); }
+            set { SetValue(EnableExtinctionEventProperty, value); }
+        }
+
+        public static readonly DependencyProperty ExtinctionEventTimeIntervalProperty = DependencyProperty.Register(nameof(ExtinctionEventTimeInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(2592000));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableExtinctionEvent))]
+        public int ExtinctionEventTimeInterval
+        {
+            get { return (int)GetValue(ExtinctionEventTimeIntervalProperty); }
+            set { SetValue(ExtinctionEventTimeIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty ExtinctionEventUTCProperty = DependencyProperty.Register(nameof(ExtinctionEventUTC), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "NextExtinctionEventUTC", ClearWhenOff = nameof(EnableExtinctionEvent))]
+        public int ExtinctionEventUTC
+        {
+            get { return (int)GetValue(ExtinctionEventUTCProperty); }
+            set { SetValue(ExtinctionEventUTCProperty, value); }
+        }
+
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float PerPlatformMaxStructuresMultiplier
         {
@@ -2076,6 +2105,10 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(ServerMapProperty);
             this.ClearValue(ServerModIdsProperty);
+
+            this.ClearValue(EnableExtinctionEventProperty);
+            this.ClearValue(ExtinctionEventTimeIntervalProperty);
+            this.ClearValue(ExtinctionEventUTCProperty);
 
             this.ClearValue(AutoSavePeriodMinutesProperty);
 

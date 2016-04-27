@@ -727,6 +727,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
                                 <Grid>
@@ -922,12 +923,21 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="{DynamicResource ServerSettings_AutoSavesLabel}" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
+                            <GroupBox Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
+                                <GroupBox.Header>
+                                    <CheckBox Name="EnableExtinctionEvent" IsChecked="{Binding EnableExtinctionEvent}" Content="{DynamicResource ServerSettings_EnableExtinctionEventLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtinctionEventTooltip}" />
+                                </GroupBox.Header>
+                                <StackPanel IsEnabled="{Binding ElementName=EnableExtinctionEvent, Path=IsChecked}">
+                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_ExtinctionEventTimeIntervalLabel}" Value="{Binding ExtinctionEventTimeInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="9999999" SmallChange="10" LargeChange="60" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_ExtinctionEventTimeIntervalTooltip}" />
+                                </StackPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="{DynamicResource ServerSettings_AutoSavesLabel}" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0">
                                 <local:AnnotatedSlider Margin="5"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Label="{DynamicResource ServerSettings_AutoSavesPeriodLabel}" Suffix="{DynamicResource ServerSettings_AutoSavesPeriodUnits}"  Value="{Binding AutoSavePeriodMinutes}" Minimum="1" Maximum="720" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" 
         						ToolTip="{DynamicResource ServerSettings_AutoSavesPeriodTooltip}"/>
                             </GroupBox>
 
-                            <GroupBox Header="{DynamicResource ServerSettings_MOTDLabel}" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
+                            <GroupBox Header="{DynamicResource ServerSettings_MOTDLabel}" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Height="100">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -939,7 +949,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="10" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_ServerOptionsLabel}">
+                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_ServerOptionsLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -964,7 +974,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="11" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_CommandLineLabel}">
+                            <GroupBox Grid.Row="12" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_CommandLineLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
