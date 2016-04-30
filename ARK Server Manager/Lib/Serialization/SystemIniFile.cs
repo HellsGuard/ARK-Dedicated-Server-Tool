@@ -72,6 +72,12 @@ namespace ARK_Server_Manager.Lib
         public bool Multiline;
 
         /// <summary>
+        /// Clears the value when the named field is off, otherwise if on will skip the update. 
+        /// NOTE: Use this for config fields that are updated by the server, while it is ruuning.
+        /// </summary>
+        public string ClearWhenOff;
+
+        /// <summary>
         /// Attribute for the IniFile serializer
         /// </summary>
         /// <param name="File">The file into which the setting should be serialized.</param>
@@ -181,7 +187,19 @@ namespace ARK_Server_Manager.Lib
                         }
                     }
 
-                    if(attr.WriteBoolValueIfNonEmpty)
+                    if(!String.IsNullOrEmpty(attr.ClearWhenOff))
+                    {
+                        var updateOffField = obj.GetType().GetProperty(attr.ClearWhenOff);
+                        var updateOffValue = updateOffField.GetValue(obj);
+                        if(updateOffValue is bool && (bool)updateOffValue == false)
+                        {
+                            // The attributed value was set to false, so clear this attribute instead of writing it
+                            IniWriteValue(attr.Section, keyName, null, attr.File);
+                        }
+                        continue;
+                    }
+
+                    if (attr.WriteBoolValueIfNonEmpty)
                     {
                         if(value == null)
                         {

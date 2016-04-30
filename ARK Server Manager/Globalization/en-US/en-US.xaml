@@ -174,8 +174,14 @@
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
     <sys:String x:Key="ServerSettings_MapPathLabel">Map or Map Mod Path:</sys:String>
     <sys:String x:Key="ServerSettings_MapPathTooltip">The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameTooltip">Reset map name to official default</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">Time Interval</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of seconds to countdown before the extinction event will occur.</sys:String>
 
     <sys:String x:Key="ServerSettings_AutoSavesLabel">Auto Saves</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
