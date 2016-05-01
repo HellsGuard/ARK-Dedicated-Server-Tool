@@ -14,7 +14,7 @@ namespace WPFSharp.Globalizer
     {
         #region Members
 
-        private const string FallBackLanguage = "en-US";
+        public const string FallBackLanguage = "en-US";
 
         #endregion
 

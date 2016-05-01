@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
+        xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
         Name="RCON"
         Title="{Binding RCONParameters.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip"
         SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"

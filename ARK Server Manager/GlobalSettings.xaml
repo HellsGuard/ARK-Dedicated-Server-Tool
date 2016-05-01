@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
+             xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+             xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
              mc:Ignorable="d" Height="435.802" Width="565.432">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -34,6 +36,7 @@
         </Grid.ColumnDefinitions>   
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -88,6 +91,13 @@
             </Grid>
         </GroupBox>
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}" Margin="5"/>        
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}" Margin="5"/>
+
+        <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
+            <GroupBox.Header>
+                <Label Content="{DynamicResource GlobalSettings_LanguageSelectionLabel}"/>
+            </GroupBox.Header>
+            <globcntrls:LanguageSelectionComboBox SelectionChanged="LanguageSelectionComboBox_SelectionChanged" />
+        </GroupBox>
     </Grid>
 </UserControl>

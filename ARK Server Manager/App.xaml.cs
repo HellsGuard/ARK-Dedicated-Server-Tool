@@ -42,11 +42,15 @@ namespace ARK_Server_Manager
 
         public App()
         {
-            //var culture = new CultureInfo("de-DE");
-            //Thread.CurrentThread.CurrentCulture = culture;
-            //Thread.CurrentThread.CurrentUICulture = culture;
-            //CultureInfo.DefaultThreadCurrentCulture = culture;
-            //CultureInfo.DefaultThreadCurrentUICulture = culture;
+            var culture = new CultureInfo(GlobalizationManager.FallBackLanguage);
+            if (!string.IsNullOrWhiteSpace(Config.Default.CultureName))
+                culture = new CultureInfo(Config.Default.CultureName);
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
             MigrateSettings();

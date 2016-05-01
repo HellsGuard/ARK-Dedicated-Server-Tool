@@ -26,8 +26,9 @@ namespace ARK_Server_Manager
         public AutoUpdate()
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
         }
-      
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cancelSource = new CancellationTokenSource();

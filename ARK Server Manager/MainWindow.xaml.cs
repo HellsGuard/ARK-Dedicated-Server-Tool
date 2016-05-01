@@ -71,11 +71,7 @@ namespace ARK_Server_Manager
             this.CurrentConfig = Config.Default;
 
             InitializeComponent();
-            var dictToRemove = this.Resources.MergedDictionaries.FirstOrDefault(d => d.Source.OriginalString.Contains(@"Globalization\en-US\en-US.xaml"));
-            if (dictToRemove != null)
-            {
-                this.Resources.MergedDictionaries.Remove(dictToRemove);
-            }
+            WindowUtils.RemoveDefaultResourceDictionary(this);
 
             MainWindow.Instance = this;
             this.ServerManager = ServerManager.Instance;

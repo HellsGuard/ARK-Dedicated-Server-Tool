@@ -140,10 +140,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AnnotatedSlider.xaml.cs">
+    <Compile Include="Lib\WindowUtils.cs" />
+    <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AnnotatedTextBox.cs" />
+    <Compile Include="WPFControls\AnnotatedTextBox.cs" />
     <Compile Include="CommandLine.xaml.cs">
       <DependentUpon>CommandLine.xaml</DependentUpon>
     </Compile>
@@ -248,7 +249,7 @@
     <Content Include="Lib\ServerUpdater\mcrcon.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="AnnotatedSlider.xaml">
+    <Page Include="WPFControls\AnnotatedSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

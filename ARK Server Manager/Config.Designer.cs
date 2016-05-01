@@ -535,5 +535,17 @@ namespace ARK_Server_Manager {
                 this["OpenRCON_RCONPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
+        public string CultureName {
+            get {
+                return ((string)(this["CultureName"]));
+            }
+            set {
+                this["CultureName"] = value;
+            }
+        }
     }
 }
