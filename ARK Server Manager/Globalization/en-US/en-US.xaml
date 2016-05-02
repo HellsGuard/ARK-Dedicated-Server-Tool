@@ -524,6 +524,8 @@
     <sys:String x:Key="ServerSettings_DeleteAllLevelsTooltip">Delete all existing levels.</sys:String>
     <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">Reset all level customizations back to ASM defaults.</sys:String>
     <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customizations back to official defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ImportLevelsTooltip">Import level customizations from CSV file.</sys:String>
+    <sys:String x:Key="ServerSettings_ExportLevelsTooltip">Export level customizations to CSV file.</sys:String>
 
     <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>

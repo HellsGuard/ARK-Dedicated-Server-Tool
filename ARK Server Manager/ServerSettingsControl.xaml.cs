@@ -27,6 +27,12 @@ using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager
 {
+    public enum ServerSettingsImportExportAction
+    {
+        PlayerLevels,
+        DinoLevels,
+    }
+
     public enum ServerSettingsResetAction
     {
         // Sections
@@ -546,6 +552,100 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.ResetOverrideMaxExperiencePointsDino();
+        }
+
+        public ICommand ExportActionCommand
+        {
+            get
+            {
+                return new RelayCommand<ServerSettingsImportExportAction>(
+                    execute: (action) =>
+                    {
+                        try
+                        {
+                            var dialog = new CommonSaveFileDialog();
+
+                            switch (action)
+                            {
+                                case ServerSettingsImportExportAction.DinoLevels:
+                                    dialog.Title = "Save level customizations";
+                                    dialog.DefaultExtension = "csv";
+                                    dialog.Filters.Add(new CommonFileDialogFilter("CSV Files", "*.csv"));
+
+                                    if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                                        return;
+
+                                    this.Settings.ExportDinoLevels(dialog.FileName);
+                                    break;
+
+                                case ServerSettingsImportExportAction.PlayerLevels:
+                                    dialog.Title = "Save level customizations";
+                                    dialog.DefaultExtension = "csv";
+                                    dialog.Filters.Add(new CommonFileDialogFilter("CSV Files", "*.csv"));
+
+                                    if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                                        return;
+
+                                    this.Settings.ExportPlayerLevels(dialog.FileName);
+                                    break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    },
+                    canExecute: (action) => true
+                );
+            }
+        }
+
+        public ICommand ImportActionCommand
+        {
+            get
+            {
+                return new RelayCommand<ServerSettingsImportExportAction>(
+                    execute: (action) =>
+                    {
+                        try
+                        {
+                            var dialog = new CommonOpenFileDialog();
+
+                            switch (action)
+                            {
+                                case ServerSettingsImportExportAction.DinoLevels:
+                                    dialog.IsFolderPicker = false;
+                                    dialog.Title = "Select level customization CSV file";
+                                    dialog.DefaultExtension = "csv";
+                                    dialog.Filters.Add(new CommonFileDialogFilter("CSV Files", "*.csv"));
+
+                                    if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                                        return;
+
+                                    this.Settings.ImportDinoLevels(dialog.FileName);
+                                    break;
+
+                                case ServerSettingsImportExportAction.PlayerLevels:
+                                    dialog.IsFolderPicker = false;
+                                    dialog.Title = "Select level customization CSV file";
+                                    dialog.DefaultExtension = "csv";
+                                    dialog.Filters.Add(new CommonFileDialogFilter("CSV Files", "*.csv"));
+
+                                    if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                                        return;
+
+                                    this.Settings.ImportPlayerLevels(dialog.FileName);
+                                    break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    },
+                    canExecute: (action) => true
+                );
+            }
         }
 
         public ICommand ResetActionCommand
