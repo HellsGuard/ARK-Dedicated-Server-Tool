@@ -316,7 +316,7 @@ namespace ARK_Server_Manager
 
                             case InputWindowMode.RenamePlayer:
                                 player = inputBox.Tag as PlayerInfo;
-                                if (player != null)
+                                if (player != null && player.ArkData != null)
                                     this.ServerRCON.IssueCommand($"RenamePlayer \"{player.ArkData.CharacterName}\" {inputText}");
                                 break;
 
@@ -506,7 +506,7 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.ServerChatTo;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Send a chat message to : {player.SteamName}";
+                        inputTitle.Text = $"Send a chat message to : {player.SteamName ?? string.Empty}";
                         inputTextBox.Text = string.Empty;
                         button1.Content = "Send";
                         button2.Content = "Cancel";
@@ -528,13 +528,13 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenamePlayer;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Rename player : from {player.ArkData.CharacterName}";
+                        inputTitle.Text = $"Rename player : from {player.ArkData.CharacterName ?? string.Empty}";
                         inputTextBox.Text = string.Empty;
                         button1.Content = "Change";
                         button2.Content = "Cancel";
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
-                    canExecute: (player) => player != null && player.IsOnline
+                    canExecute: (player) => player != null && player.ArkData != null && player.IsOnline
                 );
             }
         }
@@ -550,7 +550,7 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenameTribe;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Rename tribe : from {player.TribeName}";
+                        inputTitle.Text = $"Rename tribe : from {player.TribeName ?? string.Empty}";
                         inputTextBox.Text = string.Empty;
                         button1.Content = "Change";
                         button2.Content = "Cancel";
