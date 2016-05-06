@@ -6,7 +6,7 @@
              xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
              xmlns:Globalizer="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
              xmlns:globcntrls="clr-namespace:WPFSharp.Globalizer.Controls;assembly=WPFSharp.Globalizer"
-             mc:Ignorable="d" Height="435.802" Width="565.432">
+             mc:Ignorable="d" Height="400" Width="565.432">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

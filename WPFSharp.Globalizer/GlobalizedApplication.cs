@@ -56,7 +56,7 @@ namespace WPFSharp.Globalizer
             catch(CultureNotFoundException)
             {
                 // Try the fallback
-                GlobalizationManager.SwitchLanguage("en-US", true);
+                GlobalizationManager.SwitchLanguage(GlobalizationManager.FallBackLanguage, true);
             }
 
             // Create the FallbackResourceDictionary
