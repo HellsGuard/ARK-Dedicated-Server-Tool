@@ -14,7 +14,7 @@ namespace WPFSharp.Globalizer
     {
         #region Members
 
-        private const string FallBackLanguage = "en-US";
+        public const string FallBackLanguage = "en-US";
 
         #endregion
 
@@ -46,14 +46,23 @@ namespace WPFSharp.Globalizer
             var ci = new CultureInfo(inFiveCharLang);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
-            
-            string[] xamlFiles = Directory.GetFiles(Path.Combine(DefaultPath, inFiveCharLang), "*.xaml");
 
-            // If there are no files, do nothing
-            if (xamlFiles.Length == 0)
-                return;
+            FileNames = new List<string>();
+            string[] xamlFiles;
 
-            FileNames = new List<string>(xamlFiles);
+            // check if the switch to language matches the fallback language
+            if (!inFiveCharLang.Equals(FallBackLanguage))
+            {
+                // switch to language is different, must load the fallback language first
+                xamlFiles = Directory.GetFiles(Path.Combine(DefaultPath, FallBackLanguage), "*.xaml");
+                if (xamlFiles.Length > 0)
+                    FileNames.AddRange(xamlFiles);
+            }
+
+            // load the switch to language
+            xamlFiles = Directory.GetFiles(Path.Combine(DefaultPath, inFiveCharLang), "*.xaml");
+            if (xamlFiles.Length > 0)
+                FileNames.AddRange(xamlFiles);
 
             // Remove previous ResourceDictionaries
             RemoveGlobalizationResourceDictionaries();

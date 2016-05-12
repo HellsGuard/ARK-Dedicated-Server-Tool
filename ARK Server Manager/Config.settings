@@ -155,5 +155,8 @@
     <Setting Name="OpenRCON_RCONPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">32330</Value>
     </Setting>
+    <Setting Name="CultureName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en-US</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Xml;
+using System.ComponentModel;
+using System.Threading;
 
 namespace ARK_Server_Manager
 {
@@ -53,6 +55,7 @@ namespace ARK_Server_Manager
             this.DataContext = this;
 
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.IsAdministrator = SecurityUtils.IsAdministrator();
         }
@@ -155,6 +158,11 @@ namespace ARK_Server_Manager
                     Config.Default.ServerCacheDir = dialog.FileName;
                 }
             }
+        }
+
+        private void LanguageSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentConfig.CultureName = Thread.CurrentThread.CurrentCulture.Name;
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using ARK_Server_Manager.Lib;
 
 namespace ARK_Server_Manager
 {
@@ -38,6 +39,8 @@ namespace ARK_Server_Manager
         public OpenRCON()
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
+
             LoadDefaults();
             this.DataContext = this;
         }
