@@ -73,6 +73,16 @@ namespace WPFSharp.Globalizer
                 : null;
         }
 
+        public virtual string GetResourceString(string inKey)
+        {
+            if (string.IsNullOrWhiteSpace(inKey))
+                throw new ArgumentNullException(inKey, "parameter cannot be null.");
+
+            return (Instance.Resources.Contains(inKey) && Instance.Resources[inKey] is string)
+                ? Instance.Resources[inKey].ToString()
+                : null;
+        }
+
         /// <summary>
         /// // Create and populate the SupportedLanguages singleton
         /// </summary>
