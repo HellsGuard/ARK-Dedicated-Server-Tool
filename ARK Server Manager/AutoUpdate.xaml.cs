@@ -21,17 +21,18 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class AutoUpdate : Window
     {
-        AutoUpdater updater = new AutoUpdater();
+        Updater updater = new Updater();
         CancellationTokenSource cancelSource;
         public AutoUpdate()
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
         }
-      
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cancelSource = new CancellationTokenSource();
-            updater.UpdateAsync(new Progress<AutoUpdater.Update>(async u =>
+            updater.UpdateAsync(new Progress<Updater.Update>(async u =>
                 {
                     this.StatusLabel.Content = this.FindResource(u.StatusKey);
                     this.CompletionProgress.Value = u.CompletionPercent;
@@ -44,7 +45,6 @@ namespace ARK_Server_Manager
 
                     if (u.CompletionPercent >= 100 || u.Cancelled)
                     {
-                        await Task.Delay(1000);
                         await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
                                 var mainWindow = new MainWindow();

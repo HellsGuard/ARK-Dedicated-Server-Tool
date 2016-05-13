@@ -9,13 +9,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.CodeDom;
+using Microsoft.CSharp;
+using System.Windows;
+using System.Runtime.InteropServices;
 
 namespace ARK_Server_Manager.Lib
 {
     /// <summary>
     /// Checks for an updates this program
     /// </summary>
-    class AutoUpdater
+    class Updater
     {
 
         enum Status
@@ -51,9 +55,6 @@ namespace ARK_Server_Manager.Lib
                 await InstallSteamCmdAsync(reporter, cancellationToken);
                 reporter.Report(statuses[Status.InstallSteamCmdComplete]);
 
-                await GetLatestServerVersion(reporter, cancellationToken);
-                reporter.Report(statuses[Status.DownloadNewServerComplete]);
-
                 reporter.Report(statuses[Status.Complete]);
             }
             catch (TaskCanceledException)
@@ -80,12 +81,12 @@ namespace ARK_Server_Manager.Lib
 
             // Get SteamCmd.exe if necessary
             string steamCmdPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdExe);
-            if(!File.Exists(steamCmdPath))
+            if (!File.Exists(steamCmdPath))
             {
                 var steamZipPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdZip);
-                using(var webClient = new WebClient())
+                using (var webClient = new WebClient())
                 {
-                    using(var cancelRegistration = cancellationToken.Register(webClient.CancelAsync))
+                    using (var cancelRegistration = cancellationToken.Register(webClient.CancelAsync))
                     {
                         await webClient.DownloadFileTaskAsync(Config.Default.SteamCmdUrl, steamZipPath);
                     }
@@ -94,34 +95,78 @@ namespace ARK_Server_Manager.Lib
                 reporter.Report(statuses[Status.UnzippingSteamCmd]);
                 ZipFile.ExtractToDirectory(steamZipPath, steamCmdDirectory);
                 File.Delete(steamZipPath);
-            }
 
-            // Run the SteamCmd updater
-            reporter.Report(statuses[Status.RunningSteamCmd]);
-            var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
-            process.EnableRaisingEvents = true;
-            var ts = new TaskCompletionSource<bool>();            
-            using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))  
-            {
-                process.Exited += (s, e) => 
-                    {
-                        ts.TrySetResult(process.ExitCode == 0);
-                    };
-                process.ErrorDataReceived += (s, e) =>
-                    {
-                        ts.TrySetException(new Exception(e.Data));
-                    };
-                await ts.Task;
+                // Run the SteamCmd updater
+                reporter.Report(statuses[Status.RunningSteamCmd]);
+                var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
+                process.EnableRaisingEvents = true;
+                var ts = new TaskCompletionSource<bool>();
+                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
+                {
+                    process.Exited += (s, e) =>
+                        {
+                            ts.TrySetResult(process.ExitCode == 0);
+                        };
+                    process.ErrorDataReceived += (s, e) =>
+                        {
+                            ts.TrySetException(new Exception(e.Data));
+                        };
+                    await ts.Task;
+                }
             }
 
             return;
         }
-                        
-        private async Task GetLatestServerVersion(IProgress<Update> reporter, CancellationToken cancellationToken)
+
+        public static bool IsServerCacheAutoUpdateEnabled => Config.Default.GLOBAL_EnableServerCache && Config.Default.ServerCacheUpdatePeriod != 0 && Directory.Exists(Config.Default.ServerCacheDir);
+
+        public static string GetSteamCMDPath()
         {
-            reporter.Report(statuses[Status.CheckForNewServerVersion]);
-            reporter.Report(statuses[Status.DownloadNewServerVersion]);
-            return;
+            var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
+            return steamCmdPath;
+        }
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeleteFile(string name);
+
+        private static bool Unblock(string fileName)
+        {
+            return DeleteFile(fileName + ":Zone.Identifier");
+        }
+
+        public static void UpdateASM()
+        {
+            var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
+            var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
+            var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
+            var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var backupPath = currentInstallPath + "_bak";
+
+            // Grab the latest bits
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(Config.Default.ASMDownloadUrl, applicationZip);
+                Unblock(applicationZip);
+            }
+
+            // Extract them
+            try { Directory.Delete(extractPath, true); } catch { }
+            ZipFile.ExtractToDirectory(applicationZip, extractPath);
+
+            // Replace the current installation
+            var script = new StringBuilder();
+            
+            script.AppendLine("timeout 2");
+            script.AppendLine($"rmdir /s /q {backupPath.AsQuoted()}");
+            script.AppendLine($"rename {currentInstallPath.AsQuoted()} {Path.GetFileName(backupPath).AsQuoted()}");
+            script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
+            script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()}");
+            script.AppendLine("exit");
+
+            ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
+
+            Application.Current.Shutdown(0);
         }
 
         public struct Update
@@ -154,6 +199,11 @@ namespace ARK_Server_Manager.Lib
             public float CompletionPercent;
             public bool Cancelled;
             public string FailureText;
+        }
+
+        public static void GenerateServerUpdater()
+        {
+            
         }
     }
 }

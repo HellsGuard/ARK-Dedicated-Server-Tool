@@ -46,6 +46,50 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
+
+
+        public string ClassName
+        {
+            get { return (string)GetValue(ClassNameProperty); }
+            set { SetValue(ClassNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+
+        public string CommonName
+        {
+            get
+            {
+                string name = (string)GetValue(CommonNameProperty);
+                // check if the name has been defined (could be an unknown dino).
+                if (string.IsNullOrWhiteSpace(name))
+                    // name not defined, use the DinoNameTag instead.
+                    return DinoNameTag;
+                return name;
+            }
+            set { SetValue(CommonNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty CommonNameProperty = DependencyProperty.Register(nameof(CommonName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+
+        public string DinoName
+        {
+            get
+            {
+                string name = (string)GetValue(DinoNameProperty);
+                // check if the name has been defined (could be an unknown dino).
+                if (string.IsNullOrWhiteSpace(name))
+                    // name not defined, use the DinoNameTag instead.
+                    return DinoNameTag;
+                return name;
+            }
+            set { SetValue(CommonNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty DinoNameProperty = DependencyProperty.Register(nameof(DinoName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+
+
+
         public static DinoSpawn FromINIValue(string iniValue)
         {
             var newSpawn = new DinoSpawn();

@@ -56,7 +56,7 @@ namespace WPFSharp.Globalizer
             catch(CultureNotFoundException)
             {
                 // Try the fallback
-                GlobalizationManager.SwitchLanguage("en-US", true);
+                GlobalizationManager.SwitchLanguage(GlobalizationManager.FallBackLanguage, true);
             }
 
             // Create the FallbackResourceDictionary
@@ -70,6 +70,16 @@ namespace WPFSharp.Globalizer
                 throw new ArgumentNullException(inKey, "parameter cannot be null.");
             return (Instance.Resources.Contains(inKey))
                 ? Instance.Resources[inKey]
+                : null;
+        }
+
+        public virtual string GetResourceString(string inKey)
+        {
+            if (string.IsNullOrWhiteSpace(inKey))
+                throw new ArgumentNullException(inKey, "parameter cannot be null.");
+
+            return (Instance.Resources.Contains(inKey) && Instance.Resources[inKey] is string)
+                ? Instance.Resources[inKey].ToString()
                 : null;
         }
 

@@ -3,6 +3,8 @@
 *.user
 *.pfx
 *~
+*.pdb
+
 packages/
 ARK Dedicated Server Tool/bin/
 ARK Dedicated Server Tool/obj/
@@ -12,9 +14,13 @@ Ark Server Manager/publish/
 ARK Dedicated Server Tool Updater/bin/
 ARK Dedicated Server Tool Updater/obj/
 ARK Dedicated Server Tool Updater/publish/
+ASMWeb/bin/
+ASMWeb/obj/
 WPFSharp.Globalizer/bin/
 WPFSharp.Globalizer/obj/
 QueryMaster/bin/
 QueryMaster/obj/
 SteamKit2/bin/
 SteamKit2/obj/
+ArkData/bin/
+ArkData/obj/

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,10 +57,26 @@ namespace ARK_Server_Manager.Lib
         public bool ClearSection;
 
         /// <summary>
+        /// If true, the value will always be written with quotes
+        /// </summary>
+        public bool QuotedString;
+
+        /// <summary>
         /// Only write the attributed value if the named field is true.
         /// </summary>
         public string ConditionedOn;
-        
+
+        /// <summary>
+        /// If true, the value will be treated as a multiline value.
+        /// </summary>
+        public bool Multiline;
+
+        /// <summary>
+        /// Clears the value when the named field is off, otherwise if on will skip the update. 
+        /// NOTE: Use this for config fields that are updated by the server, while it is ruuning.
+        /// </summary>
+        public string ClearWhenOff;
+
         /// <summary>
         /// Attribute for the IniFile serializer
         /// </summary>
@@ -153,7 +170,7 @@ namespace ARK_Server_Manager.Lib
                     if (collection != null)
                     {
                         var filteredSection = IniReadSection(attr.Section, attr.File)
-                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + "="))
+                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
                                                     .ToArray();
                         IniWriteSection(attr.Section, filteredSection, attr.File);
                     }
@@ -170,7 +187,19 @@ namespace ARK_Server_Manager.Lib
                         }
                     }
 
-                    if(attr.WriteBoolValueIfNonEmpty)
+                    if(!String.IsNullOrEmpty(attr.ClearWhenOff))
+                    {
+                        var updateOffField = obj.GetType().GetProperty(attr.ClearWhenOff);
+                        var updateOffValue = updateOffField.GetValue(obj);
+                        if(updateOffValue is bool && (bool)updateOffValue == false)
+                        {
+                            // The attributed value was set to false, so clear this attribute instead of writing it
+                            IniWriteValue(attr.Section, keyName, null, attr.File);
+                        }
+                        continue;
+                    }
+
+                    if (attr.WriteBoolValueIfNonEmpty)
                     {
                         if(value == null)
                         {
@@ -197,7 +226,8 @@ namespace ARK_Server_Manager.Lib
                             if (collection.IsEnabled)
                             {
                                 // Remove all the values in the collection with this key name
-                                var filteredSection = IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
+                                var filteredSection = collection.IsArray ? IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "["))
+                                                                         : IniReadSection(attr.Section, attr.File).Where(s => !s.StartsWith(keyName + "="));
                                 var result = filteredSection
                                                 .Concat(collection.ToIniValues())
                                                 .ToArray();
@@ -210,7 +240,19 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            IniWriteValue(attr.Section, keyName, Convert.ToString(value), attr.File);
+                            var strValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US"));
+                            if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
+                            {
+                                strValue = "\"" + strValue + "\"";
+                            }
+
+                            if (attr.Multiline)
+                            {
+                                // substitutes the NewLine string with "\n"
+                                strValue = strValue.Replace(Environment.NewLine, @"\n");
+                            }
+
+                            IniWriteValue(attr.Section, keyName, strValue, attr.File);
                         }
                     }
                 }
@@ -223,7 +265,6 @@ namespace ARK_Server_Manager.Lib
             foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
-                bool extraBoolValue = false;
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
@@ -243,12 +284,18 @@ namespace ARK_Server_Manager.Lib
                         if(collection != null)
                         {
                             var section = IniReadSection(attr.Section, attr.File);
-                            var filteredSection = section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
+                            var filteredSection = collection.IsArray ? section.Where(s => s.StartsWith(collection.IniCollectionKey + "[")) :
+                                                                       section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
                             collection.FromIniValues(filteredSection);
                         }
                         else if (fieldType == typeof(string))
                         {
-                            field.SetValue(obj, iniValue);
+                            var stringValue = iniValue;
+                            if (attr.Multiline)
+                            {
+                                stringValue = stringValue.Replace(@"\n", Environment.NewLine);
+                            }
+                            field.SetValue(obj, stringValue);
                         }
                         else
                         {
@@ -293,7 +340,7 @@ namespace ARK_Server_Manager.Lib
                             else if (fieldType == typeof(float))
                             {
                                 float floatValue;
-                                float.TryParse(iniValue, out floatValue);
+                                float.TryParse(iniValue, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out floatValue);
                                 field.SetValue(obj, floatValue);
                             }                           
                             else
@@ -336,7 +383,7 @@ namespace ARK_Server_Manager.Lib
         /// <returns></returns>
         public string IniReadValue(string Section, string Key, string pathSuffix = "")
         {
-            const int MaxValueSize = 2048;
+            const int MaxValueSize = 16384;
             StringBuilder temp = new StringBuilder(MaxValueSize);
             var file = Path.Combine(this.basePath, pathSuffix);
             if (File.Exists(file))
@@ -354,7 +401,7 @@ namespace ARK_Server_Manager.Lib
 
         public string[] IniReadSection(string Section, string pathSuffix = "")
         {
-            const int MaxSectionSize = 65536;
+            const int MaxSectionSize = 262144;
             var temp = new char[MaxSectionSize];
             var file = Path.Combine(this.basePath, pathSuffix);
             if (File.Exists(file))

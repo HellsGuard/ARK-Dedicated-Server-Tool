@@ -18,9 +18,9 @@ namespace ARK_Server_Manager.Lib
     {
         public ActionBlock<Action> workQueue;
 
-        public ActionQueue()
+        public ActionQueue(TaskScheduler scheduler = null)
         {
-            this.workQueue = new ActionBlock<Action>(a => a.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
+            this.workQueue = new ActionBlock<Action>(a => a.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1, TaskScheduler = scheduler ?? TaskScheduler.Default });
 
         }
        
@@ -28,10 +28,11 @@ namespace ARK_Server_Manager.Lib
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             this.workQueue.Post(() => 
-                {
+                {                    
                     try
                     {
-                        Task.Run(() => tcs.TrySetResult(action.Invoke()));
+                        var result = action.Invoke();
+                        Task.Run(() => tcs.TrySetResult(result));
                     }
                     catch(Exception ex)
                     {

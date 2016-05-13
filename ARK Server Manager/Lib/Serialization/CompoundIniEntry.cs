@@ -8,7 +8,6 @@ namespace ARK_Server_Manager.Lib.Serialization
 {
     class CompoundIniEntry : IniEntry
     {
-        Dictionary<string, string> subValues = null;
         public Dictionary<string, string> SubValues
         {
             get;

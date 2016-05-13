@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -48,12 +49,13 @@ namespace WPFSharp.Globalizer
         public void Remove(string inResourceDictionaryName)
         {
             EnhancedResourceDictionary erdToRemove = null;
-            foreach (EnhancedResourceDictionary erd in MergedDictionaries)
+            foreach (EnhancedResourceDictionary erd in MergedDictionaries.OfType<EnhancedResourceDictionary>())
             {
                 if (erd.Name == inResourceDictionaryName)
                     erdToRemove = erd;
             }
-            MergedDictionaries.Remove(erdToRemove);
+            if (erdToRemove != null)
+                MergedDictionaries.Remove(erdToRemove);
         }
 
         public void RemoveAll()

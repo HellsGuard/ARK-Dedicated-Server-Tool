@@ -18,11 +18,43 @@
     <sys:String x:Key="AutoUpdater_Status_DownloadNewServerComplete">Server download complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Complete">Complete</sys:String>
     <sys:String x:Key="AutoUpdater_Status_Cancelled">Cancelled</sys:String>
-    
-    <!-- Main Window -->
-    <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
+    <sys:String x:Key="AutoUpdater_CancelButtonLabel">Cancel</sys:String>
 
-    <!-- Menu strings -->
+    <!-- CommandLine Window -->
+    <sys:String x:Key="CommandLine_Title">Command Line</sys:String>
+    <sys:String x:Key="CommandLine_CopyButtonLabel">Copy to clipboard</sys:String>
+
+    <!-- GlobalSettings Window -->
+    <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
+    <sys:String x:Key="GlobalSettings_VersionLabel">Version:</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
+    <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
+
+    <!-- 
+    Main Window 
+    
+    This is the portion of the main window at the top - the part which is not part of any profile.
+    -->   
+    <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
+    <sys:String x:Key="MainWindow_ArkNameLabel">ARK Server Manager</sys:String>
+    <sys:String x:Key="MainWindow_VersionLabel">Version:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpLabel">My Public IP:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpTooltip">The IP address players use to connect to your server.</sys:String>
+    <sys:String x:Key="MainWindow_MyIpError">Invalid IP address or hostname</sys:String>
+    <sys:String x:Key="MainWindow_RefreshMyIpTooltip">Attempt to determine your current public IP</sys:String>
+    <sys:String x:Key="MainWindow_DonateTooltip">Like what you see and want to show your appreciation?  Donate here!</sys:String>
+    <sys:String x:Key="MainWindow_OpenRCONTooltip">Open remote console</sys:String>
+    <sys:String x:Key="MainWindow_OpenSettingsTooltip">Open Global Settings</sys:String>
+    <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
+    <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
+
+    <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
     <sys:String x:Key="Menu_File_Exit">_Exit</sys:String>
     <sys:String x:Key="Menu_Language">_Language</sys:String>
@@ -31,13 +63,621 @@
     <sys:String x:Key="Menu_Language_Hebrew">_Hebrew</sys:String>
 
     <sys:String x:Key="LanguageSelectionLabel">_Language</sys:String>
-    
 
-    <!-- Form strings -->
-    <!-- The following line is commented out on purpose in this example in order to demonstrate the FallbackValue -->
-    <!--<sys:String x:Key="Form_FirstName">First Name</sys:String>-->
-    <sys:String x:Key="Form_LastName">Last Name</sys:String>
-    <sys:String x:Key="Form_Age">Age</sys:String>
-    <sys:String x:Key="Form_Button_Clear">Clear</sys:String>
+    <sys:String x:Key="SliderUnits_Multiplier">x</sys:String>
+    <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
+    <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
+    <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
+    <sys:String x:Key="SliderUnits_Items">items</sys:String>
+    <sys:String x:Key="SliderUnits_XP">xp</sys:String>
+    <sys:String x:Key="SliderUnits_Players">players</sys:String>
+    <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
+    
+    <!--
+    Server Settings
+    
+    These are the profile settings, grouped by section.
+    -->   
+
+    <!-- Server Settings - General -->    
+    <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
+    <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionLabel">Latest Available Version:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionTooltip">The version of the Ark server that is currently available for download.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Refresh the latest version of the Ark server that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationLabel">Installation Location:</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationTooltip">The folder that contains the Ark server game and configuration files.</sys:String>
+    <sys:String x:Key="ServerSettings_StatusLabel">Status:</sys:String>
+    <sys:String x:Key="ServerSettings_StatusTooltip">The status of the Ark server on your local network.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityLabel">Availability:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityTooltip">The status of the Ark server on Steam.</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unknown">Unknown</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_SetPublicIP">Set Public IP</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unavailable">Unavailable</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Waiting">Waiting for publication</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Available">Available</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersLabel">Players:</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersTooltip">The current number of players connected to the Ark server.</sys:String>
+
+    <!-- Server Settings - General Buttons -->
+    <sys:String x:Key="ServerSettings_ImportButtonLabel">Import</sys:String>
+    <sys:String x:Key="ServerSettings_ImportButtonTooltip">Load an existing profile, or import one directly from an existing server.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonLabel">Save</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonTooltip">Save the current profile and write the .INI files for the server.</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonLabel">Stop</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonTooltip">Stop the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonLabel">Start</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonTooltip">Start the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonTooltip">Open the RCON window.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Upgrade</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Upgrade to the latest version of the Ark server that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonLabel">Install</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonTooltip">Install the latest version of the Ark server.</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonLabel">Cancel</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonTooltip">Cancel the Ark server upgrade.</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">Update the folder that contains the Ark server game and configuration files.</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonLabel">Validate</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Verify the server content against the Steam version.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetSectionTooltip">Resets the section back to defaults.</sys:String>
+
+    <!-- Server Settings - Administration   -->
+    <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
+    <sys:String x:Key="ServerSettings_NameAndPasswordsLabel">Name and Passwords</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameLabel">Server Name:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameTooltip">The public name of the Ark server, as seen in Steam and Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPasswordLabel">Server Password:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPasswordTooltip">The password users must enter in order to access the server. If this is set, only people who know the password can access your server.</sys:String>
+    <sys:String x:Key="ServerSettings_AdminPasswordLabel">Admin Password:</sys:String>
+    <sys:String x:Key="ServerSettings_AdminPasswordTooltip">The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats.</sys:String>
+    <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Spectator Password:</sys:String>
+    <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">The password users must enter to use non-admin spectator mode on the server.</sys:String>
+
+    <sys:String x:Key="ServerSettings_NetworkingLabel">Networking</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPortLabel">Server Port:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPortTooltip">The port users will use to connect to your server. Default is 7777. Change this and Query Port if you wish to host multiple servers on one machine.</sys:String>
+    <sys:String x:Key="ServerSettings_QueryPortLabel">Query Port:</sys:String>
+    <sys:String x:Key="ServerSettings_QueryPortTooltip">The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine.</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPLabel">Local IP:</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPTooltip">Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet.</sys:String>
+    <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam.  Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+
+    <sys:String x:Key="ServerSettings_LoginOptionsLabel">Login Options</sys:String>
+    <sys:String x:Key="ServerSettings_UseBanListLabel">Use Ban List URL</sys:String>
+    <sys:String x:Key="ServerSettings_UseBanListTooltip">If enabled, the ban list URL specified will be used.</sys:String>
+    <sys:String x:Key="ServerSettings_BanListTooltip">The URL of the ban list to use.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableIdleTimeoutLabel">Enable Idle Timeout</sys:String>
+    <sys:String x:Key="ServerSettings_EnableIdleTimeoutTooltip">If enabled, the idle timeout period will be used.</sys:String>
+    <sys:String x:Key="ServerSettings_IdleTimeoutTooltip">The time until idle players are kicked from the server.</sys:String>
+    <sys:String x:Key="ServerSettings_IdleTimeoutUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersLabel">Max Players:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersTooltip">Sets the maximum number of players which can join this server.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AdminConsoleLabel">Admin Console (RCON)</sys:String>
+    <sys:String x:Key="ServerSettings_EnableRCONPortLabel">Enable RCON Port</sys:String>
+    <sys:String x:Key="ServerSettings_EnableRCONPortTooltip">If enabled, the RCON port will be enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONPortTooltip">The port that RCON will use on your server.</sys:String>
+    <sys:String x:Key="ServerSettings_LogAdminChatLabel">Log Admin to Chat</sys:String>
+    <sys:String x:Key="ServerSettings_LogAdminChatTooltip">If enabled, admin commands will be echoed to chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON Server Log Buffer:</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Maximum Tribe Logs:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
+
+    <sys:String x:Key="ServerSettings_MapsAndModsLabel">Maps and Mods</sys:String>
+    <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathLabel">Map or Map Mod Path:</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathTooltip">The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameTooltip">Reset map name to official default</sys:String>
+    <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
+    <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">Time Interval</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of seconds to countdown before the extinction event will occur.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AutoSavesLabel">Auto Saves</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodTooltip">The time between server auto-saves.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodUnits">minutes</sys:String>
+
+    <sys:String x:Key="ServerSettings_MOTDLabel">Message of the Day</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDTooltip">The Message of the Day displayed to users when they connect to the server.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationLabel">Duration:</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationTooltip">The time the Message of the Day will be shown for when the user connects to the server.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationUnits">seconds</sys:String>
+
+    <sys:String x:Key="ServerSettings_ServerOptionsLabel">Server Options</sys:String>
+    <sys:String x:Key="ServerSettings_DisableVACLabel">Disable Valve Anti-Cheat System (VAC)</sys:String>
+    <sys:String x:Key="ServerSettings_DisableVACTooltip">If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimization</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePMVOptimizationTooltip">If enabled, the player-move-physics will be disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti Speedhack Detection</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasLabel">Anti-Speed Hack Bias</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasTooltip">Adjust the speed hack detection bias. Default is 1.0, disabled is 0.0.</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeLabel">Enable BattlEye Anti-Cheat System</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeTooltip">If enabled, the BattlEye Anti-Cheat System will be enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
+
+    <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
+    <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>
+    <sys:String x:Key="ServerSettings_AdditionalArgsTooltip">Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
+    <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">Show Command...</sys:String>
+    <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">View the command line start command for the server.</sys:String>
+
+    <!-- Server Settings - Automatic Management -->
+    <sys:String x:Key="ServerSettings_AutomaticManagementLabel">Automatic Management</sys:String>
+    <sys:String x:Key="ServerSettings_NoAutoManagementButtonLabel">Why can't I use this?</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-start Server On Boot</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Enable Periodic Auto-Updates</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">Automatically check for updates periodically and upgrade the server.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodLabel">Update every:</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodTooltip">The number of hours and minutes between update checks.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodLabel">Restart Grace Period:</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodTooltip">The amount of time to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodUnits">minutes</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesLabel">Force Updates and Restart at:</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesTooltip">The hour and minute of the day to force an update and restart.</sys:String>
+
+    <!-- Server Settings - Rules -->
+    <sys:String x:Key="ServerSettings_RulesLabel">Rules</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreLabel">Enable Hardcore Mode</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Enables hardcore mode (players can not respawn, a new character must be created).</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPLabel">Enable PvP</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPTooltip">Enables Player vs Player mode (players are able to deal damage to or kill each other. In PvP players can also damage or destroy another tribe's buildings or kill their dinos).</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingLabel">Enable PvE Cave Building</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">If enabled, allows building in caves when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Disable PvE Friendly Fire</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Disable Loot Crates</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyTooltip">Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">No Survivor Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">If enabled, the survivor downloads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">No Item Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">If enabled, the item downloads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">No Dino Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">If enabled, the dino downloads are disabled.</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
+    <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodLabel">Interval Check Period</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodTooltip">The time period the respawn check lasts after the player is killed by a team.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierLabel">Interval Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierTooltip">The multiplier value of the base amount to determine the respawn time.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierUnits">x</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseLabel">Interval Base Amount:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseTooltip">The base time period used to detemine the respawn time.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseUnits">seconds</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvEScheduleLabel">PvE Schedule</sys:String>
+    <sys:String x:Key="ServerSettings_PvEScheduleTooltip">If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times.</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeLabel">Use Server Time</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeTooltip">If enabled, the schedule will use the time on the Ark server machine; otherwise it uses the in-game time.</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeLabel">Start Time:</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeTooltip">The start time in hours and minutes from midnight to enable PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeLabel">Stop Time:</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeTooltip">The stop time in hours and minutes from midnight to disable PvE mode.</sys:String>
+
+    <sys:String x:Key="ServerSettings_TribeWarfareLabel">PvE "Tribe Warfare" options</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareLabel">Allow Tribe Warfare</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareTooltip">If enabled, capability for tribes to officially declare war on each other for mutually-agreed-upon period of time.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareLabel">Allow Cancelling Tribe Warfare</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareTooltip">If enabled, tribes are able to cancel an agreed-upon war before it has actually started.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Allow Custom Recipes</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results).</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierLabel">Effectiveness Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierTooltip">Specifies the multiplier for the customer recipe effectiveness. Higher values increase the recipe effectiveness.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierLabel">Skill Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierTooltip">Specifies the multiplier for the customer recipe skill. Higher values increase the recipe skill.</sys:String>
+
+    <!-- Server Settings - Chat and Notifications -->
+    <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatLabel">Enable Global Voice Chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatTooltip">If enabled, voice chat becomes global and everyone on the server can hear.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatLabel">Enable Proximity Text Chat</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">If enabled, only players near each other can see their chat messages.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftLabel">Enable 'Player Left' Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">Enable 'Player Joined' Notifications</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">If enabled, players will always get notified if someone joins the server.</sys:String>
+
+    <!-- Server Settings - HUD and Visuals -->
+    <sys:String x:Key="ServerSettings_HUDAndVisualsLabel">HUD and Visuals</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairLabel">Allow Crosshair</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairTooltip">If enabled, shows each player a crosshair.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDLabel">Allow HUD</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDTooltip">If enabled, allows the player to see the HUD.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewLabel">Allow Third-Person View</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewTooltip">If enabled, allows players to view themselves in third person.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">Allow Map Player Location</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">If enabled, shows each player their position on the map.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Allow Player Gamma Settings in PvP</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">If enabled, allows gamma changes in PvP mode.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">Allow Player Gamma Settings in PvE</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">If enabled, allows gamma changes in PvE mode.</sys:String>
+
+    <!-- Server Settings - Player Settings -->
+    <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryLabel">Enable Flyer-Carry</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryTooltip">If enabled, permit flying dinosaurs to pick up other dinosaurs and players when mounted by a player in PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierLabel">XP Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierTooltip">Specifies the scaling factor for the experience received by players. Higher values increase XP amounts awarded for various actions; lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPLabel">Max XP:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPTooltip">Set the maximum XP cap.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPUnits">xp</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMaxXPTooltip">Reset maximum XP Cap to official default</sys:String>
+    <sys:String x:Key="ServerSettings_DamageLabel">Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_DamageTooltip">Specifies the scaling factor for the damage dealt with attacks. Higher values increase damage. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceLabel">Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceTooltip">Specifies the scaling factor for the resistance to damage received when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainLabel">Water Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainTooltip">Specifies the scaling factor for water consumption. Higher values increase water consumption (thirsty faster).</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainLabel">Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainTooltip">Specifies the scaling factor for food consumption. Higher values increase food consumption (hungry faster).</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainLabel">Stamina Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainTooltip">Specifies the scaling factor for stamina consumption. Higher values increase stamina consumption (tired faster).</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryLabel">Health Recovery:</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
+
+    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
+    
+    <sys:String x:Key="ServerSettings_StatHealthLabel">Health:</sys:String>
+    <sys:String x:Key="ServerSettings_StatHealthTooltip">Specifies the multiplier for health gain per level. Higher values increase health faster; lower values increase health more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaLabel">Stamina:</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaTooltip">Specifies the multiplier for stamina gain per level. Higher values increase stamina faster; lower values increase stamina more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityLabel">Torpidity:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityTooltip">Specifies the multiplier for torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenLabel">Oxygen:</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenTooltip">Specifies the multiplier for oxygen efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodLabel">Food:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodTooltip">Specifies the multiplier for food efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterLabel">Water:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterTooltip">Specifies the multiplier for water efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempLabel">Temperature:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempTooltip">Specifies the multiplier for temperature tolerance gain per level. Higher values increase tolerance faster; lower values increase tolerance more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightLabel">Weight:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightTooltip">Specifies the multiplier for carrying capacity gain per level. Higher values increase carrying capacity faster; lower values increase carrying capacity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageLabel">Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageTooltip">Specifies the multiplier for damage gain per level. Higher values increase damage dealt faster; lower values increase damage dealt more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedLabel">Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedTooltip">Specifies the multiplier for speed gain per level. Higher values increase speed faster; lower values increase speed more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeLabel">Fortitude:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeTooltip">Specifies the multiplier for fortitude gain per level. Higher values increase fortitude faster; lower values increase the fortitude more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase  crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
+
+    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Tamed Dinos:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Enable Allow Flyers in Caves</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
+
+    <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customization</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Spawn Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionTooltip">Show/Hide the spawn multiplier columns.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionLabel">Tamed Damage</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionTooltip">Show/Hide the tamed dino damage multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionLabel">Tamed Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionTooltip">Show/Hide the tamed dino resistance multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionLabel">Wild Damage</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionTooltip">Show/Hide the wild dino damage multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">Wild Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnableColumnLabel">Spawnable</sys:String>
+    <sys:String x:Key="ServerSettings_TameableColumnLabel">Tameable</sys:String>
+    <sys:String x:Key="ServerSettings_ReplacementColumnLabel">Replace With</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnWeightColumnLabel">Spawn Weight</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideLimitColumnLabel">Override Limit</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnLimitColumnLabel">Spawn Limit</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageColumnLabel">Tamed Damage</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">Tamed Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Wild Damage</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
+
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Tamed)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Add</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Affinity</sys:String>
+    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Wild)</sys:String>
+    <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Dino Breeding Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">If enabled, allows scale factors to be applied to each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAddMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Addition for each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Multiplier for each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">If enabled, allows scale factors to be applied to the Tamed Stat Increase for each stat.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">Reset all multipliers back to defaults.</sys:String>
+
+    <sys:String x:Key="ServerSettings_MatingIntervalLabel">Mating Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Specifies the multiplier for time between tamed dino mating. Lower values decrease the time between mating.</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedLabel">Egg Hatch Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedTooltip">Specifies the multiplier for time that fertilised eggs hatch. Higher values decrease the time an eggs hatches.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedLabel">Baby Mature Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Specifies the multiplier for time that baby dinos mature into adults. Higher values decrease the time it take baby dinos to mature into adults.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Baby Food Consumption Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often.</sys:String>
+    
+    <!-- Server Settings - Environment -->
+    <sys:String x:Key="ServerSettings_EnvironmentLabel">Environment</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedLabel">Taming Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedTooltip">Specifies the scaling factor for dinosaur taming speed. Higher values make taming faster.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountLabel">Harvest Amount:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountTooltip">Specifies the scaling factor for yields from all harvesting activities (chopping down trees, picking berries, carving carcasses, mining rocks, etc). Higher values increase the amount of materials harvested with each strike.</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnLabel">Resource Respawn:</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnTooltip">Specifies the scaling factor for the respawn rate for resource nodes (trees, rocks, bushes, etc). Lower values cause nodes to respawn more frequently.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerLabel">Suppress Replenish Radius (Player):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerTooltip">Specifies the scaling factor to allow resources to regrow closer or farther away from players. Lower values decrease the distance resources will regrow from the player.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureLabel">Suppress Replenish Radius (Structure):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureTooltip">Specifies the scaling factor to allow resources to regrow closer or farther away from structures. Lower values decrease the distance resources will regrow from the structure.</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageLabel">Clamp Resource Harvest Damage</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">If enabled, clamps how much harvesting damage you can do to a resource to the remaining health of the resource.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthLabel">Harvest Health:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthTooltip">Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc). Higher values increase the amount of damage (e.g. number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
+
+    <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Day Cycle Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it.</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">Day Time Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during the day. This value determines the length of each day, relative to the length of each night. Lowering this value increases the length of each day.</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">Night Time Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during night time. This value determines the length of each night, relative to the length of each day. Lowering this value increases the length of each night.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Global Spoiling Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Scales the spoiling time of perishables globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">Global Item Decomp Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">Scales the decomposition time of dropped items, loot bags etc globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeLabel">Global Corpse Decomp Time:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeTooltip">Scales the decomposition time of corpses (player and dino), globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedLabel">Crop Decay Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedTooltip">Scales the decay time of crops. Lower values prolong the decay.</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedLabel">Crop Growth Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedTooltip">Scales the growth time of crops. Higher values make crops grow faster.</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalLabel">Lay Egg Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Scales the egg laying interval of dinos. Lower values cause dinos to lay eggs more frequently.</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalLabel">Poop Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Scales the defecation interval of players and dinos. Lower values cause players and dinos to defecation more frequently.</sys:String>
+
+    <!-- Server Settings - Structures -->
+    <sys:String x:Key="ServerSettings_StructuresLabel">Structures</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceLabel">Structure Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Specifies the scaling factor for the resistance to damage structures receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageLabel">Structure Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageTooltip">Specifies the scaling factor for the damage structures deal with their attacks (e.g. spiked walls). Higher values increase damage. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownLabel">Structure Damage Repair Cooldown:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownTooltip">Server option for cooldown period on structure repair from the last time damaged. Set to 0 to disable it, official default is 180 seconds.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayLabel">Enable PvP Structure Decay</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayTooltip">If enabled, structures in PvP will automatically decay if left unused after a period of time.</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageLabel">PvP Zone Structure Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageTooltip">Specifies the scaling factor for the damage structures take within caves/cave entrances, in PvP.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleLabel">Max Structures Visible:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleTooltip">The maximum number of structures which will be visible to the player.  Lower values may help with server speed.</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierLabel">Per-Platform Structures Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">Max Platform Saddle Structures:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">The maximum number of platformed creatures or rafts allowed on the entire server.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableStructureDecayLabel">Enable Structure Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">If enabled, enables decay of player structures in PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodLabel">Structure Decay Period:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">Specifies the time required for player structures to decay in PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">Structure Decay Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">Specifies the scaling factor for the decay rate of player structures in PvE mode.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Auto Destroy Old Structures Multiplier:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">Allows Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed. Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Force All Structure Locking</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">If enabled, spike walls will damage wild/riderless Dinos.</sys:String>
+
+    <!-- Server Settings - Engrams -->
+    <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">Remove Prereqs</sys:String>
+    
+    <!-- Server Settings - Custom Level Progressions -->
+    <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
+    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Enable Custom Level Progressions</sys:String>
+    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">If enabled, enables player and dino level customizations.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">Custom Player Levels</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteAllLevelsTooltip">Delete all existing levels.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">Reset all level customizations back to ASM defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customizations back to official defaults.</sys:String>
+
+    <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionLevelColumnLabel">Level</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionXPRequiredColumnLabel">XP Required</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionEngramPointsColumnLabel">Engram Points</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionEngramTotalColumnLabel">Engram Total</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionAddLevelTooltip">Add a new level after this one.</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">Remove this level</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomDinoLevelsLabel">Custom Dino Levels</sys:String>
+
+    <!-- Server Settings - Survival of the Fittest -->
+    <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFTooltip">If enabled, configures the server as a 'Survival of the Fittest' server.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFHelpTooltip">Survival of the Fittest is a special total conversion mod which changes many of the rules.  See the web for more details.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorLabel">Disable Death Spectator</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorTooltip">If enabled, players cannot be spectators after they die.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorLabel">Only Admin Rejoin As Spectator</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorTooltip">If enabled, only admins can join as spectators once the game has started.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeLabel">Max Players in Tribe:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeTooltip">The maximum number of players allowed in a tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameLabel">Tribes Required for Game:</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameTooltip">The number of tribes requires for the game to start.</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeLabel">Ring of Death Collapse Time:</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeTooltip">The game length before Sudden Death.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeLabel">Auto-start Delay Time:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeTooltip">The time after the minimum number of tribes has been achieved before the game starts.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">Auto-restart Delay Time:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">The time after the last game has ended before the new game will start.</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">Sudden Death Time:</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">The amount of time Sudden Death will be in effect until the game is declared a draw.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">Enable Game Play Logging</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">Game Options</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsLabel">No Events</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsTooltip">If enabled, will cause no Evolution Events to be automatically triggered. Host can still trigger events manually with 'cheat ce evorain' etc.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesLabel">No Bosses</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">If enabled, will cause no bosses to be spawned</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesLabel">Both Bosses</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">If enabled and if bosses are used, this will spawn both the Broodmother and the Megapithecus at their respective times.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalLabel">Evolution Event Interval</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">Specifies the interval factor for the Evolution Events. Lower values decrease the time between events, higher values increase the time between events.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
+
+    <!-- Player/Tribe Profile Window -->
+    <sys:String x:Key="Profile_SteamSectionLabel">Steam Details</sys:String>
+    <sys:String x:Key="Profile_PlayerSectionLabel">Player Details</sys:String>
+    <sys:String x:Key="Profile_TribeSectionLabel">Tribe Details</sys:String>
+    <sys:String x:Key="Profile_TribeMembersSectionLabel">Tribe Members</sys:String>
+
+    <sys:String x:Key="Profile_IdLabel">Id:</sys:String>
+    <sys:String x:Key="Profile_NameLabel">Name:</sys:String>
+    <sys:String x:Key="Profile_OnlineLabel">Online:</sys:String>
+    <sys:String x:Key="Profile_CreatedLabel">Created:</sys:String>
+    <sys:String x:Key="Profile_UpdatedLabel">Last Updated:</sys:String>
+    <sys:String x:Key="Profile_BannedCommunityLabel">Community Banned:</sys:String>
+    <sys:String x:Key="Profile_BannedVACLabel">VAC Banned:</sys:String>
+    <sys:String x:Key="Profile_BannedVACCountLabel">Number of VAC Bans:</sys:String>
+    <sys:String x:Key="Profile_BannedVACDaysLabel">Days Since Last Ban:</sys:String>
+    <sys:String x:Key="Profile_LevelLabel">Level:</sys:String>
+    <sys:String x:Key="Profile_WhitelistedLabel">Whitelisted:</sys:String>
+    <sys:String x:Key="Profile_BannedLabel">Banned:</sys:String>
+    <sys:String x:Key="Profile_BannedGameCountLabel">Number of Game Bans:</sys:String>
+    <sys:String x:Key="Profile_TribeOwnerLabel">Owner:</sys:String>
+    <sys:String x:Key="Profile_SteamNameColumnLabel">Steam Name</sys:String>
+    <sys:String x:Key="Profile_CharacterNameColumnLabel">Character Name</sys:String>
+    <sys:String x:Key="Profile_LevelColumnLabel">Level</sys:String>
+    <sys:String x:Key="Profile_OnlineColumnLabel">Online</sys:String>
+    <sys:String x:Key="Profile_CreatedColumnLabel">Created</sys:String>
+    <sys:String x:Key="Profile_UpdatedColumnLabel">Last Updated</sys:String>
+    <sys:String x:Key="Profile_NavigateSteamProfile">Click to open the steam profile in a browser</sys:String>
+    <sys:String x:Key="Profile_NavigateProfile">Click to view the profile file in explorer</sys:String>
+
+    <!-- RCON window -->
+    <sys:String x:Key="RCON_Menu_File">_File</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewLogs">View Logs...</sys:String>
+    <sys:String x:Key="RCON_Menu_ClearLogs">Clear Logs</sys:String>
+    <sys:String x:Key="RCON_Menu_Confirm">Confirm</sys:String>
+    <sys:String x:Key="RCON_Menu_Console">_Console</sys:String>
+    <sys:String x:Key="RCON_Menu_AutoScroll">Auto-scroll</sys:String>
+    <sys:String x:Key="RCON_Menu_Server">_Server</sys:String>
+    <sys:String x:Key="RCON_Menu_SaveWorld">Save World</sys:String>
+    <sys:String x:Key="RCON_Menu_DestroyWildDinos">Destroy Wild Dinos</sys:String>
+    <sys:String x:Key="RCON_Menu_Players">_Players</sys:String>
+    <sys:String x:Key="RCON_Menu_Sort">Sort</sys:String>
+    <sys:String x:Key="RCON_Menu_SortOnline">By Online</sys:String>
+    <sys:String x:Key="RCON_Menu_SortName">By Name</sys:String>
+    <sys:String x:Key="RCON_Menu_SortTribe">By Tribe</sys:String>
+    <sys:String x:Key="RCON_Menu_SortLastUpdated">By Last Updated</sys:String>
+    <sys:String x:Key="RCON_Menu_Filter">_Filter</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOnline">Show Online</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
+
+    <sys:String x:Key="RCON_Menu_ChatPlayer">Chat to Player...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenamePlayer">Rename Player...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenameTribe">Rename Tribe...</sys:String>
+    <sys:String x:Key="RCON_Menu_Kill">Kill</sys:String>
+    <sys:String x:Key="RCON_Menu_Kick">Kick</sys:String>
+    <sys:String x:Key="RCON_Menu_Banned">Banned</sys:String>
+    <sys:String x:Key="RCON_Menu_Whitelisted">Whitelisted</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewSteamProfile">View Steam Profile...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewProfile">View Profile...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewTribe">View Tribe...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopySteamId">Copy Steam ID...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopyPlayerId">Copy Player ID...</sys:String>
+
+    <sys:String x:Key="RCON_AdminNameLabel">Admin Name:</sys:String>
+    <sys:String x:Key="RCON_AdminNameTooltip">This is the name used to prefix serverchat messages sent from the console.</sys:String>
+    <sys:String x:Key="RCON_StatusLabel">Status:</sys:String>
+    <sys:String x:Key="RCON_PlayersLabel">Players:</sys:String>
+    <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
+    <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
+
+    <sys:String x:Key="RCON_Button_OK">OK</sys:String>
+    <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>
+    <sys:String x:Key="RCON_Button_Change">Change</sys:String>
+    <sys:String x:Key="RCON_Button_Send">Send</sys:String>
+
+    <sys:String x:Key="RCON_UnnamedLabel">unnamed</sys:String>
+
+    <sys:String x:Key="RCON_ConnectionEstablishedLabel">Connection established.</sys:String>
+    <sys:String x:Key="RCON_ConnectionLostLabel">Connection lost.</sys:String>
+    <sys:String x:Key="RCON_NoCommandResponseLabel">Command returned no data</sys:String>
+
+    <sys:String x:Key="RCON_SaveWorldLabel">A world save is about to be performed, you may experience some lag during this process. Please be patient.</sys:String>
+    <sys:String x:Key="RCON_DestroyWildDinosLabel">About to destroy all wild creatures, you may experience some lag during this process. Please be patient.</sys:String>
+
+    <sys:String x:Key="RCON_ChatPlayerLabel">Send a chat message to :</sys:String>
+    <sys:String x:Key="RCON_RenamePlayerLabel">Rename player from :</sys:String>
+    <sys:String x:Key="RCON_RenameTribeLabel">Rename tribe from :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdLabel">Steam ID copied to the clipboard for :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdTitle">Steam ID copied</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdLabel">Player ID copied to the clipboard for :</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdTitle">Player ID copied</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorTitle">Copy to clipboard failed.</sys:String>
+
+    <!-- Open RCON window -->
+    <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>
+    
+    <sys:String x:Key="OpenRCON_IPLabel">Server IP:</sys:String>
+    <sys:String x:Key="OpenRCON_PortLabel">RCON Port:</sys:String>
+    <sys:String x:Key="OpenRCON_PasswordLabel">Admin Password:</sys:String>
+
+    <sys:String x:Key="OpenRCON_ConnectButtonLabel">Connect Button</sys:String>
+    <sys:String x:Key="OpenRCON_CancelButtonLabel">Cancel</sys:String>
+
+    <!-- Settings window -->
+    <sys:String x:Key="Settings_Title">Settings</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>

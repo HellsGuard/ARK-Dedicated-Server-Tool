@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -19,6 +20,12 @@ namespace ARK_Server_Manager.Lib
         public NetworkAdapterEntry(IPAddress address, string description)
         {
             this.IPAddress = address.ToString();
+            this.Description = description;
+        }
+
+        public NetworkAdapterEntry(string address, string description)
+        {
+            this.IPAddress = address;
             this.Description = description;
         }
 
@@ -56,6 +63,23 @@ namespace ARK_Server_Manager.Lib
             }
 
             return adapters;
+        }
+
+        public static async Task<Version> GetLatestASMVersion()
+        {
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    var latestVersion = await webClient.DownloadStringTaskAsync(Config.Default.LatestASMVersionUrl);
+                    return Version.Parse(latestVersion);
+                }
+                catch (Exception ex)
+                {
+                    logger.Debug(String.Format("Exception checking for ASM version: {0}\r\n{1}", ex.Message, ex.StackTrace));
+                    return new Version();
+                }
+            }
         }
 
         public static NetworkAdapterEntry GetPreferredIP(IEnumerable<NetworkAdapterEntry> adapters)
@@ -99,6 +123,14 @@ namespace ARK_Server_Manager.Lib
 
         public class AvailableVersion
         {
+            public AvailableVersion()
+            {
+                IsValid = false;
+                Current = new Version(0, 0);
+                Upcoming = new Version(0, 0);
+                UpcomingETA = "unknown";
+            }
+
             public bool IsValid
             {
                 get;
@@ -148,8 +180,8 @@ namespace ARK_Server_Manager.Lib
                 }
                 JObject query = JObject.Parse(jsonString);
 
-                var availableVersion = query.SelectToken("current");
-                var upcomingVersion = query.SelectToken("upcoming.version");
+                var availableVersion = Convert.ToString(query.SelectToken("current"), CultureInfo.GetCultureInfo("en-US"));
+                var upcomingVersion = Convert.ToString(query.SelectToken("upcoming.version"), CultureInfo.GetCultureInfo("en-US"));
                 var upcomingStatus = query.SelectToken("upcoming.status");
 
                 if (availableVersion != null)
@@ -178,12 +210,40 @@ namespace ARK_Server_Manager.Lib
 
                 if (upcomingStatus != null)
                 {
-                    result.UpcomingETA = (string)upcomingStatus;
-                }                
+                    result.UpcomingETA = upcomingStatus.ToString();
+                }
+
+                // if successful then exist here and return the result
+                return result;
             }
             catch (Exception ex)
             {
-                logger.Debug(String.Format("Exception checking for version: {0}\r\n{1}", ex.Message, ex.StackTrace));                
+                logger.Debug(String.Format("Exception checking for version (method 1): {0}\r\n{1}", ex.Message, ex.StackTrace));                
+            }
+
+            try
+            {
+                string webString;
+                using (var client = new WebClient())
+                {
+                    webString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl2);
+                }
+
+                if (!string.IsNullOrWhiteSpace(webString))
+                {
+                    Version ver;
+                    string versionString = webString.ToString();
+                    if (versionString.IndexOf('.') == -1)
+                    {
+                        versionString = versionString + ".0";
+                    }
+                    result.IsValid = Version.TryParse(versionString, out ver);
+                    result.Current = ver;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Debug(String.Format("Exception checking for version (method 2): {0}\r\n{1}", ex.Message, ex.StackTrace));
             }
 
             return result;
@@ -191,6 +251,15 @@ namespace ARK_Server_Manager.Lib
 
         public class ServerNetworkInfo
         {
+            public ServerNetworkInfo()
+            {
+                Name = "unknown";
+                Version = new Version(0, 0);
+                Map = "unknown";
+                Players = 0;
+                MaxPlayers = 0;
+            }
+
             public string Name
             {
                 get;
@@ -246,6 +315,12 @@ namespace ARK_Server_Manager.Lib
                     return null;
                 }
 
+                var status = query.SelectToken("status");
+                if(status == null || !(bool)status)
+                {
+                    logger.Debug($"Server at {endpoint.Address}:{endpoint.Port} returned no status or a status of false.");
+                    return null;
+                }
                 var server = query.SelectToken("server");
                 if (server.Type == JTokenType.String)
                 {
@@ -256,7 +331,7 @@ namespace ARK_Server_Manager.Lib
                     result = new ServerNetworkInfo();
                     result.Name = (string)query.SelectToken("server.name");
                     Version ver;
-                    string versionString = (string)query.SelectToken("server.version");
+                    string versionString = Convert.ToString(query.SelectToken("server.version"), CultureInfo.GetCultureInfo("en-US"));
                     if (versionString.IndexOf('.') == -1)
                     {
                         versionString = versionString + ".0";
@@ -267,6 +342,62 @@ namespace ARK_Server_Manager.Lib
                     result.Map = (string)query.SelectToken("server.map");
                     result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
                     result.MaxPlayers = Int32.Parse((string)query.SelectToken("server.playerMax"));
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
+            }
+
+            return result;
+        }
+
+        public static ServerNetworkInfo GetServerNetworkInfoDirect(IPEndPoint endpoint)
+        {
+            ServerNetworkInfo result = null;
+            QueryMaster.ServerInfo serverInfo = null;
+            ReadOnlyCollection<QueryMaster.Player> players = null;
+
+            try
+            {
+                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
+                {
+                    serverInfo = server.GetInfo();
+                    players = server.GetPlayers();
+                }
+
+                if (serverInfo != null)
+                {
+                    result = new ServerNetworkInfo();
+                    result.Name = serverInfo.Name;
+                    result.Map = serverInfo.Map;
+                    result.Players = serverInfo.Players;
+                    result.MaxPlayers = serverInfo.MaxPlayers;
+
+                    // get the name and version of the server using regular expression.
+                    if (!string.IsNullOrWhiteSpace(result.Name))
+                    {
+                        var match = Regex.Match(result.Name, @" - \(v([0-9]+\.[0-9]*)\)");
+                        if (match.Success && match.Groups.Count >= 2)
+                        {
+                            // remove the version number from the name
+                            result.Name = result.Name.Replace(match.Groups[0].Value, "");
+
+                            // get the version number
+                            var serverVersion = match.Groups[1].Value;
+                            Version ver;
+                            if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out ver))
+                            {
+                                result.Version = ver;
+                            }
+                        }
+                    }
+                }
+
+                if (players != null)
+                {
+                    // set the number of players based on the player list, excludes any players in the list without a valid name.
+                    result.Players = players.Count(record => !string.IsNullOrWhiteSpace(record.Name));
                 }
             }
             catch (Exception ex)

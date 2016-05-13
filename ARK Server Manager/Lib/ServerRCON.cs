@@ -1,9 +1,11 @@
-﻿using NLog;
-using QueryMaster;
+﻿using ARK_Server_Manager.Lib.ViewModel.RCON;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,13 +14,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ARK_Server_Manager.Lib
 {
     public class ServerRCON : DependencyObject, IAsyncDisposable
-    {
-        public static Logger _logger = LogManager.GetCurrentClassLogger();
-
+    {        
         public static readonly DependencyProperty StatusProperty =
             DependencyProperty.Register(nameof(Status), typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
         public static readonly DependencyProperty PlayersProperty =
@@ -35,67 +36,141 @@ namespace ARK_Server_Manager.Lib
             get { return (SortableObservableCollection<PlayerInfo>)GetValue(PlayersProperty); }
             set { SetValue(PlayersProperty, value); }
         }
-        
-        public class PlayerInfo
+
+
+
+        public int CountPlayers
         {
-            public string Name;
-            public ImageSource Avatar;
-            public long Score;
-            public TimeSpan ConnectionTime;
+            get { return (int)GetValue(CountPlayersProperty); }
+            set { SetValue(CountPlayersProperty, value); }
         }
-        
+
+        public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerRCON), new PropertyMetadata(0));
+
+
         public enum ConsoleStatus
         {
             Disconnected,
             Connected,
         };
 
-        public struct ConsoleCommand
+        private Logger chatLogger;
+        private Logger allLogger;
+        private Logger eventLogger;
+        private Logger _logger;
+
+        public class ConsoleCommand
         {
             public ConsoleStatus status;
+            public string rawCommand;
+
             public string command;
-            public IEnumerable<string> lines;
+            public string args;
+            
+            public bool suppressCommand;
+            public bool suppressOutput;
+            public IEnumerable<string> lines = new string[0];
         };
 
-        private const int ConnectionRetryDelay = 2000;
-
+        private const int ListPlayersPeriod = 5000;
+        private const int GetChatPeriod = 1000;
         private readonly ActionQueue commandProcessor;
-        private readonly ActionBlock<ConsoleCommand> outputProcessor;
-        private ServerRuntime.RuntimeProfileSnapshot snapshot;
-        private readonly PropertyChangeNotifier runtimeChangedNotifier;
-        private Rcon console;
+        private readonly ActionQueue outputProcessor;
+        private RCONParameters rconParams;
+        //private readonly PropertyChangeNotifier runtimeChangedNotifier;
+        private QueryMaster.Rcon console;
 
-        public ServerRCON(Server server)
+        public ServerRCON(RCONParameters parameters)
         {
-            this.runtimeChangedNotifier = new PropertyChangeNotifier(server.Runtime, ServerRuntime.ProfileSnapshotProperty, (s, d) =>
-            {
-                this.snapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
-                commandProcessor.PostAction(() => Reconnect());
-            });
+            //this.runtimeChangedNotifier = new PropertyChangeNotifier(server.Runtime, ServerRuntime.ProfileSnapshotProperty, (s, d) =>
+            //{
+            //    var oldSnapshot = this.rconParams;
+            //    if (d == null || d.NewValue == null) return;
 
-            this.commandProcessor = new ActionQueue();
+            //    var newSnapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
+            //    this.rconParams = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
+
+            //    bool reinitLoggers = !String.Equals(this.rconParams.ProfileName, newSnapshot.ProfileName);
+            //    if (reinitLoggers)
+            //    {
+            //        ReinitializeLoggers();
+            //    }
+            //});
+
+            this.commandProcessor = new ActionQueue(TaskScheduler.Default);
 
             // This is on the UI thread so we can do things like update dependency properties and whatnot.
-            this.outputProcessor = new ActionBlock<ConsoleCommand>(new Func<ConsoleCommand, Task>(ProcessOutput),
-                                              new ExecutionDataflowBlockOptions
-                                              {
-                                                  MaxDegreeOfParallelism = 1,
-                                                  TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext()
-                                              });
+            this.outputProcessor = new ActionQueue(TaskScheduler.FromCurrentSynchronizationContext());
 
-            this.Players = new SortableObservableCollection<PlayerInfo>();            
+            this.Players = new SortableObservableCollection<PlayerInfo>();
+
+            this.rconParams = parameters;
+            ReinitializeLoggers();
+            commandProcessor.PostAction(AutoPlayerList);
+            commandProcessor.PostAction(AutoGetChat);
+        }
+
+        private void ReinitializeLoggers()
+        {
+            this.allLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_All");
+            this.chatLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Chat");
+            this.eventLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Event");
+            this._logger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Debug");
+        }
+
+        private enum LogEventType
+        {
+            All,
+            Chat,
+            Event
+        }
+
+        private void LogEvent(LogEventType eventType, string message)
+        {
+            switch(eventType)
+            {
+                case LogEventType.All:
+                    this.allLogger.Info(message);
+                    return;
+
+                case LogEventType.Chat:
+                    this.chatLogger.Info(message);
+                    return;
+
+                case LogEventType.Event:
+                    this.eventLogger.Info(message);
+                    return;
+            }
+        }
+
+        private Task AutoPlayerList()
+        {
+            return this.commandProcessor.PostAction(() =>
+            {
+                ProcessInput(new ConsoleCommand() { rawCommand = "listplayers", suppressCommand = true, suppressOutput = true });
+                Task.Delay(ListPlayersPeriod).ContinueWith(t => commandProcessor.PostAction(AutoPlayerList)).DoNotWait();
+            });
+        }
+
+        private Task AutoGetChat()
+        {
+            return this.commandProcessor.PostAction(() =>
+            {
+                ProcessInput(new ConsoleCommand() { rawCommand = "getchat", suppressCommand = true, suppressOutput = true });
+                Task.Delay(GetChatPeriod).ContinueWith(t => commandProcessor.PostAction(AutoGetChat)).DoNotWait();
+            });
         }
 
         public Task<bool> IssueCommand(string userCommand)
         {
-            return this.commandProcessor.PostAction(() => ProcessInput(userCommand));
+            return this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = userCommand }));
         }
 
         public async Task DisposeAsync()
         {
             await this.commandProcessor.DisposeAsync();
-            this.outputProcessor.Complete();
-            this.runtimeChangedNotifier.Dispose();
+            await this.outputProcessor.DisposeAsync();
+            // this.runtimeChangedNotifier.Dispose();
         }
 
         private class CommandListener : IDisposable
@@ -126,16 +201,18 @@ namespace ARK_Server_Manager.Lib
         //
         // This is bound to the UI thread
         //
-        private Task ProcessOutput(ConsoleCommand command)
+        private void ProcessOutput(ConsoleCommand command)
         {
             //
             // Handle results
             //
             HandleCommand(command);
             NotifyCommand(command);
-            return TaskUtils.FinishedTask;
         }
 
+        //
+        // This is bound to the UI thread
+        //
         private void NotifyCommand(ConsoleCommand command)
         {
             foreach (var listener in commandListeners)
@@ -151,64 +228,249 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        //
+        // This is bound to the UI thread
+        //
         private void HandleCommand(ConsoleCommand command)
         {
-#if false
-            if(command.command.StartsWith("listplayers"))
+            //
+            // Change the connection state as appropriate
+            //
+            this.Status = command.status;
+
+            //
+            // Perform per-command special processing to extract data
+            //
+            if(command.command.Equals("listplayers", StringComparison.OrdinalIgnoreCase))
             {
+                var output = new List<string>();
+                //
+                // Update the visible player list
+                //
+                var newPlayerList = new List<PlayerInfo>();                
                 foreach(var line in command.lines)
-                {
+                {                    
                     var elements = line.Split(',');
-                    if(elements.Length > 0)
+                    if(elements.Length == 2)
                     {
-                        long steamId;
-                        if(Int64.TryParse(elements[elements.Length-1], out steamId))
+                        var newPlayer = new ViewModel.RCON.PlayerInfo()
                         {
-                            using(dynamic steamUser = WebAPI.GetInterface("ISteamUser"))
-                            {
-                                steamUser.GetPlayerSummaries(steamids: steamId);
-                            }   
+                            SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
+                            SteamId = Int64.Parse(elements[1]),
+                            IsOnline = true
+                        };
+
+                        if(newPlayerList.FirstOrDefault(p => p.SteamId == newPlayer.SteamId) != null)
+                        {
+                            // We received a duplicate.  Ignore it.
+                            continue;
+                        }
+
+                        newPlayerList.Add(newPlayer);
+
+                        var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
+                        bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
+
+                        if (existingPlayer == null)
+                        {
+                            this.Players.Add(newPlayer);
+                        }
+                        else
+                        {
+                            existingPlayer.IsOnline = true;
+                        }
+
+                        if(playerJoined)
+                        {
+                            var message = $"Player '{newPlayer.SteamName}' joined the game.";
+                            output.Add(message);
+                            LogEvent(LogEventType.Event, message);
+                            LogEvent(LogEventType.All, message);
                         }
                     }
                 }
-            }
-#endif
-        }
-
-        private static readonly char[] splitChars = new char[] { '\n' };
-        private bool ProcessInput(string command)
-        {
-            try
-            {
-                string result = String.Empty;
-                if (this.console == null)
+               
+                var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
+                foreach (var player in droppedPlayers)
                 {
-                    // Try connecting to the server
-                    if (!Reconnect())
+                    if(player.IsOnline)
                     {
-                        return false;
+                        var message = $"Player '{player.SteamName}' left the game.";
+                        output.Add(message);
+                        LogEvent(LogEventType.Event, message);
+                        LogEvent(LogEventType.All, message);
+                        player.IsOnline = false;
                     }
                 }
 
-                result = this.console.SendCommand(command);
+                this.Players.Sort(p => !p.IsOnline);
+                this.CountPlayers = this.Players.Count(p => p.IsOnline);
 
-                var lines = result.Split(splitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim());
-
-                ConsoleCommand output = new ConsoleCommand
+                if (this.Players.Count == 0 || newPlayerList.Count > 0)
                 {
-                    status = ConsoleStatus.Connected,
-                    command = command,
-                    lines = lines
-                };
+                    commandProcessor.PostAction(UpdatePlayerDetails);
+                }
 
-                this.outputProcessor.Post(output);
+                command.suppressOutput = false;
+                command.lines = output;
+            }
+            else if(command.command.Equals("getchat", StringComparison.OrdinalIgnoreCase))
+            {
+                // TODO: Extract the player name from the chat
+                var lines = command.lines.Where(l => !String.IsNullOrEmpty(l) && l != NoResponseOutput).ToArray();
+                if(lines.Length == 0 && command.suppressCommand)
+                {
+                    command.suppressOutput = true;
+                }
+                else
+                {
+                    command.suppressOutput = false;   
+                    command.lines = lines;
+                    foreach(var line in lines)
+                    {
+                        LogEvent(LogEventType.Chat, line);
+                        LogEvent(LogEventType.All, line);
+                    }
+                }
+            }
+            else if (command.command.Equals("broadcast", StringComparison.OrdinalIgnoreCase))
+            {
+                LogEvent(LogEventType.Chat, command.rawCommand);
+                command.suppressOutput = true;
+            }
+            else if (command.command.Equals("serverchat", StringComparison.OrdinalIgnoreCase))
+            {
+                LogEvent(LogEventType.Chat, command.rawCommand);
+                command.suppressOutput = true;
+            }
+        }
+
+        private async Task UpdatePlayerDetails()
+        {
+            if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
+            {
+                var savedArksPath = Path.Combine(rconParams.InstallDirectory, Config.Default.SavedArksRelativePath);
+                var arkData = await ArkData.ArkDataContainer.CreateAsync(savedArksPath);
+                await arkData.LoadSteamAsync(Config.Default.SteamAPIKey);
+                TaskUtils.RunOnUIThreadAsync(() =>
+                {
+                    foreach (var playerData in arkData.Players)
+                    {
+                        var playerToUpdate = this.Players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
+                        if (playerToUpdate != null)
+                        {
+                            playerToUpdate.UpdateArkDataAsync(playerData).DoNotWait();
+                        }
+                        else
+                        {
+                            var newPlayer = new PlayerInfo() { SteamId = Int64.Parse(playerData.SteamId), SteamName = playerData.SteamName };
+                            newPlayer.UpdateArkDataAsync(playerData).DoNotWait();
+                            this.Players.Add(newPlayer);
+                        }
+                    }
+                }).DoNotWait();
+            }
+        }
+
+        private static readonly char[] lineSplitChars = new char[] { '\n' };
+        private static readonly char[] argsSplitChars = new char[] { ' ' };
+        private const string NoResponseMatch = "Server received, But no response!!";
+        public const string NoResponseOutput = "NO_RESPONSE";
+        
+        private bool ProcessInput(ConsoleCommand command)
+        {
+            try
+            {
+                if (!command.suppressCommand)
+                {
+                    LogEvent(LogEventType.All, command.rawCommand);
+                }
+
+                var args = command.rawCommand.Split(argsSplitChars, 2);
+                command.command = args[0];
+                if(args.Length > 1)
+                {
+                    command.args = args[1];
+                }
+
+                string result = String.Empty;
+
+                result = SendCommand(command.rawCommand);
+
+                var lines = result.Split(lineSplitChars, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
+
+                if (!command.suppressOutput)
+                {
+                    foreach (var line in lines)
+                    {
+                        LogEvent(LogEventType.All, line);
+                    }
+                }
+
+                if(lines.Length == 1 && lines[0].StartsWith(NoResponseMatch))
+                {
+                    lines[0] = NoResponseOutput;
+                }
+
+                command.status = ConsoleStatus.Connected;
+                command.lines = lines;
+
+                this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return true;
             }
             catch(Exception ex)
             {
-                _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command, ex.Message, ex.ToString());
+                _logger.Debug("Failed to send command '{0}'.  {1}\n{2}", command.rawCommand, ex.Message, ex.ToString());
+                command.status = ConsoleStatus.Disconnected;
+                this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return false;
             }            
+        }
+
+        const int MaxCommandRetries = 10;
+        const int RetryDelay = 100;
+        private string SendCommand(string command)
+        {
+            int retries = 0;
+            Exception lastException = null;        
+            while (retries < MaxCommandRetries)
+            {
+                if (this.console != null)
+                {
+                    try
+                    {
+                        var result = this.console.SendCommand(command);
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Re will simply retry
+                        lastException = ex;
+                    }
+
+                    Task.Delay(RetryDelay).Wait();
+                }
+
+                try
+                {
+                    Reconnect();
+                }
+                catch(Exception ex)
+                {
+                    lastException = ex;
+                }
+
+                retries++;
+            }
+
+            _logger.Debug("Failed to connect to RCON at {0}:{1} with {2}: {3}\n{4}",
+                   this.rconParams.ServerIP,
+                   this.rconParams.RCONPort,
+                   this.rconParams.AdminPassword,
+                   lastException.Message,
+                   lastException.StackTrace);
+
+            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}\n{lastException.StackTrace}", lastException);
         }
 
         private bool Reconnect()
@@ -219,23 +481,10 @@ namespace ARK_Server_Manager.Lib
                 this.console = null;
             }
           
-            try
-            {
-                var endpoint = new IPEndPoint(IPAddress.Parse(this.snapshot.ServerIP), this.snapshot.RCONPort);    
-                var server = ServerQuery.GetServerInstance(EngineType.Source, endpoint);
-                this.console = server.GetControl(this.snapshot.AdminPassword);
-                return true;
-            }
-            catch(Exception ex)
-            {
-                _logger.Debug("Failed to connect to RCON at {0}:{1} with {2}: {3}\n{4}", 
-                    this.snapshot.ServerIP, 
-                    this.snapshot.RCONPort, 
-                    this.snapshot.AdminPassword, 
-                    ex.Message, 
-                    ex.StackTrace);
-                return false;
-            }
+            var endpoint = new IPEndPoint(IPAddress.Parse(this.rconParams.ServerIP), this.rconParams.RCONPort);    
+            var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint);
+            this.console = server.GetControl(this.rconParams.AdminPassword);
+            return true;
         }
     }
 }

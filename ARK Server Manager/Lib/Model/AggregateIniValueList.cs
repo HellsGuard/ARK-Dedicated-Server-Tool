@@ -21,6 +21,16 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public bool IsArray => false;
+
+        public void AddRange(IEnumerable<T> values)
+        {
+            foreach (var value in values)
+            {
+                base.Add(value);
+            }
+        }
+
         public string IniCollectionKey { get; }
 
         private Func<IEnumerable<T>> resetFunc;
@@ -31,13 +41,6 @@ namespace ARK_Server_Manager.Lib
             this.resetFunc = resetFunc;
         }
 
-        public void AddRange(IEnumerable<T> spawns)
-        {
-            foreach (var spawn in spawns)
-            {
-                base.Add(spawn);
-            }
-        }
 
         public void Reset()
         {
@@ -48,7 +51,8 @@ namespace ARK_Server_Manager.Lib
         public IEnumerable<string> ToIniValues()
         {
             var values = new List<string>();
-            values.AddRange(this.Select(d => String.Format("{0}={1}", this.IniCollectionKey, d.ToINIValue())));
+            values.AddRange(this.Where(d => d.ShouldSave())
+                                .Select(d => String.Format("{0}={1}", this.IniCollectionKey, d.ToINIValue())));
             return values;
         }
 
