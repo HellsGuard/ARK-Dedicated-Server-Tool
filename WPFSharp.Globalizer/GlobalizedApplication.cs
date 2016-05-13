@@ -19,7 +19,7 @@ namespace WPFSharp.Globalizer
         {
             // Make App a singleton
             Instance = this;
-            
+
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -31,7 +31,8 @@ namespace WPFSharp.Globalizer
         public virtual String Directory
         {
             get { return _Directory ?? (_Directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)); }
-        } private String _Directory;
+        }
+        private String _Directory;
 
 
         public virtual EnhancedResourceDictionary FallbackResourceDictionary { get; private set; }
@@ -53,7 +54,7 @@ namespace WPFSharp.Globalizer
             {
                 GlobalizationManager.SwitchLanguage(Thread.CurrentThread.CurrentCulture.Name, true);
             }
-            catch(CultureNotFoundException)
+            catch (CultureNotFoundException)
             {
                 // Try the fallback
                 GlobalizationManager.SwitchLanguage(GlobalizationManager.FallBackLanguage, true);
