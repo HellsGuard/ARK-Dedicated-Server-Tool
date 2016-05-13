@@ -1794,12 +1794,12 @@
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    Command="{Binding ImportActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsImportExportAction.PlayerLevels}">
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}">
                                                 <Image Source="Art/Open_6529.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    Command="{Binding ExportActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsImportExportAction.PlayerLevels}">
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportPlayerLevels}">
                                                 <Image Source="Art/Save_6530.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -1863,12 +1863,12 @@
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    Command="{Binding ImportActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsImportExportAction.DinoLevels}">
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}">
                                                 <Image Source="Art/Open_6529.png" Width="16"/>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
-                                                    Command="{Binding ExportActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsImportExportAction.DinoLevels}">
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportDinoLevels}">
                                                 <Image Source="Art/Save_6530.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
