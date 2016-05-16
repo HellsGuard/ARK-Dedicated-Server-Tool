@@ -7,6 +7,8 @@
     LinkedStyle="en-US-style"
     >
 
+    <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
+
     <!-- Updater Window -->
     <sys:String x:Key="AutoUpdater_Title">ARK Server Manager - Updating...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">Downloading SteamCMD...</sys:String>
@@ -34,6 +36,7 @@
     <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
 
     <!-- 
     Main Window 
@@ -71,7 +74,7 @@
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     <sys:String x:Key="SliderUnits_Players">players</sys:String>
     <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
-    
+
     <!--
     Server Settings
     
@@ -524,6 +527,8 @@
     <sys:String x:Key="ServerSettings_DeleteAllLevelsTooltip">Delete all existing levels.</sys:String>
     <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">Reset all level customizations back to ASM defaults.</sys:String>
     <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customizations back to official defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ImportLevelsTooltip">Import level customizations from CSV file.</sys:String>
+    <sys:String x:Key="ServerSettings_ExportLevelsTooltip">Export level customizations to CSV file.</sys:String>
 
     <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>
@@ -570,6 +575,17 @@
     <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">Specifies the interval factor for the Evolution Events. Lower values decrease the time between events, higher values increase the time between events.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customizations</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customization CSV file</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterLabel">CSV Files</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterExtension">*.csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterLabel">CSV Files</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterExtension">*.csv</sys:String>
 
     <!-- Player/Tribe Profile Window -->
     <sys:String x:Key="Profile_SteamSectionLabel">Steam Details</sys:String>
@@ -644,6 +660,27 @@
 
     <sys:String x:Key="RCON_Button_OK">OK</sys:String>
     <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>
+    <sys:String x:Key="RCON_Button_Change">Change</sys:String>
+    <sys:String x:Key="RCON_Button_Send">Send</sys:String>
+
+    <sys:String x:Key="RCON_UnnamedLabel">unnamed</sys:String>
+
+    <sys:String x:Key="RCON_ConnectionEstablishedLabel">Connection established.</sys:String>
+    <sys:String x:Key="RCON_ConnectionLostLabel">Connection lost.</sys:String>
+    <sys:String x:Key="RCON_NoCommandResponseLabel">Command returned no data</sys:String>
+
+    <sys:String x:Key="RCON_SaveWorldLabel">A world save is about to be performed, you may experience some lag during this process. Please be patient.</sys:String>
+    <sys:String x:Key="RCON_DestroyWildDinosLabel">About to destroy all wild creatures, you may experience some lag during this process. Please be patient.</sys:String>
+
+    <sys:String x:Key="RCON_ChatPlayerLabel">Send a chat message to :</sys:String>
+    <sys:String x:Key="RCON_RenamePlayerLabel">Rename player from :</sys:String>
+    <sys:String x:Key="RCON_RenameTribeLabel">Rename tribe from :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdLabel">Steam ID copied to the clipboard for :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdTitle">Steam ID copied</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdLabel">Player ID copied to the clipboard for :</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdTitle">Player ID copied</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorTitle">Copy to clipboard failed.</sys:String>
 
     <!-- Open RCON window -->
     <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>

@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -95,7 +96,7 @@ namespace ARK_Server_Manager
 
     public class RCONOutput_ConnectionChanged : RCONOutput_TimedCommand
     {
-        public RCONOutput_ConnectionChanged(bool isConnected) : base(isConnected ? "Connection established." : "Connection lost.") { }
+        public RCONOutput_ConnectionChanged(bool isConnected) : base(isConnected ? GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionEstablishedLabel") : GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionLostLabel")) { }
     }
 
     public class RCONOutput_Command : RCONOutput_TimedCommand
@@ -105,7 +106,7 @@ namespace ARK_Server_Manager
 
     public class RCONOutput_NoResponse : RCONOutput_TimedCommand
     {
-        public RCONOutput_NoResponse() : base("Command returned no data") { }
+        public RCONOutput_NoResponse() : base(GlobalizedApplication.Instance.GetResourceString("RCON_NoCommandResponseLabel")) { }
     };
 
     public class RCONOutput_CommandOutput : RCONOutput_TimedCommand
@@ -187,6 +188,8 @@ namespace ARK_Server_Manager
         public RCONWindow(RCONParameters parameters)
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
+
             this.CurrentInputWindowMode = InputWindowMode.None;
             this.RCONParameters = parameters;
             this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
@@ -316,7 +319,7 @@ namespace ARK_Server_Manager
 
                             case InputWindowMode.RenamePlayer:
                                 player = inputBox.Tag as PlayerInfo;
-                                if (player != null)
+                                if (player != null && player.ArkData != null)
                                     this.ServerRCON.IssueCommand($"RenamePlayer \"{player.ArkData.CharacterName}\" {inputText}");
                                 break;
 
@@ -419,7 +422,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = "A world save is about to be performed, you may experience some lag during this process. Please be patient.";
+                        var message = GlobalizedApplication.Instance.GetResourceString("RCON_SaveWorldLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("saveworld");
@@ -436,7 +439,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = "About to destroy all wild creatures, you may experience some lag during this process. Please be patient.";
+                        var message = GlobalizedApplication.Instance.GetResourceString("RCON_DestroyWildDinosLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("DestroyWildDinos");
@@ -506,10 +509,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.ServerChatTo;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Send a chat message to : {player.SteamName}";
+                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_ChatPlayerLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = "Send";
-                        button2.Content = "Cancel";
+                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Send");
+                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => true //player != null && player.IsOnline
@@ -528,13 +531,13 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenamePlayer;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Rename player : from {player.ArkData.CharacterName}";
+                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_RenamePlayerLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = "Change";
-                        button2.Content = "Cancel";
+                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Change");
+                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
-                    canExecute: (player) => player != null && player.IsOnline
+                    canExecute: (player) => player != null && player.ArkData != null && player.IsOnline
                 );
             }
         }
@@ -550,10 +553,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenameTribe;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"Rename tribe : from {player.TribeName}";
+                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_RenameTribeLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = "Change";
-                        button2.Content = "Cancel";
+                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Change");
+                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => player != null && player.IsOnline
@@ -656,11 +659,11 @@ namespace ARK_Server_Manager
                         try
                         {
                             System.Windows.Clipboard.SetText(player.SteamId.ToString());
-                            MessageBox.Show($"{player.SteamName}'s Steam ID copied to the clipboard", "Steam ID copied", MessageBoxButton.OK);
+                            MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_CopySteamIdLabel")} {player.SteamName}", GlobalizedApplication.Instance.GetResourceString("RCON_CopySteamIdTitle"), MessageBoxButton.OK);
                         }
                         catch
                         {
-                            MessageBox.Show("Clipboard could not be opened.  Another application may be using it.  Please try closing other applications and trying again.", "Copy to clipboard failed.", MessageBoxButton.OK);
+                            MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorLabel")}", GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                         }
                     },
                     canExecute: (player) => player != null
@@ -681,11 +684,11 @@ namespace ARK_Server_Manager
                             try
                             {
                                 System.Windows.Clipboard.SetText(player.ArkData.Id.ToString());
-                                MessageBox.Show($"{player.SteamName}'s ingame UE4 ID copied to the clipboard", "Player ID copied", MessageBoxButton.OK);
+                                MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", GlobalizedApplication.Instance.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
                             }
                             catch
                             {
-                                MessageBox.Show("Clipboard could not be opened.  Another application may be using it.  Please try closing other applications and trying again.", "Copy to clipboard failed.", MessageBoxButton.OK);
+                                MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorLabel")}", GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                             }
                         }
                     },

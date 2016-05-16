@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Xml;
 using System.Xml.Serialization;
+using TinyCsvParser;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -26,6 +27,8 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class ServerProfile : DependencyObject
     {
+        private const char CSV_DELIMITER = ';';
+
         private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         public enum MapSourceType
@@ -2060,6 +2063,99 @@ namespace ARK_Server_Manager.Lib
             settings.PerLevelStatsMultiplier_Player.Reset();
             return settings;
         }
+
+        #region Export Methods
+        public void ExportDinoLevels(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return;
+
+            LevelList list = GetLevelList(LevelProgression.Dino);
+
+            StringBuilder output = new StringBuilder();
+            foreach (var level in list)
+            {
+                output.AppendLine($"{level.LevelIndex}{CSV_DELIMITER}{level.XPRequired}");
+            }
+
+            File.WriteAllText(fileName, output.ToString());
+        }
+        public void ExportPlayerLevels(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return;
+
+            LevelList list = GetLevelList(LevelProgression.Player);
+
+            StringBuilder output = new StringBuilder();
+            foreach (var level in list)
+            {
+                output.AppendLine($"{level.LevelIndex}{CSV_DELIMITER}{level.XPRequired}{CSV_DELIMITER}{level.EngramPoints}");
+            }
+
+            File.WriteAllText(fileName, output.ToString());
+        }
+        #endregion
+
+        #region Import Methods
+        public void ImportDinoLevels(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return;
+            if (!File.Exists(fileName))
+                return;
+
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new[] { CSV_DELIMITER });
+            CsvDinoLevelMapping csvMapper = new CsvDinoLevelMapping();
+            CsvParser<ImportLevel> csvParser = new CsvParser<ImportLevel>(csvParserOptions, csvMapper);
+
+            var result = csvParser.ReadFromFile(fileName, Encoding.ASCII).ToList();
+            if (result.Any(r => !r.IsValid))
+            {
+                var error = result.First(r => r.Error != null);
+                throw new Exception($"Import error occured in column {error.Error.ColumnIndex} with a value of {error.Error.Value}");
+            }
+
+            LevelList list = GetLevelList(LevelProgression.Dino);
+            list.Clear();
+
+            foreach (var level in result)
+            {
+                list.Add(level.Result.AsLevel());
+            }
+
+            list.UpdateTotals();
+        }
+
+        public void ImportPlayerLevels(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return;
+            if (!File.Exists(fileName))
+                return;
+
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new[] { CSV_DELIMITER });
+            CsvPlayerLevelMapping csvMapper = new CsvPlayerLevelMapping();
+            CsvParser<ImportLevel> csvParser = new CsvParser<ImportLevel>(csvParserOptions, csvMapper);
+
+            var result = csvParser.ReadFromFile(fileName, Encoding.ASCII).ToList();
+            if (result.Any(r => !r.IsValid))
+            {
+                var error = result.First(r => r.Error != null);
+                throw new Exception($"Import error occured in column {error.Error.ColumnIndex} with a value of {error.Error.Value}");
+            }
+
+            LevelList list = GetLevelList(LevelProgression.Player);
+            list.Clear();
+
+            foreach (var level in result)
+            {
+                list.Add(level.Result.AsLevel());
+            }
+
+            list.UpdateTotals();
+        }
+        #endregion
 
         #region Reset Methods
         // individual value reset methods

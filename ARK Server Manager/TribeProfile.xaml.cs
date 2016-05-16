@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using ARK_Server_Manager.Lib;
 using ARK_Server_Manager.Lib.ViewModel;
 using ARK_Server_Manager.Lib.ViewModel.RCON;
 using ArkData;
@@ -19,6 +20,7 @@ namespace ARK_Server_Manager
         public TribeProfile(PlayerInfo player, ICollection<PlayerInfo> players, String serverFolder)
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.Player = player;
             this.Players = players;

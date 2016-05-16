@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ARK_Server_Manager.Lib;
 
 namespace ARK_Server_Manager
 {
@@ -22,6 +23,8 @@ namespace ARK_Server_Manager
         public CommandLine(string commandLine)
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
+
             this.DataContext = commandLine;
         }
 

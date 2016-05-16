@@ -25,6 +25,7 @@ namespace ARK_Server_Manager
         public SettingsWindow()
         {
             InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
         }
 
         protected override void OnClosed(EventArgs e)

@@ -24,9 +24,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ARK_Server_Manager.Lib.ViewModel;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
+    public enum ServerSettingsCustomLevelsAction
+    {
+        ExportPlayerLevels,
+        ImportPlayerLevels,
+        ExportDinoLevels,
+        ImportDinoLevels,
+    }
+
     public enum ServerSettingsResetAction
     {
         // Sections
@@ -101,7 +110,7 @@ namespace ARK_Server_Manager
             {
                 TaskUtils.RunOnUIThreadAsync(() =>
                     {
-                        if(oldserver != null)
+                        if (oldserver != null)
                         {
                             oldserver.Profile.Save();
                         }
@@ -112,7 +121,7 @@ namespace ARK_Server_Manager
                     }).DoNotWait();
             }
         }
-        
+
         public ServerProfile Settings
         {
             get { return GetValue(SettingsProperty) as ServerProfile; }
@@ -134,11 +143,7 @@ namespace ARK_Server_Manager
         public ServerSettingsControl()
         {
             InitializeComponent();
-            var dictToRemove = this.Resources.MergedDictionaries.FirstOrDefault(d => d.Source.OriginalString.Contains(@"Globalization\en-US\en-US.xaml"));
-            if (dictToRemove != null)
-            {
-                this.Resources.MergedDictionaries.Remove(dictToRemove);
-            }
+            WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
@@ -163,7 +168,7 @@ namespace ARK_Server_Manager
             //
             var preferredIP = NetworkUtils.GetPreferredIP(adapters);
             preferredIP.Description = "(Recommended) " + preferredIP.Description;
-            if(String.IsNullOrWhiteSpace(this.Settings.ServerIP))
+            if (String.IsNullOrWhiteSpace(this.Settings.ServerIP))
             {
                 // removed to enforce the 'Let ARK choose' option.
                 //if (preferredIP != null)
@@ -171,7 +176,7 @@ namespace ARK_Server_Manager
                 //    this.Settings.ServerIP = preferredIP.IPAddress;
                 //}
             }
-            else if(adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null) 
+            else if (adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null)
             {
                 MessageBox.Show(
                     String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP),
@@ -179,11 +184,11 @@ namespace ARK_Server_Manager
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
-        }        
+        }
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
-            switch(this.Runtime.Status)
+            switch (this.Runtime.Status)
             {
                 case ServerRuntime.ServerStatus.Stopped:
                 case ServerRuntime.ServerStatus.Uninstalled:
@@ -192,7 +197,7 @@ namespace ARK_Server_Manager
                 case ServerRuntime.ServerStatus.Running:
                 case ServerRuntime.ServerStatus.Initializing:
                     var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if(result == MessageBoxResult.No)
+                    if (result == MessageBoxResult.No)
                     {
                         return;
                     }
@@ -206,12 +211,12 @@ namespace ARK_Server_Manager
             }
 
             this.upgradeCancellationSource = new CancellationTokenSource();
-            await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);            
+            await this.Server.UpgradeAsync(upgradeCancellationSource.Token, validate: true);
         }
 
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
-            switch(this.Runtime.Status)
+            switch (this.Runtime.Status)
             {
                 case ServerRuntime.ServerStatus.Initializing:
                 case ServerRuntime.ServerStatus.Running:
@@ -236,7 +241,7 @@ namespace ARK_Server_Manager
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
             dialog.Title = "Select Install Directory";
-            if(!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
+            if (!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
             {
                 dialog.InitialDirectory = Settings.InstallDirectory;
             }
@@ -255,7 +260,7 @@ namespace ARK_Server_Manager
             dialog.Multiselect = false;
             dialog.Title = "Load Server Profile or GameUserSettings.ini";
             dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.LoadProfileExtensionList));
-            if(!Directory.Exists(Config.Default.ConfigDirectory))
+            if (!Directory.Exists(Config.Default.ConfigDirectory))
             {
                 System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             }
@@ -274,7 +279,7 @@ namespace ARK_Server_Manager
                 {
                     MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", dialog.FileName, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
-            }            
+            }
         }
 
         // REVIEW: This is a sample Command implementation which replaces the original Save_Click command, for reference when refactoring.
@@ -342,15 +347,15 @@ namespace ARK_Server_Manager
         }
 
         private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
-        {            
-            if(this.Settings.PlayerLevels.Count == 1)
+        {
+            if (this.Settings.PlayerLevels.Count == 1)
             {
                 MessageBox.Show("You can't delete the last level.  If you want to disable the feature, uncheck Enable Custom Level Progressions.", "Can't delete last item", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
             else
             {
                 var level = ((Level)((Button)e.Source).DataContext);
-                this.Settings.PlayerLevels.RemoveLevel(level);            
+                this.Settings.PlayerLevels.RemoveLevel(level);
             }
         }
 
@@ -413,12 +418,12 @@ namespace ARK_Server_Manager
         }
 
         private void DinoLevels_ResetOfficial(object sender, RoutedEventArgs e)
-        {  
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current dino levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)  
-                return;  
-  
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);  
-  }
+        {
+            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current dino levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
+        }
 
         private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
         {
@@ -486,7 +491,7 @@ namespace ARK_Server_Manager
         {
             var window = RCONWindow.GetRCONForServer(this.Server);
             window.Show();
-            if(window.WindowState == WindowState.Minimized)
+            if (window.WindowState == WindowState.Minimized)
             {
                 window.WindowState = WindowState.Normal;
             }
@@ -505,7 +510,7 @@ namespace ARK_Server_Manager
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Survival of the Fittest is a total conversion mod.  In order to enable it, you will need to first install it (we don't yet support installing it for you.)  Would you like to open the installation instructions web page now?", "Go to SOTF web page?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if(result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.Yes)
             {
                 Process.Start("http://steamcommunity.com/app/346110/discussions/10/530649887204866610/");
             }
@@ -513,9 +518,9 @@ namespace ARK_Server_Manager
 
         private void TestUpdater_Click(object sender, RoutedEventArgs e)
         {
-            if(!this.Settings.UpdateAutoUpdateSettings())
+            if (!this.Settings.UpdateAutoUpdateSettings())
             {
-                
+
             }
         }
 
@@ -546,6 +551,84 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.ResetOverrideMaxExperiencePointsDino();
+        }
+
+        private CommonFileDialog GetCustomLevelCommonFileDialog(ServerSettingsCustomLevelsAction action)
+        {
+            CommonFileDialog dialog = null;
+
+            switch (action)
+            {
+                case ServerSettingsCustomLevelsAction.ExportDinoLevels:
+                case ServerSettingsCustomLevelsAction.ExportPlayerLevels:
+                    dialog = new CommonSaveFileDialog();
+                    dialog.Title = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportDialogTitle");
+                    dialog.DefaultExtension = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportDefaultExtension");
+                    dialog.Filters.Add(new CommonFileDialogFilter(GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportFilterLabel"), GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportFilterExtension")));
+                    break;
+
+                case ServerSettingsCustomLevelsAction.ImportDinoLevels:
+                case ServerSettingsCustomLevelsAction.ImportPlayerLevels:
+                    dialog = new CommonOpenFileDialog();
+                    dialog.Title = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportDialogTitle");
+                    dialog.DefaultExtension = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportDefaultExtension");
+                    dialog.Filters.Add(new CommonFileDialogFilter(GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportFilterLabel"), GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportFilterExtension")));
+                    break;
+            }
+
+            return dialog;
+        }
+
+        public ICommand CustomLevelActionCommand
+        {
+            get
+            {
+                return new RelayCommand<ServerSettingsCustomLevelsAction>(
+                    execute: (action) =>
+                    {
+                        var errorTitle = GlobalizedApplication.Instance.GetResourceString("Generic_ErrorLabel");
+
+                        try
+                        {
+                            var dialog = GetCustomLevelCommonFileDialog(action);
+                            if (dialog == null || dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                                return;
+
+                            switch (action)
+                            {
+                                case ServerSettingsCustomLevelsAction.ExportDinoLevels:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportErrorTitle");
+
+                                    this.Settings.ExportDinoLevels(dialog.FileName);
+                                    break;
+
+                                case ServerSettingsCustomLevelsAction.ImportDinoLevels:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportErrorTitle");
+
+                                    this.Settings.ImportDinoLevels(dialog.FileName);
+                                    break;
+
+                                case ServerSettingsCustomLevelsAction.ExportPlayerLevels:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportErrorTitle");
+
+                                    this.Settings.ExportPlayerLevels(dialog.FileName);
+                                    break;
+
+                                case ServerSettingsCustomLevelsAction.ImportPlayerLevels:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportErrorTitle");
+
+                                    this.Settings.ImportPlayerLevels(dialog.FileName);
+                                    break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, errorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    },
+                    canExecute: (action) => true
+                );
+            }
         }
 
         public ICommand ResetActionCommand
