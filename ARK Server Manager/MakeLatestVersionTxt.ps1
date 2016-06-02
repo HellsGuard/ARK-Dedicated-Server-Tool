@@ -37,13 +37,13 @@ $AppVersion = Write-LatestTxt
 Write-Host "LatestVersion $($AppVersion)"
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
 $publishSrcDir = "$($rootDir)\publish\Application Files\Ark Server Manager_$($versionWithUnderscores)"
-Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application"
+Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application" -ErrorAction Ignore
 $publishDestFileName = "ArkServerManager_$($AppVersion).zip"
 $publishDestFile = "$($rootDir)\publish\$($publishDestFileName)"
 Create-Zip $publishDestFile $publishSrcDir
 
 $batchFileContent = @"
-set AWS_DEFAULT_PROFILE=ASMPublisher
+set AWS_DEFAULT_PROFILE=ASMPublish
 aws s3 cp "$($publishDestFile)" s3://arkservermanager/release/
 aws s3 cp s3://arkservermanager/release/$($publishDestFileName) s3://arkservermanager/release/latest.zip
 aws s3 cp "$($destFile)" s3://arkservermanager/release/
