@@ -36,7 +36,7 @@
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Password}" TabIndex="2"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-            <Button Content="{DynamicResource OpenRCON_ConnectButtonLabel}" Width="50" Margin="5" IsDefault="True" Command="{Binding ConnectCommand}"/>
+            <Button Name="buttonConnect" Content="{DynamicResource OpenRCON_ConnectButtonLabel}" Width="50" Margin="5" IsDefault="True" Command="{Binding ConnectCommand}"/>
             <Button Content="{DynamicResource OpenRCON_CancelButtonLabel}" Width="50" Margin="5" IsCancel="True" />
         </StackPanel>
     </Grid>

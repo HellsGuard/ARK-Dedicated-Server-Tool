@@ -47,6 +47,9 @@ namespace ARK_Server_Manager
 
         public ICommand ConnectCommand => new RelayCommand<object>(
             execute: _ => {
+                // set focus to the Connect button, if the Enter key is pressed, the value just entered has not yet been posted to the property.
+                buttonConnect.Focus();
+
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
                     ProfileName = $"Remote: {ServerIP}:{RCONPort}",
@@ -67,7 +70,6 @@ namespace ARK_Server_Manager
 
         private void LoadDefaults()
         {
-            Config.Default.Reload();
             if (!String.IsNullOrWhiteSpace(Config.Default.OpenRCON_ServerIP))
                 ServerIP = Config.Default.OpenRCON_ServerIP;
             RCONPort = Config.Default.OpenRCON_RCONPort;
@@ -76,7 +78,6 @@ namespace ARK_Server_Manager
         {
             Config.Default.OpenRCON_ServerIP = ServerIP;
             Config.Default.OpenRCON_RCONPort = RCONPort;
-            Config.Default.Save();
         }
     }
 }
