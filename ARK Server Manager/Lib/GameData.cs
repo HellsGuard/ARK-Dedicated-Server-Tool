@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -30,6 +25,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            DinoName="Dilophosaurus",       CommonName="Dilophosaurus",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         DinoName="Dimetrodon",          CommonName="Dimetrodon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         DinoName="Dimorphodon",         CommonName="Dimorphodon",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo",           DinoName="Diplodocus",          CommonName="Diplodocus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        DinoName="Direbear",            CommonName="Direbear",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        DinoName="Direwolf",            CommonName="Direwolf",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            DinoName="Dodo",                CommonName="Dodo",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
@@ -42,7 +38,8 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Galli_Character_BP",             DinoNameTag="Galli",           DinoName="Gallimimus",          CommonName="Gallimimus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          DinoName="Giganotosaurus",      CommonName="Giganotosaurus",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         DinoName="Kairuku",             CommonName="Kairuku",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          DinoName="Lystrosaurus",        CommonName="Lystrosaurus",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech",           DinoName="Leech",               CommonName="Leech",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          DinoName="Lystrosaurus",        CommonName="Lystrosaurus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     DinoName="Alpha Carnotaurus",   CommonName="Alpha Carnotaurus",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    DinoName="Alpha Raptor",        CommonName="Alpha Raptor",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       DinoName="Alpha Tyrannosaurus", CommonName="Alpha T-Rex",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
@@ -51,6 +48,7 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            DinoName="Megalodon",           CommonName="Megalodon",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          DinoName="Mesopithecus",        CommonName="Mesopithecus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        DinoName="Mosasaurus",          CommonName="Mosasaurus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+                new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur",  DinoName="Alpha Mosasaurus",    CommonName="Alpha Mosasaurus",    SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       DinoName="Oviraptor",           CommonName="Oviraptor",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           DinoName="Pachycephalosaurus",  CommonName="Pachy",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
                 new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            DinoName="Parasaur",            CommonName="Parasaur",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
@@ -81,9 +79,30 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          DinoName="Carbonemys",          CommonName="Carbonemys",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
             };
 
-        public static string NameTagForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? null : dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+        public static string NameTagForClass(string entry)
+        {
+            switch (entry)
+            {
+                case "FlyingAnt_Character_BP_C":
+                case "Leech_Character_Diseased_C":
+                    return null;
+                default:
+                    return dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+            }
+        }
 
-        public static string FriendlyNameForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? "Titanomyrma Soldier" : dinoSpawns.First(d => d.ClassName == entry).CommonName;
+        public static string FriendlyNameForClass(string entry)
+        {
+            switch (entry)
+            {
+                case "FlyingAnt_Character_BP_C":
+                    return "Titanomyrma Soldier";
+                case "Leech_Character_Diseased_C":
+                    return "Diseased Leech";
+                default:
+                    return dinoSpawns.First(d => d.ClassName == entry).CommonName;
+            }
+        }
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
@@ -104,6 +123,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Dilo_Character_BP_C",          Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dimetro_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dimorph_Character_BP_C",       Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Diplodocus_Character_BP_C",    Multiplier=1.0f },
             new ClassMultiplier { ClassName="Direbear_Character_BP_C",      Multiplier=1.0f },
             new ClassMultiplier { ClassName="Direwolf_Character_BP_C",      Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dodo_Character_BP_C",          Multiplier=1.0f },
@@ -116,6 +136,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Galli_Character_BP",           Multiplier=1.0f },
             new ClassMultiplier { ClassName="Gigant_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Kairuku_Character_BP_C",       Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Leech_Character_C",            Multiplier=1.0f },
             new ClassMultiplier { ClassName="Lystro_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Mammoth_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Manta_Character_BP_C",         Multiplier=1.0f },
@@ -125,6 +146,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="MegaRex_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Monkey_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Mosa_Character_BP_C",          Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Mosa_Character_BP_Mega_C",     Multiplier=1.0f },
             new ClassMultiplier { ClassName="Oviraptor_Character_BP_C",     Multiplier=1.0f },
             new ClassMultiplier { ClassName="Pachy_Character_BP_C",         Multiplier=1.0f },
             new ClassMultiplier { ClassName="Para_Character_BP_C",          Multiplier=1.0f },
@@ -155,6 +177,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Turtle_Character_BP_C",        Multiplier=1.0f },
 
             new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C",     Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Leech_Character_Diseased_C",   Multiplier=1.0f },
         };
 
         public static IEnumerable<string> GetDinoClasses() => standardDinoMultipliers.Select(d => d.ClassName);
@@ -185,6 +208,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="PrimalItemResource_Hide_C",                Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Horn_C",                Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Keratin_C",             Multiplier=1.0f },
+            new ClassMultiplier { ClassName="PrimalItemResource_LeechBlood_C",          Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Metal_C",               Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C",          Multiplier=1.0f },
             new ClassMultiplier { ClassName="PrimalItemResource_Obsidian_C",            Multiplier=1.0f },
@@ -546,6 +570,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_CropPlot_Medium_C",               EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_CropPlot_Small_C",                EngramLevelRequirement=10, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Crossbow_C",                      EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_CureLow_C",                       EngramLevelRequirement=20, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Electronics_C",                   EngramLevelRequirement=40, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ElectricProd_C",                  EngramLevelRequirement=80, EngramPointsCost=60,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformLarge_C",         EngramLevelRequirement=65, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
@@ -685,6 +710,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Arthro_C",                 EngramLevelRequirement=50, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Beaver_C",                 EngramLevelRequirement=55, EngramPointsCost=50,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Carno_C",                  EngramLevelRequirement=50, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Diplodocus_C",             EngramLevelRequirement=35, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Direbear_C",               EngramLevelRequirement=35, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Doed_C",                   EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Dolphin_C",                EngramLevelRequirement=10, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
@@ -781,6 +807,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Right_C",        EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ThatchRoof_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ThatchWallWithDoor_C",            EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_TrainingDummy_C",                 EngramLevelRequirement=10, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TranqDart_C",                     EngramLevelRequirement=60, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TransGPS_C",                      EngramLevelRequirement=65, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TransGPSAmmo_C",                  EngramLevelRequirement=65, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },

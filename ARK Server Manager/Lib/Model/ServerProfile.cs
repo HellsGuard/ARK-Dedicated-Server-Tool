@@ -1392,14 +1392,122 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableServerAdminLogsProperty, value); }
         }
 
-        public static readonly DependencyProperty RCONServerGameLogBufferProperty = DependencyProperty.Register(nameof(RCONServerGameLogBuffer), typeof(int), typeof(ServerProfile), new PropertyMetadata(600));
+        public static readonly DependencyProperty PreventOfflinePvPProperty = DependencyProperty.Register(nameof(PreventOfflinePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
-        public int RCONServerGameLogBuffer
+        public bool PreventOfflinePvP
         {
-            get { return (int)GetValue(RCONServerGameLogBufferProperty); }
-            set { SetValue(RCONServerGameLogBufferProperty, value); }
+            get { return (bool)GetValue(PreventOfflinePvPProperty); }
+            set { SetValue(PreventOfflinePvPProperty, value); }
         }
 
+        public static readonly DependencyProperty PreventOfflinePvPIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(900));
+
+        public int PreventOfflinePvPInterval
+        {
+            get { return (int)GetValue(PreventOfflinePvPIntervalProperty); }
+            set { SetValue(PreventOfflinePvPIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowFloatingDamageTextProperty = DependencyProperty.Register(nameof(ShowFloatingDamageText), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool ShowFloatingDamageText
+        {
+            get { return (bool)GetValue(ShowFloatingDamageTextProperty); }
+            set { SetValue(ShowFloatingDamageTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableImprintDinoBuffProperty = DependencyProperty.Register(nameof(DisableImprintDinoBuff), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool DisableImprintDinoBuff
+        {
+            get { return (bool)GetValue(DisableImprintDinoBuffProperty); }
+            set { SetValue(DisableImprintDinoBuffProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowAnyoneBabyImprintCuddleProperty = DependencyProperty.Register(nameof(AllowAnyoneBabyImprintCuddle), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool AllowAnyoneBabyImprintCuddle
+        {
+            get { return (bool)GetValue(AllowAnyoneBabyImprintCuddleProperty); }
+            set { SetValue(AllowAnyoneBabyImprintCuddleProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverideStructurePlatformPreventionProperty = DependencyProperty.Register(nameof(OverideStructurePlatformPrevention), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool OverideStructurePlatformPrevention
+        {
+            get { return (bool)GetValue(OverideStructurePlatformPreventionProperty); }
+            set { SetValue(OverideStructurePlatformPreventionProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableExtraStructurePreventionVolumesProperty = DependencyProperty.Register(nameof(EnableExtraStructurePreventionVolumes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool EnableExtraStructurePreventionVolumes
+        {
+            get { return (bool)GetValue(EnableExtraStructurePreventionVolumesProperty); }
+            set { SetValue(EnableExtraStructurePreventionVolumesProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableDiseasesProperty = DependencyProperty.Register(nameof(EnableDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+
+        public bool EnableDiseases
+        {
+            get { return (bool)GetValue(EnableDiseasesProperty); }
+            set { SetValue(EnableDiseasesProperty, value); }
+        }
+
+        public static readonly DependencyProperty NonPermanentDiseasesProperty = DependencyProperty.Register(nameof(NonPermanentDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
+        public bool NonPermanentDiseases
+        {
+            get { return (bool)GetValue(NonPermanentDiseasesProperty); }
+            set { SetValue(NonPermanentDiseasesProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public int MaxNumberOfPlayersInTribe
+        {
+            get { return (int)GetValue(MaxNumberOfPlayersInTribeProperty); }
+            set { SetValue(MaxNumberOfPlayersInTribeProperty, value); }
+        }
+
+        public static readonly DependencyProperty BabyImprintingStatScaleMultiplierProperty = DependencyProperty.Register(nameof(BabyImprintingStatScaleMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BabyImprintingStatScaleMultiplier
+        {
+            get { return (float)GetValue(BabyImprintingStatScaleMultiplierProperty); }
+            set { SetValue(BabyImprintingStatScaleMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty BabyCuddleIntervalMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BabyCuddleIntervalMultiplier
+        {
+            get { return (float)GetValue(BabyCuddleIntervalMultiplierProperty); }
+            set { SetValue(BabyCuddleIntervalMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty BabyCuddleGracePeriodMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleGracePeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BabyCuddleGracePeriodMultiplier
+        {
+            get { return (float)GetValue(BabyCuddleGracePeriodMultiplierProperty); }
+            set { SetValue(BabyCuddleGracePeriodMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty BabyCuddleLoseImprintQualitySpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleLoseImprintQualitySpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BabyCuddleLoseImprintQualitySpeedMultiplier
+        {
+            get { return (float)GetValue(BabyCuddleLoseImprintQualitySpeedMultiplierProperty); }
+            set { SetValue(BabyCuddleLoseImprintQualitySpeedMultiplierProperty, value); }
+        }
         #endregion
 
         #region Survival of the Fittest Options
@@ -1541,6 +1649,14 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RCONWindowExtentsProperty = DependencyProperty.Register(nameof(RCONWindowExtents), typeof(Rect), typeof(ServerProfile), new PropertyMetadata(new Rect(0f, 0f, 0f, 0f)));
+
+        public static readonly DependencyProperty RCONServerGameLogBufferProperty = DependencyProperty.Register(nameof(RCONServerGameLogBuffer), typeof(int), typeof(ServerProfile), new PropertyMetadata(600));
+
+        public int RCONServerGameLogBuffer
+        {
+            get { return (int)GetValue(RCONServerGameLogBufferProperty); }
+            set { SetValue(RCONServerGameLogBufferProperty, value); }
+        }
 
         #endregion
 
@@ -1854,17 +1970,16 @@ namespace ARK_Server_Manager.Lib
 #endif
             }
 
-            // This flag is broken in the INI        
-            if(this.EnableFlyerCarry)
-            {
-                serverArgs.Append("?AllowFlyerCarryPVE=True");
-            }
+            serverArgs.Append("?listen");
+
             // These are used to match the server to the profile.
-            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
             if (!String.IsNullOrEmpty(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
+            serverArgs.Append("?Port=").Append(this.ServerConnectionPort);
+            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
+            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
 
             if(this.RCONEnabled)
             {
@@ -1881,6 +1996,12 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?bRawSockets");
             }
 
+            // This flag is broken in the INI        
+            if(this.EnableFlyerCarry)
+            {
+                serverArgs.Append("?AllowFlyerCarryPVE=true");
+            }
+
             if (this.ForceAllStructureLocking)
             {
                 serverArgs.Append("?ForceAllStructureLocking=true");
@@ -1888,11 +2009,47 @@ namespace ARK_Server_Manager.Lib
 
             serverArgs.Append("?AutoDestroyOldStructuresMultiplier=").Append(this.AutoDestroyOldStructuresMultiplier);
 
-            // Currently this setting does not seem to get picked up from the INI file.
-            serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
-            serverArgs.Append("?Port=").Append(this.ServerConnectionPort);
+            if (this.PreventOfflinePvP)
+            {
+                serverArgs.Append("?PreventOfflinePvP=true");
+                if (!PreventOfflinePvPIntervalProperty.DefaultMetadata.DefaultValue.Equals(this.PreventOfflinePvPInterval))
+                {
+                    serverArgs.Append($"?PreventOfflinePvPInterval={this.PreventOfflinePvPInterval}");
+                }
+            }
 
-            serverArgs.Append("?listen");
+            if (this.ShowFloatingDamageText)
+            {
+                serverArgs.Append("?ShowFloatingDamageText=true");
+            }
+
+            if (!this.EnableDiseases)
+            {
+                serverArgs.Append("?PreventDiseases=true");
+                if (this.NonPermanentDiseases)
+                {
+                    serverArgs.Append("?NonPermanentDiseases=true");
+                }
+            }
+
+            if (this.DisableImprintDinoBuff)
+            {
+                serverArgs.Append("?DisableImprintDinoBuff=true");
+            }
+            if (this.AllowAnyoneBabyImprintCuddle)
+            {
+                serverArgs.Append("?AllowAnyoneBabyImprintCuddle=true");
+            }
+
+            if (this.OverideStructurePlatformPrevention)
+            {
+                serverArgs.Append("?OverideStructurePlatformPrevention=true");
+            }
+
+            if (this.EnableExtraStructurePreventionVolumes)
+            {
+                serverArgs.Append("?EnableExtraStructurePreventionVolumes=true");
+            }
 
             if (!this.SOTF_Enabled && !String.IsNullOrEmpty(this.ServerModIds))
             {

@@ -1107,8 +1107,10 @@
                                 <CheckBox IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
                                 <CheckBox IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
                                 <CheckBox IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
+                                <CheckBox IsChecked="{Binding EnableExtraStructurePreventionVolumes}" Content="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DifficultyLabel}" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" 
         							Suffix="{DynamicResource ServerSettings_DifficultyUnits}" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_DifficultyTooltip}" />
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeLabel}" Value="{Binding MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeUnits}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="5" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeTooltip}" />
                                 <GroupBox  HorizontalAlignment="Stretch">
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
@@ -1127,6 +1129,14 @@
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalCheckPeriodLabel}" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="{DynamicResource ServerSettings_IntervalCheckPeriodUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalCheckPeriodTooltip}" />
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalMultiplierLabel}" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="{DynamicResource ServerSettings_IntervalMultiplierUnits}" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_IntervalMultiplierTooltip}" />
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_IntervalBaseLabel}" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="{DynamicResource ServerSettings_IntervalBaseUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalBaseTooltip}" />
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox Name="EnablePreventOfflinePvP" IsChecked="{Binding PreventOfflinePvP}" Content="{DynamicResource ServerSettings_PreventOfflinePvPLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPTooltip}"/>
+                                    </GroupBox.Header>
+                                    <StackPanel IsEnabled="{Binding ElementName=EnablePreventOfflinePvP, Path=IsChecked}">
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_PreventOfflinePvPIntervalLabel}" Value="{Binding PreventOfflinePvPInterval}" Suffix="{DynamicResource ServerSettings_PreventOfflinePvPIntervalUnits}" Minimum="0" Maximum="3600" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPIntervalTooltip}" />
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
@@ -1197,6 +1207,14 @@
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_CustomRecipeSkillMultiplierLabel}" Value="{Binding CustomRecipeSkillMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_CustomRecipeSkillMultiplierTooltip}" />
                                     </StackPanel>
                                 </GroupBox>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox Name="EnableDiseasesCheckbox" IsChecked="{Binding EnableDiseases}" Content="{DynamicResource ServerSettings_EnableDiseasesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableDiseasesTooltip}" />
+                                    </GroupBox.Header>
+                                    <StackPanel IsEnabled="{Binding ElementName=EnableDiseasesCheckbox, Path=IsChecked}">
+                                        <CheckBox IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1239,6 +1257,7 @@
                                 <CheckBox IsChecked="{Binding AllowMapPlayerLocation}" Content="{DynamicResource ServerSettings_AllowMapPlayerLocationLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowMapPlayerLocationTooltip}"/>
                                 <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvPTooltip}"/>
                                 <CheckBox IsChecked="{Binding AllowPvEGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvETooltip}"/>
+                                <CheckBox IsChecked="{Binding ShowFloatingDamageText}" Content="{DynamicResource ServerSettings_ShowFloatingDamageTextLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ShowFloatingDamageTextTooltip}"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -1594,10 +1613,25 @@
                                     </GroupBox.Header>
 
                                     <StackPanel Grid.Column="0">
-                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MatingIntervalLabel}"   Value="{Binding MatingIntervalMultiplier}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MatingIntervalTooltip}"/>
-                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EggHatchSpeedLabel}"   Value="{Binding EggHatchSpeedMultiplier}"   Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EggHatchSpeedTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MatingIntervalLabel}" Value="{Binding MatingIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MatingIntervalTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EggHatchSpeedLabel}" Value="{Binding EggHatchSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EggHatchSpeedTooltip}"/>
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyMatureSpeedLabel}" Value="{Binding BabyMatureSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyMatureSpeedTooltip}"/>
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyFoodConsumptionSpeedLabel}" Value="{Binding BabyFoodConsumptionSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyFoodConsumptionSpeedTooltip}"/>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="{DynamicResource ServerSettings_DinoImprintLabel}"/>
+                                    </GroupBox.Header>
+
+                                    <StackPanel Grid.Column="0">
+                                        <CheckBox Content="{DynamicResource ServerSettings_DisableImprintDinoBuffLabel}" IsChecked="{Binding DisableImprintDinoBuff}" ToolTip="{DynamicResource ServerSettings_DisableImprintDinoBuffTooltip}"/>
+                                        <CheckBox Content="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleLabel}" IsChecked="{Binding AllowAnyoneBabyImprintCuddle}" ToolTip="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierLabel}" Value="{Binding BabyImprintingStatScaleMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierLabel}" Value="{Binding BabyCuddleIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierLabel}" Value="{Binding BabyCuddleGracePeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel}" Value="{Binding BabyCuddleLoseImprintQualitySpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
@@ -1688,6 +1722,7 @@
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxStructuresVisibleLabel}" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxStructuresVisibleTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierLabel}" Value="{Binding PerPlatformMaxStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresLabel}" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresTooltip}"/>
+                                <CheckBox            Content="{DynamicResource ServerSettings_OverideStructurePlatformPreventionLabel}" IsChecked="{Binding OverideStructurePlatformPrevention}" Margin="5" ToolTip="{DynamicResource ServerSettings_OverideStructurePlatformPreventionTooltip}"/>
                                 <CheckBox            Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" Margin="5" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}"/>
                                 <GroupBox>
                                     <GroupBox.Header>

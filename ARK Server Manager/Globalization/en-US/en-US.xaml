@@ -243,11 +243,16 @@
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Disable Loot Crates</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Prevent Building in Resource Rich Areas</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyTooltip">Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop.</sys:String>
     <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">Max Players in Tribe:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">Set to 0 for unlimited player in tribe, set to a number > 0 to act as a limit.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">players</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>
@@ -269,6 +274,11 @@
     <sys:String x:Key="ServerSettings_IntervalBaseLabel">Interval Base Amount:</sys:String>
     <sys:String x:Key="ServerSettings_IntervalBaseTooltip">The base time period used to detemine the respawn time.</sys:String>
     <sys:String x:Key="ServerSettings_IntervalBaseUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPLabel">Prevent Offline PvP</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPTooltip">If enabled, enables the offline raiding prevention option.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Logout Interval</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">The time period before a tribe/players dinos/structures become invulnerable/inactive after they log off (if tribe, requires ALL tribe members to be logged off).</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">seconds</sys:String>
 
     <sys:String x:Key="ServerSettings_PvEScheduleLabel">PvE Schedule</sys:String>
     <sys:String x:Key="ServerSettings_PvEScheduleTooltip">If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times.</sys:String>
@@ -291,6 +301,11 @@
     <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierTooltip">Specifies the multiplier for the customer recipe effectiveness. Higher values increase the recipe effectiveness.</sys:String>
     <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierLabel">Skill Multiplier</sys:String>
     <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierTooltip">Specifies the multiplier for the customer recipe skill. Higher values increase the recipe skill.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableDiseasesLabel">Enable Diseases</sys:String>
+    <sys:String x:Key="ServerSettings_EnableDiseasesTooltip">If enabled, diseases will be enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">Non Permanent Diseases</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">If enabled, will make diseases not permanent (you will then lose them if you respawn).</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
@@ -317,6 +332,8 @@
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">If enabled, allows gamma changes in PvP mode.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">Allow Player Gamma Settings in PvE</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">If enabled, allows gamma changes in PvE mode.</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Show Floating Damage Text</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">If enabled, enables RPG-style popup text stat mode.</sys:String>
 
     <!-- Server Settings - Player Settings -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>
@@ -385,6 +402,10 @@
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Disable Baby Dino Imprint Buff</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">If enabled, will disable the dino imprinting-player stat bonus, where normally whomever specifically imprinted on the dino and raised it to have an imprinting quality, gets extra damage/resistance buff.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Allow Baby Dino Imprint Cuddle by Anyone</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">If enabled, ANYONE will to be able to take care of a Baby Dino (cuddle etc), not just whomever imprinted on it.</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customization</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Spawn Multipliers</sys:String>
@@ -429,7 +450,17 @@
     <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Specifies the multiplier for time that baby dinos mature into adults. Higher values decrease the time it take baby dinos to mature into adults.</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Baby Food Consumption Speed:</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Specifies the multiplier for the speed at which the baby dinos will consume food. Higher values will make the baby consume food more often.</sys:String>
-    
+
+    <sys:String x:Key="ServerSettings_DinoImprintLabel">Dino Imprinting</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">Imprinting Stat Scale:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">How much of an effect on stats the imprinting quality has. Set it to 0 to effectively disable the system.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierLabel">Cuddle Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">How often babies want to cuddle. More often means you'll need to cuddle with them more frequently to gain imprinting quality.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierLabel">Cuddle Grace Period:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">A multiplier on how long after delaying cuddling with the baby before imprinting quality starts to decrease.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">Cuddle Lose Imprint Quality Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">A multiplier on how fast imprinting qualtiy decreases after the grace period if you haven't yet cuddled with the baby.</sys:String>
+
     <!-- Server Settings - Environment -->
     <sys:String x:Key="ServerSettings_EnvironmentLabel">Environment</sys:String>
     <sys:String x:Key="ServerSettings_TamingSpeedLabel">Taming Speed:</sys:String>
@@ -491,6 +522,8 @@
     <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">Max Platform Saddle Structures:</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">The maximum number of platformed creatures or rafts allowed on the entire server.</sys:String>
+    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">Overide Structure Platform Prevention</sys:String>
+    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">If enabled, allows auto-turrets to be buildable/working on dino platform saddles.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
 
