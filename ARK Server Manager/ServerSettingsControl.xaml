@@ -447,240 +447,222 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1" Margin="0,0,0,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Row="0" DataContext="{Binding Profile}" VerticalAlignment="Center" >
+                    <Label FontSize="15" Content="{DynamicResource ServerSettings_ProfileLabel}"/>
+                    <TextBox Text="{Binding ProfileName}" Margin="0,5" />
+                </DockPanel>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
+                <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
+
+                <Grid Grid.Row="1" DataContext="{Binding Runtime}" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid DataContext="{Binding Profile}" Grid.Row="0" Grid.ColumnSpan="2"  Height="39" ToolTip="{DynamicResource ServerSettings_ProfileTooltip}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_ProfileLabel}" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                        <TextBox Margin="5,5,2,5" Grid.Column="1" Text="{Binding ProfileName}" VerticalContentAlignment="Center" />
-                    </Grid>
-                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                        <Button Margin="5" Width="80"  Click="Load_Click" Content="{StaticResource ImportButtonContent}"  ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}"/>
-                        <Button Margin="5" Width="80" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}"  Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}"/>
-                    </StackPanel>
-
-
-                    <Grid DataContext="{Binding Runtime}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"  
-						Style="{DynamicResource BorderLabel}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <Label FontSize="15" Content="{Binding Version}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Border>
-                        <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="2" BorderBrush="{DynamicResource BeigeBorder}" Style="{DynamicResource BorderLabel}" ToolTip="{DynamicResource ServerSettings_AvailableVersionTooltip}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailableVersionLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
-                                <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center"
-                                        ToolTip="{DynamicResource ServerSettings_AvailableVersionRefreshTooltip}">
-                                    <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                    <Button DataContext="{Binding Runtime}"  Grid.Column="2" Grid.Row="1" Margin="5" Click="Upgrade_Click">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
-                                        <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
-                                        <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
-                                        <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
-                                        <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
-                                        <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_UpgradeButtonTooltip}" />
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
-                                        <Setter Property="Content" Value="{StaticResource CancelInstallButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_CancelUpgradeButtonTooltip}" />
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
-                                        <Setter Property="Content" Value="{StaticResource InstallButtonContent}"/>
-                                        <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_InstallButtonTooltip}" />
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-
-                    </Button>
-
-                    <Border HorizontalAlignment="Stretch" DataContext="{Binding Profile}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}" ToolTip="{DynamicResource ServerSettings_InstallLocationTooltip}">
-                        <DockPanel HorizontalAlignment="Stretch" LastChildFill="true">
-                            <Label DockPanel.Dock="Left" Content="{DynamicResource ServerSettings_InstallLocationLabel}" FontSize="15" VerticalAlignment="Center" />
-                            <TextBox DockPanel.Dock="Left" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontSize="15" VerticalAlignment="Center" Margin="5" BorderThickness="0"/>
-                        </DockPanel>
+                    <Border Grid.Column="0" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
+                            <Label FontSize="15" Content="{Binding Version}" />
+                        </StackPanel>
                     </Border>
-                    <Button DataContext="{Binding Runtime}"  Margin="5" Grid.Column="2" Grid.Row="2" Content="{StaticResource LocationButtonContent}"  Click="SelectInstallDirectory_Click">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
-                                        <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_SetLocationButtonTooltip}" />
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
-                                        <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_SetLocationButtonTooltip}" />
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                    <Border Grid.Column="1" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_AvailableVersionTooltip}" Style="{DynamicResource BorderLabel}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailableVersionLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                    <Grid DataContext="{Binding Runtime}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" Height="39">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}" ToolTip="{DynamicResource ServerSettings_StatusTooltip}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="{DynamicResource ServerSettings_StatusLabel}"/>
-                                <Label FontSize="15" Content="{Binding Status}"/>
-                            </StackPanel>
-                        </Border>
-                        <Border Grid.Column="1" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}" ToolTip="{DynamicResource ServerSettings_AvailabilityTooltip}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailabilityLabel}"/>
-                                <Label FontSize="15">
-                                    <Label.Style>
-                                        <Style TargetType="{x:Type Label}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
-                                                    <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Unknown}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
-                                                    <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_SetPublicIP}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
-                                                    <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Unavailable}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
-                                                    <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Waiting}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
-                                                    <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Available}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
-                            </StackPanel>
-                        </Border>
-                        <Border Grid.Column="2" Background="{DynamicResource BeigeLabel}" Margin="2" Style="{DynamicResource BorderLabel}" ToolTip="{DynamicResource ServerSettings_PlayersTooltip}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label FontSize="15" Content="{DynamicResource ServerSettings_PlayersLabel}"/>
-                                <Label FontSize="15" Content="{Binding Players}"/>
-                                <Label FontSize="15" Content="/" Width="20"/>
-                                <Label FontSize="15" Content="{Binding MaxPlayers}"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                    <StackPanel DataContext="{Binding Runtime}" Grid.Column="2" Grid.Row="3" Orientation="Horizontal" Height="39">
-                        <Button Margin="5" Click="Start_Click" Width="80">
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
-                                            <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
-                                            <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
-                                            <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
-                                            <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
-                                            <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
-                                            <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
-                                            <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
-                                            <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
-                                            <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StartButtonTooltip}" />
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
-                                            <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
-                                            <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
-                                            <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Button Margin="5" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Content="{StaticResource OpenRCONButtonContent}" Width="80"  Click="OpenRCON_Click" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}"/>
-                    </StackPanel>
+                            <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AvailableVersionRefreshTooltip}">
+                                <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
                 </Grid>
+                <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" DataContext="{Binding Runtime}" Click="Upgrade_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                    <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                    <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                    <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                    <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                    <Setter Property="Content" Value="{StaticResource UpgradeButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_UpgradeButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                    <Setter Property="Content" Value="{StaticResource CancelInstallButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_CancelUpgradeButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                    <Setter Property="Content" Value="{StaticResource InstallButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_InstallButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Border Grid.Row="2" Margin="2" HorizontalAlignment="Stretch" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_InstallLocationTooltip}" Style="{DynamicResource BorderLabel}" DataContext="{Binding Profile}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                        <Label FontSize="15" Content="{DynamicResource ServerSettings_InstallLocationLabel}" VerticalAlignment="Center" />
+                        <TextBox FontSize="15" Margin="5" BorderThickness="0" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" Content="{StaticResource LocationButtonContent}" Click="SelectInstallDirectory_Click" DataContext="{Binding Runtime}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_SetLocationButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_SetLocationButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Grid Grid.Row="3" DataContext="{Binding Runtime}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Margin="2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_StatusTooltip}" Style="{DynamicResource BorderLabel}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label FontSize="15" Content="{DynamicResource ServerSettings_StatusLabel}"/>
+                            <Label FontSize="15" Content="{Binding Status}" MinWidth="100"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Margin="2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_AvailabilityTooltip}" Style="{DynamicResource BorderLabel}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailabilityLabel}"/>
+                            <Label FontSize="15">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unknown}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Unknown}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.NeedPublicIP}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_SetPublicIP}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Unavailable}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Unavailable}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.WaitingForPublication}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Waiting}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Steam}" Value="{x:Static lib:ServerRuntime+SteamStatus.Available}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_Availability_Available}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="2" Margin="2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_PlayersTooltip}" Style="{DynamicResource BorderLabel}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label FontSize="15" Content="{DynamicResource ServerSettings_PlayersLabel}"/>
+                            <Label FontSize="15" Content="{Binding Players}"/>
+                            <Label FontSize="15" Content="/" Width="20"/>
+                            <Label FontSize="15" Content="{Binding MaxPlayers}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Button Grid.Row="3" Grid.Column="1" Margin="5" Click="Start_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                    <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                    <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                    <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StopButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                    <Setter Property="Content" Value="{StaticResource StopButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                    <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
+                                    <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_StartButtonTooltip}" />
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                    <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                    <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                    <Setter Property="Content" Value="{StaticResource StartButtonContent}"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Row="3" Grid.Column="2" Margin="5" Content="{StaticResource OpenRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}" Click="OpenRCON_Click" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}"/>
             </Grid>
         </Border>
         <Border Grid.Row="1" BorderBrush="#FFD4C2B0" BorderThickness="2" Margin="3" Padding="0" >
