@@ -1807,7 +1807,12 @@
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" 
+                                                    IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdatePlayerXPCap}">
+                                                <Image Source="Art/Upgrade.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
                                                     Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}">
                                                 <Image Source="Art/Open_6529.png" Width="16"/>
@@ -1876,7 +1881,12 @@
                                                     ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" 
+                                                    IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
+                                                    Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdateDinoXPCap}">
+                                                <Image Source="Art/Upgrade.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" 
                                                     IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}"
                                                     Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}">
                                                 <Image Source="Art/Open_6529.png" Width="16"/>

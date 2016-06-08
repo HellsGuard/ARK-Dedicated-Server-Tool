@@ -565,6 +565,7 @@
     <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customizations back to official defaults.</sys:String>
     <sys:String x:Key="ServerSettings_ImportLevelsTooltip">Import level customizations from CSV file.</sys:String>
     <sys:String x:Key="ServerSettings_ExportLevelsTooltip">Export level customizations to CSV file.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateLevelsTooltip">Update maximum XP Cap to last level value.</sys:String>
 
     <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>
@@ -614,6 +615,7 @@
 
     <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_UpdateErrorTitle">Update Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customizations</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customization CSV file</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>

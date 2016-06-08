@@ -2553,6 +2553,24 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceAllStructureLockingProperty);
             this.ClearValue(PassiveDefensesDamageRiderlessDinosProperty);
         }
+
+        public void UpdateOverrideMaxExperiencePointsDino()
+        {
+            LevelList list = GetLevelList(LevelProgression.Dino);
+            if (list == null || list.Count == 0)
+                return;
+
+            OverrideMaxExperiencePointsDino = list[list.Count - 1].XPRequired;
+        }
+
+        public void UpdateOverrideMaxExperiencePointsPlayer()
+        {
+            LevelList list = GetLevelList(LevelProgression.Player);
+            if (list == null || list.Count == 0)
+                return;
+
+            OverrideMaxExperiencePointsPlayer = list[list.Count - 1].XPRequired;
+        }
         #endregion
     }
 }
