@@ -32,8 +32,10 @@ namespace ARK_Server_Manager
     {
         ExportPlayerLevels,
         ImportPlayerLevels,
+        UpdatePlayerXPCap,
         ExportDinoLevels,
         ImportDinoLevels,
+        UpdateDinoXPCap,
     }
 
     public enum ServerSettingsResetAction
@@ -369,7 +371,7 @@ namespace ARK_Server_Manager
         private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
         {
             var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.PlayerLevels.AddNewLevel(level);
+            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
         }
 
         private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
@@ -388,7 +390,7 @@ namespace ARK_Server_Manager
         private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
         {
             var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.DinoLevels.AddNewLevel(level);
+            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
         }
 
         private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
@@ -598,33 +600,46 @@ namespace ARK_Server_Manager
                         try
                         {
                             var dialog = GetCustomLevelCommonFileDialog(action);
-                            if (dialog == null || dialog.ShowDialog() != CommonFileDialogResult.Ok)
-                                return;
+                            var dialogValue = string.Empty;
+                            if (dialog != null && dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                                dialogValue = dialog.FileName;
 
                             switch (action)
                             {
                                 case ServerSettingsCustomLevelsAction.ExportDinoLevels:
                                     errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportErrorTitle");
 
-                                    this.Settings.ExportDinoLevels(dialog.FileName);
+                                    this.Settings.ExportDinoLevels(dialogValue);
                                     break;
 
                                 case ServerSettingsCustomLevelsAction.ImportDinoLevels:
                                     errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportErrorTitle");
 
-                                    this.Settings.ImportDinoLevels(dialog.FileName);
+                                    this.Settings.ImportDinoLevels(dialogValue);
+                                    break;
+
+                                case ServerSettingsCustomLevelsAction.UpdateDinoXPCap:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_UpdateErrorTitle");
+
+                                    this.Settings.UpdateOverrideMaxExperiencePointsDino();
                                     break;
 
                                 case ServerSettingsCustomLevelsAction.ExportPlayerLevels:
                                     errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ExportErrorTitle");
 
-                                    this.Settings.ExportPlayerLevels(dialog.FileName);
+                                    this.Settings.ExportPlayerLevels(dialogValue);
                                     break;
 
                                 case ServerSettingsCustomLevelsAction.ImportPlayerLevels:
                                     errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_ImportErrorTitle");
 
-                                    this.Settings.ImportPlayerLevels(dialog.FileName);
+                                    this.Settings.ImportPlayerLevels(dialogValue);
+                                    break;
+
+                                case ServerSettingsCustomLevelsAction.UpdatePlayerXPCap:
+                                    errorTitle = GlobalizedApplication.Instance.GetResourceString("ServerSettings_CustomLevel_UpdateErrorTitle");
+
+                                    this.Settings.UpdateOverrideMaxExperiencePointsPlayer();
                                     break;
                             }
                         }

@@ -40,10 +40,15 @@ namespace ARK_Server_Manager.Lib
 
         public void AddNewLevel(Level afterLevel)
         {
+            AddNewLevel(afterLevel, 1);
+        }
+
+        public void AddNewLevel(Level afterLevel, int xpIncrease)
+        {
             var newLevel = new Level
             {
                 LevelIndex = 0,
-                XPRequired = afterLevel.XPRequired + 1,
+                XPRequired = afterLevel.XPRequired + xpIncrease,
                 EngramPoints = afterLevel.EngramPoints
             };
 
