@@ -37,7 +37,10 @@
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
-
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">Dino Level Increase:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
     <!-- 
     Main Window 
     

@@ -691,5 +691,29 @@ namespace ARK_Server_Manager {
                 this["SectionSOTFIsExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int CustomLevelXPIncrease_Player {
+            get {
+                return ((int)(this["CustomLevelXPIncrease_Player"]));
+            }
+            set {
+                this["CustomLevelXPIncrease_Player"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int CustomLevelXPIncrease_Dino {
+            get {
+                return ((int)(this["CustomLevelXPIncrease_Dino"]));
+            }
+            set {
+                this["CustomLevelXPIncrease_Dino"] = value;
+            }
+        }
     }
 }

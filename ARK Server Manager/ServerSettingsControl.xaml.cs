@@ -369,7 +369,7 @@ namespace ARK_Server_Manager
         private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
         {
             var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.PlayerLevels.AddNewLevel(level);
+            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
         }
 
         private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
@@ -388,7 +388,7 @@ namespace ARK_Server_Manager
         private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
         {
             var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.DinoLevels.AddNewLevel(level);
+            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
         }
 
         private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
