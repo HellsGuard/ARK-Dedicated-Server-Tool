@@ -3,15 +3,9 @@ using EO.Wpf;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Net;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.ComponentModel;
-using System.Windows.Markup;
-using System.Linq;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -20,6 +14,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register(nameof(IsIpValid), typeof(bool), typeof(MainWindow));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(MainWindow));
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
@@ -96,7 +92,7 @@ namespace ARK_Server_Manager
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", profile, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("MainWindow_ProfileLoad_FailedLabel"), profile, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("MainWindow_ProfileLoad_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
                     }
 
@@ -151,7 +147,7 @@ namespace ARK_Server_Manager
         {
             args.Canceled = true;
             var server = ServerManager.Instance.Servers[args.ItemIndex];
-            var result = MessageBox.Show("Are you sure you want to delete this profile?\r\n\r\nNOTE: This will only delete the profile, not the installation directory, save games or settings files contained therein.", String.Format("Delete {0}?", server.Profile.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show(_globalizedApplication.GetResourceString("MainWindow_ProfileDelete_Label"), String.Format(_globalizedApplication.GetResourceString("MainWindow_ProfileDelete_Title"), server.Profile.ProfileName), MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if(result == MessageBoxResult.Yes)
             {
                 ServerManager.Instance.Remove(server, deleteProfile: true);
@@ -172,7 +168,7 @@ namespace ARK_Server_Manager
 
         private void Donate_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Ark Server Manager is an open-source project, provided completely free of charge.  You can still donate if you would like; however you are under no obligation.  If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like.  Would you like to donate now?", "Make a donation?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show(_globalizedApplication.GetResourceString("MainWindow_Donate_Label"), _globalizedApplication.GetResourceString("MainWindow_Donate_Title"), MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 var process = Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=cliff%2es%2ehudson%40gmail%2ecom&lc=US&item_name=Ark%20Server%20Manager&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
@@ -188,7 +184,7 @@ namespace ARK_Server_Manager
 
         private void Upgrade_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show($"Version {this.LatestASMVersion} is now available.  To upgrade the application must close.  Close and upgrade now?", "Upgrade available", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("MainWindow_Upgrade_Label"), this.LatestASMVersion), _globalizedApplication.GetResourceString("MainWindow_Upgrade_Title"), MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
             {
                 try
@@ -197,7 +193,7 @@ namespace ARK_Server_Manager
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show($"Unable to run the update process.  Please report this!\nException {ex.Message}: {ex.StackTrace}", "Update failed!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("MainWindow_Upgrade_FailedLabel"), ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("MainWindow_Upgrade_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

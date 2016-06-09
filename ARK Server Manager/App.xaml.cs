@@ -4,20 +4,12 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using WPFSharp.Globalizer;
-using SteamKit2;
 using System.Threading;
 using System.Globalization;
 
@@ -39,6 +31,8 @@ namespace ARK_Server_Manager
             get;
             private set;
         }
+
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
 
         public App()
         {
@@ -145,11 +139,11 @@ namespace ARK_Server_Manager
         }
 
         protected override void OnStartup(StartupEventArgs e)
-        {                                  
+        {
             // Initial configuration setting
-            if(String.IsNullOrWhiteSpace(Config.Default.DataDir))
+            if (String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
-                MessageBox.Show("It appears you do not have a data directory set.  The data directory is where your profiles and SteamCMD will be stored.  It is not the same as the server installation directory, which you can choose for each profile.  You will now be asked to select the location where the Ark Server Manager data directory is located.  You may later change this in the Settings window.", "Select Data Directory", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(_globalizedApplication.GetResourceString("Application_DataDirectoryLabel"), _globalizedApplication.GetResourceString("Application_DataDirectoryTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                 while (String.IsNullOrWhiteSpace(Config.Default.DataDir))
                 {
@@ -157,12 +151,12 @@ namespace ARK_Server_Manager
                     dialog.EnsureFileExists = true;
                     dialog.IsFolderPicker = true;
                     dialog.Multiselect = false;
-                    dialog.Title = "Select a Data Directory";
+                    dialog.Title = _globalizedApplication.GetResourceString("Application_DataDirectory_DialogTitle");
                     dialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
                     var result = dialog.ShowDialog();
                     if (result == CommonFileDialogResult.Ok)
                     {
-                        var confirm = MessageBox.Show(String.Format("Ark Server Manager will store profiles and SteamCMD in the following directories:\r\n\r\nProfiles: {0}\r\nSteamCMD: {1}\r\n\r\nIs this ok?", Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), "Confirm location", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                        var confirm = MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmLabel"), Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), _globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                         if(confirm == MessageBoxResult.No)
                         {
                             continue;
@@ -219,7 +213,7 @@ namespace ARK_Server_Manager
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(String.Format("Failed to save profile {0}.  {1}\n{2}", server.Profile.ProfileName, ex.Message, ex.StackTrace), "Failed to save profile", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_Profile_SaveFailedLabel"), server.Profile.ProfileName, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("Application_Profile_SaveFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             Config.Default.Save();

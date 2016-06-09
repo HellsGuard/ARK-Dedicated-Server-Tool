@@ -8,9 +8,19 @@
     >
 
     <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
+    
+    <!-- Application -->
+    <sys:String x:Key="Application_DataDirectoryTitle">Select Data Directory</sys:String>
+    <sys:String x:Key="Application_DataDirectoryLabel">It appears you do not have a data directory set. The data directory is where your profiles and SteamCMD will be stored. It is not the same as the server installation directory, which you can choose for each profile. You will now be asked to select the location where the Ark Server Manager data directory is located. You may later change this in the Settings window.</sys:String>
+    <sys:String x:Key="Application_DataDirectory_DialogTitle">Select a Data Directory</sys:String>
+    <sys:String x:Key="Application_DataDirectory_ConfirmTitle">Confirm location</sys:String>
+    <sys:String x:Key="Application_DataDirectory_ConfirmLabel">Ark Server Manager will store profiles and SteamCMD in the following directories:\r\n\r\nProfiles: {0}\r\nSteamCMD: {1}\r\n\r\nIs this ok?</sys:String>
+    <sys:String x:Key="Application_Profile_SaveFailedTitle">Failed to save profile</sys:String>
+    <sys:String x:Key="Application_Profile_SaveFailedLabel">Failed to save profile {0}.  {1}\n{2}</sys:String>
 
     <!-- Updater Window -->
     <sys:String x:Key="AutoUpdater_Title">ARK Server Manager - Updating...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status">Status</sys:String>
     <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">Downloading SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_UnzippingSteamCmd">Unzipping SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">Authorizing SteamCMD...</sys:String>
@@ -25,6 +35,10 @@
     <!-- CommandLine Window -->
     <sys:String x:Key="CommandLine_Title">Command Line</sys:String>
     <sys:String x:Key="CommandLine_CopyButtonLabel">Copy to clipboard</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ConfirmTitle">Copied to clipboard</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ConfirmLabel">Done!</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ErrorTitle">Copy to clipboard failed.</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
 
     <!-- GlobalSettings Window -->
     <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
@@ -41,6 +55,22 @@
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">Dino Level Increase:</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
+
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Failed to change data directory</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">There was an error changing the data directory: {0}\r\nPlease correct the error and try again, or contact technical support for assistance.</sys:String>
+
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Select Cache Directory</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Invalid cache directory</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorLabel">The cache directory must specify a valid location or the cache update period must be 0.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorTitle">Update task failed</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorLabel">Failed to update the cache task. Ensure you have administrative rights and try again.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledTitle">Updates enabled</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledLabel">Server cache will update every {0} minutes.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledTitle">Updates disabled</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledLabel">Server cache updating disabled.</sys:String>
+
     <!-- 
     Main Window 
     
@@ -59,13 +89,20 @@
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
 
+    <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
+    <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load.  The error was: {1}\r\n{2}</sys:String>
+    <sys:String x:Key="MainWindow_ProfileDelete_Title">Delete Profile {0}?</sys:String>
+    <sys:String x:Key="MainWindow_ProfileDelete_Label">Are you sure you want to delete this profile?\r\n\r\nNOTE: This will only delete the profile, not the installation directory, save games or settings files contained therein.</sys:String>
+    <sys:String x:Key="MainWindow_Donate_Title">Make a donation?</sys:String>
+    <sys:String x:Key="MainWindow_Donate_Label">Ark Server Manager is an open-source project, provided completely free of charge. You can still donate if you would like; however you are under no obligation. If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like. Would you like to donate now?</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_Title">Upgrade available</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?"</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Upgrade failed!</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this!\nException {0}: {1}</sys:String>
+
     <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
     <sys:String x:Key="Menu_File_Exit">_Exit</sys:String>
-    <sys:String x:Key="Menu_Language">_Language</sys:String>
-    <sys:String x:Key="Menu_Language_English">_English</sys:String>
-    <sys:String x:Key="Menu_Language_Spanish">_Spanish</sys:String>
-    <sys:String x:Key="Menu_Language_Hebrew">_Hebrew</sys:String>
 
     <sys:String x:Key="LanguageSelectionLabel">_Language</sys:String>
 
@@ -129,6 +166,24 @@
     <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Verify the server content against the Steam version.</sys:String>
     <sys:String x:Key="ServerSettings_ResetSectionTooltip">Resets the section back to defaults.</sys:String>
 
+    <sys:String x:Key="ServerSettings_AdminRequired_ErrorTitle">Needs Administrator Access</sys:String>
+    <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Stop the server?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?</sys:String>
+    <sys:String x:Key="ServerSettings_InstallServer_Title">Select Install Directory</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_Title">Load Server Profile or GameUserSettings.ini</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_ErrorTitle">Profile failed to load</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_ErrorLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Server cache not configured</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_ResetLabel">Click 'Yes' to confirm you want to perform the reset.</sys:String>
+
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
     <sys:String x:Key="ServerSettings_NameAndPasswordsLabel">Name and Passwords</sys:String>
@@ -148,9 +203,14 @@
     <sys:String x:Key="ServerSettings_QueryPortTooltip">The port Steam uses to communicate with your server. Default is 27015. Change this and Server Port if you wish to host multiple servers on one machine.</sys:String>
     <sys:String x:Key="ServerSettings_LocalIPLabel">Local IP:</sys:String>
     <sys:String x:Key="ServerSettings_LocalIPTooltip">Sets the local (private) IP the server will listen on. This should be your primary network card which routes to the public internet.</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPArkChooseLabel">Let ARK choose</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPRecommendedLabel">(Recommended)</sys:String>
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
-    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam.  Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+
+    <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIP_ErrorLabel">Your Local IP address {0} is no longer available. Please review the available IP addresses and select a valid one. If you have a server running on the original IP, you will need to stop it first.</sys:String>
 
     <sys:String x:Key="ServerSettings_LoginOptionsLabel">Login Options</sys:String>
     <sys:String x:Key="ServerSettings_UseBanListLabel">Use Ban List URL</sys:String>
@@ -392,6 +452,10 @@
     <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
     <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase  crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
 
+    <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
+
+    <!-- Server Settings - Dino Settings -->
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
     <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
@@ -464,6 +528,11 @@
     <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">Cuddle Lose Imprint Quality Speed:</sys:String>
     <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">A multiplier on how fast imprinting qualtiy decreases after the grace period if you haven't yet cuddled with the baby.</sys:String>
 
+    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino customizations.</sys:String>
+
     <!-- Server Settings - Environment -->
     <sys:String x:Key="ServerSettings_EnvironmentLabel">Environment</sys:String>
     <sys:String x:Key="ServerSettings_TamingSpeedLabel">Taming Speed:</sys:String>
@@ -506,6 +575,9 @@
     <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Scales the egg laying interval of dinos. Lower values cause dinos to lay eggs more frequently.</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalLabel">Poop Interval:</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Scales the defecation interval of players and dinos. Lower values cause players and dinos to defecation more frequently.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomHarvest_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvest_ResetLabel">Click 'Yes' to confirm you want to reset all the current resource harvest amount multiplier changes.</sys:String>
 
     <!-- Server Settings - Structures -->
     <sys:String x:Key="ServerSettings_StructuresLabel">Structures</sys:String>
@@ -554,7 +626,10 @@
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
     <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">Remove Prereqs</sys:String>
-    
+
+    <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Click 'Yes' to confirm you want to reset all the current engram changes.</sys:String>
+
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Enable Custom Level Progressions</sys:String>
@@ -577,6 +652,17 @@
     <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">Remove this level</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomDinoLevelsLabel">Custom Dino Levels</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomLevels_LastRemove_ErrorTitle">Can't delete last item</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevels_LastRemove_ErrorLabel">You can't delete the last level. If you want to disable the feature, uncheck Enable Custom Level Progressions.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerLevels_ClearTitle">Confirm Clear Action</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerLevels_ClearLabel">Click 'Yes' to confirm you want to clear all the current player levels.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerLevels_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerLevels_ResetLabel">Click 'Yes' to confirm you want to reset all the current player levels.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoLevels_ClearTitle">Confirm Clear Action</sys:String>
+    <sys:String x:Key="ServerSettings_DinoLevels_ClearLabel">Click 'Yes' to confirm you want to clear all the current dino levels.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoLevels_ResetTitle">Confirm Reset Action</sys:String>
+    <sys:String x:Key="ServerSettings_DinoLevels_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino levels.</sys:String>
 
     <!-- Server Settings - Survival of the Fittest -->
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
@@ -612,6 +698,9 @@
     <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">Specifies the interval factor for the Evolution Events. Lower values decrease the time between events, higher values increase the time between events.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
+
+    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SOTF web page?</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is a total conversion mod. In order to enable it, you will need to first install it (we don't yet support installing it for you). Would you like to open the installation instructions web page now?"</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
@@ -653,6 +742,9 @@
     <sys:String x:Key="Profile_UpdatedColumnLabel">Last Updated</sys:String>
     <sys:String x:Key="Profile_NavigateSteamProfile">Click to open the steam profile in a browser</sys:String>
     <sys:String x:Key="Profile_NavigateProfile">Click to view the profile file in explorer</sys:String>
+
+    <sys:String x:Key="Profile_WindowTitle_Player">Player Profile - {0}</sys:String>
+    <sys:String x:Key="Profile_WindowTitle_Tribe">Tribe Profile - {0}</sys:String>
 
     <!-- RCON window -->
     <sys:String x:Key="RCON_Menu_File">_File</sys:String>
@@ -720,6 +812,53 @@
     <sys:String x:Key="RCON_ClipboardErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
     <sys:String x:Key="RCON_ClipboardErrorTitle">Copy to clipboard failed.</sys:String>
 
+    <sys:String x:Key="RCON_Comments_Line1">Enter commands or chat into the box at the bottom.</sys:String>
+    <sys:String x:Key="RCON_Comments_Line2">In Command mode, everything you enter will be a normal admin command.</sys:String>
+    <sys:String x:Key="RCON_Comments_Line3">In Broadcast mode, everything you enter will be a global broadcast.</sys:String>
+    <sys:String x:Key="RCON_Comments_Line4">You may always prefix a command with / to be treated as a command and not chat.</sys:String>
+    <sys:String x:Key="RCON_Comments_Line5">Right click on players in the list to access player commands.</sys:String>
+    <sys:String x:Key="RCON_Comments_Line6">Type {0} to get help.</sys:String>
+
+    <sys:String x:Key="RCON_Help_Keyword">/help</sys:String>
+
+    <sys:String x:Key="RCON_Help_Line1">Known commands:</sys:String>
+    <sys:String x:Key="RCON_Help_Line2">AllowPlayerToJoinNoCheck &lt;steam id&gt; - Adds the specified player to the server's whitelist.</sys:String>
+    <sys:String x:Key="RCON_Help_Line3">BanPlayer &lt;steam id&gt; - Add the specified player to the server's banned list.</sys:String>
+    <sys:String x:Key="RCON_Help_Line4">Broadcast &lt;message&gt; - Broadcast a message to all players on the server.</sys:String>
+    <sys:String x:Key="RCON_Help_Line5">DestroyAll &lt;class name&gt; - Destroys ALL creatures of the specified class.</sys:String>
+    <sys:String x:Key="RCON_Help_Line6">DestroyAllEnemies - Destroys all non-player creatures on the map, including tamed creatures. This does not prevent new ones from spawning as usual.</sys:String>
+    <sys:String x:Key="RCON_Help_Line7">DestroyStructures - Destroys all structures owned by all players on the map.</sys:String>
+    <sys:String x:Key="RCON_Help_Line8">DestroyWildDinos - Destroys all untamed creatures on the map. Useful for helping newly-released creatures to spawn.</sys:String>
+    <sys:String x:Key="RCON_Help_Line9">DisallowPlayerToJoinNoCheck &lt;steam id&gt; - Removes the specified player from the server's whitelist.</sys:String>
+    <sys:String x:Key="RCON_Help_Line10">DoExit - Shuts down the server as soon as possible.</sys:String>
+    <sys:String x:Key="RCON_Help_Line11">GetChat - Returns the latest chat buffer (the same amount that the clients see).</sys:String>
+    <sys:String x:Key="RCON_Help_Line12">GiveItemNumToPlayer &lt;player id&gt; &lt;item id&gt; &lt;quantity&gt; &lt;quality&gt; &lt;blueprint&gt; - Adds the specified item to the player's inventory (or its blueprint) in the specified quantity and with the specified quality.</sys:String>
+    <sys:String x:Key="RCON_Help_Line13">GiveExpToPlayer &lt;player id&gt; &lt;how much&gt; &lt;from tribe share&gt; &lt;prevent sharing with tribe&gt; - Gives the specified player the specified amount of experience points.</sys:String>
+    <sys:String x:Key="RCON_Help_Line14">KickPlayer &lt;steam id&gt; - Forcibly disconnect the specified player from the server.</sys:String>
+    <sys:String x:Key="RCON_Help_Line15">KillPlayer &lt;player id&gt; - Kills the specified player.</sys:String>
+    <sys:String x:Key="RCON_Help_Line16">ListPlayers - List all connected players and their Steam IDs.</sys:String>
+    <sys:String x:Key="RCON_Help_Line17">PlayersOnly - Stops all creature movement in the game world and halts crafting. Players can still move normally. Repeat the command to disable its effects.</sys:String>
+    <sys:String x:Key="RCON_Help_Line18">RenamePlayer "&lt;player&gt;" &lt;new name&gt; - Renames the player specified by their in-game string name.</sys:String>
+    <sys:String x:Key="RCON_Help_Line19">RenameTribe "&lt;tribe&gt;" &lt;new name&gt; - Renames the tribe specified by it's string name.</sys:String>
+    <sys:String x:Key="RCON_Help_Line20">SaveWorld - Forces the server to save the game world to disk in its current state.</sys:String>
+    <sys:String x:Key="RCON_Help_Line21">ServerChat &lt;message&gt; - Sends a chat message to all currently connected players.</sys:String>
+    <sys:String x:Key="RCON_Help_Line22">ServerChatTo "&lt;steam id&gt;" &lt;message&gt; - Sends a direct chat message to the player specified by their int64 encoded steam id.</sys:String>
+    <sys:String x:Key="RCON_Help_Line23">ServerChatToPlayer "&lt;player&gt;" &lt;message&gt; - Sends a direct chat message to the player specified by their in-game player name.</sys:String>
+    <sys:String x:Key="RCON_Help_Line24">SetMessageOfTheDay &lt;message&gt; - Sets the server's 'message of the day', displayed to players when they connect to it.</sys:String>
+    <sys:String x:Key="RCON_Help_Line25">SetTimeOfDay &lt;hour>:&lt;minute>[:&lt;second>] - Sets the game world's time of day to the specified time.</sys:String>
+    <sys:String x:Key="RCON_Help_Line26">ShowMessageOfTheDay - Displays the message of the day.</sys:String>
+    <sys:String x:Key="RCON_Help_Line27">Slomo &lt;factor&gt; - Sets the game speed multiplier. Lower values slow time, change back to 1 to set back to normal.</sys:String>
+    <sys:String x:Key="RCON_Help_Line28">UnBanPlayer &lt;steam id&gt; - Remove the specified player from the server's banned list.</sys:String>
+    <sys:String x:Key="RCON_Help_Line29">where:</sys:String>
+    <sys:String x:Key="RCON_Help_Line30">&lt;player&gt; specifies the character name of the player</sys:String>
+    <sys:String x:Key="RCON_Help_Line31">&lt;steam id&gt; is the long numerical id of the player</sys:String>
+    <sys:String x:Key="RCON_Help_Line32">&lt;player id&gt; specifies the ingame UE4 ID of the player</sys:String>
+
+    <sys:String x:Key="RCON_ClearLogs_Title">Logs deleted</sys:String>
+    <sys:String x:Key="RCON_ClearLogs_Label">Logs in {0} deleted.</sys:String>
+    <sys:String x:Key="RCON_ViewLogs_ErrorTitle">Can't open logs</sys:String>
+    <sys:String x:Key="RCON_ViewLogs_ErrorLabel">Unable to open the logs directory at {0}. Please make sure this directory exists and that you have permission to access it.\nException: {1}</sys:String>
+
     <!-- Open RCON window -->
     <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>
     
@@ -729,6 +868,8 @@
 
     <sys:String x:Key="OpenRCON_ConnectButtonLabel">Connect Button</sys:String>
     <sys:String x:Key="OpenRCON_CancelButtonLabel">Cancel</sys:String>
+
+    <sys:String x:Key="OpenRCON_WindowTitle">Remote: {0}:{1}</sys:String>
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Settings</sys:String>

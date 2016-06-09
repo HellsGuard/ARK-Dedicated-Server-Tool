@@ -1,28 +1,14 @@
 ﻿using ARK_Server_Manager.Lib;
-using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ARK_Server_Manager.Lib.ViewModel;
 using WPFSharp.Globalizer;
 
@@ -69,6 +55,8 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register(nameof(Runtime), typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -176,7 +164,7 @@ namespace ARK_Server_Manager
             // Filter out self-assigned addresses
             //
             adapters.RemoveAll(a => a.IPAddress.StartsWith("169.254."));
-            adapters.Insert(0, new NetworkAdapterEntry(String.Empty, "Let ARK choose"));
+            adapters.Insert(0, new NetworkAdapterEntry(String.Empty, _globalizedApplication.GetResourceString("ServerSettings_LocalIPArkChooseLabel")));
             var savedServerIp = this.Settings.ServerIP;
             this.NetworkInterfaces = adapters;
             this.Settings.ServerIP = savedServerIp;
@@ -186,7 +174,7 @@ namespace ARK_Server_Manager
             // If there isn't already an adapter assigned, pick one
             //
             var preferredIP = NetworkUtils.GetPreferredIP(adapters);
-            preferredIP.Description = "(Recommended) " + preferredIP.Description;
+            preferredIP.Description = _globalizedApplication.GetResourceString("ServerSettings_LocalIPRecommendedLabel") + " " + preferredIP.Description;
             if (String.IsNullOrWhiteSpace(this.Settings.ServerIP))
             {
                 // removed to enforce the 'Let ARK choose' option.
@@ -198,8 +186,8 @@ namespace ARK_Server_Manager
             else if (adapters.FirstOrDefault(a => String.Equals(a.IPAddress, this.Settings.ServerIP, StringComparison.OrdinalIgnoreCase)) == null)
             {
                 MessageBox.Show(
-                    String.Format("Your Local IP address {0} is no longer available.  Please review the available IP addresses and select a valid one.  If you have a server running on the original IP, you will need to stop it first.", this.Settings.ServerIP),
-                    "Local IP invalid",
+                    String.Format(_globalizedApplication.GetResourceString("ServerSettings_LocalIP_ErrorLabel"), this.Settings.ServerIP),
+                    _globalizedApplication.GetResourceString("ServerSettings_LocalIP_ErrorTitle"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -215,7 +203,7 @@ namespace ARK_Server_Manager
 
                 case ServerRuntime.ServerStatus.Running:
                 case ServerRuntime.ServerStatus.Initializing:
-                    var result = MessageBox.Show("The server must be stopped to upgrade.  Do you wish to proceed?", "Server running", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_UpgradeServer_RunningLabel"), _globalizedApplication.GetResourceString("ServerSettings_UpgradeServer_RunningTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)
                     {
                         return;
@@ -239,7 +227,7 @@ namespace ARK_Server_Manager
             {
                 case ServerRuntime.ServerStatus.Initializing:
                 case ServerRuntime.ServerStatus.Running:
-                    var result = MessageBox.Show("This will shut down the server.  Do you wish to proceed?", "Stop the server?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_StartServer_RunningLabel"), _globalizedApplication.GetResourceString("ServerSettings_StartServer_RunningTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)
                     {
                         return;
@@ -259,7 +247,7 @@ namespace ARK_Server_Manager
         {
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            dialog.Title = "Select Install Directory";
+            dialog.Title = _globalizedApplication.GetResourceString("ServerSettings_InstallServer_Title");
             if (!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
             {
                 dialog.InitialDirectory = Settings.InstallDirectory;
@@ -277,7 +265,7 @@ namespace ARK_Server_Manager
             var dialog = new CommonOpenFileDialog();
             dialog.EnsureFileExists = true;
             dialog.Multiselect = false;
-            dialog.Title = "Load Server Profile or GameUserSettings.ini";
+            dialog.Title = _globalizedApplication.GetResourceString("ServerSettings_LoadConfig_Title");
             dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.LoadProfileExtensionList));
             if (!Directory.Exists(Config.Default.ConfigDirectory))
             {
@@ -296,7 +284,7 @@ namespace ARK_Server_Manager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(String.Format("The profile at {0} failed to load.  The error was: {1}\r\n{2}", dialog.FileName, ex.Message, ex.StackTrace), "Profile failed to load", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("ServerSettings_LoadConfig_ErrorLabel"), dialog.FileName, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("ServerSettings_LoadConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
         }
@@ -313,14 +301,14 @@ namespace ARK_Server_Manager
                         var settings = (Server)parameter;
                         if (settings.Profile.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
                         {
-                            var result = MessageBox.Show("Auto-updates is enabled but the Server Cache update is not yet configured.  The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers.  You must first configure the cache, then you may enable automatic updating.  Would you like to configure the cache now?", "Server cache not configured", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorLabel1"), _globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
                             if (result == MessageBoxResult.Yes)
                             {
                                 var settingsWindow = new SettingsWindow();
                                 settingsWindow.ShowDialog();
                                 if (!Updater.IsServerCacheAutoUpdateEnabled)
                                 {
-                                    MessageBox.Show("The server cache was not configured.  Disabling auto-updates.", "Server cache not configured", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorLabel2"), _globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
                                     settings.Profile.EnableAutoUpdate = false;
                                 }
                             }
@@ -334,7 +322,7 @@ namespace ARK_Server_Manager
                         {
                             if (!settings.Profile.UpdateAutoUpdateSettings())
                             {
-                                MessageBox.Show("Failed to update scheduled tasks.  Ensure you have administrator rights on this machine and try again.  If the problem persists, please report this as a bug.", "Update schedule failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorLabel"), _globalizedApplication.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
                     },
@@ -369,7 +357,7 @@ namespace ARK_Server_Manager
         {
             if (this.Settings.PlayerLevels.Count == 1)
             {
-                MessageBox.Show("You can't delete the last level.  If you want to disable the feature, uncheck Enable Custom Level Progressions.", "Can't delete last item", MessageBoxButton.OK, MessageBoxImage.Hand);
+                MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizedApplication.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
             }
             else
             {
@@ -388,7 +376,7 @@ namespace ARK_Server_Manager
         {
             if (this.Settings.DinoLevels.Count == 1)
             {
-                MessageBox.Show("You can't delete the last level.  If you want to disable the feature, uncheck Enable Custom Level Progressions.", "Can't delete last item", MessageBoxButton.OK, MessageBoxImage.Hand);
+                MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizedApplication.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
             }
             else
             {
@@ -422,7 +410,7 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_Clear(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to clear all the current dino levels.", "Confirm Clear Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ClearLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
@@ -430,7 +418,7 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current dino levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Dino);
@@ -438,7 +426,7 @@ namespace ARK_Server_Manager
 
         private void DinoLevels_ResetOfficial(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current dino levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
@@ -446,7 +434,7 @@ namespace ARK_Server_Manager
 
         private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to clear all the current player levels.", "Confirm Clear Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
@@ -454,7 +442,7 @@ namespace ARK_Server_Manager
 
         private void PlayerLevels_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current player levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetLevelProgressionToDefault(ServerProfile.LevelProgression.Player);
@@ -462,7 +450,7 @@ namespace ARK_Server_Manager
 
         private void PlayerLevels_ResetOfficial(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current player levels.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
@@ -495,7 +483,7 @@ namespace ARK_Server_Manager
 
         private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current resource harvest amount multiplier changes.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_CustomHarvest_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_CustomHarvest_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
@@ -520,7 +508,7 @@ namespace ARK_Server_Manager
 
         private void Engrams_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current engram changes.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.OverrideNamedEngramEntries.Reset();
@@ -528,7 +516,7 @@ namespace ARK_Server_Manager
 
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Survival of the Fittest is a total conversion mod.  In order to enable it, you will need to first install it (we don't yet support installing it for you.)  Would you like to open the installation instructions web page now?", "Go to SOTF web page?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_SOTF_HelpLabel"), _globalizedApplication.GetResourceString("ServerSettings_SOTF_HelpTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Process.Start("http://steamcommunity.com/app/346110/discussions/10/530649887204866610/");
@@ -545,12 +533,12 @@ namespace ARK_Server_Manager
 
         private void NeedAdmin_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services.  To do this, the Server Manager must run with administrator privileges.  Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.", "Needs Administrator Access", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_AdminRequired_ErrorLabel"), _globalizedApplication.GetResourceString("ServerSettings_AdminRequired_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset all the current dino customizations.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.DinoSettings.Reset();
@@ -558,7 +546,7 @@ namespace ARK_Server_Manager
 
         private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset the Max XP.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_PlayerMaxXP_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_PlayerMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetOverrideMaxExperiencePointsPlayer();
@@ -566,7 +554,7 @@ namespace ARK_Server_Manager
 
         private void MaxXPDino_Reset(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Click 'Yes' to confirm you want to reset the Max XP.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoMaxXP_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetOverrideMaxExperiencePointsDino();
@@ -670,7 +658,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<ServerSettingsResetAction>(
                     execute: (action) =>
                     {
-                        if (MessageBox.Show("Click 'Yes' to confirm you want to perform the reset.", "Confirm Reset Action", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                        if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_ResetLabel"), _globalizedApplication.GetResourceString("ServerSettings_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                             return;
 
                         switch (action)

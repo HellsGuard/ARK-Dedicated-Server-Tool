@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using ARK_Server_Manager.Lib;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -12,6 +13,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class OpenRCON : Window
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public string ServerIP
         {
             get { return (string)GetValue(ServerIPProperty); }
@@ -52,7 +55,7 @@ namespace ARK_Server_Manager
 
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
-                    ProfileName = $"Remote: {ServerIP}:{RCONPort}",
+                    ProfileName = String.Format(_globalizedApplication.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
                     ServerIP = ServerIP,
                     RCONPort = RCONPort,
                     AdminPassword = Password,
