@@ -1138,13 +1138,13 @@ namespace ARK_Server_Manager.Lib
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<ClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        public AggregateIniValueList<ResourceClassMultiplier> HarvestResourceItemAmountClassMultipliers
         {
-            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            get { return (AggregateIniValueList<ResourceClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ResourceClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1681,7 +1681,7 @@ namespace ARK_Server_Manager.Lib
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0] );
             this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoLevels = new LevelList();
@@ -2451,7 +2451,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ClampResourceHarvestDamageProperty);
             this.ClearValue(HarvestHealthMultiplierProperty);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             this.HarvestResourceItemAmountClassMultipliers.Reset();
 
             this.ClearValue(DayCycleSpeedScaleProperty);

@@ -8,16 +8,31 @@ namespace ARK_Server_Manager.Lib.ViewModel
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var strVal = value as string;
-            var firstIndex = strVal.IndexOf('_');
-            var lastIndex = strVal.LastIndexOf('_');
-            var subStr = strVal.Substring(firstIndex + 1, lastIndex - firstIndex - 1).Replace('_', ' ');
-            return subStr;
+            return Convert(value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        public static object Convert(object value)
+        {
+            try
+            {
+                var strVal = value as string;
+                var name = GameData.FriendlyNameForClass(strVal);
+                if (!string.IsNullOrWhiteSpace(name) && !name.Equals(strVal))
+                    return name;
+
+                var firstIndex = strVal.IndexOf('_');
+                var lastIndex = strVal.LastIndexOf('_');
+                return strVal.Substring(firstIndex + 1, lastIndex - firstIndex - 1).Replace('_', ' ');
+            }
+            catch
+            {
+                return value;
+            }
         }
     }
 }

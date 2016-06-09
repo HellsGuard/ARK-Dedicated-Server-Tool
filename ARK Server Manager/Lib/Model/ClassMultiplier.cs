@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
@@ -21,7 +17,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return this.ClassName;
+            return GameData.FriendlyNameForClass(this.ClassName);
         }
 
         [AggregateIniValueEntry]

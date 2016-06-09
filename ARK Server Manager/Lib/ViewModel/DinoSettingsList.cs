@@ -179,5 +179,13 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 this.DinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildResistanceMultiplier });
             }
         }
+
+        public void UpdateForLocalization()
+        {
+            foreach (var dinoSetting in this)
+            {
+                dinoSetting.FriendlyName = GameData.FriendlyNameForClass(dinoSetting.ClassName);
+            }
+        }
     }
 }

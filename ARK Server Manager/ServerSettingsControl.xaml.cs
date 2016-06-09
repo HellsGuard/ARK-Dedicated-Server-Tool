@@ -156,6 +156,16 @@ namespace ARK_Server_Manager
 
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
+
+            // hook into the language change event
+            GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += GlobalizationManager_ResourceDictionaryChangedEvent;
+        }
+
+        private void GlobalizationManager_ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
+        {
+            this.Settings.DinoSettings.UpdateForLocalization();
+            this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
+            this.EngramsOverrideListView.Items.Refresh();
         }
 
         private void ReinitializeNetworkAdapters()

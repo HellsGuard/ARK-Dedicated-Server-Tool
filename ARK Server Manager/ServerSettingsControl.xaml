@@ -1399,24 +1399,46 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_DinoCustomizationLabel}"/>
-                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_SpawnMultipliersOptionTooltip}" Content="{DynamicResource ServerSettings_SpawnMultipliersOptionLabel}"/>
-                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedDamageOptionTooltip}" Content="{DynamicResource ServerSettings_TamedDamageOptionLabel}"/>
-                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
-                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}" Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
-                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
-                                            <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" 
-                                                    ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
+                                            <CheckBox Name="EditSpawnsCheckbox"          Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}"          ToolTip="{DynamicResource ServerSettings_SpawnMultipliersOptionTooltip}" Content="{DynamicResource ServerSettings_SpawnMultipliersOptionLabel}"/>
+                                            <CheckBox Name="EditTamedDamageCheckbox"     Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}"     ToolTip="{DynamicResource ServerSettings_TamedDamageOptionTooltip}"      Content="{DynamicResource ServerSettings_TamedDamageOptionLabel}"/>
+                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}"  Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
+                                            <CheckBox Name="EditWildDamageCheckbox"      Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}"          ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}"       Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
+                                            <CheckBox Name="EditWildResistanceCheckbox"  Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}"      ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}"   Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
+                                            <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16" />
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <DataGrid Name="DinoSettingsGrid" ItemsSource="{Binding DinoSettings}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1" CanUserAddRows="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn     Binding="{Binding FriendlyName, Mode=TwoWay}"                 Header="{DynamicResource ServerSettings_NameColumnLabel}"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}"                     Header="{DynamicResource ServerSettings_SpawnableColumnLabel}"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}"                      Header="{DynamicResource ServerSettings_TameableColumnLabel}"/>
-                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName" Header="{DynamicResource ServerSettings_ReplacementColumnLabel}"/>
-                                            <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}"        Header="{DynamicResource ServerSettings_SpawnWeightColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <DataGridTextColumn     Binding="{Binding FriendlyName, Mode=TwoWay}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_NameColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            
+                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnableColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+                                            
+                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TameableColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+
+                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName">
+                                                <DataGridComboBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_ReplacementColumnLabel}" />
+                                                </DataGridComboBoxColumn.Header>
+                                            </DataGridComboBoxColumn>
+                                            
+                                            <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnWeightColumnLabel}" />
+                                                </DataGridTextColumn.Header>
                                                 <DataGridTextColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
@@ -1427,7 +1449,11 @@
                                                     </Style>
                                                 </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
-                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Header="{DynamicResource ServerSettings_OverrideLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            
+                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_OverrideLimitColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
                                                 <DataGridCheckBoxColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
@@ -1438,7 +1464,11 @@
                                                     </Style>
                                                 </DataGridCheckBoxColumn.CellStyle>
                                             </DataGridCheckBoxColumn>
-                                            <DataGridTextColumn     Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}"         Header="{DynamicResource ServerSettings_SpawnLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            
+                                            <DataGridTextColumn     Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnLimitColumnLabel}" />
+                                                </DataGridTextColumn.Header>
                                                 <DataGridTextColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
@@ -1449,10 +1479,30 @@
                                                     </Style>
                                                 </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
-                                            <DataGridTextColumn     Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}"        Header="{DynamicResource ServerSettings_TamedDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}"    Header="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding WildDamageMultiplier, Mode=TwoWay}"         Header="{DynamicResource ServerSettings_WildDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}"     Header="{DynamicResource ServerSettings_WildResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            
+                                            <DataGridTextColumn     Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TamedDamageColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                        
+                                            <DataGridTextColumn     Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_WildDamageColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_WildResistanceColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
@@ -1649,21 +1699,21 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListBox Name="HarvestResourceItemAmountClassMultipliersListBox" ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="Auto" MinWidth="150"/>
                                                             <ColumnDefinition Width="1*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="120" ValueRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
