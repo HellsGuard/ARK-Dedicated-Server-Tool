@@ -128,7 +128,7 @@
     <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">此处请设置成方舟路径名为“ARK”的根目录</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonLabel">验证</sys:String>
     <sys:String x:Key="ServerSettings_ValidateButtonTooltip">验证Steam服务器内容和版本.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetSectionTooltip">重置回默认的截面.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetSectionTooltip">重置回默认的数值.</sys:String>
 
     <!-- 服务器设置 - 管理员   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">基础管理</sys:String>
@@ -183,7 +183,7 @@
     <sys:String x:Key="ServerSettings_MapPathTooltip">标准的地图名字(例如TheIsland),或本地的mod路径(例如./Game/Mods/123456789/myModMap)如果你的Mod里有一个地图.</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameTooltip">重置地图名称为官方默认</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod ID编号:</sys:String>
-    <sys:String x:Key="ServerSettings_ModIdsTooltip">每个Mod ID编号之间请使用“,”来间隔开来，以及以启动顺序来排列.</sys:String>
+    <sys:String x:Key="ServerSettings_ModIdsTooltip">每个Mod ID编号之间请使用“,”小写逗号来间隔开来，以及以启动顺序来排列.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">启用毁灭方舟倒计时</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">如果启用，毁灭方舟的倒计时将被打开。要重置倒计时，请先关闭后设置，然后保存配置文件，再重新启动。</sys:String>
@@ -309,7 +309,7 @@
     <sys:String x:Key="ServerSettings_EnableDiseasesLabel">启用疾病</sys:String>
     <sys:String x:Key="ServerSettings_EnableDiseasesTooltip">如果启用，疾病将被启用.</sys:String>
     <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">非永久性疾病</sys:String>
-    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">如果启用，将会使疾病不是永久性的（玩家重生，疾病将消除）.</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">如果启用，将使疾病不是永久性的（玩家重生后，疾病将消除）.</sys:String>
 
     <!-- 服务器设置 - 聊天和通知 -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">聊天和通知</sys:String>
@@ -336,8 +336,8 @@
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">如果启用，允许在PVP模式中调整伽马变化.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">启用PVE伽马设置</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">如果启用，允许在PVE模式中调整伽马变化.</sys:String>
-    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">显示浮动损坏文本</sys:String>
-    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">如果启用，使RPG风格的弹出文本统计模式.</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">显示浮动伤害数值</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">如果启用，使用RPG风格的弹出伤害数值模式.</sys:String>
 
     <!-- 服务器设置 - 玩家设置 -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">玩家设置</sys:String>
@@ -455,15 +455,15 @@
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">恐龙宝宝食品消耗速度:</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">增加速度，小恐龙会消耗食物。更高的值会使恐龙宝宝更经常地吃食物.</sys:String>
     
-    <sys:String x:Key="ServerSettings_DinoImprintLabel">恐龙基因</sys:String>
-    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">基因统计表:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">多大程度上影响统计数据质量基因.设置为0,有效地禁用系统.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoImprintLabel">恐龙印记</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">印记统计表:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">多大程度上影响统计数据质量印记.设置为0,有效地禁用系统.</sys:String>
     <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierLabel">拥抱间隔:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">婴儿想要拥抱的次数.通常意味着你需要更频繁地与他们拥抱获得优质基因.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">宝宝想要拥抱的次数.通常意味着你需要更频繁地与他们拥抱获得优质印记.</sys:String>
     <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierLabel">拥抱宽限期:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">增加则在多久后推迟之前基因，拥抱婴儿的质量开始下降.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">没拥抱失去基因质量速度:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">如果你还没拥抱婴儿,增加速度,降低基因质量的宽限期后.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">延缓拥抱宝宝前印记质量开始下降的时间,乘数计算.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">没拥抱失去印记质量速度:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">如果你还没拥抱宝宝,增加速度,降低基因质量的宽限期后.</sys:String>
 
     <!-- 服务器设置 - 环境 -->
     <sys:String x:Key="ServerSettings_EnvironmentLabel">环境设置</sys:String>
@@ -480,10 +480,10 @@
     <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageLabel">资源收获伤害</sys:String>
     <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">如果启用，夹有多少收获伤害你可以做一个资源的剩余资源的健康.（不建议设置）</sys:String>
     <sys:String x:Key="ServerSettings_HarvestHealthLabel">收获持久:</sys:String>
-    <sys:String x:Key="ServerSettings_HarvestHealthTooltip">指定的项目，可以收获（树木，岩石，尸体等）的健康的缩放参数。较高的值会增加伤害的数量，这样的对象可以在被摧毁前承受，从而导致更高的整体收获.（不建议设置）</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthTooltip">指定可以收获(树木,岩石,尸体等)生命值倍数.这样的对象可以在被摧毁前承受更多伤害,从而提高整体收获.</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">自定义收获量倍数</sys:String>
-    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">如果启用，允许每一资源规模的因素被应用到每一个资源.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">如果启用，指定自定义倍数到每个资源.</sys:String>
     <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">重置所有自定义设置回默认的收获值.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">数量</sys:String>
 
@@ -498,26 +498,26 @@
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">世界项目分解时间:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">世界范围的分解时间项下降,全球战利品袋等。更高的价值延长时间.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeLabel">世界尸体腐烂时间:</sys:String>
-    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeTooltip">世界范围的尸体分解时间（玩家和恐龙），较高的值，延长时间.</sys:String>
-    <sys:String x:Key="ServerSettings_CropDecaySpeedLabel">作物衰变速度:</sys:String>
-    <sys:String x:Key="ServerSettings_CropDecaySpeedTooltip">作物腐烂时间的范围。较低的值延长衰减.</sys:String>
-    <sys:String x:Key="ServerSettings_CropGrowthSpeedLabel">作物生长速度:</sys:String>
-    <sys:String x:Key="ServerSettings_CropGrowthSpeedTooltip">作物生长发育时间。较高的值使农作物生长更快.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeTooltip">玩家尸体和恐龙分解时间,较高的值,延长时间.</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedLabel">农作物衰变速度:</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedTooltip">农作物腐烂时间的范围。较低的值延长衰减.</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedLabel">农作物生长速度:</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedTooltip">农作物生长发育时间,较高的值使农作物生长更快.</sys:String>
     <sys:String x:Key="ServerSettings_EggLayingIntervalLabel">产蛋间隔:</sys:String>
-    <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">世界范围恐龙产蛋间隔。较低的值导致恐龙下蛋更频繁.</sys:String>
-    <sys:String x:Key="ServerSettings_PoopIntervalLabel">大便间隔:</sys:String>
-    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">世界范围的玩家和恐龙排便间隔。较低的值导致玩家和恐龙排便更频繁.</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">恐龙产蛋间隔,较低的值导致恐龙下蛋更快.</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalLabel">排便间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">玩家和恐龙排便的时间间隔,较低的数值可以使玩家和恐龙排便快.</sys:String>
 
     <!-- 服务器设置 - 建筑 -->
     <sys:String x:Key="ServerSettings_StructuresLabel">建筑设置</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceLabel">建筑抗性:</sys:String>
-    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">指定当受到攻击时抵抗损坏建筑的缩放参数。更高的值减少抗性，增加每次攻击的伤害。较低的值增加抗性，减少每次攻击的伤害.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">指定当受到攻击时抵抗损坏建筑的缩放因子。更高的值减少抗性，增加每次攻击的伤害。较低的值增加抗性，减少每次攻击的伤害.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageLabel">建筑伤害:</sys:String>
-    <sys:String x:Key="ServerSettings_StructureDamageTooltip">指定建筑损伤,建筑处理的缩放参数（例如：马刺墙）。高值增加伤害。较低的值减少.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageTooltip">指定建筑损伤,建筑处理的缩放参数（例如：尖刺墙）。高值增加伤害。较低的值减少.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownLabel">建筑损伤修复的冷却时间:</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownTooltip">从上次损坏的建筑修复的冷却时间服务器选项。设置为0禁用它，官方默认为180秒.</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPStructureDecayLabel">使PVP建筑衰变</sys:String>
-    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayTooltip">如果启用，如果在PVP经过一段时间的闲置后建筑会自动衰减.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayTooltip">如果启用，在PVP经过一段时间的闲置后建筑会自动衰减.</sys:String>
     <sys:String x:Key="ServerSettings_PvPZoneStructureDamageLabel">PVP洞穴伤害:</sys:String>
     <sys:String x:Key="ServerSettings_PvPZoneStructureDamageTooltip">在PVP中如果在洞穴/洞入口建筑则会按指定比例参数对建筑进行伤害.</sys:String>
     <sys:String x:Key="ServerSettings_MaxStructuresVisibleLabel">最大建筑数量:</sys:String>
@@ -527,34 +527,34 @@
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">最大平台鞍建筑:</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">对平台鞍的生物或竹筏上允许建筑物的最大数量.</sys:String>
     <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">建筑将覆盖预防平台</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">如果启用，允许自动炮塔是可编译/于恐龙平台鞍工作.</sys:String>
+    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">如果启用，允许自动炮塔是可建设于恐龙平台鞍工作.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">允许不结盟的恐龙停在飞行平台鞍上</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">如果启用，非结盟的部落的恐龙能够站在自己部落的平台鞍上.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableStructureDecayLabel">开启PVE建筑衰变</sys:String>
-    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">如果启用，使玩家在PVE建筑衰变.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">如果启用，在PVE经过一段时间的闲置后建筑会自动衰减.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayPeriodLabel">建筑衰减周期:</sys:String>
-    <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">指定玩家在PVE模式建筑衰变所需要的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">指定PVE模式下建筑自动衰减的时间.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">建筑衰减倍数:</sys:String>
-    <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">指定比例参数为玩家建筑的衰减率在PVE模式.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">指定玩家建筑的PVE自动衰减倍数.</sys:String>
 
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">自动销毁旧建筑:</sys:String>
-    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">允许自动摧毁建筑，足够的'附近的部落'的时间已经过去了。有用的服务器清除废弃的建筑，如果他们希望自动关闭。设置为0禁用它.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">允许自动摧毁建筑,'附近没有部落'的一段时间后.服务器自动清除废弃的建筑,如果希望自动关闭功能.设置为0禁用它.</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">强制锁定所有建筑</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">如果启用，允许锁定所有项目容器.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">伤害被动防御的恐龙</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">如果启用，马刺栅栏会伤害野生/无主的恐龙.</sys:String>
 
     <!-- 服务器设置 - 技能 -->
-    <sys:String x:Key="ServerSettings_EngramsLabel">技能设置</sys:String>
-    <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">使用自定义设置</sys:String>
-    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">如果启用，可以定制技能.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsLabel">技能印痕设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">使用自定义印痕设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">如果启用，可以定制自定义数值.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">重置所有设置回到默认的技能设置.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">名字</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">需要等级</sys:String>
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">需要技能点</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">隐藏</sys:String>
-    <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">不需要前置物品</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">移除前置要求</sys:String>
     
     <!-- 服务器设置 - 自定义级别级数 -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">自定义等级</sys:String>
@@ -566,7 +566,7 @@
     <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">重置所有级别的自定义回官方默认.</sys:String>
     <sys:String x:Key="ServerSettings_ImportLevelsTooltip">从目录导入自定义CSV文件.</sys:String>
     <sys:String x:Key="ServerSettings_ExportLevelsTooltip">导出自定义CSV文件到目录.</sys:String>
-    <sys:String x:Key="ServerSettings_UpdateLevelsTooltip">Update maximum XP Cap to last level value.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateLevelsTooltip">按照最后一个级别更新最大经验值上限.</sys:String>
 
     <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>
@@ -598,8 +598,8 @@
     <sys:String x:Key="ServerSettings_AutoStartDelayTimeTooltip">在比赛开始前，已经达到了最少数量的部落.</sys:String>
     <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">自动重启动延迟时间:</sys:String>
     <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">最后一场比赛结束后，新的比赛将开始的时间.</sys:String>
-    <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">猝死时间:</sys:String>
-    <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">猝死的次数前的抽签将揭晓.</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">突然死亡的时间:</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">自动死亡时间,游戏会宣布平局.</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">启用游戏日志记录</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">如果启用日期，输出日志文件保存的文件夹，其中包含一个时间戳杀者日志列表Steam的名字，身份，角色名称，等方便的自动比赛纪录.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">游戏选项</sys:String>
@@ -608,7 +608,7 @@
     <sys:String x:Key="ServerSettings_SOTFNoBossesLabel">没有Boss</sys:String>
     <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">如果启用，将导致不产生任何Boss</sys:String>
     <sys:String x:Key="ServerSettings_SOTFBothBossesLabel">两个Boss</sys:String>
-    <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">如果启用，如果您使用的是Boss会出现两个Boss。育母蜘蛛和Megapitek在适当的时候出现.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">如果启用,这将刷新Broodmother和Megapithecus在各自区域.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalLabel">进化事件间隔</sys:String>
     <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">指定间隔事件的演变,较低值降低事件之间的时间,较高值则增加事件之间的时间.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">每局开始时间</sys:String>
@@ -698,11 +698,11 @@
     <sys:String x:Key="RCON_ModeLabel">模式:</sys:String>
 
     <sys:String x:Key="RCON_Button_OK">确定</sys:String>
-    <sys:String x:Key="RCON_Button_Cancel">关闭</sys:String>
+    <sys:String x:Key="RCON_Button_Cancel">取消</sys:String>
     <sys:String x:Key="RCON_Button_Change">更改</sys:String>
     <sys:String x:Key="RCON_Button_Send">发送</sys:String>
 
-    <sys:String x:Key="RCON_UnnamedLabel">无名</sys:String>
+    <sys:String x:Key="RCON_UnnamedLabel">未命名</sys:String>
 
     <sys:String x:Key="RCON_ConnectionEstablishedLabel">连接已建立.</sys:String>
     <sys:String x:Key="RCON_ConnectionLostLabel">失去连接.</sys:String>
