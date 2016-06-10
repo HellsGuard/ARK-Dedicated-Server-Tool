@@ -20,7 +20,6 @@
             <vm:EngramClassNameToDisplayNameConverter x:Key="EngramClassNameToDisplayNameConverter" />
             <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
             <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
-            <vm:DinoSettingsList x:Key="BaseDinoSettings"/>
             <vm:TimeValidationRule x:Key="TimeValidationRule"/>
             <vm:IdListValidationRule x:Key="IdListValidationRule"/>
             <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
@@ -792,12 +791,6 @@
                                 </Grid>
                             </GroupBox>
 
-
-                            <!--
-        					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
-                            -->
-
                             <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -1414,10 +1407,20 @@
                                                 </DataGridCheckBoxColumn.Header>
                                             </DataGridCheckBoxColumn>
 
-                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName">
+                                            <DataGridComboBoxColumn SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName">
                                                 <DataGridComboBoxColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_ReplacementColumnLabel}" />
                                                 </DataGridComboBoxColumn.Header>
+                                                <DataGridComboBoxColumn.ElementStyle>
+                                                    <Style TargetType="ComboBox">
+                                                        <Setter Property="ItemsSource" Value="{Binding BaseDinoSettings, ElementName=SettingsControl}" />
+                                                    </Style>
+                                                </DataGridComboBoxColumn.ElementStyle>
+                                                <DataGridComboBoxColumn.EditingElementStyle>
+                                                    <Style TargetType="ComboBox">
+                                                        <Setter Property="ItemsSource" Value="{Binding BaseDinoSettings, ElementName=SettingsControl}" />
+                                                    </Style>
+                                                </DataGridComboBoxColumn.EditingElementStyle>
                                             </DataGridComboBoxColumn>
                                             
                                             <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">

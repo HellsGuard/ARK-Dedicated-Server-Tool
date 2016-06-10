@@ -90,7 +90,6 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
 
 
-
         public Server Server
         {
             get { return (Server)GetValue(ServerProperty); }
@@ -136,6 +135,14 @@ namespace ARK_Server_Manager
             set { SetValue(NetworkInterfacesProperty, value); }
         }
 
+        public DinoSettingsList BaseDinoSettings
+        {
+            get { return (DinoSettingsList)GetValue(DinoSettingsProperty); }
+            set { SetValue(DinoSettingsProperty, value); }
+        }
+
+        public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(BaseDinoSettings), typeof(DinoSettingsList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+
         public ServerSettingsControl()
         {
             this.CurrentConfig = Config.Default;
@@ -145,12 +152,15 @@ namespace ARK_Server_Manager
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
 
+            this.BaseDinoSettings = new DinoSettingsList();
+
             // hook into the language change event
             GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += GlobalizationManager_ResourceDictionaryChangedEvent;
         }
 
         private void GlobalizationManager_ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
         {
+            this.BaseDinoSettings.UpdateForLocalization();
             this.Settings.DinoSettings.UpdateForLocalization();
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
