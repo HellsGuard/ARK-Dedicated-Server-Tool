@@ -309,13 +309,23 @@ namespace ARK_Server_Manager
                     {
                         // NOTE: This parameter is of type object and must be cast in most cases before use.
                         var settings = (Server)parameter;
-                        if (settings.Profile.EnableAutoUpdate && !Updater.IsServerCacheAutoUpdateEnabled)
+                        if (settings.Profile.EnableAutoUpdate)
                         {
-                            var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorLabel1"), _globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (result == MessageBoxResult.Yes)
+                            if (settings.Profile.SOTF_Enabled)
                             {
-                                var settingsWindow = new SettingsWindow();
-                                settingsWindow.ShowDialog();
+                                MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_AutoUpdate_ErrorLabel"), _globalizedApplication.GetResourceString("ServerSettings_Save_AutoUpdate_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                settings.Profile.EnableAutoUpdate = false;
+                            }
+                            else if (!Updater.IsServerCacheAutoUpdateEnabled)
+                            {
+                                var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorLabel1"), _globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                if (result == MessageBoxResult.Yes)
+                                {
+                                    var settingsWindow = new SettingsWindow();
+                                    settingsWindow.ShowDialog();
+                                }
+
+                                // retest the server cache configuration
                                 if (!Updater.IsServerCacheAutoUpdateEnabled)
                                 {
                                     MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorLabel2"), _globalizedApplication.GetResourceString("ServerSettings_Save_ServerCache_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);

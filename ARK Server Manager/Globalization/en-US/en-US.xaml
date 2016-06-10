@@ -179,6 +179,8 @@
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Server cache not configured</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorTitle">Auto-updates Not Compatible</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorLabel">Auto-updates is enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
