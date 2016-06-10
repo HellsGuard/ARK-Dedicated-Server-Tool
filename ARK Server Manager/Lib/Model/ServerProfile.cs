@@ -1544,6 +1544,14 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_GamePlayLoggingProperty = DependencyProperty.Register(nameof(SOTF_GamePlayLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
+        public bool SOTF_OutputGameReport
+        {
+            get { return (bool)GetValue(SOTF_OutputGameReportProperty); }
+            set { SetValue(SOTF_OutputGameReportProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_OutputGameReportProperty = DependencyProperty.Register(nameof(SOTF_OutputGameReport), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_MaxNumberOfPlayersInTribe
         {
@@ -1950,27 +1958,19 @@ namespace ARK_Server_Manager.Lib
             if (this.SOTF_Enabled)
             {
                 serverArgs.Append(Config.Default.DefaultServerMap);
-
-                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
-                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
             else
             {
-#if false
-                if (this.MapSource == MapSourceType.ByName)
-                {
-                    serverArgs.Append(this.ServerMap);
-                }
-                else
-                {
-                    serverArgs.Append($"-MapModID={this.ServerMapModId}");
-                }
-#else
                 serverArgs.Append(this.ServerMap);
-#endif
             }
 
             serverArgs.Append("?listen");
+
+            if (this.SOTF_Enabled)
+            {
+                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
+                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
+            }
 
             // These are used to match the server to the profile.
             if (!String.IsNullOrEmpty(this.ServerIP))
@@ -2051,11 +2051,6 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?EnableExtraStructurePreventionVolumes=true");
             }
 
-            if (!this.SOTF_Enabled && !String.IsNullOrEmpty(this.ServerModIds))
-            {
-                serverArgs.Append($"?GameModIds={this.ServerModIds}");
-            }
-
             if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
             {
                 var addArgs = this.AdditionalArgs.TrimStart();
@@ -2071,14 +2066,17 @@ namespace ARK_Server_Manager.Lib
 
             if(this.SOTF_Enabled)
             {
-                serverArgs.Append(" -TotalConversionMod=496735411");
+                if (this.SOTF_OutputGameReport)
+                {
+                    serverArgs.Append(" -OutputGameReport");
+                }
 
                 if (this.SOTF_GamePlayLogging)
                 {
                     serverArgs.Append(" -gameplaylogging");
                 }
 
-                if(this.SOTF_DisableDeathSPectator)
+                if (this.SOTF_DisableDeathSPectator)
                 {
                     serverArgs.Append(" -DisableDeathSpectator");
                 }

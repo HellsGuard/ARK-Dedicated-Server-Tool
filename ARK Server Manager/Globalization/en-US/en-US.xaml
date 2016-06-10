@@ -685,6 +685,8 @@
     <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">The time after the last game has ended before the new game will start.</sys:String>
     <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">Sudden Death Time:</sys:String>
     <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">The amount of time Sudden Death will be in effect until the game is declared a draw.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableOutputGameReportLabel">Output Game Report</sys:String>
+    <sys:String x:Key="ServerSettings_EnableOutputGameReportTooltip">If enabled, generates a timestamped HTML after-action report file at the end of each game in the server's "Saved" directory, as the Official Ranked servers do.</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">Enable Game Play Logging</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">If enabled, outputs a dated log file to \Saved folder, which will contain a timestamped kill and winners log listing steam id, steam name, character name, etc. Handy for automatic Tournament records.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">Game Options</sys:String>

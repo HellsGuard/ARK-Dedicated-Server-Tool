@@ -27,24 +27,16 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServersProperty = DependencyProperty.Register(nameof(Servers), typeof(ObservableCollection<Server>), typeof(ServerManager), new PropertyMetadata(new ObservableCollection<Server>()));
-        public static readonly DependencyProperty AvailableVersionProperty = DependencyProperty.Register(nameof(AvailableVersion), typeof(Version), typeof(ServerManager), new PropertyMetadata(new Version()));
 
         public ObservableCollection<Server> Servers
         {
             get { return (ObservableCollection<Server>)GetValue(ServersProperty); }
             set { SetValue(ServersProperty, value); }
         }
-
-        public Version AvailableVersion
-        {
-            get { return (Version)GetValue(AvailableVersionProperty); }
-            set { SetValue(AvailableVersionProperty, value); }
-        }
       
         public ServerManager()
         {
             this.Servers.CollectionChanged += Servers_CollectionChanged;
-            CheckForUpdatesAsync().DoNotWait();
         }
 
         void Servers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -87,12 +79,6 @@ namespace ARK_Server_Manager.Lib
             }
 
             this.Servers.Remove(server);
-        }
-
-        public async Task CheckForUpdatesAsync()
-        {
-            var result = await NetworkUtils.GetLatestAvailableVersion();
-            await TaskUtils.RunOnUIThreadAsync(() => this.AvailableVersion = result.Current);
         }
     }
 }

@@ -489,11 +489,6 @@ namespace ARK_Server_Manager
             this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
         }
 
-        private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
-        {
-            await ServerManager.Instance.CheckForUpdatesAsync();
-        }
-
         private void OpenRCON_Click(object sender, RoutedEventArgs e)
         {
             var window = RCONWindow.GetRCONForServer(this.Server);

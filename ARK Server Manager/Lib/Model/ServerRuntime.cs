@@ -103,6 +103,7 @@ namespace ARK_Server_Manager.Lib
             public string ServerArgs;
             public string AdminPassword;
             public bool UseRawSockets;
+            public bool SotFServer;
         };
 
         private IAsyncDisposable updateRegistration;
@@ -156,7 +157,8 @@ namespace ARK_Server_Manager.Lib
                 ServerName = profile.ServerName,
                 ServerArgs = profile.GetServerArgs(),
                 AdminPassword = profile.AdminPassword,
-                UseRawSockets = profile.UseRawSockets
+                UseRawSockets = profile.UseRawSockets,
+                SotFServer = profile.SOTF_Enabled,
             };
 
             Version lastInstalled;
@@ -166,8 +168,8 @@ namespace ARK_Server_Manager.Lib
             }
 
             RegisterForUpdates();
-
         }
+
         List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
 
         private void GetProfilePropertyChanges(ServerProfile profile)
@@ -380,12 +382,11 @@ namespace ARK_Server_Manager.Lib
 
                 // Run the SteamCMD to install the server
                 var steamCmdPath = Updater.GetSteamCMDPath();
+                var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
                 //DataReceivedEventHandler dataReceived = (s, e) => Console.WriteLine(e.Data);
-                var success = await ServerUpdater.UpgradeServerAsync(validate, this.ProfileSnapshot.InstallDirectory, steamCmdPath, Config.Default.SteamCmdInstallServerArgsFormat, null /* dataReceived*/, cancellationToken);
-                if (success && ServerManager.Instance.AvailableVersion != null)
-                {
-                    this.Version = ServerManager.Instance.AvailableVersion;
-                }
+                var success = await ServerUpdater.UpgradeServerAsync(validate, this.ProfileSnapshot.InstallDirectory, steamCmdPath, steamCmdInstallServerArgsFormat, null /* dataReceived*/, cancellationToken);
+                if (success)
+                    this.Version = GetServerVersion();
 
                 return success;
             }
@@ -404,6 +405,32 @@ namespace ARK_Server_Manager.Lib
             this.updateRegistration.DisposeAsync().DoNotWait();
         }
 
+        /// <summary>
+        /// Returns the server version number from the version file.
+        /// </summary>
+        /// <returns>A version object containing the server version.</returns>
+        private Version GetServerVersion()
+        {
+            var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
+
+            if (!string.IsNullOrWhiteSpace(versionFile) && File.Exists(versionFile))
+            {
+                var fileValue = File.ReadAllText(versionFile);
+
+                if (!string.IsNullOrWhiteSpace(fileValue))
+                {
+                    string versionString = fileValue.ToString();
+                    if (versionString.IndexOf('.') == -1)
+                        versionString = versionString + ".0";
+
+                    Version version;
+                    if (Version.TryParse(versionString, out version))
+                        return version;
+                }
+            }
+
+            return new Version(0, 0);
+        }
 
         private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
         {

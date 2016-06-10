@@ -715,5 +715,23 @@ namespace ARK_Server_Manager {
                 this["CustomLevelXPIncrease_Dino"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("version.txt")]
+        public string VersionFile {
+            get {
+                return ((string)(this["VersionFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 445400 {1}\" +quit")]
+        public string SteamCmdInstallServerArgsFormat_SotF {
+            get {
+                return ((string)(this["SteamCmdInstallServerArgsFormat_SotF"]));
+            }
+        }
     }
 }

@@ -462,29 +462,12 @@
                 <Button Grid.Row="0" Grid.Column="1" Margin="5" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
                 <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
 
-                <Grid Grid.Row="1" DataContext="{Binding Runtime}" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
-                            <Label FontSize="15" Content="{Binding Version}" />
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Column="1" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_AvailableVersionTooltip}" Style="{DynamicResource BorderLabel}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailableVersionLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
-                            <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AvailableVersionRefreshTooltip}">
-                                <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                            </Button>
-                        </StackPanel>
-                    </Border>
-                </Grid>
+                <Border Grid.Row="1" Margin="2" HorizontalAlignment="Stretch" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}" DataContext="{Binding Runtime}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
+                        <Label FontSize="15" Content="{Binding Version}" />
+                    </StackPanel>
+                </Border>
                 <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" DataContext="{Binding Runtime}" Click="Upgrade_Click">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -709,7 +692,9 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
+                            <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" FontWeight="Bold" FontSize="14" VerticalContentAlignment="Center"/>
+                            
+                            <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -737,7 +722,7 @@
                                     <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_SpectatorPasswordTooltip}"/>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Grid.Row="1" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NetworkingLabel}" >
+                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NetworkingLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -778,7 +763,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_LoginOptionsLabel}" >
+                            <GroupBox Grid.Row="3" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_LoginOptionsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -813,7 +798,7 @@
         						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
                             -->
 
-                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
+                            <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -852,11 +837,11 @@
                                 <GroupBox.Style>
                                     <Style TargetType="{x:Type GroupBox}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="True">
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
                                                 <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsSOTFLabel}"/>
                                                 <Setter Property="IsEnabled" Value="False"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="False">
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
                                                 <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsLabel}"/>
                                                 <Setter Property="IsEnabled" Value="True"/>
                                             </DataTrigger>
@@ -1997,39 +1982,30 @@
                             </StackPanel>
                         </Expander.Header>
                         <Grid Margin ="10">
-                            <GroupBox>
-                                <GroupBox.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}"/>
-                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTFHelpTooltip}">
-                                            <Image Source="Art/Help.png" Height="16" Margin="0" />
-                                        </Button>
+                            <StackPanel IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}">
+                                <CheckBox IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}"/>
+                                <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
+                                <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
+                                <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
+                                <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="{DynamicResource ServerSettings_SOTFGameOptionsLabel}"/>
+                                    </GroupBox.Header>
+                                    <StackPanel Orientation="Vertical">
+                                        <CheckBox IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}"/>
+                                        <CheckBox IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
                                     </StackPanel>
-                                </GroupBox.Header>
-                                <StackPanel IsEnabled="{Binding ElementName=EnableSOTF, Path=IsChecked}">
-                                    <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
-                                    <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
-                                    <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
-                                    <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
-                                    <GroupBox>
-                                        <GroupBox.Header>
-                                            <Label Content="{DynamicResource ServerSettings_SOTFGameOptionsLabel}"/>
-                                        </GroupBox.Header>
-                                        <StackPanel Orientation="Vertical">
-                                            <CheckBox IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}"/>
-                                            <CheckBox IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}"/>
-                                            <CheckBox IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
-                                            <local:AnnotatedSlider Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
-                                        </StackPanel>
-                                    </GroupBox>
-                                </StackPanel>
-                            </GroupBox>
+                                </GroupBox>
+                            </StackPanel>
                         </Grid>
                     </Expander>
                 </StackPanel>
