@@ -10,74 +10,76 @@ namespace ARK_Server_Manager.Lib
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1083538;
 
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
-            {
-                new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Arthro_Character_BP_C",          DinoNameTag="Arthro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Galli_Character_BP_C",           DinoNameTag="Galli",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur",  SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Salmon_Character_BP_C",          DinoNameTag="Salmon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-            };
+        {
+            new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Arthro_Character_BP_C",          DinoNameTag="Arthro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Galli_Character_BP_C",           DinoNameTag="Galli",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur",  SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Salmon_Character_BP_C",          DinoNameTag="Salmon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+        };
+
+        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
         public static bool IsTameableForClass(string className)
         {
@@ -120,8 +122,6 @@ namespace ARK_Server_Manager.Lib
         {
             return GlobalizedApplication.Instance.GetResourceString(className) ?? className;
         }
-
-        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
         private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
         {
@@ -266,6 +266,16 @@ namespace ARK_Server_Manager.Lib
         };
 
         public static IEnumerable<ResourceClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
+
+        public static ResourceClassMultiplier GetResourceForClass(string className)
+        {
+            return standardResourceMultipliers.FirstOrDefault(e => e.ClassName.Equals(className));
+        }
+
+        public static bool HasResourceForClass(string className)
+        {
+            return standardResourceMultipliers.Any(e => e.ClassName.Equals(className));
+        }
 
         private static readonly Level[] levelProgression = new Level[]
             {
@@ -534,8 +544,6 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=971538,  EngramPoints=60 },
                 new Level { XPRequired=1083538, EngramPoints=60 },
             };
-
-        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
 
         public static readonly EngramEntry[] engrams = new[]
         {
@@ -869,6 +877,8 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWallWithWindow_C",            EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
         };
+
+        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
 
         public static EngramEntry GetEngramForClass(string className)
         {
