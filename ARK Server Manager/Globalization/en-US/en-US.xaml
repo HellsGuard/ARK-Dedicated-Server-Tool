@@ -500,6 +500,10 @@
     <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">Tamed Resistance</sys:String>
     <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Wild Damage</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
+    <sys:String x:Key="ServerSettings_DinoRemoveRecordTooltip">Remove this Dino</sys:String>
+
+    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordTitle">Remove Dino</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordLabel">Click 'Yes' to confirm you want to delete the dino record.</sys:String>
 
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Tamed)</sys:String>
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Add</sys:String>
@@ -557,6 +561,10 @@
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
     <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestRemoveRecordTooltip">Remove this Resource</sys:String>
+
+    <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordTitle">Remove Resource</sys:String>
+    <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordLabel">Click 'Yes' to confirm you want to delete the resource record.</sys:String>
 
     <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Day Cycle Speed:</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it.</sys:String>
@@ -629,6 +637,10 @@
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
     <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">Remove Prereqs</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsRemoveRecordTooltip">Remove this Engram</sys:String>
+
+    <sys:String x:Key="ServerSettings_EngramsOverride_EngramsRemoveRecordTitle">Remove Engram</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_EngramsRemoveRecordLabel">Click 'Yes' to confirm you want to delete the resource record.</sys:String>
 
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Click 'Yes' to confirm you want to reset all the current engram changes.</sys:String>

@@ -85,19 +85,16 @@ namespace ARK_Server_Manager
                         ssc.Settings = server.Profile;
                         ssc.Runtime = server.Runtime;
                         ssc.ReinitializeNetworkAdapters();
-
-                        ssc.BaseDinoSettings = ssc.Settings.DinoSettings.Clone();
-                        ssc.DinoSettingsGrid.Items.Refresh();
+                        ssc.RefreshDinoSettingsCombobox();
                     }).DoNotWait();
             }
         }
 
         private void GlobalizationManager_ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
         {
-            this.BaseDinoSettings.UpdateForLocalization();
             this.Settings.DinoSettings.UpdateForLocalization();
 
-            this.DinoSettingsGrid.Items.Refresh();
+            this.RefreshDinoSettingsCombobox();
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
         }
@@ -204,6 +201,12 @@ namespace ARK_Server_Manager
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+
+        public void RefreshDinoSettingsCombobox()
+        {
+            this.BaseDinoSettings = this.Settings.DinoSettings.Clone();
+            this.DinoSettingsGrid.Items.Refresh();
         }
 
         private async void Upgrade_Click(object sender, RoutedEventArgs e)
@@ -414,6 +417,39 @@ namespace ARK_Server_Manager
             this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
         }
 
+        private void RemoveDinoSetting_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordLabel"), _globalizedApplication.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var dino = ((DinoSettings)((Button)e.Source).DataContext);
+            if (!dino.KnownDino)
+            {
+                this.Settings.DinoSettings.Remove(dino);
+                RefreshDinoSettingsCombobox();
+            }
+        }
+
+        private void RemoveHarvestResource_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordLabel"), _globalizedApplication.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var resource = ((ResourceClassMultiplier)((Button)e.Source).DataContext);
+            if (!resource.KnownResource)
+                this.Settings.HarvestResourceItemAmountClassMultipliers.Remove(resource);
+        }
+
+        private void RemoveEngramOverride_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordLabel"), _globalizedApplication.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var engram = ((EngramEntry)((Button)e.Source).DataContext);
+            if (!engram.KnownEngram)
+                this.Settings.OverrideNamedEngramEntries.Remove(engram);
+        }
+
         private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
         {
             this.Settings.PlayerLevels.UpdateTotals();
@@ -564,6 +600,7 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.DinoSettings.Reset();
+            RefreshDinoSettingsCombobox();
         }
 
         private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
@@ -700,6 +737,7 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.DinoSettingsSection:
                                 this.Settings.ResetDinoSettings();
+                                RefreshDinoSettingsCombobox();
                                 break;
 
                             case ServerSettingsResetAction.EngramsSection:

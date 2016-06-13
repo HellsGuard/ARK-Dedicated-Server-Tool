@@ -200,6 +200,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     dinoSettings.WildResistanceMultiplier = entry.Multiplier;
                 }
             }
+
+            // sort the collection by the friendly name.
+            this.Sort(row => row.FriendlyName);
         }
 
         public void RenderToModel()
