@@ -870,6 +870,16 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
         };
 
+        public static EngramEntry GetEngramForClass(string className)
+        {
+            return engrams.FirstOrDefault(e => e.EngramClassName.Equals(className));
+        }
+
+        public static bool HasEngramForClass(string className)
+        {
+            return engrams.Any(e => e.EngramClassName.Equals(className));
+        }
+
         public enum StatsMultiplier
         {
             Health = 0,

@@ -305,13 +305,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style x:Key="DinoSpawnGridCellStyle" TargetType="{x:Type DataGridCell}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
-                        <Setter Property="IsEnabled" Value="False" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
@@ -1863,7 +1856,7 @@
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
-                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" >
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
@@ -1897,6 +1890,17 @@
                                             </GridViewColumn>
                                         </GridView>
                                     </ListView.View>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}" >
+                                            <Setter Property="Background" Value="White" />
+
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding KnownEngram}" Value="False">
+                                                    <Setter Property="Background" Value="Beige" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
                                 </ListView>
                             </GroupBox>
                         </Grid>
