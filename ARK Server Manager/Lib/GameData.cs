@@ -79,21 +79,46 @@ namespace ARK_Server_Manager.Lib
                 new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
             };
 
-        public static string NameTagForClass(string entry)
+        public static bool IsTameableForClass(string className)
         {
-            switch (entry)
+            switch (className)
+            {
+                case "Ant_Character_BP_C":
+                case "BoaFrill_Character_BP_C":
+                case "Coel_Character_BP_C":
+                case "Dragonfly_Character_BP_C":
+                case "FlyingAnt_Character_BP_C":
+                case "Leech_Character_C":
+                case "Leech_Character_Diseased_C":
+                case "MegaCarno_Character_BP_C":
+                case "MegaRaptor_Character_BP_C":
+                case "MegaRex_Character_BP_C":
+                case "Mosa_Character_BP_Mega_C":
+                case "Piranha_Character_BP_C":
+                case "Salmon_Character_BP_C":
+                case "Trilobite_Character_C":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        public static string NameTagForClass(string className)
+        {
+            switch (className)
             {
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                     return null;
                 default:
-                    return dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+                    var dinoSpawn = dinoSpawns.FirstOrDefault(d => d.ClassName == className);
+                    return dinoSpawn != null ? dinoSpawn.DinoNameTag : className;
             }
         }
 
-        public static string FriendlyNameForClass(string entry)
+        public static string FriendlyNameForClass(string className)
         {
-            return GlobalizedApplication.Instance.GetResourceString(entry) ?? entry;
+            return GlobalizedApplication.Instance.GetResourceString(className) ?? className;
         }
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());

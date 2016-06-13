@@ -57,44 +57,16 @@ namespace ARK_Server_Manager
     {
         private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
 
+        // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty RuntimeProperty = DependencyProperty.Register(nameof(Runtime), typeof(ServerRuntime), typeof(ServerSettingsControl));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
-
-        CancellationTokenSource upgradeCancellationSource;
-
-        public ServerManager ServerManager
-        {
-            get { return (ServerManager)GetValue(ServerManagerProperty); }
-            set { SetValue(ServerManagerProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
-
-        public Config CurrentConfig
-        {
-            get { return GetValue(CurrentConfigProperty) as Config; }
-            set { SetValue(CurrentConfigProperty, value); }
-        }
-
-
-        public bool IsAdministrator
-        {
-            get { return (bool)GetValue(IsAdministratorProperty); }
-            set { SetValue(IsAdministratorProperty, value); }
-        }
-
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(BaseDinoSettings), typeof(DinoSettingsList), typeof(ServerSettingsControl), new PropertyMetadata(null));
 
-
-        public Server Server
-        {
-            get { return (Server)GetValue(ServerProperty); }
-            set { SetValue(ServerProperty, value); }
-        }
 
         private static void ServerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -113,8 +85,49 @@ namespace ARK_Server_Manager
                         ssc.Settings = server.Profile;
                         ssc.Runtime = server.Runtime;
                         ssc.ReinitializeNetworkAdapters();
+
+                        ssc.BaseDinoSettings = ssc.Settings.DinoSettings.Clone();
+                        ssc.DinoSettingsGrid.Items.Refresh();
                     }).DoNotWait();
             }
+        }
+
+        private void GlobalizationManager_ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
+        {
+            this.BaseDinoSettings.UpdateForLocalization();
+            this.Settings.DinoSettings.UpdateForLocalization();
+
+            this.DinoSettingsGrid.Items.Refresh();
+            this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
+            this.EngramsOverrideListView.Items.Refresh();
+        }
+
+
+        CancellationTokenSource upgradeCancellationSource;
+
+
+        public ServerManager ServerManager
+        {
+            get { return (ServerManager)GetValue(ServerManagerProperty); }
+            set { SetValue(ServerManagerProperty, value); }
+        }
+
+        public Config CurrentConfig
+        {
+            get { return GetValue(CurrentConfigProperty) as Config; }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
+
+        public bool IsAdministrator
+        {
+            get { return (bool)GetValue(IsAdministratorProperty); }
+            set { SetValue(IsAdministratorProperty, value); }
+        }
+
+        public Server Server
+        {
+            get { return (Server)GetValue(ServerProperty); }
+            set { SetValue(ServerProperty, value); }
         }
 
         public ServerProfile Settings
@@ -141,8 +154,6 @@ namespace ARK_Server_Manager
             set { SetValue(DinoSettingsProperty, value); }
         }
 
-        public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(BaseDinoSettings), typeof(DinoSettingsList), typeof(ServerSettingsControl), new PropertyMetadata(null));
-
         public ServerSettingsControl()
         {
             this.CurrentConfig = Config.Default;
@@ -156,14 +167,6 @@ namespace ARK_Server_Manager
 
             // hook into the language change event
             GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += GlobalizationManager_ResourceDictionaryChangedEvent;
-        }
-
-        private void GlobalizationManager_ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
-        {
-            this.BaseDinoSettings.UpdateForLocalization();
-            this.Settings.DinoSettings.UpdateForLocalization();
-            this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
-            this.EngramsOverrideListView.Items.Refresh();
         }
 
         private void ReinitializeNetworkAdapters()

@@ -1401,18 +1401,48 @@
                                                 <DataGridCheckBoxColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_SpawnableColumnLabel}" />
                                                 </DataGridCheckBoxColumn.Header>
+                                                <DataGridCheckBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridCheckBoxColumn.CellStyle>
                                             </DataGridCheckBoxColumn>
                                             
                                             <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}">
                                                 <DataGridCheckBoxColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_TameableColumnLabel}" />
                                                 </DataGridCheckBoxColumn.Header>
+                                                <DataGridCheckBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridCheckBoxColumn.CellStyle>
                                             </DataGridCheckBoxColumn>
 
                                             <DataGridComboBoxColumn SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName">
                                                 <DataGridComboBoxColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_ReplacementColumnLabel}" />
                                                 </DataGridComboBoxColumn.Header>
+                                                <DataGridComboBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridComboBoxColumn.CellStyle>
                                                 <DataGridComboBoxColumn.ElementStyle>
                                                     <Style TargetType="ComboBox">
                                                         <Setter Property="ItemsSource" Value="{Binding BaseDinoSettings, ElementName=SettingsControl}" />
@@ -1432,7 +1462,7 @@
                                                 <DataGridTextColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
                                                                 <Setter Property="Visibility" Value="Hidden" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -1447,7 +1477,7 @@
                                                 <DataGridCheckBoxColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
                                                                 <Setter Property="Visibility" Value="Hidden" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -1462,7 +1492,7 @@
                                                 <DataGridTextColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
                                                                 <Setter Property="Visibility" Value="Hidden" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -1474,26 +1504,77 @@
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_TamedDamageColumnLabel}" />
                                                 </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
                                         
                                             <DataGridTextColumn     Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" />
                                                 </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
 
                                             <DataGridTextColumn     Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_WildDamageColumnLabel}" />
                                                 </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
 
                                             <DataGridTextColumn     Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_WildResistanceColumnLabel}" />
                                                 </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
                                         </DataGrid.Columns>
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding KnownDino}" Value="False">
+                                                        <Setter Property="Background" Value="Beige" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.RowStyle>
                                     </DataGrid>
                                 </GroupBox>
 
