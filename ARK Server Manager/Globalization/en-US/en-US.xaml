@@ -126,6 +126,7 @@
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded.</sys:String>
+    <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionLabel">Latest Available Version:</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionTooltip">The version of the Ark server that is currently available for download.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Refresh the latest version of the Ark server that is currently available to download.</sys:String>
@@ -670,7 +671,6 @@
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFTooltip">If enabled, configures the server as a 'Survival of the Fittest' server.</sys:String>
-    <sys:String x:Key="ServerSettings_SOTFHelpTooltip">Survival of the Fittest is a special total conversion mod which changes many of the rules.  See the web for more details.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDeathSpectatorLabel">Disable Death Spectator</sys:String>
     <sys:String x:Key="ServerSettings_DisableDeathSpectatorTooltip">If enabled, players cannot be spectators after they die.</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorLabel">Only Admin Rejoin As Spectator</sys:String>
@@ -703,8 +703,9 @@
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
 
-    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SOTF web page?</sys:String>
-    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is a total conversion mod. In order to enable it, you will need to first install it (we don't yet support installing it for you). Would you like to open the installation instructions web page now?"</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpTooltip">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SotF web page?</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>

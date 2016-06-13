@@ -531,11 +531,15 @@ namespace ARK_Server_Manager
 
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show(_globalizedApplication.GetResourceString("ServerSettings_SOTF_HelpLabel"), _globalizedApplication.GetResourceString("ServerSettings_SOTF_HelpTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                Process.Start("http://steamcommunity.com/app/346110/discussions/10/530649887204866610/");
-            }
+            Process.Start(Config.Default.ArkSotfUrl);
+        }
+
+        private void PatchNotes_Click(object sender, RoutedEventArgs e)
+        {
+            if (Settings.SOTF_Enabled)
+                Process.Start(Config.Default.ArkSotF_PatchNotesUrl);
+            else
+                Process.Start(Config.Default.ArkSE_PatchNotesUrl);
         }
 
         private void TestUpdater_Click(object sender, RoutedEventArgs e)

@@ -32,7 +32,7 @@ namespace ARK_Server_Manager
             private set;
         }
 
-        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+        private GlobalizedApplication _globalizedApplication;
 
         public App()
         {
@@ -51,6 +51,8 @@ namespace ARK_Server_Manager
 
             ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
+
+            _globalizedApplication = GlobalizedApplication.Instance;
         }
 
         private static void MigrateSettings()
@@ -140,6 +142,8 @@ namespace ARK_Server_Manager
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+            
             // Initial configuration setting
             if (String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
@@ -153,24 +157,21 @@ namespace ARK_Server_Manager
                     dialog.Multiselect = false;
                     dialog.Title = _globalizedApplication.GetResourceString("Application_DataDirectory_DialogTitle");
                     dialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-                    var result = dialog.ShowDialog();
-                    if (result == CommonFileDialogResult.Ok)
+                    if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
                     {
-                        var confirm = MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmLabel"), Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), _globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                        if(confirm == MessageBoxResult.No)
-                        {
-                            continue;
-                        }
-                        else if(confirm == MessageBoxResult.Yes)
-                        {
-                            Config.Default.DataDir = dialog.FileName;
-                            ReconfigureLogging();
-                            break;
-                        }
-                        else
-                        {
-                            Environment.Exit(0);
-                        }
+                        Environment.Exit(0);
+                    }
+
+                    var confirm = MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmLabel"), Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), _globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                    if (confirm == MessageBoxResult.Cancel)
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (confirm == MessageBoxResult.Yes)
+                    {
+                        Config.Default.DataDir = dialog.FileName;
+                        ReconfigureLogging();
+                        break;
                     }
                 }
             }
@@ -183,9 +184,6 @@ namespace ARK_Server_Manager
             {
                 Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
             }
-
-            
-            base.OnStartup(e);
         }
 
         public static async Task DiscoverMachinePublicIP(bool forceOverride)

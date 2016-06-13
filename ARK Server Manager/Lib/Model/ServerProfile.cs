@@ -1840,6 +1840,10 @@ namespace ARK_Server_Manager.Lib
 
         public void Save()
         {
+            // ensure that the auto update is switched off for SotF servers
+            if (SOTF_Enabled)
+                EnableAutoUpdate = false;
+
             this.DinoSettings.RenderToModel();
 
             //
@@ -1888,7 +1892,7 @@ namespace ARK_Server_Manager.Lib
         private void SaveLauncher()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherPath()));
-            File.WriteAllText(GetLauncherPath(), $"start \"\" \"{GetServerExe()}\" {GetServerArgs()}");
+            File.WriteAllText(GetLauncherPath(), $"start \"{ProfileName}\" \"{GetServerExe()}\" {GetServerArgs()}");
         }
 
         public string GetProfilePath()
@@ -1966,12 +1970,6 @@ namespace ARK_Server_Manager.Lib
 
             serverArgs.Append("?listen");
 
-            if (this.SOTF_Enabled)
-            {
-                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
-                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
-            }
-
             // These are used to match the server to the profile.
             if (!String.IsNullOrEmpty(this.ServerIP))
             {
@@ -1994,6 +1992,12 @@ namespace ARK_Server_Manager.Lib
             if (this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
+            }
+
+            if (this.SOTF_Enabled)
+            {
+                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
+                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
 
             // This flag is broken in the INI        
