@@ -1138,13 +1138,13 @@ namespace ARK_Server_Manager.Lib
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<ClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        public AggregateIniValueList<ResourceClassMultiplier> HarvestResourceItemAmountClassMultipliers
         {
-            get { return (AggregateIniValueList<ClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            get { return (AggregateIniValueList<ResourceClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ResourceClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
 
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1544,6 +1544,14 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_GamePlayLoggingProperty = DependencyProperty.Register(nameof(SOTF_GamePlayLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
 
+        public bool SOTF_OutputGameReport
+        {
+            get { return (bool)GetValue(SOTF_OutputGameReportProperty); }
+            set { SetValue(SOTF_OutputGameReportProperty, value); }
+        }
+
+        public static readonly DependencyProperty SOTF_OutputGameReportProperty = DependencyProperty.Register(nameof(SOTF_OutputGameReport), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_MaxNumberOfPlayersInTribe
         {
@@ -1674,16 +1682,19 @@ namespace ARK_Server_Manager.Lib
         {
             ServerPassword = SecurityUtils.GeneratePassword(16);
             AdminPassword = SecurityUtils.GeneratePassword(16);
+
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
+            this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0] );
+            this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
             this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
-            this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0] );
-            this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
-            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
+
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
@@ -1815,9 +1826,10 @@ namespace ARK_Server_Manager.Lib
             // Levels
             //
             var levelRampOverrides = strings.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
-            var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
             if (levelRampOverrides.Length > 0)
             {
+                var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
+
                 settings.EnableLevelProgressions = true;
                 settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
 
@@ -1832,6 +1844,10 @@ namespace ARK_Server_Manager.Lib
 
         public void Save()
         {
+            // ensure that the auto update is switched off for SotF servers
+            if (SOTF_Enabled)
+                EnableAutoUpdate = false;
+
             this.DinoSettings.RenderToModel();
 
             //
@@ -1880,7 +1896,7 @@ namespace ARK_Server_Manager.Lib
         private void SaveLauncher()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherPath()));
-            File.WriteAllText(GetLauncherPath(), $"start \"\" \"{GetServerExe()}\" {GetServerArgs()}");
+            File.WriteAllText(GetLauncherPath(), $"start \"{ProfileName}\" \"{GetServerExe()}\" {GetServerArgs()}");
         }
 
         public string GetProfilePath()
@@ -1950,30 +1966,16 @@ namespace ARK_Server_Manager.Lib
             if (this.SOTF_Enabled)
             {
                 serverArgs.Append(Config.Default.DefaultServerMap);
-
-                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
-                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
             else
             {
-#if false
-                if (this.MapSource == MapSourceType.ByName)
-                {
-                    serverArgs.Append(this.ServerMap);
-                }
-                else
-                {
-                    serverArgs.Append($"-MapModID={this.ServerMapModId}");
-                }
-#else
                 serverArgs.Append(this.ServerMap);
-#endif
             }
 
             serverArgs.Append("?listen");
 
             // These are used to match the server to the profile.
-            if (!String.IsNullOrEmpty(this.ServerIP))
+            if (!String.IsNullOrWhiteSpace(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
@@ -1994,6 +1996,12 @@ namespace ARK_Server_Manager.Lib
             if (this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
+            }
+
+            if (this.SOTF_Enabled)
+            {
+                serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
+                serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
 
             // This flag is broken in the INI        
@@ -2051,11 +2059,6 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?EnableExtraStructurePreventionVolumes=true");
             }
 
-            if (!this.SOTF_Enabled && !String.IsNullOrEmpty(this.ServerModIds))
-            {
-                serverArgs.Append($"?GameModIds={this.ServerModIds}");
-            }
-
             if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
             {
                 var addArgs = this.AdditionalArgs.TrimStart();
@@ -2071,14 +2074,17 @@ namespace ARK_Server_Manager.Lib
 
             if(this.SOTF_Enabled)
             {
-                serverArgs.Append(" -TotalConversionMod=496735411");
+                if (this.SOTF_OutputGameReport)
+                {
+                    serverArgs.Append(" -OutputGameReport");
+                }
 
                 if (this.SOTF_GamePlayLogging)
                 {
                     serverArgs.Append(" -gameplaylogging");
                 }
 
-                if(this.SOTF_DisableDeathSPectator)
+                if (this.SOTF_DisableDeathSPectator)
                 {
                     serverArgs.Append(" -DisableDeathSpectator");
                 }
@@ -2161,7 +2167,7 @@ namespace ARK_Server_Manager.Lib
                     this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
                     Config.Default.ServerCacheDir,
                     this.InstallDirectory,
-                    this.ServerIP,
+                    String.IsNullOrWhiteSpace(this.ServerIP) ? "127.0.0.1" : this.ServerIP,
                     this.RCONPort,
                     this.AdminPassword,
                     this.ServerUpdateGraceMinutes,
@@ -2451,7 +2457,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ClampResourceHarvestDamageProperty);
             this.ClearValue(HarvestHealthMultiplierProperty);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             this.HarvestResourceItemAmountClassMultipliers.Reset();
 
             this.ClearValue(DayCycleSpeedScaleProperty);

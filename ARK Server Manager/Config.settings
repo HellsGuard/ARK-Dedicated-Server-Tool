@@ -200,5 +200,23 @@
     <Setting Name="CustomLevelXPIncrease_Dino" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
+    <Setting Name="VersionFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">version.txt</Value>
+    </Setting>
+    <Setting Name="SteamCmdInstallServerArgsFormat_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 445400 {1}" +quit</Value>
+    </Setting>
+    <Setting Name="ArkSE_PatchNotesUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://steamcommunity.com/app/346110/discussions/0/594820656447032287/</Value>
+    </Setting>
+    <Setting Name="ArkSotF_PatchNotesUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://steamcommunity.com/app/407530/discussions/0/365163686069351564/</Value>
+    </Setting>
+    <Setting Name="ArkSEUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://store.steampowered.com/app/346110/</Value>
+    </Setting>
+    <Setting Name="ArkSotfUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://store.steampowered.com/app/407530/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -715,5 +715,59 @@ namespace ARK_Server_Manager {
                 this["CustomLevelXPIncrease_Dino"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("version.txt")]
+        public string VersionFile {
+            get {
+                return ((string)(this["VersionFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 445400 {1}\" +quit")]
+        public string SteamCmdInstallServerArgsFormat_SotF {
+            get {
+                return ((string)(this["SteamCmdInstallServerArgsFormat_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://steamcommunity.com/app/346110/discussions/0/594820656447032287/")]
+        public string ArkSE_PatchNotesUrl {
+            get {
+                return ((string)(this["ArkSE_PatchNotesUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://steamcommunity.com/app/407530/discussions/0/365163686069351564/")]
+        public string ArkSotF_PatchNotesUrl {
+            get {
+                return ((string)(this["ArkSotF_PatchNotesUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://store.steampowered.com/app/346110/")]
+        public string ArkSEUrl {
+            get {
+                return ((string)(this["ArkSEUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://store.steampowered.com/app/407530/")]
+        public string ArkSotfUrl {
+            get {
+                return ((string)(this["ArkSotfUrl"]));
+            }
+        }
     }
 }

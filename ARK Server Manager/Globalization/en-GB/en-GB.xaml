@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:Globalization="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
-    Name="en-US"
-    LinkedStyle="en-US-style"
+    Name="en-GB"
+    LinkedStyle="en-GB-style"
     >
 
     <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
@@ -23,7 +23,7 @@
     <sys:String x:Key="AutoUpdater_Status">Status</sys:String>
     <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">Downloading SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_UnzippingSteamCmd">Unzipping SteamCMD...</sys:String>
-    <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">Authorizing SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">Authorising SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_InstallSteamCmdComplete">SteamCMD installed</sys:String>
     <sys:String x:Key="AutoUpdater_Status_CheckForNewServerVersion">Checking for new server version...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_DownloadNewServerVersion">Downloading new server version...</sys:String>
@@ -126,7 +126,6 @@
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded.</sys:String>
-    <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionLabel">Latest Available Version:</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionTooltip">The version of the Ark server that is currently available for download.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Refresh the latest version of the Ark server that is currently available to download.</sys:String>
@@ -168,7 +167,7 @@
     <sys:String x:Key="ServerSettings_ResetSectionTooltip">Resets the section back to defaults.</sys:String>
 
     <sys:String x:Key="ServerSettings_AdminRequired_ErrorTitle">Needs Administrator Access</sys:String>
-    <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.</sys:String>
+    <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilise these features.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
     <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Stop the server?</sys:String>
@@ -180,8 +179,6 @@
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Server cache not configured</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorTitle">Auto-updates Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorLabel">Auto-updates is enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
@@ -266,7 +263,7 @@
     <sys:String x:Key="ServerSettings_ServerOptionsLabel">Server Options</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACLabel">Disable Valve Anti-Cheat System (VAC)</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACTooltip">If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!</sys:String>
-    <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimization</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimisation</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationTooltip">If enabled, the player-move-physics will be disabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti Speedhack Detection</sys:String>
     <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
@@ -477,7 +474,7 @@
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Allow Baby Dino Imprint Cuddle by Anyone</sys:String>
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">If enabled, ANYONE will to be able to take care of a Baby Dino (cuddle etc), not just whomever imprinted on it.</sys:String>
 
-    <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customization</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customisation</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Spawn Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionTooltip">Show/Hide the spawn multiplier columns.</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageOptionLabel">Tamed Damage</sys:String>
@@ -488,7 +485,7 @@
     <sys:String x:Key="ServerSettings_WildDamageOptionTooltip">Show/Hide the wild dino damage multiplier column.</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">Wild Resistance</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customisations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_SpawnableColumnLabel">Spawnable</sys:String>
     <sys:String x:Key="ServerSettings_TameableColumnLabel">Tameable</sys:String>
@@ -500,10 +497,6 @@
     <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">Tamed Resistance</sys:String>
     <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Wild Damage</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Wild Resistance</sys:String>
-    <sys:String x:Key="ServerSettings_DinoRemoveRecordTooltip">Remove this Dino</sys:String>
-
-    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordTitle">Remove Dino</sys:String>
-    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordLabel">Click 'Yes' to confirm you want to delete the dino record.</sys:String>
 
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Tamed)</sys:String>
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Add</sys:String>
@@ -538,7 +531,7 @@
     <sys:String x:Key="ServerSettings_DinoMaxXP_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_DinoMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
     <sys:String x:Key="ServerSettings_DinoCustomization_ResetTitle">Confirm Reset Action</sys:String>
-    <sys:String x:Key="ServerSettings_DinoCustomization_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino customizations.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino customisations.</sys:String>
 
     <!-- Server Settings - Environment -->
     <sys:String x:Key="ServerSettings_EnvironmentLabel">Environment</sys:String>
@@ -559,12 +552,8 @@
 
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customisations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
-    <sys:String x:Key="ServerSettings_HarvestRemoveRecordTooltip">Remove this Resource</sys:String>
-
-    <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordTitle">Remove Resource</sys:String>
-    <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordLabel">Click 'Yes' to confirm you want to delete the resource record.</sys:String>
 
     <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Day Cycle Speed:</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it.</sys:String>
@@ -630,17 +619,13 @@
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
-    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customisations.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customisations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
     <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">Remove Prereqs</sys:String>
-    <sys:String x:Key="ServerSettings_EngramsRemoveRecordTooltip">Remove this Engram</sys:String>
-
-    <sys:String x:Key="ServerSettings_EngramsOverride_EngramsRemoveRecordTitle">Remove Engram</sys:String>
-    <sys:String x:Key="ServerSettings_EngramsOverride_EngramsRemoveRecordLabel">Click 'Yes' to confirm you want to delete the resource record.</sys:String>
 
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Click 'Yes' to confirm you want to reset all the current engram changes.</sys:String>
@@ -648,13 +633,13 @@
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Enable Custom Level Progressions</sys:String>
-    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">If enabled, enables player and dino level customizations.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">If enabled, enables player and dino level customisations.</sys:String>
     <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">Custom Player Levels</sys:String>
     <sys:String x:Key="ServerSettings_DeleteAllLevelsTooltip">Delete all existing levels.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">Reset all level customizations back to ASM defaults.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customizations back to official defaults.</sys:String>
-    <sys:String x:Key="ServerSettings_ImportLevelsTooltip">Import level customizations from CSV file.</sys:String>
-    <sys:String x:Key="ServerSettings_ExportLevelsTooltip">Export level customizations to CSV file.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">Reset all level customisations back to ASM defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">Reset all level customisations back to official defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ImportLevelsTooltip">Import level customisations from CSV file.</sys:String>
+    <sys:String x:Key="ServerSettings_ExportLevelsTooltip">Export level customisations to CSV file.</sys:String>
     <sys:String x:Key="ServerSettings_UpdateLevelsTooltip">Update maximum XP Cap to last level value.</sys:String>
 
     <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
@@ -683,6 +668,7 @@
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFTooltip">If enabled, configures the server as a 'Survival of the Fittest' server.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFHelpTooltip">Survival of the Fittest is a special total conversion mod which changes many of the rules.  See the web for more details.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDeathSpectatorLabel">Disable Death Spectator</sys:String>
     <sys:String x:Key="ServerSettings_DisableDeathSpectatorTooltip">If enabled, players cannot be spectators after they die.</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorLabel">Only Admin Rejoin As Spectator</sys:String>
@@ -715,15 +701,14 @@
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Ring Start Time</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">You can set this to 'pre-advance' the match time (ring of death progress) to a certain time. Lower values decrease the match time and higher values increase the match time.</sys:String>
 
-    <sys:String x:Key="ServerSettings_SOTF_HelpTooltip">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
-    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SotF web page?</sys:String>
-    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SOTF web page?</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is a total conversion mod. In order to enable it, you will need to first install it (we don't yet support installing it for you). Would you like to open the installation instructions web page now?"</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_UpdateErrorTitle">Update Error</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customizations</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customization CSV file</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customisations</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customisation CSV file</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportDefaultExtension">csv</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterLabel">CSV Files</sys:String>
@@ -1174,7 +1159,7 @@
     <sys:String x:Key="EngramEntry_MetalWindow_C">Metal Window</sys:String>
     <sys:String x:Key="EngramEntry_MinersHelmet_C">Heavy Miner's Helmet</sys:String>
     <sys:String x:Key="EngramEntry_MinigunTurret_C">Minigun Turret</sys:String>
-    <sys:String x:Key="EngramEntry_MiracleGro_C">Re-Fertilizer</sys:String>
+    <sys:String x:Key="EngramEntry_MiracleGro_C">Re-Fertiliser</sys:String>
     <sys:String x:Key="EngramEntry_ModernBed_C">Bunk Bed</sys:String>
     <sys:String x:Key="EngramEntry_MortarAndPestle_C">Mortar and Pestle</sys:String>
     <sys:String x:Key="EngramEntry_Narcotic_C">Narcotic</sys:String>
@@ -1311,7 +1296,7 @@
     <sys:String x:Key="EngramEntry_ThatchWallWithDoor_C">Thatch Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_Torch_C">Torch</sys:String>
     <sys:String x:Key="EngramEntry_TrainingDummy_C">Training Dummy</sys:String>
-    <sys:String x:Key="EngramEntry_TranqDart_C">Tranquilizer Dart</sys:String>
+    <sys:String x:Key="EngramEntry_TranqDart_C">Tranquiliser Dart</sys:String>
     <sys:String x:Key="EngramEntry_TransGPS_C">Transponder Tracker</sys:String>
     <sys:String x:Key="EngramEntry_TransGPSAmmo_C">Transponder Node</sys:String>
     <sys:String x:Key="EngramEntry_TripwireC4_C">Improvised Explosive Device</sys:String>

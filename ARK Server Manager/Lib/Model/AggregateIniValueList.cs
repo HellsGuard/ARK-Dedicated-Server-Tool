@@ -46,6 +46,8 @@ namespace ARK_Server_Manager.Lib
         {
             this.Clear();
             this.AddRange(this.resetFunc());
+
+            this.Sort(AggregateIniValue.SortKeySelector);
         }
 
         public IEnumerable<string> ToIniValues()

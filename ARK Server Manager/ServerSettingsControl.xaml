@@ -20,7 +20,6 @@
             <vm:EngramClassNameToDisplayNameConverter x:Key="EngramClassNameToDisplayNameConverter" />
             <vm:DinoNameValueConverter x:Key="DinoNameValueConverter" />
             <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
-            <vm:DinoSettingsList x:Key="BaseDinoSettings"/>
             <vm:TimeValidationRule x:Key="TimeValidationRule"/>
             <vm:IdListValidationRule x:Key="IdListValidationRule"/>
             <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
@@ -28,6 +27,20 @@
             <vm:AllTrueMultiValueConverter x:Key="AllTrueMultiValueConverter"/>
             <vm:EnumConverter x:Key="EnumConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            
+            <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF5593FF"/>
+            <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="#FFF3F9FF"/>
+            <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#FF000000"/>
+            <SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="#FF3C77DD"/>
+            <SolidColorBrush x:Key="Expander.Pressed.Circle.Fill" Color="#FFD9ECFF"/>
+            <SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="#FF000000"/>
+            <SolidColorBrush x:Key="Expander.Disabled.Circle.Stroke" Color="#FFBCBCBC"/>
+            <SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="#FFE6E6E6"/>
+            <SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="#FF707070"/>
+            <SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="#FF333333"/>
+            <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#FF333333"/>
+            
             <Style TargetType="local:AnnotatedTextBox">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -44,18 +57,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF5593FF"/>
-            <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="#FFF3F9FF"/>
-            <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#FF000000"/>
-            <SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="#FF3C77DD"/>
-            <SolidColorBrush x:Key="Expander.Pressed.Circle.Fill" Color="#FFD9ECFF"/>
-            <SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="#FF000000"/>
-            <SolidColorBrush x:Key="Expander.Disabled.Circle.Stroke" Color="#FFBCBCBC"/>
-            <SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="#FFE6E6E6"/>
-            <SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="#FF707070"/>
-            <SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="#FFFFFFFF"/>
-            <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="#FF333333"/>
-            <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#FF333333"/>
             <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -306,19 +307,24 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style x:Key="DinoSpawnGridCellStyle" TargetType="{x:Type DataGridCell}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
-                        <Setter Property="IsEnabled" Value="False" />
-                    </DataTrigger>
-                </Style.Triggers>
+            <Style x:Key="CenteredCheckboxStyle" TargetType="CheckBox">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
+            <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="CenteredComboBoxStyle" TargetType="ComboBox">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
             <SolidColorBrush x:Key="BeigeLabel" Color="#FFE6DFD8"/>
             <SolidColorBrush x:Key="BeigeBorder" Color="#FFD8CCBC"/>
+            
             <ContentControl x:Key="ImportButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
                     <Image Source="Art/Open_6529.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
@@ -331,7 +337,6 @@
                     <Label Content="{DynamicResource ServerSettings_SaveButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
-
             <ContentControl x:Key="StopButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
                     <Image Source="Art/Stop.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
@@ -350,7 +355,6 @@
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
-
             <ContentControl x:Key="UpgradeButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
                     <Image Source="Art/Upgrade.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
@@ -387,6 +391,7 @@
                     <Label Content="{DynamicResource ServerSettings_ShowCommandButtonLabel}" />
                 </StackPanel>
             </ContentControl>
+            
             <DataTemplate x:Key="PlayerLevelItemTemplate">
                 <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
                     <Grid>
@@ -462,29 +467,15 @@
                 <Button Grid.Row="0" Grid.Column="1" Margin="5" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
                 <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
 
-                <Grid Grid.Row="1" DataContext="{Binding Runtime}" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
-                            <Label FontSize="15" Content="{Binding Version}" />
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Column="1" Margin="2" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_AvailableVersionTooltip}" Style="{DynamicResource BorderLabel}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label FontSize="15" Content="{DynamicResource ServerSettings_AvailableVersionLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label FontSize="15" Content="{Binding ElementName=SettingsControl, Path=ServerManager.AvailableVersion}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
-                            <Button Margin="5,0,0,0" Click="CheckForUpdates_Click" Width="22" Height="22" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AvailableVersionRefreshTooltip}">
-                                <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                            </Button>
-                        </StackPanel>
-                    </Border>
-                </Grid>
+                <Border Grid.Row="1" Margin="2" HorizontalAlignment="Stretch" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}" DataContext="{Binding Runtime}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
+                        <Label FontSize="15" Content="{Binding Version}" />
+                        <Button Margin="5" Click="PatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
+                            <Image Source="Art/Help.png" Height="16" Margin="0" />
+                        </Button>
+                    </StackPanel>
+                </Border>
                 <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" DataContext="{Binding Runtime}" Click="Upgrade_Click">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -709,7 +700,8 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
+                            
+                            <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NameAndPasswordsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -737,7 +729,7 @@
                                     <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding SpectatorPassword}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_SpectatorPasswordTooltip}"/>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Grid.Row="1" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NetworkingLabel}" >
+                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_NetworkingLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -778,7 +770,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="2" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_LoginOptionsLabel}" >
+                            <GroupBox Grid.Row="3" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_LoginOptionsLabel}" >
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -807,13 +799,7 @@
                                 </Grid>
                             </GroupBox>
 
-
-                            <!--
-        					<TextBox Grid.Column="5" Grid.Row="1" Text="{Binding ServerIP}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"
-        						ToolTip="Sets the IP address to bind the server to. Only necessary if your machine is on multiple networks. Most users do not need to use this and it should remain blank."/>
-                            -->
-
-                            <GroupBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
+                            <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="#FFD4C2B0" Header="{DynamicResource ServerSettings_AdminConsoleLabel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -852,11 +838,11 @@
                                 <GroupBox.Style>
                                     <Style TargetType="{x:Type GroupBox}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="True">
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
                                                 <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsSOTFLabel}"/>
                                                 <Setter Property="IsEnabled" Value="False"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTF, Path=IsChecked}" Value="False">
+                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
                                                 <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsLabel}"/>
                                                 <Setter Property="IsEnabled" Value="True"/>
                                             </DataTrigger>
@@ -1399,61 +1385,223 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_DinoCustomizationLabel}"/>
-                                            <CheckBox Name="EditSpawnsCheckbox" Margin="5,5,5,5"  VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_SpawnMultipliersOptionTooltip}" Content="{DynamicResource ServerSettings_SpawnMultipliersOptionLabel}"/>
-                                            <CheckBox Name="EditTamedDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedDamageOptionTooltip}" Content="{DynamicResource ServerSettings_TamedDamageOptionLabel}"/>
-                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
-                                            <CheckBox Name="EditWildDamageCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}" Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
-                                            <CheckBox Name="EditWildResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}" Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
-                                            <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" 
-                                                    ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
+                                            <CheckBox Name="EditSpawnsCheckbox"          Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoSpawnWeightMultipliers.IsEnabled, Mode=TwoWay}"          ToolTip="{DynamicResource ServerSettings_SpawnMultipliersOptionTooltip}" Content="{DynamicResource ServerSettings_SpawnMultipliersOptionLabel}"/>
+                                            <CheckBox Name="EditTamedDamageCheckbox"     Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}"     ToolTip="{DynamicResource ServerSettings_TamedDamageOptionTooltip}"      Content="{DynamicResource ServerSettings_TamedDamageOptionLabel}"/>
+                                            <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}"  Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
+                                            <CheckBox Name="EditWildDamageCheckbox"      Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}"          ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}"       Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
+                                            <CheckBox Name="EditWildResistanceCheckbox"  Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}"      ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}"   Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
+                                            <Button Width="22" Height="22" Margin ="5,0,0,0" Click="DinoCustomization_Reset" ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16" />
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <DataGrid Name="DinoSettingsGrid" ItemsSource="{Binding DinoSettings}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1" CanUserAddRows="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn     Binding="{Binding FriendlyName, Mode=TwoWay}"                 Header="{DynamicResource ServerSettings_NameColumnLabel}"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}"                     Header="{DynamicResource ServerSettings_SpawnableColumnLabel}"/>
-                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}"                      Header="{DynamicResource ServerSettings_TameableColumnLabel}"/>
-                                            <DataGridComboBoxColumn ItemsSource="{StaticResource BaseDinoSettings}" SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName" Header="{DynamicResource ServerSettings_ReplacementColumnLabel}"/>
-                                            <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}"        Header="{DynamicResource ServerSettings_SpawnWeightColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <DataGridTextColumn.CellStyle>
-                                                    <Style TargetType="{x:Type DataGridCell}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
-                                                                <Setter Property="Visibility" Value="Hidden" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </DataGridTextColumn.CellStyle>
+                                            <DataGridTextColumn     Binding="{Binding FriendlyName, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_NameColumnLabel}"/>
+                                                </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
-                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Header="{DynamicResource ServerSettings_OverrideLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                                            <DataGridCheckBoxColumn Binding="{Binding CanSpawn, Mode=TwoWay}" >
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnableColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
                                                 <DataGridCheckBoxColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
                                                                 <Setter Property="Visibility" Value="Hidden" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </DataGridCheckBoxColumn.CellStyle>
                                             </DataGridCheckBoxColumn>
-                                            <DataGridTextColumn     Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}"         Header="{DynamicResource ServerSettings_SpawnLimitColumnLabel}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                                            <DataGridCheckBoxColumn Binding="{Binding CanTame, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TameableColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                                <DataGridCheckBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridCheckBoxColumn.CellStyle>
+                                            </DataGridCheckBoxColumn>
+
+                                            <DataGridComboBoxColumn SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ClassName" DisplayMemberPath="FriendlyName">
+                                                <DataGridComboBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_ReplacementColumnLabel}" />
+                                                </DataGridComboBoxColumn.Header>
+                                                <DataGridComboBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridComboBoxColumn.CellStyle>
+                                                <DataGridComboBoxColumn.ElementStyle>
+                                                    <Style TargetType="ComboBox">
+                                                        <Setter Property="ItemsSource" Value="{Binding BaseDinoSettings, ElementName=SettingsControl}" />
+                                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridComboBoxColumn.ElementStyle>
+                                                <DataGridComboBoxColumn.EditingElementStyle>
+                                                    <Style TargetType="ComboBox">
+                                                        <Setter Property="ItemsSource" Value="{Binding BaseDinoSettings, ElementName=SettingsControl}" />
+                                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridComboBoxColumn.EditingElementStyle>
+                                            </DataGridComboBoxColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnWeightColumnLabel}" />
+                                                </DataGridTextColumn.Header>
                                                 <DataGridTextColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CanSetSpawnMultipliers}" Value="False">
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
                                                                 <Setter Property="Visibility" Value="Hidden" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </DataGridTextColumn.CellStyle>
                                             </DataGridTextColumn>
-                                            <DataGridTextColumn     Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}"        Header="{DynamicResource ServerSettings_TamedDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}"    Header="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding WildDamageMultiplier, Mode=TwoWay}"         Header="{DynamicResource ServerSettings_WildDamageColumnLabel}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <DataGridTextColumn     Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}"     Header="{DynamicResource ServerSettings_WildResistanceColumnLabel}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                            <DataGridCheckBoxColumn Binding="{Binding OverrideSpawnLimitPercentage, Mode=TwoWay}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_OverrideLimitColumnLabel}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                                <DataGridCheckBoxColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridCheckBoxColumn.CellStyle>
+                                            </DataGridCheckBoxColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding SpawnLimitPercentage, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SpawnLimitColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasNameTag}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding TamedDamageMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditTamedDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TamedDamageColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding TamedResistanceMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditTamedResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_TamedResistanceColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding WildDamageMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditWildDamageCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_WildDamageColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn     Binding="{Binding WildResistanceMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditWildResistanceCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_WildResistanceColumnLabel}" />
+                                                </DataGridTextColumn.Header>
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+                                            
+                                            <DataGridTemplateColumn Width="20*" CanUserReorder="False">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="30" Click="RemoveDinoSetting_Click" ToolTip="{DynamicResource ServerSettings_DinoRemoveRecordTooltip}" HorizontalAlignment="Left">
+                                                            <Image Source="Art/Delete.png" Width="16" Height="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding KnownDino}" Value="True">
+                                                                <Setter Property="Visibility" Value="Hidden" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTemplateColumn.CellStyle>
+                                            </DataGridTemplateColumn>
                                         </DataGrid.Columns>
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding KnownDino}" Value="False">
+                                                        <Setter Property="Background" Value="Beige" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.RowStyle>
                                     </DataGrid>
                                 </GroupBox>
 
@@ -1649,25 +1797,49 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    <ListBox ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                    <ListBox Name="HarvestResourceItemAmountClassMultipliersListBox" ItemsSource="{Binding HarvestResourceItemAmountClassMultipliers}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
+                                                <Border BorderBrush="Black" BorderThickness="1">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="Auto" MinWidth="150"/>
                                                             <ColumnDefinition Width="1*"/>
+                                                            <ColumnDefinition Width="Auto" MinWidth="20"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <local:AnnotatedSlider Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="120" ValueRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                        <Button Grid.Column="2" Grid.Row="0" Click="RemoveHarvestResource_Click" ToolTip="{DynamicResource ServerSettings_HarvestRemoveRecordTooltip}">
+                                                            <Button.Style>
+                                                                <Style TargetType="{x:Type Button}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding KnownResource}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Button.Style>
+                                                            <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0"  />
+                                                        </Button>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListBoxItem}" >
+                                                <Setter Property="Background" Value="White" />
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding KnownResource}" Value="False">
+                                                        <Setter Property="Background" Value="Beige" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
                                     </ListBox>
                                 </GroupBox>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DayCycleSpeedLabel}" Value="{Binding DayCycleSpeedScale}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DayCycleSpeedTooltip}"/>
@@ -1742,7 +1914,7 @@
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
-                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
+                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" >
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
@@ -1774,8 +1946,37 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
+                                            <GridViewColumn Width="Auto">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Click="RemoveEngramOverride_Click" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
+                                                            <Button.Style>
+                                                                <Style TargetType="{x:Type Button}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding KnownEngram}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Button.Style>
+                                                            <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0"  />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
                                         </GridView>
                                     </ListView.View>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}" >
+                                            <Setter Property="Background" Value="White" />
+
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding KnownEngram}" Value="False">
+                                                    <Setter Property="Background" Value="Beige" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
                                 </ListView>
                             </GroupBox>
                         </Grid>
@@ -1950,13 +2151,14 @@
                             <GroupBox>
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="EnableSOTF" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}"/>
-                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTFHelpTooltip}">
+                                        <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                                        <Button Margin="5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}">
                                             <Image Source="Art/Help.png" Height="16" Margin="0" />
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
-                                <StackPanel IsEnabled="{Binding ElementName=EnableSOTF, Path=IsChecked}">
+                                <StackPanel IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Margin="3">
+                                    <CheckBox IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}"/>
                                     <CheckBox IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
                                     <CheckBox IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
                                     <CheckBox IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>

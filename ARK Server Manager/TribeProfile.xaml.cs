@@ -9,6 +9,7 @@ using ARK_Server_Manager.Lib;
 using ARK_Server_Manager.Lib.ViewModel;
 using ARK_Server_Manager.Lib.ViewModel.RCON;
 using ArkData;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -17,6 +18,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class TribeProfile : Window
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public TribeProfile(PlayerInfo player, ICollection<PlayerInfo> players, String serverFolder)
         {
             InitializeComponent();
@@ -75,7 +78,7 @@ namespace ARK_Server_Manager
 
         public String UpdatedDate => ArkDataTribe?.FileUpdated.ToString("G");
 
-        public String WindowTitle => $"Tribe Profile - {Player.TribeName}";
+        public String WindowTitle => String.Format(_globalizedApplication.GetResourceString("Profile_WindowTitle_Tribe"), Player.TribeName);
 
         public ICommand ExplorerLinkCommand
         {

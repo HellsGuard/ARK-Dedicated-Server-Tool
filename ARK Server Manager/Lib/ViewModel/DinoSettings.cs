@@ -12,6 +12,14 @@ namespace ARK_Server_Manager.Lib.ViewModel
     //
     public class DinoSettings : DependencyObject
     {
+        public const float DefaultSpawnWeightMultiplier = 0.1f;
+        public const bool  DefaultOverrideSpawnLimitPercentage = true;
+        public const float DefaultSpawnLimitPercentage = 1.0f;
+        public const float DefaultTamedDamageMultiplier = 1.0f;
+        public const float DefaultTamedResistanceMultiplier = 1.0f;
+        public const float DefaultWildDamageMultiplier = 1.0f;
+        public const float DefaultWildResistanceMultiplier = 1.0f;
+
         public static readonly DependencyProperty FriendlyNameProperty = DependencyProperty.Register(nameof(FriendlyName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(false));
@@ -48,15 +56,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
             get { return (bool)GetValue(CanSpawnProperty); }
             set { SetValue(CanSpawnProperty, value); }
         }
-
-        public bool CanSetSpawnMultipliers
-        {
-            get { return (bool)GetValue(CanSetSpawnMultipliersProperty); }
-            set { SetValue(CanSetSpawnMultipliersProperty, value); }
-        }
-
-        public static readonly DependencyProperty CanSetSpawnMultipliersProperty = DependencyProperty.Register(nameof(CanSetSpawnMultipliers), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
-
 
         public string ReplacementClass
         {
@@ -107,5 +106,37 @@ namespace ARK_Server_Manager.Lib.ViewModel
         }
 
         public string NameTag { get; internal set; }
+        public bool KnownDino { get; internal set; }
+        public bool HasNameTag { get; internal set; }
+        public bool HasClassName { get; internal set; }
+        public bool IsTameable { get; internal set; }
+
+        public DinoSettings Clone()
+        {
+            return new DinoSettings()
+            {
+                ClassName = ClassName,
+                FriendlyName = FriendlyName,
+                NameTag = NameTag,
+
+                CanSpawn = CanSpawn,
+                CanTame = CanTame,
+                ReplacementClass = ReplacementClass,
+
+                SpawnWeightMultiplier = SpawnWeightMultiplier,
+                OverrideSpawnLimitPercentage = OverrideSpawnLimitPercentage,
+                SpawnLimitPercentage = SpawnLimitPercentage,
+
+                TamedDamageMultiplier = TamedDamageMultiplier,
+                TamedResistanceMultiplier = TamedResistanceMultiplier,
+                WildDamageMultiplier = WildDamageMultiplier,
+                WildResistanceMultiplier = WildResistanceMultiplier,
+
+                KnownDino = KnownDino,
+                HasNameTag = HasNameTag,
+                HasClassName = HasClassName,
+                IsTameable = IsTameable,
+            };
+        }
     }
 }

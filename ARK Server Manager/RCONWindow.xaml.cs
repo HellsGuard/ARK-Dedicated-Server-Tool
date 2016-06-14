@@ -119,6 +119,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class RCONWindow : Window
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public bool ScrollOnNewInput
         {
             get { return (bool)GetValue(ScrollOnNewInputProperty); }
@@ -214,12 +216,12 @@ namespace ARK_Server_Manager
             this.DataContext = this;
 
             AddCommentsBlock(
-                "Enter commands or chat into the box at the bottom.",
-                "In Command mode, everything you enter will be a normal admin command",
-                "In Broadcast mode, everything you enter will be a global broadcast",
-                "You may always prefix a command with / to be treated as a command and not chat.",
-                "Right click on players in the list to access player commands",
-                "Type /help to get help");
+                _globalizedApplication.GetResourceString("RCON_Comments_Line1"),
+                _globalizedApplication.GetResourceString("RCON_Comments_Line2"),
+                _globalizedApplication.GetResourceString("RCON_Comments_Line3"),
+                _globalizedApplication.GetResourceString("RCON_Comments_Line4"),
+                _globalizedApplication.GetResourceString("RCON_Comments_Line5"),
+                String.Format(_globalizedApplication.GetResourceString("RCON_Comments_Line6"), _globalizedApplication.GetResourceString("RCON_Help_Keyword")));
 
             if (this.RCONParameters.RCONWindowExtents.Width > 50 && this.RCONParameters.RCONWindowExtents.Height > 50)
             {
@@ -385,7 +387,7 @@ namespace ARK_Server_Manager
                             // Ignore any failures here, best effort only.
                         }
 
-                        MessageBox.Show($"Logs in {logsDir} deleted.", "Logs deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("RCON_ClearLogs_Label"), logsDir), _globalizedApplication.GetResourceString("RCON_ClearLogs_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
                     },
                     canExecute: (_) => this.RCONParameters.Server != null
                 );
@@ -407,7 +409,7 @@ namespace ARK_Server_Manager
                         }
                         catch(Exception ex)
                         {
-                            MessageBox.Show($"Unable to open the logs directory at {logsDir}.  Please make sure this directory exists and that you have permission to access it.\nException: {ex.Message}", "Can't open logs", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("RCON_ViewLogs_ErrorLabel"), logsDir, ex.Message), _globalizedApplication.GetResourceString("RCON_ViewLogs_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     },
                     canExecute: (_) => this.RCONParameters.Server != null
@@ -422,7 +424,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = GlobalizedApplication.Instance.GetResourceString("RCON_SaveWorldLabel");
+                        var message = _globalizedApplication.GetResourceString("RCON_SaveWorldLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("saveworld");
@@ -439,7 +441,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = GlobalizedApplication.Instance.GetResourceString("RCON_DestroyWildDinosLabel");
+                        var message = _globalizedApplication.GetResourceString("RCON_DestroyWildDinosLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("DestroyWildDinos");
@@ -509,10 +511,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.ServerChatTo;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_ChatPlayerLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_ChatPlayerLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Send");
-                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
+                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Send");
+                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => true //player != null && player.IsOnline
@@ -531,10 +533,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenamePlayer;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_RenamePlayerLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_RenamePlayerLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Change");
-                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
+                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Change");
+                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => player != null && player.ArkData != null && player.IsOnline
@@ -553,10 +555,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenameTribe;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{GlobalizedApplication.Instance.GetResourceString("RCON_RenameTribeLabel")} {player.SteamName ?? GlobalizedApplication.Instance.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_RenameTribeLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Change");
-                        button2.Content = GlobalizedApplication.Instance.GetResourceString("RCON_Button_Cancel");
+                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Change");
+                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => player != null && player.IsOnline
@@ -659,11 +661,11 @@ namespace ARK_Server_Manager
                         try
                         {
                             System.Windows.Clipboard.SetText(player.SteamId.ToString());
-                            MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_CopySteamIdLabel")} {player.SteamName}", GlobalizedApplication.Instance.GetResourceString("RCON_CopySteamIdTitle"), MessageBoxButton.OK);
+                            MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_CopySteamIdLabel")} {player.SteamName}", _globalizedApplication.GetResourceString("RCON_CopySteamIdTitle"), MessageBoxButton.OK);
                         }
                         catch
                         {
-                            MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorLabel")}", GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
+                            MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizedApplication.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                         }
                     },
                     canExecute: (player) => player != null
@@ -684,11 +686,11 @@ namespace ARK_Server_Manager
                             try
                             {
                                 System.Windows.Clipboard.SetText(player.ArkData.Id.ToString());
-                                MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", GlobalizedApplication.Instance.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
+                                MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", _globalizedApplication.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
                             }
                             catch
                             {
-                                MessageBox.Show($"{GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorLabel")}", GlobalizedApplication.Instance.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
+                                MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizedApplication.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                             }
                         }
                     },
@@ -824,41 +826,41 @@ namespace ARK_Server_Manager
                 var textBox = (TextBox)sender;
                 var effectiveMode = this.CurrentInputMode;
                 var commandText = textBox.Text.Trim();
-                if (commandText.StartsWith("/help"))
+                if (commandText.StartsWith(_globalizedApplication.GetResourceString("RCON_Help_Keyword")))
                 {
                     AddCommentsBlock(
-                        "Known commands:",
-                        "   AllowPlayerToJoinNoCheck <steam id> - Adds the specified player to the server's whitelist.",
-                        "   BanPlayer <steam id> - Add the specified player to the server's banned list. ",
-                        "   Broadcast <message> - Broadcast a message to all players on the server. ",
-                        "   DestroyAll <class name> - Destroys ALL creatures of the specified class.",
-                        "   DestroyAllEnemies - Destroys all non-player creatures on the map, including tamed creatures. This does not prevent new ones from spawning as usual.",
-                        "   DestroyStructures - Destroys all structures owned by all players on the map.",
-                        "   DestroyWildDinos - Destroys all untamed creatures on the map. Useful for helping newly-released creatures to spawn.",
-                        "   DisallowPlayerToJoinNoCheck <steam id> - Removes the specified player from the server's whitelist.",
-                        "   DoExit - Shuts down the server as soon as possible.",
-                        "   GetChat - Returns the latest chat buffer (the same amount that the clients see).",
-                        "   GiveItemNumToPlayer <player id> <item id> <quantity> <quality> <blueprint> - Adds the specified item to the player's inventory (or its blueprint) in the specified quantity and with the specified quality.",
-                        "   GiveExpToPlayer <player id> <how much> <from tribe share> <prevent sharing with tribe> - Gives the specified player the specified amount of experience points.",
-                        "   KickPlayer <steam id> - Forcibly disconnect the specified player from the server.",
-                        "   KillPlayer <player id> - Kills the specified player.",
-                        "   ListPlayers - List all connected players and their Steam IDs.",
-                        "   PlayersOnly - Stops all creature movement in the game world and halts crafting. Players can still move normally. Repeat the command to disable its effects.",
-                        "   RenamePlayer \"<player>\" <new name> - Renames the player specified by their in-game string name.",
-                        "   RenameTribe \"<tribe>\" <new name> - Renames the tribe specified by it's string name.",
-                        "   SaveWorld - Forces the server to save the game world to disk in its current state.",
-                        "   ServerChat <message> - Sends a chat message to all currently connected players.",
-                        "   ServerChatTo \"<steam id>\" <message> - Sends a direct chat message to the player specified by their int64 encoded steam id.",
-                        "   ServerChatToPlayer \"<player>\" <message> - Sends a direct chat message to the player specified by their in-game player name.",
-                        "   SetMessageOfTheDay <message> - Sets the server's 'message of the day', displayed to players when they connect to it.",
-                        "   SetTimeOfDay <hour>:<minute>[:<second>] - Sets the game world's time of day to the specified time.",
-                        "   ShowMessageOfTheDay - Displays the message of the day.",
-                        "   Slomo <factor> - Sets the game speed multiplier. Lower values slow time, change back to 1 to set back to normal.",
-                        "   UnBanPlayer <steam id> - Remove the specified player from the server's banned list.",
-                        "where:",
-                        "   <player> specifies the character name of the player",
-                        "   <steam id> is the long numerical id of the player",
-                        "   <player id> specifies the ingame UE4 ID of the player"
+                        _globalizedApplication.GetResourceString("RCON_Help_Line1"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line2"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line3"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line4"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line5"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line6"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line7"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line8"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line9"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line10"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line11"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line12"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line13"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line14"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line15"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line16"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line17"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line18"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line19"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line20"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line21"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line22"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line23"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line24"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line25"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line26"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line27"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line28"),
+                        _globalizedApplication.GetResourceString("RCON_Help_Line29"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line30"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line31"),
+                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line32")
                         );
                 }
                 else

@@ -1,24 +1,13 @@
 ﻿using ARK_Server_Manager.Lib;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Deployment.Application;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Xml;
-using System.ComponentModel;
 using System.Threading;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -27,6 +16,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class GlobalSettings : UserControl
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public string Version
         {
             get;
@@ -77,12 +68,12 @@ namespace ARK_Server_Manager
 
         public void SetDataDir_Click(object sender, RoutedEventArgs args)
         {
-            var optionResult = MessageBox.Show("Changing the data directory will move any existing profiles to the new location, but it will not move any server installations.  Do you still want to change this directory?", "Confim changing data directory", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var optionResult = MessageBox.Show(_globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmLabel"), _globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (optionResult == MessageBoxResult.Yes)
             {
                 var dialog = new CommonOpenFileDialog();
                 dialog.IsFolderPicker = true;
-                dialog.Title = "Select Data Directory";
+                dialog.Title = _globalizedApplication.GetResourceString("Application_DataDirectoryTitle");
                 dialog.InitialDirectory = Config.Default.DataDir;
                 var result = dialog.ShowDialog();
 
@@ -135,7 +126,7 @@ namespace ARK_Server_Manager
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(String.Format("There was an error changing the data directory: {0}\r\nPlease correct the error and try again, or contact technical support for assistance.", ex.Message), "Failed to change data directory", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_FailedLabel"), ex.Message), _globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
 
                     }
@@ -147,7 +138,7 @@ namespace ARK_Server_Manager
         {
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            dialog.Title = "Select Data Directory";
+            dialog.Title = _globalizedApplication.GetResourceString("GlobalSettings_CacheDirectoryTitle");
             dialog.InitialDirectory = Config.Default.DataDir;
             var result = dialog.ShowDialog();
 

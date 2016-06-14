@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
+using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -51,6 +47,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RemoveEngramPreReqProperty, value); }
         }
 
+        public bool KnownEngram
+        {
+            get
+            {
+                return GameData.HasEngramForClass(EngramClassName);
+            }
+        }
+
         public static EngramEntry FromINIValue(string iniValue)
         {
             var newSpawn = new EngramEntry();
@@ -65,7 +69,22 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return this.EngramClassName;
+            return EngramClassNameToDisplayNameConverter.Convert(this.EngramClassName).ToString();
+        }
+
+        public override bool ShouldSave()
+        {
+            if (!KnownEngram)
+                return true;
+
+            var engramEntry = GameData.GetEngramForClass(EngramClassName);
+            if (engramEntry == null)
+                return true;
+
+            return (!engramEntry.EngramHidden.Equals(EngramHidden) ||
+                !engramEntry.EngramPointsCost.Equals(EngramPointsCost) ||
+                !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
+                !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
         }
     }
 }

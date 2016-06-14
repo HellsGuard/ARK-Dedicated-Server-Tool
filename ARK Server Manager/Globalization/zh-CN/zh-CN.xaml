@@ -1,0 +1,737 @@
+﻿<Globalization:GlobalizationResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:Globalization="clr-namespace:WPFSharp.Globalizer;assembly=WPFSharp.Globalizer"
+    Name="zh-CN"
+    LinkedStyle="zh-CN"
+    >
+
+    <sys:String x:Key="Generic_ErrorLabel">错误</sys:String>
+
+    <!-- 更新窗口 -->
+    <sys:String x:Key="AutoUpdater_Title">方舟服务器管理 - 更新中...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">下载 SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_UnzippingSteamCmd">解压 SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">授权 SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_InstallSteamCmdComplete">SteamCMD 安装中</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_CheckForNewServerVersion">检查新的服务器版本...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadNewServerVersion">下载新的服务器版本...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadNewServerComplete">服务器下载完成</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_Complete">完成</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_Cancelled">取消</sys:String>
+    <sys:String x:Key="AutoUpdater_CancelButtonLabel">关闭</sys:String>
+
+    <!-- 全局设置窗口 -->
+    <sys:String x:Key="CommandLine_Title">命令行</sys:String>
+    <sys:String x:Key="CommandLine_CopyButtonLabel">复制到剪贴板</sys:String>
+
+    <!-- 全局设置窗口 -->
+    <sys:String x:Key="GlobalSettings_Title">方舟服务器管理</sys:String>
+    <sys:String x:Key="GlobalSettings_VersionLabel">当前版本:</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">数据目录:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">缓存目录:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">这是自动更新的文件将缓存到服务器的文件副本里.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">更新间隔:</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">设置检查Steam服务器更新时间，以小时和分钟（HH：mm）。设置为00:00禁用.</sys:String>
+    <sys:String x:Key="GlobalSettings_ManageFirewallLabel">自动管理防火墙设置</sys:String>
+    <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">设置位置...</sys:String>
+    <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">语言</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">玩家等级增加:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">添加新的自定义级别时要增加XP的量.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">迪诺级别提升:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">添加新的自定义级别时要增加XP的量.</sys:String>
+    <!-- 
+    主窗口 
+    
+    这是在顶部的主窗口 - 这不是任何配置文件的一部分.
+    -->
+    <sys:String x:Key="MainWindow_Title">方舟服务器管理器</sys:String>
+    <sys:String x:Key="MainWindow_ArkNameLabel">方舟服务器管理器</sys:String>
+    <sys:String x:Key="MainWindow_VersionLabel">当前版本:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpLabel">我的公网 IP:</sys:String>
+    <sys:String x:Key="MainWindow_MyIpTooltip">这个IP是你服务器对外开放的IP.</sys:String>
+    <sys:String x:Key="MainWindow_MyIpError">无效的IP地址或主机名</sys:String>
+    <sys:String x:Key="MainWindow_RefreshMyIpTooltip">请确认您现在的公网IP地址。</sys:String>
+    <sys:String x:Key="MainWindow_DonateTooltip">点击这里捐赠，以表示对我们工作的支持！</sys:String>
+    <sys:String x:Key="MainWindow_OpenRCONTooltip">打开远程控制台</sys:String>
+    <sys:String x:Key="MainWindow_OpenSettingsTooltip">打开全局设置</sys:String>
+    <sys:String x:Key="MainWindow_OpenHelpTooltip">打开帮助</sys:String>
+    <sys:String x:Key="MainWindow_UpdateToLabelFormat">升级到 {0} 最新版!</sys:String>
+
+    <!-- 通用菜单字符串 -->
+    <sys:String x:Key="Menu_File">_文件</sys:String>
+    <sys:String x:Key="Menu_File_Exit">_退出</sys:String>
+    <sys:String x:Key="Menu_Language">_语言</sys:String>
+    <sys:String x:Key="Menu_Language_Chinese">_简体中文</sys:String>
+    <sys:String x:Key="Menu_Language_English">_英语</sys:String>
+    <sys:String x:Key="Menu_Language_Spanish">_西班牙</sys:String>
+    <sys:String x:Key="Menu_Language_Hebrew">_希伯来</sys:String>
+
+    <sys:String x:Key="LanguageSelectionLabel">_语言</sys:String>
+
+    <sys:String x:Key="SliderUnits_Multiplier">倍</sys:String>
+    <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
+    <sys:String x:Key="SliderUnits_Seconds">秒</sys:String>
+    <sys:String x:Key="SliderUnits_Minutes">分钟</sys:String>
+    <sys:String x:Key="SliderUnits_Items">单位</sys:String>
+    <sys:String x:Key="SliderUnits_XP">xp</sys:String>
+    <sys:String x:Key="SliderUnits_Players">玩家</sys:String>
+    <sys:String x:Key="SliderUnits_Tribes">部落</sys:String>
+    
+    <!--
+    服务器设置
+    
+    这些配置文件设置，通过分组节.
+    -->   
+
+    <!-- 服务器设置 - 一般 -->    
+    <sys:String x:Key="ServerSettings_ProfileLabel">配置名称:</sys:String>
+    <sys:String x:Key="ServerSettings_ProfileTooltip">服务器配置文件的名称。这不是方舟游戏服务器的名称，玩家无法看到的.</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionLabel">安装的版本:</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionTooltip">目前本地安装的方舟服务器版本.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionLabel">最新的版本:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionTooltip">目前可供下载的方舟服务器版本.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">刷新当前服务器可下载的最新版本.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationLabel">安装位置:</sys:String>
+    <sys:String x:Key="ServerSettings_InstallLocationTooltip">此处请设置成方舟路径名为“ARK”的根目录</sys:String>
+    <sys:String x:Key="ServerSettings_StatusLabel">本地状态:</sys:String>
+    <sys:String x:Key="ServerSettings_StatusTooltip">方舟服务器在本地网络上的状态.</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityLabel">网络状态:</sys:String>
+    <sys:String x:Key="ServerSettings_AvailabilityTooltip">方舟服务器在Steam网络上的状态.</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unknown">未知</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_SetPublicIP">设置公网 IP</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Unavailable">不可用</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Waiting">等待发布</sys:String>
+    <sys:String x:Key="ServerSettings_Availability_Available">可用</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersLabel">在线玩家:</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersTooltip">目前连接到方舟服务器的玩家数量.</sys:String>
+
+    <!-- 服务器设置 - 一般按​​钮 -->
+    <sys:String x:Key="ServerSettings_ImportButtonLabel">加载</sys:String>
+    <sys:String x:Key="ServerSettings_ImportButtonTooltip">加载一个现有的配置文件，或直接从现有的文件导入服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonLabel">保存</sys:String>
+    <sys:String x:Key="ServerSettings_SaveButtonTooltip">保存当前配置文件写入服务器的.INI文件.</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonLabel">停止</sys:String>
+    <sys:String x:Key="ServerSettings_StopButtonTooltip">停止运行方舟服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonLabel">开始</sys:String>
+    <sys:String x:Key="ServerSettings_StartButtonTooltip">开始运行方舟服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
+    <sys:String x:Key="ServerSettings_RCONButtonTooltip">打开RCON窗口.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonLabel">升级</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">升级到目前的方舟服务器的最新版本.</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonLabel">安装</sys:String>
+    <sys:String x:Key="ServerSettings_InstallButtonTooltip">安装最新版本的方舟服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonLabel">取消</sys:String>
+    <sys:String x:Key="ServerSettings_CancelUpgradeButtonTooltip">取消方舟服务器升级.</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonLabel">设置位置...</sys:String>
+    <sys:String x:Key="ServerSettings_SetLocationButtonTooltip">此处请设置成方舟路径名为“ARK”的根目录</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonLabel">验证</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateButtonTooltip">验证Steam服务器内容和版本.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetSectionTooltip">重置回默认的数值.</sys:String>
+
+    <!-- 服务器设置 - 管理员   -->
+    <sys:String x:Key="ServerSettings_AdministrationSectionLabel">基础管理</sys:String>
+    <sys:String x:Key="ServerSettings_NameAndPasswordsLabel">名字和密码</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameLabel">服务器名称:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameTooltip">方舟服务器的名称，如(我的方舟).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPasswordLabel">服务器密码:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPasswordTooltip">用户必须输入密码以访问服务器。如果这样设置，只有知道密码的人才能访问你的服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_AdminPasswordLabel">管理员密码:</sys:String>
+    <sys:String x:Key="ServerSettings_AdminPasswordTooltip">用户必须输入密码来执行权限。如果不设置，任何人都可以使用权限.</sys:String>
+    <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">观察者密码:</sys:String>
+    <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">用户必须输入密码使用非管理员的观众模式.</sys:String>
+
+    <sys:String x:Key="ServerSettings_NetworkingLabel">网络</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPortLabel">服务器源端口:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerPortTooltip">用户将使用这个端口连接到您的服务器。默认为7777。如果您希望在一台机器上有多台服务器，可以更改这个端口.</sys:String>
+    <sys:String x:Key="ServerSettings_QueryPortLabel">目标端口:</sys:String>
+    <sys:String x:Key="ServerSettings_QueryPortTooltip">Steam用于与服务器通信的端口。默认为27015。如果您希望在一台机器上有多台服务器，可以更改这个端口.</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPLabel">本地 IP:</sys:String>
+    <sys:String x:Key="ServerSettings_LocalIPTooltip">设置本地（私有）服务器的IP地址。这应该是你的首要网卡，可以连接到公共网络上的.</sys:String>
+    <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">刷新可用的本地IP.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsLabel">使用原始套接字</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">允许直接对等连接，而不是通过Steam。打开两个服务器端口和服务器端口1是在防火墙和端口转发.</sys:String>
+
+    <sys:String x:Key="ServerSettings_LoginOptionsLabel">登录选项</sys:String>
+    <sys:String x:Key="ServerSettings_UseBanListLabel">使用禁止列表网址</sys:String>
+    <sys:String x:Key="ServerSettings_UseBanListTooltip">如果启用，禁止列表指定内容将被使用.</sys:String>
+    <sys:String x:Key="ServerSettings_BanListTooltip">禁止使用列表的网址.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableIdleTimeoutLabel">启用挂机超时踢出</sys:String>
+    <sys:String x:Key="ServerSettings_EnableIdleTimeoutTooltip">如果启用，将使用挂机超时踢出机制.</sys:String>
+    <sys:String x:Key="ServerSettings_IdleTimeoutTooltip">直到空闲挂机的玩家被踢出服务器的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_IdleTimeoutUnits">秒</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersLabel">最大玩家:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersTooltip">设置可以加入此服务器的最大数量的玩家.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AdminConsoleLabel">管理控制台 (RCON)</sys:String>
+    <sys:String x:Key="ServerSettings_EnableRCONPortLabel">使用 RCON 端口</sys:String>
+    <sys:String x:Key="ServerSettings_EnableRCONPortTooltip">如果启用，RCON的端口将被启用.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONPortTooltip">RCON 将在你的服务器上使用这个端口.</sys:String>
+    <sys:String x:Key="ServerSettings_LogAdminChatLabel">登录管理员日志</sys:String>
+    <sys:String x:Key="ServerSettings_LogAdminChatTooltip">如果启用，管理命令将显示在聊天窗口中.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">启用服务器管理日志</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">如果启用，服务器管理员日志（包括RCON支持）将打开.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON 服务器日志缓冲区:</sys:String>
+    <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">设置RCON游戏日志缓冲区的最大长度（默认为600）.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">最大部落日志:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">设置每个部落的部落日志条目的最大数量（默认为100）.</sys:String>
+
+    <sys:String x:Key="ServerSettings_MapsAndModsLabel">地图和Mod</sys:String>
+    <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">生存进化—地图设置和插件设置</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathLabel">地图和地图Mod路径:</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathTooltip">标准的地图名字(例如TheIsland),或本地的mod路径(例如./Game/Mods/123456789/myModMap)如果你的Mod里有一个地图.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameTooltip">重置地图名称为官方默认</sys:String>
+    <sys:String x:Key="ServerSettings_ModIdsLabel">Mod ID编号:</sys:String>
+    <sys:String x:Key="ServerSettings_ModIdsTooltip">每个Mod ID编号之间请使用“,”小写逗号来间隔开来，以及以启动顺序来排列.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">启用毁灭方舟倒计时</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">如果启用，毁灭方舟的倒计时将被打开。要重置倒计时，请先关闭后设置，然后保存配置文件，再重新启动。</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">时间间隔</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">设置秒数，将生效倒计时毁灭方舟。2592000秒为30天时间！</sys:String>
+
+    <sys:String x:Key="ServerSettings_AutoSavesLabel">服务器存档</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">自动保存时间:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodTooltip">服务器自动保存时间.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoSavesPeriodUnits">分钟</sys:String>
+
+    <sys:String x:Key="ServerSettings_MOTDLabel">服务器公告</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDTooltip">这个公告是当玩家进入你的方舟服务器时显示给玩家的信息.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationLabel">持续时间:</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationTooltip">这个时间是显示服务器公告的时间长度.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDDurationUnits">秒</sys:String>
+
+    <sys:String x:Key="ServerSettings_ServerOptionsLabel">服务器选项</sys:String>
+    <sys:String x:Key="ServerSettings_DisableVACLabel">禁用Valve防外挂系统（VAC）</sys:String>
+    <sys:String x:Key="ServerSettings_DisableVACTooltip">如果启用，该Valve防外挂系统（VAC）将被禁用。请谨慎使用！</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">禁用Player-Move-Physics优化</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePMVOptimizationTooltip">如果启用,player-move-physics将被禁用。</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">禁用防外挂检测</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">如果启用，反作弊检测会被禁用.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasLabel">防外挂偏差设置</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasTooltip">防外挂检测偏差。默认为1.0，禁用0.0</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeLabel">使battleye防外挂系统</sys:String>
+    <sys:String x:Key="ServerSettings_UseBattlEyeTooltip">如果启用，该battleye防外挂系统将启用.</sys:String>
+    <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
+
+    <sys:String x:Key="ServerSettings_CommandLineLabel">命令行设置:</sys:String>
+    <sys:String x:Key="ServerSettings_AdditionalArgsLabel">额外的参数:</sys:String>
+    <sys:String x:Key="ServerSettings_AdditionalArgsTooltip">为服务器额外的命令行参数。例如添加中文MOD的总模式转换:?TotalConversionMod=505802807</sys:String>
+    <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">显示命令...</sys:String>
+    <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">查看服务器的运行命令.</sys:String>
+
+    <!-- 服务器设置 - 自动化管理 -->
+    <sys:String x:Key="ServerSettings_AutomaticManagementLabel">自动管理</sys:String>
+    <sys:String x:Key="ServerSettings_NoAutoManagementButtonLabel">我为什么不能用这个？</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartLabel">开机自动启动服务器</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartTooltip">机器启动时自动启动服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">启用定期自动更新</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">自动检查更新和升级服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodLabel">更新时间:</sys:String>
+    <sys:String x:Key="ServerSettings_UpdatePeriodTooltip">更新检查时的小时数和分钟数.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodLabel">重新启动间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodTooltip">广播关于升级的时间以及关闭和升级服务器的消息.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartGracePeriodUnits">分钟</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesLabel">强制更新和重启时间:</sys:String>
+    <sys:String x:Key="ServerSettings_ForceUpdatesTooltip">这个时间是每天强制在某个时间进行更新和重启.</sys:String>
+
+    <!-- 服务器设置 - 规则 -->
+    <sys:String x:Key="ServerSettings_RulesLabel">规则</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreLabel">启用专家模式</sys:String>
+    <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">开启专家模式（玩家死后无法重生，必须重新创建一个角色才能游戏）.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPLabel">开启 PvP</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPTooltip">开启玩家与玩家模式（玩家可以处理伤害或杀死对方。在PVP玩家也可以破坏或摧毁另一个部落的建筑或杀死恐龙.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingLabel">开启PVE洞穴建筑</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">如果启用，则在洞穴内的建筑将使用PVE模式.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">禁用 PVE 伤害</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">如果启用，玩家无法处理伤害或杀死其他部落成员，恐龙和建筑在PVE模式启用.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesLabel">禁用战利品箱子</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">如果启用，将不再产生战利品箱子(但不会影响到神器箱子的产生).</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">防止在资源丰富区域建设</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">如果启用，则完全禁止在资源丰富的区域建设,在TheIsland地图,特别设置遍布各大山脉。</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">禁用 PVP 友军伤害</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">如果启用，玩家无法处理伤害或杀死其他部落成员，恐龙和建筑，PVP模式启用.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyLabel">游戏难度:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyTooltip">决定方舟世界里所有生物的等级以及战利品下降的质量。值越高生物的等级越高战利品质量越高.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">部落玩家数量:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">设置为 0 ,部落玩家是无限的.设置数字大于 0 作为限制部落玩家数量.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">玩家</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableTributeLabel">启用角色数据下载</sys:String>
+    <sys:String x:Key="ServerSettings_EnableTributeTooltip">如果启用,这将允许下载外部服务器角色/物品/恐龙到你的服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">取消角色下载</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">如果启用，将禁止角色数据下载.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">取消物品下载</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">如果启用，将禁止物品数据下载.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">取消恐龙下载</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">如果启用，将禁止恐龙数据下载.</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvPRespawnLabel">增加PVP刷新间隔</sys:String>
+    <sys:String x:Key="ServerSettings_PvPRespawnTooltip">如果启用，使增加PVP刷新间隔设置.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodLabel">检查周期间隔</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodTooltip">重生的时间检查玩家被杀后持续由一个团队.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalCheckPeriodUnits">秒</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierLabel">乘数间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierTooltip">乘数的值基本确定重生时间.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalMultiplierUnits">倍</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseLabel">基数间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseTooltip">用于确定重生时间基地的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_IntervalBaseUnits">秒</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPLabel">防止离线 PvP</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPTooltip">如果启用，则禁止袭击离线玩家的预防措施.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">离线间隔</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">规定时间内部落的玩家/恐龙/建筑变得无懈可击（要求部落内所有成员都离线后才生效）.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">秒</sys:String>
+
+    <sys:String x:Key="ServerSettings_PvEScheduleLabel">PvE 保护时间</sys:String>
+    <sys:String x:Key="ServerSettings_PvEScheduleTooltip">如果启用，允许切换PVE和PVP之间在预先指定的游戏时间或预先指定的真实世界时间.</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeLabel">使用服务器时间</sys:String>
+    <sys:String x:Key="ServerSettings_UseServerTimeTooltip">如果启用，该计划将使用方舟服务器上的真实时间；否则，它使用游戏时间.</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeLabel">开始时间:</sys:String>
+    <sys:String x:Key="ServerSettings_StartTimeTooltip">开始时间以小时和分钟从午夜至使用PVE模式.</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeLabel">停止时间:</sys:String>
+    <sys:String x:Key="ServerSettings_StopTimeTooltip">停止时间以小时和分钟从午夜到禁用PVE模式.</sys:String>
+
+    <sys:String x:Key="ServerSettings_TribeWarfareLabel">PVE“部落战争”选项</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareLabel">允许部落战争</sys:String>
+    <sys:String x:Key="ServerSettings_AllowTribeWarfareTooltip">如果启用，部落之间可以宣战并在约定的时间内进行战争.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareLabel">允许取消部落战争</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareTooltip">如果启用,部落能够取消前一个商定的战争，哪怕实际上已经开始了的战争.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">允许定制的食谱</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">如果启用,玩家可以使用自定义RP-oriented配方/烹饪系统(包括技能的结果).</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierLabel">有效倍数</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeEffectivenessMultiplierTooltip">为客户指定乘数配方有效性。更高的值增加配方的有效性.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierLabel">技能倍数</sys:String>
+    <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierTooltip">为客户指定乘数配方的技能。更高的值增加配方的技能.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableDiseasesLabel">启用疾病</sys:String>
+    <sys:String x:Key="ServerSettings_EnableDiseasesTooltip">如果启用，疾病将被启用.</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">非永久性疾病</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">如果启用，将使疾病不是永久性的（玩家重生后，疾病将消除）.</sys:String>
+
+    <!-- 服务器设置 - 聊天和通知 -->
+    <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">聊天和通知</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatLabel">启用全球语音聊天</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatTooltip">如果启用，语音聊天将成为全球性的服务器上的所有人能听到.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatLabel">启用附近文本聊天</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">如果启用，只有附近的玩家可以看到他们的聊天消息.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftLabel">启用玩家下线通知</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">如果启用，如果有人离开服务器玩家会收到通知.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">启用玩家加入通知</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePlayerJoinedTooltip">如果启用，如果有人加入服务器玩家会收到通知.</sys:String>
+
+    <!-- 服务器设置 - HUD和视觉效果 -->
+    <sys:String x:Key="ServerSettings_HUDAndVisualsLabel">开启HUD和辅助设置</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairLabel">开启准心</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrosshairTooltip">如果启用，玩家将显示准星.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDLabel">允许 HUD</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHUDTooltip">如果启用，允许玩家看到HUD信息.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewLabel">允许第三人称</sys:String>
+    <sys:String x:Key="ServerSettings_AllowThirdPersonViewTooltip">如果启用，可以让玩家以第三人称方式查看.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">允许地图显示位置</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">如果启用，将显示玩家在地图上的位置.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">启用PVP伽马设置</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">如果启用，允许在PVP模式中调整伽马变化.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">启用PVE伽马设置</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">如果启用，允许在PVE模式中调整伽马变化.</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">显示浮动伤害数值</sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">如果启用，使用RPG风格的弹出伤害数值模式.</sys:String>
+
+    <!-- 服务器设置 - 玩家设置 -->
+    <sys:String x:Key="ServerSettings_PlayerSettingsLabel">玩家设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryLabel">启用 Flyer-Carry</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryTooltip">如果启用，在PVE模式下允许飞行的恐龙，拿起其他恐龙和玩家.</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierLabel">XP 倍数:</sys:String>
+    <sys:String x:Key="ServerSettings_XPMultiplierTooltip">设置玩家游戏中获得的经验倍数.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPLabel">最大 XP:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPTooltip">设置最大的XP经验值.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxXPUnits">xp</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMaxXPTooltip">重置官方默认最大XP值</sys:String>
+    <sys:String x:Key="ServerSettings_DamageLabel">攻击伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_DamageTooltip">调整玩家等比例的徒手伤害，值越大伤害越高.</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceLabel">伤害抗性:</sys:String>
+    <sys:String x:Key="ServerSettings_ResistanceTooltip">伤害抗性调整，值越大吸收伤害越多，值越小吸收伤害越少.</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainLabel">水分流失:</sys:String>
+    <sys:String x:Key="ServerSettings_WaterDrainTooltip">设置水分流失速度，值越高水分流失越快（渴得更快）.</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainLabel">饥饿流失:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainTooltip">设置饥饿流失速度，值越高饥饿流失越快（饿得更快）.</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainLabel">体力流失:</sys:String>
+    <sys:String x:Key="ServerSettings_StaminaDrainTooltip">设置体力流失速度，值越高体力流失越快（累得更快）.</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryLabel">健康恢复:</sys:String>
+    <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">设置健康恢复速度，值越高健康恢复越快（痊愈更快）.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageLabel">驯服伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">指定材料的收获参数.数值越高,则对作物越高的损害,从而提高资源的获得量.</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageLabel">炮塔伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_TurretDamageTooltip">指定损坏炮塔（炮塔子弹和炮弹）的因素,数值越高,对炮塔的伤害,较低的值减少.</sys:String>
+
+    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">每一级所加属性点的倍数</sys:String>
+    
+    <sys:String x:Key="ServerSettings_StatHealthLabel">健康:</sys:String>
+    <sys:String x:Key="ServerSettings_StatHealthTooltip">指定每个级别的健康增益的倍数。较高的值增加健康更快；较低的价值观增加健康更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaLabel">耐力:</sys:String>
+    <sys:String x:Key="ServerSettings_StatStaminaTooltip">指定每一级的耐力增益倍数。较高的值增加耐力更快；较低的值增加耐力更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityLabel">困倦:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTorpidityTooltip">指定每级增益困倦的倍数。更高的价值增加的困倦更快；低值增加的困倦更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenLabel">氧气:</sys:String>
+    <sys:String x:Key="ServerSettings_StatOxygenTooltip">指定每个级别的氧效率增益的倍数。更高的价值提高效率更快；较低的值提高效率更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodLabel">食物:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFoodTooltip">指定每级食物效率增益的倍数。更高的价值提高效率更快；较低的值提高效率更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterLabel">水分:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWaterTooltip">指定每一级的水效率增益倍数。更高的价值提高效率更快；较低的值提高效率更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempLabel">温度:</sys:String>
+    <sys:String x:Key="ServerSettings_StatTempTooltip">指定每个级别的温度公差增益的倍数。高值增加耐受性更快；较低的值增加耐受性更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightLabel">负重:</sys:String>
+    <sys:String x:Key="ServerSettings_StatWeightTooltip">指定每一级进行容量增益的倍数。更高的价值提高承载能力更快；较低的值增加运载能力更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageLabel">徒手伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_StatDamageTooltip">指定每级损伤增益的倍数。较高的值增加伤害处理得更快；较低的值增加伤害更慢的处理.</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedLabel">速度:</sys:String>
+    <sys:String x:Key="ServerSettings_StatSpeedTooltip">指定每一级的速度增益倍数。较高的值增加速度更快；较低的值增加速度更慢.</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeLabel">毅力:</sys:String>
+    <sys:String x:Key="ServerSettings_StatFortitudeTooltip">为每一级的毅力增益指定倍数。更高的价值增加坚韧的速度；较低的价值观，增加坚韧的毅力.</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingLabel">制作速度:</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingTooltip">指定每一级制造速度增益的倍数。更高的价值提高工艺制造速度更快；较低的值增加制造速度更慢.</sys:String>
+
+    <sys:String x:Key="ServerSettings_DinoSettingsLabel">恐龙的设置</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageLabel">驯服伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceLabel">抗性:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">最大驯服数量:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">设置服务器的驯服恐龙的最大数量.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsLabel">恐龙产卵:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">允许洞穴飞行</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">如果启用，则允许生物在洞穴内飞行.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">禁用PVE恐龙衰变</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">如果启用，在PVE模式中禁用恐龙所有权逐渐衰减；否则每个恐龙都可以被任何玩家获得.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE 恐龙衰变周期:</sys:String>
+    <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">对恐龙所有时间衰减的基础乘数。只有当PVE选中禁用恐龙衰变.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">禁用婴儿恐龙印记 Buff</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">如果启用，将禁用恐龙印记玩家统计的奖金，而正常情况的任何人专门在恐龙印记，并提出它有一个印迹的品质，获得额外的伤害/抗性的buff.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">让宝宝恐龙印记拥抱任何人</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">如果启用，任何人都必须能够采取一个婴儿恐龙的护理（搂抱等），而不是任何人在其上印.</sys:String>
+
+    <sys:String x:Key="ServerSettings_DinoCustomizationLabel">恐龙设置</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">产卵设置</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionTooltip">显示/隐藏产卵乘数列.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionLabel">驯服伤害</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageOptionTooltip">显示/隐藏驯服恐龙伤害乘数柱.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionLabel">驯服抗性</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceOptionTooltip">显示/隐藏驯服恐龙电阻倍增器柱.</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionLabel">野生伤害</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageOptionTooltip">显示/隐藏野生恐龙伤害乘数柱.</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">野生抗性</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">显示/隐藏野生恐龙阻力倍增柱.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">重置所有自定义设置回默认的恐龙设置.</sys:String>
+    <sys:String x:Key="ServerSettings_NameColumnLabel">名称</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnableColumnLabel">防御</sys:String>
+    <sys:String x:Key="ServerSettings_TameableColumnLabel">可驯服的</sys:String>
+    <sys:String x:Key="ServerSettings_ReplacementColumnLabel">替换</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnWeightColumnLabel">产卵量</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideLimitColumnLabel">覆盖限制</sys:String>
+    <sys:String x:Key="ServerSettings_SpawnLimitColumnLabel">产卵限制</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageColumnLabel">驯服伤害</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">驯服抗性</sys:String>
+    <sys:String x:Key="ServerSettings_WildDamageColumnLabel">野生伤害</sys:String>
+    <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">野生抗性</sys:String>
+
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">每一级所需点数 (驯服的)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">每一级所需点数 (驯服的) - 新增</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">每一级所需点数 (驯服的) - 同类</sys:String>
+    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">每一级所需点数 (野生的)</sys:String>
+    <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">恐龙繁殖设置</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">如果启用,允许规模应用到每一个数据设置.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAddMultipliersTooltip">如果启用,允许规模因素适用于每个属性的驯服之外.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip">如果启用,允许规模因素应用到每个统计驯服乘数.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">如果启用,允许规模因素应用于驯服统计为每个属性增加.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">重置所有倍数返回到默认值.</sys:String>
+
+    <sys:String x:Key="ServerSettings_MatingIntervalLabel">交配间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_MatingIntervalTooltip">指定时间驯服恐龙之间的乘数交配。较低的值减少交配的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedLabel">蛋孵化速度:</sys:String>
+    <sys:String x:Key="ServerSettings_EggHatchSpeedTooltip">指定的时间，受精卵孵化的倍数。较高的值降低卵孵化时间.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedLabel">恐龙宝宝成熟的速度:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">指定的时间，小恐龙成长为成年恐龙的倍数。较高的值降低婴儿恐龙成熟到成人的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">恐龙宝宝食品消耗速度:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">增加速度，小恐龙会消耗食物。更高的值会使恐龙宝宝更经常地吃食物.</sys:String>
+    
+    <sys:String x:Key="ServerSettings_DinoImprintLabel">恐龙印记</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">印记统计表:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">多大程度上影响统计数据质量印记.设置为0,有效地禁用系统.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierLabel">拥抱间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">宝宝想要拥抱的次数.通常意味着你需要更频繁地与他们拥抱获得优质印记.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierLabel">拥抱宽限期:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">延缓拥抱宝宝前印记质量开始下降的时间,乘数计算.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">没拥抱失去印记质量速度:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">如果你还没拥抱宝宝,增加速度,降低基因质量的宽限期后.</sys:String>
+
+    <!-- 服务器设置 - 环境 -->
+    <sys:String x:Key="ServerSettings_EnvironmentLabel">环境设置</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedLabel">驯服的速度:</sys:String>
+    <sys:String x:Key="ServerSettings_TamingSpeedTooltip">指定的恐龙驯化速度比例值。较高的值使驯服得更快.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountLabel">收获倍数:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountTooltip">指定所有采伐活动（砍伐树木，采摘浆果，雕刻尸体，采矿岩石等）的收益率的缩放参数。更高的值增加了每一次攻击收获的材料的数量.</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnLabel">资源重生:</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnTooltip">指定比例参数为资源节点的刷新率（树木、岩石、灌木等）。较低的值导致更频繁的节点重生.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerLabel">资源再生半径 (玩家):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerTooltip">指定允许资源再生或近或远的玩家比例参数。较低的值减少远程资源可以再生的玩家。</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureLabel">资源再生半径 (建筑):</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureTooltip">指定允许资源再生靠近或远离建筑比例参数。较低的值减少远程资源可以再生的建筑.</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageLabel">资源收获伤害</sys:String>
+    <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">如果启用，夹有多少收获伤害你可以做一个资源的剩余资源的健康.（不建议设置）</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthLabel">收获持久:</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestHealthTooltip">指定可以收获(树木,岩石,尸体等)生命值倍数.这样的对象可以在被摧毁前承受更多伤害,从而提高整体收获.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">自定义收获量倍数</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">如果启用，指定自定义倍数到每个资源.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">重置所有自定义设置回默认的收获值.</sys:String>
+    <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">数量</sys:String>
+
+    <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">白天循环速度:</sys:String>
+    <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">指定在方舟上的时间段的缩放参数，控制白天的变化，夜间和夜间的变化。值低于1的慢下来的周期；较高的值加速.</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">一天的时间速度:</sys:String>
+    <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">指定在白天的时间在方舟中的缩放参数。这个值决定了每一天的长度，相对于每一个夜晚的长度。降低这个值每天的长度.</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">夜间速度:</sys:String>
+    <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">指定夜间时间在方舟上的缩放参数。这个值决定了每个夜晚的长度，相对于每一天的长度。降低这个值每晚的长度.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">世界破坏时间:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">世界范围的破坏时间易腐烂的东西。更高的值延长时间.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">世界项目分解时间:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">世界范围的分解时间项下降,全球战利品袋等。更高的价值延长时间.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeLabel">世界尸体腐烂时间:</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeTooltip">玩家尸体和恐龙分解时间,较高的值,延长时间.</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedLabel">农作物衰变速度:</sys:String>
+    <sys:String x:Key="ServerSettings_CropDecaySpeedTooltip">农作物腐烂时间的范围。较低的值延长衰减.</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedLabel">农作物生长速度:</sys:String>
+    <sys:String x:Key="ServerSettings_CropGrowthSpeedTooltip">农作物生长发育时间,较高的值使农作物生长更快.</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalLabel">产蛋间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">恐龙产蛋间隔,较低的值导致恐龙下蛋更快.</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalLabel">排便间隔:</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">玩家和恐龙排便的时间间隔,较低的数值可以使玩家和恐龙排便快.</sys:String>
+
+    <!-- 服务器设置 - 建筑 -->
+    <sys:String x:Key="ServerSettings_StructuresLabel">建筑设置</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceLabel">建筑抗性:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">指定当受到攻击时抵抗损坏建筑的缩放因子。更高的值减少抗性，增加每次攻击的伤害。较低的值增加抗性，减少每次攻击的伤害.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageLabel">建筑伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageTooltip">指定建筑损伤,建筑处理的缩放参数（例如：尖刺墙）。高值增加伤害。较低的值减少.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownLabel">建筑损伤修复的冷却时间:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownTooltip">从上次损坏的建筑修复的冷却时间服务器选项。设置为0禁用它，官方默认为180秒.</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayLabel">使PVP建筑衰变</sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvPStructureDecayTooltip">如果启用，在PVP经过一段时间的闲置后建筑会自动衰减.</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageLabel">PVP洞穴伤害:</sys:String>
+    <sys:String x:Key="ServerSettings_PvPZoneStructureDamageTooltip">在PVP中如果在洞穴/洞入口建筑则会按指定比例参数对建筑进行伤害.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleLabel">最大建筑数量:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxStructuresVisibleTooltip">玩家可以看到的最大数量的建筑。较低的值可以帮助服务器提高运行速度.</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierLabel">平台鞍建筑数量:</sys:String>
+    <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">指定在一个单一的平台/鞍上允许的最大数量的缩放参数.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">最大平台鞍建筑:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">对平台鞍的生物或竹筏上允许建筑物的最大数量.</sys:String>
+    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">建筑将覆盖预防平台</sys:String>
+    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">如果启用，允许自动炮塔是可建设于恐龙平台鞍工作.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">允许不结盟的恐龙停在飞行平台鞍上</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">如果启用，非结盟的部落的恐龙能够站在自己部落的平台鞍上.</sys:String>
+
+    <sys:String x:Key="ServerSettings_EnableStructureDecayLabel">开启PVE建筑衰变</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">如果启用，在PVE经过一段时间的闲置后建筑会自动衰减.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodLabel">建筑衰减周期:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">指定PVE模式下建筑自动衰减的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">建筑衰减倍数:</sys:String>
+    <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">指定玩家建筑的PVE自动衰减倍数.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">自动销毁旧建筑:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">允许自动摧毁建筑,'附近没有部落'的一段时间后.服务器自动清除废弃的建筑,如果希望自动关闭功能.设置为0禁用它.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">强制锁定所有建筑</sys:String>
+    <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">如果启用，允许锁定所有项目容器.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">伤害被动防御的恐龙</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">如果启用，马刺栅栏会伤害野生/无主的恐龙.</sys:String>
+
+    <!-- 服务器设置 - 技能 -->
+    <sys:String x:Key="ServerSettings_EngramsLabel">技能印痕设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">使用自定义印痕设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">如果启用，可以定制自定义数值.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetEngramsLabel">重置所有设置回到默认的技能设置.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">名字</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">需要等级</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">需要技能点</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">隐藏</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">移除前置要求</sys:String>
+    
+    <!-- 服务器设置 - 自定义级别级数 -->
+    <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">自定义等级</sys:String>
+    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">启用自定义等级</sys:String>
+    <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">如果启用，则使用玩家和恐龙级别的自定义值.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">自定义玩家等级</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteAllLevelsTooltip">删除所有现有的等级.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToASMDefaultsTooltip">重置所有级别的自定义默认回到ASM.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetToOfficialDefaultsTooltip">重置所有级别的自定义回官方默认.</sys:String>
+    <sys:String x:Key="ServerSettings_ImportLevelsTooltip">从目录导入自定义CSV文件.</sys:String>
+    <sys:String x:Key="ServerSettings_ExportLevelsTooltip">导出自定义CSV文件到目录.</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateLevelsTooltip">按照最后一个级别更新最大经验值上限.</sys:String>
+
+    <sys:String x:Key="ServerSettings_ProgressionPlusColumnLabel">+</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionMinusColumnLabel">-</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionLevelColumnLabel">等级</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionXPRequiredColumnLabel">所需XP</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionEngramPointsColumnLabel">所给技能点</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionEngramTotalColumnLabel">总共技能点</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionAddLevelTooltip">添加新的等级.</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">删除这个等级</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomDinoLevelsLabel">自定义恐龙等级</sys:String>
+
+    <!-- 服务器设置 - 适者生存 -->
+    <sys:String x:Key="ServerSettings_SOTFLabel">适者生存模式设置</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFLabel">开启适者生存模式</sys:String>
+    <sys:String x:Key="ServerSettings_EnableSOTFTooltip">如果启用，配置服务器会作为“大逃杀”的服务器.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFHelpTooltip">适者生存是一种特殊的总转换模式，它改变了许多规则。</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorLabel">禁用死亡后观众模式</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDeathSpectatorTooltip">如果启用，玩家不能在他们死后使用观众模式.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorLabel">只有管理员加入作为旁观者</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAdminRejoinSpectatorTooltip">如果启用，一旦比赛开始只有管理员可以加入观众模式.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeLabel">部落的最大玩家:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPlayersInTribeTooltip">允许多少个玩家在同一个部落里.</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameLabel">游戏开始所需部落数:</sys:String>
+    <sys:String x:Key="ServerSettings_TribesRequiredForGameTooltip">游戏开始要求的部落数量.</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeLabel">死亡惩戒时间:</sys:String>
+    <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeTooltip">突然死亡之前的游戏时间长度.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeLabel">自动开始前准备时间:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartDelayTimeTooltip">在比赛开始前，已经达到了最少数量的部落.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">自动重启动延迟时间:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">最后一场比赛结束后，新的比赛将开始的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">突然死亡的时间:</sys:String>
+    <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">自动死亡时间,游戏会宣布平局.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">启用游戏日志记录</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">如果启用日期，输出日志文件保存的文件夹，其中包含一个时间戳杀者日志列表Steam的名字，身份，角色名称，等方便的自动比赛纪录.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">游戏选项</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsLabel">没有事件</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoEventsTooltip">启用后，该事件不会自动触发。管理员还可以触发使用“作弊CE evorain”等手动事件.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesLabel">没有Boss</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">如果启用，将导致不产生任何Boss</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesLabel">两个Boss</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">如果启用,这将刷新Broodmother和Megapithecus在各自区域.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalLabel">进化事件间隔</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalTooltip">指定间隔事件的演变,较低值降低事件之间的时间,较高值则增加事件之间的时间.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">每局开始时间</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">可以在一定的时间设定为“提前”的战斗时间（死亡的进度）。较低值降低比赛的时间，较高值则增加时间.</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">导出错误</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">导入错误</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_UpdateErrorTitle">更新错误</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">保存自定义级别</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">选择高级定制的CSV文件</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterLabel">CSV 文件</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterExtension">*.csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterLabel">CSV 文件</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterExtension">*.csv</sys:String>
+
+    <!-- 玩家/部落档案窗口 -->
+    <sys:String x:Key="Profile_SteamSectionLabel">Steam 设置</sys:String>
+    <sys:String x:Key="Profile_PlayerSectionLabel">玩家设置</sys:String>
+    <sys:String x:Key="Profile_TribeSectionLabel">部落设置</sys:String>
+    <sys:String x:Key="Profile_TribeMembersSectionLabel">部落成员</sys:String>
+
+    <sys:String x:Key="Profile_IdLabel">Id:</sys:String>
+    <sys:String x:Key="Profile_NameLabel">名字:</sys:String>
+    <sys:String x:Key="Profile_OnlineLabel">在线:</sys:String>
+    <sys:String x:Key="Profile_CreatedLabel">创建:</sys:String>
+    <sys:String x:Key="Profile_UpdatedLabel">最后更新:</sys:String>
+    <sys:String x:Key="Profile_BannedCommunityLabel">禁止社区:</sys:String>
+    <sys:String x:Key="Profile_BannedVACLabel">禁止VAC:</sys:String>
+    <sys:String x:Key="Profile_BannedVACCountLabel">VAC禁令数:</sys:String>
+    <sys:String x:Key="Profile_BannedVACDaysLabel">自去年以来被Ban的号:</sys:String>
+    <sys:String x:Key="Profile_LevelLabel">等级:</sys:String>
+    <sys:String x:Key="Profile_WhitelistedLabel">白名单:</sys:String>
+    <sys:String x:Key="Profile_BannedLabel">禁令:</sys:String>
+    <sys:String x:Key="Profile_BannedGameCountLabel">游戏禁令数量:</sys:String>
+    <sys:String x:Key="Profile_TribeOwnerLabel">业主:</sys:String>
+    <sys:String x:Key="Profile_SteamNameColumnLabel">Steam 名字</sys:String>
+    <sys:String x:Key="Profile_CharacterNameColumnLabel">字符名称</sys:String>
+    <sys:String x:Key="Profile_LevelColumnLabel">等级</sys:String>
+    <sys:String x:Key="Profile_OnlineColumnLabel">在线</sys:String>
+    <sys:String x:Key="Profile_CreatedColumnLabel">创建</sys:String>
+    <sys:String x:Key="Profile_UpdatedColumnLabel">最后更新</sys:String>
+    <sys:String x:Key="Profile_NavigateSteamProfile">单击以打开浏览器中的Steam配置文件</sys:String>
+    <sys:String x:Key="Profile_NavigateProfile">单击“查看资源管理器中的配置文件”</sys:String>
+
+    <!-- 服主 窗口 -->
+    <sys:String x:Key="RCON_Menu_File">_文件</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewLogs">查看日志...</sys:String>
+    <sys:String x:Key="RCON_Menu_ClearLogs">清除日志</sys:String>
+    <sys:String x:Key="RCON_Menu_Confirm">确认</sys:String>
+    <sys:String x:Key="RCON_Menu_Console">_控制台</sys:String>
+    <sys:String x:Key="RCON_Menu_AutoScroll">自动滚动</sys:String>
+    <sys:String x:Key="RCON_Menu_Server">_服务器</sys:String>
+    <sys:String x:Key="RCON_Menu_SaveWorld">保存世界</sys:String>
+    <sys:String x:Key="RCON_Menu_DestroyWildDinos">破坏野生恐龙</sys:String>
+    <sys:String x:Key="RCON_Menu_Players">_玩家</sys:String>
+    <sys:String x:Key="RCON_Menu_Sort">排序</sys:String>
+    <sys:String x:Key="RCON_Menu_SortOnline">在线</sys:String>
+    <sys:String x:Key="RCON_Menu_SortName">按姓名</sys:String>
+    <sys:String x:Key="RCON_Menu_SortTribe">按部落</sys:String>
+    <sys:String x:Key="RCON_Menu_SortLastUpdated">按最后更新</sys:String>
+    <sys:String x:Key="RCON_Menu_Filter">_过滤器</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOnline">在线显示</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterOffline">离线显示</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterBanned">禁用显示</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterWhitelisted">显示白名单</sys:String>
+
+    <sys:String x:Key="RCON_Menu_ChatPlayer">聊天的玩家...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenamePlayer">重命名的玩家...</sys:String>
+    <sys:String x:Key="RCON_Menu_RenameTribe">重命名的部落...</sys:String>
+    <sys:String x:Key="RCON_Menu_Kill">杀死</sys:String>
+    <sys:String x:Key="RCON_Menu_Kick">踢出</sys:String>
+    <sys:String x:Key="RCON_Menu_Banned">Ban掉</sys:String>
+    <sys:String x:Key="RCON_Menu_Whitelisted">白名单</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewSteamProfile">查看Steam档案...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewProfile">查看档案...</sys:String>
+    <sys:String x:Key="RCON_Menu_ViewTribe">查看部落...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopySteamId">复制SteamID...</sys:String>
+    <sys:String x:Key="RCON_Menu_CopyPlayerId">复制玩家ID...</sys:String>
+
+    <sys:String x:Key="RCON_AdminNameLabel">管理员名称:</sys:String>
+    <sys:String x:Key="RCON_AdminNameTooltip">这是用于前缀从控制台发送消息的名字。</sys:String>
+    <sys:String x:Key="RCON_StatusLabel">现状:</sys:String>
+    <sys:String x:Key="RCON_PlayersLabel">玩家:</sys:String>
+    <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
+    <sys:String x:Key="RCON_ModeLabel">模式:</sys:String>
+
+    <sys:String x:Key="RCON_Button_OK">确定</sys:String>
+    <sys:String x:Key="RCON_Button_Cancel">取消</sys:String>
+    <sys:String x:Key="RCON_Button_Change">更改</sys:String>
+    <sys:String x:Key="RCON_Button_Send">发送</sys:String>
+
+    <sys:String x:Key="RCON_UnnamedLabel">未命名</sys:String>
+
+    <sys:String x:Key="RCON_ConnectionEstablishedLabel">连接已建立.</sys:String>
+    <sys:String x:Key="RCON_ConnectionLostLabel">失去连接.</sys:String>
+    <sys:String x:Key="RCON_NoCommandResponseLabel">命令返回任何数据</sys:String>
+
+    <sys:String x:Key="RCON_SaveWorldLabel">方舟世界保存即将被执行，你可能会在这个过程中遇到一定的滞后性,请耐心等待.</sys:String>
+    <sys:String x:Key="RCON_DestroyWildDinosLabel">关于销毁所有的野生动物，你可能会在这个过程中遇到一定的滞后性,请耐心等待.</sys:String>
+
+    <sys:String x:Key="RCON_ChatPlayerLabel">发送聊天消息 :</sys:String>
+    <sys:String x:Key="RCON_RenamePlayerLabel">重命名 玩家 从 :</sys:String>
+    <sys:String x:Key="RCON_RenameTribeLabel">重命名 部落 从 :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdLabel">Steam ID 复制到剪贴板 :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdTitle">Steam ID 复制</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdLabel">玩家 ID 复制到剪贴板 :</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdTitle">玩家 ID 复制</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorLabel">剪贴板无法打开,另一应用可以是使用它.请尝试关闭其他应用程序并再次尝试.</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorTitle">复制到剪贴板失败.</sys:String>
+
+    <!-- Open RCON window -->
+    <sys:String x:Key="OpenRCON_Title">打开RCON会话</sys:String>
+    
+    <sys:String x:Key="OpenRCON_IPLabel">服务器的IP:</sys:String>
+    <sys:String x:Key="OpenRCON_PortLabel">RCON端口:</sys:String>
+    <sys:String x:Key="OpenRCON_PasswordLabel">管理员密码:</sys:String>
+
+    <sys:String x:Key="OpenRCON_ConnectButtonLabel">连接按钮</sys:String>
+    <sys:String x:Key="OpenRCON_CancelButtonLabel">取消</sys:String>
+
+    <!-- Settings window -->
+    <sys:String x:Key="Settings_Title">设置</sys:String>
+
+</Globalization:GlobalizationResourceDictionary>

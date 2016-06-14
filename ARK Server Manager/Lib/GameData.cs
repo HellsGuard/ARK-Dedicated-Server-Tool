@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -9,102 +10,118 @@ namespace ARK_Server_Manager.Lib
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1083538;
 
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
-            {
-                new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          DinoName="Angler Fish",         CommonName="Angler",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            DinoName="Ankylosaurus",        CommonName="Ankylo",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             DinoName="Titanomyrma",         CommonName="Titanomyrma Drone",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          DinoName="Argentavis",          CommonName="Argentavis",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Arthro_Character_BP_C",          DinoNameTag="Arthro",          DinoName="Arthropluera",        CommonName="Arthropluera",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             DinoName="Onychonycteris",      CommonName="Onyc",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver",          DinoName="Castoroides",         CommonName="Castoroides",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         DinoName="Gigantopithecus",     CommonName="Gigantopithecus",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        DinoName="Titanoboa",           CommonName="Titanoboa",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno",           DinoName="Carnotaurus",         CommonName="Carnotaurus",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel",            DinoName="Coelacanth",          CommonName="Coel",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy",           DinoName="Compsognathus",       CommonName="Compy",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            DinoName="Dilophosaurus",       CommonName="Dilophosaurus",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         DinoName="Dimetrodon",          CommonName="Dimetrodon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         DinoName="Dimorphodon",         CommonName="Dimorphodon",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo",           DinoName="Diplodocus",          CommonName="Diplodocus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        DinoName="Direbear",            CommonName="Direbear",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        DinoName="Direwolf",            CommonName="Direwolf",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            DinoName="Dodo",                CommonName="Dodo",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed",            DinoName="Doedicurus",          CommonName="Doedicurus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin",         DinoName="Ichthyosaurus",       CommonName="Ichthy",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly",       DinoName="Meganeura",           CommonName="Meganeura",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle",          DinoName="Dung Beetle",         CommonName="Dung Beetle",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle",          DinoName="Dunkleosteus",        CommonName="Dunkleosteus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp",           DinoName="Eurypterid",          CommonName="Eurypterid",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Galli_Character_BP",             DinoNameTag="Galli",           DinoName="Gallimimus",          CommonName="Gallimimus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          DinoName="Giganotosaurus",      CommonName="Giganotosaurus",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         DinoName="Kairuku",             CommonName="Kairuku",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech",           DinoName="Leech",               CommonName="Leech",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          DinoName="Lystrosaurus",        CommonName="Lystrosaurus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     DinoName="Alpha Carnotaurus",   CommonName="Alpha Carnotaurus",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    DinoName="Alpha Raptor",        CommonName="Alpha Raptor",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       DinoName="Alpha Tyrannosaurus", CommonName="Alpha T-Rex",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth",         DinoName="Mammoth",             CommonName="Mammoth",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta",           DinoName="Manta",               CommonName="Manta",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            DinoName="Megalodon",           CommonName="Megalodon",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          DinoName="Mesopithecus",        CommonName="Mesopithecus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        DinoName="Mosasaurus",          CommonName="Mosasaurus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur",  DinoName="Alpha Mosasaurus",    CommonName="Alpha Mosasaurus",    SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       DinoName="Oviraptor",           CommonName="Oviraptor",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           DinoName="Pachycephalosaurus",  CommonName="Pachy",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            DinoName="Parasaur",            CommonName="Parasaur",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer",         DinoName="Paraceratherium",     CommonName="Paracer",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia",         DinoName="Phiomia",             CommonName="Phiomia",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha",         DinoName="Megapiranha",         CommonName="Megapiranha",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur",      DinoName="Plesiosaur",          CommonName="Plesiosaur",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo",        DinoName="Procoptodon",         CommonName="Procoptodon",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera",           DinoName="Pteranodon",          CommonName="Pteranodon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz",           DinoName="Quetzalcoatlus",      CommonName="Quetzal",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor",          DinoName="Raptor",              CommonName="Raptor",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex",             DinoName="Tyrannosaurus",       CommonName="Rex",                 SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino",           DinoName="Woolly Rhino",        CommonName="Woolly Rhino",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth",      DinoName="Sabertooth",          CommonName="Sabertooth",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Salmon_Character_BP_C",          DinoNameTag="Salmon",          DinoName="Sabertooth Salmon",   CommonName="Sabertooth Salmon",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco",           DinoName="Sarcosuchus",         CommonName="Sarco",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto",          DinoName="Brontosaurus",        CommonName="Bronto",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion",        DinoName="Pulmonoscorpius",     CommonName="Pulmonoscorpius",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="SpiderL_Character_BP_C",         DinoNameTag="Uberspider",      DinoName="Broodmother Lysrix",  CommonName="Broodmother Lysrix",  SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider",          DinoName="Araneomorphus",       CommonName="Araneo",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino",           DinoName="Spinosaurus",         CommonName="Spinosaurus",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag",            DinoName="Megaloceros",         CommonName="Megaloceros",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego",           DinoName="Stegosaurus",         CommonName="Stego",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird",      DinoName="Terror Bird",         CommonName="Terror Bird",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad",            DinoName="Beelzebufo",          CommonName="Beelzebufo",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike",           DinoName="Triceratops",         CommonName="Trike",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite",       DinoName="Trilobite",           CommonName="Trilobite",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          DinoName="Carbonemys",          CommonName="Carbonemys",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-            };
-
-        public static string NameTagForClass(string entry)
         {
-            switch (entry)
+            new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Arthro_Character_BP_C",          DinoNameTag="Arthro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Galli_Character_BP_C",           DinoNameTag="Galli",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur",  SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Salmon_Character_BP_C",          DinoNameTag="Salmon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+            new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
+        };
+
+        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
+
+        public static bool IsTameableForClass(string className)
+        {
+            switch (className)
+            {
+                case "Ant_Character_BP_C":
+                case "BoaFrill_Character_BP_C":
+                case "Coel_Character_BP_C":
+                case "Dragonfly_Character_BP_C":
+                case "FlyingAnt_Character_BP_C":
+                case "Leech_Character_C":
+                case "Leech_Character_Diseased_C":
+                case "MegaCarno_Character_BP_C":
+                case "MegaRaptor_Character_BP_C":
+                case "MegaRex_Character_BP_C":
+                case "Mosa_Character_BP_Mega_C":
+                case "Piranha_Character_BP_C":
+                case "Salmon_Character_BP_C":
+                case "Trilobite_Character_C":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        public static string NameTagForClass(string className)
+        {
+            switch (className)
             {
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                     return null;
                 default:
-                    return dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+                    var dinoSpawn = dinoSpawns.FirstOrDefault(d => d.ClassName == className);
+                    return dinoSpawn != null ? dinoSpawn.DinoNameTag : className;
             }
         }
 
-        public static string FriendlyNameForClass(string entry)
+        public static string FriendlyNameForClass(string className)
         {
-            switch (entry)
-            {
-                case "FlyingAnt_Character_BP_C":
-                    return "Titanomyrma Soldier";
-                case "Leech_Character_Diseased_C":
-                    return "Diseased Leech";
-                default:
-                    return dinoSpawns.First(d => d.ClassName == entry).CommonName;
-            }
+            return GlobalizedApplication.Instance.GetResourceString(className) ?? className;
         }
-
-        public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
         private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
         {
@@ -133,7 +150,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="DungBeetle_Character_BP_C",    Multiplier=1.0f },
             new ClassMultiplier { ClassName="Dunkle_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Euryp_Character_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Galli_Character_BP",           Multiplier=1.0f },
+            new ClassMultiplier { ClassName="Galli_Character_BP_C",         Multiplier=1.0f },
             new ClassMultiplier { ClassName="Gigant_Character_BP_C",        Multiplier=1.0f },
             new ClassMultiplier { ClassName="Kairuku_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Leech_Character_C",            Multiplier=1.0f },
@@ -165,7 +182,6 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Sarco_Character_BP_C",         Multiplier=1.0f },
             new ClassMultiplier { ClassName="Sauropod_Character_BP_C",      Multiplier=1.0f },
             new ClassMultiplier { ClassName="Scorpion_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="SpiderL_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="SpiderS_Character_BP_C",       Multiplier=1.0f },
             new ClassMultiplier { ClassName="Spino_Character_BP_C",         Multiplier=1.0f },
             new ClassMultiplier { ClassName="Stag_Character_BP_C",          Multiplier=1.0f },
@@ -186,72 +202,80 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
 
-        private static readonly ClassMultiplier[] standardResourceMultipliers = new ClassMultiplier[]
+        private static readonly ResourceClassMultiplier[] standardResourceMultipliers = new ResourceClassMultiplier[]
         {
-            new ClassMultiplier { ClassName="PrimalItemResource_AnglerGel_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Sauro_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_BlackPearl_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Charcoal_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Chitin_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ChitinOrKeratin_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ChitinPaste_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Craftable_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Crystal_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Electronics_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Fibers_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Flint_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Gasoline_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Gunpowder_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Hide_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Horn_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Keratin_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_LeechBlood_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Metal_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Obsidian_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Oil_C",                 Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Pelt_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_Organic_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_RareFlower_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Silicon_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Sparkpowder_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Stone_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Temp_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Thatch_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawMeat_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawMeat_Fish_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawPrimeMeat_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawPrimeMeat_Fish_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Amarberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Azulberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Mejoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Narcoberry_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Stimberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Tintoberry_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Citronal_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Longrass_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Rockarrot_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Savoroot_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Amarberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Azulberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_DefensePlant_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Mejoberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Narcoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Stimberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Tintoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Citronal_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Longrass_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Rockarrot_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Savoroot_C",     Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_AnglerGel_C",           Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C",  Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C",        Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Sauro_C",      Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_BlackPearl_C",          Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Charcoal_C",            Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Chitin_C",              Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ChitinOrKeratin_C",     Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ChitinPaste_C",         Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Crystal_C",             Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Electronics_C",         Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Fibers_C",              Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Flint_C",               Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Gasoline_C",            Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Gunpowder_C",           Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Hide_C",                Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Horn_C",                Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Keratin_C",             Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_LeechBlood_C",          Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Metal_C",               Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C",          Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Obsidian_C",            Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Oil_C",                 Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Pelt_C",                Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Polymer_C",             Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Polymer_Organic_C",     Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_RareFlower_C",          Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C",        Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Silicon_C",             Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Sparkpowder_C",         Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Stone_C",               Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Thatch_C",              Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Wood_C",                Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_RawMeat_C",           Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_RawMeat_Fish_C",      Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_RawPrimeMeat_C",      Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_RawPrimeMeat_Fish_C", Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Amarberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Azulberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Mejoberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Narcoberry_C",  Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Stimberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Berry_Tintoberry_C",  Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Citronal_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Longrass_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Rockarrot_C",  Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Savoroot_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Amarberry_C",    Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Azulberry_C",    Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_DefensePlant_C", Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Mejoberry_C",    Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Narcoberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Stimberry_C",    Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Tintoberry_C",   Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Citronal_C",     Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Longrass_C",     Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Rockarrot_C",    Multiplier=1.0f },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Savoroot_C",     Multiplier=1.0f },
         };
 
-        public static IEnumerable<ClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+        public static IEnumerable<ResourceClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
+
+        public static ResourceClassMultiplier GetResourceForClass(string className)
+        {
+            return standardResourceMultipliers.FirstOrDefault(e => e.ClassName.Equals(className));
+        }
+
+        public static bool HasResourceForClass(string className)
+        {
+            return standardResourceMultipliers.Any(e => e.ClassName.Equals(className));
+        }
 
         private static readonly Level[] levelProgression = new Level[]
             {
@@ -521,8 +545,6 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=1083538, EngramPoints=60 },
             };
 
-        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
-
         public static readonly EngramEntry[] engrams = new[]
         {
             new EngramEntry { EngramClassName="EngramEntry_AdvancedBullet_C",                EngramLevelRequirement=50, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
@@ -718,6 +740,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Galli_C",                  EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Gigant_C",                 EngramLevelRequirement=85, EngramPointsCost=75,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Mammoth_C",                EngramLevelRequirement=40, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Manta_C",                  EngramLevelRequirement=25, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Megalodon_C",              EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Mosa_C",                   EngramLevelRequirement=80, EngramPointsCost=60,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Mosa_Platform_C",          EngramLevelRequirement=85, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
@@ -727,9 +750,9 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Paracer_Platform_C",       EngramLevelRequirement=45, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Phiomia_C",                EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesia_C",                 EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Ptero_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesio_Platform_C",        EngramLevelRequirement=80, EngramPointsCost=50,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Procop_C",                 EngramLevelRequirement=50, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Ptero_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_C",                  EngramLevelRequirement=60, EngramPointsCost=44,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_Platform_C",         EngramLevelRequirement=80, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Raptor_C",                 EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
@@ -779,6 +802,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_StoneGateway_C",                  EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneGateway_Large_C",            EngramLevelRequirement=30, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneHatchet_C",                  EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_StonePick_C",                     EngramLevelRequirement=1,  EngramPointsCost=0,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StonePillar_C",                   EngramLevelRequirement=25, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StonePipeInclined_C",             EngramLevelRequirement=15, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StonePipeIntake_C",               EngramLevelRequirement=10, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
@@ -786,12 +810,12 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_StonePipeStraight_C",             EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StonePipeTap_C",                  EngramLevelRequirement=10, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StonePipeVertical_C",             EngramLevelRequirement=15, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneTrapdoor_C",                 EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneWall_C",                     EngramLevelRequirement=15, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Left_C",          EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Right_C",         EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneRailing_C",                  EngramLevelRequirement=20, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneRoof_C",                     EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Left_C",          EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Right_C",         EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_StoneTrapdoor_C",                 EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_StoneWall_C",                     EngramLevelRequirement=15, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneWallWithDoor_C",             EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneWallWithWindow_C",           EngramLevelRequirement=25, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_StoneWindow_C",                   EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
@@ -807,6 +831,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Right_C",        EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ThatchRoof_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_ThatchWallWithDoor_C",            EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
+            new EngramEntry { EngramClassName="EngramEntry_Torch_C",                         EngramLevelRequirement=1,  EngramPointsCost=0,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TrainingDummy_C",                 EngramLevelRequirement=10, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TranqDart_C",                     EngramLevelRequirement=60, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_TransGPS_C",                      EngramLevelRequirement=65, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
@@ -852,6 +877,18 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWallWithWindow_C",            EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
         };
+
+        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
+
+        public static EngramEntry GetEngramForClass(string className)
+        {
+            return engrams.FirstOrDefault(e => e.EngramClassName.Equals(className));
+        }
+
+        public static bool HasEngramForClass(string className)
+        {
+            return engrams.Any(e => e.EngramClassName.Equals(className));
+        }
 
         public enum StatsMultiplier
         {

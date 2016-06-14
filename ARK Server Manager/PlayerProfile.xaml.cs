@@ -7,6 +7,7 @@ using ARK_Server_Manager.Lib;
 using ARK_Server_Manager.Lib.ViewModel;
 using ARK_Server_Manager.Lib.ViewModel.RCON;
 using ArkData;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -15,6 +16,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class PlayerProfile : Window
     {
+        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+
         public PlayerProfile(PlayerInfo player, String serverFolder)
         {
             InitializeComponent();
@@ -55,7 +58,7 @@ namespace ARK_Server_Manager
 
         public String UpdatedDate => ArkDataPlayer?.FileUpdated.ToString("G");
 
-        public String WindowTitle => $"Player Profile - {Player.SteamName}";
+        public String WindowTitle => String.Format(_globalizedApplication.GetResourceString("Profile_WindowTitle_Player"), Player.SteamName);
 
         public ICommand DirectLinkCommand
         {

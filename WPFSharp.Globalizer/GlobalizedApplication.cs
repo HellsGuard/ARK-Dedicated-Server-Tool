@@ -79,9 +79,14 @@ namespace WPFSharp.Globalizer
             if (string.IsNullOrWhiteSpace(inKey))
                 throw new ArgumentNullException(inKey, "parameter cannot be null.");
 
-            return (Instance.Resources.Contains(inKey) && Instance.Resources[inKey] is string)
-                ? Instance.Resources[inKey].ToString()
-                : null;
+            if ((Instance.Resources.Contains(inKey) && Instance.Resources[inKey] is string))
+            {
+                var resourceString = Instance.Resources[inKey].ToString();
+                resourceString = resourceString.Replace("\\r", "\r");
+                resourceString = resourceString.Replace("\\n", "\n");
+                return resourceString;
+            }
+            return null;
         }
 
         /// <summary>
