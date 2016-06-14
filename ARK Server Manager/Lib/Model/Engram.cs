@@ -16,7 +16,10 @@ namespace ARK_Server_Manager.Lib
         public string EngramClassName
         {
             get { return (string)GetValue(EngramClassNameProperty); }
-            set { SetValue(EngramClassNameProperty, value); }
+            set {
+                SetValue(EngramClassNameProperty, value);
+                DisplayName = EngramClassNameToDisplayNameConverter.Convert(value).ToString();
+            }
         }
 
         [AggregateIniValueEntry]
@@ -47,6 +50,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RemoveEngramPreReqProperty, value); }
         }
 
+        public string DisplayName
+        {
+            get;
+            protected set;
+        }
+
         public bool KnownEngram
         {
             get
@@ -69,7 +78,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return EngramClassNameToDisplayNameConverter.Convert(this.EngramClassName).ToString();
+            return DisplayName;
         }
 
         public override bool ShouldSave()

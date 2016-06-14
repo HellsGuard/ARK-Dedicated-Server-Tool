@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
              xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
+             xmlns:lvs="clr-namespace:ARK_Server_Manager.Lib.ListViewSorting"
              mc:Ignorable="d"
              d:DesignWidth="800"
              x:Name="SettingsControl">
@@ -1914,39 +1915,39 @@
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
-                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" >
+                                <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding EngramClassName, Converter={StaticResource EngramClassNameToDisplayNameConverter}}"/>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True"/>
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}" lvs:SortBehavior.SortExpression="EngramPointsCost">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox Text="{Binding EngramPointsCost}" Width="75" VerticalContentAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsHiddenColumnLabel}" Width="100">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsHiddenColumnLabel}" Width="100" lvs:SortBehavior.SortExpression="EngramHidden">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding EngramHidden}" HorizontalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="100">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="100" lvs:SortBehavior.SortExpression="RemoveEngramPreReq">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Width="Auto">
+                                            <GridViewColumn Width="Auto" lvs:SortBehavior.CanUseSort="False">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Click="RemoveEngramOverride_Click" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
