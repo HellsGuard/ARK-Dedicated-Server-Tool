@@ -1975,7 +1975,7 @@ namespace ARK_Server_Manager.Lib
             serverArgs.Append("?listen");
 
             // These are used to match the server to the profile.
-            if (!String.IsNullOrEmpty(this.ServerIP))
+            if (!String.IsNullOrWhiteSpace(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
@@ -2167,7 +2167,7 @@ namespace ARK_Server_Manager.Lib
                     this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
                     Config.Default.ServerCacheDir,
                     this.InstallDirectory,
-                    this.ServerIP,
+                    String.IsNullOrWhiteSpace(this.ServerIP) ? "127.0.0.1" : this.ServerIP,
                     this.RCONPort,
                     this.AdminPassword,
                     this.ServerUpdateGraceMinutes,
