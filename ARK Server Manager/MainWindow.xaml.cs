@@ -197,5 +197,10 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+        private void ASMPatchNotes_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Config.Default.ASM_PatchNotesUrl);
+        }
     }
 }
