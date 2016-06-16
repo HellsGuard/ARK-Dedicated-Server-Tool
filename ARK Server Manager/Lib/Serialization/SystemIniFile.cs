@@ -240,7 +240,11 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            var strValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US"));
+                            string strValue;
+                            if (field.PropertyType == typeof(float))
+                                strValue = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo("en-US"));
+                            else
+                                strValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US"));
                             if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
                             {
                                 strValue = "\"" + strValue + "\"";
@@ -334,7 +338,7 @@ namespace ARK_Server_Manager.Lib
                             else if (fieldType == typeof(int))
                             {
                                 int intValue;
-                                int.TryParse(iniValue, out intValue);
+                                int.TryParse(iniValue, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out intValue);
                                 field.SetValue(obj, intValue);
                             }
                             else if (fieldType == typeof(float))

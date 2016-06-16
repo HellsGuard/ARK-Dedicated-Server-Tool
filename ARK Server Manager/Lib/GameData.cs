@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ARK_Server_Manager.Lib.ViewModel;
 using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager.Lib
@@ -888,6 +889,24 @@ namespace ARK_Server_Manager.Lib
         public static bool HasEngramForClass(string className)
         {
             return engrams.Any(e => e.EngramClassName.Equals(className));
+        }
+
+        public static readonly PrimalItem[] primalItems = new[]
+        {
+            new PrimalItem { ClassName="PrimalItemConsumable_RawMeat_C" },
+            new PrimalItem { ClassName="PrimalItemResource_Thatch_C" },
+        };
+
+        public static IEnumerable<PrimalItem> GetStandardPrimalItems() => primalItems.Select(d => d.Duplicate());
+
+        public static PrimalItem GetPrimalItemForClass(string className)
+        {
+            return primalItems.FirstOrDefault(e => e.ClassName.Equals(className));
+        }
+
+        public static bool HasPrimalItemForClass(string className)
+        {
+            return primalItems.Any(e => e.ClassName.Equals(className));
         }
 
         public enum StatsMultiplier

@@ -56,6 +56,8 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
+            this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
+
             GetDefaultDirectories();
         }
 
@@ -1550,6 +1552,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RCONWindowExtentsProperty, value); }
         }
         #endregion
+
+        public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<Crafting> ConfigOverrideItemCraftingCosts
+        {
+            get { return (AggregateIniValueList<Crafting>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
+            set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
+        }
 
         #endregion
 

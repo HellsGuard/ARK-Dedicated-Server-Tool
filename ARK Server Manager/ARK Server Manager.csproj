@@ -145,7 +145,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Lib\ListViewSorting.cs" />
+    <Compile Include="Lib\Model\Crafting.cs" />
     <Compile Include="Lib\Model\ResourceClassMultiplier.cs" />
+    <Compile Include="Lib\ViewModel\PrimalItem.cs" />
+    <Compile Include="Lib\ViewModel\PrimalItemClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\WindowUtils.cs" />
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>

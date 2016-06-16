@@ -19,7 +19,7 @@ namespace ARK_Server_Manager.Lib
     /// </summary>
     public abstract class AggregateIniValue : DependencyObject
     {
-        private readonly List<PropertyInfo> properties = new List<PropertyInfo>();
+        protected readonly List<PropertyInfo> properties = new List<PropertyInfo>();
 
         public static T FromINIValue<T>(string value) where T : AggregateIniValue, new()
         {
@@ -40,7 +40,7 @@ namespace ARK_Server_Manager.Lib
             return result;
         }
 
-        public string ToINIValue()
+        public virtual string ToINIValue()
         {
             GetPropertyInfos();
             StringBuilder result = new StringBuilder();
@@ -55,7 +55,11 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 var val = prop.GetValue(this);
-                var convertedVal = Convert.ToString(val, CultureInfo.GetCultureInfo("en-US"));
+                string convertedVal;
+                if (prop.PropertyType == typeof(float))
+                    convertedVal = ((float)val).ToString("0.0#########", CultureInfo.GetCultureInfo("en-US"));
+                else
+                    convertedVal = Convert.ToString(val, CultureInfo.GetCultureInfo("en-US"));
                 result.Append(prop.Name).Append('=');
                 if (prop.PropertyType == typeof(String))
                 {
@@ -82,7 +86,7 @@ namespace ARK_Server_Manager.Lib
         public abstract string GetSortKey();
         public virtual bool ShouldSave() { return true; }
 
-        private void GetPropertyInfos()
+        protected void GetPropertyInfos()
         {
             if (this.properties.Count == 0)
             {
@@ -90,31 +94,52 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        protected void InitializeFromINIValue(string value)
+        protected virtual void InitializeFromINIValue(string value)
         {
             GetPropertyInfos();
-            var kvPair = value.Split(new [] { '='} , 2);
+
+            var kvPair = value.Split(new[] { '=' }, 2);
             value = kvPair[1].Trim('(', ')', ' ');
             var pairs = value.Split(',');
-            foreach(var pair in pairs)
+
+            foreach (var pair in pairs)
             {
                 kvPair = pair.Split('=');
-                if(kvPair.Length == 2)
+                if (kvPair.Length == 2)
                 {
                     var key = kvPair[0].Trim();
                     var val = kvPair[1].Trim();
                     var propInfo = this.properties.FirstOrDefault(p => String.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase));
-                    if(propInfo != null)
+                    if (propInfo != null)
                     {
-                        object convertedValue = Convert.ChangeType(val, propInfo.PropertyType, CultureInfo.GetCultureInfo("en-US"));
-                        if(convertedValue.GetType() == typeof(String))
+                        if (propInfo.PropertyType == typeof(bool))
                         {
-                            convertedValue = (convertedValue as string).Trim('"');
+                            var boolValue = false;
+                            bool.TryParse(val, out boolValue);
+                            propInfo.SetValue(this, boolValue);
                         }
-                        propInfo.SetValue(this, convertedValue);
+                        else if (propInfo.PropertyType == typeof(int))
+                        {
+                            int intValue;
+                            int.TryParse(val, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out intValue);
+                            propInfo.SetValue(this, intValue);
+                        }
+                        else if (propInfo.PropertyType == typeof(float))
+                        {
+                            float floatValue;
+                            float.TryParse(val, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out floatValue);
+                            propInfo.SetValue(this, floatValue);
+                        }
+                        else
+                        {
+                            object convertedValue = Convert.ChangeType(val, propInfo.PropertyType, CultureInfo.GetCultureInfo("en-US"));
+                            if (convertedValue.GetType() == typeof(String))
+                                convertedValue = (convertedValue as string).Trim('"');
+                            propInfo.SetValue(this, convertedValue);
+                        }
                     }
                 }
-            }            
+            }
         }
     }
 }
