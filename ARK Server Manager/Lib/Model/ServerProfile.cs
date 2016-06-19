@@ -1742,7 +1742,7 @@ namespace ARK_Server_Manager.Lib
 
             if (this.OverideStructurePlatformPrevention)
             {
-                serverArgs.Append("?OverideStructurePlatformPrevention=true");
+                serverArgs.Append("?OverrideStructurePlatformPrevention=true");
             }
 
             if (this.EnableExtraStructurePreventionVolumes)

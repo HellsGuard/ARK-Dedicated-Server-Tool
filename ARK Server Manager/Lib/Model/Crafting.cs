@@ -43,7 +43,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return DisplayName;
+            return null;
         }
 
         public override bool IsEquivalent(AggregateIniValue other)
@@ -66,7 +66,7 @@ namespace ARK_Server_Manager.Lib
             if (kvValue.EndsWith(")))"))
                 kvValue = kvValue.Substring(0, kvValue.Length - 1);
 
-            var propertyValues = Split(kvValue, propertyNames);
+            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
 
             foreach (var property in this.properties)
             {
@@ -83,13 +83,16 @@ namespace ARK_Server_Manager.Lib
                     if (property.Name == nameof(BaseCraftingResourceRequirements))
                     {
                         kvPropertyValue = kvPropertyPair[1].Trim();
-                        kvPropertyValue = kvPropertyValue.Replace("((", "(");
-                        kvPropertyValue = kvPropertyValue.Replace("))", ")");
+                        if (kvPropertyValue.StartsWith("(("))
+                            kvPropertyValue = kvPropertyValue.Substring(1);
+                        if (kvPropertyValue.EndsWith("))"))
+                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
                         kvPropertyValue = kvPropertyPair[0].Trim() + "=" + kvPropertyValue;
                         kvPropertyValue = kvPropertyValue.Replace("),(", ")," + kvPropertyPair[0].Trim() + "=(");
 
-                        var items = kvPropertyValue.Split(new[] { ")," }, StringSplitOptions.RemoveEmptyEntries);
-                        collection.FromIniValues(items);
+                        string[] delimiters = new[] { "," + kvPropertyPair[0].Trim() + "=" };
+                        var items = StringUtils.SplitIncludingDelimiters("," + kvPropertyValue, delimiters);
+                        collection.FromIniValues(items.Select(i => i.Trim(',', ' ')));
                     }
                     else
                     {
@@ -98,32 +101,9 @@ namespace ARK_Server_Manager.Lib
                 }
                 else
                 {
-                    object convertedValue = Convert.ChangeType(kvPropertyValue, property.PropertyType, CultureInfo.GetCultureInfo("en-US"));
-                    if (convertedValue.GetType() == typeof(String))
-                        convertedValue = (convertedValue as string).Trim('"');
-                    property.SetValue(this, convertedValue);
+                    StringUtils.SetPropertyValue(kvPropertyValue, this, property);
                 }
             }
-        }
-
-        private List<string> Split(string input, string[] delimiters)
-        {
-            List<string> result = new List<string>();
-
-            int[] nextPosition = delimiters.Select(d => input.IndexOf(d)).ToArray();
-            Array.Sort(nextPosition);
-            Array.Reverse(nextPosition);
-
-            int lastPos = input.Length;
-            foreach (var pos in nextPosition)
-            {
-                var value = input.Substring(pos, lastPos - pos);
-                result.Add(value);
-
-                lastPos = pos;
-            }
-
-            return result;
         }
 
         public override string ToINIValue()
@@ -171,13 +151,13 @@ namespace ARK_Server_Manager.Lib
                 else
                 {
                     var val = property.GetValue(this);
-                    var convertedVal = Convert.ToString(val, CultureInfo.GetCultureInfo("en-US"));
+                    var propertyValue = StringUtils.GetPropertyValue(val, property);
 
                     result.Append(property.Name).Append("=");
                     if (property.PropertyType == typeof(String))
-                        result.Append('"').Append(convertedVal).Append('"');
+                        result.Append('"').Append(propertyValue).Append('"');
                     else
-                        result.Append(convertedVal);
+                        result.Append(propertyValue);
                 }
 
                 firstItem = false;
@@ -228,16 +208,8 @@ namespace ARK_Server_Manager.Lib
         {
             get
             {
-                return false;
-                //return GameData.HasEngramForClass(EngramClassName);
+                return GameData.HasEngramForClass(ResourceItemTypeString);
             }
-        }
-
-        public static CraftingResourceRequirement FromINIValue(string iniValue)
-        {
-            var temp = new CraftingResourceRequirement();
-            temp.InitializeFromINIValue(iniValue);
-            return temp;
         }
 
         public override string GetSortKey()

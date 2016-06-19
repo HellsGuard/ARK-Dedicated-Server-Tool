@@ -55,19 +55,16 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 var val = prop.GetValue(this);
-                string convertedVal;
-                if (prop.PropertyType == typeof(float))
-                    convertedVal = ((float)val).ToString("0.0#########", CultureInfo.GetCultureInfo("en-US"));
-                else
-                    convertedVal = Convert.ToString(val, CultureInfo.GetCultureInfo("en-US"));
+                var propValue = StringUtils.GetPropertyValue(val, prop);
+
                 result.Append(prop.Name).Append('=');
                 if (prop.PropertyType == typeof(String))
                 {
-                    result.Append('"').Append(convertedVal).Append('"');
+                    result.Append('"').Append(propValue).Append('"');
                 }
                 else
                 {
-                    result.Append(convertedVal);
+                    result.Append(propValue);
                 }
 
                 firstItem = false;
@@ -112,31 +109,7 @@ namespace ARK_Server_Manager.Lib
                     var propInfo = this.properties.FirstOrDefault(p => String.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase));
                     if (propInfo != null)
                     {
-                        if (propInfo.PropertyType == typeof(bool))
-                        {
-                            var boolValue = false;
-                            bool.TryParse(val, out boolValue);
-                            propInfo.SetValue(this, boolValue);
-                        }
-                        else if (propInfo.PropertyType == typeof(int))
-                        {
-                            int intValue;
-                            int.TryParse(val, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out intValue);
-                            propInfo.SetValue(this, intValue);
-                        }
-                        else if (propInfo.PropertyType == typeof(float))
-                        {
-                            float floatValue;
-                            float.TryParse(val, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out floatValue);
-                            propInfo.SetValue(this, floatValue);
-                        }
-                        else
-                        {
-                            object convertedValue = Convert.ChangeType(val, propInfo.PropertyType, CultureInfo.GetCultureInfo("en-US"));
-                            if (convertedValue.GetType() == typeof(String))
-                                convertedValue = (convertedValue as string).Trim('"');
-                            propInfo.SetValue(this, convertedValue);
-                        }
+                        StringUtils.SetPropertyValue(val, this, propInfo);
                     }
                 }
             }

@@ -118,17 +118,14 @@ namespace ARK_Server_Manager.Lib
         public string basePath;
 
         [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section,
-            string key, string val, string filePath);
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
 
 
         [DllImport("kernel32")]
         private static extern int WritePrivateProfileSection(string section, string data, string filePath);
 
         [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section,
-                 string key, string def, StringBuilder retVal,
-            int size, string filePath);
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
         [DllImport("kernel32", CharSet=CharSet.Auto)]
         private static extern int GetPrivateProfileSection(string section, char[] retVal, int size, string filePath);
@@ -240,11 +237,7 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            string strValue;
-                            if (field.PropertyType == typeof(float))
-                                strValue = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo("en-US"));
-                            else
-                                strValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US"));
+                            var strValue = StringUtils.GetPropertyValue(value, field);
                             if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
                             {
                                 strValue = "\"" + strValue + "\"";
@@ -319,38 +312,13 @@ namespace ARK_Server_Manager.Lib
 
                             if (String.IsNullOrWhiteSpace(iniValue))
                             {                                
-
                                 // Skip non-string values which are not found
                                 continue;
                             }
 
-                            if (fieldType == typeof(bool))
-                            {
-                                var boolValue = false;
-                                bool.TryParse(iniValue, out boolValue);
-                                if (attr.InvertBoolean)
-                                {
-                                    boolValue = !boolValue;
-                                }
-
-                                field.SetValue(obj, boolValue);
-                            }
-                            else if (fieldType == typeof(int))
-                            {
-                                int intValue;
-                                int.TryParse(iniValue, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out intValue);
-                                field.SetValue(obj, intValue);
-                            }
-                            else if (fieldType == typeof(float))
-                            {
-                                float floatValue;
-                                float.TryParse(iniValue, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out floatValue);
-                                field.SetValue(obj, floatValue);
-                            }                           
-                            else
-                            {
+                            var valueSet = StringUtils.SetPropertyValueIniFile(iniValue, obj, field);
+                            if (!valueSet)
                                 throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
-                            }
                         }
                     }
                 }

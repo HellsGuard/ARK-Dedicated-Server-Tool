@@ -45,7 +45,8 @@ namespace ARK_Server_Manager.Lib
         public void Reset()
         {
             this.Clear();
-            this.AddRange(this.resetFunc());
+            if (this.resetFunc != null)
+                this.AddRange(this.resetFunc());
 
             this.Sort(AggregateIniValue.SortKeySelector);
         }
