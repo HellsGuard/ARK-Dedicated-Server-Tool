@@ -636,6 +636,7 @@
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsKnownColumnLabel">Known</sys:String>
     <sys:String x:Key="ServerSettings_EngramsRemovePrereqsColumnLabel">Remove Prereqs</sys:String>
     <sys:String x:Key="ServerSettings_EngramsRemoveRecordTooltip">Remove this Engram</sys:String>
 

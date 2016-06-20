@@ -8,33 +8,13 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 {
 	public static class SortBehavior
 	{
-		public static readonly DependencyProperty CanUserSortColumnsProperty =
-			DependencyProperty.RegisterAttached(
-				"CanUserSortColumns",
-				typeof(bool),
-				typeof(SortBehavior),
-				new FrameworkPropertyMetadata(OnCanUserSortColumnsChanged));
+		public static readonly DependencyProperty CanUserSortColumnsProperty = DependencyProperty.RegisterAttached("CanUserSortColumns", typeof(bool), typeof(SortBehavior), new FrameworkPropertyMetadata(OnCanUserSortColumnsChanged));
+        public static readonly DependencyProperty CanUseSortProperty = DependencyProperty.RegisterAttached("CanUseSort", typeof(bool), typeof(SortBehavior), new FrameworkPropertyMetadata(true));
+        public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.RegisterAttached("SortDirection", typeof(ListSortDirection?), typeof(SortBehavior));
+        public static readonly DependencyProperty SortExpressionProperty = DependencyProperty.RegisterAttached("SortExpression", typeof(string), typeof(SortBehavior));
+        public static readonly DependencyProperty IsDefaultSortProperty = DependencyProperty.RegisterAttached("IsDefaultSort", typeof(bool), typeof(SortBehavior), new FrameworkPropertyMetadata(false));
 
-		public static readonly DependencyProperty CanUseSortProperty =
-			DependencyProperty.RegisterAttached(
-				"CanUseSort",
-				typeof(bool),
-				typeof(SortBehavior),
-				new FrameworkPropertyMetadata(true));
-
-		public static readonly DependencyProperty SortDirectionProperty =
-			DependencyProperty.RegisterAttached(
-				"SortDirection",
-				typeof(ListSortDirection?),
-				typeof(SortBehavior));
-
-		public static readonly DependencyProperty SortExpressionProperty =
-			DependencyProperty.RegisterAttached(
-				"SortExpression",
-				typeof(string),
-				typeof(SortBehavior));
-
-		[AttachedPropertyBrowsableForType(typeof(ListView))]
+        [AttachedPropertyBrowsableForType(typeof(ListView))]
 		public static bool GetCanUserSortColumns(ListView element)
 		{
 			return (bool)element.GetValue(CanUserSortColumnsProperty);
@@ -82,7 +62,19 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 			element.SetValue(SortExpressionProperty, value);
 		}
 
-		private static void OnCanUserSortColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        [AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
+        public static bool GetIsDefaultSort(GridViewColumn element)
+        {
+            return (bool)element.GetValue(IsDefaultSortProperty);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
+        public static void SetIsDefaultSort(GridViewColumn element, bool value)
+        {
+            element.SetValue(IsDefaultSortProperty, value);
+        }
+
+        private static void OnCanUserSortColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var listView = (ListView)d;
 			if ((bool)e.NewValue)
@@ -113,7 +105,7 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 		private static void DoInitialSort(ListView listView)
 		{
 			var gridView = (GridView)listView.View;
-			var column = gridView.Columns.FirstOrDefault(c => GetSortDirection(c) != null);
+			var column = gridView.Columns.FirstOrDefault(c => GetIsDefaultSort(c));
 			if (column != null)
 			{
 				DoSort(listView, column);
@@ -131,7 +123,9 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 
 		private static void DoSort(ListView listView, GridViewColumn newColumn)
 		{
-			var sortDescriptions = listView.Items.SortDescriptions;
+            var gridView = (GridView)listView.View;
+
+            var sortDescriptions = listView.Items.SortDescriptions;
 			var newDirection = ListSortDirection.Ascending;
 
 			var propertyPath = ResolveSortExpression(newColumn);
@@ -141,13 +135,10 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 				{
 					if (sortDescriptions[0].PropertyName == propertyPath)
 					{
-						newDirection = GetSortDirection(newColumn) == ListSortDirection.Ascending ?
-							ListSortDirection.Descending :
-							ListSortDirection.Ascending;
+						newDirection = GetSortDirection(newColumn) == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
 					}
 					else
 					{
-						var gridView = (GridView)listView.View;
 						foreach (var column in gridView.Columns.Where(c => GetSortDirection(c) != null))
 						{
 							SetSortDirection(column, null);
@@ -158,8 +149,19 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 				}
 
 				sortDescriptions.Add(new SortDescription(propertyPath, newDirection));
-				SetSortDirection(newColumn, newDirection);
-			}
+                SetSortDirection(newColumn, newDirection);
+
+                // check if there is a default sort column
+                var defaultColumn = gridView.Columns.FirstOrDefault(c => GetIsDefaultSort(c));
+                if (defaultColumn != null)
+                {
+                    var defaultPropertyPath = ResolveSortExpression(defaultColumn);
+                    if (defaultPropertyPath != null && !defaultPropertyPath.Equals(propertyPath))
+                    {
+                        sortDescriptions.Add(new SortDescription(defaultPropertyPath, ListSortDirection.Ascending));
+                    }
+                }
+            }
 		}
 
 		private static string ResolveSortExpression(GridViewColumn column)

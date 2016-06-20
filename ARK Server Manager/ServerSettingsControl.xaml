@@ -1845,7 +1845,7 @@
                                 <ListView x:Name="EngramsOverrideListView"  ItemsSource="{Binding OverrideNamedEngramEntries}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True"/>
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True" lvs:SortBehavior.IsDefaultSort="True"/>
                                             <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
@@ -1871,6 +1871,13 @@
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsKnownColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="KnownEngram">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding KnownEngram, Mode=OneWay}" HorizontalAlignment="Center" IsEnabled="False"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>

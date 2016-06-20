@@ -147,7 +147,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="HelpUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/1194</Value>
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/1194/faq-frequently-asked</Value>
     </Setting>
     <Setting Name="OpenRCON_ServerIP" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -219,7 +219,7 @@
       <Value Profile="(Default)">http://store.steampowered.com/app/407530/</Value>
     </Setting>
     <Setting Name="ASM_PatchNotesUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3</Value>
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3/downloads</Value>
     </Setting>
   </Settings>
 </SettingsFile>

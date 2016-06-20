@@ -505,7 +505,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/1194")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/1194/faq-frequently-asked")]
         public string HelpUrl {
             get {
                 return ((string)(this["HelpUrl"]));
@@ -772,7 +772,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3/downloads")]
         public string ASM_PatchNotesUrl {
             get {
                 return ((string)(this["ASM_PatchNotesUrl"]));
