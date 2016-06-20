@@ -195,6 +195,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool RCONEnabled
         {
             get { return (bool)GetValue(RCONEnabledProperty); }
@@ -202,10 +203,19 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public int RCONPort
         {
             get { return (int)GetValue(RCONPortProperty); }
             set { SetValue(RCONPortProperty, value); }
+        }
+
+        public static readonly DependencyProperty RCONServerGameLogBufferProperty = DependencyProperty.Register(nameof(RCONServerGameLogBuffer), typeof(int), typeof(ServerProfile), new PropertyMetadata(600));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int RCONServerGameLogBuffer
+        {
+            get { return (int)GetValue(RCONServerGameLogBufferProperty); }
+            set { SetValue(RCONServerGameLogBufferProperty, value); }
         }
 
         public static readonly DependencyProperty AdminLoggingProperty = DependencyProperty.Register(nameof(AdminLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -214,20 +224,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(AdminLoggingProperty); }
             set { SetValue(AdminLoggingProperty, value); }
-        }
-
-        public static readonly DependencyProperty EnableServerAdminLogsProperty = DependencyProperty.Register(nameof(EnableServerAdminLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool EnableServerAdminLogs
-        {
-            get { return (bool)GetValue(EnableServerAdminLogsProperty); }
-            set { SetValue(EnableServerAdminLogsProperty, value); }
-        }
-
-        public static readonly DependencyProperty RCONServerGameLogBufferProperty = DependencyProperty.Register(nameof(RCONServerGameLogBuffer), typeof(int), typeof(ServerProfile), new PropertyMetadata(600));
-        public int RCONServerGameLogBuffer
-        {
-            get { return (int)GetValue(RCONServerGameLogBufferProperty); }
-            set { SetValue(RCONServerGameLogBufferProperty, value); }
         }
 
         public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
@@ -337,6 +333,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxTribeLogsProperty, value); }
         }
 
+        public static readonly DependencyProperty EnableServerAdminLogsProperty = DependencyProperty.Register(nameof(EnableServerAdminLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableServerAdminLogs
+        {
+            get { return (bool)GetValue(EnableServerAdminLogsProperty); }
+            set { SetValue(EnableServerAdminLogsProperty, value); }
+        }
+
         public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         public string AdditionalArgs
         {
@@ -439,6 +442,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EnableExtraStructurePreventionVolumesProperty = DependencyProperty.Register(nameof(EnableExtraStructurePreventionVolumes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool EnableExtraStructurePreventionVolumes
         {
             get { return (bool)GetValue(EnableExtraStructurePreventionVolumesProperty); }
@@ -526,6 +530,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventOfflinePvPProperty = DependencyProperty.Register(nameof(PreventOfflinePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool PreventOfflinePvP
         {
             get { return (bool)GetValue(PreventOfflinePvPProperty); }
@@ -533,6 +538,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventOfflinePvPIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(900));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(PreventOfflinePvP))]
         public int PreventOfflinePvPInterval
         {
             get { return (int)GetValue(PreventOfflinePvPIntervalProperty); }
@@ -612,6 +618,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EnableDiseasesProperty = DependencyProperty.Register(nameof(EnableDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventDiseases", InvertBoolean = true)]
         public bool EnableDiseases
         {
             get { return (bool)GetValue(EnableDiseasesProperty); }
@@ -619,6 +626,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NonPermanentDiseasesProperty = DependencyProperty.Register(nameof(NonPermanentDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDiseases))]
         public bool NonPermanentDiseases
         {
             get { return (bool)GetValue(NonPermanentDiseasesProperty); }
@@ -710,6 +718,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShowFloatingDamageTextProperty = DependencyProperty.Register(nameof(ShowFloatingDamageText), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool ShowFloatingDamageText
         {
             get { return (bool)GetValue(ShowFloatingDamageTextProperty); }
@@ -719,7 +728,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Player Settings
         public static readonly DependencyProperty EnableFlyerCarryProperty = DependencyProperty.Register(nameof(EnableFlyerCarry), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bAllowFlyerCarryPVE")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowFlyerCarryPVE")]
         public bool EnableFlyerCarry
         {
             get { return (bool)GetValue(EnableFlyerCarryProperty); }
@@ -1005,6 +1014,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DisableImprintDinoBuffProperty = DependencyProperty.Register(nameof(DisableImprintDinoBuff), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool DisableImprintDinoBuff
         {
             get { return (bool)GetValue(DisableImprintDinoBuffProperty); }
@@ -1012,6 +1022,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty AllowAnyoneBabyImprintCuddleProperty = DependencyProperty.Register(nameof(AllowAnyoneBabyImprintCuddle), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AllowAnyoneBabyImprintCuddle
         {
             get { return (bool)GetValue(AllowAnyoneBabyImprintCuddleProperty); }
@@ -1328,11 +1339,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxPlatformSaddleStructureLimitProperty, value); }
         }
 
-        public static readonly DependencyProperty OverideStructurePlatformPreventionProperty = DependencyProperty.Register(nameof(OverideStructurePlatformPrevention), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool OverideStructurePlatformPrevention
+        public static readonly DependencyProperty OverrideStructurePlatformPreventionProperty = DependencyProperty.Register(nameof(OverrideStructurePlatformPrevention), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool OverrideStructurePlatformPrevention
         {
-            get { return (bool)GetValue(OverideStructurePlatformPreventionProperty); }
-            set { SetValue(OverideStructurePlatformPreventionProperty, value); }
+            get { return (bool)GetValue(OverrideStructurePlatformPreventionProperty); }
+            set { SetValue(OverrideStructurePlatformPreventionProperty, value); }
         }
 
         public static readonly DependencyProperty FlyerPlatformAllowUnalignedDinoBasingProperty = DependencyProperty.Register(nameof(FlyerPlatformAllowUnalignedDinoBasing), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1368,6 +1380,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty AutoDestroyOldStructuresMultiplierProperty = DependencyProperty.Register(nameof(AutoDestroyOldStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.0f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float AutoDestroyOldStructuresMultiplier
         {
             get { return (float)GetValue(AutoDestroyOldStructuresMultiplierProperty); }
@@ -1375,6 +1388,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ForceAllStructureLockingProperty = DependencyProperty.Register(nameof(ForceAllStructureLocking), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool ForceAllStructureLocking
         {
             get { return (bool)GetValue(ForceAllStructureLockingProperty); }
@@ -1674,16 +1688,6 @@ namespace ARK_Server_Manager.Lib
             serverArgs.Append("?QueryPort=").Append(this.ServerPort);
             serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
 
-            if(this.RCONEnabled)
-            {
-                serverArgs.Append("?RCONEnabled=true");
-                serverArgs.Append("?RCONPort=").Append(this.RCONPort);
-                if (this.EnableServerAdminLogs)
-                {
-                    serverArgs.Append("?RCONServerGameLogBuffer=").Append(this.RCONServerGameLogBuffer);
-                }
-            }
-
             if (this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
@@ -1693,61 +1697,6 @@ namespace ARK_Server_Manager.Lib
             {
                 serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
                 serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
-            }
-
-            // This flag is broken in the INI        
-            if(this.EnableFlyerCarry)
-            {
-                serverArgs.Append("?AllowFlyerCarryPVE=true");
-            }
-
-            if (this.ForceAllStructureLocking)
-            {
-                serverArgs.Append("?ForceAllStructureLocking=true");
-            }
-
-            serverArgs.Append("?AutoDestroyOldStructuresMultiplier=").Append(this.AutoDestroyOldStructuresMultiplier);
-
-            if (this.PreventOfflinePvP)
-            {
-                serverArgs.Append("?PreventOfflinePvP=true");
-                if (!PreventOfflinePvPIntervalProperty.DefaultMetadata.DefaultValue.Equals(this.PreventOfflinePvPInterval))
-                {
-                    serverArgs.Append($"?PreventOfflinePvPInterval={this.PreventOfflinePvPInterval}");
-                }
-            }
-
-            if (this.ShowFloatingDamageText)
-            {
-                serverArgs.Append("?ShowFloatingDamageText=true");
-            }
-
-            if (!this.EnableDiseases)
-            {
-                serverArgs.Append("?PreventDiseases=true");
-                if (this.NonPermanentDiseases)
-                {
-                    serverArgs.Append("?NonPermanentDiseases=true");
-                }
-            }
-
-            if (this.DisableImprintDinoBuff)
-            {
-                serverArgs.Append("?DisableImprintDinoBuff=true");
-            }
-            if (this.AllowAnyoneBabyImprintCuddle)
-            {
-                serverArgs.Append("?AllowAnyoneBabyImprintCuddle=true");
-            }
-
-            if (this.OverideStructurePlatformPrevention)
-            {
-                serverArgs.Append("?OverrideStructurePlatformPrevention=true");
-            }
-
-            if (this.EnableExtraStructurePreventionVolumes)
-            {
-                serverArgs.Append("?EnableExtraStructurePreventionVolumes=true");
             }
 
             if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
@@ -2211,9 +2160,8 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(RCONEnabledProperty);
             this.ClearValue(RCONPortProperty);
-            this.ClearValue(AdminLoggingProperty);
-            this.ClearValue(EnableServerAdminLogsProperty);
             this.ClearValue(RCONServerGameLogBufferProperty);
+            this.ClearValue(AdminLoggingProperty);
 
             this.ClearValue(ServerMapProperty);
             this.ClearValue(ServerModIdsProperty);
@@ -2233,6 +2181,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(SpeedHackBiasProperty);
             this.ClearValue(UseBattlEyeProperty);
             this.ClearValue(MaxTribeLogsProperty);
+            this.ClearValue(EnableServerAdminLogsProperty);
 
             this.ClearValue(AdditionalArgsProperty);
         }
@@ -2270,6 +2219,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DinoCountMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierDinoProperty);
             this.ClearValue(TurretDamageMultiplierDinoProperty);
+
             this.ClearValue(EnableAllowCaveFlyersProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
@@ -2292,6 +2242,13 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EggHatchSpeedMultiplierProperty);
             this.ClearValue(BabyMatureSpeedMultiplierProperty);
             this.ClearValue(BabyFoodConsumptionSpeedMultiplierProperty);
+
+            this.ClearValue(DisableImprintDinoBuffProperty);
+            this.ClearValue(AllowAnyoneBabyImprintCuddleProperty);
+            this.ClearValue(BabyImprintingStatScaleMultiplierProperty);
+            this.ClearValue(BabyCuddleIntervalMultiplierProperty);
+            this.ClearValue(BabyCuddleGracePeriodMultiplierProperty);
+            this.ClearValue(BabyCuddleLoseImprintQualitySpeedMultiplierProperty);
         }
 
         public void ResetEngramsSection()
@@ -2333,6 +2290,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowMapPlayerLocationProperty);
             this.ClearValue(AllowPVPGammaProperty);
             this.ClearValue(AllowPvEGammaProperty);
+            this.ClearValue(ShowFloatingDamageTextProperty);
         }
 
         public void ResetPlayerSettings()
@@ -2343,7 +2301,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PlayerDamageMultiplierProperty);
             this.ClearValue(PlayerResistanceMultiplierProperty);
             this.ClearValue(PlayerCharacterWaterDrainMultiplierProperty);
-
             this.ClearValue(PlayerCharacterFoodDrainMultiplierProperty);
             this.ClearValue(PlayerCharacterStaminaDrainMultiplierProperty);
             this.ClearValue(PlayerCharacterHealthRecoveryMultiplierProperty);
@@ -2360,29 +2317,45 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DisableFriendlyFirePvPProperty);
             this.ClearValue(DisableFriendlyFirePvEProperty);
             this.ClearValue(DisableLootCratesProperty);
+            this.ClearValue(EnableExtraStructurePreventionVolumesProperty);
+
             this.ClearValue(DifficultyOffsetProperty);
+            this.ClearValue(MaxNumberOfPlayersInTribeProperty);
+
             this.ClearValue(EnableTributeDownloadsProperty);
             this.ClearValue(PreventDownloadSurvivorsProperty);
             this.ClearValue(PreventDownloadItemsProperty);
             this.ClearValue(PreventDownloadDinosProperty);
+
             this.ClearValue(IncreasePvPRespawnIntervalProperty);
             this.ClearValue(IncreasePvPRespawnIntervalCheckPeriodProperty);
             this.ClearValue(IncreasePvPRespawnIntervalMultiplierProperty);
             this.ClearValue(IncreasePvPRespawnIntervalBaseAmountProperty);
+
+            this.ClearValue(PreventOfflinePvPProperty);
+            this.ClearValue(PreventOfflinePvPIntervalProperty);
+
             this.ClearValue(AutoPvETimerProperty);
             this.ClearValue(AutoPvEUseSystemTimeProperty);
             this.ClearValue(AutoPvEStartTimeSecondsProperty);
             this.ClearValue(AutoPvEStopTimeSecondsProperty);
+
             this.ClearValue(AllowTribeWarPvEProperty);
             this.ClearValue(AllowTribeWarCancelPvEProperty);
+
             this.ClearValue(AllowCustomRecipesProperty);
             this.ClearValue(CustomRecipeEffectivenessMultiplierProperty);
             this.ClearValue(CustomRecipeSkillMultiplierProperty);
+
+            this.ClearValue(EnableDiseasesProperty);
+            this.ClearValue(NonPermanentDiseasesProperty);
         }
 
         public void ResetSOTFSection()
         {
             this.ClearValue(SOTF_EnabledProperty);
+            this.ClearValue(SOTF_OutputGameReportProperty);
+            this.ClearValue(SOTF_GamePlayLoggingProperty);
             this.ClearValue(SOTF_DisableDeathSPectatorProperty);
             this.ClearValue(SOTF_OnlyAdminRejoinAsSpectatorProperty);
             this.ClearValue(SOTF_MaxNumberOfPlayersInTribeProperty);
@@ -2391,7 +2364,12 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(SOTF_BattleAutoStartGameIntervalProperty);
             this.ClearValue(SOTF_BattleAutoRestartGameIntervalProperty);
             this.ClearValue(SOTF_BattleSuddenDeathIntervalProperty);
-            this.ClearValue(SOTF_GamePlayLoggingProperty);
+
+            this.ClearValue(SOTF_NoEventsProperty);
+            this.ClearValue(SOTF_NoBossesProperty);
+            this.ClearValue(SOTF_BothBossesProperty);
+            this.ClearValue(SOTF_EvoEventIntervalProperty);
+            this.ClearValue(SOTF_RingStartTimeProperty);
         }
 
         public void ResetStructuresSection()
@@ -2404,6 +2382,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MaxStructuresVisibleProperty);
             this.ClearValue(PerPlatformMaxStructuresMultiplierProperty);
             this.ClearValue(MaxPlatformSaddleStructureLimitProperty);
+            this.ClearValue(OverrideStructurePlatformPreventionProperty);
             this.ClearValue(FlyerPlatformAllowUnalignedDinoBasingProperty);
             this.ClearValue(EnableStructureDecayProperty);
             this.ClearValue(PvEStructureDecayDestructionPeriodProperty);

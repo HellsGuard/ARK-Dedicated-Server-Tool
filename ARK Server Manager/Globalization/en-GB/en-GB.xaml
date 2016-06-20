@@ -597,8 +597,8 @@
     <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">Specifies the scaling factor for the maximum number of structures allowed on a single platform/saddle.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">Max Platform Saddle Structures:</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">The maximum number of platformed creatures or rafts allowed on the entire server.</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">Overide Structure Platform Prevention</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">If enabled, allows auto-turrets to be buildable/working on dino platform saddles.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionLabel">Override Structure Platform Prevention</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">If enabled, allows auto-turrets to be buildable/working on dino platform saddles.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
 

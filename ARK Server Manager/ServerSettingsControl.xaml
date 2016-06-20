@@ -800,24 +800,9 @@
                                     </Grid.RowDefinitions>
                                     <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="{DynamicResource ServerSettings_EnableRCONPortLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="{DynamicResource ServerSettings_EnableRCONPortTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONPortTooltip}"/>
-                                    <CheckBox Grid.Row="1" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" Margin="5" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
-                                    <CheckBox x:Name="EnableServerAdminLogs" Grid.Column="0" Grid.Row="2" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}" Height="14" Width="158"/>
-                                    <Label Grid.Column="0" Grid.Row="4" Margin="20,0,0,0" Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}">
-                                        <Label.IsEnabled>
-                                            <MultiBinding Converter="{StaticResource AllTrueMultiValueConverter}">
-                                                <Binding ElementName="EnableRCON" Path="IsChecked"/>
-                                                <Binding ElementName="EnableServerAdminLogs" Path="IsChecked"/>
-                                            </MultiBinding>
-                                        </Label.IsEnabled>
-                                    </Label>
-                                    <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}">
-                                        <TextBox.IsEnabled>
-                                            <MultiBinding Converter="{StaticResource AllTrueMultiValueConverter}">
-                                                <Binding ElementName="EnableRCON" Path="IsChecked"/>
-                                                <Binding ElementName="EnableServerAdminLogs" Path="IsChecked"/>
-                                            </MultiBinding>
-                                        </TextBox.IsEnabled>
-                                    </TextBox>
+                                    <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,0" Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
+                                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
+                                    <CheckBox Grid.Row="2" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" Margin="5" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -912,6 +897,7 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <CheckBox x:Name="DisableValveAntiCheatSystem" Grid.Column="0" Grid.Row="0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="{DynamicResource ServerSettings_DisableVACLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_DisableVACTooltip}" Height="14" Width="223"/>
                                     <CheckBox x:Name="DisablePlayerMovePhysicsOptimization" Grid.Column="0" Grid.Row="1" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="{DynamicResource ServerSettings_DisablePMVOptimizationLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_DisablePMVOptimizationTooltip}" Height="14" Width="243"/>
@@ -920,6 +906,7 @@
                                     <CheckBox x:Name="EnableBattlEye" Grid.Column="0" Grid.Row="4" IsChecked="{Binding UseBattlEye}" Content="{DynamicResource ServerSettings_UseBattlEyeLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,5,0,5" ToolTip="{DynamicResource ServerSettings_UseBattlEyeTooltip}" Height="16" Width="199"/>
                                     <Label Grid.Column="0" Grid.Row="5" Content="{DynamicResource ServerSettings_MaxTribeLogsLabel}" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding MaxTribeLogs}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}"/>
+                                    <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Margin="5,6,0,6" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -1804,7 +1791,7 @@
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxStructuresVisibleLabel}" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxStructuresVisibleTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierLabel}" Value="{Binding PerPlatformMaxStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresLabel}" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresTooltip}"/>
-                                <CheckBox            Content="{DynamicResource ServerSettings_OverideStructurePlatformPreventionLabel}" IsChecked="{Binding OverideStructurePlatformPrevention}" Margin="5" ToolTip="{DynamicResource ServerSettings_OverideStructurePlatformPreventionTooltip}"/>
+                                <CheckBox            Content="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionLabel}" IsChecked="{Binding OverrideStructurePlatformPrevention}" Margin="5" ToolTip="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionTooltip}"/>
                                 <CheckBox            Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" Margin="5" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}"/>
                                 <GroupBox>
                                     <GroupBox.Header>
@@ -1853,21 +1840,21 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}" lvs:SortBehavior.SortExpression="EngramPointsCost">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramPointsCost">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBox Text="{Binding EngramPointsCost}" Width="75" VerticalContentAlignment="Center"/>
+                                                        <TextBox Text="{Binding EngramPointsCost}" VerticalContentAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsHiddenColumnLabel}" Width="100" lvs:SortBehavior.SortExpression="EngramHidden">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsHiddenColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramHidden">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding EngramHidden}" HorizontalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="100" lvs:SortBehavior.SortExpression="RemoveEngramPreReq">
+                                            <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="RemoveEngramPreReq">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
@@ -1884,7 +1871,7 @@
                                             <GridViewColumn Width="Auto" lvs:SortBehavior.CanUseSort="False">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Click="RemoveEngramOverride_Click" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
+                                                        <Button Click="RemoveEngramOverride_Click" Width="30" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
                                                             <Button.Style>
                                                                 <Style TargetType="{x:Type Button}">
                                                                     <Style.Triggers>
@@ -1903,6 +1890,7 @@
                                     </ListView.View>
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListViewItem}" >
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                             <Setter Property="Background" Value="White" />
 
                                             <Style.Triggers>

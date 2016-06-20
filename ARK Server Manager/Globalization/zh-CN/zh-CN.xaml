@@ -526,8 +526,8 @@
     <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">指定在一个单一的平台/鞍上允许的最大数量的缩放参数.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">最大平台鞍建筑:</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">对平台鞍的生物或竹筏上允许建筑物的最大数量.</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">建筑将覆盖预防平台</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">如果启用，允许自动炮塔是可建设于恐龙平台鞍工作.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionLabel">建筑将覆盖预防平台</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">如果启用，允许自动炮塔是可建设于恐龙平台鞍工作.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">允许不结盟的恐龙停在飞行平台鞍上</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">如果启用，非结盟的部落的恐龙能够站在自己部落的平台鞍上.</sys:String>
 
