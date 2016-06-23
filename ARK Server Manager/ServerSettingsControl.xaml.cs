@@ -48,6 +48,7 @@ namespace ARK_Server_Manager
         DinoTamedPerLevelStatMultipliers,
         DinoTamedAddPerLevelStatMultipliers,
         DinoTamedAffinityPerLevelStatMultipliers,
+        RCONWindowExtents,
     }
 
     /// <summary>
@@ -799,6 +800,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.DinoTamedAffinityPerLevelStatMultipliers:
                                 this.Settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
+                                break;
+
+                            case ServerSettingsResetAction.RCONWindowExtents:
+                                this.Settings.ResetRCONWindowExtents();
                                 break;
                         }
                     },

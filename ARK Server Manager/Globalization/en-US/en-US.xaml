@@ -230,6 +230,7 @@
     <sys:String x:Key="ServerSettings_EnableRCONPortLabel">Enable RCON Port</sys:String>
     <sys:String x:Key="ServerSettings_EnableRCONPortTooltip">If enabled, the RCON port will be enabled.</sys:String>
     <sys:String x:Key="ServerSettings_RCONPortTooltip">The port that RCON will use on your server.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONResetTooltip">Resets the RCON Window settings back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Log Admin to Chat</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">If enabled, admin commands will be echoed to chat</sys:String>
     <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>

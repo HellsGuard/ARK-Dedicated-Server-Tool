@@ -356,6 +356,12 @@
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
+            <ContentControl x:Key="ResetRCONButtonContent">
+                <StackPanel Orientation="Horizontal"  Height="27">
+                    <Image Source="Art/Refresh.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ContentControl>
             <ContentControl x:Key="UpgradeButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
                     <Image Source="Art/Upgrade.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
@@ -791,6 +797,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -800,6 +807,8 @@
                                     </Grid.RowDefinitions>
                                     <CheckBox x:Name="EnableRCON" Grid.Column="0" Grid.Row="0" IsChecked="{Binding RCONEnabled}" Content="{DynamicResource ServerSettings_EnableRCONPortLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="{DynamicResource ServerSettings_EnableRCONPortTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="{Binding ElementName=EnableRCON, Path=IsChecked}" Text="{Binding RCONPort}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONPortTooltip}"/>
+                                    <Button Grid.Column="2" Grid.Row="0" Margin="5,0,0,0" Content="{StaticResource ResetRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONResetTooltip}" 
+                                        Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.RCONWindowExtents}"/>
                                     <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,0" Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
                                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding RCONServerGameLogBuffer}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}"/>
                                     <CheckBox Grid.Row="2" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" Margin="5" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>

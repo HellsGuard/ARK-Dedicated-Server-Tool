@@ -2139,6 +2139,11 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(OverrideMaxExperiencePointsDinoProperty);
         }
 
+        public void ResetRCONWindowExtents()
+        {
+            this.ClearValue(RCONWindowExtentsProperty);
+        }
+
         // section reset methods
         public void ResetAdministrationSection()
         {
