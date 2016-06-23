@@ -221,5 +221,8 @@
     <Setting Name="ASM_PatchNotesUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3/downloads</Value>
     </Setting>
+    <Setting Name="RunAsAdministratorPrompt" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

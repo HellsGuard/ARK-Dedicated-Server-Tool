@@ -1,6 +1,5 @@
 ﻿using ARK_Server_Manager.Lib;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 
@@ -47,12 +46,14 @@ namespace ARK_Server_Manager
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            cancelSource.Cancel();
+            if (cancelSource != null)
+                cancelSource.Cancel();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            cancelSource.Cancel();
+            if (cancelSource != null)
+                cancelSource.Cancel();
         }
     }
 }

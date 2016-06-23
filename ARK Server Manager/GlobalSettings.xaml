@@ -42,6 +42,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Grid.ColumnSpan="3" LastChildFill="False">
             <Label DockPanel.Dock="Left" Content="{DynamicResource GlobalSettings_Title}" FontSize="20" VerticalAlignment="Bottom" />
@@ -49,11 +50,13 @@
             <Label DockPanel.Dock="Right" FontSize="15" Content="{DynamicResource GlobalSettings_VersionLabel}" VerticalAlignment="Bottom" />
         </DockPanel>
 
-        <Label Grid.Column="0" Grid.Row="1" Content="{DynamicResource GlobalSettings_DataDirectoryLabel}" VerticalAlignment="Center"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
-        <Button Grid.Column="2" Grid.Row="1" Margin="5" Content="{StaticResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
+        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_RunAsAdministratorLabel}" IsChecked="{Binding CurrentConfig.RunAsAdministratorPrompt, Mode=TwoWay}" Margin="5"/>
 
-        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsEnabled="{Binding IsAdministrator}">
+        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource GlobalSettings_DataDirectoryLabel}" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
+        <Button Grid.Row="2" Grid.Column="2" Margin="5" Content="{StaticResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
+
+        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" IsEnabled="{Binding IsAdministrator}">
             <GroupBox.Header>
                 <CheckBox IsChecked="{Binding CurrentConfig.GLOBAL_EnableServerCache}" Content="Server Cache"/>
             </GroupBox.Header>
@@ -93,16 +96,16 @@
             </Grid>
         </GroupBox>
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}" Margin="5"/>
+        <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}" Margin="5"/>
 
-        <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
+        <GroupBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
             <GroupBox.Header>
                 <Label Content="{DynamicResource GlobalSettings_LanguageSelectionLabel}"/>
             </GroupBox.Header>
             <globcntrls:LanguageSelectionComboBox SelectionChanged="LanguageSelectionComboBox_SelectionChanged" />
         </GroupBox>
 
-        <GroupBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">
+        <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
             <GroupBox.Header>
                 <Label Content="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}"/>
             </GroupBox.Header>

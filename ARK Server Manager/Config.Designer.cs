@@ -778,5 +778,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ASM_PatchNotesUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RunAsAdministratorPrompt {
+            get {
+                return ((bool)(this["RunAsAdministratorPrompt"]));
+            }
+            set {
+                this["RunAsAdministratorPrompt"] = value;
+            }
+        }
     }
 }

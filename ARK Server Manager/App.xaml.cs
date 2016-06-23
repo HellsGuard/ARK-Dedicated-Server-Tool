@@ -12,6 +12,8 @@ using System.Xml;
 using WPFSharp.Globalizer;
 using System.Threading;
 using System.Globalization;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace ARK_Server_Manager
 {
@@ -20,22 +22,30 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class App : GlobalizedApplication
     {
-        static public string Version
+        public new static App Instance
+        {
+            get;
+            private set;
+        }
+
+        public static bool ApplicationStarted
         {
             get;
             set;
         }
 
-        new static public App Instance
+        public static string Version
         {
             get;
-            private set;
+            set;
         }
 
         private GlobalizedApplication _globalizedApplication;
 
         public App()
         {
+            ApplicationStarted = false;
+
             var culture = new CultureInfo(GlobalizationManager.FallBackLanguage);
             if (!string.IsNullOrWhiteSpace(Config.Default.CultureName))
                 culture = new CultureInfo(Config.Default.CultureName);
@@ -143,7 +153,39 @@ namespace ARK_Server_Manager
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
+
+            if (Config.Default.RunAsAdministratorPrompt && !IsRunAsAdministrator())
+            {
+                var result = MessageBox.Show(_globalizedApplication.GetResourceString("Application_RunAsAdministratorLabel"), _globalizedApplication.GetResourceString("Application_RunAsAdministratorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
+
+                    // The following properties run the new process as administrator
+                    processInfo.UseShellExecute = true;
+                    processInfo.Verb = "runas";
+                    processInfo.Arguments = string.Join(" ", e.Args);
+
+                    // Start the new process
+                    try
+                    {
+                        Process.Start(processInfo);
+
+                        // Shut down the current process
+                        Application.Current.Shutdown();
+
+                        return;
+                    }
+                    catch (Exception)
+                    {
+                        // The user did not allow the application to run as administrator
+                        MessageBox.Show(_globalizedApplication.GetResourceString("Application_RunAsAdministrator_FailedLabel"), _globalizedApplication.GetResourceString("Application_RunAsAdministrator_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+
+            ApplicationStarted = true;
+
             // Initial configuration setting
             if (String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
@@ -203,18 +245,24 @@ namespace ARK_Server_Manager
 
         protected override void OnExit(ExitEventArgs e)
         {
-            foreach(var server in ServerManager.Instance.Servers)
+            if (ApplicationStarted)
             {
-                try
+                foreach(var server in ServerManager.Instance.Servers)
                 {
-                    server.Profile.Save();
+                    try
+                    {
+                        server.Profile.Save();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_Profile_SaveFailedLabel"), server.Profile.ProfileName, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("Application_Profile_SaveFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_Profile_SaveFailedLabel"), server.Profile.ProfileName, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("Application_Profile_SaveFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                Config.Default.Save();
             }
-            Config.Default.Save();
+
+            ApplicationStarted = false;
+
             base.OnExit(e);
         }
 
@@ -238,6 +286,14 @@ namespace ARK_Server_Manager
             {
                 return "Unknown";
             }            
+        }
+
+        private static bool IsRunAsAdministrator()
+        {
+            var wi = WindowsIdentity.GetCurrent();
+            var wp = new WindowsPrincipal(wi);
+
+            return wp.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

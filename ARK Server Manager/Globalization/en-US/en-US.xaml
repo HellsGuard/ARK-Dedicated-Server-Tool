@@ -10,6 +10,12 @@
     <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
     
     <!-- Application -->
+    <sys:String x:Key="Application_RunAsAdministratorTitle">Run as Administrator</sys:String>
+    <sys:String x:Key="Application_RunAsAdministratorLabel">This application requires administration priviledges to access ALL functionality. Would you like to Run as Administrator?</sys:String>
+    <sys:String x:Key="Application_RunAsAdministrator_FailedTitle">Run as Administrator Failed</sys:String>
+    <sys:String x:Key="Application_RunAsAdministrator_FailedLabel">Sorry, this application could not be Run as Administrator, reverting back to user priviledges.</sys:String>
+
+
     <sys:String x:Key="Application_DataDirectoryTitle">Select Data Directory</sys:String>
     <sys:String x:Key="Application_DataDirectoryLabel">It appears you do not have a data directory set. The data directory is where your profiles and SteamCMD will be stored. It is not the same as the server installation directory, which you can choose for each profile. You will now be asked to select the location where the Ark Server Manager data directory is located. You may later change this in the Settings window.</sys:String>
     <sys:String x:Key="Application_DataDirectory_DialogTitle">Select a Data Directory</sys:String>
@@ -43,6 +49,7 @@
     <!-- GlobalSettings Window -->
     <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
     <sys:String x:Key="GlobalSettings_VersionLabel">Version:</sys:String>
+    <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Enable Run as Administrator Prompt On Startup</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
@@ -377,9 +384,9 @@
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
     <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatLabel">Enable Global Voice Chat</sys:String>
-    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatTooltip">If enabled, voice chat becomes global and everyone on the server can hear.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatTooltip">If enabled, voice chat becomes global and everyone on the server can hear; otherwise only people near each other can hear.</sys:String>
     <sys:String x:Key="ServerSettings_EnableProximityChatLabel">Enable Proximity Text Chat</sys:String>
-    <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">If enabled, only players near each other can see their chat messages.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableProximityChatTooltip">If enabled, only players near each other can see their chat messages; otherwise their text chat is global and everyone can see their chat messages.</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerLeftLabel">Enable 'Player Left' Notifications</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerLeftTooltip">If enabled, players will always get notified if someone leaves the server.</sys:String>
     <sys:String x:Key="ServerSettings_EnablePlayerJoinedLabel">Enable 'Player Joined' Notifications</sys:String>
