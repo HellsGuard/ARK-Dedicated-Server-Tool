@@ -16,12 +16,12 @@ namespace ARK_Server_Manager.Lib
 
         private static string ToIniValueInternal(float val)
         {
-            return val.ToString("0.0#########", CultureInfo.GetCultureInfo("en-US"));
+            return val.ToString("0.0#########", CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
 
         private static float FromIniValueInternal(string iniVal)
         {
-            return float.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"));
+            return float.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
     }
 }

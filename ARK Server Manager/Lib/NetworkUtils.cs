@@ -180,8 +180,8 @@ namespace ARK_Server_Manager.Lib
                 }
                 JObject query = JObject.Parse(jsonString);
 
-                var availableVersion = Convert.ToString(query.SelectToken("current"), CultureInfo.GetCultureInfo("en-US"));
-                var upcomingVersion = Convert.ToString(query.SelectToken("upcoming.version"), CultureInfo.GetCultureInfo("en-US"));
+                var availableVersion = Convert.ToString(query.SelectToken("current"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
+                var upcomingVersion = Convert.ToString(query.SelectToken("upcoming.version"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
                 var upcomingStatus = query.SelectToken("upcoming.status");
 
                 if (availableVersion != null)
@@ -331,7 +331,7 @@ namespace ARK_Server_Manager.Lib
                     result = new ServerNetworkInfo();
                     result.Name = (string)query.SelectToken("server.name");
                     Version ver;
-                    string versionString = Convert.ToString(query.SelectToken("server.version"), CultureInfo.GetCultureInfo("en-US"));
+                    string versionString = Convert.ToString(query.SelectToken("server.version"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
                     if (versionString.IndexOf('.') == -1)
                     {
                         versionString = versionString + ".0";

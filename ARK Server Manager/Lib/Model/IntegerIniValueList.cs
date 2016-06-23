@@ -14,12 +14,12 @@ namespace ARK_Server_Manager.Lib
 
         private static string ToIniValueInternal(int val)
         {
-            return val.ToString(CultureInfo.GetCultureInfo("en-US"));
+            return val.ToString(CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
 
         private static int FromIniValueInternal(string iniVal)
         {
-            return int.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"));
+            return int.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
     }
 }

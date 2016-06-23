@@ -231,13 +231,9 @@ namespace ARK_Server_Manager.Lib
                                 IniWriteSection(attr.Section, result, attr.File);
                             }
                         }
-                        else if (attr.InvertBoolean && value is Boolean)
-                        {
-                            IniWriteValue(attr.Section, keyName, Convert.ToString(!(bool)(value)), attr.File);
-                        }
                         else
                         {
-                            var strValue = StringUtils.GetPropertyValue(value, field);
+                            var strValue = StringUtils.GetPropertyValue(value, field, attr);
                             if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
                             {
                                 strValue = "\"" + strValue + "\"";
@@ -316,7 +312,7 @@ namespace ARK_Server_Manager.Lib
                                 continue;
                             }
 
-                            var valueSet = StringUtils.SetPropertyValueIniFile(iniValue, obj, field);
+                            var valueSet = StringUtils.SetPropertyValue(iniValue, obj, field, attr);
                             if (!valueSet)
                                 throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
                         }
