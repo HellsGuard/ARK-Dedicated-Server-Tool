@@ -593,6 +593,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AllowTribeWarCancelPvEProperty, value); }
         }
 
+        public static readonly DependencyProperty AllowTribeAlliancesProperty = DependencyProperty.Register(nameof(AllowTribeAlliances), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventTribeAlliances", InvertBoolean = true)]
+        public bool AllowTribeAlliances
+        {
+            get { return (bool)GetValue(AllowTribeAlliancesProperty); }
+            set { SetValue(AllowTribeAlliancesProperty, value); }
+        }
+
         public static readonly DependencyProperty AllowCustomRecipesProperty = DependencyProperty.Register(nameof(AllowCustomRecipes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowCustomRecipes")]
         public bool AllowCustomRecipes
@@ -631,6 +639,46 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(NonPermanentDiseasesProperty); }
             set { SetValue(NonPermanentDiseasesProperty, value); }
+        }
+
+        public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CraftXPMultiplier
+        {
+            get { return (float)GetValue(CraftXPMultiplierProperty); }
+            set { SetValue(CraftXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GenericXPMultiplier
+        {
+            get { return (float)GetValue(GenericXPMultiplierProperty); }
+            set { SetValue(GenericXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HarvestXPMultiplier
+        {
+            get { return (float)GetValue(HarvestXPMultiplierProperty); }
+            set { SetValue(HarvestXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float KillXPMultiplier
+        {
+            get { return (float)GetValue(KillXPMultiplierProperty); }
+            set { SetValue(KillXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float SpecialXPMultiplier
+        {
+            get { return (float)GetValue(SpecialXPMultiplierProperty); }
+            set { SetValue(SpecialXPMultiplierProperty, value); }
         }
         #endregion
 
@@ -912,6 +960,22 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(TurretDamageMultiplierDinoProperty); }
             set { SetValue(TurretDamageMultiplierDinoProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowRaidDinoFeedingProperty = DependencyProperty.Register(nameof(AllowRaidDinoFeeding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AllowRaidDinoFeeding
+        {
+            get { return (bool)GetValue(AllowRaidDinoFeedingProperty); }
+            set { SetValue(AllowRaidDinoFeedingProperty, value); }
+        }
+
+        public static readonly DependencyProperty RaidDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(RaidDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float RaidDinoCharacterFoodDrainMultiplier
+        {
+            get { return (float)GetValue(RaidDinoCharacterFoodDrainMultiplierProperty); }
+            set { SetValue(RaidDinoCharacterFoodDrainMultiplierProperty, value); }
         }
 
         public static readonly DependencyProperty EnableAllowCaveFlyersProperty = DependencyProperty.Register(nameof(EnableAllowCaveFlyers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -2225,6 +2289,9 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(HarvestingDamageMultiplierDinoProperty);
             this.ClearValue(TurretDamageMultiplierDinoProperty);
 
+            this.ClearValue(AllowRaidDinoFeedingProperty);
+            this.ClearValue(RaidDinoCharacterFoodDrainMultiplierProperty);
+
             this.ClearValue(EnableAllowCaveFlyersProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
@@ -2347,6 +2414,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(AllowTribeWarPvEProperty);
             this.ClearValue(AllowTribeWarCancelPvEProperty);
+            this.ClearValue(AllowTribeAlliancesProperty);
 
             this.ClearValue(AllowCustomRecipesProperty);
             this.ClearValue(CustomRecipeEffectivenessMultiplierProperty);
@@ -2354,6 +2422,12 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(EnableDiseasesProperty);
             this.ClearValue(NonPermanentDiseasesProperty);
+
+            this.ClearValue(CraftXPMultiplierProperty);
+            this.ClearValue(GenericXPMultiplierProperty);
+            this.ClearValue(HarvestXPMultiplierProperty);
+            this.ClearValue(KillXPMultiplierProperty);
+            this.ClearValue(SpecialXPMultiplierProperty);
         }
 
         public void ResetSOTFSection()

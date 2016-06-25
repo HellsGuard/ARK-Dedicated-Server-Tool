@@ -96,7 +96,7 @@
     <sys:String x:Key="MainWindow_Donate_Title">Make a donation?</sys:String>
     <sys:String x:Key="MainWindow_Donate_Label">Ark Server Manager is an open-source project, provided completely free of charge. You can still donate if you would like; however you are under no obligation. If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like. Would you like to donate now?</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_Title">Upgrade available</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?"</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Upgrade failed!</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this!\nException {0}: {1}</sys:String>
 
@@ -940,6 +940,7 @@
     <sys:String x:Key="Stag_Character_BP_C">Megaloceros</sys:String>
     <sys:String x:Key="Stego_Character_BP_C">Stego</sys:String>
     <sys:String x:Key="TerrorBird_Character_BP_C">Terror Bird</sys:String>
+    <sys:String x:Key="Titanosaur_Character_BP_C">Titanosaur</sys:String>
     <sys:String x:Key="Toad_Character_BP_C">Beelzebufo</sys:String>
     <sys:String x:Key="Trike_Character_BP_C">Trike</sys:String>
     <sys:String x:Key="Trilobite_Character_C">Trilobite</sys:String>
@@ -1034,6 +1035,7 @@
     <sys:String x:Key="EngramEntry_CannonBall_C">Cannon Ball</sys:String>
     <sys:String x:Key="EngramEntry_Canteen_C">Canteen</sys:String>
     <sys:String x:Key="EngramEntry_CatapultTurret_C">Catapult Turret</sys:String>
+    <sys:String x:Key="EngramEntry_ChainBola_C">Chain Bola</sys:String>
     <sys:String x:Key="EngramEntry_ChemBench_C">Chemistry Bench</sys:String>
     <sys:String x:Key="EngramEntry_ChitinBoots_C">Chitin Boots</sys:String>
     <sys:String x:Key="EngramEntry_ChitinGloves_C">Chitin Gauntlets</sys:String>
@@ -1078,6 +1080,7 @@
     <sys:String x:Key="EngramEntry_FurShirt_C">Fur Chestpiece</sys:String>
     <sys:String x:Key="EngramEntry_GPS_C">GPS</sys:String>
     <sys:String x:Key="EngramEntry_GasGrenade_C">Smoke Grenade</sys:String>
+    <sys:String x:Key="EngramEntry_GasMask_C">Gas Mask</sys:String>
     <sys:String x:Key="EngramEntry_GhillieBoots_C">Ghillie Boots</sys:String>
     <sys:String x:Key="EngramEntry_GhillieGloves_C">Ghillie Gauntlets</sys:String>
     <sys:String x:Key="EngramEntry_GhillieHelmet_C">Ghillie Mask</sys:String>
@@ -1190,6 +1193,7 @@
     <sys:String x:Key="EngramEntry_RocketAmmo_C">Rocket Propelled Grenade</sys:String>
     <sys:String x:Key="EngramEntry_RocketLauncher_C">Rocket Launcher</sys:String>
     <sys:String x:Key="EngramEntry_RocketTurret_C">Rocket Turret</sys:String>
+    <sys:String x:Key="EngramEntry_RopeLadder_C">Rope Ladder</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Ankylo_C">Saddle - Ankylo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Argentavis_C">Saddle - Argentavis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Arthro_C">Saddle - Arthropluera</sys:String>
@@ -1231,6 +1235,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Stag_C">Saddle - Megaloceros</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Stego_C">Saddle - Stego</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_TerrorBird_C">Saddle - Terror Bird</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Titano_Platform_C">Saddle - Titanosaur Platform</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Toad_C">Saddle - Beelzebufo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Trike_C">Saddle - Trike</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Turtle_C">Saddle - Carbonemys</sys:String>
@@ -1285,6 +1290,7 @@
     <sys:String x:Key="EngramEntry_StorageBox_Huge_C">Vault</sys:String>
     <sys:String x:Key="EngramEntry_StorageBox_Large_C">Large Storage Box</sys:String>
     <sys:String x:Key="EngramEntry_StorageBox_Small_C">Storage Box</sys:String>
+    <sys:String x:Key="EngramEntry_SubstrateAbsorbent_C">Absorbent Substrate</sys:String>
     <sys:String x:Key="EngramEntry_Sword_C">Sword</sys:String>
     <sys:String x:Key="EngramEntry_ThatchCeiling_C">Thatch Roof</sys:String>
     <sys:String x:Key="EngramEntry_ThatchDoor_C">Thatch Door</sys:String>
@@ -1299,6 +1305,9 @@
     <sys:String x:Key="EngramEntry_TranqDart_C">Tranquiliser Dart</sys:String>
     <sys:String x:Key="EngramEntry_TransGPS_C">Transponder Tracker</sys:String>
     <sys:String x:Key="EngramEntry_TransGPSAmmo_C">Transponder Node</sys:String>
+    <sys:String x:Key="EngramEntry_TreePlatformMetal_C">Metal Tree Platform</sys:String>
+    <sys:String x:Key="EngramEntry_TreePlatformWood_C">Wooden Tree Platform</sys:String>
+    <sys:String x:Key="EngramEntry_TreeSapTap_C">Tree Sap Tap</sys:String>
     <sys:String x:Key="EngramEntry_TripwireC4_C">Improvised Explosive Device</sys:String>
     <sys:String x:Key="EngramEntry_TrophyBase_C">Trophy Base</sys:String>
     <sys:String x:Key="EngramEntry_TrophyWall_C">Trophy Wall-Mount</sys:String>

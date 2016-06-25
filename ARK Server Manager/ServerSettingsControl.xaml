@@ -1061,9 +1061,9 @@
                                         <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
-                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
-                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,5,5" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,5,5" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                        <CheckBox IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" Margin="5,0,5,5" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
@@ -1137,10 +1137,11 @@
                                         </TextBox>
                                     </Grid>
                                 </GroupBox>
+                                <CheckBox Margin="5" IsChecked="{Binding AllowTribeAlliances}" Content="{DynamicResource ServerSettings_AllowTribeAlliancesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowTribeAlliancesTooltip}" />
                                 <GroupBox  HorizontalAlignment="Stretch" Header="{DynamicResource ServerSettings_TribeWarfareLabel}">
                                     <StackPanel>
-                                        <CheckBox Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
-                                        <CheckBox IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
+                                        <CheckBox Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" Margin="5" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
+                                        <CheckBox IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" Margin="5,0,5,5" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox  HorizontalAlignment="Stretch">
@@ -1157,7 +1158,7 @@
                                         <CheckBox Name="EnableDiseasesCheckbox" IsChecked="{Binding EnableDiseases}" Content="{DynamicResource ServerSettings_EnableDiseasesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableDiseasesTooltip}" />
                                     </GroupBox.Header>
                                     <StackPanel IsEnabled="{Binding ElementName=EnableDiseasesCheckbox, Path=IsChecked}">
-                                        <CheckBox IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
+                                        <CheckBox IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" Margin="5" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
@@ -1304,6 +1305,14 @@
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoSpawnsLabel}" Value="{Binding DinoCountMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoSpawnsTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_HarvestingDamageLabel}" Value="{Binding DinoHarvestingDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_HarvestingDamageTooltip}" Margin="0,0,22,0"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_TurretDamageLabel}" Value="{Binding DinoTurretDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_TurretDamageTooltip}" Margin="0,0,22,0"/>
+                                <GroupBox  HorizontalAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <CheckBox IsChecked="{Binding AllowRaidDinoFeeding}" Content="{DynamicResource ServerSettings_AllowRaidDinoFeedingLabel}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_AllowRaidDinoFeedingTooltip}"/>
+                                    </GroupBox.Header>
+                                    <StackPanel>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel}" Value="{Binding RaidDinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip}" Margin="0,0,15,0" />
+                                    </StackPanel>
+                                </GroupBox>
                                 <CheckBox Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" Margin="5,5,5,5"  IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}"/>
                                 <CheckBox Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" Margin="5,5,5,5"  IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}" Margin="0,0,22,0"/>
@@ -1682,8 +1691,8 @@
                                     </GroupBox.Header>
 
                                     <StackPanel Grid.Column="0">
-                                        <CheckBox Content="{DynamicResource ServerSettings_DisableImprintDinoBuffLabel}" IsChecked="{Binding DisableImprintDinoBuff}" ToolTip="{DynamicResource ServerSettings_DisableImprintDinoBuffTooltip}"/>
-                                        <CheckBox Content="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleLabel}" IsChecked="{Binding AllowAnyoneBabyImprintCuddle}" ToolTip="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleTooltip}"/>
+                                        <CheckBox Content="{DynamicResource ServerSettings_DisableImprintDinoBuffLabel}" IsChecked="{Binding DisableImprintDinoBuff}" ToolTip="{DynamicResource ServerSettings_DisableImprintDinoBuffTooltip}" Margin="5"/>
+                                        <CheckBox Content="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleLabel}" IsChecked="{Binding AllowAnyoneBabyImprintCuddle}" ToolTip="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleTooltip}" Margin="5,0,5,5"/>
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierLabel}" Value="{Binding BabyImprintingStatScaleMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierTooltip}"/>
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierLabel}" Value="{Binding BabyCuddleIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierTooltip}"/>
                                         <local:AnnotatedSlider Label="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierLabel}" Value="{Binding BabyCuddleGracePeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierTooltip}"/>
@@ -1776,6 +1785,19 @@
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_CropGrowthSpeedLabel}" Value="{Binding CropGrowthSpeedMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_CropGrowthSpeedTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EggLayingIntervalLabel}" Value="{Binding LayEggIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EggLayingIntervalTooltip}"/>
                                 <local:AnnotatedSlider Label="{DynamicResource ServerSettings_PoopIntervalLabel}" Value="{Binding PoopIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_PoopIntervalTooltip}"/>
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Label Content="{DynamicResource ServerSettings_EarnedXPMultipliersLabel}"/>
+                                    </GroupBox.Header>
+
+                                    <StackPanel>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EarnedXPMultipliers_GenericLabel}" Value="{Binding GenericXPMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EarnedXPMultipliers_GenericTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EarnedXPMultipliers_CraftingLabel}" Value="{Binding CraftXPMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EarnedXPMultipliers_CraftingTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EarnedXPMultipliers_HarvestingLabel}" Value="{Binding HarvestXPMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EarnedXPMultipliers_HarvestingTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EarnedXPMultipliers_KillingLabel}" Value="{Binding KillXPMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EarnedXPMultipliers_KillingTooltip}"/>
+                                        <local:AnnotatedSlider Label="{DynamicResource ServerSettings_EarnedXPMultipliers_SpecialLabel}" Value="{Binding SpecialXPMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_EarnedXPMultipliers_SpecialTooltip}"/>
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>

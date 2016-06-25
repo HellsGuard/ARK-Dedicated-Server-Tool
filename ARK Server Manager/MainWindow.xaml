@@ -102,16 +102,46 @@
  
 
         </DockPanel>
-        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" 
-                       ShowCloseTabButton="True" ShowNewTabButton="True" 
-                       NewItemRequested="Servers_AddNew"
-                       PreviewItemClose="Servers_Remove"
-                       ItemsSource="{Binding ServerManager.Servers}">
+        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
             <eo:TabControl.HeaderTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Profile.ProfileName}"/>
+                <DataTemplate >
+                    <TextBlock Text="{Binding Profile.ProfileName}"/>
                 </DataTemplate>
             </eo:TabControl.HeaderTemplate>
+            <eo:TabControl.NewTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border BorderBrush="#8C8E94" BorderThickness="1,1,1,0" Padding="3,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#F3F3F3" />
+                                                <GradientStop Offset="0.5" Color="#EBEBEB" />
+                                                <GradientStop Offset="0.5" Color="#DDDDDD" />
+                                                <GradientStop Offset="1" Color="#CDCDCD" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Add.png" ToolTip="{DynamicResource MainWindow_NewProfileTooltip}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.NewTabButtonStyle>
+            <eo:TabControl.CloseTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Delete.png" ToolTip="{DynamicResource MainWindow_CloseProfileTooltip}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.CloseTabButtonStyle>            
             <eo:TabControl.ContentTemplate>
                 <DataTemplate>
                     <local:ServerSettingsControl Server="{Binding}"/>
