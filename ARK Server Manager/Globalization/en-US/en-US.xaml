@@ -27,6 +27,7 @@
     <!-- Updater Window -->
     <sys:String x:Key="AutoUpdater_Title">ARK Server Manager - Updating...</sys:String>
     <sys:String x:Key="AutoUpdater_Status">Status</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_CleaningSteamCmd">Cleaning up SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">Downloading SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_UnzippingSteamCmd">Unzipping SteamCMD...</sys:String>
     <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">Authorizing SteamCMD...</sys:String>
@@ -46,22 +47,80 @@
     <sys:String x:Key="CommandLine_CopyButton_ErrorTitle">Copy to clipboard failed.</sys:String>
     <sys:String x:Key="CommandLine_CopyButton_ErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
 
+    <!-- Mod Details Window -->
+    <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
+    <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
+    <sys:String x:Key="ModDetails_ModDetailsLoad_FailedTitle">Mod Details Error</sys:String>
+    <sys:String x:Key="ModDetails_ModDetailsLoad_FailedLabel">An error occurred while retrieving the mod details.\r\n{0}</sys:String>
+
+    <sys:String x:Key="ModDetails_IndexColumnLabel">#</sys:String>
+    <sys:String x:Key="ModDetails_ModIdColumnLabel">Mod ID</sys:String>
+    <sys:String x:Key="ModDetails_TitleColumnLabel">Name</sys:String>
+    <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Updated</sys:String>
+    
+    <!-- Progress Window -->
+    <sys:String x:Key="Progress_Title">Progress</sys:String>
+    <sys:String x:Key="Progress_UpgradeServer_WindowTitle">Update Progress - {0}</sys:String>
+    <sys:String x:Key="Progress_ReinstallSteamCmd_WindowTitle">SteamCMD Progress</sys:String>
+
+    <!-- Shutdown Window -->
+    <sys:String x:Key="ShutdownWindow_Title">Server Shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_ProfileTitle">Server Shutdown - {0}</sys:String>
+    <sys:String x:Key="ShutdownWindow_ShutdownRestartOptionsLabel">Shutdown/Restart Options</sys:String>
+    <sys:String x:Key="ShutdownWindow_ShutdownIntervalLabel">Countdown Length</sys:String>
+    <sys:String x:Key="ShutdownWindow_ShutdownIntervalTooltip">The number of minutes to countdown before the server will shutdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_RestartServerLabel">Restart server after shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_RestartServerTooltip">If enabled, the server will be immediately restarted after it is shutdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_BackupWorldFileLabel">Backup world file after shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_BackupWorldFileTooltip">If enabled, the world file will be backed up after shutdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_ShutdownButtonLabel">Shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_ShutdownButtonTooltip">Perform a server shutdown with countdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_RestartButtonLabel">Restart</sys:String>
+    <sys:String x:Key="ShutdownWindow_RestartButtonTooltip">Perform a server restart with countdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_StopButtonLabel">Stop</sys:String>
+    <sys:String x:Key="ShutdownWindow_StopButtonTooltip">Stop the server immediately, without a countdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_CloseButtonLabel">Close</sys:String>
+    <sys:String x:Key="ShutdownWindow_CloseButtonTooltip">Close the window and cancel the server shutdown.</sys:String>
+
     <!-- GlobalSettings Window -->
     <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
     <sys:String x:Key="GlobalSettings_VersionLabel">Version:</sys:String>
-    <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Enable Run as Administrator Prompt On Startup</sys:String>
-    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
-    <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
-    <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Enable Run as Administrator Prompt on Startup</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">Dino Level Increase:</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputLabel">Output SteamCMD to the progress window</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputTooltip">If enabled, the SteamCMD output will be shown in the progress window instead of the command window. NOTE: if enabled, this could cause your server and mods updates to fail.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModSettingsLabel">Mod Update Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModWithServerLabel">Update mods when updating server</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModWithServerTooltip">If enabled, the mods will be updated when the server is updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsLabel">Force mod file downloads</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">If enabled, the mods will be downloaded from steam even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Force mod file copying</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">If enabled, the mod files will be copied to the server folder even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
+    <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Use smart cache copy</sys:String>
+    <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage1Label">Message 1:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage1Tooltip">This message will be displayed upon shutdown when there is 2 or more minutes left.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage2Label">Message 2:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage2Tooltip">This message will be displayed upon shutdown when there is 1 minute left.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage3Label">Message 3:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">This message will be displayed when the server is about to shutdown.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">WorldSave Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">This message will be displayed upon shutdown when the world is about to be saved.</sys:String>
 
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>
@@ -93,13 +152,14 @@
     <sys:String x:Key="MainWindow_MyIpError">Invalid IP address or hostname</sys:String>
     <sys:String x:Key="MainWindow_RefreshMyIpTooltip">Attempt to determine your current public IP</sys:String>
     <sys:String x:Key="MainWindow_DonateTooltip">Like what you see and want to show your appreciation?  Donate here!</sys:String>
+    <sys:String x:Key="MainWindow_SteamCMDTooltip">Reinstall SteamCMD from the internet.</sys:String>
     <sys:String x:Key="MainWindow_OpenRCONTooltip">Open remote console</sys:String>
     <sys:String x:Key="MainWindow_OpenSettingsTooltip">Open Global Settings</sys:String>
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
-    <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load.  The error was: {1}\r\n{2}</sys:String>
+    <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
     <sys:String x:Key="MainWindow_ProfileDelete_Title">Delete Profile {0}?</sys:String>
     <sys:String x:Key="MainWindow_ProfileDelete_Label">Are you sure you want to delete this profile?\r\n\r\nNOTE: This will only delete the profile, not the installation directory, save games or settings files contained therein.</sys:String>
     <sys:String x:Key="MainWindow_Donate_Title">Make a donation?</sys:String>
@@ -107,7 +167,11 @@
     <sys:String x:Key="MainWindow_Upgrade_Title">Upgrade available</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Upgrade failed!</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this!\nException {0}: {1}</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this.\r\nException: {0}\r\nStacktrace: {1}</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_Title">Reinstall SteamCMD</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_Label">If you proceed the entire SteamCMD folder will be removed including all mod cache downloads.\r\nAre you sure you want to reinstall SteamCMD?</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_FailedTitle">Reinstall SteamCMD Error</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_FailedLabel">An error occured while trying to reinstall SteamCMD. This has left SteamCmd in an unstable state, try reinstalling again or please report this.\r\nException: {0}</sys:String>
 
     <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
@@ -180,8 +244,15 @@
     <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_FailedTitle">Server Update Error</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_MutexFailedLabel">Could not lock the server, another process is using the server. Update process was cancelled.</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_StartingTitle">Stop the server?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_StartingLabel">This will shut down the server. Do you wish to proceed?</sys:String>
     <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Stop the server?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?\r\n\r\nClick Yes to shutdown with a timer.\r\nClick No to shutdown now.\r\nClick Cancel to cancel shutdown.</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_FailedTitle">Starting Server Error</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_MutexFailedLabel">Could not lock the server, another process is using the server. Server start was cancelled.</sys:String>
+    <sys:String x:Key="ServerSettings_StopServer_FailedTitle">Stoping Server Error</sys:String>
     <sys:String x:Key="ServerSettings_InstallServer_Title">Select Install Directory</sys:String>
     <sys:String x:Key="ServerSettings_LoadConfig_Title">Load Server Profile or GameUserSettings.ini</sys:String>
     <sys:String x:Key="ServerSettings_LoadConfig_ErrorTitle">Profile failed to load</sys:String>
@@ -190,7 +261,7 @@
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorTitle">Auto-updates Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorLabel">Auto-updates is enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorLabel">Auto-updates are enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
@@ -248,14 +319,23 @@
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
     <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Maximum Tribe Logs:</sys:String>
     <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
+    <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force Respawn Dinos on Startup</sys:String>
+    <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">If enabled, when the server is started ALL wild creatures will be wiped and respawned (this will only destroy wild creatures that are NOT currently being tamed).</sys:String>
 
     <sys:String x:Key="ServerSettings_MapsAndModsLabel">Maps and Mods</sys:String>
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
-    <sys:String x:Key="ServerSettings_MapPathLabel">Map or Map Mod Path:</sys:String>
-    <sys:String x:Key="ServerSettings_MapPathTooltip">The standard map name (e.g. TheIsland), or the local mod path (e.g. /Game/Mods/123456789/myModMap) if your mod has a map in it.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetMapNameTooltip">Reset map name to official default</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathLabel">Map Name or Map Mod Path:</sys:String>
+    <sys:String x:Key="ServerSettings_MapPathTooltip">The standard map name (e.g. TheIsland, TheCenter), or the local mod path (e.g. /Game/Mods/123456789/ModMapName) if your mod has a map in it.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
+    <sys:String x:Key="ServerSettings_ModDetailsTooltip">View the mod details.</sys:String>
+    <sys:String x:Key="ServerSettings_ModUpgradeTooltip">Upgrade to the latest version of the mods that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeMods_FailedTitle">Mods Update Error</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeMods_MutexFailedLabel">Could not lock the server, another process is using the server. Mod update process was cancelled.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Auto manage mods when server launches (Official Ark Setting)</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">If enabled, adds support for automatic mod download/installation/updating before the server launches.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
@@ -278,13 +358,34 @@
     <sys:String x:Key="ServerSettings_DisableVACTooltip">If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimization</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationTooltip">If enabled, the player-move-physics will be disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti Speedhack Detection</sys:String>
-    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti speedhack detection will be disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackLabel">Disable Anti-Speed Hack Detection</sys:String>
+    <sys:String x:Key="ServerSettings_DisableAntiSpeedHackTooltip">If enabled, the anti-speed hack detection will be disabled.</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasLabel">Anti-Speed Hack Bias</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasTooltip">Adjust the speed hack detection bias. Default is 1.0, disabled is 0.0.</sys:String>
     <sys:String x:Key="ServerSettings_UseBattlEyeLabel">Enable BattlEye Anti-Cheat System</sys:String>
     <sys:String x:Key="ServerSettings_UseBattlEyeTooltip">If enabled, the BattlEye Anti-Cheat System will be enabled.</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
+    <sys:String x:Key="ServerSettings_UseAllAvailableCoresLabel">Use All Available Cores</sys:String>
+    <sys:String x:Key="ServerSettings_UseAllAvailableCoresTooltip">If enabled, all of your CPU cores will be used, if all of them are not being utilized after using this launch option, then try to disable it.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCacheLabel">Use Cache</sys:String>
+    <sys:String x:Key="ServerSettings_UseCacheTooltip">If enabled, ~70% faster loading speed option. The first and second times that you start the game will be still be slow, but the third time onwards will be fast.</sys:String>
+    <sys:String x:Key="ServerSettings_UseNewSaveFormatLabel">Use new save format</sys:String>
+    <sys:String x:Key="ServerSettings_UseNewSaveFormatTooltip">If enabled, will use an experimental fast save/load code implemented for servers. Approximately 4x faster and 75% smaller. It is strongly recommended to back up your save games if you intend to try this out, it is still being tested.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceDirectX10Label">Force DirectX 10</sys:String>
+    <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">If enabled, the game is forced to use DirectX 10 instead of DirectX 11.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Force Shader Model 4</sys:String>
+    <sys:String x:Key="ServerSettings_ForceShaderModel4Tooltip">If enabled, the game is forced to use Shader Model 4 instead of the Shader Model 5.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceLowMemoryLabel">Force Low Memory</sys:String>
+    <sys:String x:Key="ServerSettings_ForceLowMemoryTooltip">If enabled, reduces graphics and audio effects to save about 800 MB RAM, likely enabling 4GB RAM players to get past infinite-loading screens.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNoManSkyLabel">Force No Man Sky</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNoManSkyTooltip">If enabled, lots of the detailed sky features are disabled, such as clouds and starry night sky. You still see the stars, the sun, and the moon.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableWebAlarmLabel">Enable Web Alarms</sys:String>
+    <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">If enabled, servers can now get web notifications posted somewhere when important things happen to a tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmUrlTooltip">Specifies the URL where your listening script is stored, waiting and ready to receive the post information by your game server.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmNote">NOTE: ASM does not provide the Web Alarms functionaility. ASM just allows you to enable/disable the Web Alarms and create the necessary AlarmPostCredentials file.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>
@@ -295,17 +396,14 @@
     <!-- Server Settings - Automatic Management -->
     <sys:String x:Key="ServerSettings_AutomaticManagementLabel">Automatic Management</sys:String>
     <sys:String x:Key="ServerSettings_NoAutoManagementButtonLabel">Why can't I use this?</sys:String>
-    <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-start Server On Boot</sys:String>
+    <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-Start server on boot</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
-    <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Enable Periodic Auto-Updates</sys:String>
-    <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">Automatically check for updates periodically and upgrade the server.</sys:String>
-    <sys:String x:Key="ServerSettings_UpdatePeriodLabel">Update every:</sys:String>
-    <sys:String x:Key="ServerSettings_UpdatePeriodTooltip">The number of hours and minutes between update checks.</sys:String>
-    <sys:String x:Key="ServerSettings_RestartGracePeriodLabel">Restart Grace Period:</sys:String>
-    <sys:String x:Key="ServerSettings_RestartGracePeriodTooltip">The amount of time to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
-    <sys:String x:Key="ServerSettings_RestartGracePeriodUnits">minutes</sys:String>
-    <sys:String x:Key="ServerSettings_ForceUpdatesLabel">Force Updates and Restart at:</sys:String>
-    <sys:String x:Key="ServerSettings_ForceUpdatesTooltip">The hour and minute of the day to force an update and restart.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartServerLabel">Restart server at</sys:String>
+    <sys:String x:Key="ServerSettings_RestartServerTooltip">The hour and minute of the day to force a server restart.</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Include server in the Auto-Update cycle</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">If enabled, the server will be periodically updated during the Auto-Update cycle. See the settings for Auto-Update options.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Restart server if shutdown</sys:String>
+    <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">If enabled, the server will be restarted even if shutdown for Auto-Restarts and Auto-Updates.</sys:String>
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Rules</sys:String>

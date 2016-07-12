@@ -12,11 +12,26 @@ using WPFSharp.Globalizer;
 namespace ARK_Server_Manager
 {
     /// <summary>
-    /// Interaction logic for GlobalSettings.xaml
+    /// Interaction logic for GlobalSettingsControl.xaml
     /// </summary>
-    public partial class GlobalSettings : UserControl
+    public partial class GlobalSettingsControl : UserControl
     {
-        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+
+        public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(GlobalSettingsControl), new PropertyMetadata(false));
+        
+        public GlobalSettingsControl()
+        {
+            this.Version = GetDeployedVersion();
+
+            this.CurrentConfig = Config.Default;
+            this.DataContext = this;
+
+            InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
+
+            this.IsAdministrator = SecurityUtils.IsAdministrator();
+        }
 
         public string Version
         {
@@ -36,22 +51,7 @@ namespace ARK_Server_Manager
             set { SetValue(IsAdministratorProperty, value); }
         }
 
-        public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(GlobalSettings), new PropertyMetadata(false));
-        
-        public GlobalSettings()
-        {
-            this.Version = GetDeplployedVersion();
-
-            this.CurrentConfig = Config.Default;
-            this.DataContext = this;
-
-            InitializeComponent();
-            WindowUtils.RemoveDefaultResourceDictionary(this);
-
-            this.IsAdministrator = SecurityUtils.IsAdministrator();
-        }
-
-        private string GetDeplployedVersion()
+        private string GetDeployedVersion()
         {
             XmlDocument xmlDoc = new XmlDocument();
             Assembly asmCurrent = System.Reflection.Assembly.GetExecutingAssembly();
@@ -68,12 +68,12 @@ namespace ARK_Server_Manager
 
         public void SetDataDir_Click(object sender, RoutedEventArgs args)
         {
-            var optionResult = MessageBox.Show(_globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmLabel"), _globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var optionResult = MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmLabel"), _globalizer.GetResourceString("GlobalSettings_DataDirectoryChange_ConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (optionResult == MessageBoxResult.Yes)
             {
                 var dialog = new CommonOpenFileDialog();
                 dialog.IsFolderPicker = true;
-                dialog.Title = _globalizedApplication.GetResourceString("Application_DataDirectoryTitle");
+                dialog.Title = _globalizer.GetResourceString("Application_DataDirectoryTitle");
                 dialog.InitialDirectory = Config.Default.DataDir;
                 var result = dialog.ShowDialog();
 
@@ -126,7 +126,7 @@ namespace ARK_Server_Manager
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_FailedLabel"), ex.Message), _globalizedApplication.GetResourceString("GlobalSettings_DataDirectoryChange_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            MessageBox.Show(String.Format(_globalizer.GetResourceString("GlobalSettings_DataDirectoryChange_FailedLabel"), ex.Message), _globalizer.GetResourceString("GlobalSettings_DataDirectoryChange_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
 
                     }
@@ -138,22 +138,27 @@ namespace ARK_Server_Manager
         {
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            dialog.Title = _globalizedApplication.GetResourceString("GlobalSettings_CacheDirectoryTitle");
+            dialog.Title = _globalizer.GetResourceString("GlobalSettings_CacheDirectoryTitle");
             dialog.InitialDirectory = Config.Default.DataDir;
             var result = dialog.ShowDialog();
 
             if (result == CommonFileDialogResult.Ok)
             {
-                if (!String.Equals(dialog.FileName, Config.Default.ServerCacheDir))
+                if (!String.Equals(dialog.FileName, Config.Default.AutoUpdate_CacheDir))
                 {
-                    Config.Default.ServerCacheDir = dialog.FileName;
+                    Config.Default.AutoUpdate_CacheDir = dialog.FileName;
                 }
             }
         }
 
         private void LanguageSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentConfig.CultureName = Thread.CurrentThread.CurrentCulture.Name;
+            CurrentConfig.CultureName = AvailableLanguages.Instance.SelectedLanguage;
+        }
+
+        private void StyleSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentConfig.StyleName = AvailableStyles.Instance.SelectedStyle;
         }
     }
 }

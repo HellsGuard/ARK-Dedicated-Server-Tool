@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using static ARK_Server_Manager.Lib.ServerRuntime;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -25,14 +23,19 @@ namespace ARK_Server_Manager.Lib
             protected set { SetValue(RuntimeProperty, value); }
         }
 
-        public void ImportFromPath(string path)
+        private Server(ServerProfile profile)
         {
-            var profile = ServerProfile.LoadFrom(path);
             InitializeFromProfile(profile);
         }
 
-        private Server(ServerProfile profile)
+        public void Dispose()
         {
+            this.Runtime.Dispose();
+        }
+
+        public void ImportFromPath(string path)
+        {
+            var profile = ServerProfile.LoadFrom(path);
             InitializeFromProfile(profile);
         }
 
@@ -66,17 +69,12 @@ namespace ARK_Server_Manager.Lib
             await this.Runtime.StopAsync();
         }
 
-        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, ProgressDelegate progressCallback)
         {
             await this.Runtime.AttachToProfile(this.Profile);
-            var success = await this.Runtime.UpgradeAsync(cancellationToken, validate);
+            var success = await this.Runtime.UpgradeAsync(cancellationToken, updateServer, validate, updateMods, progressCallback);
             this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
             return success;
-        }
-
-        public void Dispose()
-        {
-            this.Runtime.Dispose();
         }
     }
 }

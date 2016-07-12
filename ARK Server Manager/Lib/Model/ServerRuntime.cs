@@ -1,27 +1,43 @@
-﻿using QueryMaster;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager.Lib
 {
     public class ServerRuntime : DependencyObject, IDisposable
     {
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+
+        public struct RuntimeProfileSnapshot
+        {
+            public string ProfileName;            
+            public string InstallDirectory;
+            public string AdminPassword;
+            public string ServerName;
+            public string ServerArgs;
+            public string ServerIP;
+            public int ServerConnectionPort;
+            public int QueryPort;
+            public bool UseRawSockets;
+            public bool RCONEnabled;
+            public int RCONPort;
+            public bool SotFServer;
+            public string ServerMap;
+            public string ServerMapModId;
+            public string TotalConversionModId;
+            public List<string> ServerModIds;
+            public string LastInstalledVersion;
+        };
+
         public enum ServerStatus
         {
             Unknown,
@@ -42,7 +58,15 @@ namespace ARK_Server_Manager.Lib
             Available
         }
 
-        #region Model Properties
+        private List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
+        private Process serverProcess;
+        private IAsyncDisposable updateRegistration;
+
+        public ServerRuntime()
+        {
+        }
+
+        #region Properties
 
         public static readonly DependencyProperty SteamProperty = DependencyProperty.Register(nameof(Steam), typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(nameof(Status), typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
@@ -89,50 +113,11 @@ namespace ARK_Server_Manager.Lib
 
         #endregion
 
-        public struct RuntimeProfileSnapshot
+        public void Dispose()
         {
-            public string ServerName;
-            public string InstallDirectory;
-            public int QueryPort;
-            public int ServerConnectionPort;
-            public string ServerIP;
-            public string LastInstalledVersion;
-            public string ProfileName;            
-            public bool RCONEnabled;
-            public int RCONPort;
-            public string ServerArgs;
-            public string AdminPassword;
-            public bool UseRawSockets;
-            public bool SotFServer;
-        };
-
-        private IAsyncDisposable updateRegistration;
-        private Process serverProcess;
-
-        public ServerRuntime()
-        {
+            this.updateRegistration.DisposeAsync().DoNotWait();
         }
 
-        private void RegisterForUpdates()
-        {
-            if (this.updateRegistration == null)
-            {
-                IPEndPoint localServerQueryEndPoint;
-                IPEndPoint steamServerQueryEndPoint;
-                GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
-                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
-            }
-        }
-
-        private void UnregisterForUpdates()
-        {
-            if (this.updateRegistration != null)
-            {
-                this.updateRegistration.DisposeAsync().DoNotWait();
-                this.updateRegistration = null;
-            }
-        }
-        
         public Task AttachToProfile(ServerProfile profile)
         {
             AttachToProfileCore(profile);
@@ -146,19 +131,23 @@ namespace ARK_Server_Manager.Lib
 
             this.ProfileSnapshot = new RuntimeProfileSnapshot
             {
-                InstallDirectory = profile.InstallDirectory,
-                QueryPort = profile.ServerPort,
-                ServerConnectionPort = profile.ServerConnectionPort,
-                ServerIP = String.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
-                LastInstalledVersion = profile.LastInstalledVersion,
                 ProfileName = profile.ProfileName,
-                RCONEnabled = profile.RCONEnabled,
-                RCONPort = profile.RCONPort,
+                InstallDirectory = profile.InstallDirectory,
+                AdminPassword = profile.AdminPassword,
                 ServerName = profile.ServerName,
                 ServerArgs = profile.GetServerArgs(),
-                AdminPassword = profile.AdminPassword,
+                ServerIP = String.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
+                ServerConnectionPort = profile.ServerConnectionPort,
+                QueryPort = profile.ServerPort,
                 UseRawSockets = profile.UseRawSockets,
+                RCONEnabled = profile.RCONEnabled,
+                RCONPort = profile.RCONPort,
                 SotFServer = profile.SOTF_Enabled,
+                ServerMap = ModUtils.GetMapName(profile.ServerMap),
+                ServerMapModId = ModUtils.GetMapModId(profile.ServerMap),
+                TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
+                ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
+                LastInstalledVersion =  string.IsNullOrWhiteSpace(profile.LastInstalledVersion) ? new Version(0, 0).ToString() : profile.LastInstalledVersion,
             };
 
             Version lastInstalled;
@@ -169,8 +158,6 @@ namespace ARK_Server_Manager.Lib
 
             RegisterForUpdates();
         }
-
-        List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
 
         private void GetProfilePropertyChanges(ServerProfile profile)
         {
@@ -193,243 +180,6 @@ namespace ARK_Server_Manager.Lib
                     if (Status == ServerStatus.Stopped || Status == ServerStatus.Uninstalled || Status == ServerStatus.Unknown) { AttachToProfileCore(profile); }
                 }));
 
-        }
-
-        public string GetServerExe()
-        {
-            return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
-        }
-
-        public Task StartAsync()
-        {
-            if(!System.Environment.Is64BitOperatingSystem)
-            {
-                MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager cannot start the server.  You may still load and save profiles and settings files for use on other machines.", "64-bit OS Required", MessageBoxButton.OK, MessageBoxImage.Error);
-                return TaskUtils.FinishedTask;
-            }
-
-            switch(this.Status)
-            {
-                case ServerStatus.Running:
-                case ServerStatus.Initializing:
-                case ServerStatus.Stopping:
-                    Debug.WriteLine("Server {0} already running.", this.ProfileSnapshot.ProfileName);
-                    return TaskUtils.FinishedTask;
-            }
-
-            UnregisterForUpdates();
-            this.Status = ServerStatus.Initializing;
-            
-            var serverExe = GetServerExe();
-            var serverArgs = this.ProfileSnapshot.ServerArgs;
-
-            if (Config.Default.ManageFirewallAutomatically)
-            {
-                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerConnectionPort };
-                if (this.ProfileSnapshot.RCONEnabled)
-                {
-                    ports.Add(this.ProfileSnapshot.RCONPort);
-                }
-
-                if(this.ProfileSnapshot.UseRawSockets)
-                {
-                    ports.Add(this.ProfileSnapshot.ServerConnectionPort + 1);
-                }
-
-                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))
-                {
-                    var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.No)
-                    {
-                        return TaskUtils.FinishedTask;
-                    }
-                }
-            }
-
-            var startInfo = new ProcessStartInfo();
-            Process process;
-            try
-            {
-                process = Process.Start(serverExe, serverArgs);
-                process.EnableRaisingEvents = true;
-            }
-            catch (System.ComponentModel.Win32Exception ex)
-            {
-                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.ProfileSnapshot.InstallDirectory), serverExe, ex);
-            }
-            finally
-            {
-                RegisterForUpdates();
-            }
-            
-            return TaskUtils.FinishedTask;            
-        }
-
-        // Delegate type to be used as the Handler Routine for SCCH
-        delegate Boolean ConsoleCtrlDelegate(CtrlTypes CtrlType);
-
-        // Enumerated type for the control messages sent to the handler routine
-        enum CtrlTypes : uint
-        {
-            CTRL_C_EVENT = 0,
-            CTRL_BREAK_EVENT,
-            CTRL_CLOSE_EVENT,
-            CTRL_LOGOFF_EVENT = 5,
-            CTRL_SHUTDOWN_EVENT
-        }
-        [DllImport("kernel32.dll")]
-        static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool AttachConsole(uint dwProcessId);
-
-        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        static extern bool FreeConsole();
-
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GenerateConsoleCtrlEvent(CtrlTypes dwCtrlEvent, uint dwProcessGroupId);
-
-        public static void SendStop(Process proc)
-        {
-            //This does not require the console window to be visible.
-            if (AttachConsole((uint)proc.Id))
-            {
-                // Disable Ctrl-C handling for our program
-                SetConsoleCtrlHandler(null, true);
-                GenerateConsoleCtrlEvent(CtrlTypes.CTRL_C_EVENT, 0);
-
-                // Must wait here. If we don't and re-enable Ctrl-C
-                // handling below too fast, we might terminate ourselves.
-                //proc.WaitForExit(2000);
-
-                FreeConsole();
-
-                //Re-enable Ctrl-C handling or any subsequently started
-                //programs will inherit the disabled state.
-                SetConsoleCtrlHandler(null, false);
-            }
-        }
-
-        public async Task StopAsync()
-        {
-            switch(this.Status)
-            {
-                case ServerStatus.Running:
-                case ServerStatus.Initializing:
-                    try
-                    {
-                        UnregisterForUpdates();
-
-                        var ts = new TaskCompletionSource<bool>();
-                        EventHandler handler = (s, e) => ts.TrySetResult(true);
-                        var process = this.serverProcess;
-                        if (process != null)
-                        {
-                            try
-                            {
-                                this.Status = ServerStatus.Stopping;
-                                this.Steam = SteamStatus.Unavailable;
-                                process.Exited += handler;
-                                if (AttachConsole((uint)process.Id))
-                                {
-                                    // Disable Ctrl-C handling for our program
-                                    SetConsoleCtrlHandler(null, true);
-                                    GenerateConsoleCtrlEvent(CtrlTypes.CTRL_C_EVENT, 0);
-                                    await ts.Task;
-                                    FreeConsole();
-                                    SetConsoleCtrlHandler(null, false);
-                                }
-                                else
-                                {
-                                    process.Kill();
-                                }
-                            }
-                            finally
-                            {
-                                process.Exited -= handler;
-                            }
-                        }                    
-                    }
-                    catch(InvalidOperationException)
-                    {                    
-                    }
-                    finally
-                    {
-                        this.Status = ServerStatus.Stopped;
-                        this.Steam = SteamStatus.Unavailable;
-                    }
-                    break;
-            }            
-        }
-
-        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
-        {
-            if (!System.Environment.Is64BitOperatingSystem)
-            {
-                var result = MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager will be unable to start the server, but you may still install it or load and save profiles and settings files for use on other machines.\r\n\r\nDo you wish to continue?", "64-bit OS Required", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-
-            string serverExe = GetServerExe();
-            try
-            {
-                await StopAsync();
-                this.Status = ServerStatus.Updating;
-
-                // Run the SteamCMD to install the server
-                var steamCmdPath = Updater.GetSteamCMDPath();
-                var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
-                //DataReceivedEventHandler dataReceived = (s, e) => Console.WriteLine(e.Data);
-                var success = await ServerUpdater.UpgradeServerAsync(validate, this.ProfileSnapshot.InstallDirectory, steamCmdPath, steamCmdInstallServerArgsFormat, null /* dataReceived*/, cancellationToken);
-                if (success)
-                    this.Version = GetServerVersion();
-
-                return success;
-            }
-            catch (TaskCanceledException)
-            {
-                return false;
-            }
-            finally
-            {
-                this.Status = ServerStatus.Stopped;
-            }
-        }       
-
-        public void Dispose()
-        {
-            this.updateRegistration.DisposeAsync().DoNotWait();
-        }
-
-        /// <summary>
-        /// Returns the server version number from the version file.
-        /// </summary>
-        /// <returns>A version object containing the server version.</returns>
-        private Version GetServerVersion()
-        {
-            var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
-
-            if (!string.IsNullOrWhiteSpace(versionFile) && File.Exists(versionFile))
-            {
-                var fileValue = File.ReadAllText(versionFile);
-
-                if (!string.IsNullOrWhiteSpace(fileValue))
-                {
-                    string versionString = fileValue.ToString();
-                    if (versionString.IndexOf('.') == -1)
-                        versionString = versionString + ".0";
-
-                    Version version;
-                    if (Version.TryParse(versionString, out version))
-                        return version;
-                }
-            }
-
-            return new Version(0, 0);
         }
 
         private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
@@ -481,6 +231,11 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public string GetServerExe()
+        {
+            return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+        }
+
         private void ProcessStatusUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
         {
             if(!Object.ReferenceEquals(registration, this.updateRegistration))
@@ -505,6 +260,11 @@ namespace ARK_Server_Manager.Lib
                     case ServerStatusWatcher.ServerStatus.Stopped:
                         this.Status = ServerStatus.Stopped;
                         this.Steam = SteamStatus.Unavailable;
+                        break;
+
+                    case ServerStatusWatcher.ServerStatus.Unknown:
+                        this.Status = ServerStatus.Unknown;
+                        this.Steam = SteamStatus.Unknown;
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Running:
@@ -538,6 +298,428 @@ namespace ARK_Server_Manager.Lib
 
                 this.serverProcess = update.Process;
             }).DoNotWait();
+        }
+
+        private void RegisterForUpdates()
+        {
+            if (this.updateRegistration == null)
+            {
+                IPEndPoint localServerQueryEndPoint;
+                IPEndPoint steamServerQueryEndPoint;
+                GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
+                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
+            }
+        }
+
+        private void UnregisterForUpdates()
+        {
+            if (this.updateRegistration != null)
+            {
+                this.updateRegistration.DisposeAsync().DoNotWait();
+                this.updateRegistration = null;
+            }
+        }
+        
+
+        public Task StartAsync()
+        {
+            if(!System.Environment.Is64BitOperatingSystem)
+            {
+                MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager cannot start the server.  You may still load and save profiles and settings files for use on other machines.", "64-bit OS Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                return TaskUtils.FinishedTask;
+            }
+
+            switch(this.Status)
+            {
+                case ServerStatus.Running:
+                case ServerStatus.Initializing:
+                case ServerStatus.Stopping:
+                    Debug.WriteLine("Server {0} already running.", this.ProfileSnapshot.ProfileName);
+                    return TaskUtils.FinishedTask;
+            }
+
+            UnregisterForUpdates();
+            this.Status = ServerStatus.Initializing;
+            
+            var serverExe = GetServerExe();
+            var serverArgs = this.ProfileSnapshot.ServerArgs;
+
+            if (Config.Default.ManageFirewallAutomatically)
+            {
+                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerConnectionPort };
+                if (this.ProfileSnapshot.RCONEnabled)
+                {
+                    ports.Add(this.ProfileSnapshot.RCONPort);
+                }
+
+                if(this.ProfileSnapshot.UseRawSockets)
+                {
+                    ports.Add(this.ProfileSnapshot.ServerConnectionPort + 1);
+                }
+
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))
+                {
+                    var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return TaskUtils.FinishedTask;
+                    }
+                }
+            }
+
+            try
+            {
+                var startInfo = new ProcessStartInfo()
+                {
+                    FileName = serverExe,
+                    Arguments = serverArgs,
+                };
+
+                var process = Process.Start(startInfo);
+                process.EnableRaisingEvents = true;
+            }
+            catch (Win32Exception ex)
+            {
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.ProfileSnapshot.InstallDirectory), serverExe, ex);
+            }
+            finally
+            {
+                RegisterForUpdates();
+            }
+            
+            return TaskUtils.FinishedTask;            
+        }
+
+        public async Task StopAsync()
+        {
+            switch(this.Status)
+            {
+                case ServerStatus.Running:
+                case ServerStatus.Initializing:
+                    try
+                    {
+                        UnregisterForUpdates();
+
+                        if (this.serverProcess != null)
+                        {
+                            this.Status = ServerStatus.Stopping;
+                            this.Steam = SteamStatus.Unavailable;
+
+                            await ProcessUtils.SendStop(this.serverProcess);
+                        }
+                    }
+                    catch(InvalidOperationException)
+                    {                    
+                    }
+                    finally
+                    {
+                        this.Status = ServerStatus.Stopped;
+                        this.Steam = SteamStatus.Unavailable;
+                    }
+                    break;
+            }            
+        }
+
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, ProgressDelegate progressCallback)
+        {
+            if (updateServer && !Environment.Is64BitOperatingSystem)
+            {
+                var result = MessageBox.Show("The ARK server requires a 64-bit operating system to run. Your operating system is 32-bit and therefore the Ark Server Manager will be unable to start the server, but you may still install it or load and save profiles and settings files for use on other machines.\r\n\r\nDo you wish to continue?", "64-bit OS Required", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+
+            try
+            {
+                await StopAsync();
+
+                this.Status = ServerStatus.Updating;
+
+                // Run the SteamCMD to install the server
+                var steamCmdFile = Updater.GetSteamCmdFile();
+                if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
+                {
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************");
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: SteamCMD could not be found. Expected location is {steamCmdFile}");
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************");
+                    return false;
+                }
+
+                // record the start time of the process, this is used to determine if any files changed in the download process.
+                var startTime = DateTime.Now;
+
+                var gotNewVersion = false;
+                var downloadSuccessful = false;
+                var success = false;
+
+                if (updateServer)
+                {
+                    // *********************
+                    // Server Update Section
+                    // *********************
+
+                    downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
+                    DataReceivedEventHandler serverOutputHandler = (s, e) =>
+                    {
+                        var dataValue = e.Data ?? string.Empty;
+                        progressCallback?.Invoke(0, dataValue);
+                        if (!gotNewVersion && dataValue.Contains("downloading,"))
+                        {
+                            gotNewVersion = true;
+                        }
+                        if (dataValue.StartsWith("Success!"))
+                        {
+                            downloadSuccessful = true;
+                        }
+                    };
+
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started server update.\r\n");
+
+                    var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
+                    success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken);
+                    if (success && downloadSuccessful)
+                    {
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished server update.");
+
+                        if (Directory.Exists(this.ProfileSnapshot.InstallDirectory))
+                        {
+                            if (!Config.Default.SteamCmdRedirectOutput)
+                                // check if any of the server files have changed.
+                                gotNewVersion = ServerApp.HasNewServerVersion(this.ProfileSnapshot.InstallDirectory, startTime);
+
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New server version - {gotNewVersion.ToString().ToUpperInvariant()}.");
+
+                            // update the version number of the server.
+                            var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
+                            this.Version = Updater.GetServerVersion(versionFile);
+
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Server version: {this.Version}\r\n");
+                        }
+                    }
+                    else
+                    {
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************");
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed server update.");
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************\r\n");
+
+                        if (Config.Default.SteamCmdRedirectOutput)
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the server update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                    }
+                }
+                else
+                    success = true;
+
+                if (success)
+                {
+                    if (updateMods)
+                    {
+                        // ******************
+                        // Mod Update Section
+                        // ******************
+
+                        // build a list of mods to be processed
+                        var modIdList = new List<string>();
+                        if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerMapModId))
+                            modIdList.Add(this.ProfileSnapshot.ServerMapModId);
+                        if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.TotalConversionModId))
+                            modIdList.Add(this.ProfileSnapshot.TotalConversionModId);
+                        modIdList.AddRange(this.ProfileSnapshot.ServerModIds);
+
+                        // remove all duplicate mod ids.
+                        modIdList = modIdList.Distinct().ToList();
+
+                        // get the details of the mods to be processed.
+                        var modDetails = ModUtils.GetSteamModDetails(modIdList);
+                        if (modDetails != null)
+                        {
+                            for (var index = 0; index < modIdList.Count; index++)
+                            {
+                                var modId = modIdList[index];
+                                success = false;
+                                gotNewVersion = false;
+                                downloadSuccessful = false;
+
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started processing mod {index + 1} of {modIdList.Count}.");
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod {modId}.");
+
+                                // check if the steam information was downloaded
+                                var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
+                                if (modDetail != null)
+                                {
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title ?? string.Empty}.\r\n");
+
+                                    var modCachePath = ModUtils.GetModCachePath(modId);
+                                    var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
+                                    var modPath = ModUtils.GetModPath(this.ProfileSnapshot.InstallDirectory, modId);
+                                    var modTimeFile = ModUtils.GetLatestModTimeFile(this.ProfileSnapshot.InstallDirectory, modId);
+
+                                    var modCacheLastUpdated = 0;
+                                    var downloadMod = true;
+                                    var copyMod = true;
+
+                                    if (downloadMod)
+                                    {
+                                        // check if the mod needs to be downloaded, or force the download.
+                                        if (!Config.Default.ServerUpdate_ForceUpdateMods)
+                                        {
+                                            modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                                            if (modCacheLastUpdated <= 0)
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
+                                            }
+                                            else
+                                            {
+                                                var steamLastUpdated = modDetail.time_updated;
+                                                if (steamLastUpdated <= modCacheLastUpdated)
+                                                {
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
+                                                    downloadMod = false;
+                                                }
+                                            }
+                                        }
+                                        else
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
+
+                                        if (downloadMod)
+                                        {
+                                            // mod will be downloaded
+                                            downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
+                                            DataReceivedEventHandler modOutputHandler = (s, e) =>
+                                            {
+                                                var dataValue = e.Data ?? string.Empty;
+                                                progressCallback?.Invoke(0, dataValue);
+                                                if (dataValue.StartsWith("Success."))
+                                                {
+                                                    downloadSuccessful = true;
+                                                }
+                                            };
+
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod download.\r\n");
+
+                                            success = await ServerUpdater.UpgradeModsAsync(steamCmdFile, Config.Default.SteamCmdInstallModArgsFormat, modId, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
+                                            if (success && downloadSuccessful)
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");
+                                                copyMod = true;
+
+                                                if (Directory.Exists(modCachePath))
+                                                {
+                                                    // check if any of the mod files have changed.
+                                                    gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Where(file => file.LastWriteTime >= startTime).Any();
+
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.\r\n");
+
+                                                    // update the last updated file with the steam updated time.
+                                                    var steamLastUpdated = modDetail.time_updated.ToString();
+                                                    File.WriteAllText(cacheTimeFile, steamLastUpdated);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod download failed.");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************\r\n");
+
+                                                if (Config.Default.SteamCmdRedirectOutput)
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                                                copyMod = false;
+                                            }
+                                        }
+                                    }
+
+                                    if (copyMod)
+                                    {
+                                        // check if the mod needs to be copied, or force the copy.
+                                        if (!Config.Default.ServerUpdate_ForceCopyMods)
+                                        {
+                                            // check the mod version against the cache version.
+                                            var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
+                                            if (modLastUpdated <= 0)
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - mod is not versioned.");
+                                            }
+                                            else
+                                            {
+                                                modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                                                if (modCacheLastUpdated <= modLastUpdated)
+                                                {
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
+                                                    copyMod = false;
+                                                }
+                                            }
+                                        }
+                                        else
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
+
+                                        if (copyMod)
+                                        {
+                                            try
+                                            {
+                                                if (Directory.Exists(modCachePath))
+                                                {
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
+                                                    ModUtils.CopyMod(modCachePath, modPath, modId);
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
+                                                }
+                                                else
+                                                {
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // no steam information downloaded, display an error, mod might no longer be available
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cannot be updated, unable to download steam information.");
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
+                                }
+
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
+                            }
+                        }
+                        else
+                        {
+                            // no steam information downloaded, display an error
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************");
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods cannot be updated, unable to download steam information.");
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************\r\n");
+                        }
+                    }
+                }
+                else
+                {
+                    if (updateServer && updateMods)
+                    {
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************************************");
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods were not processed as server update had errors.");
+                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************************************\r\n");
+                    }
+                }
+
+                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished upgrade process.");
+                return success;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+            finally
+            {
+                this.Status = ServerStatus.Stopped;
+            }
         }
     }
 }

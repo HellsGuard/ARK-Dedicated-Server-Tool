@@ -9,11 +9,11 @@ using WPFSharp.Globalizer;
 namespace ARK_Server_Manager
 {
     /// <summary>
-    /// Interaction logic for OpenRCON.xaml
+    /// Interaction logic for OpenRCONWindow.xaml
     /// </summary>
-    public partial class OpenRCON : Window
+    public partial class OpenRCONWindow : Window
     {
-        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public string ServerIP
         {
@@ -21,7 +21,7 @@ namespace ARK_Server_Manager
             set { SetValue(ServerIPProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register(nameof(ServerIP), typeof(string), typeof(OpenRCON), new PropertyMetadata(IPAddress.Loopback.ToString()));
+        public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register(nameof(ServerIP), typeof(string), typeof(OpenRCONWindow), new PropertyMetadata(IPAddress.Loopback.ToString()));
 
         public int RCONPort
         {
@@ -29,7 +29,7 @@ namespace ARK_Server_Manager
             set { SetValue(RCONPortProperty, value); }
         }
 
-        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(OpenRCON), new PropertyMetadata(32330));
+        public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(OpenRCONWindow), new PropertyMetadata(32330));
 
         public string Password
         {
@@ -37,9 +37,9 @@ namespace ARK_Server_Manager
             set { SetValue(PasswordProperty, value); }
         }
 
-        public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(string), typeof(OpenRCON), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(string), typeof(OpenRCONWindow), new PropertyMetadata(String.Empty));
 
-        public OpenRCON()
+        public OpenRCONWindow()
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
@@ -55,7 +55,7 @@ namespace ARK_Server_Manager
 
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
-                    ProfileName = String.Format(_globalizedApplication.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
+                    ProfileName = String.Format(_globalizer.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
                     ServerIP = ServerIP,
                     RCONPort = RCONPort,
                     AdminPassword = Password,

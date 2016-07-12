@@ -3,30 +3,63 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.CodeDom;
-using Microsoft.CSharp;
 using System.Windows;
 using System.Runtime.InteropServices;
 
 namespace ARK_Server_Manager.Lib
 {
+    public delegate void ProgressDelegate(int progress, string message);
+
     /// <summary>
     /// Checks for an updates this program
     /// </summary>
     class Updater
     {
+        public const string OUTPUT_PREFIX = "[UPDATER]";
+
+        public struct Update
+        {
+            public Update(string statusKey, float completionPercent)
+            {
+                this.StatusKey = statusKey;
+                this.CompletionPercent = completionPercent;
+                this.Cancelled = false;
+                this.FailureText = null;
+            }
+
+            public Update SetFailed(string failureText)
+            {
+                this.FailureText = failureText;
+                return this;
+            }
+
+            public static Update AsCompleted(string statusKey)
+            {
+                return new Update { StatusKey = statusKey, CompletionPercent = 100, Cancelled = false };
+            }
+
+            public static Update AsCancelled(string statusKey)
+            {
+                return new Update { StatusKey = statusKey, CompletionPercent = 100, Cancelled = true };
+            }
+
+            public string StatusKey;
+            public float CompletionPercent;
+            public bool Cancelled;
+            public string FailureText;
+        }
 
         enum Status
         {
             CheckForNewServerVersion,
             DownloadNewServerVersion,
             DownloadNewServerComplete,
+            CleaningSteamCmd,
             DownloadingSteamCmd,
             UnzippingSteamCmd,
             RunningSteamCmd,
@@ -37,6 +70,7 @@ namespace ARK_Server_Manager.Lib
 
         Dictionary<Status, Update> statuses = new Dictionary<Status, Update>()
         {
+           { Status.CleaningSteamCmd, new Update("AutoUpdater_Status_CleaningSteamCmd", 0) },
            { Status.DownloadingSteamCmd, new Update("AutoUpdater_Status_DownloadingSteamCmd", 0) },
            { Status.UnzippingSteamCmd, new Update("AutoUpdater_Status_UnzippingSteamCmd", 20) },
            { Status.RunningSteamCmd, new Update("AutoUpdater_Status_RunningSteamCmd", 40) },
@@ -48,41 +82,79 @@ namespace ARK_Server_Manager.Lib
            { Status.Cancelled, Update.AsCancelled("AutoUpdater_Status_Cancelled") }
         };
 
-        public async void UpdateAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
+        public static bool IsAutoUpdateCacheEnabled => Config.Default.AutoUpdate_EnableUpdate && Config.Default.AutoUpdate_UpdatePeriod >= 0 && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir);
+
+        public static string GetLogFolder() => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.LogsDir));
+
+        public static Version GetServerVersion(string versionFile)
+        {
+            if (!string.IsNullOrWhiteSpace(versionFile) && File.Exists(versionFile))
+            {
+                var fileValue = File.ReadAllText(versionFile);
+
+                if (!string.IsNullOrWhiteSpace(fileValue))
+                {
+                    string versionString = fileValue.ToString();
+                    if (versionString.IndexOf('.') == -1)
+                        versionString = versionString + ".0";
+
+                    Version version;
+                    if (Version.TryParse(versionString, out version))
+                        return version;
+                }
+            }
+
+            return new Version(0, 0);
+        }
+
+        public static string GetSteamCmdFile() => NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe));
+
+        public static string NormalizePath(string path) => Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).ToLowerInvariant();
+
+        #region SteamCMD
+        public async Task ReinstallSteamCmdAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
         {
             try
             {
-                await InstallSteamCmdAsync(reporter, cancellationToken);
-                reporter.Report(statuses[Status.InstallSteamCmdComplete]);
+                reporter?.Report(statuses[Status.CleaningSteamCmd]);
 
-                reporter.Report(statuses[Status.Complete]);
+                string steamCmdDirectory = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir);
+                if (Directory.Exists(steamCmdDirectory))
+                {
+                    Directory.Delete(steamCmdDirectory, true);
+                }
+
+                await Task.Delay(5000);
+                await InstallSteamCmdAsync(reporter, cancellationToken);
+
+                reporter?.Report(statuses[Status.InstallSteamCmdComplete]);
+                reporter?.Report(statuses[Status.Complete]);
             }
             catch (TaskCanceledException)
             {
-                reporter.Report(statuses[Status.Cancelled]);
+                reporter?.Report(statuses[Status.Cancelled]);
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                reporter.Report(statuses[Status.Complete].SetFailed(ex.ToString()));
-                return;
+                reporter?.Report(statuses[Status.Complete].SetFailed(ex.ToString()));
             }
         }
 
         private async Task InstallSteamCmdAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
         {
             string steamCmdDirectory = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir);
-            if(!Directory.Exists(steamCmdDirectory))
+            if (!Directory.Exists(steamCmdDirectory))
             {
                 Directory.CreateDirectory(steamCmdDirectory);
             }
 
-            reporter.Report(statuses[Status.DownloadingSteamCmd]);
+            reporter?.Report(statuses[Status.DownloadingSteamCmd]);
 
             // Get SteamCmd.exe if necessary
             string steamCmdPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdExe);
             if (!File.Exists(steamCmdPath))
             {
+                // download the SteamCMD zip file
                 var steamZipPath = Path.Combine(steamCmdDirectory, Config.Default.SteamCmdZip);
                 using (var webClient = new WebClient())
                 {
@@ -92,25 +164,42 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                reporter.Report(statuses[Status.UnzippingSteamCmd]);
+                // Unzip the downloaded file
+                reporter?.Report(statuses[Status.UnzippingSteamCmd]);
+
                 ZipFile.ExtractToDirectory(steamZipPath, steamCmdDirectory);
                 File.Delete(steamZipPath);
 
                 // Run the SteamCmd updater
-                reporter.Report(statuses[Status.RunningSteamCmd]);
-                var process = Process.Start(steamCmdPath, Config.Default.SteamCmdInstallArgs);
-                process.EnableRaisingEvents = true;
-                var ts = new TaskCompletionSource<bool>();
-                using (var cancelRegistration = cancellationToken.Register(() => { try { process.CloseMainWindow(); } finally { ts.TrySetCanceled(); } }))
+                reporter?.Report(statuses[Status.RunningSteamCmd]);
+
+                ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
-                    process.Exited += (s, e) =>
+                    FileName = steamCmdPath,
+                    Arguments = Config.Default.SteamCmdInstallArgs,
+                    UseShellExecute = false,
+                };
+
+                var process = Process.Start(startInfo);
+                process.EnableRaisingEvents = true;
+
+                var ts = new TaskCompletionSource<bool>();
+                using (var cancelRegistration = cancellationToken.Register(() => 
+                    {
+                        try
                         {
-                            ts.TrySetResult(process.ExitCode == 0);
-                        };
-                    process.ErrorDataReceived += (s, e) =>
+                            process.Kill();
+                        }
+                        finally
                         {
-                            ts.TrySetException(new Exception(e.Data));
-                        };
+                            ts.TrySetCanceled();
+                        }
+                    }))
+                {
+                    process.Exited += (s, e) => 
+                    {
+                        ts.TrySetResult(process.ExitCode == 0);
+                    };
                     await ts.Task;
                 }
             }
@@ -118,14 +207,27 @@ namespace ARK_Server_Manager.Lib
             return;
         }
 
-        public static bool IsServerCacheAutoUpdateEnabled => Config.Default.GLOBAL_EnableServerCache && Config.Default.ServerCacheUpdatePeriod != 0 && Directory.Exists(Config.Default.ServerCacheDir);
-
-        public static string GetSteamCMDPath()
+        public async void UpdateSteamCmdAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
         {
-            var steamCmdPath = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe);
-            return steamCmdPath;
-        }
+            try
+            {
+                await InstallSteamCmdAsync(reporter, cancellationToken);
 
+                reporter?.Report(statuses[Status.InstallSteamCmdComplete]);
+                reporter?.Report(statuses[Status.Complete]);
+            }
+            catch (TaskCanceledException)
+            {
+                reporter?.Report(statuses[Status.Cancelled]);
+            }
+            catch(Exception ex)
+            {
+                reporter?.Report(statuses[Status.Complete].SetFailed(ex.ToString()));
+            }
+        }
+        #endregion
+
+        #region ASM Update
         [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteFile(string name);
@@ -168,42 +270,6 @@ namespace ARK_Server_Manager.Lib
 
             Application.Current.Shutdown(0);
         }
-
-        public struct Update
-        {
-            public Update(string statusKey, float completionPercent)
-            {
-                this.StatusKey = statusKey;
-                this.CompletionPercent = completionPercent;
-                this.Cancelled = false;
-                this.FailureText = null;
-            }
-
-            public Update SetFailed(string failureText)
-            {
-                this.FailureText = failureText;
-                return this;
-            }
-
-            public static Update AsCompleted(string statusKey)
-            {
-                return new Update { StatusKey = statusKey, CompletionPercent = 100, Cancelled = false };
-            }
-
-            public static Update AsCancelled(string statusKey)
-            {
-                return new Update { StatusKey = statusKey, CompletionPercent = 100, Cancelled = true };
-            }
-
-            public string StatusKey;
-            public float CompletionPercent;
-            public bool Cancelled;
-            public string FailureText;
-        }
-
-        public static void GenerateServerUpdater()
-        {
-            
-        }
+        #endregion
     }
 }

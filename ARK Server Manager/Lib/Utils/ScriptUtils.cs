@@ -44,9 +44,10 @@ namespace ARK_Server_Manager.Lib
                 ProcessStartInfo psInfo = new ProcessStartInfo()
                 {
                     FileName = $"{scriptWrapperPath.AsQuoted()}",
+                    Verb = withElevation ? "runas" : String.Empty,
                     UseShellExecute = true,
                     CreateNoWindow = true,
-                    Verb = withElevation ? "runas" : String.Empty
+                    //WindowStyle = ProcessWindowStyle.Hidden,
                 };
 
                 var process = new Process

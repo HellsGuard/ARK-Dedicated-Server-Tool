@@ -1,0 +1,76 @@
+﻿<Window x:Class="ARK_Server_Manager.ModDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
+        xmlns:lvs="clr-namespace:ARK_Server_Manager.Lib.ListViewSorting"
+        Title="{DynamicResource ModDetails_Title}"
+        Width="640" Height="480" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFECE1D4" Offset="1"/>
+                <GradientStop Color="#FFEAE8E6"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="{StaticResource BeigeGradient}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Name="ModDetailsGrid" ItemsSource="{Binding Response.publishedfiledetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0">
+            <DataGrid.HorizontalGridLinesBrush>
+                <SolidColorBrush Color="#FFB4B4B4"/>
+            </DataGrid.HorizontalGridLinesBrush>
+            <DataGrid.VerticalGridLinesBrush>
+                <SolidColorBrush Color="#FFB4B4B4"/>
+            </DataGrid.VerticalGridLinesBrush>
+            <DataGrid.Columns>
+                <DataGridTextColumn     Width="Auto" Binding="{Binding Index, Mode=OneWay}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource ModDetails_IndexColumnLabel}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Width="Auto" MinWidth="100" CanUserSort="True" SortMemberPath="publishedfileid">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="{DynamicResource ModDetails_ModIdColumnLabel}" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink NavigateUri="{Binding PublishedFileUrl}" RequestNavigate="Mod_RequestNavigate">
+                                    <TextBlock Text="{Binding publishedfileid, Mode=OneWay}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn     Width="100*" Binding="{Binding title, Mode=OneWay}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource ModDetails_TitleColumnLabel}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn     Width="Auto" Binding="{Binding LastUpdatedTimeString, Mode=OneWay}" SortMemberPath="LastUpdatedTimeSortString">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource ModDetails_LastUpdatedColumnLabel}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UpToDate}" Value="False">
+                            <Setter Property="Background" Value="#FFF5DFB8" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+    </Grid>
+</Window>

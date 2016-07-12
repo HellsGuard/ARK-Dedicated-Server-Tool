@@ -26,8 +26,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
-    <SupportUrl>http://steamcommunity.com/sharedfiles/filedetails/%3fid=468312476</SupportUrl>
-    <ErrorReportUrl>http://steamcommunity.com/sharedfiles/filedetails/%3fid=468312476</ErrorReportUrl>
+    <SupportUrl>http://arkservermanager.freeforums.net/thread/1194/faq-frequently-asked</SupportUrl>
+    <ErrorReportUrl>http://arkservermanager.freeforums.net/board/3/tech-support-bug-reports</ErrorReportUrl>
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
@@ -46,6 +46,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +56,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>830428608E4443ED2D6C6561382FA65894469D82</ManifestCertificateThumbprint>
@@ -92,6 +95,10 @@
       <HintPath>..\packages\EO.Wpf.4.0.12\lib\EO.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskScheduler.2.4.0\lib\net40\Microsoft.Win32.TaskScheduler.dll</HintPath>
@@ -118,6 +125,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
@@ -144,29 +152,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Lib\Utils\MachineUtils.cs" />
+    <Compile Include="Lib\Utils\ProcessUtils.cs" />
+    <Compile Include="ShutdownWindow.xaml.cs">
+      <DependentUpon>ShutdownWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\ViewModel\UnixTimeToDateTimeConverter.cs" />
+    <Compile Include="ModDetailsWindow.xaml.cs">
+      <DependentUpon>ModDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config.cs" />
+    <Compile Include="Lib\Utils\JsonUtils.cs" />
+    <Compile Include="Lib\Model\PublishedFileDetail.cs" />
+    <Compile Include="Lib\Model\WorkshopFileDetail.cs" />
+    <Compile Include="Lib\ViewModel\InvertBooleanConverter.cs" />
+    <Compile Include="ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Lib\ListViewSorting.cs" />
     <Compile Include="Lib\Model\Crafting.cs" />
     <Compile Include="Lib\Model\ResourceClassMultiplier.cs" />
     <Compile Include="Lib\Model\IntegerIniValueList.cs" />
     <Compile Include="Lib\Model\SupplyCrate.cs" />
-    <Compile Include="Lib\StringUtils.cs" />
+    <Compile Include="Lib\Utils\ModUtils.cs" />
+    <Compile Include="Lib\Utils\StringUtils.cs" />
     <Compile Include="Lib\ViewModel\PrimalItem.cs" />
     <Compile Include="Lib\ViewModel\PrimalItemClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\ViewModel\SupplyCrateClassNameToDisplayNameConverter.cs" />
-    <Compile Include="Lib\WindowUtils.cs" />
+    <Compile Include="Lib\Utils\WindowUtils.cs" />
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFControls\AnnotatedTextBox.cs" />
-    <Compile Include="CommandLine.xaml.cs">
-      <DependentUpon>CommandLine.xaml</DependentUpon>
+    <Compile Include="CommandLineWindow.xaml.cs">
+      <DependentUpon>CommandLineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ErrorHandling.cs" />
-    <Compile Include="GlobalSettings.xaml.cs">
-      <DependentUpon>GlobalSettings.xaml</DependentUpon>
+    <Compile Include="GlobalSettingsControl.xaml.cs">
+      <DependentUpon>GlobalSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ActionQueue.cs" />
-    <Compile Include="Lib\DebugUtils.cs" />
+    <Compile Include="Lib\Utils\DebugUtils.cs" />
     <Compile Include="Lib\Extensions\CollectionViewExtensions.cs" />
     <Compile Include="Lib\IAsyncDisposable.cs" />
     <Compile Include="Lib\Model\AggregateIniValueList.cs" />
@@ -177,14 +203,13 @@
     <Compile Include="Lib\Model\ClassMultiplier.cs" />
     <Compile Include="Lib\Model\DinoSpawn.cs" />
     <Compile Include="Lib\Model\Engram.cs" />
-    <Compile Include="Lib\FirewallUtils.cs" />
+    <Compile Include="Lib\Utils\FirewallUtils.cs" />
     <Compile Include="Lib\GameData.cs" />
     <Compile Include="Lib\Model\RCONParameters.cs" />
     <Compile Include="Lib\Model\StatsMultipliers.cs" />
     <Compile Include="Lib\Model\StringIniValueList.cs" />
-    <Compile Include="Lib\ModManager.cs" />
     <Compile Include="Lib\PropertyChangeNotifier.cs" />
-    <Compile Include="Lib\ScriptUtils.cs" />
+    <Compile Include="Lib\Utils\ScriptUtils.cs" />
     <Compile Include="Lib\Serialization\AggregateIniValue.cs" />
     <Compile Include="Lib\Serialization\CompoundIniEntry.cs" />
     <Compile Include="Lib\Serialization\IIniValuesCollection.cs" />
@@ -194,20 +219,18 @@
     <Compile Include="Lib\Serialization\IniFileStream.cs" />
     <Compile Include="Lib\Serialization\SystemIniFile.cs" />
     <Compile Include="Lib\Model\Level.cs" />
-    <Compile Include="Lib\NetworkUtils.cs" />
-    <Compile Include="Lib\SecurityUtils.cs" />
+    <Compile Include="Lib\Utils\NetworkUtils.cs" />
+    <Compile Include="Lib\Utils\SecurityUtils.cs" />
     <Compile Include="Lib\Serialization\IniFile.cs" />
     <Compile Include="Lib\Serialization\ValueArray.cs" />
     <Compile Include="Lib\Server.cs" />
     <Compile Include="Lib\Model\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />
-    <Compile Include="Lib\ServerScheduler.cs" />
+    <Compile Include="Lib\Utils\TaskSchedulerUtils.cs" />
     <Compile Include="Lib\ServerUpdater\ServerUpdater.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerUpdaterApp.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerUpdaterConstants.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerUpdaterGenerator.cs" />
+    <Compile Include="Lib\ServerUpdater\ServerApp.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
-    <Compile Include="Lib\TaskUtils.cs" />
+    <Compile Include="Lib\Utils\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
     <Compile Include="Lib\Model\ServerRuntime.cs" />
     <Compile Include="Lib\ViewModel\AllTrueMultiValueConverter.cs" />
@@ -234,11 +257,11 @@
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OpenRCON.xaml.cs">
-      <DependentUpon>OpenRCON.xaml</DependentUpon>
+    <Compile Include="OpenRCONWindow.xaml.cs">
+      <DependentUpon>OpenRCONWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlayerProfile.xaml.cs">
-      <DependentUpon>PlayerProfile.xaml</DependentUpon>
+    <Compile Include="PlayerProfileWindow.xaml.cs">
+      <DependentUpon>PlayerProfileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="RCONWindow.xaml.cs">
       <DependentUpon>RCONWindow.xaml</DependentUpon>
@@ -250,8 +273,8 @@
     <Compile Include="Testing\UITests.xaml.cs">
       <DependentUpon>UITests.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TribeProfile.xaml.cs">
-      <DependentUpon>TribeProfile.xaml</DependentUpon>
+    <Compile Include="TribeProfileWindow.xaml.cs">
+      <DependentUpon>TribeProfileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFControls\AnnotatedGlowSlider.xaml.cs">
       <DependentUpon>AnnotatedGlowSlider.xaml</DependentUpon>
@@ -259,9 +282,8 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Content Include="Lib\ServerUpdater\mcrcon.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Lib\ServerUpdater\mcrcon.exe" />
+    <Resource Include="Art\SteamCMD.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -278,11 +300,30 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="ShutdownWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ModDetailsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProgressWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Content Include="Styles\Default.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Styles\Blue.xaml">
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="WPFControls\AnnotatedSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AutoUpdate.xaml">
+    <Page Include="AutoUpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,11 +339,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OpenRCON.xaml">
+    <Page Include="OpenRCONWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PlayerProfile.xaml">
+    <Page Include="PlayerProfileWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -310,7 +351,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TribeProfile.xaml">
+    <Page Include="TribeProfileWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -357,11 +398,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="CommandLine.xaml">
+    <Page Include="CommandLineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GlobalSettings.xaml">
+    <Page Include="GlobalSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -373,8 +414,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AutoUpdate.xaml.cs">
-      <DependentUpon>AutoUpdate.xaml</DependentUpon>
+    <Compile Include="AutoUpdateWindow.xaml.cs">
+      <DependentUpon>AutoUpdateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Config.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -454,38 +495,16 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="ARK Server Manager_TemporaryKey.pfx" />
     <None Include="Config.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
     </None>
     <None Include="DeployToAWS.cmd" />
-    <Content Include="Lib\ServerUpdater\AutoUpdateFromCache.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Lib\ServerUpdater\AutoUpdateServerCache.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Lib\ServerUpdater\AutoUpdateFromCache.ps1" />
+    <None Include="Lib\ServerUpdater\AutoUpdateServerCache.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -494,9 +513,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -528,18 +547,7 @@
       <Name>WPFSharp.Globalizer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PublishFile Include="ARK Server Manager.pdb">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Art\bgGrad1.jpg" />
   </ItemGroup>

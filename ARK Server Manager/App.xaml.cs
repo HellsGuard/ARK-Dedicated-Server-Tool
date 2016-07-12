@@ -14,6 +14,7 @@ using System.Threading;
 using System.Globalization;
 using System.Security.Principal;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ARK_Server_Manager
 {
@@ -22,6 +23,9 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class App : GlobalizedApplication
     {
+        private const string ARG_AUTORESTART = "-ar";
+        private const string ARG_AUTOUPDATE = "-au";
+
         public new static App Instance
         {
             get;
@@ -40,20 +44,11 @@ namespace ARK_Server_Manager
             set;
         }
 
-        private GlobalizedApplication _globalizedApplication;
+        private GlobalizedApplication _globalizer;
 
         public App()
         {
             ApplicationStarted = false;
-
-            var culture = new CultureInfo(GlobalizationManager.FallBackLanguage);
-            if (!string.IsNullOrWhiteSpace(Config.Default.CultureName))
-                culture = new CultureInfo(Config.Default.CultureName);
-
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
@@ -61,58 +56,44 @@ namespace ARK_Server_Manager
 
             ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
-
-            _globalizedApplication = GlobalizedApplication.Instance;
         }
 
-        private static void MigrateSettings()
+        public static async Task DiscoverMachinePublicIP(bool forceOverride)
         {
-            //
-            // Migrate settings when we update.
-            //
-            if (Config.Default.UpgradeConfig)
+            var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
+            if(publicIP != null)
             {
-                Config.Default.Upgrade();
-                Config.Default.Reload();
-                Config.Default.UpgradeConfig = false;
-
-#if false
-                object previousEnableSettingsCache = null;
-                try { previousEnableSettingsCache = Config.Default.GetPreviousVersion(nameof(Config.Default.GLOBAL_EnableServerCache)); }
-                catch (SettingsPropertyNotFoundException) { /* this would get thrown if we were renaming a property, see http://www.codeproject.com/Articles/247333/Renaming-User-Settings-properties-between-software */ }
-
-                if (previousEnableSettingsCache == null)
+                await App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int serverupdatePeriod = 0;
-                    Int32.TryParse(Config.Default.GetPreviousVersion(nameof(Config.Default.ServerCacheUpdatePeriod)).ToString(), out serverupdatePeriod);
-                    if (!String.IsNullOrWhiteSpace(Config.Default.GetPreviousVersion(nameof(Config.Default.ServerCacheDir)).ToString()) &&
-                       serverupdatePeriod > 0)
+                    if(forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                     {
-                        Config.Default.GLOBAL_EnableServerCache = true;
+                        Config.Default.MachinePublicIP = publicIP;
                     }
-                }
-#endif
-                Config.Default.Save();
+                }));
             }
         }
 
-        public static void ReconfigureLogging()
-        {               
-            string logDir = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir);
-            LogManager.Configuration.Variables["logDir"] = logDir;
+        private static string GetDeployedVersion()
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                Assembly asmCurrent = System.Reflection.Assembly.GetExecutingAssembly();
+                string executePath = new Uri(asmCurrent.GetName().CodeBase).LocalPath;
 
-            System.IO.Directory.CreateDirectory(logDir);
-            var target = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
-            target.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
-            target.FileName = Path.Combine(logDir, "ASM_Debug.log");
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("scripts");
-            target.FileName = Path.Combine(logDir, "ASM_Scripts.log");
-
-            LogManager.ReconfigExistingLoggers();
-        }   
+                xmlDoc.Load(executePath + ".manifest");
+                XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
+                ns.AddNamespace("asmv1", "urn:schemas-microsoft-com:asm.v1");
+                string xPath = "/asmv1:assembly/asmv1:assemblyIdentity/@version";
+                XmlNode node = xmlDoc.SelectSingleNode(xPath, ns);
+                string version = node.Value;
+                return version;
+            }
+            catch
+            {
+                return "Unknown";
+            }            
+        }
 
         public static string GetProfileLogDir(string profileName)
         {
@@ -150,13 +131,86 @@ namespace ARK_Server_Manager
             return logger;
         }
 
+        private static bool IsRunAsAdministrator()
+        {
+            var wi = WindowsIdentity.GetCurrent();
+            var wp = new WindowsPrincipal(wi);
+
+            return wp.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        private static void MigrateSettings()
+        {
+            //
+            // Migrate settings when we update.
+            //
+            if (Config.Default.UpgradeConfig)
+            {
+                Config.Default.Upgrade();
+                Config.Default.Reload();
+                Config.Default.UpgradeConfig = false;
+
+#if false
+                object previousEnableSettingsCache = null;
+                try { previousEnableSettingsCache = Config.Default.GetPreviousVersion(nameof(Config.Default.GLOBAL_EnableServerCache)); }
+                catch (SettingsPropertyNotFoundException) { /* this would get thrown if we were renaming a property, see http://www.codeproject.com/Articles/247333/Renaming-User-Settings-properties-between-software */ }
+
+                if (previousEnableSettingsCache == null)
+                {
+                    int serverupdatePeriod = 0;
+                    Int32.TryParse(Config.Default.GetPreviousVersion(nameof(Config.Default.AutoUpdate_UpdatePeriod)).ToString(), out serverupdatePeriod);
+                    if (!String.IsNullOrWhiteSpace(Config.Default.GetPreviousVersion(nameof(Config.Default.AutoUpdate_CacheDir)).ToString()) &&
+                       serverupdatePeriod > 0)
+                    {
+                        Config.Default.GLOBAL_EnableServerCache = true;
+                    }
+                }
+#endif
+                Config.Default.Save();
+            }
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
+            _globalizer = GlobalizedApplication.Instance;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Config.Default.CultureName))
+                    _globalizer.GlobalizationManager.SwitchLanguage(Config.Default.CultureName, true);
+            }
+            catch (CultureNotFoundException ex)
+            {
+                // just output the exception message, it should default back to the fallback language.
+                Debug.WriteLine(ex.Message);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Config.Default.StyleName))
+                _globalizer.StyleManager.SwitchStyle($"{Config.Default.StyleName}.xaml");
+
+            // check if we are starting ASM for server restart
+            if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))
+            {
+                var arg = e.Args.FirstOrDefault(a => a.StartsWith(ARG_AUTORESTART));
+                var exitCode = ServerApp.PerformAutoRestart(arg);
+
+                // once we are finished, just exit
+                Environment.Exit(exitCode);
+            }
+
+            // check if we are starting ASM for server updating
+            if (e.Args.Any(a => a.Equals(ARG_AUTOUPDATE)))
+            {
+                var exitCode = ServerApp.PerformAutoUpdate();
+
+                // once we are finished, just exit
+                Environment.Exit(exitCode);
+            }
+
             if (Config.Default.RunAsAdministratorPrompt && !IsRunAsAdministrator())
             {
-                var result = MessageBox.Show(_globalizedApplication.GetResourceString("Application_RunAsAdministratorLabel"), _globalizedApplication.GetResourceString("Application_RunAsAdministratorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(_globalizer.GetResourceString("Application_RunAsAdministratorLabel"), _globalizer.GetResourceString("Application_RunAsAdministratorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
@@ -179,7 +233,7 @@ namespace ARK_Server_Manager
                     catch (Exception)
                     {
                         // The user did not allow the application to run as administrator
-                        MessageBox.Show(_globalizedApplication.GetResourceString("Application_RunAsAdministrator_FailedLabel"), _globalizedApplication.GetResourceString("Application_RunAsAdministrator_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_globalizer.GetResourceString("Application_RunAsAdministrator_FailedLabel"), _globalizer.GetResourceString("Application_RunAsAdministrator_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -189,7 +243,7 @@ namespace ARK_Server_Manager
             // Initial configuration setting
             if (String.IsNullOrWhiteSpace(Config.Default.DataDir))
             {
-                MessageBox.Show(_globalizedApplication.GetResourceString("Application_DataDirectoryLabel"), _globalizedApplication.GetResourceString("Application_DataDirectoryTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(_globalizer.GetResourceString("Application_DataDirectoryLabel"), _globalizer.GetResourceString("Application_DataDirectoryTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                 while (String.IsNullOrWhiteSpace(Config.Default.DataDir))
                 {
@@ -197,14 +251,14 @@ namespace ARK_Server_Manager
                     dialog.EnsureFileExists = true;
                     dialog.IsFolderPicker = true;
                     dialog.Multiselect = false;
-                    dialog.Title = _globalizedApplication.GetResourceString("Application_DataDirectory_DialogTitle");
-                    dialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+                    dialog.Title = _globalizer.GetResourceString("Application_DataDirectory_DialogTitle");
+                    dialog.InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
                     {
                         Environment.Exit(0);
                     }
 
-                    var confirm = MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmLabel"), Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), _globalizedApplication.GetResourceString("Application_DataDirectory_ConfirmTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                    var confirm = MessageBox.Show(String.Format(_globalizer.GetResourceString("Application_DataDirectory_ConfirmLabel"), Path.Combine(dialog.FileName, Config.Default.ProfilesDir), Path.Combine(dialog.FileName, Config.Default.SteamCmdDir)), _globalizer.GetResourceString("Application_DataDirectory_ConfirmTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                     if (confirm == MessageBoxResult.Cancel)
                     {
                         Environment.Exit(0);
@@ -228,21 +282,6 @@ namespace ARK_Server_Manager
             }
         }
 
-        public static async Task DiscoverMachinePublicIP(bool forceOverride)
-        {
-            var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
-            if(publicIP != null)
-            {
-                await App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if(forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
-                    {
-                        Config.Default.MachinePublicIP = publicIP;
-                    }
-                }));
-            }
-        }
-
         protected override void OnExit(ExitEventArgs e)
         {
             if (ApplicationStarted)
@@ -251,11 +290,11 @@ namespace ARK_Server_Manager
                 {
                     try
                     {
-                        server.Profile.Save();
+                        server.Profile.Save(false);
                     }
                     catch(Exception ex)
                     {
-                        MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("Application_Profile_SaveFailedLabel"), server.Profile.ProfileName, ex.Message, ex.StackTrace), _globalizedApplication.GetResourceString("Application_Profile_SaveFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(String.Format(_globalizer.GetResourceString("Application_Profile_SaveFailedLabel"), server.Profile.ProfileName, ex.Message, ex.StackTrace), _globalizer.GetResourceString("Application_Profile_SaveFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 Config.Default.Save();
@@ -266,34 +305,22 @@ namespace ARK_Server_Manager
             base.OnExit(e);
         }
 
-        private static string GetDeployedVersion()
-        {
-            try
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                Assembly asmCurrent = System.Reflection.Assembly.GetExecutingAssembly();
-                string executePath = new Uri(asmCurrent.GetName().CodeBase).LocalPath;
+        public static void ReconfigureLogging()
+        {               
+            string logDir = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir);
+            LogManager.Configuration.Variables["logDir"] = logDir;
 
-                xmlDoc.Load(executePath + ".manifest");
-                XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
-                ns.AddNamespace("asmv1", "urn:schemas-microsoft-com:asm.v1");
-                string xPath = "/asmv1:assembly/asmv1:assemblyIdentity/@version";
-                XmlNode node = xmlDoc.SelectSingleNode(xPath, ns);
-                string version = node.Value;
-                return version;
-            }
-            catch
-            {
-                return "Unknown";
-            }            
-        }
+            System.IO.Directory.CreateDirectory(logDir);
+            var target = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
+            target.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
 
-        private static bool IsRunAsAdministrator()
-        {
-            var wi = WindowsIdentity.GetCurrent();
-            var wp = new WindowsPrincipal(wi);
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
+            target.FileName = Path.Combine(logDir, "ASM_Debug.log");
 
-            return wp.IsInRole(WindowsBuiltInRole.Administrator);
-        }
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("scripts");
+            target.FileName = Path.Combine(logDir, "ASM_Scripts.log");
+
+            LogManager.ReconfigExistingLoggers();
+        }   
     }
 }

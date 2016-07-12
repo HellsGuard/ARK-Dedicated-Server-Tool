@@ -30,8 +30,9 @@ namespace WPFSharp.Globalizer.Controls
 
         void LanguageSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var converter = new LanguageNameConverter();
-            GlobalizedApplication.Instance.GlobalizationManager.SwitchLanguage(converter.ConvertBack(e.AddedItems[0].ToString(), typeof(string), null, null).ToString());
+            var lang = new LanguageNameConverter().ConvertBack(e.AddedItems[0].ToString(), typeof(string), null, null).ToString();
+            if (!string.IsNullOrWhiteSpace(lang))
+                GlobalizedApplication.Instance.GlobalizationManager.SwitchLanguage(lang);
         }
     }
 }

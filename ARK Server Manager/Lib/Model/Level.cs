@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Serialization;
-using System.Windows.Data;
-using System.Collections.ObjectModel;
 using TinyCsvParser.Mapping;
 
 namespace ARK_Server_Manager.Lib
@@ -19,6 +14,7 @@ namespace ARK_Server_Manager.Lib
     public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
+
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
@@ -160,16 +156,11 @@ namespace ARK_Server_Manager.Lib
     [Serializable()]
     public class Level : DependencyObject
     {
-        public static readonly DependencyProperty EngramTotalProperty =
-            DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty XPTotalProperty =
-            DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty EngramPointsProperty =
-            DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty XPRequiredProperty =
-            DependencyProperty.Register(nameof(XPRequired), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty LevelIndexProperty =
-            DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty LevelIndexProperty = DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty XPRequiredProperty = DependencyProperty.Register(nameof(XPRequired), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty EngramPointsProperty = DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty XPTotalProperty = DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty EngramTotalProperty = DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
 
         public int LevelIndex
         {

@@ -89,6 +89,9 @@
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                     <Image Source="Art/Donate.png" />
                 </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
+                    <Image Source="Art/SteamCMD.png" Width="16"/>
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
                     <Image Source="Art/Command.png" Width="16"/>
                 </Button>

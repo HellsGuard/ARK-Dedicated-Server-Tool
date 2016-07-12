@@ -170,8 +170,6 @@
     <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilise these features.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Stop the server?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?</sys:String>
     <sys:String x:Key="ServerSettings_InstallServer_Title">Select Install Directory</sys:String>
     <sys:String x:Key="ServerSettings_LoadConfig_Title">Load Server Profile or GameUserSettings.ini</sys:String>
     <sys:String x:Key="ServerSettings_LoadConfig_ErrorTitle">Profile failed to load</sys:String>

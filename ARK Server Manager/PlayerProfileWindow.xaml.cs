@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ARK_Server_Manager.Lib;
@@ -14,30 +12,23 @@ using WPFSharp.Globalizer;
 namespace ARK_Server_Manager
 {
     /// <summary>
-    /// Interaction logic for TribeProfile.xaml
+    /// Interaction logic for PlayerProfileWindow.xaml
     /// </summary>
-    public partial class TribeProfile : Window
+    public partial class PlayerProfileWindow : Window
     {
-        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
-        public TribeProfile(PlayerInfo player, ICollection<PlayerInfo> players, String serverFolder)
+        public PlayerProfileWindow(PlayerInfo player, String serverFolder)
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.Player = player;
-            this.Players = players;
             this.ServerFolder = serverFolder;
             this.DataContext = this;
         }
 
         public PlayerInfo Player
-        {
-            get;
-            private set;
-        }
-
-        public ICollection<PlayerInfo> Players
         {
             get;
             private set;
@@ -53,32 +44,36 @@ namespace ARK_Server_Manager
 
         public Tribe ArkDataTribe => Player?.ArkData?.Tribe;
 
-        public String CreatedDate => ArkDataTribe?.FileCreated.ToString("G");
+        public String CreatedDate => ArkDataPlayer?.FileCreated.ToString("G");
+
+        public Boolean IsTribeOwner => ArkDataPlayer != null && ArkDataTribe != null && ArkDataTribe.OwnerId == ArkDataPlayer.Id;
+
+        public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, Config.Default.SavedArksRelativePath, $"{Player.SteamId}.arkprofile")}";
+
+        public String ProfileLink => ArkDataPlayer?.ProfileUrl;
 
         public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, Config.Default.SavedArksRelativePath, $"{ArkDataTribe.Id}.arktribe")}";
 
-        public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? string.Format("{0} ({1})", ArkDataTribe.Owner.SteamName, ArkDataTribe.Owner.CharacterName) : null;
+        public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? $"{ArkDataTribe.Owner.SteamName} ({ArkDataTribe.Owner.CharacterName})" : null;
 
-        public ICollection<PlayerInfo> TribePlayers
+        public String UpdatedDate => ArkDataPlayer?.FileUpdated.ToString("G");
+
+        public String WindowTitle => String.Format(_globalizer.GetResourceString("Profile_WindowTitle_Player"), Player.SteamName);
+
+        public ICommand DirectLinkCommand
         {
             get
             {
-                if (ArkDataTribe == null) return null;
-
-                ICollection<PlayerInfo> players = new List<PlayerInfo>();
-                foreach (var tribePlayer in ArkDataTribe.Players)
-                {
-                    var player = Players.FirstOrDefault(p => p.SteamId.ToString() == tribePlayer.SteamId);
-                    if (player != null)
-                        players.Add(player);
-                }
-                return players;
+                return new RelayCommand<String>(
+                    execute: (action) =>
+                    {
+                        if (String.IsNullOrWhiteSpace(action)) return;
+                        Process.Start(action);
+                    },
+                    canExecute: (action) => true
+                );
             }
         }
-
-        public String UpdatedDate => ArkDataTribe?.FileUpdated.ToString("G");
-
-        public String WindowTitle => String.Format(_globalizedApplication.GetResourceString("Profile_WindowTitle_Tribe"), Player.TribeName);
 
         public ICommand ExplorerLinkCommand
         {

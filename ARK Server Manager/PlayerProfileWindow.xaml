@@ -1,4 +1,4 @@
-﻿<Window x:Class="ARK_Server_Manager.PlayerProfile"
+﻿<Window x:Class="ARK_Server_Manager.PlayerProfileWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"

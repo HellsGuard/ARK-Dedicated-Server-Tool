@@ -188,15 +188,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TheIsland")]
-        public string DefaultServerMap {
+        public string DefaultServerMap_TheIsland {
             get {
-                return ((string)(this["DefaultServerMap"]));
-            }
-            set {
-                this["DefaultServerMap"] = value;
+                return ((string)(this["DefaultServerMap_TheIsland"]));
             }
         }
         
@@ -433,30 +430,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ServerCacheDir {
-            get {
-                return ((string)(this["ServerCacheDir"]));
-            }
-            set {
-                this["ServerCacheDir"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ServerCacheUpdatePeriod {
-            get {
-                return ((int)(this["ServerCacheUpdatePeriod"]));
-            }
-            set {
-                this["ServerCacheUpdatePeriod"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int RCON_PlayerListSort {
             get {
@@ -488,18 +461,6 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["RCON_AdminName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GLOBAL_EnableServerCache {
-            get {
-                return ((bool)(this["GLOBAL_EnableServerCache"]));
-            }
-            set {
-                this["GLOBAL_EnableServerCache"] = value;
             }
         }
         
@@ -788,6 +749,260 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["RunAsAdministratorPrompt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoUpdate_EnableUpdate {
+            get {
+                return ((bool)(this["AutoUpdate_EnableUpdate"]));
+            }
+            set {
+                this["AutoUpdate_EnableUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int AutoUpdate_UpdatePeriod {
+            get {
+                return ((int)(this["AutoUpdate_UpdatePeriod"]));
+            }
+            set {
+                this["AutoUpdate_UpdatePeriod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int ServerShutdown_GracePeriod {
+            get {
+                return ((int)(this["ServerShutdown_GracePeriod"]));
+            }
+            set {
+                this["ServerShutdown_GracePeriod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown required. Server will shutdown in {minutes} minutes. Please logou" +
+            "t before shutdown to prevent character corruption.")]
+        public string ServerShutdown_GraceMessage1 {
+            get {
+                return ((string)(this["ServerShutdown_GraceMessage1"]));
+            }
+            set {
+                this["ServerShutdown_GraceMessage1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown required. Server will shutdown in 1 minute. Please logout before " +
+            "shutdown to prevent character corruption.")]
+        public string ServerShutdown_GraceMessage2 {
+            get {
+                return ((string)(this["ServerShutdown_GraceMessage2"]));
+            }
+            set {
+                this["ServerShutdown_GraceMessage2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown required. Server is shutting down now.")]
+        public string ServerShutdown_GraceMessage3 {
+            get {
+                return ((string)(this["ServerShutdown_GraceMessage3"]));
+            }
+            set {
+                this["ServerShutdown_GraceMessage3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LastUpdatedASM.txt")]
+        public string LastUpdatedTimeFile {
+            get {
+                return ((string)(this["LastUpdatedTimeFile"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown required. Server is about to shutdown, performing a world save.")]
+        public string ServerShutdown_WorldSaveMessage {
+            get {
+                return ((string)(this["ServerShutdown_WorldSaveMessage"]));
+            }
+            set {
+                this["ServerShutdown_WorldSaveMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ServerShutdown_EnableWorldSave {
+            get {
+                return ((bool)(this["ServerShutdown_EnableWorldSave"]));
+            }
+            set {
+                this["ServerShutdown_EnableWorldSave"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RunServer.cmd")]
+        public string LauncherFile {
+            get {
+                return ((string)(this["LauncherFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +workshop_download_item 346110 {0} +quit")]
+        public string SteamCmdInstallModArgsFormat {
+            get {
+                return ((string)(this["SteamCmdInstallModArgsFormat"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("steamapps\\workshop\\content\\346110\\")]
+        public string WorkshopFolderRelativePath {
+            get {
+                return ((string)(this["WorkshopFolderRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Content\\Mods")]
+        public string ServerModsRelativePath {
+            get {
+                return ((string)(this["ServerModsRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AutoUpdate_CacheDir {
+            get {
+                return ((string)(this["AutoUpdate_CacheDir"]));
+            }
+            set {
+                this["AutoUpdate_CacheDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ServerUpdate_UpdateModsWhenUpdatingServer {
+            get {
+                return ((bool)(this["ServerUpdate_UpdateModsWhenUpdatingServer"]));
+            }
+            set {
+                this["ServerUpdate_UpdateModsWhenUpdatingServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ServerUpdate_ForceUpdateMods {
+            get {
+                return ((bool)(this["ServerUpdate_ForceUpdateMods"]));
+            }
+            set {
+                this["ServerUpdate_ForceUpdateMods"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ServerUpdate_ForceCopyMods {
+            get {
+                return ((bool)(this["ServerUpdate_ForceCopyMods"]));
+            }
+            set {
+                this["ServerUpdate_ForceCopyMods"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TheCenter")]
+        public string DefaultServerMap_TheCenter {
+            get {
+                return ((string)(this["DefaultServerMap_TheCenter"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AlarmPostCredentials.txt")]
+        public string WebAlarmFile {
+            get {
+                return ((string)(this["WebAlarmFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ShooterGame\\Saved")]
+        public string SavedRelativePath {
+            get {
+                return ((string)(this["SavedRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SteamCmdRedirectOutput {
+            get {
+                return ((bool)(this["SteamCmdRedirectOutput"]));
+            }
+            set {
+                this["SteamCmdRedirectOutput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoUpdate_UseSmartCopy {
+            get {
+                return ((bool)(this["AutoUpdate_UseSmartCopy"]));
+            }
+            set {
+                this["AutoUpdate_UseSmartCopy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StyleName {
+            get {
+                return ((string)(this["StyleName"]));
+            }
+            set {
+                this["StyleName"] = value;
             }
         }
     }

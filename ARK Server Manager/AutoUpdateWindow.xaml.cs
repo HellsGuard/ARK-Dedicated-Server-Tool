@@ -2,17 +2,21 @@
 using System;
 using System.Threading;
 using System.Windows;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
     /// <summary>
-    /// Interaction logic for AutoUpdate.xaml
+    /// Interaction logic for AutoUpdateWindow.xaml
     /// </summary>
-    public partial class AutoUpdate : Window
+    public partial class AutoUpdateWindow : Window
     {
-        Updater updater = new Updater();
-        CancellationTokenSource cancelSource;
-        public AutoUpdate()
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+
+        private Updater updater = new Updater();
+        private CancellationTokenSource cancelSource;
+
+        public AutoUpdateWindow()
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
@@ -21,9 +25,10 @@ namespace ARK_Server_Manager
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cancelSource = new CancellationTokenSource();
-            updater.UpdateAsync(new Progress<Updater.Update>(async u =>
+            updater.UpdateSteamCmdAsync(new Progress<Updater.Update>(async u =>
                 {
-                    this.StatusLabel.Content = this.FindResource(u.StatusKey);
+                    var message = string.IsNullOrWhiteSpace(u.StatusKey) ? string.Empty : _globalizer.GetResourceString(u.StatusKey) ?? u.StatusKey;
+                    this.StatusLabel.Content = message;
                     this.CompletionProgress.Value = u.CompletionPercent;
 
                     if(u.FailureText != null)

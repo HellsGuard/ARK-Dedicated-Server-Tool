@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
 using TinyCsvParser;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -226,11 +228,18 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AdminLoggingProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
+        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap_TheIsland));
         public string ServerMap
         {
             get { return (string)GetValue(ServerMapProperty); }
             set { SetValue(ServerMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty TotalConversionModIdProperty = DependencyProperty.Register(nameof(TotalConversionModId), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string TotalConversionModId
+        {
+            get { return (string)GetValue(TotalConversionModIdProperty); }
+            set { SetValue(TotalConversionModIdProperty, value); }
         }
 
         public static readonly DependencyProperty ServerModIdsProperty = DependencyProperty.Register(nameof(ServerModIds), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -325,6 +334,20 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseBattlEyeProperty, value); }
         }
 
+        public static readonly DependencyProperty ForceRespawnDinosProperty = DependencyProperty.Register(nameof(ForceRespawnDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceRespawnDinos
+        {
+            get { return (bool)GetValue(ForceRespawnDinosProperty); }
+            set { SetValue(ForceRespawnDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableServerAdminLogsProperty = DependencyProperty.Register(nameof(EnableServerAdminLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableServerAdminLogs
+        {
+            get { return (bool)GetValue(EnableServerAdminLogsProperty); }
+            set { SetValue(EnableServerAdminLogsProperty, value); }
+        }
+
         public static readonly DependencyProperty MaxTribeLogsProperty = DependencyProperty.Register(nameof(MaxTribeLogs), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int MaxTribeLogs
@@ -333,11 +356,81 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxTribeLogsProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableServerAdminLogsProperty = DependencyProperty.Register(nameof(EnableServerAdminLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool EnableServerAdminLogs
+        public static readonly DependencyProperty ForceDirectX10Property = DependencyProperty.Register(nameof(ForceDirectX10), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceDirectX10
         {
-            get { return (bool)GetValue(EnableServerAdminLogsProperty); }
-            set { SetValue(EnableServerAdminLogsProperty, value); }
+            get { return (bool)GetValue(ForceDirectX10Property); }
+            set { SetValue(ForceDirectX10Property, value); }
+        }
+
+        public static readonly DependencyProperty ForceShaderModel4Property = DependencyProperty.Register(nameof(ForceShaderModel4), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceShaderModel4
+        {
+            get { return (bool)GetValue(ForceShaderModel4Property); }
+            set { SetValue(ForceShaderModel4Property, value); }
+        }
+
+        public static readonly DependencyProperty ForceLowMemoryProperty = DependencyProperty.Register(nameof(ForceLowMemory), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceLowMemory
+        {
+            get { return (bool)GetValue(ForceLowMemoryProperty); }
+            set { SetValue(ForceLowMemoryProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForceNoManSkyProperty = DependencyProperty.Register(nameof(ForceNoManSky), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceNoManSky
+        {
+            get { return (bool)GetValue(ForceNoManSkyProperty); }
+            set { SetValue(ForceNoManSkyProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseAllAvailableCoresProperty = DependencyProperty.Register(nameof(UseAllAvailableCores), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UseAllAvailableCores
+        {
+            get { return (bool)GetValue(UseAllAvailableCoresProperty); }
+            set { SetValue(UseAllAvailableCoresProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseCacheProperty = DependencyProperty.Register(nameof(UseCache), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UseCache
+        {
+            get { return (bool)GetValue(UseCacheProperty); }
+            set { SetValue(UseCacheProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableWebAlarmProperty = DependencyProperty.Register(nameof(EnableWebAlarm), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableWebAlarm
+        {
+            get { return (bool)GetValue(EnableWebAlarmProperty); }
+            set { SetValue(EnableWebAlarmProperty, value); }
+        }
+
+        public static readonly DependencyProperty WebAlarmKeyProperty = DependencyProperty.Register(nameof(WebAlarmKey), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string WebAlarmKey
+        {
+            get { return (string)GetValue(WebAlarmKeyProperty); }
+            set { SetValue(WebAlarmKeyProperty, value); }
+        }
+
+        public static readonly DependencyProperty WebAlarmUrlProperty = DependencyProperty.Register(nameof(WebAlarmUrl), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string WebAlarmUrl
+        {
+            get { return (string)GetValue(WebAlarmUrlProperty); }
+            set { SetValue(WebAlarmUrlProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool AutoManagedMods
+        {
+            get { return (bool)GetValue(AutoManagedModsProperty); }
+            set { SetValue(AutoManagedModsProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseNewSaveFormatProperty = DependencyProperty.Register(nameof(UseNewSaveFormat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UseNewSaveFormat
+        {
+            get { return (bool)GetValue(UseNewSaveFormatProperty); }
+            set { SetValue(UseNewSaveFormatProperty, value); }
         }
 
         public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -363,32 +456,25 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAutoUpdateProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoUpdatePeriodProperty = DependencyProperty.Register(nameof(AutoUpdatePeriod), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
-        public int AutoUpdatePeriod
+        public static readonly DependencyProperty EnableServerRestartProperty = DependencyProperty.Register(nameof(EnableAutoRestart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoRestart
         {
-            get { return (int)GetValue(AutoUpdatePeriodProperty); }
-            set { SetValue(AutoUpdatePeriodProperty, value); }
+            get { return (bool)GetValue(EnableServerRestartProperty); }
+            set { SetValue(EnableServerRestartProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerUpdateGraceMinutesProperty = DependencyProperty.Register(nameof(ServerUpdateGraceMinutes), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
-        public int ServerUpdateGraceMinutes
+        public static readonly DependencyProperty AutoRestartTimeProperty = DependencyProperty.Register(nameof(AutoRestartTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+        public string AutoRestartTime
         {
-            get { return (int)GetValue(ServerUpdateGraceMinutesProperty); }
-            set { SetValue(ServerUpdateGraceMinutesProperty, value); }
+            get { return (string)GetValue(AutoRestartTimeProperty); }
+            set { SetValue(AutoRestartTimeProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerForceUpdateProperty = DependencyProperty.Register(nameof(ServerForceUpdate), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool ServerForceUpdate
+        public static readonly DependencyProperty AutoRestartIfShutdownProperty = DependencyProperty.Register(nameof(AutoRestartIfShutdown), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool AutoRestartIfShutdown
         {
-            get { return (bool)GetValue(ServerForceUpdateProperty); }
-            set { SetValue(ServerForceUpdateProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerForceUpdateTimeProperty = DependencyProperty.Register(nameof(ServerForceUpdateTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
-        public string ServerForceUpdateTime
-        {
-            get { return (string)GetValue(ServerForceUpdateTimeProperty); }
-            set { SetValue(ServerForceUpdateTimeProperty, value); }
+            get { return (bool)GetValue(AutoRestartIfShutdownProperty); }
+            set { SetValue(AutoRestartIfShutdownProperty, value); }
         }
         #endregion
 
@@ -1652,8 +1738,8 @@ namespace ARK_Server_Manager.Lib
             settings.DinoClassResistanceMultipliers.Reset();
             settings.DinoClassDamageMultipliers.Reset();
             settings.HarvestResourceItemAmountClassMultipliers.Reset();
-            settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-            settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+            settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
+            settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
             settings.PerLevelStatsMultiplier_DinoTamed.Reset();
             settings.PerLevelStatsMultiplier_DinoTamed_Add.Reset();
             settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
@@ -1690,40 +1776,64 @@ namespace ARK_Server_Manager.Lib
             return list;
         }
 
-        public string GetLauncherPath()
+        public string GetLauncherFile()
         {
-            return Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
-        }
-
-        public string GetProfilePath()
-        {
-            return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
+            return Path.Combine(this.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile);
         }
 
         public string GetProfileIniDir()
         {
-            return Path.Combine(Path.GetDirectoryName(GetProfilePath()), this.ProfileName);
+            return Path.Combine(Path.GetDirectoryName(GetProfileFile()), this.ProfileName);
         }
 
-        private string GetSchedulerKey()
+        public string GetProfileKey()
         {
-            using (var hashAlgo = MD5.Create())
+            try
+            {
+                using (var hashAlgo = MD5.Create())
+                {
+                    var hashStr = Encoding.UTF8.GetBytes(this.InstallDirectory);
+                    var hash = hashAlgo.ComputeHash(hashStr);
+
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var b in hash)
+                    {
+                        // can be "x2" if you want lowercase
+                        sb.Append(b.ToString("x2"));
+                    }
+                    return sb.ToString();
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                // Exception has been thrown by the target of an invocation. 
+                // This error message seems to occur when using MD5 hash algorithm on an environment where FIPS is enabled. 
+                // Swallow the exception and allow the SHA1 algorithm to be used.
+                Debug.WriteLine(ex.Message);
+            }
+
+            // An error occurred using the MD5 hash, try using SHA1 instead.
+            using (var hashAlgo = SHA1.Create())
             {
                 var hashStr = Encoding.UTF8.GetBytes(this.InstallDirectory);
                 var hash = hashAlgo.ComputeHash(hashStr);
-                StringBuilder builder = new StringBuilder();
-                foreach(var b in hash)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
 
-                var outputStr = builder.ToString();
-                
-                return outputStr;
+                var sb = new StringBuilder(hash.Length * 2);
+                foreach (byte b in hash)
+                {
+                    // can be "x2" if you want lowercase
+                    sb.Append(b.ToString("x2"));
+                }
+                return sb.ToString();
             }
         }
 
-        public string GetServerExe()
+        public string GetProfileFile()
+        {
+            return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
+        }
+
+        public string GetServerExeFile()
         {
             return Path.Combine(this.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
         }
@@ -1734,7 +1844,7 @@ namespace ARK_Server_Manager.Lib
 
             if (this.SOTF_Enabled)
             {
-                serverArgs.Append(Config.Default.DefaultServerMap);
+                serverArgs.Append(Config.Default.DefaultServerMap_TheIsland);
             }
             else
             {
@@ -1771,7 +1881,12 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(addArgs);
             }
 
-            if(this.EnableAllowCaveFlyers)
+            if (!string.IsNullOrWhiteSpace(this.TotalConversionModId) && !this.SOTF_Enabled)
+            {
+                serverArgs.Append($" -TotalConversionMod={this.TotalConversionModId}");
+            }
+
+            if (this.EnableAllowCaveFlyers)
             {
                 serverArgs.Append(" -ForceAllowCaveFlyers");
             }
@@ -1837,9 +1952,59 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -nocombineclientmoves");
             }
 
+            if (this.ForceRespawnDinos)
+            {
+                serverArgs.Append(" -forcerespawndinos");
+            }
+
             if (this.EnableServerAdminLogs)
             {
                 serverArgs.Append(" -servergamelog");
+            }
+
+            if (this.ForceDirectX10)
+            {
+                serverArgs.Append(" -d3d10");
+            }
+
+            if (this.ForceShaderModel4)
+            {
+                serverArgs.Append(" -sm4");
+            }
+
+            if (this.ForceLowMemory)
+            {
+                serverArgs.Append(" -lowmemory");
+            }
+
+            if (this.ForceNoManSky)
+            {
+                serverArgs.Append(" -nomansky");
+            }
+
+            if (this.UseAllAvailableCores)
+            {
+                serverArgs.Append(" -useallavailablecores");
+            }
+
+            if (this.UseCache)
+            {
+                serverArgs.Append(" -usecache");
+            }
+
+            if (this.EnableWebAlarm)
+            {
+                serverArgs.Append(" -webalarm");
+            }
+
+            if (this.AutoManagedMods)
+            {
+                serverArgs.Append(" -automanagedmods");
+            }
+
+            if (this.UseNewSaveFormat)
+            {
+                serverArgs.Append(" -newsaveformat");
             }
 
             serverArgs.Append(' ');
@@ -1883,8 +2048,8 @@ namespace ARK_Server_Manager.Lib
             //
             if (settings.PlayerLevels.Count == 0)
             {
-                settings.ResetLevelProgressionToDefault(LevelProgression.Player);
-                settings.ResetLevelProgressionToDefault(LevelProgression.Dino);
+                settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
+                settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
                 settings.EnableLevelProgressions = false;
             }
 
@@ -1926,7 +2091,7 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
 
-        public void Save()
+        public void Save(bool updateSchedules)
         {
             // ensure that the auto update is switched off for SotF servers
             if (SOTF_Enabled)
@@ -1937,11 +2102,7 @@ namespace ARK_Server_Manager.Lib
             //
             // Save the profile
             //
-            XmlSerializer serializer = new XmlSerializer(this.GetType());
-            using (var stream = File.Open(GetProfilePath(), FileMode.Create))
-            {
-                serializer.Serialize(stream, this);
-            }                        
+            SaveProfile();
 
             //
             // Write the INI files
@@ -1951,7 +2112,7 @@ namespace ARK_Server_Manager.Lib
             //
             // If this was a rename, remove the old profile after writing the new one.
             //
-            if(!String.Equals(GetProfilePath(), this._lastSaveLocation))
+            if(!String.Equals(GetProfileFile(), this._lastSaveLocation))
             {
                 try
                 {
@@ -1971,16 +2132,34 @@ namespace ARK_Server_Manager.Lib
                     // We tried...
                 }
 
-                this._lastSaveLocation = GetProfilePath();
+                this._lastSaveLocation = GetProfileFile();
             }
 
             SaveLauncher();
+            UpdateWebAlarm();
+
+            if (updateSchedules)
+            {
+                UpdateSchedules();
+            }
+        }
+
+        public void SaveProfile()
+        {
+            //
+            // Save the profile
+            //
+            XmlSerializer serializer = new XmlSerializer(this.GetType());
+            using (var stream = File.Open(GetProfileFile(), FileMode.Create))
+            {
+                serializer.Serialize(stream, this);
+            }
         }
 
         private void SaveLauncher()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherPath()));
-            File.WriteAllText(GetLauncherPath(), $"start \"{ProfileName}\" \"{GetServerExe()}\" {GetServerArgs()}");
+            Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherFile()));
+            File.WriteAllText(GetLauncherFile(), $"start \"{ProfileName}\" /normal \"{GetServerExeFile()}\" {GetServerArgs()}");
         }
 
         public void SaveINIFiles()
@@ -2023,41 +2202,68 @@ namespace ARK_Server_Manager.Lib
             iniFile.IniWriteSection(IniFileSections.GameMode, filteredValues.ToArray(), IniFiles.Game);
         }
 
-        public bool UpdateAutoUpdateSettings()
+        public bool UpdateSchedules()
         {
             SaveLauncher();
 
-            if (!ServerScheduler.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
+            if (!SecurityUtils.IsAdministrator())
+                return true;
+
+            if (!SecurityUtils.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
             {
                _logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
                 return false;
             }
 
+            var schedulerKey = GetProfileKey();
 
-            var schedulerKey = GetSchedulerKey();
-            if(!ServerScheduler.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetLauncherPath(), String.Empty))
+            // remove the old task schedule
+            TaskSchedulerUtils.ScheduleUpdates(schedulerKey, 0, Config.Default.AutoUpdate_CacheDir, this.InstallDirectory, null, 0, null, 0, null);
+
+            if(!TaskSchedulerUtils.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetLauncherFile(), String.Empty))
             {
                 return false;
             }
 
-            TimeSpan serverForceUpdateTime;
-            if (!ServerScheduler.ScheduleUpdates(
-                    schedulerKey,
-                    this.EnableAutoUpdate ? this.AutoUpdatePeriod : 0,
-                    Config.Default.ServerCacheDir,
-                    this.InstallDirectory,
-                    String.IsNullOrWhiteSpace(this.ServerIP) ? "127.0.0.1" : this.ServerIP,
-                    this.RCONPort,
-                    this.AdminPassword,
-                    this.ServerUpdateGraceMinutes,
-                    this.ServerForceUpdate ? (TimeSpan.TryParseExact(this.ServerForceUpdateTime, "g", null, out serverForceUpdateTime) ? serverForceUpdateTime : (TimeSpan?)null)
-                                           : null
-                ))
+            TimeSpan restartTime;
+            var command = Assembly.GetEntryAssembly().Location;
+            if (!TaskSchedulerUtils.ScheduleAutoRestart(schedulerKey, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
             {
                 return false;
             }
 
             return true;
+        }
+
+        private void UpdateWebAlarm()
+        {
+            var alarmPostCredentialsFile = Path.Combine(this.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.WebAlarmFile);
+
+            try
+            {
+                // check if the web alarm option is enabled.
+                if (this.EnableWebAlarm)
+                {
+                    // check if the directory exists.
+                    if (!Directory.Exists(Path.GetDirectoryName(alarmPostCredentialsFile)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(alarmPostCredentialsFile));
+
+                    var contents = new StringBuilder();
+                    contents.AppendLine($"{this.WebAlarmKey}");
+                    contents.AppendLine($"{this.WebAlarmUrl}");
+                    File.WriteAllText(alarmPostCredentialsFile, contents.ToString());
+                }
+                else
+                {
+                    // check if the files exists and delete it.
+                    if (File.Exists(alarmPostCredentialsFile))
+                        File.Delete(alarmPostCredentialsFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Web Alarm Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #region Export Methods
@@ -2162,14 +2368,6 @@ namespace ARK_Server_Manager.Lib
             list.UpdateTotals();
         }
 
-        public void ResetLevelProgressionToDefault(LevelProgression levelProgression)
-        {
-            LevelList list = GetLevelList(levelProgression);
-
-            list.Clear();
-            list.AddRange(GameData.LevelProgression);
-        }
-
         public void ResetLevelProgressionToOfficial(LevelProgression levelProgression)
         {
             LevelList list = GetLevelList(levelProgression);
@@ -2188,9 +2386,9 @@ namespace ARK_Server_Manager.Lib
         }
 
         // individual value reset methods
-        public void ResetMapName()
+        public void ResetMapName(string mapName)
         {
-            this.ClearValue(ServerMapProperty);
+            this.ServerMap = mapName;
         }
 
         public void ResetOverrideMaxExperiencePointsPlayer()
@@ -2233,7 +2431,9 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AdminLoggingProperty);
 
             this.ClearValue(ServerMapProperty);
+            this.ClearValue(TotalConversionModIdProperty);
             this.ClearValue(ServerModIdsProperty);
+            this.ClearValue(AutoManagedModsProperty);
 
             this.ClearValue(EnableExtinctionEventProperty);
             this.ClearValue(ExtinctionEventTimeIntervalProperty);
@@ -2251,6 +2451,18 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(UseBattlEyeProperty);
             this.ClearValue(MaxTribeLogsProperty);
             this.ClearValue(EnableServerAdminLogsProperty);
+            this.ClearValue(ForceRespawnDinosProperty);
+            this.ClearValue(ForceDirectX10Property);
+            this.ClearValue(ForceShaderModel4Property);
+            this.ClearValue(ForceLowMemoryProperty);
+            this.ClearValue(ForceNoManSkyProperty);
+            this.ClearValue(UseAllAvailableCoresProperty);
+            this.ClearValue(UseCacheProperty);
+            this.ClearValue(UseNewSaveFormatProperty);
+
+            this.ClearValue(EnableWebAlarmProperty);
+            this.ClearValue(WebAlarmKeyProperty);
+            this.ClearValue(WebAlarmUrlProperty);
 
             this.ClearValue(AdditionalArgsProperty);
         }
