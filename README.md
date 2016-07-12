@@ -10,4 +10,11 @@ http://steamcommunity.com/id/HellsGuard
 http://steamcommunity.com/id/chronosws
 
 Find the Guide page for this tool at:
+http://arkservermanager.freeforums.net/
+             &
 http://steamcommunity.com/sharedfiles/filedetails/?id=468312476
+
+
+ARK Server Manager and it's creators are in no way affiliated with Studio WildCard or its partners. 
+ARK: Survival Evolved™ and its related images, trademarks and copyrights are the sole property of Studio Wildcard and/or its partners and affiliates. 
+The ARK Server Manager is provided free of charge for all legal use.
