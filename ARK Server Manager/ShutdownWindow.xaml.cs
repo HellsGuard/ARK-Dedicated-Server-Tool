@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +16,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class ShutdownWindow : Window
     {
+        private static List<Server> instances = new List<Server>();
+
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public static readonly DependencyProperty BackupWorldFileProperty = DependencyProperty.Register(nameof(BackupWorldFile), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(true));
@@ -24,7 +28,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ShutdownTypeProperty = DependencyProperty.Register(nameof(ShutdownType), typeof(int), typeof(ShutdownWindow), new PropertyMetadata(0));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ShutdownWindow), new PropertyMetadata(null));
 
-        public ShutdownWindow(Server server)
+        protected ShutdownWindow(Server server)
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
@@ -76,10 +80,16 @@ namespace ARK_Server_Manager
             set { SetValue(ServerProperty, value); }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (ShutdownStarted)
                 e.Cancel = true;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            instances.Remove(Server);
+            Server = null;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -122,7 +132,7 @@ namespace ARK_Server_Manager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_StopServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_ShutdownServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 ShutdownType = 0;
             }
             finally
@@ -157,13 +167,27 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void AddMessage(string message)
+        public void AddMessage(string message)
         {
             MessageOutput.AppendText(message);
             MessageOutput.AppendText(Environment.NewLine);
             MessageOutput.ScrollToEnd();
 
             Debug.WriteLine(message);
+        }
+
+        public static bool HasInstance(Server server)
+        {
+            return instances.Contains(server);
+        }
+
+        public static ShutdownWindow OpenShutdownWindow(Server server)
+        {
+            if (HasInstance(server))
+                return null;
+
+            instances.Add(server);
+            return new ShutdownWindow(server);
         }
     }
 }

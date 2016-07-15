@@ -660,7 +660,7 @@ namespace ARK_Server_Manager.Lib
                                                 if (Directory.Exists(modCachePath))
                                                 {
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
-                                                    ModUtils.CopyMod(modCachePath, modPath, modId);
+                                                    ModUtils.CopyMod(modCachePath, modPath, modId, null);
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
                                                 }
                                                 else

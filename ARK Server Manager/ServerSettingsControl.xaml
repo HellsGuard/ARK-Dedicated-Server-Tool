@@ -476,13 +476,23 @@
                 <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
 
                 <Border Grid.Row="1" Margin="2" HorizontalAlignment="Stretch" Background="{DynamicResource BeigeLabel}" BorderBrush="{DynamicResource BeigeBorder}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{DynamicResource BorderLabel}" DataContext="{Binding Profile}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Label FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
-                        <Label FontSize="15" Content="{Binding LastInstalledVersion}" />
-                        <Button Margin="5" Click="PatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" FontSize="15" HorizontalAlignment="Left" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" />
+                        <Label Grid.Column="1" FontSize="15" HorizontalAlignment="Left" Content="{Binding LastInstalledVersion}" />
+                        <Button Grid.Column="2" Margin="5" HorizontalAlignment="Left" Click="PatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
                             <Image Source="Art/Help.png" Height="16" Margin="0" />
                         </Button>
-                    </StackPanel>
+                        <Button Grid.Column="3" Margin="5" Click="OpenLogFolder_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}">
+                            <Image Source="Art/OpenLog.png" Height="16" Margin="0" />
+                        </Button>
+                    </Grid>
                 </Border>
                 <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" DataContext="{Binding Runtime}" Click="Upgrade_Click">
                     <Button.Style>

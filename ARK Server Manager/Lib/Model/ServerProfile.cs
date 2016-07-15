@@ -2014,12 +2014,12 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static ServerProfile LoadFrom(string path)
-        {            
+        {
             ServerProfile settings = null;
             if (Path.GetExtension(path) == Config.Default.ProfileExtension)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
-                
+
                 using (var reader = File.OpenRead(path))
                 {
                     settings = (ServerProfile)serializer.Deserialize(reader);
@@ -2028,12 +2028,12 @@ namespace ARK_Server_Manager.Lib
 
                 var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
                 var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
-                if (File.Exists(configIniPath))                    
+                if (File.Exists(configIniPath))
                 {
                     settings = LoadFromINIFiles(configIniPath, settings);
                 }
                 else if (File.Exists(profileIniPath))
-                {                    
+                {
                     settings = LoadFromINIFiles(profileIniPath, settings);
                 }
             }
@@ -2043,9 +2043,6 @@ namespace ARK_Server_Manager.Lib
                 settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
             }
 
-            //
-            // TODO: Refactor this out
-            //
             if (settings.PlayerLevels.Count == 0)
             {
                 settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
@@ -2064,30 +2061,27 @@ namespace ARK_Server_Manager.Lib
         }
 
         private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
-        {         
-            SystemIniFile iniFile = new SystemIniFile(Path.GetDirectoryName(path));
+        {
+            var iniFile = new SystemIniFile(Path.GetDirectoryName(path));
             settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings);
 
-            var strings = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+            var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
 
-            // 
-            // Levels
-            //
-            var levelRampOverrides = strings.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
+            var levelRampOverrides = values.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
             if (levelRampOverrides.Length > 0)
             {
-                var engramPointOverrides = strings.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
+                var engramPointOverrides = values.Where(s => s.StartsWith("OverridePlayerLevelEngramPoints="));
 
                 settings.EnableLevelProgressions = true;
                 settings.PlayerLevels = LevelList.FromINIValues(levelRampOverrides[0], engramPointOverrides);
 
-                if(levelRampOverrides.Length > 1)
+                if (levelRampOverrides.Length > 1)
                 {
                     settings.DinoLevels = LevelList.FromINIValues(levelRampOverrides[1], null);
                 }
             }
-                      
+
             return settings;
         }
 
@@ -2184,10 +2178,8 @@ namespace ARK_Server_Manager.Lib
             var iniFile = new SystemIniFile(profileIniDir);
             iniFile.Serialize(this);
 
-            //
-            // TODO: Refactor this into SystemIniFile
-            //
-            var values = iniFile.IniReadSection(IniFileSections.GameMode, IniFiles.Game);
+            var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
+
             var filteredValues = values.Where(s => !s.StartsWith("LevelExperienceRampOverrides=") && !s.StartsWith("OverridePlayerLevelEngramPoints=")).ToList();
             if (this.EnableLevelProgressions)
             {
@@ -2199,7 +2191,7 @@ namespace ARK_Server_Manager.Lib
                 filteredValues.AddRange(this.PlayerLevels.ToINIValuesForEngramPoints());
             }
 
-            iniFile.IniWriteSection(IniFileSections.GameMode, filteredValues.ToArray(), IniFiles.Game);
+            iniFile.WriteSection(IniFiles.Game, IniFileSections.GameMode, filteredValues.ToArray());
         }
 
         public bool UpdateSchedules()

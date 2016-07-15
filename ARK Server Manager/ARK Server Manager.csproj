@@ -152,6 +152,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="ShutdownWindow.xaml.cs">
@@ -284,6 +285,7 @@
     </Compile>
     <None Include="Lib\ServerUpdater\mcrcon.exe" />
     <Resource Include="Art\SteamCMD.png" />
+    <Resource Include="Art\OpenLog.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

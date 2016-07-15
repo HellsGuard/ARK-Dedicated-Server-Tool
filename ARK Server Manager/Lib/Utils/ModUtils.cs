@@ -28,16 +28,20 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static void CopyMod(string sourceFolder, string destinationFolder, string modId)
+        public static void CopyMod(string sourceFolder, string destinationFolder, string modId, ProgressDelegate progressCallback)
         {
             if (string.IsNullOrWhiteSpace(sourceFolder) || !Directory.Exists(sourceFolder))
                 throw new DirectoryNotFoundException($"Source folder was not found.\r\n{sourceFolder}");
 
             var modSourceFolder = sourceFolder;
 
+            progressCallback?.Invoke(0, "Reading mod base information.");
+
             var fileName = Updater.NormalizePath(Path.Combine(modSourceFolder, "mod.info"));
             var list = new List<string>();
             ParseBaseInformation(fileName, list);
+
+            progressCallback?.Invoke(0, "Reading mod meta information.");
 
             fileName = Updater.NormalizePath(Path.Combine(modSourceFolder, "modmeta.info"));
             var metaInformation = new Dictionary<string, string>();
@@ -46,17 +50,23 @@ namespace ARK_Server_Manager.Lib
 
             var modFile = $"{destinationFolder}.mod";
 
+            progressCallback?.Invoke(0, "Deleting existing mod files.");
+
             // delete the server mod folder and mod file.
             if (Directory.Exists(destinationFolder))
                 Directory.Delete(destinationFolder, true);
             if (File.Exists(modFile))
                 File.Delete(modFile);
 
+            progressCallback?.Invoke(0, "Copying mod files.");
+
             // update the mod files from the cache.
             var flag = Copy(modSourceFolder, destinationFolder, true);
 
             if (metaInformation.Count == 0 && flag)
                 metaInformation["ModType"] = "1";
+
+            progressCallback?.Invoke(0, "Creating mod file.");
 
             // create the mod file.
             WriteModFile(modFile, modId, metaInformation, list);
@@ -65,6 +75,8 @@ namespace ARK_Server_Manager.Lib
             fileName = Updater.NormalizePath(Path.Combine(sourceFolder, Config.Default.LastUpdatedTimeFile));
             if (File.Exists(fileName))
             {
+                progressCallback?.Invoke(0, "Copying mod version file.");
+
                 var tempFile = Updater.NormalizePath(fileName.Replace(sourceFolder, destinationFolder));
                 File.Copy(fileName, tempFile, true);
             }
@@ -125,7 +137,7 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             // split the map string into parts, using the '/' separator.
-            var parts = serverMap.Split('/').ToList();
+            var parts = serverMap.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // check if any parts were returned.
             if (parts.Count != 4)
@@ -312,7 +324,6 @@ namespace ARK_Server_Manager.Lib
                     requestIndex++;
                 };
 
-                response.SetPublishedFileIndex();
                 return response;
             }
             catch (Exception ex)
@@ -390,6 +401,9 @@ namespace ARK_Server_Manager.Lib
             modId = null;
             metaInformation = new Dictionary<string, string>();
             mapNames = new List<string>();
+
+            if (!File.Exists(fileName))
+                return;
 
             using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
             {

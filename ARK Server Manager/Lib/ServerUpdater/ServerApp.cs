@@ -622,7 +622,7 @@ namespace ARK_Server_Manager.Lib
                                 if (Directory.Exists(modCachePath))
                                 {
                                     LogProfileMessage($"Updating mod {modId}, {index + 1} of {updateModIds.Count} from cache...");
-                                    ModUtils.CopyMod(modCachePath, modPath, modId);
+                                    ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
                                     LogProfileMessage($"Updated mod {modId}, {index + 1} of {updateModIds.Count} from cache.");
                                 }
                                 else

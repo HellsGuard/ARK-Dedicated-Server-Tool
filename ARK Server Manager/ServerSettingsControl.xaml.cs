@@ -185,10 +185,23 @@ namespace ARK_Server_Manager
                     }
                     else
                     {
-                        var window = new ShutdownWindow(this.Server);
-                        window.Owner = Window.GetWindow(this);
-                        window.Closed += Window_Closed;
-                        window.ShowDialog();
+                        try
+                        {
+                            var shutdownWindow = ShutdownWindow.OpenShutdownWindow(this.Server);
+                            if (shutdownWindow == null)
+                            {
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ShutdownServer_AlreadyOpenLabel"), _globalizer.GetResourceString("ServerSettings_ShutdownServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+
+                            shutdownWindow.Owner = Window.GetWindow(this);
+                            shutdownWindow.Closed += Window_Closed;
+                            shutdownWindow.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_ShutdownServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                     break;
 
@@ -689,9 +702,19 @@ namespace ARK_Server_Manager
 
             this.Settings.ResetOverrideMaxExperiencePointsDino();
         }
+
+        private void OpenLogFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var logFolder = Path.Combine(Updater.GetLogFolder(), this.Server.Profile.ProfileName);
+            if (!Directory.Exists(logFolder))
+                logFolder = Updater.GetLogFolder();
+            if (!Directory.Exists(logFolder))
+                logFolder = Config.Default.DataDir;
+            Process.Start("explorer.exe", logFolder);
+        }
         #endregion
 
-        #region methods
+        #region Methods
         private CommonFileDialog GetCustomLevelCommonFileDialog(ServerSettingsCustomLevelsAction action)
         {
             CommonFileDialog dialog = null;

@@ -127,6 +127,14 @@ namespace ARK_Server_Manager
             Process.Start(Config.Default.HelpUrl);
         }
 
+        private void OpenLogFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var logFolder = Updater.GetLogFolder();
+            if (!Directory.Exists(logFolder))
+                logFolder = Config.Default.DataDir;
+            Process.Start("explorer.exe", logFolder);
+        }
+
         private void RCON_Click(object sender, RoutedEventArgs e)
         {
             var window = new OpenRCONWindow();

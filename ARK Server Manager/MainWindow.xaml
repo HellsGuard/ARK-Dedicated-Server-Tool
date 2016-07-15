@@ -95,6 +95,9 @@
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
                     <Image Source="Art/Command.png" Width="16"/>
                 </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}">
+                    <Image Source="Art/OpenLog.png" Width="16"/>
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
                     <Image Source="Art/Settings.png" Width="16"/>
                 </Button>
