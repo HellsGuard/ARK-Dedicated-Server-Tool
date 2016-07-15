@@ -286,6 +286,8 @@
     <None Include="Lib\ServerUpdater\mcrcon.exe" />
     <Resource Include="Art\SteamCMD.png" />
     <Resource Include="Art\OpenLog.png" />
+    <Resource Include="Art\Down.png" />
+    <Resource Include="Art\Up.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
