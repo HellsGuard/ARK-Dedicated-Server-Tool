@@ -25,10 +25,40 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         public string SteamName
         {
             get { return (string)GetValue(SteamNameProperty); }
-            set { SetValue(SteamNameProperty, value); }
+            set
+            {
+                SetValue(SteamNameProperty, value);
+
+                SteamNameFilterString = value?.ToLower();
+            }
+        }
+
+        public string SteamNameFilterString
+        {
+            get;
+            private set;
         }
 
         public static readonly DependencyProperty SteamNameProperty = DependencyProperty.Register(nameof(SteamName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
+
+        public string CharacterName
+        {
+            get { return (string)GetValue(CharacterNameProperty); }
+            set
+            {
+                SetValue(CharacterNameProperty, value);
+
+                CharacterNameFilterString = value?.ToLower();
+            }
+        }
+
+        public string CharacterNameFilterString
+        {
+            get;
+            private set;
+        }
+
+        public static readonly DependencyProperty CharacterNameProperty = DependencyProperty.Register(nameof(CharacterName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
 
         public ImageSource AvatarImage
         {
@@ -65,7 +95,18 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         public string TribeName
         {
             get { return (string)GetValue(TribeNameProperty); }
-            set { SetValue(TribeNameProperty, value); }
+            set
+            {
+                SetValue(TribeNameProperty, value);
+
+                TribeNameFilterString = value?.ToLower();
+            }
+        }
+
+        public string TribeNameFilterString
+        {
+            get;
+            private set;
         }
 
         public static readonly DependencyProperty TribeNameProperty = DependencyProperty.Register(nameof(TribeName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
@@ -99,6 +140,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             this.ArkData = arkData;
             this.LastUpdated = arkData.FileUpdated;
             this.TribeName = arkData.Tribe?.Name;
+            this.CharacterName = arkData.CharacterName;
             this.HasBan = arkData.CommunityBanned || arkData.VACBanned;
 
             BitmapImage avatarImage;

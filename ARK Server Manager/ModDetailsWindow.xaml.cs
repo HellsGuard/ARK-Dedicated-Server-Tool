@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -103,7 +104,7 @@ namespace ARK_Server_Manager
             ModDetailsView?.Refresh();
         }
 
-        private void ModDetails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ModDetails_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ModDetailsView?.Refresh();
             ModDetailsChanged = true;

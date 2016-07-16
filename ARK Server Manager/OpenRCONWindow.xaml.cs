@@ -62,11 +62,20 @@ namespace ARK_Server_Manager
                     InstallDirectory = String.Empty,
                     RCONWindowExtents = Rect.Empty
                 });
-                window.Owner = this.Owner;
-                window.Show();
 
                 SaveDefaults();
-                this.Close();
+
+                window.Owner = this.Owner;
+                if (this.Owner == null)
+                {
+                    this.Close();
+                    window.ShowDialog();
+                }
+                else
+                {
+                    window.Show();
+                    this.Close();
+                }
             },
             canExecute: _ => true
         );

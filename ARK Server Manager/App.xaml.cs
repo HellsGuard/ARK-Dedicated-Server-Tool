@@ -25,6 +25,7 @@ namespace ARK_Server_Manager
     {
         private const string ARG_AUTORESTART = "-ar";
         private const string ARG_AUTOUPDATE = "-au";
+        private const string ARG_RCON = "-rcon";
 
         public new static App Instance
         {
@@ -206,6 +207,16 @@ namespace ARK_Server_Manager
 
                 // once we are finished, just exit
                 Environment.Exit(exitCode);
+            }
+
+            // check if we are starting ASM for server updating
+            if (e.Args.Any(a => a.Equals(ARG_RCON)))
+            {
+                var rcon = new OpenRCONWindow();
+                rcon.ShowDialog();
+
+                // once we are finished, just exit
+                Environment.Exit(0);
             }
 
             if (Config.Default.RunAsAdministratorPrompt && !IsRunAsAdministrator())

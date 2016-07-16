@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Name="RCON"
-        Title="{Binding RCONParameters.ProfileName}" Height="768" Width="1024" ResizeMode="CanResizeWithGrip"
-        SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"
-        Icon="Art/Command.png">
+        Name="RCON" Title="{Binding RCONParameters.ProfileName}"
+        Width="1024" Height="768" ResizeMode="CanResizeWithGrip" Icon="Art/Command.png"
+        SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -86,6 +85,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                
                 <Label Grid.Column="0" Content="{DynamicResource RCON_ModeLabel}"/>
                 <ComboBox Grid.Column="1" ItemsSource="{Binding Source={StaticResource InputModes}}" SelectedItem="{Binding CurrentInputMode, Mode=TwoWay}" Margin="0,0,2,0"/>
                 <TextBox Name="ConsoleInput" TabIndex="0" Grid.Column="2" KeyUp="ConsoleInput_KeyUp" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True"/>
@@ -148,61 +148,75 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
-            <ListBox DockPanel.Dock="Right" MinWidth="200" BorderBrush="LightGray" ItemsSource="{Binding ServerRCON.Players}" Margin="1,1,2,1" HorizontalContentAlignment="Stretch">
-                <ListBox.Resources>
-                    <vm:BindingProxy x:Key="proxy" Data="{Binding ElementName=RCON}"/>
-                    <BitmapImage x:Key="NoAvatar" UriSource="Art/NoAvatar.png" />
-                </ListBox.Resources>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="ContextMenu">
-                            <Setter.Value>
-                                <ContextMenu>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_ChatPlayer}"                                        Command="{Binding Source={StaticResource proxy}, Path=Data.ChatPlayerCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_RenamePlayer}"                                      Command="{Binding Source={StaticResource proxy}, Path=Data.RenamePlayerCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_RenameTribe}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.RenameTribeCommand}" CommandParameter="{Binding}" />
-                                    <Separator/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_Kill}">
-                                        <MenuItem Header="{DynamicResource RCON_Menu_Confirm}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.KillPlayerCommand}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_Kick}"                                              Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_Banned}"      IsCheckable="{Binding IsBanned}"      Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_Whitelisted}" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
-                                    <Separator/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_ViewSteamProfile}"                                  Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerSteamProfileCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_ViewProfile}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
-                                    <MenuItem Header="{DynamicResource RCON_Menu_ViewTribe}"                                         Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
-                                    <Separator/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_CopySteamId}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.CopySteamIDCommand}" CommandParameter="{Binding}"/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_CopyPlayerId}"                                      Command="{Binding Source={StaticResource proxy}, Path=Data.CopyPlayerIDCommand}" CommandParameter="{Binding}"/>
-                                </ContextMenu>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type rcon:PlayerInfo}">
-                        <Border BorderThickness="2" Padding="1" Style="{DynamicResource PlayerStatus}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding AvatarImage, Converter={StaticResource ResourceKey=NullValueConverter}, ConverterParameter={StaticResource ResourceKey=NoAvatar}}" Width="48" Height="48" Stretch="Uniform"/>
-                                <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
-                                    <Label Content="{Binding SteamName}" ToolTip="{Binding SteamId}" Padding="0,-1,0,-1" Background="AliceBlue" VerticalContentAlignment="Center"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0" >
-                                        <Label Content="{Binding ArkData.CharacterName}" Padding="0,-1,0,-1"/>
-                                        <TextBlock Text="{Binding ArkData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
+
+            <DockPanel DockPanel.Dock="Right" MinWidth="200" Margin="1,1,2,1" DataContext="{Binding}" SourceUpdated="PlayerFilter_SourceUpdated">
+                <TextBox DockPanel.Dock="Top" Text="{Binding PlayerFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True" Margin="0"/>
+                
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <Label Content="{DynamicResource RCON_ProfileCountLabel}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding ServerRCON.Players.Count, FallbackValue=0}" HorizontalAlignment="Center"/>
+                </StackPanel>
+                
+                <ListBox DockPanel.Dock="Top" ItemsSource="{Binding ServerRCON.Players}" BorderBrush="LightGray" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <ListBox.Resources>
+                        <vm:BindingProxy x:Key="proxy" Data="{Binding ElementName=RCON}"/>
+                        <BitmapImage x:Key="NoAvatar" UriSource="Art/NoAvatar.png" />
+                    </ListBox.Resources>
+                    
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_ChatPlayer}"                                        Command="{Binding Source={StaticResource proxy}, Path=Data.ChatPlayerCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_RenamePlayer}"                                      Command="{Binding Source={StaticResource proxy}, Path=Data.RenamePlayerCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_RenameTribe}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.RenameTribeCommand}" CommandParameter="{Binding}" />
+                                        <Separator/>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_Kill}">
+                                            <MenuItem Header="{DynamicResource RCON_Menu_Confirm}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.KillPlayerCommand}" CommandParameter="{Binding}"/>
+                                        </MenuItem>
+                                        <Separator/>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_Kick}"                                              Command="{Binding Source={StaticResource proxy}, Path=Data.KickPlayerCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_Banned}"      IsCheckable="{Binding IsBanned}"      Command="{Binding Source={StaticResource proxy}, Path=Data.BanPlayerCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_Whitelisted}" IsCheckable="{Binding IsWhitelisted}" Command="{Binding Source={StaticResource proxy}, Path=Data.WhitelistPlayerCommand}" CommandParameter="{Binding}" />
+                                        <Separator/>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_ViewSteamProfile}"                                  Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerSteamProfileCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_ViewProfile}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerProfileCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Header="{DynamicResource RCON_Menu_ViewTribe}"                                         Command="{Binding Source={StaticResource proxy}, Path=Data.ViewPlayerTribeCommand}" CommandParameter="{Binding}"/>
+                                        <Separator/>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_CopySteamId}"                                       Command="{Binding Source={StaticResource proxy}, Path=Data.CopySteamIDCommand}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="{DynamicResource RCON_Menu_CopyPlayerId}"                                      Command="{Binding Source={StaticResource proxy}, Path=Data.CopyPlayerIDCommand}" CommandParameter="{Binding}"/>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type rcon:PlayerInfo}">
+                            <Border BorderThickness="2" Padding="1" Style="{DynamicResource PlayerStatus}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Image Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding AvatarImage, Converter={StaticResource ResourceKey=NullValueConverter}, ConverterParameter={StaticResource ResourceKey=NoAvatar}}" Width="48" Height="48" Stretch="Uniform"/>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+                                        <Label Content="{Binding SteamName}" ToolTip="{Binding SteamId}" Padding="0,-1,0,-1" Background="AliceBlue" VerticalContentAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0" >
+                                            <Label Content="{Binding CharacterName}" Padding="0,-1,0,-1"/>
+                                            <TextBlock Text="{Binding ArkData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
+                                        </StackPanel>
+                                        <Label Padding="0,-1,0,-1" Style="{DynamicResource Tribename}"/>
                                     </StackPanel>
-                                    <Label Padding="0,-1,0,-1" Style="{DynamicResource Tribename}"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+            
             <RichTextBox DockPanel.Dock="Top" BorderBrush="LightGray" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"  Margin="2,1,1,1" HorizontalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" IsReadOnly="True" IsTabStop="False">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged" >

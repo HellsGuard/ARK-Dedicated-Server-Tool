@@ -976,6 +976,7 @@
     <sys:String x:Key="RCON_PlayersLabel">Players:</sys:String>
     <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
     <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
+    <sys:String x:Key="RCON_ProfileCountLabel">Profile Count:</sys:String>
 
     <sys:String x:Key="RCON_Button_OK">OK</sys:String>
     <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>
