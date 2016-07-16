@@ -56,11 +56,12 @@
     <sys:String x:Key="ModDetails_Reload_FailedTitle">Reload Mod Details Error</sys:String>
     <sys:String x:Key="ModDetails_Save_FailedTitle">Save Mods Error</sys:String>
     <sys:String x:Key="ModDetails_Save_UnknownTitle">Unknown Mod Types</sys:String>
-    <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more unknown mod types, this could cause problems when the save is performed. Do you want to continue?</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more unknown mod types, this could prevent the map mods being detected properly. Do you want to continue?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Unsaved Changed</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">You have made changes that have not been saved to the profile, if you continue your changes will be discarded. Do you want to continue?</sys:String>
     
     <sys:String x:Key="ModDetails_TotalCountLabel">Total Count:</sys:String>
+    <sys:String x:Key="ModDetails_FilterLabel">Filter:</sys:String>
 
     <sys:String x:Key="ModDetails_IndexColumnLabel">#</sys:String>
     <sys:String x:Key="ModDetails_ModIdColumnLabel">Mod ID</sys:String>

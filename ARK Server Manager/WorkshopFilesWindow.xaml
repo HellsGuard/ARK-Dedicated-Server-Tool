@@ -26,75 +26,36 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="200*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddSelected_Click" Margin="5,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource WorkshopFiles_AddSelectedTooltip}">
-            <Image Source="Art/Add.png" Width="16" />
-            <Button.Style>
-                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedCount}" Value="0">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-
-        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Unselect_Click" Margin="0,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource WorkshopFiles_UnselectTooltip}">
-            <Image Source="Art/Unchecked.png" Width="16" />
-            <Button.Style>
-                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedCount}" Value="0">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-
-        <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Reload_Click" Margin="10,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource WorkshopFiles_ReloadTooltip}">
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Reload_Click" Margin="5,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource WorkshopFiles_ReloadTooltip}">
             <Image Source="Art/Reload.png" Width="14" />
         </Button>
 
-        <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
-            <TextBlock Margin="30,5,5,0" Text="{DynamicResource WorkshopFiles_TotalCountLabel}" VerticalAlignment="Center" />
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Margin="10,5,5,0" Text="{DynamicResource WorkshopFiles_TotalCountLabel}" VerticalAlignment="Center" />
             <TextBlock Margin="5,5,5,0" Text="{Binding WorkshopFiles.Count}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
-            <TextBlock Margin="30,5,5,0" Text="{DynamicResource WorkshopFiles_SelectedCountLabel}" VerticalAlignment="Center" />
-            <TextBlock Margin="5,5,5,0" Text="{Binding SelectedCount}" VerticalAlignment="Center" />
-        </StackPanel>
-
-        <StackPanel Grid.Row="0" Grid.Column="5" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
             <TextBlock Margin="30,5,5,0" Text="{DynamicResource WorkshopFiles_LastRefreshedLabel}" VerticalAlignment="Center" />
             <TextBlock Margin="5,5,5,0" Text="{Binding WorkshopFiles.CachedTime}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Orientation="Horizontal" Height="26" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Height="26" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
             <TextBlock Margin="5,5,5,0" Text="{DynamicResource WorkshopFiles_FilterLabel}" VerticalAlignment="Center" />
             <TextBox   Margin="5,5,5,0" Text="{Binding WorkshopFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
             <CheckBox  Margin="5,5,5,0" IsChecked="{Binding WorkshopFilterExisting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Content="{DynamicResource WorkshopFiles_FilterExistingLabel}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" ItemsSource="{Binding WorkshopFilesView}" SourceUpdated="DataGrid_SourceUpdated" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single">
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding WorkshopFilesView}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Style.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                     </Style.Resources>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Selected}" Value="True">
-                            <Setter Property="Background" Value="#FFF5DFB8" />
-                        </DataTrigger>
-                    </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
 
@@ -106,7 +67,6 @@
             </DataGrid.VerticalGridLinesBrush>
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Width="Auto" Binding="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Header="{DynamicResource WorkshopFiles_SelectedColumnLabel}"/>
                 <DataGridTemplateColumn Width="Auto" MinWidth="100" CanUserSort="True" SortMemberPath="WorkshopId" Header="{DynamicResource WorkshopFiles_ModIdColumnLabel}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

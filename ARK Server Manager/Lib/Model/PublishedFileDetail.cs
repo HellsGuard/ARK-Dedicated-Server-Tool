@@ -300,7 +300,12 @@ namespace ARK_Server_Manager.Lib.Model
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
+            set
+            {
+                SetValue(TitleProperty, value);
+
+                TitleFilterString = value?.ToLower();
+            }
         }
 
 
@@ -338,6 +343,12 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
+        public string TitleFilterString
+        {
+            get;
+            private set;
+        }
+
         public bool UpToDate
         {
             get
@@ -345,6 +356,7 @@ namespace ARK_Server_Manager.Lib.Model
                 return LastTimeUpdated > 0 && LastTimeUpdated == TimeUpdated;
             }
         }
+
 
         public void PopulateExtended(ModDetailExtended extended)
         {

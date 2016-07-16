@@ -155,25 +155,12 @@ namespace ARK_Server_Manager.Lib.Model
             set;
         }
 
-        public int SelectedCount
-        {
-            get
-            {
-                return this.Count(m => m.Selected);
-            }
-        }
-
         public new void Add(WorkshopFileItem item)
         {
             if (item == null || this.Any(m => m.WorkshopId.Equals(item.WorkshopId)))
                 return;
 
             base.Add(item);
-        }
-
-        public WorkshopFileItem[] GetSelectedItems()
-        {
-            return this.Where(m => m.Selected).ToArray();
         }
 
         public static WorkshopFileList GetList(WorkshopFileDetailResponse response)
@@ -190,16 +177,9 @@ namespace ARK_Server_Manager.Lib.Model
 
     public class WorkshopFileItem : DependencyObject
     {
-        public static readonly DependencyProperty SelectedProperty = DependencyProperty.Register(nameof(Selected), typeof(bool), typeof(WorkshopFileItem), new PropertyMetadata(false));
         public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(WorkshopFileItem), new PropertyMetadata(0));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty WorkshopIdProperty = DependencyProperty.Register(nameof(WorkshopId), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
-
-        public bool Selected
-        {
-            get { return (bool)GetValue(SelectedProperty); }
-            set { SetValue(SelectedProperty, value); }
-        }
 
         public int TimeUpdated
         {
@@ -210,19 +190,25 @@ namespace ARK_Server_Manager.Lib.Model
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
+            set
+            {
+                SetValue(TitleProperty, value);
 
-        public string TitleFilterString
-        {
-            get;
-            set;
+                TitleFilterString = value?.ToLower();
+            }
         }
 
         public string WorkshopId
         {
             get { return (string)GetValue(WorkshopIdProperty); }
             set { SetValue(WorkshopIdProperty, value); }
+        }
+
+
+        public string TitleFilterString
+        {
+            get;
+            private set;
         }
 
         public string WorkshopUrl
@@ -233,6 +219,7 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
+
         public static WorkshopFileItem GetItem(WorkshopFileDetail item)
         {
             if (string.IsNullOrWhiteSpace(item.publishedfileid) || string.IsNullOrWhiteSpace(item.title))
@@ -241,7 +228,6 @@ namespace ARK_Server_Manager.Lib.Model
             var result = new WorkshopFileItem();
             result.TimeUpdated = item.time_updated;
             result.Title = item.title ?? string.Empty;
-            result.TitleFilterString = result.Title.ToLower();
             result.WorkshopId = item.publishedfileid ?? string.Empty;
             return result;
         }

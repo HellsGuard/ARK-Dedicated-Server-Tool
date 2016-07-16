@@ -27,7 +27,6 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty WorkshopFilesViewProperty = DependencyProperty.Register(nameof(WorkshopFilesView), typeof(ICollectionView), typeof(WorkshopFilesWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty WorkshopFilterStringProperty = DependencyProperty.Register(nameof(WorkshopFilterString), typeof(string), typeof(WorkshopFilesWindow), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty WorkshopFilterExistingProperty = DependencyProperty.Register(nameof(WorkshopFilterExisting), typeof(bool), typeof(WorkshopFilesWindow), new PropertyMetadata(false));
-        public static readonly DependencyProperty SelectedCountProperty = DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(WorkshopFilesWindow), new PropertyMetadata(0));
 
         public WorkshopFilesWindow(ModDetailList modDetails)
         {
@@ -46,7 +45,6 @@ namespace ARK_Server_Manager
             {
                 SetValue(WorkshopFilesProperty, value);
 
-                SelectedCount = WorkshopFiles?.SelectedCount ?? 0;
                 WorkshopFilesView = CollectionViewSource.GetDefaultView(WorkshopFiles);
                 WorkshopFilesView.Filter = new Predicate<object>(Filter);
             }
@@ -70,12 +68,6 @@ namespace ARK_Server_Manager
             set { SetValue(WorkshopFilterExistingProperty, value); }
         }
 
-        public int SelectedCount
-        {
-            get { return (int)GetValue(SelectedCountProperty); }
-            set { SetValue(SelectedCountProperty, value); }
-        }
-
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -86,11 +78,6 @@ namespace ARK_Server_Manager
             {
                 MessageBox.Show(ex.Message, _globalizer.GetResourceString("WorkshopFiles_Load_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void DataGrid_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            SelectedCount = WorkshopFiles?.SelectedCount ?? 0;
         }
 
         private void Filter_SourceUpdated(object sender, DataTransferEventArgs e)
@@ -111,14 +98,6 @@ namespace ARK_Server_Manager
             _modDetails.Add(mod);
         }
 
-        private void AddSelected_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = WorkshopFiles.GetSelectedItems();
-
-            var mods = selected.Select(i => ModDetail.GetModDetail(i)).ToArray();
-            _modDetails.AddRange(mods);
-        }
-
         private async void Reload_Click(object sender, RoutedEventArgs e)
         {
             var cursor = this.Cursor;
@@ -133,27 +112,6 @@ namespace ARK_Server_Manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, _globalizer.GetResourceString("WorkshopFiles_Refresh_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
-            }
-        }
-
-        private void Unselect_Click(object sender, RoutedEventArgs e)
-        {
-            var cursor = this.Cursor;
-
-            try
-            {
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
-                Task.Delay(500).Wait();
-
-                foreach (var item in WorkshopFiles)
-                {
-                    item.Selected = false;
-                }
-                SelectedCount = WorkshopFiles?.SelectedCount ?? 0;
             }
             finally
             {
@@ -229,6 +187,7 @@ namespace ARK_Server_Manager
             _modDetails = modDetails ?? new ModDetailList();
             if (_modDetails != null)
                 _modDetails.CollectionChanged += ModDetails_CollectionChanged;
+
             WorkshopFilesView?.Refresh();
         }
     }

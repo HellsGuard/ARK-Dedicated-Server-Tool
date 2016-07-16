@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         xmlns:lvs="clr-namespace:ARK_Server_Manager.Lib.ListViewSorting"
-        Title="{DynamicResource ModDetails_Title}"
-        Width="800" Height="480" MinWidth="600" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="{DynamicResource ModDetails_Title}" Name="ModDetailsUI"
+        Width="800" Height="480" MinWidth="600" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" 
+        Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
 
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
@@ -19,6 +22,7 @@
     </Window.Resources>
     <Grid Background="{StaticResource BeigeGradient}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
@@ -61,7 +65,12 @@
             <TextBlock Margin="5,5,5,0" Text="{Binding ModDetails.Count}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10" Orientation="Horizontal" Height="26" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
+            <TextBlock Margin="5,5,5,0" Text="{DynamicResource ModDetails_FilterLabel}" VerticalAlignment="Center" />
+            <TextBox   Margin="5,5,5,0" Text="{Binding ModDetailsFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
+        </StackPanel>
+        
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="10" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Style.Resources>
@@ -121,7 +130,7 @@
                 <DataGridTemplateColumn Width="30" CanUserReorder="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="22" Height="22" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="MoveModUp_Click" ToolTip="{DynamicResource ModDetails_RemoveModTooltip}">
+                            <Button Width="22" Height="22" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="MoveModUp_Click" ToolTip="{DynamicResource ModDetails_MoveModUpTooltip}">
                                 <Image Source="Art/Up.png" Width="16" />
                             </Button>
                         </DataTemplate>
@@ -132,6 +141,9 @@
                                 <DataTrigger Binding="{Binding IsFirst}" Value="True">
                                     <Setter Property="Visibility" Value="Hidden" />
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding ModDetailsFilterString, ElementName=ModDetailsUI, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
@@ -139,7 +151,7 @@
                 <DataGridTemplateColumn Width="30" CanUserReorder="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="22" Height="22" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="MoveModDown_Click" ToolTip="{DynamicResource ModDetails_RemoveModTooltip}">
+                            <Button Width="22" Height="22" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="MoveModDown_Click" ToolTip="{DynamicResource ModDetails_MoveModDownTooltip}">
                                 <Image Source="Art/Down.png" Width="16" />
                             </Button>
                         </DataTemplate>
@@ -148,6 +160,9 @@
                         <Style TargetType="{x:Type DataGridCell}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsLast}" Value="True">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ModDetailsFilterString, ElementName=ModDetailsUI, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
                                     <Setter Property="Visibility" Value="Hidden" />
                                 </DataTrigger>
                             </Style.Triggers>

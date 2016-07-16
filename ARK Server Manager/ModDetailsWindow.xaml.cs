@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Navigation;
 using ARK_Server_Manager.Lib;
@@ -26,6 +28,8 @@ namespace ARK_Server_Manager
 
         public static readonly DependencyProperty ModDetailsProperty = DependencyProperty.Register(nameof(ModDetails), typeof(ModDetailList), typeof(ModDetailsWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty ModDetailsChangedProperty = DependencyProperty.Register(nameof(ModDetailsChanged), typeof(bool), typeof(ModDetailsWindow), new PropertyMetadata(false));
+        public static readonly DependencyProperty ModDetailsViewProperty = DependencyProperty.Register(nameof(ModDetailsView), typeof(ICollectionView), typeof(ModDetailsWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty ModDetailsFilterStringProperty = DependencyProperty.Register(nameof(ModDetailsFilterString), typeof(string), typeof(ModDetailsWindow), new PropertyMetadata(string.Empty));
 
         public ModDetailsWindow(ServerProfile profile)
         {
@@ -44,6 +48,10 @@ namespace ARK_Server_Manager
             set
             {
                 SetValue(ModDetailsProperty, value);
+
+                ModDetailsView = CollectionViewSource.GetDefaultView(ModDetails);
+                ModDetailsView.Filter = new Predicate<object>(Filter);
+
                 if (_workshopFilesWindow != null)
                     _workshopFilesWindow.UpdateModDetailsList(value);
             }
@@ -54,6 +62,19 @@ namespace ARK_Server_Manager
             get { return (bool)GetValue(ModDetailsChangedProperty); }
             set { SetValue(ModDetailsChangedProperty, value); }
         }
+
+        public ICollectionView ModDetailsView
+        {
+            get { return GetValue(ModDetailsViewProperty) as ICollectionView; }
+            set { SetValue(ModDetailsViewProperty, value); }
+        }
+
+        public string ModDetailsFilterString
+        {
+            get { return (string)GetValue(ModDetailsFilterStringProperty); }
+            set { SetValue(ModDetailsFilterStringProperty, value); }
+        }
+
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -67,7 +88,7 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (ModDetailsChanged)
             {
@@ -77,15 +98,21 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void WorkshopFilesWindow_Closed(object sender, EventArgs e)
+        private void Filter_SourceUpdated(object sender, DataTransferEventArgs e)
         {
-            _workshopFilesWindow = null;
-            this.Activate();
+            ModDetailsView?.Refresh();
         }
 
         private void ModDetails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            ModDetailsView?.Refresh();
             ModDetailsChanged = true;
+        }
+
+        private void WorkshopFilesWindow_Closed(object sender, EventArgs e)
+        {
+            _workshopFilesWindow = null;
+            this.Activate();
         }
 
         private void Mod_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -239,6 +266,21 @@ namespace ARK_Server_Manager
             }
         }
 
+
+        public bool Filter(object obj)
+        {
+            var data = obj as ModDetail;
+            if (data == null)
+                return false;
+
+            var filterString = ModDetailsFilterString.ToLower();
+
+            if (string.IsNullOrWhiteSpace(filterString))
+                return true;
+
+            return data.ModId.Contains(filterString) || data.TitleFilterString.Contains(filterString);
+        }
+
         private async Task<PublishedFileDetailsResponse> GetModDetails(List<string> modIdList)
         {
             if (modIdList == null || modIdList.Count == 0)
@@ -321,6 +363,8 @@ namespace ARK_Server_Manager
             ModDetails = modDetails ?? new ModDetailList();
             if (ModDetails != null)
                 ModDetails.CollectionChanged += ModDetails_CollectionChanged;
+
+            ModDetailsView?.Refresh();
         }
     }
 }
