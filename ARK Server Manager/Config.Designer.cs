@@ -1005,5 +1005,14 @@ namespace ARK_Server_Manager {
                 this["StyleName"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WorkshopCache.xml")]
+        public string WorkshopCacheFile {
+            get {
+                return ((string)(this["WorkshopCacheFile"]));
+            }
+        }
     }
 }

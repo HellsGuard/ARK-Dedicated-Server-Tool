@@ -50,22 +50,54 @@
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
-    <sys:String x:Key="ModDetails_ModDetailsLoad_FailedTitle">Mod Details Error</sys:String>
-    <sys:String x:Key="ModDetails_ModDetailsLoad_FailedLabel">An error occurred while retrieving the mod details.\r\n{0}</sys:String>
+    <sys:String x:Key="ModDetails_Load_FailedTitle">Load Mod Details Error</sys:String>
+    <sys:String x:Key="ModDetails_Load_FailedLabel">An error occurred while retrieving the mod details.\r\n{0}</sys:String>
+    <sys:String x:Key="ModDetails_Refresh_FailedTitle">Refresh Mod Details Error</sys:String>
+    <sys:String x:Key="ModDetails_Reload_FailedTitle">Reload Mod Details Error</sys:String>
+    <sys:String x:Key="ModDetails_Save_FailedTitle">Save Mods Error</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownTitle">Unknown Mod Types</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more unknown mod types, this could cause problems when the save is performed. Do you want to continue?</sys:String>
+    <sys:String x:Key="ModDetails_Unsaved_Title">Unsaved Changed</sys:String>
+    <sys:String x:Key="ModDetails_Unsaved_Label">You have made changes that have not been saved to the profile, if you continue your changes will be discarded. Do you want to continue?</sys:String>
+    
+    <sys:String x:Key="ModDetails_TotalCountLabel">Total Count:</sys:String>
 
     <sys:String x:Key="ModDetails_IndexColumnLabel">#</sys:String>
     <sys:String x:Key="ModDetails_ModIdColumnLabel">Mod ID</sys:String>
     <sys:String x:Key="ModDetails_TitleColumnLabel">Name</sys:String>
     <sys:String x:Key="ModDetails_TypeColumnLabel">Mod Type</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Updated</sys:String>
-    
-    <sys:String x:Key="ModDetails_AddNewModTooltip">Add a new mod.</sys:String>
+
+    <sys:String x:Key="ModDetails_AddModsTooltip">Add mods to the list.</sys:String>
+    <sys:String x:Key="ModDetails_LoadModsTooltip">Load mod list from server mods folder.</sys:String>
     <sys:String x:Key="ModDetails_MoveModUpTooltip">Move mod up in the list.</sys:String>
     <sys:String x:Key="ModDetails_MoveModDownTooltip">Move mod down in the list.</sys:String>
-    <sys:String x:Key="ModDetails_RefreshModsTooltip">Refresh mod list.</sys:String>
+    <sys:String x:Key="ModDetails_RefreshModsTooltip">Refresh mod list information.</sys:String>
+    <sys:String x:Key="ModDetails_ReloadModsTooltip">Reload mod list from profile.</sys:String>
     <sys:String x:Key="ModDetails_RemoveModTooltip">Remove mod from the list.</sys:String>
-    <sys:String x:Key="ModDetails_SaveModsTooltip">Save mods to profile.</sys:String>
-    
+    <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Remove all mods from the list.</sys:String>
+    <sys:String x:Key="ModDetails_SaveModsTooltip">Save mods back to the profile.</sys:String>
+
+    <!-- Workshop Files Window -->
+    <sys:String x:Key="WorkshopFiles_Title">Workshop Details</sys:String>
+    <sys:String x:Key="WorkshopFiles_Load_FailedTitle">Load Workshop Items Error</sys:String>
+    <sys:String x:Key="WorkshopFiles_Refresh_FailedTitle">Refresh Workshop Items Error</sys:String>
+
+    <sys:String x:Key="WorkshopFiles_TotalCountLabel">Total Count:</sys:String>
+    <sys:String x:Key="WorkshopFiles_SelectedCountLabel">Selected Count:</sys:String>
+    <sys:String x:Key="WorkshopFiles_LastRefreshedLabel">Last Refreshed:</sys:String>
+    <sys:String x:Key="WorkshopFiles_FilterLabel">Filter:</sys:String>
+    <sys:String x:Key="WorkshopFiles_FilterExistingLabel">Filter out existing mods</sys:String>
+
+    <sys:String x:Key="WorkshopFiles_SelectedColumnLabel">Selected</sys:String>
+    <sys:String x:Key="WorkshopFiles_ModIdColumnLabel">Mod ID</sys:String>
+    <sys:String x:Key="WorkshopFiles_TitleColumnLabel">Name</sys:String>
+
+    <sys:String x:Key="WorkshopFiles_AddTooltip">Add mod</sys:String>
+    <sys:String x:Key="WorkshopFiles_AddSelectedTooltip">Add selected mods</sys:String>
+    <sys:String x:Key="WorkshopFiles_ReloadTooltip">Reload workshop information</sys:String>
+    <sys:String x:Key="WorkshopFiles_UnselectTooltip">Unselect all</sys:String>
+
     <!-- Progress Window -->
     <sys:String x:Key="Progress_Title">Progress</sys:String>
     <sys:String x:Key="Progress_UpgradeServer_WindowTitle">Update Progress - {0}</sys:String>

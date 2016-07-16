@@ -240,8 +240,8 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
-                        if (result.response.workshopfiledetails != null)
-                            response.workshopfiledetails.AddRange(result.response.workshopfiledetails);
+                        if (result.response.publishedfiledetails != null)
+                            response.publishedfiledetails.AddRange(result.response.publishedfiledetails);
                     }
 
                     requestIndex++;

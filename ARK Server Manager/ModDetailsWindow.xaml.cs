@@ -22,7 +22,10 @@ namespace ARK_Server_Manager
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private ServerProfile _profile = null;
 
+        private WorkshopFilesWindow _workshopFilesWindow = null;
+
         public static readonly DependencyProperty ModDetailsProperty = DependencyProperty.Register(nameof(ModDetails), typeof(ModDetailList), typeof(ModDetailsWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty ModDetailsChangedProperty = DependencyProperty.Register(nameof(ModDetailsChanged), typeof(bool), typeof(ModDetailsWindow), new PropertyMetadata(false));
 
         public ModDetailsWindow(ServerProfile profile)
         {
@@ -38,21 +41,51 @@ namespace ARK_Server_Manager
         public ModDetailList ModDetails
         {
             get { return GetValue(ModDetailsProperty) as ModDetailList; }
-            set { SetValue(ModDetailsProperty, value); }
+            set
+            {
+                SetValue(ModDetailsProperty, value);
+                if (_workshopFilesWindow != null)
+                    _workshopFilesWindow.UpdateModDetailsList(value);
+            }
+        }
+
+        public bool ModDetailsChanged
+        {
+            get { return (bool)GetValue(ModDetailsChangedProperty); }
+            set { SetValue(ModDetailsChangedProperty, value); }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                var response = await GetModDetails();
-
-                ModDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+                await LoadModsFromProfile();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Load Mod Details Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Load_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (ModDetailsChanged)
+            {
+                var result = MessageBox.Show(_globalizer.GetResourceString("ModDetails_Unsaved_Label"), _globalizer.GetResourceString("ModDetails_Unsaved_Title"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                    e.Cancel = true;
+            }
+        }
+
+        private void WorkshopFilesWindow_Closed(object sender, EventArgs e)
+        {
+            _workshopFilesWindow = null;
+            this.Activate();
+        }
+
+        private void ModDetails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            ModDetailsChanged = true;
         }
 
         private void Mod_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -63,9 +96,39 @@ namespace ARK_Server_Manager
             e.Handled = true;
         }
 
-        private void AddNewMod_Click(object sender, RoutedEventArgs e)
+        private void AddMods_Click(object sender, RoutedEventArgs e)
         {
-            ModDetails.Add();
+            if (_workshopFilesWindow != null)
+                return;
+
+            _workshopFilesWindow = new WorkshopFilesWindow(ModDetails);
+            _workshopFilesWindow.Owner = this;
+            _workshopFilesWindow.Closed += WorkshopFilesWindow_Closed;
+            _workshopFilesWindow.Show();
+        }
+
+        private async void LoadMods_Click(object sender, RoutedEventArgs e)
+        {
+            if (_profile == null)
+                return;
+
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                await LoadModsFromServerFolder();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Load_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
         }
 
         private void MoveModDown_Click(object sender, RoutedEventArgs e)
@@ -82,16 +145,43 @@ namespace ARK_Server_Manager
 
         private async void RefreshMods_Click(object sender, RoutedEventArgs e)
         {
+            var cursor = this.Cursor;
+
             try
             {
-                var modIdList = ModDetails.Select(m => m.ModId).ToList();
-                var response = await GetModDetails(modIdList);
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
 
-                ModDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+                await LoadModsFromList();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Refresh Mod Details Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Refresh_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
+        }
+
+        private async void ReloadMods_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                await LoadModsFromProfile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Reload_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
         }
 
@@ -101,61 +191,47 @@ namespace ARK_Server_Manager
             ModDetails.Remove(mod);
         }
 
-        private void SaveMods_Click(object sender, RoutedEventArgs e)
+        private void RemoveAllMods_Click(object sender, RoutedEventArgs e)
         {
-            string mapString;
-            string totalConversionString;
-            string modIdString;
-
-            // check if there are any unknown mod types.
-            if (ModDetails.AnyUnknownModTypes)
-            {
-                if (MessageBox.Show("There are one or more unknown mod types, this could cause problems when the save is performed. Do you want to continue?", "Unknown Mod Types", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                    return;
-            }
-
-            if (ModDetails.GetModStrings(out mapString, out totalConversionString, out modIdString))
-            {
-                if (mapString != null)
-                    _profile.ServerMap = mapString;
-                else if (_profile.ServerMap.Contains('/'))
-                    _profile.ServerMap = string.Empty;
-
-                _profile.TotalConversionModId = totalConversionString ?? string.Empty;
-                _profile.ServerModIds = modIdString ?? string.Empty;
-            }
+            ModDetails.Clear();
         }
 
-        private async Task<PublishedFileDetailsResponse> GetModDetails()
+        private async void SaveMods_Click(object sender, RoutedEventArgs e)
         {
-            if (_profile == null)
-                return null;
-
             var cursor = this.Cursor;
 
             try
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
-                await Task.Delay(1000);
+                await Task.Delay(500);
 
-                // build a list of mods to be processed
-                var modIdList = new List<string>();
+                string mapString;
+                string totalConversionString;
+                string modIdString;
 
-                var serverMapModId = ModUtils.GetMapModId(_profile.ServerMap);
-                if (!string.IsNullOrWhiteSpace(serverMapModId))
-                    modIdList.Add(serverMapModId);
+                // check if there are any unknown mod types.
+                if (ModDetails.AnyUnknownModTypes)
+                {
+                    if (MessageBox.Show(_globalizer.GetResourceString("ModDetails_Save_UnknownLabel"), _globalizer.GetResourceString("ModDetails_Save_UnknownTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                        return;
+                }
 
-                if (!string.IsNullOrWhiteSpace(_profile.TotalConversionModId))
-                    modIdList.Add(_profile.TotalConversionModId);
+                if (ModDetails.GetModStrings(out mapString, out totalConversionString, out modIdString))
+                {
+                    if (mapString != null)
+                        _profile.ServerMap = mapString;
+                    else if (_profile.ServerMap.Contains('/'))
+                        _profile.ServerMap = string.Empty;
 
-                modIdList.AddRange(ModUtils.GetModIdList(_profile.ServerModIds));
+                    _profile.TotalConversionModId = totalConversionString ?? string.Empty;
+                    _profile.ServerModIds = modIdString ?? string.Empty;
+                }
 
-                return await GetModDetails(modIdList);
+                await LoadModsFromProfile();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(_globalizer.GetResourceString("ModDetails_ModDetailsLoad_FailedLabel"), ex.Message), _globalizer.GetResourceString("ModDetails_ModDetailsLoad_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Save_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -166,30 +242,85 @@ namespace ARK_Server_Manager
         private async Task<PublishedFileDetailsResponse> GetModDetails(List<string> modIdList)
         {
             if (modIdList == null || modIdList.Count == 0)
-                return null;
-
-            var cursor = this.Cursor;
+                return new PublishedFileDetailsResponse();
 
             try
             {
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
-                await Task.Delay(1000);
-
                 // remove all duplicate mod ids.
                 modIdList = modIdList.Distinct().ToList();
 
                 // get the details of the mods to be processed.
-                return ModUtils.GetSteamModDetails(modIdList);
+                return await Task.Run( () =>  ModUtils.GetSteamModDetails(modIdList) );
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(_globalizer.GetResourceString("ModDetails_ModDetailsLoad_FailedLabel"), ex.Message), _globalizer.GetResourceString("ModDetails_ModDetailsLoad_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format(_globalizer.GetResourceString("ModDetails_Load_FailedLabel"), ex.Message), _globalizer.GetResourceString("ModDetails_Load_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
-            finally
+        }
+
+        private async Task LoadModsFromList()
+        {
+            var modIdList = ModDetails.Select(m => m.ModId).ToList();
+
+            var response = await GetModDetails(modIdList);
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            UpdateModDetailsList(modDetails);
+
+            ModDetailsChanged = true;
+        }
+
+        private async Task LoadModsFromProfile()
+        {
+            // build a list of mods to be processed
+            var modIdList = new List<string>();
+
+            var serverMapModId = ModUtils.GetMapModId(_profile.ServerMap);
+            if (!string.IsNullOrWhiteSpace(serverMapModId))
+                modIdList.Add(serverMapModId);
+
+            if (!string.IsNullOrWhiteSpace(_profile.TotalConversionModId))
+                modIdList.Add(_profile.TotalConversionModId);
+
+            modIdList.AddRange(ModUtils.GetModIdList(_profile.ServerModIds));
+
+            var response = await GetModDetails(modIdList);
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            UpdateModDetailsList(modDetails);
+
+            ModDetailsChanged = false;
+        }
+
+        private async Task LoadModsFromServerFolder()
+        {
+            // build a list of mods to be processed
+            var modIdList = new List<string>();
+
+            var directoryNames = Directory.GetDirectories(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            foreach (var directoryName in directoryNames)
             {
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+                var modFile = $"{directoryName}.mod";
+                if (File.Exists(modFile))
+                {
+                    modIdList.Add(Path.GetFileNameWithoutExtension(modFile));
+                }
             }
+
+            var response = await GetModDetails(modIdList);
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            UpdateModDetailsList(modDetails);
+
+            ModDetailsChanged = true;
+        }
+
+        private void UpdateModDetailsList(ModDetailList modDetails)
+        {
+            if (ModDetails != null)
+                ModDetails.CollectionChanged -= ModDetails_CollectionChanged;
+
+            ModDetails = modDetails ?? new ModDetailList();
+            if (ModDetails != null)
+                ModDetails.CollectionChanged += ModDetails_CollectionChanged;
         }
     }
 }

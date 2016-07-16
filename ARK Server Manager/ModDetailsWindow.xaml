@@ -4,7 +4,7 @@
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         xmlns:lvs="clr-namespace:ARK_Server_Manager.Lib.ListViewSorting"
         Title="{DynamicResource ModDetails_Title}"
-        Width="800" MinHeight="480" ResizeMode="CanResize" SizeToContent="Height" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Loaded="Window_Loaded">
+        Width="800" Height="480" MinWidth="600" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,21 +20,69 @@
     <Grid Background="{StaticResource BeigeGradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0">
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SaveMods_Click" Margin="5,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_SaveModsTooltip}">
+            <Image Source="Art/Save_6530.png" Width="16" />
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddMods_Click" Margin="10,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_AddModsTooltip}">
+            <Image Source="Art/Add.png" Width="16" />
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RemoveAllMods_Click" Margin="0,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_RemoveAllModsTooltip}">
+            <Image Source="Art/Delete.png" Width="16" />
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RefreshMods_Click" Margin="10,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_RefreshModsTooltip}">
+            <Image Source="Art/Refresh.png" Width="16" />
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ReloadMods_Click" Margin="0,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_ReloadModsTooltip}">
+            <Image Source="Art/Reload.png" Width="14" />
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Click="LoadMods_Click" Margin="0,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_LoadModsTooltip}">
+            <Image Source="Art/Open_6529.png" Width="14" />
+        </Button>
+
+        <StackPanel Grid.Row="0" Grid.Column="6" Orientation="Horizontal">
+            <TextBlock Margin="30,5,5,0" Text="{DynamicResource ModDetails_TotalCountLabel}" VerticalAlignment="Center" />
+            <TextBlock Margin="5,5,5,0" Text="{Binding ModDetails.Count}" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UpToDate}" Value="False">
+                            <Setter Property="Background" Value="#FFF5DFB8" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            
             <DataGrid.HorizontalGridLinesBrush>
                 <SolidColorBrush Color="#FFB4B4B4"/>
             </DataGrid.HorizontalGridLinesBrush>
             <DataGrid.VerticalGridLinesBrush>
                 <SolidColorBrush Color="#FFB4B4B4"/>
             </DataGrid.VerticalGridLinesBrush>
+            
             <DataGrid.Columns>
                 <DataGridTextColumn     Width="Auto" Binding="{Binding Index, Mode=OneWay}">
                     <DataGridTextColumn.Header>
@@ -54,11 +102,6 @@
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <TextBox Text="{Binding ModId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn     Width="1*" Binding="{Binding Title, Mode=OneWay}">
                     <DataGridTextColumn.Header>
@@ -121,27 +164,6 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-            <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding UpToDate}" Value="False">
-                            <Setter Property="Background" Value="#FFF5DFB8" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.RowStyle>
         </DataGrid>
-
-        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SaveMods_Click" Margin="0,5,5,5" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_SaveModsTooltip}">
-            <Image Source="Art/Save_6530.png" Width="16" />
-        </Button>
-
-        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RefreshMods_Click" Margin="0,0,5,5" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_RefreshModsTooltip}">
-            <Image Source="Art/Refresh.png" Width="16" />
-        </Button>
-
-        <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddNewMod_Click" Margin="0,0,5,5" Width="22" ToolTip="{DynamicResource ModDetails_AddNewModTooltip}">
-            <Image Source="Art/Add.png" Width="16" />
-        </Button>
     </Grid>
 </Window>

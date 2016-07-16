@@ -155,6 +155,9 @@
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
+    <Compile Include="WorkshopFilesWindow.xaml.cs">
+      <DependentUpon>WorkshopFilesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShutdownWindow.xaml.cs">
       <DependentUpon>ShutdownWindow.xaml</DependentUpon>
     </Compile>
@@ -288,6 +291,9 @@
     <Resource Include="Art\OpenLog.png" />
     <Resource Include="Art\Down.png" />
     <Resource Include="Art\Up.png" />
+    <Resource Include="Art\Reload.png" />
+    <Resource Include="Art\Checked.png" />
+    <Resource Include="Art\Unchecked.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -304,6 +310,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="WorkshopFilesWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ShutdownWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

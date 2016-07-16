@@ -851,7 +851,7 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="180"/>
-                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="300"/>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="100*"/>
                                         <ColumnDefinition Width="30"/>

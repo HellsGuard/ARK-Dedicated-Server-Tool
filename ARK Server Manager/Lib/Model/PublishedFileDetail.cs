@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,14 +84,23 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
-        public void Add()
-        {
-            this.Add(new ModDetail());
-        }
-
         public new void Add(ModDetail mod)
         {
+            if (mod == null || this.Any(m => m.ModId.Equals(mod.ModId)))
+                return;
+
             base.Add(mod);
+            SetPublishedFileIndex();
+        }
+
+        public void AddRange(ModDetail[] mods)
+        {
+            foreach (var mod in mods)
+            {
+                if (mod == null || this.Any(m => m.ModId.Equals(mod.ModId)))
+                    continue;
+                base.Add(mod);
+            }
             SetPublishedFileIndex();
         }
 
@@ -103,11 +113,7 @@ namespace ARK_Server_Manager.Lib.Model
             if (index == base.Count - 1)
                 return;
 
-            var removed = base.Remove(mod);
-            if (!removed)
-                return;
-
-            base.Insert(index+1, mod);
+            base.Move(index, index + 1);
             SetPublishedFileIndex();
         }
 
@@ -120,11 +126,7 @@ namespace ARK_Server_Manager.Lib.Model
             if (index == 0)
                 return;
 
-            var removed = base.Remove(mod);
-            if (!removed)
-                return;
-
-            base.Insert(index - 1, mod);
+            base.Move(index, index - 1);
             SetPublishedFileIndex();
         }
 
@@ -164,6 +166,9 @@ namespace ARK_Server_Manager.Lib.Model
                 mod.IsLast = false;
             }
 
+            if (this.Count == 0)
+                return;
+
             this[0].IsFirst = true;
             this[base.Count - 1].IsLast = true;
         }
@@ -200,12 +205,15 @@ namespace ARK_Server_Manager.Lib.Model
         public static ModDetailList GetModDetails(PublishedFileDetailsResponse response, string modsRootFolder)
         {
             var result = new ModDetailList();
-            foreach (var detail in response.publishedfiledetails)
+            if (response != null && response.publishedfiledetails != null)
             {
-                result.Add(ModDetail.GetModDetail(detail));
+                foreach (var detail in response.publishedfiledetails)
+                {
+                    result.Add(ModDetail.GetModDetail(detail));
+                }
+                result.SetPublishedFileIndex();
+                result.PopulateExtended(modsRootFolder);
             }
-            result.SetPublishedFileIndex();
-            result.PopulateExtended(modsRootFolder);
             return result;
         }
     }
@@ -378,6 +386,24 @@ namespace ARK_Server_Manager.Lib.Model
             result.ModId = detail.publishedfileid;
             result.TimeUpdated = detail.time_updated;
             result.Title = detail.title;
+            return result;
+        }
+
+        public static ModDetail GetModDetail(WorkshopFileDetail detail)
+        {
+            var result = new ModDetail();
+            result.ModId = detail.publishedfileid;
+            result.TimeUpdated = detail.time_updated;
+            result.Title = detail.title;
+            return result;
+        }
+
+        public static ModDetail GetModDetail(WorkshopFileItem detail)
+        {
+            var result = new ModDetail();
+            result.ModId = detail.WorkshopId;
+            result.TimeUpdated = detail.TimeUpdated;
+            result.Title = detail.Title;
             return result;
         }
     }

@@ -284,5 +284,8 @@
     <Setting Name="StyleName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="WorkshopCacheFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WorkshopCache.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

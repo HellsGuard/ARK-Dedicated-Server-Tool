@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib.Model
 {
@@ -7,13 +14,46 @@ namespace ARK_Server_Manager.Lib.Model
         public WorkshopFileDetailResponse response { get; set; }
     }
 
+    [Serializable]
     public class WorkshopFileDetailResponse
     {
+        public DateTime cached = DateTime.UtcNow;
+
         public int total { get; set; }
 
-        public List<WorkshopFileDetail> workshopfiledetails { get; set; }
+        public List<WorkshopFileDetail> publishedfiledetails { get; set; }
+
+        public static WorkshopFileDetailResponse Load(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
+            WorkshopFileDetailResponse result = null;
+
+            using (var reader = File.OpenRead(file))
+            {
+                var serializer = new XmlSerializer(typeof(WorkshopFileDetailResponse));
+                result = (WorkshopFileDetailResponse)serializer.Deserialize(reader);
+            }
+
+            return result;
+        }
+
+        public bool Save(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
+                return false;
+
+            using (var stream = File.Open(file, FileMode.Create))
+            {
+                var serializer = new XmlSerializer(this.GetType());
+                serializer.Serialize(stream, this);
+            }
+            return true;
+        }
     }
 
+    [Serializable]
     public class WorkshopFileDetail
     {
         public int result { get; set; }
@@ -105,5 +145,105 @@ namespace ARK_Server_Manager.Lib.Model
         public int language { get; set; }
 
         public bool IsAdded { get; set; }
+    }
+
+    public class WorkshopFileList : ObservableCollection<WorkshopFileItem>
+    {
+        public DateTime CachedTime
+        {
+            get;
+            set;
+        }
+
+        public int SelectedCount
+        {
+            get
+            {
+                return this.Count(m => m.Selected);
+            }
+        }
+
+        public new void Add(WorkshopFileItem item)
+        {
+            if (item == null || this.Any(m => m.WorkshopId.Equals(item.WorkshopId)))
+                return;
+
+            base.Add(item);
+        }
+
+        public WorkshopFileItem[] GetSelectedItems()
+        {
+            return this.Where(m => m.Selected).ToArray();
+        }
+
+        public static WorkshopFileList GetList(WorkshopFileDetailResponse response)
+        {
+            var result = new WorkshopFileList();
+            result.CachedTime = response.cached.ToLocalTime();
+            foreach (var detail in response.publishedfiledetails)
+            {
+                result.Add(WorkshopFileItem.GetItem(detail));
+            }
+            return result;
+        }
+    }
+
+    public class WorkshopFileItem : DependencyObject
+    {
+        public static readonly DependencyProperty SelectedProperty = DependencyProperty.Register(nameof(Selected), typeof(bool), typeof(WorkshopFileItem), new PropertyMetadata(false));
+        public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(WorkshopFileItem), new PropertyMetadata(0));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty WorkshopIdProperty = DependencyProperty.Register(nameof(WorkshopId), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
+
+        public bool Selected
+        {
+            get { return (bool)GetValue(SelectedProperty); }
+            set { SetValue(SelectedProperty, value); }
+        }
+
+        public int TimeUpdated
+        {
+            get { return (int)GetValue(TimeUpdatedProperty); }
+            set { SetValue(TimeUpdatedProperty, value); }
+        }
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public string TitleFilterString
+        {
+            get;
+            set;
+        }
+
+        public string WorkshopId
+        {
+            get { return (string)GetValue(WorkshopIdProperty); }
+            set { SetValue(WorkshopIdProperty, value); }
+        }
+
+        public string WorkshopUrl
+        {
+            get
+            {
+                return $"http://steamcommunity.com/sharedfiles/filedetails/?id={WorkshopId}";
+            }
+        }
+
+        public static WorkshopFileItem GetItem(WorkshopFileDetail item)
+        {
+            if (string.IsNullOrWhiteSpace(item.publishedfileid) || string.IsNullOrWhiteSpace(item.title))
+                return null;
+
+            var result = new WorkshopFileItem();
+            result.TimeUpdated = item.time_updated;
+            result.Title = item.title ?? string.Empty;
+            result.TitleFilterString = result.Title.ToLower();
+            result.WorkshopId = item.publishedfileid ?? string.Empty;
+            return result;
+        }
     }
 }
