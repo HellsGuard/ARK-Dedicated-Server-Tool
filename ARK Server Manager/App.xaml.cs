@@ -213,7 +213,11 @@ namespace ARK_Server_Manager
             if (e.Args.Any(a => a.Equals(ARG_RCON)))
             {
                 var rcon = new OpenRCONWindow();
+                rcon.ShowInTaskbar = true;
+                rcon.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 rcon.ShowDialog();
+
+                Config.Default.Save();
 
                 // once we are finished, just exit
                 Environment.Exit(0);

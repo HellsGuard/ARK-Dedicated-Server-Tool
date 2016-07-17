@@ -150,7 +150,10 @@
             </Border>
 
             <DockPanel DockPanel.Dock="Right" MinWidth="200" Margin="1,1,2,1" DataContext="{Binding}" SourceUpdated="PlayerFilter_SourceUpdated">
-                <TextBox DockPanel.Dock="Top" Text="{Binding PlayerFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True" Margin="0"/>
+                <DockPanel DockPanel.Dock="Top">
+                    <Label DockPanel.Dock="Left" Content="{DynamicResource RCON_FilterLabel}" HorizontalAlignment="Center"/>
+                    <TextBox DockPanel.Dock="Left" Text="{Binding PlayerFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True" Margin="0" Padding="2"/>
+                </DockPanel>
                 
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="{DynamicResource RCON_ProfileCountLabel}" HorizontalAlignment="Center"/>

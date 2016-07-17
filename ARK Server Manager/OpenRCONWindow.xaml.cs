@@ -56,7 +56,7 @@ namespace ARK_Server_Manager
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
                     ProfileName = String.Format(_globalizer.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
-                    ServerIP = ServerIP,
+                    RCONHost = ServerIP,
                     RCONPort = RCONPort,
                     AdminPassword = Password,
                     InstallDirectory = String.Empty,
@@ -69,6 +69,8 @@ namespace ARK_Server_Manager
                 if (this.Owner == null)
                 {
                     this.Close();
+                    window.ShowInTaskbar = true;
+                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     window.ShowDialog();
                 }
                 else

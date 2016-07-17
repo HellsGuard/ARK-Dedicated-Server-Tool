@@ -270,8 +270,8 @@ namespace ARK_Server_Manager
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
                     InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
                     ProfileName = server.Profile.ProfileName,
+                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
-                    ServerIP = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
                     MaxPlayers = server.Runtime.MaxPlayers,
                     Server = server

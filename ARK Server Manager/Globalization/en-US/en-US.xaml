@@ -976,6 +976,7 @@
     <sys:String x:Key="RCON_PlayersLabel">Players:</sys:String>
     <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
     <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
+    <sys:String x:Key="RCON_FilterLabel">Filter:</sys:String>
     <sys:String x:Key="RCON_ProfileCountLabel">Profile Count:</sys:String>
 
     <sys:String x:Key="RCON_Button_OK">OK</sys:String>
@@ -1051,12 +1052,12 @@
 
     <!-- Open RCON window -->
     <sys:String x:Key="OpenRCON_Title">Open RCON Session</sys:String>
-    
-    <sys:String x:Key="OpenRCON_IPLabel">Server IP:</sys:String>
+
+    <sys:String x:Key="OpenRCON_IPLabel">Hostname or IP Address:</sys:String>
     <sys:String x:Key="OpenRCON_PortLabel">RCON Port:</sys:String>
     <sys:String x:Key="OpenRCON_PasswordLabel">Admin Password:</sys:String>
 
-    <sys:String x:Key="OpenRCON_ConnectButtonLabel">Connect Button</sys:String>
+    <sys:String x:Key="OpenRCON_ConnectButtonLabel">Connect</sys:String>
     <sys:String x:Key="OpenRCON_CancelButtonLabel">Cancel</sys:String>
 
     <sys:String x:Key="OpenRCON_WindowTitle">Remote: {0}:{1}</sys:String>
