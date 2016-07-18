@@ -712,6 +712,11 @@ namespace ARK_Server_Manager
                 logFolder = Config.Default.DataDir;
             Process.Start("explorer.exe", logFolder);
         }
+
+        private void OpenServerFolder_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer.exe", this.Server.Profile.InstallDirectory);
+        }
         #endregion
 
         #region Methods
