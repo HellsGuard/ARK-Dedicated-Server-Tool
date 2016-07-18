@@ -157,7 +157,7 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             // split the map string into parts, using the '/' separator.
-            var parts = serverMap.Split('/').ToList();
+            var parts = serverMap.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // check if any parts were returned.
             if (parts.Count == 1)

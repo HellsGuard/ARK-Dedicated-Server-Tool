@@ -53,7 +53,7 @@ namespace ARK_Server_Manager.Lib
                     ProfileName = profile.ProfileName,
                     InstallDirectory = profile.InstallDirectory,
                     AdminPassword = profile.AdminPassword,
-                    ServerIP = profile.ServerIP ?? IPAddress.Loopback.ToString(),
+                    ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
                     ServerPort = profile.ServerPort,
                     RCONEnabled = profile.RCONEnabled,
                     RCONPort = profile.RCONPort,
