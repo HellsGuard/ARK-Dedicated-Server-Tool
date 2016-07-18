@@ -295,6 +295,7 @@
     <Resource Include="Art\Reload.png" />
     <Resource Include="Art\Checked.png" />
     <Resource Include="Art\Unchecked.png" />
+    <Resource Include="Art\Find.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

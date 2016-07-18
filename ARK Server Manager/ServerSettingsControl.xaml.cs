@@ -43,6 +43,7 @@ namespace ARK_Server_Manager
         // Properties
         MapNameIslandProperty,
         MapNameCenterProperty,
+        MapNameTotalConversionProperty,
         PlayerMaxXpProperty,
         DinoMaxXpProperty,
         PlayerPerLevelStatMultipliers,
@@ -861,8 +862,11 @@ namespace ARK_Server_Manager
                 return new RelayCommand<ServerSettingsResetAction>(
                     execute: (action) =>
                     {
-                        if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ResetLabel"), _globalizer.GetResourceString("ServerSettings_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                            return;
+                        if (action != ServerSettingsResetAction.MapNameTotalConversionProperty)
+                        {
+                            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ResetLabel"), _globalizer.GetResourceString("ServerSettings_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                                return;
+                        }
 
                         switch (action)
                         {
@@ -919,6 +923,20 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.MapNameCenterProperty:
                                 this.Settings.ResetMapName(Config.Default.DefaultServerMap_TheCenter);
+                                break;
+
+                            case ServerSettingsResetAction.MapNameTotalConversionProperty:
+                                // we need to read the mod file and retreive the map name
+                                var mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
+                                if (string.IsNullOrWhiteSpace(mapName))
+                                {
+                                    MessageBox.Show("The map name could not be found, please check the total conversion mod id is correct and the mod has been downloaded.", "Find Total Conversion Map Name Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    break;
+                                }
+
+                                this.Settings.ServerMap = mapName;
+
+                                MessageBox.Show("The map name has been updated.", "Find Total Conversion Map Name", MessageBoxButton.OK, MessageBoxImage.Information);
                                 break;
 
                             case ServerSettingsResetAction.PlayerMaxXpProperty:

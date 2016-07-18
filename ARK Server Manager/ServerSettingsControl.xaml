@@ -855,11 +855,13 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25"/>
                                         <RowDefinition Height="25"/>
+                                        <RowDefinition Height="25"/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="180"/>
-                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="150"/>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="100*"/>
                                         <ColumnDefinition Width="30"/>
@@ -867,16 +869,22 @@
                                     </Grid.ColumnDefinitions>
                                     
                                     <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_MapPathLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
-                                    <TextBox Grid.Row="0" Grid.Column="1"  Name="MapNameTextbox" Text="{Binding ServerMap}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
-                                    <Button Grid.Row="0" Grid.Column="2" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameIslandTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameIslandProperty}">
+                                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Name="MapNameTextbox" Text="{Binding ServerMap}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}"/>
+                                    <Button Grid.Row="0" Grid.Column="3" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameIslandTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameIslandProperty}">
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
-                                    <Button Grid.Row="0" Grid.Column="3" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameCenterTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameCenterProperty}">
+                                    <Button Grid.Row="0" Grid.Column="4" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameCenterTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameCenterProperty}">
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
-                                    
-                                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
+
+                                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_TotalConversionLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TotalConversionModId}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
+                                    <Button Grid.Row="1" Grid.Column="2" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_FindTotalConversionMapNameTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameTotalConversionProperty}">
+                                        <Image Source="Art/Find.png" Width="16" Height="16" />
+                                    </Button>
+
+                                    <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <StackPanel>
@@ -893,10 +901,10 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Button Grid.Row="1" Grid.Column="4" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Click="OpenModDetails_Click">
+                                    <Button Grid.Row="2" Grid.Column="5" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Click="OpenModDetails_Click">
                                         <Image Source="Art/Help.png" Width="16" Height="16" />
                                     </Button>
-                                    <Button Grid.Row="1" Grid.Column="5" Width="22" Height="22" Margin="5,0,0,0" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" HorizontalAlignment="Left" Click="ModUpgrade_Click">
+                                    <Button Grid.Row="2" Grid.Column="6" Width="22" Height="22" Margin="5,0,0,0" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" HorizontalAlignment="Left" Click="ModUpgrade_Click">
                                         <Image Source="Art/Upgrade.png" Width="16" Height="16" />
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
@@ -913,7 +921,7 @@
                                         </Button.Style>
                                     </Button>
 
-                                    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}"/>
+                                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7" Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}"/>
                                 </Grid>
                             </GroupBox>
 

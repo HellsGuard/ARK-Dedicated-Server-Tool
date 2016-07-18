@@ -173,6 +173,24 @@ namespace ARK_Server_Manager.Lib
             return parts[3];
         }
 
+        public static string GetMapName(string installDirectory, string modId)
+        {
+            if (string.IsNullOrWhiteSpace(modId))
+                return string.Empty;
+
+            var modFolder = Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId);
+            var modFile = $"{modFolder}.mod";
+
+            if (!File.Exists(modFile))
+                return string.Empty;
+
+            Dictionary<string, string> metaInformation;
+            List<string> mapNames;
+            ReadModFile(modFile, out modId, out metaInformation, out mapNames);
+
+            return mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
+        }
+
         public static string GetModCachePath(string modId) => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.WorkshopFolderRelativePath, modId));
 
         public static List<string> GetModIdList(string modIds)

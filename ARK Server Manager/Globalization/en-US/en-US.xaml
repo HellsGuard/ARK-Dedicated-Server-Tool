@@ -56,7 +56,7 @@
     <sys:String x:Key="ModDetails_Reload_FailedTitle">Reload Mod Details Error</sys:String>
     <sys:String x:Key="ModDetails_Save_FailedTitle">Save Mods Error</sys:String>
     <sys:String x:Key="ModDetails_Save_UnknownTitle">Unknown Mod Types</sys:String>
-    <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more unknown mod types, this could prevent the map mods being detected properly. Do you want to continue?</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more mods that have not been downloaded, this could prevent the map mods and total conversion mods being detected properly. Do you want to continue?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Unsaved Changed</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">You have made changes that have not been saved to the profile, if you continue your changes will be discarded. Do you want to continue?</sys:String>
     
@@ -395,8 +395,11 @@
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
     <sys:String x:Key="ServerSettings_MapPathLabel">Map Name or Map Mod Path:</sys:String>
     <sys:String x:Key="ServerSettings_MapPathTooltip">The standard map name (e.g. TheIsland, TheCenter), or the local mod path (e.g. /Game/Mods/123456789/ModMapName) if your mod has a map in it.</sys:String>
+    <sys:String x:Key="ServerSettings_TotalConversionLabel">Total Conversion ID:</sys:String>
+    <sys:String x:Key="ServerSettings_TotalConversionTooltip">The id of the total conversion mod.</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
+    <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
     <sys:String x:Key="ServerSettings_ModDetailsTooltip">View the mod details.</sys:String>
