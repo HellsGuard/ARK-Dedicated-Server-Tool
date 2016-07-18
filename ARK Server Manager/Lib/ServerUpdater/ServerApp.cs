@@ -532,19 +532,16 @@ namespace ARK_Server_Manager.Lib
 
             // check if any of the mods need to be updated
             var updateModIds = new List<string>();
-            if (Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer)
-            {
-                var modIdList = GetModList();
+            var modIdList = GetModList();
 
-                // cycle through each mod.
-                foreach (var modId in modIdList)
-                {
-                    // check if the mod needs to be updated.
-                    var modCacheLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModCacheTimeFile(modId));
-                    var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
-                    if (modCacheLastUpdated > modLastUpdated || modLastUpdated == 0)
-                        updateModIds.Add(modId);
-                }
+            // cycle through each mod.
+            foreach (var modId in modIdList)
+            {
+                // check if the mod needs to be updated.
+                var modCacheLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModCacheTimeFile(modId));
+                var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
+                if (modCacheLastUpdated > modLastUpdated || modLastUpdated == 0)
+                    updateModIds.Add(modId);
             }
 
             if (ExitCode != EXITCODE_NORMALEXIT)
@@ -689,7 +686,10 @@ namespace ARK_Server_Manager.Lib
             }
             else
             {
-                LogProfileMessage($"The server and mods are already up to date, no updates required.");
+                if (updateModIds.Count > 0)
+                    LogProfileMessage($"The server and mods files are already up to date, no updates required.");
+                else
+                    LogProfileMessage($"The server files are already up to date, no updates required.");
 
                 _serverRunning = GetServerProcess() != null;
 
@@ -709,12 +709,6 @@ namespace ARK_Server_Manager.Lib
 
         private void UpdateModCache()
         {
-            if (!Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer)
-            {
-                ExitCode = EXITCODE_NORMALEXIT;
-                return;
-            }
-
             // get a list of mods to be processed
             var modIdList = GetModList();
 
@@ -1000,30 +994,38 @@ namespace ARK_Server_Manager.Lib
         {
             var modIdList = new List<string>();
 
-            if (_profile == null)
+            // check if we need to update the mods.
+            if (Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer)
             {
-                // get all the mods for all the profiles.
-                foreach (var profile in _profiles.Keys)
+                if (_profile == null)
                 {
-                    if (!string.IsNullOrWhiteSpace(profile.ServerMapModId))
-                        modIdList.Add(profile.ServerMapModId);
+                    // get all the mods for all the profiles.
+                    foreach (var profile in _profiles.Keys)
+                    {
+                        // check if the profile is included int he auto update.
+                        if (!profile.EnableAutoUpdate)
+                            continue;
 
-                    if (!string.IsNullOrWhiteSpace(profile.TotalConversionModId))
-                        modIdList.Add(profile.TotalConversionModId);
+                        if (!string.IsNullOrWhiteSpace(profile.ServerMapModId))
+                            modIdList.Add(profile.ServerMapModId);
 
-                    modIdList.AddRange(profile.ServerModIds);
+                        if (!string.IsNullOrWhiteSpace(profile.TotalConversionModId))
+                            modIdList.Add(profile.TotalConversionModId);
+
+                        modIdList.AddRange(profile.ServerModIds);
+                    }
                 }
-            }
-            else
-            {
-                // get all the mods for only the specified profile.
-                if (!string.IsNullOrWhiteSpace(_profile.ServerMapModId))
-                    modIdList.Add(_profile.ServerMapModId);
+                else
+                {
+                    // get all the mods for only the specified profile.
+                    if (!string.IsNullOrWhiteSpace(_profile.ServerMapModId))
+                        modIdList.Add(_profile.ServerMapModId);
 
-                if (!string.IsNullOrWhiteSpace(_profile.TotalConversionModId))
-                    modIdList.Add(_profile.TotalConversionModId);
+                    if (!string.IsNullOrWhiteSpace(_profile.TotalConversionModId))
+                        modIdList.Add(_profile.TotalConversionModId);
 
-                modIdList.AddRange(_profile.ServerModIds);
+                    modIdList.AddRange(_profile.ServerModIds);
+                }
             }
 
             // remove all duplicate mod ids.
