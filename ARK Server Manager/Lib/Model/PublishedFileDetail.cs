@@ -220,7 +220,7 @@ namespace ARK_Server_Manager.Lib.Model
 
     public class ModDetail : DependencyObject
     {
-        public const string MODTYPE_UNKNOWN = "<unknown>";
+        public const string MODTYPE_UNKNOWN = "<not downloaded>";
         public const string MODTYPE_MAP = "Map";
         public const string MODTYPE_MAPEXT = "Map Extension";
         public const string MODTYPE_MOD = "Mod";

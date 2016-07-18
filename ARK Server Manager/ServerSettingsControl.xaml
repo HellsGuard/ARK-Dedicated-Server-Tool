@@ -383,7 +383,6 @@
             </ContentControl>
             <ContentControl x:Key="LocationButtonContent"  Height="27">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="Art/Open_6529.png" Width="16" Margin="5,0,5,0" />
                     <Label Content="{DynamicResource ServerSettings_SetLocationButtonLabel}" />
                 </StackPanel>
             </ContentControl>
@@ -539,10 +538,19 @@
                 </Button>
 
                 <Border Grid.Row="2" Margin="2" HorizontalAlignment="Stretch" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_InstallLocationTooltip}" Style="{DynamicResource BorderLabel}" DataContext="{Binding Profile}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                        <Label FontSize="15" Content="{DynamicResource ServerSettings_InstallLocationLabel}" VerticalAlignment="Center" />
-                        <TextBox FontSize="15" Margin="5" BorderThickness="0" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <Grid VerticalAlignment="Center" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstallLocationLabel}" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="1" FontSize="15" Margin="5" BorderThickness="0" Text="{Binding InstallDirectory}" Background="{DynamicResource BeigeLabel}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalAlignment="Center"/>
+                        <Button Grid.Column="2" Margin="5" Click="OpenServerFolder_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_OpenServerFolderTooltip}">
+                            <Image Source="Art/Open_6529.png" Height="16" Margin="0" />
+                        </Button>
+                    </Grid>
                 </Border>
                 <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" Content="{StaticResource LocationButtonContent}" Click="SelectInstallDirectory_Click" DataContext="{Binding Runtime}">
                     <Button.Style>
