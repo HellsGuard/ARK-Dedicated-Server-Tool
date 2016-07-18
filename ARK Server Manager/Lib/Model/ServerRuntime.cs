@@ -478,7 +478,9 @@ namespace ARK_Server_Manager.Lib
                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started server update.\r\n");
 
                     var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
-                    success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken);
+                    var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : string.Empty);
+
+                    success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken);
                     if (success && downloadSuccessful)
                     {
                         progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished server update.");
@@ -598,7 +600,13 @@ namespace ARK_Server_Manager.Lib
 
                                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod download.\r\n");
 
-                                            success = await ServerUpdater.UpgradeModsAsync(steamCmdFile, Config.Default.SteamCmdInstallModArgsFormat, modId, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
+                                            var steamCmdArgs = string.Empty;
+                                            if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
+                                            else
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username,  modId);
+
+                                            success = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
                                             if (success && downloadSuccessful)
                                             {
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");

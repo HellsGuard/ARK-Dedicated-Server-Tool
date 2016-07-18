@@ -33,7 +33,7 @@ namespace ARK_Server_Manager
                     // check if an update period has been set.
                     if (Config.Default.AutoUpdate_UpdatePeriod <= 0)
                     {
-                        MessageBox.Show(_globalizer.GetResourceString(""), _globalizer.GetResourceString(""), MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledLabel"), _globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
                     // check if the cache directory has been set and it exists.
@@ -60,6 +60,12 @@ namespace ARK_Server_Manager
                         MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledLabel"), _globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
+            }
+
+            if (Config.Default.SteamCmdRedirectOutput && !Config.Default.SteamCmd_UseAnonymousCredentials)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_SteamCMDAuthentication_DisabledLabel"), _globalizer.GetResourceString("GlobalSettings_SteamCMDAuthentication_DisabledTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                Config.Default.SteamCmd_UseAnonymousCredentials = true;
             }
 
             Config.Default.Save();

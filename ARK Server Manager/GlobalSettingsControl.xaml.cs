@@ -9,6 +9,7 @@ using System.Xml;
 using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ARK_Server_Manager
 {
@@ -187,6 +188,46 @@ namespace ARK_Server_Manager
                 {
                     Config.Default.AutoUpdate_CacheDir = dialog.FileName;
                 }
+            }
+        }
+
+        private async void SteamCMDAuthenticate_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Config.Default.SteamCmd_Username))
+                {
+                    MessageBox.Show("A steam username has not be entered.", "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var steamCmdFile = Updater.GetSteamCmdFile();
+                if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
+                {
+                    MessageBox.Show("Could not locate the SteamCMD executable. Try reinstalling SteamCMD.", "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                var steamCmdArgs = string.Format(Config.Default.SteamCmdAuthenticateArgs, Config.Default.SteamCmd_Username);
+                var result = await ProcessUtils.RunProcessAsync(steamCmdFile, steamCmdArgs, string.Empty, null, CancellationToken.None);
+                if (result)
+                    MessageBox.Show("The authentication was completed.", "SteamCMD Authentication", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show("An error occurred while trying to authenticate with steam. Please try again.", "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
         }
 

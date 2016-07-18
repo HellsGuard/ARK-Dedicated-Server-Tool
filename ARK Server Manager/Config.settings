@@ -246,7 +246,7 @@
       <Value Profile="(Default)">RunServer.cmd</Value>
     </Setting>
     <Setting Name="SteamCmdInstallModArgsFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">+login anonymous +workshop_download_item 346110 {0} +quit</Value>
+      <Value Profile="(Default)">+login {0} +workshop_download_item 346110 {1} +quit</Value>
     </Setting>
     <Setting Name="WorkshopFolderRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">steamapps\workshop\content\346110\</Value>
@@ -316,6 +316,18 @@
     </Setting>
     <Setting Name="EmailNotify_AutoRestart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SteamCmd_Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SteamCmd_AnonymousUsername" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">anonymous</Value>
+    </Setting>
+    <Setting Name="SteamCmd_UseAnonymousCredentials" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SteamCmdAuthenticateArgs" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">+login {0} +quit</Value>
     </Setting>
   </Settings>
 </SettingsFile>

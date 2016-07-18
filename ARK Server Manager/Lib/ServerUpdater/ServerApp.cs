@@ -820,7 +820,12 @@ namespace ARK_Server_Manager.Lib
                 LogMessage($"Started mod {modId} cache update...");
 
                 // update the mod cache
-                var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, Config.Default.SteamCmdInstallModArgsFormat, modId, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
+                var steamCmdArgs = string.Empty;
+                if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
+                else
+                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
+                var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
                 if (!success || !downloadSuccessful)
                 {
                     LogError($"Mod {modId} cache update failed.");
@@ -890,7 +895,8 @@ namespace ARK_Server_Manager.Lib
             LogMessage("Server update started.");
 
             // update the server cache
-            var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, true, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
+            var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, "validate");
+            var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
             if (!success || !downloadSuccessful)
             {
                 LogError("Server cache update failed.");

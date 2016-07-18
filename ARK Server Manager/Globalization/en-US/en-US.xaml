@@ -144,6 +144,11 @@
     <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">If enabled, the mods will be downloaded from steam even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Force mod file copying</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">If enabled, the mod files will be copied to the server folder even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsLabel">Use Anonymous Credentials</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Controls whether the anonymous user is used to download from SteamCMD.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Username:</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdUsernameTooltip">The user name associated with the steam account.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate SteamCMD</sys:String>
     <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
@@ -200,6 +205,9 @@
     <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledLabel">Server cache will update every {0} minutes.</sys:String>
     <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledTitle">Updates disabled</sys:String>
     <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledLabel">Server cache updating disabled.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTitle">SteamCmd Authentication Disabled</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledLabel">You have chosen to redirect the steamcmd output to the progress window. You are not able to use your steam credentials, you must use anonymous credentials.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTooltip">To use your steam credentials you must turn off the Output SteamCMD to the progress window option.</sys:String>
 
     <!-- 
     Main Window 

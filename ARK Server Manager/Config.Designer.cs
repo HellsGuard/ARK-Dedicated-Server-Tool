@@ -870,7 +870,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +workshop_download_item 346110 {0} +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +workshop_download_item 346110 {1} +quit")]
         public string SteamCmdInstallModArgsFormat {
             get {
                 return ((string)(this["SteamCmdInstallModArgsFormat"]));
@@ -1132,6 +1132,48 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["EmailNotify_AutoRestart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamCmd_Username {
+            get {
+                return ((string)(this["SteamCmd_Username"]));
+            }
+            set {
+                this["SteamCmd_Username"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("anonymous")]
+        public string SteamCmd_AnonymousUsername {
+            get {
+                return ((string)(this["SteamCmd_AnonymousUsername"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SteamCmd_UseAnonymousCredentials {
+            get {
+                return ((bool)(this["SteamCmd_UseAnonymousCredentials"]));
+            }
+            set {
+                this["SteamCmd_UseAnonymousCredentials"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +quit")]
+        public string SteamCmdAuthenticateArgs {
+            get {
+                return ((string)(this["SteamCmdAuthenticateArgs"]));
             }
         }
     }
