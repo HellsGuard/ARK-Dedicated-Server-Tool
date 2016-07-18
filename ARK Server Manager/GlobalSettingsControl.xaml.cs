@@ -6,8 +6,9 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
-using System.Threading;
 using WPFSharp.Globalizer;
+using ARK_Server_Manager.Lib.Utils;
+using System.Threading.Tasks;
 
 namespace ARK_Server_Manager
 {
@@ -64,6 +65,44 @@ namespace ARK_Server_Manager
             XmlNode node = xmlDoc.SelectSingleNode(xPath, ns);
             string version = node.Value;
             return version;
+        }
+
+        private async void SendTestEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                await Task.Run(() =>
+                {
+                    var email = new EmailUtil()
+                    {
+                        EnableSsl = Config.Default.Email_UseSSL,
+                        MailServer = Config.Default.Email_Host,
+                        Port = Config.Default.Email_Port,
+                        UseDefaultCredentials = Config.Default.Email_UseDetaultCredentials,
+                        Credentials = Config.Default.Email_UseDetaultCredentials ? null : new System.Net.NetworkCredential(Config.Default.Email_Username, Config.Default.Email_Password),
+                    };
+
+                    email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), "Ark Server Manager Test Email", "This is a test email sent from the Ark Server Manager settings window.", true);
+
+                });
+                MessageBox.Show("Test email sent.", "Send Email Confirmation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                if (ex.InnerException != null)
+                    message += $"\r\n{ex.InnerException.Message}";
+                MessageBox.Show(message, "Send Email Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
         }
 
         public void SetDataDir_Click(object sender, RoutedEventArgs args)

@@ -118,6 +118,7 @@ namespace ARK_Server_Manager
                     BackupWorldFile = this.BackupWorldFile,
                     ShutdownInterval = this.ShutdownInterval,
                     OutputLogs = false,
+                    ServerProcess = RestartServer ? ServerProcessType.Restart : ServerProcessType.Shutdown,
                     ProgressCallback = (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { this.AddMessage(m); }).DoNotWait(); },
                 };
 

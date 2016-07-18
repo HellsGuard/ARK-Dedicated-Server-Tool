@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Collections.Concurrent;
 using System.Reflection;
 using WPFSharp.Globalizer;
+using ARK_Server_Manager.Lib.Utils;
+using System.Net.Mail;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -78,6 +80,15 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public enum ServerProcessType
+        {
+            Unknown = 0,
+            AutoUpdate,
+            AutoRestart,
+            Shutdown,
+            Restart,
+        }
+
         public const int MUTEX_TIMEOUT = 5;         // 5 minutes
         public const int MUTEX_ATTEMPTDELAY = 5000; // 5 seconds
 
@@ -136,6 +147,8 @@ namespace ARK_Server_Manager.Lib
         public bool BackupWorldFile = true;
         public int ExitCode = EXITCODE_NORMALEXIT;
         public bool OutputLogs = true;
+        public bool SendEmails = false;
+        public ServerProcessType ServerProcess = ServerProcessType.Unknown;
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
 
@@ -261,6 +274,8 @@ namespace ARK_Server_Manager.Lib
 
                 LogProfileMessage("Started server successfully.");
                 LogProfileMessage("");
+
+                SendEmail($"{_profile.ProfileName} server started", $"The server has been started.", false);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -391,28 +406,49 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("RCON not enabled.");
             }
 
-            // Stop the server
-            LogProfileMessage("");
-            LogProfileMessage("Stopping server...");
-
-            TaskCompletionSource<bool> ts = new TaskCompletionSource<bool>();
-            EventHandler handler = (s, e) => ts.TrySetResult(true);
-            process.EnableRaisingEvents = true;
-            process.Exited += handler;
-
-            // Method 1 - RCON Command
-            if (_profile.RCONEnabled)
+            try
             {
-                try
-                {
-                    SendCommand("doexit", false);
+                // Stop the server
+                LogProfileMessage("");
+                LogProfileMessage("Stopping server...");
 
-                    Task.Delay(10000).Wait();
-                }
-                catch (Exception ex)
+                TaskCompletionSource<bool> ts = new TaskCompletionSource<bool>();
+                EventHandler handler = (s, e) => ts.TrySetResult(true);
+                process.EnableRaisingEvents = true;
+                process.Exited += handler;
+
+                // Method 1 - RCON Command
+                if (_profile.RCONEnabled)
                 {
-                    Debug.WriteLine($"RCON> doexit command.\r\n{ex.Message}");
+                    try
+                    {
+                        SendCommand("doexit", false);
+
+                        Task.Delay(10000).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"RCON> doexit command.\r\n{ex.Message}");
+                    }
+
+                    if (!process.HasExited)
+                    {
+                        ts.Task.Wait(60000);   // 1 minute
+                    }
+
+                    if (process.HasExited)
+                    {
+                        LogProfileMessage($"Exited server successfully.");
+                        LogProfileMessage("");
+                        ExitCode = EXITCODE_NORMALEXIT;
+                        return;
+                    }
+
+                    LogProfileMessage("Exiting server timed out, attempting to close the server.");
                 }
+
+                // Method 2 - Close the process
+                process.CloseMainWindow();
 
                 if (!process.HasExited)
                 {
@@ -421,66 +457,55 @@ namespace ARK_Server_Manager.Lib
 
                 if (process.HasExited)
                 {
-                    LogProfileMessage($"Exited server successfully.");
+                    LogProfileMessage("Closed server successfully.");
                     LogProfileMessage("");
                     ExitCode = EXITCODE_NORMALEXIT;
                     return;
                 }
 
-                LogProfileMessage("Exiting server timed out, attempting to close the server.");
+                // Attempt 3 - Send CNTL-C
+                LogProfileMessage("Closing server timed out, attempting to stop the server.");
+
+                ProcessUtils.SendStop(process).Wait();
+
+                if (!process.HasExited)
+                {
+                    ts.Task.Wait(60000);   // 1 minute
+                }
+
+                if (ts.Task.Result)
+                {
+                    LogProfileMessage("Stopped server successfully.");
+                    LogProfileMessage("");
+                    ExitCode = EXITCODE_NORMALEXIT;
+                    return;
+                }
+
+                // Attempt 4 - Kill the process
+                LogProfileMessage("Stopping server timed out, attempting to kill the server.");
+
+                // try to kill the server
+                process.Kill();
+
+                if (!process.HasExited)
+                {
+                    ts.Task.Wait(60000);   // 1 minute
+                }
+
+                if (ts.Task.Result)
+                {
+                    LogProfileMessage("Killed server successfully.");
+                    LogProfileMessage("");
+                    ExitCode = EXITCODE_NORMALEXIT;
+                    return;
+                }
             }
-
-            // Method 2 - Close the process
-            process.CloseMainWindow();
-
-            if (!process.HasExited)
+            finally
             {
-                ts.Task.Wait(60000);   // 1 minute
-            }
-
-            if (process.HasExited)
-            {
-                LogProfileMessage("Closed server successfully.");
-                LogProfileMessage("");
-                ExitCode = EXITCODE_NORMALEXIT;
-                return;
-            }
-
-            // Attempt 3 - Send CNTL-C
-            LogProfileMessage("Closing server timed out, attempting to stop the server.");
-
-            ProcessUtils.SendStop(process).Wait();
-
-            if (!process.HasExited)
-            {
-                ts.Task.Wait(60000);   // 1 minute
-            }
-
-            if (ts.Task.Result)
-            {
-                LogProfileMessage("Stopped server successfully.");
-                LogProfileMessage("");
-                ExitCode = EXITCODE_NORMALEXIT;
-                return;
-            }
-
-            // Attempt 4 - Kill the process
-            LogProfileMessage("Stopping server timed out, attempting to kill the server.");
-
-            // try to kill the server
-            process.Kill();
-
-            if (!process.HasExited)
-            {
-                ts.Task.Wait(60000);   // 1 minute
-            }
-
-            if (ts.Task.Result)
-            {
-                LogProfileMessage("Killed server successfully.");
-                LogProfileMessage("");
-                ExitCode = EXITCODE_NORMALEXIT;
-                return;
+                if (process.HasExited)
+                {
+                    SendEmail($"{_profile.ProfileName} server shutdown", $"The server has been shutdown to perform the {ServerProcess.ToString()} process.", false);
+                }
             }
 
             // killing the server did not work, cancel the update
@@ -532,6 +557,8 @@ namespace ARK_Server_Manager.Lib
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
+
+                SendEmail($"{_profile.ProfileName} server update", $"The server update process has started.", false);
 
                 if (BackupWorldFile)
                 {
@@ -1220,6 +1247,41 @@ namespace ARK_Server_Manager.Lib
             SendCommand($"broadcast {message}", false);
         }
 
+        private void SendEmail(string subject, string body, bool includeLogFile)
+        {
+            if (!SendEmails)
+                return;
+            if (ServerProcess == ServerProcessType.AutoRestart && !Config.Default.EmailNotify_AutoRestart || ServerProcess == ServerProcessType.AutoUpdate && !Config.Default.EmailNotify_AutoUpdate)
+                return;
+
+            try
+            {
+                var email = new EmailUtil()
+                {
+                    EnableSsl = Config.Default.Email_UseSSL,
+                    MailServer = Config.Default.Email_Host,
+                    Port = Config.Default.Email_Port,
+                    UseDefaultCredentials = Config.Default.Email_UseDetaultCredentials,
+                    Credentials = Config.Default.Email_UseDetaultCredentials ? null : new NetworkCredential(Config.Default.Email_Username, Config.Default.Email_Password),
+                };
+
+                Attachment attachment = null;
+
+                if (includeLogFile)
+                {
+                    attachment = new Attachment(GetProfileLogFile());
+                }
+
+                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, body, true, new[] { attachment });
+
+                LogProfileMessage($"Email Sent - {subject}\r\n{body}");
+            }
+            catch (Exception ex)
+            {
+                LogProfileError($"Unable to send email.\r\n{ex.Message}", false);
+            }
+        }
+
         private void SetupRconConsole()
         {
             CloseRconConsole();
@@ -1314,6 +1376,14 @@ namespace ARK_Server_Manager.Lib
                 else
                 {
                     ShutdownServer(performRestart);
+
+                    if (ExitCode != EXITCODE_NORMALEXIT)
+                    {
+                        if (performRestart)
+                            SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                        else
+                            SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1322,6 +1392,11 @@ namespace ARK_Server_Manager.Lib
                 if (ex.InnerException != null)
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
+
+                if (performRestart)
+                    SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                else
+                    SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -1384,6 +1459,9 @@ namespace ARK_Server_Manager.Lib
                     UpdateFiles();
 
                     LogMessage($"[{_profile.ProfileName}] Finished server update process.");
+
+                    if (ExitCode != EXITCODE_NORMALEXIT)
+                        SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
                 }
             }
             catch (Exception ex)
@@ -1392,6 +1470,8 @@ namespace ARK_Server_Manager.Lib
                 if (ex.InnerException != null)
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
+
+                SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -1435,6 +1515,8 @@ namespace ARK_Server_Manager.Lib
                 else
                 {
                     var app = new ServerApp();
+                    app.SendEmails = true;
+                    app.ServerProcess = ServerProcessType.AutoRestart;
                     exitCode = app.PerformProfileShutdown(profile, performRestart: true);
                 }
             }
@@ -1492,6 +1574,7 @@ namespace ARK_Server_Manager.Lib
 
                 ServerApp app = new ServerApp();
                 app.UpdateServerCache();
+                app.ServerProcess = ServerProcessType.AutoUpdate;
                 exitCode = app.ExitCode;
 
                 if (exitCode == EXITCODE_NORMALEXIT)
@@ -1506,6 +1589,8 @@ namespace ARK_Server_Manager.Lib
 
                     Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
                         app = new ServerApp();
+                        app.SendEmails = true;
+                        app.ServerProcess = ServerProcessType.AutoUpdate;
                         exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
                     });
 

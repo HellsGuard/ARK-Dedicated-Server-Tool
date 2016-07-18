@@ -1014,5 +1014,125 @@ namespace ARK_Server_Manager {
                 return ((string)(this["WorkshopCacheFile"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Email_Host {
+            get {
+                return ((string)(this["Email_Host"]));
+            }
+            set {
+                this["Email_Host"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int Email_Port {
+            get {
+                return ((int)(this["Email_Port"]));
+            }
+            set {
+                this["Email_Port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Email_UseSSL {
+            get {
+                return ((bool)(this["Email_UseSSL"]));
+            }
+            set {
+                this["Email_UseSSL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Email_UseDetaultCredentials {
+            get {
+                return ((bool)(this["Email_UseDetaultCredentials"]));
+            }
+            set {
+                this["Email_UseDetaultCredentials"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Email_Username {
+            get {
+                return ((string)(this["Email_Username"]));
+            }
+            set {
+                this["Email_Username"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Email_Password {
+            get {
+                return ((string)(this["Email_Password"]));
+            }
+            set {
+                this["Email_Password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Email_From {
+            get {
+                return ((string)(this["Email_From"]));
+            }
+            set {
+                this["Email_From"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Email_To {
+            get {
+                return ((string)(this["Email_To"]));
+            }
+            set {
+                this["Email_To"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmailNotify_AutoUpdate {
+            get {
+                return ((bool)(this["EmailNotify_AutoUpdate"]));
+            }
+            set {
+                this["EmailNotify_AutoUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmailNotify_AutoRestart {
+            get {
+                return ((bool)(this["EmailNotify_AutoRestart"]));
+            }
+            set {
+                this["EmailNotify_AutoRestart"] = value;
+            }
+        }
     }
 }

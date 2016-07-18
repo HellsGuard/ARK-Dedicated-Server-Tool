@@ -152,6 +152,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Lib\Utils\EmailUtil.cs" />
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
