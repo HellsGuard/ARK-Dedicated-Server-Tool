@@ -96,7 +96,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unofficial.Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -156,6 +156,7 @@
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
+    <Compile Include="Lib\Utils\ZipUtils.cs" />
     <Compile Include="WorkshopFilesWindow.xaml.cs">
       <DependentUpon>WorkshopFilesWindow.xaml</DependentUpon>
     </Compile>
@@ -296,6 +297,7 @@
     <Resource Include="Art\Checked.png" />
     <Resource Include="Art\Unchecked.png" />
     <Resource Include="Art\Find.png" />
+    <Resource Include="Art\Zip.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

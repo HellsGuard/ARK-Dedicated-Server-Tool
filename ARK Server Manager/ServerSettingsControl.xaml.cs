@@ -12,6 +12,7 @@ using System.Windows.Input;
 using ARK_Server_Manager.Lib.ViewModel;
 using WPFSharp.Globalizer;
 using System.Threading.Tasks;
+using ARK_Server_Manager.Lib.Utils;
 
 namespace ARK_Server_Manager
 {
@@ -717,6 +718,80 @@ namespace ARK_Server_Manager
         private void OpenServerFolder_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer.exe", this.Server.Profile.InstallDirectory);
+        }
+
+        private async void CreateSupportZip_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
+                await Task.Delay(500);
+
+                var files = new List<string>();
+                var folder = string.Empty;
+                var file = string.Empty;
+
+                // <server>
+                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
+                if (File.Exists(file)) files.Add(file);
+                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.VersionFile);
+                if (File.Exists(file)) files.Add(file);
+
+                // <server>\ShooterGame\Saved\Config\WindowsServer
+                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "Game.ini");
+                if (File.Exists(file)) files.Add(file);
+                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "GameUserSettings.ini");
+                if (File.Exists(file)) files.Add(file);
+                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
+                if (File.Exists(file)) files.Add(file);
+
+                // <server>\ShooterGame\Saved\Logs
+                folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.SavedRelativePath, "Logs");
+                if (Directory.Exists(folder))
+                {
+                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
+                    {
+                        files.Add(logFile);
+                    }
+                }
+
+                // Logs
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOUPDATE);
+                if (Directory.Exists(folder))
+                {
+                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
+                    {
+                        files.Add(logFile);
+                    }
+                }
+
+                // Logs/<server>
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, this.Settings.ProfileName);
+                foreach (var logFile in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                {
+                    files.Add(logFile);
+                }
+
+                // Profiles
+                files.Add(this.Settings.GetProfileFile());
+                files.Add(Path.Combine(this.Settings.GetProfileIniDir(), "Game.ini"));
+                files.Add(Path.Combine(this.Settings.GetProfileIniDir(), "GameUserSettings.ini"));
+
+                var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
+                ZipUtils.ZipFiles(zipFile, files.ToArray(), $"ARK Version: {this.Settings.LastInstalledVersion}\r\nASM Version: {App.Version}");
+
+                MessageBox.Show($"The support zip file has been created and saved to your desktop.\r\nThe filename is {Path.GetFileName(zipFile)}", "Support ZipFile Creation", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Support ZipFile Creation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
         }
         #endregion
 

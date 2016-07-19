@@ -129,8 +129,8 @@ namespace ARK_Server_Manager.Lib
         private const int EXITCODE_RESTART_FAILED = 5001;
         private const int EXITCODE_RESTART_BADLAUNCHER = 5002;
 
-        private const string LOGPREFIX_AUTORESTART = "#AutoRestartLogs";
-        private const string LOGPREFIX_AUTOUPDATE = "#AutoUpdateLogs";
+        public const string LOGPREFIX_AUTORESTART = "#AutoRestartLogs";
+        public const string LOGPREFIX_AUTOUPDATE = "#AutoUpdateLogs";
 
         public const string ARGUMENT_AUTORESTART = "-ar";
         public const string ARGUMENT_AUTOUPDATE = "-au";
