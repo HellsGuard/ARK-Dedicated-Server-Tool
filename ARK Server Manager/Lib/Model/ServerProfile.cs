@@ -426,11 +426,18 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AutoManagedModsProperty, value); }
         }
 
-        public static readonly DependencyProperty UseNewSaveFormatProperty = DependencyProperty.Register(nameof(UseNewSaveFormat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool UseNewSaveFormat
+        public static readonly DependencyProperty UseOldSaveFormatProperty = DependencyProperty.Register(nameof(UseOldSaveFormat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UseOldSaveFormat
         {
-            get { return (bool)GetValue(UseNewSaveFormatProperty); }
-            set { SetValue(UseNewSaveFormatProperty, value); }
+            get { return (bool)GetValue(UseOldSaveFormatProperty); }
+            set { SetValue(UseOldSaveFormatProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseNoMemoryBiasProperty = DependencyProperty.Register(nameof(UseNoMemoryBias), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UseNoMemoryBias
+        {
+            get { return (bool)GetValue(UseNoMemoryBiasProperty); }
+            set { SetValue(UseNoMemoryBiasProperty, value); }
         }
 
         public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -2002,9 +2009,14 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -automanagedmods");
             }
 
-            if (this.UseNewSaveFormat)
+            if (this.UseOldSaveFormat)
             {
-                serverArgs.Append(" -newsaveformat");
+                serverArgs.Append(" -oldsaveformat");
+            }
+
+            if (this.UseNoMemoryBias)
+            {
+                serverArgs.Append(" -nomemorybias");
             }
 
             serverArgs.Append(' ');
@@ -2450,7 +2462,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceNoManSkyProperty);
             this.ClearValue(UseAllAvailableCoresProperty);
             this.ClearValue(UseCacheProperty);
-            this.ClearValue(UseNewSaveFormatProperty);
+            this.ClearValue(UseOldSaveFormatProperty);
+            this.ClearValue(UseNoMemoryBiasProperty);
 
             this.ClearValue(EnableWebAlarmProperty);
             this.ClearValue(WebAlarmKeyProperty);

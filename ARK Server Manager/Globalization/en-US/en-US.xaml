@@ -449,8 +449,8 @@
     <sys:String x:Key="ServerSettings_UseAllAvailableCoresTooltip">If enabled, all of your CPU cores will be used, if all of them are not being utilized after using this launch option, then try to disable it.</sys:String>
     <sys:String x:Key="ServerSettings_UseCacheLabel">Use Cache</sys:String>
     <sys:String x:Key="ServerSettings_UseCacheTooltip">If enabled, ~70% faster loading speed option. The first and second times that you start the game will be still be slow, but the third time onwards will be fast.</sys:String>
-    <sys:String x:Key="ServerSettings_UseNewSaveFormatLabel">Use new save format</sys:String>
-    <sys:String x:Key="ServerSettings_UseNewSaveFormatTooltip">If enabled, will use an experimental fast save/load code implemented for servers. Approximately 4x faster and 75% smaller. It is strongly recommended to back up your save games if you intend to try this out, it is still being tested.</sys:String>
+    <sys:String x:Key="ServerSettings_UseOldSaveFormatLabel">Use Old Save Format</sys:String>
+    <sys:String x:Key="ServerSettings_UseOldSaveFormatTooltip">If enabled, will use the old save formatt. New saves are not backwards compatible.</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Label">Force DirectX 10</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">If enabled, the game is forced to use DirectX 10 instead of DirectX 11.</sys:String>
     <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Force Shader Model 4</sys:String>
@@ -461,6 +461,8 @@
     <sys:String x:Key="ServerSettings_ForceNoManSkyTooltip">If enabled, lots of the detailed sky features are disabled, such as clouds and starry night sky. You still see the stars, the sun, and the moon.</sys:String>
     <sys:String x:Key="ServerSettings_EnableWebAlarmLabel">Enable Web Alarms</sys:String>
     <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">If enabled, servers can now get web notifications posted somewhere when important things happen to a tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoMemoryBiasLabel">Use No Memory Bias</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">If enabled, will use the old method, more RAM usage but no potential performance loss.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
