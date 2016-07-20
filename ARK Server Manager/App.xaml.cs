@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using WPFSharp.Globalizer;
-using System.Threading;
 using System.Globalization;
-using System.Security.Principal;
 using System.Diagnostics;
 using System.Linq;
 
@@ -132,14 +130,6 @@ namespace ARK_Server_Manager
             return logger;
         }
 
-        private static bool IsRunAsAdministrator()
-        {
-            var wi = WindowsIdentity.GetCurrent();
-            var wp = new WindowsPrincipal(wi);
-
-            return wp.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
         private static void MigrateSettings()
         {
             //
@@ -223,7 +213,7 @@ namespace ARK_Server_Manager
                 Environment.Exit(0);
             }
 
-            if (Config.Default.RunAsAdministratorPrompt && !IsRunAsAdministrator())
+            if (Config.Default.RunAsAdministratorPrompt && !SecurityUtils.IsAdministrator())
             {
                 var result = MessageBox.Show(_globalizer.GetResourceString("Application_RunAsAdministratorLabel"), _globalizer.GetResourceString("Application_RunAsAdministratorTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)

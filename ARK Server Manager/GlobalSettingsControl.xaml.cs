@@ -216,7 +216,7 @@ namespace ARK_Server_Manager
                 var steamCmdArgs = string.Format(Config.Default.SteamCmdAuthenticateArgs, Config.Default.SteamCmd_Username);
                 var result = await ProcessUtils.RunProcessAsync(steamCmdFile, steamCmdArgs, string.Empty, null, CancellationToken.None);
                 if (result)
-                    MessageBox.Show("The authentication was completed.", "SteamCMD Authentication", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("The authentication was completed.", "SteamCMD Authentication", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("An error occurred while trying to authenticate with steam. Please try again.", "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

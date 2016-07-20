@@ -68,7 +68,7 @@
     <Setting Name="ServerProcessName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGameServer</Value>
     </Setting>
-    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="User">
+    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameUserSettings.ini</Value>
     </Setting>
     <Setting Name="IniExtension" Type="System.String" Scope="Application">
@@ -89,7 +89,7 @@
     <Setting Name="LogsDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Logs</Value>
     </Setting>
-    <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="User">
+    <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">?MultiHome={0}</Value>
     </Setting>
     <Setting Name="AvailableVersionUrl" Type="System.String" Scope="Application">
@@ -112,12 +112,6 @@
     </Setting>
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
-    </Setting>
-    <Setting Name="SteamUserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="SteamPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ASMDownloadUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/latest.zip</Value>

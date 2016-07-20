@@ -13,6 +13,7 @@ using ARK_Server_Manager.Lib.ViewModel;
 using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
+using System.Text;
 
 namespace ARK_Server_Manager
 {
@@ -739,6 +740,21 @@ namespace ARK_Server_Manager
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.VersionFile);
                 if (File.Exists(file)) files.Add(file);
 
+                // <server>\ShooterGame\Content\Mods
+                folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
+                if (Directory.Exists(folder))
+                {
+                    foreach (var modFile in Directory.GetFiles(folder, "*.mod"))
+                    {
+                        files.Add(modFile);
+                    }
+                    foreach (var modFolder in Directory.GetDirectories(folder))
+                    {
+                        file = Path.Combine(modFolder, Config.Default.LastUpdatedTimeFile);
+                        if (File.Exists(file)) files.Add(file);
+                    }
+                }
+
                 // <server>\ShooterGame\Saved\Config\WindowsServer
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "Game.ini");
                 if (File.Exists(file)) files.Add(file);
@@ -769,20 +785,73 @@ namespace ARK_Server_Manager
 
                 // Logs/<server>
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, this.Settings.ProfileName);
-                foreach (var logFile in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                if (Directory.Exists(folder))
                 {
-                    files.Add(logFile);
+                    foreach (var logFile in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                    {
+                        files.Add(logFile);
+                    }
                 }
 
                 // Profiles
-                files.Add(this.Settings.GetProfileFile());
-                files.Add(Path.Combine(this.Settings.GetProfileIniDir(), "Game.ini"));
-                files.Add(Path.Combine(this.Settings.GetProfileIniDir(), "GameUserSettings.ini"));
+                file = this.Settings.GetProfileFile();
+                if (File.Exists(file)) files.Add(file);
+                file = Path.Combine(this.Settings.GetProfileIniDir(), "Game.ini");
+                if (File.Exists(file)) files.Add(file);
+                file = Path.Combine(this.Settings.GetProfileIniDir(), "GameUserSettings.ini");
+                if (File.Exists(file)) files.Add(file);
+
+                // <data folder>\SteamCMD\steamapps\workshop\content\346110
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.WorkshopFolderRelativePath);
+                if (Directory.Exists(folder))
+                {
+                    foreach (var modFolder in Directory.GetDirectories(folder))
+                    {
+                        file = Path.Combine(modFolder, Config.Default.LastUpdatedTimeFile);
+                        if (File.Exists(file)) files.Add(file);
+                    }
+                }
+
+                // <server cache>
+                if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
+                {
+                    file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile);
+                    if (File.Exists(file)) files.Add(file);
+                    file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.VersionFile);
+                    if (File.Exists(file)) files.Add(file);
+                }
+
+                var comment = new StringBuilder();
+                comment.AppendLine($"ARK Version: {this.Settings.LastInstalledVersion}");
+                comment.AppendLine($"ASM Version: {App.Version}");
+
+                comment.AppendLine($"MachinePublicIP: {Config.Default.MachinePublicIP}");
+                comment.AppendLine($"ConfigDirectory: {Config.Default.ConfigDirectory}");
+                comment.AppendLine($"DataDir: {Config.Default.DataDir}");
+
+                comment.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
+                comment.AppendLine($"RunAsAdministratorPrompt: {Config.Default.RunAsAdministratorPrompt}");
+                comment.AppendLine($"ManageFirewallAutomatically: {Config.Default.ManageFirewallAutomatically}");
+                comment.AppendLine($"SteamCmdRedirectOutput: {Config.Default.SteamCmdRedirectOutput}");
+                comment.AppendLine($"SteamCmd_UseAnonymousCredentials: {Config.Default.SteamCmd_UseAnonymousCredentials}");
+
+                comment.AppendLine($"AutoUpdate_EnableUpdate: {Config.Default.AutoUpdate_EnableUpdate}");
+                comment.AppendLine($"AutoUpdate_CacheDir: {Config.Default.AutoUpdate_CacheDir}");
+                comment.AppendLine($"AutoUpdate_UpdatePeriod: {Config.Default.AutoUpdate_UpdatePeriod}");
+                comment.AppendLine($"AutoUpdate_UseSmartCopy: {Config.Default.AutoUpdate_UseSmartCopy}");
+
+                comment.AppendLine($"ServerShutdown_EnableWorldSave: {Config.Default.ServerShutdown_EnableWorldSave}");
+                comment.AppendLine($"ServerShutdown_GracePeriod: {Config.Default.ServerShutdown_GracePeriod}");
+                comment.AppendLine($"ServerUpdate_UpdateModsWhenUpdatingServer: {Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer}");
+                comment.AppendLine($"ServerUpdate_ForceCopyMods: {Config.Default.ServerUpdate_ForceCopyMods}");
+                comment.AppendLine($"ServerUpdate_ForceUpdateMods: {Config.Default.ServerUpdate_ForceUpdateMods}");
+                comment.AppendLine($"EmailNotify_AutoRestart: {Config.Default.EmailNotify_AutoRestart}");
+                comment.AppendLine($"EmailNotify_AutoUpdate: {Config.Default.EmailNotify_AutoUpdate}");
 
                 var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
-                ZipUtils.ZipFiles(zipFile, files.ToArray(), $"ARK Version: {this.Settings.LastInstalledVersion}\r\nASM Version: {App.Version}");
+                ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());
 
-                MessageBox.Show($"The support zip file has been created and saved to your desktop.\r\nThe filename is {Path.GetFileName(zipFile)}", "Support ZipFile Creation", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"The support zip file has been created and saved to your desktop.\r\nThe filename is {Path.GetFileName(zipFile)}", "Support ZipFile Creation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

@@ -586,6 +586,9 @@ namespace ARK_Server_Manager.Lib
                         return;
                 }
 
+                Mutex mutex = null;
+                bool createdNew = false;
+
                 // check if the server needs to be updated
                 if (updateServer)
                 {
@@ -597,6 +600,27 @@ namespace ARK_Server_Manager.Lib
                         {
                             LogProfileMessage($"Smart cache copy: {Config.Default.AutoUpdate_UseSmartCopy}.");
 
+                            //// try to establish a mutex for the server cache folder.
+                            //var startTime = DateTime.Now;
+                            //var delay = 0;
+                            //do
+                            //{
+                            //    Task.Delay(delay).Wait();
+                            //    delay = MUTEX_ATTEMPTDELAY;
+
+                            //    mutex = new Mutex(true, GetMutexName(Config.Default.AutoUpdate_CacheDir), out createdNew);
+                            //} while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+
+                            //// check if the mutex was established
+                            //if (mutex == null || !createdNew)
+                            //{
+                            //    mutex = null;
+
+                            //    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                            //    LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock server cache.");
+                            //}
+                            //else
+                            //{
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy);
 
@@ -606,6 +630,7 @@ namespace ARK_Server_Manager.Lib
 
                             LogProfileMessage("Updated server from cache.");
                             LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
+                            //}
                         }
                         else
                         {
@@ -645,9 +670,34 @@ namespace ARK_Server_Manager.Lib
                             {
                                 if (Directory.Exists(modCachePath))
                                 {
-                                    LogProfileMessage($"Updating mod {modId}, {index + 1} of {updateModIds.Count} from cache...");
-                                    ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
-                                    LogProfileMessage($"Updated mod {modId}, {index + 1} of {updateModIds.Count} from cache.");
+                                    // try to establish a mutex for the server cache folder.
+                                    var startTime = DateTime.Now;
+                                    var delay = 0;
+                                    do
+                                    {
+                                        Task.Delay(delay).Wait();
+                                        delay = MUTEX_ATTEMPTDELAY;
+
+                                        mutex = new Mutex(true, GetMutexName(modCachePath), out createdNew);
+                                    } while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+
+                                    // check if the mutex was established
+                                    if (mutex == null || !createdNew)
+                                    {
+                                        mutex = null;
+
+                                        ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                                        LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock mod cache.");
+                                    }
+                                    else
+                                    {
+                                        LogProfileMessage($"Updating mod {modId}, {index + 1} of {updateModIds.Count} from cache...");
+                                        ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
+                                        LogProfileMessage($"Updated mod {modId}, {index + 1} of {updateModIds.Count} from cache.");
+
+                                        var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
+                                        LogProfileMessage($"Mod version: {modLastUpdated}.");
+                                    }
                                 }
                                 else
                                 {
@@ -846,6 +896,7 @@ namespace ARK_Server_Manager.Lib
                     // update the last updated file with the steam updated time.
                     var steamLastUpdated = modDetail.time_updated.ToString();
                     File.WriteAllText(cacheTimeFile, steamLastUpdated);
+                    LogMessage($"Mod cache version: {steamLastUpdated}");
                 }
                 else
                     LogMessage($"Mod cache does not exist.");

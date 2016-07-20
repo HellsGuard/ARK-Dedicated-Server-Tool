@@ -227,15 +227,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameUserSettings.ini")]
         public string ServerGameUserSettingsFile {
             get {
                 return ((string)(this["ServerGameUserSettingsFile"]));
-            }
-            set {
-                this["ServerGameUserSettingsFile"] = value;
             }
         }
         
@@ -299,15 +296,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("?MultiHome={0}")]
         public string ServerCommandLineArgsIPMatchFormat {
             get {
                 return ((string)(this["ServerCommandLineArgsIPMatchFormat"]));
-            }
-            set {
-                this["ServerCommandLineArgsIPMatchFormat"] = value;
             }
         }
         
@@ -371,30 +365,6 @@ namespace ARK_Server_Manager {
         public string SavedArksRelativePath {
             get {
                 return ((string)(this["SavedArksRelativePath"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SteamUserName {
-            get {
-                return ((string)(this["SteamUserName"]));
-            }
-            set {
-                this["SteamUserName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SteamPassword {
-            get {
-                return ((string)(this["SteamPassword"]));
-            }
-            set {
-                this["SteamPassword"] = value;
             }
         }
         
