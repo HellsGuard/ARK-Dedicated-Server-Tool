@@ -925,7 +925,6 @@
                                         </Button.Style>
                                     </Button>
 
-                                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7" Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -1056,53 +1055,93 @@
                                 </Button>
                             </DockPanel>
                         </Expander.Header>
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                        <StackPanel>
+                            <GroupBox Header="{DynamicResource ServerSettings_ASMSettingLabel}">
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
                             
-                            <StackPanel Grid.Row="0" >
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="False">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="True">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_AutoStartLabel}" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" />
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoRestart}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
-                                    <TextBox Margin="20,0,0,0" Width="100" Height="25" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
-                                        <Validation.ErrorTemplate>
-                                            <ControlTemplate>
-                                                <StackPanel>
-                                                    <!-- Placeholder for the TextBox itself -->
-                                                    <AdornedElementPlaceholder x:Name="textBox"/>
-                                                    <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                                </StackPanel>
-                                            </ControlTemplate>
-                                        </Validation.ErrorTemplate>
-                                        <TextBox.Text>
-                                            <Binding Path="AutoRestartTime">
-                                                <Binding.ValidationRules>
-                                                    <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                </StackPanel>
-                            </StackPanel>
+                                    <StackPanel Grid.Row="0" >
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                    
+                                        <CheckBox IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_AutoStartLabel}" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoRestart}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
+                                            <TextBox Margin="20,0,0,0" Width="100" Height="25" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
+                                                <Validation.ErrorTemplate>
+                                                    <ControlTemplate>
+                                                        <StackPanel>
+                                                            <!-- Placeholder for the TextBox itself -->
+                                                            <AdornedElementPlaceholder x:Name="textBox"/>
+                                                            <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Validation.ErrorTemplate>
+                                                <TextBox.Text>
+                                                    <Binding Path="AutoRestartTime">
+                                                        <Binding.ValidationRules>
+                                                            <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </StackPanel>
 
-                            <CheckBox Grid.Row="1" Margin="0,0,0,5" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding EnableAutoUpdate}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PeriodicUpdatesLabel}" ToolTip="{DynamicResource ServerSettings_PeriodicUpdatesTooltip}" />
-                            <CheckBox Grid.Row="2" Margin="0,0,0,5" IsChecked="{Binding AutoRestartIfShutdown}" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}"/>
-                        </Grid>
+                                    <CheckBox Grid.Row="1" Margin="0,0,0,5" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding EnableAutoUpdate}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PeriodicUpdatesLabel}" ToolTip="{DynamicResource ServerSettings_PeriodicUpdatesTooltip}" />
+                                    <CheckBox Grid.Row="2" Margin="0,0,0,0" IsChecked="{Binding AutoRestartIfShutdown}" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox>
+                                <GroupBox.Header>
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_ARKSettingLabel}" VerticalAlignment="Center"/>
+                                        <Button Margin="10,0,0,1" DockPanel.Dock="Right" Content="{DynamicResource ServerSettings_NoAutoManagementButtonLabel}" Click="ArkAutoSettings_Click">
+                                            <Button.Style>
+                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </DockPanel>
+                                </GroupBox.Header>
+                                <CheckBox Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}">
+                                    <CheckBox.Style>
+                                        <Style TargetType="{x:Type CheckBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding EnableSOTFCheckbox}" Value="true">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="true">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </CheckBox.Style>
+                                </CheckBox>
+                            </GroupBox>
+                        </StackPanel>
                     </Expander>
                     <Expander Name="SectionRules" IsExpanded="{Binding CurrentConfig.SectionRulesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>

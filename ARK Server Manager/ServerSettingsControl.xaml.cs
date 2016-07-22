@@ -681,6 +681,11 @@ namespace ARK_Server_Manager
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_AdminRequired_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_AdminRequired_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
@@ -1134,8 +1139,14 @@ namespace ARK_Server_Manager
                         {
                             if (settings.Profile.SOTF_Enabled)
                             {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
                                 settings.Profile.EnableAutoUpdate = false;
+                            }
+
+                            if (settings.Profile.AutoManagedMods)
+                            {
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                settings.Profile.AutoManagedMods = false;
                             }
                         }
 

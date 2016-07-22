@@ -318,6 +318,8 @@
 
     <sys:String x:Key="ServerSettings_AdminRequired_ErrorTitle">Needs Administrator Access</sys:String>
     <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.</sys:String>
+    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorTitle">ARK Auto Settings</sys:String>
+    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorLabel">The ARK automatic settings and ASM automatic settings cannot be enabled at the same time. They are similar features that cause problems for the other and if the ASM automatic features are enabled, the ARK features are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeServer_FailedTitle">Server Update Error</sys:String>
@@ -338,8 +340,10 @@
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Server cache not configured</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
     <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorTitle">Auto-updates Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_ErrorLabel">Auto-updates are enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF Not Compatible</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Auto-updates are enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Auto Managed Mods Not Compatible</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">ARK's auto managed mods are enabled but is not compatible with ASM's auto updates. Disabling ARK's auto managed mods.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
@@ -415,8 +419,6 @@
     <sys:String x:Key="ServerSettings_ModUpgradeTooltip">Upgrade to the latest version of the mods that is currently available to download.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeMods_FailedTitle">Mods Update Error</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeMods_MutexFailedLabel">Could not lock the server, another process is using the server. Mod update process was cancelled.</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Auto manage mods when server launches (Official Ark Setting)</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">If enabled, adds support for automatic mod download/installation/updating before the server launches.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
@@ -479,6 +481,7 @@
     <!-- Server Settings - Automatic Management -->
     <sys:String x:Key="ServerSettings_AutomaticManagementLabel">Automatic Management</sys:String>
     <sys:String x:Key="ServerSettings_NoAutoManagementButtonLabel">Why can't I use this?</sys:String>
+    <sys:String x:Key="ServerSettings_ASMSettingLabel">Ark Server Manager Settings</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-Start server on boot</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
     <sys:String x:Key="ServerSettings_RestartServerLabel">Restart server at</sys:String>
@@ -487,6 +490,9 @@
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">If enabled, the server will be periodically updated during the Auto-Update cycle. See the settings for Auto-Update options.</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Restart server if shutdown</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">If enabled, the server will be restarted even if shutdown for Auto-Restarts and Auto-Updates.</sys:String>
+    <sys:String x:Key="ServerSettings_ARKSettingLabel">Official Ark Settings</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Auto manage mods when server launches</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">If enabled, adds support for automatic mod download/installation/updating before the server launches.</sys:String>
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Rules</sys:String>

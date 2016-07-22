@@ -2102,6 +2102,8 @@ namespace ARK_Server_Manager.Lib
             // ensure that the auto update is switched off for SotF servers
             if (SOTF_Enabled)
                 EnableAutoUpdate = false;
+            if (EnableAutoUpdate)
+                AutoManagedMods = false;
 
             this.DinoSettings.RenderToModel();
 
