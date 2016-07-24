@@ -555,7 +555,7 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                SendEmail($"{_profile.ProfileName} server update", $"The server update process has started.", false);
+                SendEmail($"{_profile.ProfileName} auto update started", $"The auto update process has started.", false);
 
                 if (BackupWorldFile)
                 {
@@ -609,6 +609,8 @@ namespace ARK_Server_Manager.Lib
 
                             LogProfileMessage("Updated server from cache.");
                             LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
+
+                            LogProfileMessage($"Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287/.");
                         }
                         else
                         {
@@ -628,12 +630,17 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
+                {
+                    SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed during the server update process.", true);
                     return;
+                }
 
                 // check if the mods need to be updated
                 if (updateModIds.Count > 0)
                 {
                     LogProfileMessage($"Updating {updateModIds.Count} mods from cache...");
+
+                    var modDetails = ModUtils.GetSteamModDetails(updateModIds);
 
                     try
                     {
@@ -643,6 +650,7 @@ namespace ARK_Server_Manager.Lib
                             var modId = updateModIds[index];
                             var modCachePath = ModUtils.GetModCachePath(modId);
                             var modPath = GetModPath(modId);
+                            var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
 
                             try
                             {
@@ -665,27 +673,33 @@ namespace ARK_Server_Manager.Lib
                                         mutex = null;
 
                                         ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                                        LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock mod cache.");
+                                        LogProfileMessage($"Cancelled server update process, could not lock mod cache.");
                                     }
                                     else
                                     {
-                                        LogProfileMessage($"Updating mod {modId}, {index + 1} of {updateModIds.Count} from cache...");
+                                        LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
+                                        LogProfileMessage($"{modId} - {modName}");
+
                                         ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
-                                        LogProfileMessage($"Updated mod {modId}, {index + 1} of {updateModIds.Count} from cache.");
 
                                         var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
-                                        LogProfileMessage($"Mod version: {modLastUpdated}.");
+                                        LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
+
+                                        LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}.");
+                                        LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}.");
+
+                                        LogProfileMessage($"Finished mod {modId} update from cache.");
                                     }
                                 }
                                 else
                                 {
-                                    LogProfileError("Mod cache was not found, mod was not updated from cache.");
+                                    LogProfileError($"Mod {modId} cache was not found, mod was not updated from cache.");
                                     ExitCode = EXITCODE_MODUPDATEFAILED;
                                 }
                             }
                             catch (Exception ex)
                             {
-                                LogProfileError($"Unable to update the mod from cache.\r\n{ex.Message}");
+                                LogProfileError($"Unable to update mod {modId} from cache.\r\n{ex.Message}");
                                 ExitCode = EXITCODE_MODUPDATEFAILED;
                             }
                         }
@@ -707,7 +721,10 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
+                {
+                    SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed during the mod update process.", true);
                     return;
+                }
 
                 // restart the server
                 StartServer();
@@ -726,11 +743,16 @@ namespace ARK_Server_Manager.Lib
             }
 
             if (ExitCode != EXITCODE_NORMALEXIT)
+            {
+                SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed.", true);
                 return;
+            }
 
             LogProfileMessage("-----------------------");
             LogProfileMessage("Finished server update.");
             LogProfileMessage("-----------------------");
+
+            SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.", true);
 
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -851,9 +873,8 @@ namespace ARK_Server_Manager.Lib
                 };
 
                 LogMessage("");
-                LogMessage($"Mod {index + 1} of {updateModIds.Count}");
-                LogMessage($"{modDetail.title}");
-                LogMessage($"Started mod {modId} cache update...");
+                LogMessage($"Started mod cache update {index + 1} of {updateModIds.Count}");
+                LogMessage($"{modId} - {modDetail.title}");
 
                 // update the mod cache
                 var steamCmdArgs = string.Empty;
@@ -887,10 +908,10 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     File.WriteAllText(cacheTimeFile, steamLastUpdated);
-                    LogMessage($"Mod cache version: {steamLastUpdated}");
+                    LogMessage($"Mod {modId} cache version: {steamLastUpdated}");
                 }
                 else
-                    LogMessage($"Mod cache does not exist.");
+                    LogMessage($"Mod {modId} cache does not exist.");
 
                 LogMessage($"Finished mod {modId} cache update.");
             }
@@ -1315,14 +1336,20 @@ namespace ARK_Server_Manager.Lib
                     Credentials = Config.Default.Email_UseDetaultCredentials ? null : new NetworkCredential(Config.Default.Email_Username, Config.Default.Email_Password),
                 };
 
+                string messageBody = body;
                 Attachment attachment = null;
 
                 if (includeLogFile)
                 {
-                    attachment = new Attachment(GetProfileLogFile());
+                    var logFile = GetProfileLogFile();
+                    if (!string.IsNullOrWhiteSpace(logFile) && File.Exists(logFile))
+                    {
+                        messageBody += $"\r\n\r\nLog Information:\r\n{File.ReadAllLines(logFile)}";
+                        attachment = new Attachment(GetProfileLogFile());
+                    }
                 }
 
-                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, body, true, new[] { attachment });
+                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody, true, new[] { attachment });
 
                 LogProfileMessage($"Email Sent - {subject}\r\n{body}");
             }
