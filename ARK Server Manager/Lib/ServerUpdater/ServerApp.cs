@@ -1347,13 +1347,16 @@ namespace ARK_Server_Manager.Lib
                         messageBody.AppendLine();
                         messageBody.AppendLine();
                         messageBody.AppendLine("Log Information:");
-                        messageBody.AppendLine(File.ReadAllText(logFile));
+                        foreach (var line in File.ReadAllLines(logFile))
+                        {
+                            messageBody.AppendLine(line);
+                        }
 
                         attachment = new Attachment(GetProfileLogFile());
                     }
                 }
 
-                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody.ToString(), true, new[] { attachment });
+                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody.ToString(), false, new[] { attachment });
 
                 LogProfileMessage($"Email Sent - {subject}\r\n{body}");
             }
