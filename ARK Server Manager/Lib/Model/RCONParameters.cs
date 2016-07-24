@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
@@ -11,7 +7,7 @@ namespace ARK_Server_Manager.Lib
     {
         public string ProfileName { get; set; }
 
-        public string ServerIP { get; set; }
+        public string RCONHost { get; set; }
 
         public int RCONPort { get; set; }
 
@@ -24,5 +20,21 @@ namespace ARK_Server_Manager.Lib
         public int MaxPlayers { get; set; }
 
         public Server Server { get; set; }
+
+        public IPAddress RCONHostIP
+        {
+            get
+            {
+                try
+                {
+                    var ipAddresses = Dns.GetHostAddresses(RCONHost);
+                    if (ipAddresses.Length > 0)
+                        return ipAddresses[0].MapToIPv4();
+                }
+                catch {}
+
+                return IPAddress.None;
+            }
+        }
     }
 }

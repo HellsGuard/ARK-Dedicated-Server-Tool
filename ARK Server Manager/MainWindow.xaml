@@ -35,6 +35,9 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{DynamicResource MainWindow_VersionLabel}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Button Margin="5" Click="ASMPatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
+                        <Image Source="Art/Help.png" Height="16" Margin="0" />
+                    </Button>
                     <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="{DynamicResource MainWindow_UpdateToLabelFormat}" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
@@ -86,8 +89,14 @@
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                     <Image Source="Art/Donate.png" />
                 </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
+                    <Image Source="Art/SteamCMD.png" Width="16"/>
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
                     <Image Source="Art/Command.png" Width="16"/>
+                </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}">
+                    <Image Source="Art/OpenLog.png" Width="16"/>
                 </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
                     <Image Source="Art/Settings.png" Width="16"/>
@@ -99,16 +108,46 @@
  
 
         </DockPanel>
-        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" 
-                       ShowCloseTabButton="True" ShowNewTabButton="True" 
-                       NewItemRequested="Servers_AddNew"
-                       PreviewItemClose="Servers_Remove"
-                       ItemsSource="{Binding ServerManager.Servers}">
+        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
             <eo:TabControl.HeaderTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Profile.ProfileName}"/>
+                <DataTemplate >
+                    <TextBlock Text="{Binding Profile.ProfileName}"/>
                 </DataTemplate>
             </eo:TabControl.HeaderTemplate>
+            <eo:TabControl.NewTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border BorderBrush="#8C8E94" BorderThickness="1,1,1,0" Padding="3,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#F3F3F3" />
+                                                <GradientStop Offset="0.5" Color="#EBEBEB" />
+                                                <GradientStop Offset="0.5" Color="#DDDDDD" />
+                                                <GradientStop Offset="1" Color="#CDCDCD" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Add.png" ToolTip="{DynamicResource MainWindow_NewProfileTooltip}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.NewTabButtonStyle>
+            <eo:TabControl.CloseTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Delete.png" ToolTip="{DynamicResource MainWindow_CloseProfileTooltip}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.CloseTabButtonStyle>            
             <eo:TabControl.ContentTemplate>
                 <DataTemplate>
                     <local:ServerSettingsControl Server="{Binding}"/>

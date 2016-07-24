@@ -464,7 +464,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             _logger.Debug("Failed to connect to RCON at {0}:{1} with {2}: {3}\n{4}",
-                   this.rconParams.ServerIP,
+                   this.rconParams.RCONHostIP,
                    this.rconParams.RCONPort,
                    this.rconParams.AdminPassword,
                    lastException.Message,
@@ -481,7 +481,7 @@ namespace ARK_Server_Manager.Lib
                 this.console = null;
             }
           
-            var endpoint = new IPEndPoint(IPAddress.Parse(this.rconParams.ServerIP), this.rconParams.RCONPort);    
+            var endpoint = new IPEndPoint(this.rconParams.RCONHostIP, this.rconParams.RCONPort);    
             var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint);
             this.console = server.GetControl(this.rconParams.AdminPassword);
             return true;

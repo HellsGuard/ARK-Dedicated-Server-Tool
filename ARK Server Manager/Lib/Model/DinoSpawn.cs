@@ -1,21 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
+using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {   
     public class DinoSpawn : AggregateIniValue
     {
         public const string AggregateValueName = "DinoSpawnWeightMultipliers";
-        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(10.0F));
-        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata("--SET ME--"));
-        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(0.0F));
-        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
+
+        public const bool DefaultOverrideSpawnLimitPercentage = true;
+        public const float DefaultSpawnLimitPercentage = ClassMultiplier.DefaultMultiplier;
+        public const float DefaultSpawnWeightMultiplier = ClassMultiplier.DefaultMultiplier;
+
+        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(DefaultOverrideSpawnLimitPercentage));
+        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DefaultSpawnLimitPercentage));
+        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DefaultSpawnWeightMultiplier));
+
+        public string ClassName
+        {
+            get { return (string)GetValue(ClassNameProperty); }
+            set { SetValue(ClassNameProperty, value); }
+        }
 
         [XmlElement(ElementName="Name")]
         [AggregateIniValueEntry]
@@ -23,13 +31,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (string)GetValue(DinoNameTagProperty); }
             set { SetValue(DinoNameTagProperty, value); }
-        }
-
-        [AggregateIniValueEntry]
-        public float SpawnWeightMultiplier
-        {
-            get { return (float)GetValue(SpawnWeightMultiplierProperty); }
-            set { SetValue(SpawnWeightMultiplierProperty, value); }
         }
 
         [AggregateIniValueEntry]
@@ -46,16 +47,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
-
-
-        public string ClassName
+        [AggregateIniValueEntry]
+        public float SpawnWeightMultiplier
         {
-            get { return (string)GetValue(ClassNameProperty); }
-            set { SetValue(ClassNameProperty, value); }
+            get { return (float)GetValue(SpawnWeightMultiplierProperty); }
+            set { SetValue(SpawnWeightMultiplierProperty, value); }
         }
-
-        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
-
 
 
         public static DinoSpawn FromINIValue(string iniValue)
@@ -65,14 +62,14 @@ namespace ARK_Server_Manager.Lib
             return newSpawn;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.DinoNameTag, ((DinoSpawn)other).DinoNameTag, StringComparison.OrdinalIgnoreCase);
-        }
-
         public override string GetSortKey()
         {
             return this.DinoNameTag;
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.DinoNameTag, ((DinoSpawn)other).DinoNameTag, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

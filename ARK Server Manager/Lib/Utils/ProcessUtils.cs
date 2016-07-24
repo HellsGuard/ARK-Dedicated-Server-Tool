@@ -1,0 +1,160 @@
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Management;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ARK_Server_Manager.Lib
+{
+    public static class ProcessUtils
+    {
+        // Delegate type to be used as the Handler Routine for SCCH
+        delegate bool ConsoleCtrlDelegate(CtrlTypes CtrlType);
+
+        // Enumerated type for the control messages sent to the handler routine
+        enum CtrlTypes : uint
+        {
+            CTRL_C_EVENT = 0,
+            CTRL_BREAK_EVENT,
+            CTRL_CLOSE_EVENT,
+            CTRL_LOGOFF_EVENT = 5,
+            CTRL_SHUTDOWN_EVENT
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool AttachConsole(uint dwProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        static extern bool FreeConsole();
+
+        [DllImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GenerateConsoleCtrlEvent(CtrlTypes dwCtrlEvent, uint dwProcessGroupId);
+
+        [DllImport("kernel32.dll")]
+        static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
+
+        public static string FIELD_COMMANDLINE = "CommandLine";
+        public static string FIELD_EXECUTABLEPATH = "ExecutablePath";
+        public static string FIELD_PROCESSID = "ProcessId";
+
+        public static string GetCommandLineForProcess(int processId)
+        {
+            var wmiQueryString = $"SELECT {FIELD_COMMANDLINE} FROM Win32_Process WHERE {FIELD_PROCESSID} = {processId}";
+
+            using (var searcher = new ManagementObjectSearcher(wmiQueryString))
+            {
+                using (var results = searcher.Get())
+                {
+                    ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+                    if (mo != null)
+                        return (string)mo[FIELD_COMMANDLINE];
+                }
+            }
+
+            return null;
+        }
+
+        public static string GetMainModuleFilepath(int processId)
+        {
+            var wmiQueryString = $"SELECT {FIELD_EXECUTABLEPATH} FROM Win32_Process WHERE {FIELD_PROCESSID} = {processId}";
+
+            using (var searcher = new ManagementObjectSearcher(wmiQueryString))
+            {
+                using (var results = searcher.Get())
+                {
+                    ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+                    if (mo != null)
+                        return (string)mo[FIELD_EXECUTABLEPATH];
+                }
+            }
+
+            return null;
+        }
+
+        public static async Task SendStop(Process process)
+        {
+            if (process == null)
+                return;
+
+            var ts = new TaskCompletionSource<bool>();
+            EventHandler handler = (s, e) => ts.TrySetResult(true);
+
+            try
+            {
+                process.Exited += handler;
+
+                //This does not require the console window to be visible.
+                if (AttachConsole((uint)process.Id))
+                {
+                    // Disable Ctrl-C handling for our program
+                    SetConsoleCtrlHandler(null, true);
+                    GenerateConsoleCtrlEvent(CtrlTypes.CTRL_C_EVENT, 0);
+
+                    // Must wait here. If we don't and re-enable Ctrl-C
+                    // handling below too fast, we might terminate ourselves.
+                    await ts.Task;
+
+                    FreeConsole();
+
+                    //Re-enable Ctrl-C handling or any subsequently started
+                    //programs will inherit the disabled state.
+                    SetConsoleCtrlHandler(null, false);
+                }
+                else
+                {
+                    process.Kill();
+                }
+            }
+            finally
+            {
+                process.Exited -= handler;
+            }
+        }
+
+        public static Task<bool> RunProcessAsync(string fileName, string arguments, string verb, DataReceivedEventHandler outputHandler, CancellationToken cancellationToken, ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal)
+        {
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                Verb = verb,
+                UseShellExecute = false,
+                RedirectStandardOutput = outputHandler != null,
+                CreateNoWindow = outputHandler != null || windowStyle == ProcessWindowStyle.Hidden,
+                WindowStyle = windowStyle,
+            };
+
+            var process = Process.Start(startInfo);
+            process.EnableRaisingEvents = true;
+            if (outputHandler != null)
+            {
+                process.OutputDataReceived += outputHandler;
+                process.BeginOutputReadLine();
+            }
+
+            var tcs = new TaskCompletionSource<bool>();
+            using (var cancelRegistration = cancellationToken.Register(() =>
+                {
+                    try
+                    {
+                        process.Kill();
+                    }
+                    finally
+                    {
+                        tcs.TrySetCanceled();
+                    }
+                }))
+            {
+                process.Exited += ((s, e) =>
+                {
+                    tcs.TrySetResult(process.ExitCode == 0);
+                    process.Close();
+                });
+                return tcs.Task;
+            }
+        }
+    }
+}

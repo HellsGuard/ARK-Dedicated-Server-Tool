@@ -70,7 +70,7 @@ namespace ARK_Server_Manager.Lib
             {
                 try
                 {
-                    File.Delete(server.Profile.GetProfilePath());
+                    File.Delete(server.Profile.GetProfileFile());
                 }
                 catch(Exception)
                 {

@@ -56,7 +56,7 @@
     <Setting Name="ProfileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.profile</Value>
     </Setting>
-    <Setting Name="DefaultServerMap" Type="System.String" Scope="User">
+    <Setting Name="DefaultServerMap_TheIsland" Type="System.String" Scope="Application">
       <Value Profile="(Default)">TheIsland</Value>
     </Setting>
     <Setting Name="DataDir" Type="System.String" Scope="User">
@@ -68,7 +68,7 @@
     <Setting Name="ServerProcessName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGameServer</Value>
     </Setting>
-    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="User">
+    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameUserSettings.ini</Value>
     </Setting>
     <Setting Name="IniExtension" Type="System.String" Scope="Application">
@@ -89,7 +89,7 @@
     <Setting Name="LogsDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Logs</Value>
     </Setting>
-    <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="User">
+    <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">?MultiHome={0}</Value>
     </Setting>
     <Setting Name="AvailableVersionUrl" Type="System.String" Scope="Application">
@@ -113,12 +113,6 @@
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
     </Setting>
-    <Setting Name="SteamUserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="SteamPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="ASMDownloadUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/latest.zip</Value>
     </Setting>
@@ -127,12 +121,6 @@
     </Setting>
     <Setting Name="SchedulerWorkDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ASMScheduler</Value>
-    </Setting>
-    <Setting Name="ServerCacheDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ServerCacheUpdatePeriod" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RCON_PlayerListSort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
@@ -143,11 +131,8 @@
     <Setting Name="RCON_AdminName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GLOBAL_EnableServerCache" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="HelpUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.com</Value>
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/1194/faq-frequently-asked</Value>
     </Setting>
     <Setting Name="OpenRCON_ServerIP" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -217,6 +202,135 @@
     </Setting>
     <Setting Name="ArkSotfUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://store.steampowered.com/app/407530/</Value>
+    </Setting>
+    <Setting Name="ASM_PatchNotesUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3/downloads</Value>
+    </Setting>
+    <Setting Name="RunAsAdministratorPrompt" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_EnableUpdate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_UpdatePeriod" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_GracePeriod" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_GraceMessage1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server shutdown required. Server will shutdown in {minutes} minutes. Please logout before shutdown to prevent character corruption.</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_GraceMessage2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server shutdown required. Server will shutdown in 1 minute. Please logout before shutdown to prevent character corruption.</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_GraceMessage3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server shutdown required. Server is shutting down now.</Value>
+    </Setting>
+    <Setting Name="LastUpdatedTimeFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LastUpdatedASM.txt</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_WorldSaveMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server shutdown required. Server is about to shutdown, performing a world save.</Value>
+    </Setting>
+    <Setting Name="ServerShutdown_EnableWorldSave" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LauncherFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">RunServer.cmd</Value>
+    </Setting>
+    <Setting Name="SteamCmdInstallModArgsFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">+login {0} +workshop_download_item 346110 {1} +quit</Value>
+    </Setting>
+    <Setting Name="ArkSteamWorkshopFolderRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">steamapps\workshop\content\346110\</Value>
+    </Setting>
+    <Setting Name="ServerModsRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGame\Content\Mods</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_CacheDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ServerUpdate_UpdateModsWhenUpdatingServer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ServerUpdate_ForceUpdateMods" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ServerUpdate_ForceCopyMods" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DefaultServerMap_TheCenter" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">TheCenter</Value>
+    </Setting>
+    <Setting Name="WebAlarmFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">AlarmPostCredentials.txt</Value>
+    </Setting>
+    <Setting Name="SavedRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ShooterGame\Saved</Value>
+    </Setting>
+    <Setting Name="SteamCmdRedirectOutput" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_UseSmartCopy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="StyleName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WorkshopCacheFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WorkshopCache.xml</Value>
+    </Setting>
+    <Setting Name="Email_Host" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Email_Port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="Email_UseSSL" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Email_UseDetaultCredentials" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Email_Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Email_Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Email_From" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Email_To" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailNotify_AutoUpdate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EmailNotify_AutoRestart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SteamCmd_Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SteamCmd_AnonymousUsername" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">anonymous</Value>
+    </Setting>
+    <Setting Name="SteamCmd_UseAnonymousCredentials" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SteamCmdAuthenticateArgs" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">+login {0} {1} +quit</Value>
+    </Setting>
+    <Setting Name="SteamWorkshopFolderRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">steamapps\workshop</Value>
+    </Setting>
+    <Setting Name="ArkSteamWorkshopFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">appworkshop_346110.acf</Value>
+    </Setting>
+    <Setting Name="SteamCmd_Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
