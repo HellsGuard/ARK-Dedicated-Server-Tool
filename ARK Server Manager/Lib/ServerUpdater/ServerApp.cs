@@ -680,7 +680,7 @@ namespace ARK_Server_Manager.Lib
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"{modId} - {modName}");
 
-                                        ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
+                                        ModUtils.CopyMod(modCachePath, modPath, modId, null); // (int p, string m) => { LogProfileMessage(m); });
 
                                         var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
                                         LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
@@ -728,6 +728,8 @@ namespace ARK_Server_Manager.Lib
 
                 // restart the server
                 StartServer();
+
+                SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.", true);
             }
             else
             {
@@ -751,8 +753,6 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("-----------------------");
             LogProfileMessage("Finished server update.");
             LogProfileMessage("-----------------------");
-
-            SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.", true);
 
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -1336,7 +1336,7 @@ namespace ARK_Server_Manager.Lib
                     Credentials = Config.Default.Email_UseDetaultCredentials ? null : new NetworkCredential(Config.Default.Email_Username, Config.Default.Email_Password),
                 };
 
-                string messageBody = body;
+                StringBuilder messageBody = new StringBuilder(body);
                 Attachment attachment = null;
 
                 if (includeLogFile)
@@ -1344,12 +1344,16 @@ namespace ARK_Server_Manager.Lib
                     var logFile = GetProfileLogFile();
                     if (!string.IsNullOrWhiteSpace(logFile) && File.Exists(logFile))
                     {
-                        messageBody += $"\r\n\r\nLog Information:\r\n{File.ReadAllLines(logFile)}";
+                        messageBody.AppendLine();
+                        messageBody.AppendLine();
+                        messageBody.AppendLine("Log Information:");
+                        messageBody.AppendLine(File.ReadAllText(logFile));
+
                         attachment = new Attachment(GetProfileLogFile());
                     }
                 }
 
-                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody, true, new[] { attachment });
+                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody.ToString(), true, new[] { attachment });
 
                 LogProfileMessage($"Email Sent - {subject}\r\n{body}");
             }
