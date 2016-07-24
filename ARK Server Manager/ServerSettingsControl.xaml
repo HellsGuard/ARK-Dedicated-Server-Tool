@@ -1128,7 +1128,7 @@
                                 </GroupBox.Header>
                                 <CheckBox Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}">
                                     <CheckBox.Style>
-                                        <Style TargetType="{x:Type CheckBox}">
+                                        <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding EnableSOTFCheckbox}" Value="true">
                                                     <Setter Property="IsEnabled" Value="False"/>

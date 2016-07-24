@@ -564,25 +564,35 @@ namespace ARK_Server_Manager.Lib
                                     if (downloadMod)
                                     {
                                         // check if the mod needs to be downloaded, or force the download.
-                                        if (!Config.Default.ServerUpdate_ForceUpdateMods)
+                                        if (Config.Default.ServerUpdate_ForceUpdateMods)
                                         {
-                                            modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
-                                            if (modCacheLastUpdated <= 0)
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
+                                        }
+                                        else
+                                        {
+                                            // check if the mod detail record is valid (private mod).
+                                            if (modDetail.time_updated <= 0)
                                             {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod is private.");
                                             }
                                             else
                                             {
-                                                var steamLastUpdated = modDetail.time_updated;
-                                                if (steamLastUpdated <= modCacheLastUpdated)
+                                                modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                                                if (modCacheLastUpdated <= 0)
                                                 {
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
-                                                    downloadMod = false;
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
+                                                }
+                                                else
+                                                {
+                                                    var steamLastUpdated = modDetail.time_updated;
+                                                    if (steamLastUpdated <= modCacheLastUpdated)
+                                                    {
+                                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
+                                                        downloadMod = false;
+                                                    }
                                                 }
                                             }
                                         }
-                                        else
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
 
                                         if (downloadMod)
                                         {
@@ -617,11 +627,19 @@ namespace ARK_Server_Manager.Lib
                                                     // check if any of the mod files have changed.
                                                     gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Where(file => file.LastWriteTime >= startTime).Any();
 
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.\r\n");
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
+
+                                                    var steamLastUpdated = modDetail.time_updated.ToString();
+                                                    if (modDetail.time_updated <= 0)
+                                                    {
+                                                        // get the version number from the steamcmd workshop file.
+                                                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(), modId).ToString();
+                                                    }
 
                                                     // update the last updated file with the steam updated time.
-                                                    var steamLastUpdated = modDetail.time_updated.ToString();
                                                     File.WriteAllText(cacheTimeFile, steamLastUpdated);
+
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod Cache version: {steamLastUpdated}\r\n");
                                                 }
                                             }
                                             else
@@ -640,7 +658,11 @@ namespace ARK_Server_Manager.Lib
                                     if (copyMod)
                                     {
                                         // check if the mod needs to be copied, or force the copy.
-                                        if (!Config.Default.ServerUpdate_ForceCopyMods)
+                                        if (Config.Default.ServerUpdate_ForceCopyMods)
+                                        {
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
+                                        }
+                                        else
                                         {
                                             // check the mod version against the cache version.
                                             var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
@@ -654,12 +676,11 @@ namespace ARK_Server_Manager.Lib
                                                 if (modCacheLastUpdated <= modLastUpdated)
                                                 {
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                                     copyMod = false;
                                                 }
                                             }
                                         }
-                                        else
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
 
                                         if (copyMod)
                                         {
@@ -670,6 +691,9 @@ namespace ARK_Server_Manager.Lib
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
                                                     ModUtils.CopyMod(modCachePath, modPath, modId, null);
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
+
+                                                    var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                                 }
                                                 else
                                                 {

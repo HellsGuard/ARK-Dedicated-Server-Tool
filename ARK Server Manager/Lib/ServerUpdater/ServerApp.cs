@@ -600,27 +600,6 @@ namespace ARK_Server_Manager.Lib
                         {
                             LogProfileMessage($"Smart cache copy: {Config.Default.AutoUpdate_UseSmartCopy}.");
 
-                            //// try to establish a mutex for the server cache folder.
-                            //var startTime = DateTime.Now;
-                            //var delay = 0;
-                            //do
-                            //{
-                            //    Task.Delay(delay).Wait();
-                            //    delay = MUTEX_ATTEMPTDELAY;
-
-                            //    mutex = new Mutex(true, GetMutexName(Config.Default.AutoUpdate_CacheDir), out createdNew);
-                            //} while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
-
-                            //// check if the mutex was established
-                            //if (mutex == null || !createdNew)
-                            //{
-                            //    mutex = null;
-
-                            //    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                            //    LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock server cache.");
-                            //}
-                            //else
-                            //{
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy);
 
@@ -630,7 +609,6 @@ namespace ARK_Server_Manager.Lib
 
                             LogProfileMessage("Updated server from cache.");
                             LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
-                            //}
                         }
                         else
                         {
@@ -808,24 +786,32 @@ namespace ARK_Server_Manager.Lib
                         continue;
                     }
 
-                    var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
-
-                    // check if the mod needs to be updated
-                    var steamLastUpdated = modDetail.time_updated;
-                    var modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
-                    if (steamLastUpdated > modCacheLastUpdated)
+                    if (modDetail.time_updated == 0)
                     {
-                        LogMessage($"Mod {modId} will be updated - new version found.");
-                        updateModIds.Add(modId);
-                    }
-                    else if (modCacheLastUpdated == 0)
-                    {
-                        LogMessage($"Mod {modId} will be updated - cache not versioned.");
+                        LogMessage($"Mod {modId} will be updated - mod is private.");
                         updateModIds.Add(modId);
                     }
                     else
                     {
-                        LogMessage($"Mod {modId} update skipped - cache contains the latest version.");
+                        var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
+
+                        // check if the mod needs to be updated
+                        var steamLastUpdated = modDetail.time_updated;
+                        var modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                        if (steamLastUpdated > modCacheLastUpdated)
+                        {
+                            LogMessage($"Mod {modId} will be updated - new version found.");
+                            updateModIds.Add(modId);
+                        }
+                        else if (modCacheLastUpdated == 0)
+                        {
+                            LogMessage($"Mod {modId} will be updated - cache not versioned.");
+                            updateModIds.Add(modId);
+                        }
+                        else
+                        {
+                            LogMessage($"Mod {modId} update skipped - cache contains the latest version.");
+                        }
                     }
                 }
             }
@@ -893,8 +879,13 @@ namespace ARK_Server_Manager.Lib
                     else
                         LogMessage("No new version.");
 
-                    // update the last updated file with the steam updated time.
                     var steamLastUpdated = modDetail.time_updated.ToString();
+                    if (modDetail.time_updated <= 0)
+                    {
+                        // get the version number from the steamcmd workshop file.
+                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(), modId).ToString();
+                    }
+
                     File.WriteAllText(cacheTimeFile, steamLastUpdated);
                     LogMessage($"Mod cache version: {steamLastUpdated}");
                 }

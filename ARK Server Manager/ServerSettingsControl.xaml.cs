@@ -807,7 +807,7 @@ namespace ARK_Server_Manager
                 if (File.Exists(file)) files.Add(file);
 
                 // <data folder>\SteamCMD\steamapps\workshop\content\346110
-                folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.WorkshopFolderRelativePath);
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath);
                 if (Directory.Exists(folder))
                 {
                     foreach (var modFolder in Directory.GetDirectories(folder))

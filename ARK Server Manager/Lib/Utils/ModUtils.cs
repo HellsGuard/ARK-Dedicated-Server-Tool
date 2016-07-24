@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using ARK_Server_Manager.Lib.Model;
 using Ionic.Zlib;
+using NeXt.Vdf;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -191,7 +192,7 @@ namespace ARK_Server_Manager.Lib
             return mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
         }
 
-        public static string GetModCachePath(string modId) => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.WorkshopFolderRelativePath, modId));
+        public static string GetModCachePath(string modId) => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath, modId));
 
         public static List<string> GetModIdList(string modIds)
         {
@@ -309,7 +310,7 @@ namespace ARK_Server_Manager.Lib
                         count++;
                     }
 
-                    postData = $"itemcount={count}{postData}";
+                    postData = $"key={Config.Default.SteamAPIKey}&format=json&itemcount={count}{postData}";
 
                     var data = Encoding.ASCII.GetBytes(postData);
 
@@ -348,6 +349,29 @@ namespace ARK_Server_Manager.Lib
             {
                 Debug.WriteLine($"ERROR: {nameof(GetSteamModDetails)}\r\n{ex.Message}");
                 return null;
+            }
+        }
+
+        public static string GetSteamWorkshopFile() => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile));
+
+        public static int GetSteamWorkshopLatestTime(string workshopFile, string modId)
+        {
+            try
+            {
+                var result = ReadSteamCmdAppWorkshopFile(workshopFile);
+                if (result == null)
+                    return 0;
+
+                var detail = result.WorkshopItemDetails.FirstOrDefault(v => v.publishedfileid.Equals(modId));
+                if (detail == null)
+                    return 0;
+
+                int unixTime;
+                return int.TryParse(detail.timeupdated, out unixTime) ? unixTime : 0;
+            }
+            catch
+            {
+                return 0;
             }
         }
 
@@ -455,6 +479,17 @@ namespace ARK_Server_Manager.Lib
                     metaInformation.Add(readString4, readString5);
                 }
             }
+        }
+
+        public static SteamCmdAppWorkshop ReadSteamCmdAppWorkshopFile(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
+            var vdfSerializer = VdfDeserializer.FromFile(file);
+            var vdf = vdfSerializer.Deserialize();
+
+            return SteamCmdWorkshopDetailsResult.Deserialize(vdf);
         }
 
         private static void ReadUE4String(BinaryReader reader, out string readString)

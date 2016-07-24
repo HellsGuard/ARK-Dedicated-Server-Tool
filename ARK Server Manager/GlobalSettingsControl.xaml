@@ -126,6 +126,8 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" IsChecked="{Binding CurrentConfig.ServerUpdate_UpdateModsWhenUpdatingServer, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_UpdateModWithServerLabel}" ToolTip="{DynamicResource GlobalSettings_UpdateModWithServerTooltip}"/>
@@ -158,7 +160,22 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button Grid.Row="1" Grid.Column="7" Content="{DynamicResource GlobalSettings_SteamCMDAuthenticateButtonLabel}" Click="SteamCMDAuthenticate_Click" VerticalAlignment="Stretch">
+                <Label Grid.Row="1" Grid.Column="5" Content="{DynamicResource GlobalSettings_SteamCmdPasswordLabel}" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
+                    <TextBox.Style>
+                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentConfig.SteamCmdRedirectOutput}" Value="true">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Value="true">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button Grid.Row="1" Grid.Column="8" Content="{DynamicResource GlobalSettings_SteamCMDAuthenticateButtonLabel}" Click="SteamCMDAuthenticate_Click" VerticalAlignment="Stretch">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Style.Triggers>

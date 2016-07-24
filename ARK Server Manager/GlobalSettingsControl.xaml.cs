@@ -213,7 +213,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
                 await Task.Delay(500);
 
-                var steamCmdArgs = string.Format(Config.Default.SteamCmdAuthenticateArgs, Config.Default.SteamCmd_Username);
+                var steamCmdArgs = string.Format(Config.Default.SteamCmdAuthenticateArgs, Config.Default.SteamCmd_Username, Config.Default.SteamCmd_Password);
                 var result = await ProcessUtils.RunProcessAsync(steamCmdFile, steamCmdArgs, string.Empty, null, CancellationToken.None);
                 if (result)
                     MessageBox.Show("The authentication was completed.", "SteamCMD Authentication", MessageBoxButton.OK, MessageBoxImage.Information);

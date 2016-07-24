@@ -148,7 +148,9 @@
     <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Controls whether the anonymous user is used to download from SteamCMD.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Username:</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdUsernameTooltip">The user name associated with the steam account.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate SteamCMD</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdPasswordLabel">Password:</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdPasswordTooltip">The password associated with the steam account.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate</sys:String>
     <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>

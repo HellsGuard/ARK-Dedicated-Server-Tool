@@ -850,9 +850,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("steamapps\\workshop\\content\\346110\\")]
-        public string WorkshopFolderRelativePath {
+        public string ArkSteamWorkshopFolderRelativePath {
             get {
-                return ((string)(this["WorkshopFolderRelativePath"]));
+                return ((string)(this["ArkSteamWorkshopFolderRelativePath"]));
             }
         }
         
@@ -1140,10 +1140,40 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} {1} +quit")]
         public string SteamCmdAuthenticateArgs {
             get {
                 return ((string)(this["SteamCmdAuthenticateArgs"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("steamapps\\workshop")]
+        public string SteamWorkshopFolderRelativePath {
+            get {
+                return ((string)(this["SteamWorkshopFolderRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("appworkshop_346110.acf")]
+        public string ArkSteamWorkshopFile {
+            get {
+                return ((string)(this["ArkSteamWorkshopFile"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamCmd_Password {
+            get {
+                return ((string)(this["SteamCmd_Password"]));
+            }
+            set {
+                this["SteamCmd_Password"] = value;
             }
         }
     }
