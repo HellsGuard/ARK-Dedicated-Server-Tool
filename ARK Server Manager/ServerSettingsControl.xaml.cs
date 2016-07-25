@@ -218,17 +218,15 @@ namespace ARK_Server_Manager
                         mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
 
                         // check if the mutex was established
-                        if (mutex == null || !createdNew)
-                        {
-                            mutex = null;
-
-                            // display an error message and exit
-                            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_StartServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_StartServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        else
+                        if (createdNew)
                         {
                             this.Settings.Save(false);
                             await this.Server.StartAsync();
+                        }
+                        else
+                        {
+                            // display an error message and exit
+                            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_StartServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_StartServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                     catch (Exception ex)
@@ -274,9 +272,9 @@ namespace ARK_Server_Manager
             if (_upgradeCancellationSource != null)
                 return;
 
+            ProgressWindow window = null;
             Mutex mutex = null;
             bool createdNew = false;
-            ProgressWindow window = null;
 
             try
             {
@@ -284,14 +282,7 @@ namespace ARK_Server_Manager
                 mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
 
                 // check if the mutex was established
-                if (mutex == null || !createdNew)
-                {
-                    mutex = null;
-
-                    // display an error message and exit
-                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
+                if (createdNew)
                 {
                     this._upgradeCancellationSource = new CancellationTokenSource();
 
@@ -302,6 +293,11 @@ namespace ARK_Server_Manager
 
                     await Task.Delay(1000);
                     await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                }
+                else
+                {
+                    // display an error message and exit
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
@@ -347,9 +343,9 @@ namespace ARK_Server_Manager
             if (_upgradeCancellationSource != null)
                 return;
 
+            ProgressWindow window = null;
             Mutex mutex = null;
             bool createdNew = false;
-            ProgressWindow window = null;
 
             try
             {
@@ -357,14 +353,7 @@ namespace ARK_Server_Manager
                 mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
 
                 // check if the mutex was established
-                if (mutex == null || !createdNew)
-                {
-                    mutex = null;
-
-                    // display an error message and exit
-                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeMods_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeMods_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
+                if (createdNew)
                 {
                     this._upgradeCancellationSource = new CancellationTokenSource();
 
@@ -375,6 +364,11 @@ namespace ARK_Server_Manager
 
                     await Task.Delay(1000);
                     await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: false, validate: true, updateMods: true, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                }
+                else
+                {
+                    // display an error message and exit
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeMods_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeMods_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
