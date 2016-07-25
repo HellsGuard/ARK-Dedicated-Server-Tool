@@ -2102,8 +2102,28 @@ namespace ARK_Server_Manager.Lib
             // ensure that the auto update is switched off for SotF servers
             if (SOTF_Enabled)
                 EnableAutoUpdate = false;
+
+            // ensure that the ARK mod management is switched off for ASM controlled profiles
             if (EnableAutoUpdate)
                 AutoManagedMods = false;
+
+            // ensure that the MAX XP settings for player and dinos are set to the last custom level
+            if (EnableLevelProgressions)
+            {
+                // dinos
+                var list = GetLevelList(LevelProgression.Dino);
+                var lastxp = (list == null || list.Count == 0) ? 0 : list[list.Count - 1].XPRequired;
+
+                if (lastxp > OverrideMaxExperiencePointsDino)
+                    OverrideMaxExperiencePointsDino = lastxp;
+
+                // players
+                list = GetLevelList(LevelProgression.Player);
+                lastxp = (list == null || list.Count == 0) ? 0 : list[list.Count - 1].XPRequired;
+
+                if (lastxp > OverrideMaxExperiencePointsPlayer)
+                    OverrideMaxExperiencePointsPlayer = lastxp;
+            }
 
             this.DinoSettings.RenderToModel();
 
