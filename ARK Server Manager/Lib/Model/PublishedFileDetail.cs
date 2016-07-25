@@ -258,15 +258,15 @@ namespace ARK_Server_Manager.Lib.Model
             {
                 switch (mod.ModTypeString)
                 {
-                    case ModDetail.MODTYPE_MAP:
+                    case ModUtils.MODTYPENAME_MAP:
                         mapString = $"/Game/Mods/{mod.ModId}/{mod.MapName}";
                         break;
-                    case ModDetail.MODTYPE_TOTCONV:
+                    case ModUtils.MODTYPENAME_TOTCONV:
                         totalConversionString = mod.ModId;
                         break;
-                    case ModDetail.MODTYPE_MAPEXT:
-                    case ModDetail.MODTYPE_MOD:
-                    case ModDetail.MODTYPE_UNKNOWN:
+                    case ModUtils.MODTYPENAME_MAPEXT:
+                    case ModUtils.MODTYPENAME_MOD:
+                    case ModUtils.MODTYPENAME_UNKNOWN:
                         modIdString += $"{delimiter}{mod.ModId}";
                         delimiter = ",";
                         break;
@@ -294,20 +294,14 @@ namespace ARK_Server_Manager.Lib.Model
 
     public class ModDetail : DependencyObject
     {
-        public const string MODTYPE_UNKNOWN = "<not downloaded>";
-        public const string MODTYPE_MAP = "Map";
-        public const string MODTYPE_MAPEXT = "Map Extension";
-        public const string MODTYPE_MOD = "Mod";
-        public const string MODTYPE_TOTCONV = "Total Conversion";
-
         public static readonly DependencyProperty IndexProperty = DependencyProperty.Register(nameof(Index), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty IsFirstProperty = DependencyProperty.Register(nameof(IsFirst), typeof(bool), typeof(ModDetail), new PropertyMetadata(false));
         public static readonly DependencyProperty IsLastProperty = DependencyProperty.Register(nameof(IsLast), typeof(bool), typeof(ModDetail), new PropertyMetadata(false));
         public static readonly DependencyProperty LastWriteTimeProperty = DependencyProperty.Register(nameof(LastWriteTime), typeof(DateTime), typeof(ModDetail), new PropertyMetadata(DateTime.MinValue));
         public static readonly DependencyProperty LastTimeUpdatedProperty = DependencyProperty.Register(nameof(LastTimeUpdated), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty ModIdProperty = DependencyProperty.Register(nameof(ModId), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty ModTypeProperty = DependencyProperty.Register(nameof(ModType), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty ModTypeStringProperty = DependencyProperty.Register(nameof(ModTypeString), typeof(string), typeof(ModDetail), new PropertyMetadata(MODTYPE_UNKNOWN));
+        public static readonly DependencyProperty ModTypeProperty = DependencyProperty.Register(nameof(ModType), typeof(string), typeof(ModDetail), new PropertyMetadata(ModUtils.MODTYPE_UNKNOWN));
+        public static readonly DependencyProperty ModTypeStringProperty = DependencyProperty.Register(nameof(ModTypeString), typeof(string), typeof(ModDetail), new PropertyMetadata(ModUtils.MODTYPENAME_UNKNOWN));
         public static readonly DependencyProperty ModUrlProperty = DependencyProperty.Register(nameof(ModUrl), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
@@ -387,7 +381,7 @@ namespace ARK_Server_Manager.Lib.Model
         {
             get
             {
-                return !ModTypeString.Equals(MODTYPE_UNKNOWN);
+                return !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN);
             }
         }
 
@@ -443,24 +437,24 @@ namespace ARK_Server_Manager.Lib.Model
         public void SetModTypeString()
         {
             if (string.IsNullOrWhiteSpace(ModType))
-                ModTypeString = MODTYPE_UNKNOWN;
+                ModTypeString = ModUtils.MODTYPENAME_UNKNOWN;
 
             switch (ModType)
             {
-                case "1":
-                    ModTypeString = MODTYPE_MOD;
+                case ModUtils.MODTYPE_MOD:
+                    ModTypeString = ModUtils.MODTYPENAME_MOD;
                     break;
-                case "2":
-                    ModTypeString = MODTYPE_MAP;
+                case ModUtils.MODTYPE_MAP:
+                    ModTypeString = ModUtils.MODTYPENAME_MAP;
                     break;
-                case "3":
-                    ModTypeString = MODTYPE_TOTCONV;
+                case ModUtils.MODTYPE_TOTCONV:
+                    ModTypeString = ModUtils.MODTYPENAME_TOTCONV;
                     break;
-                case "4":
-                    ModTypeString = MODTYPE_MAPEXT;
+                case ModUtils.MODTYPE_MAPEXT:
+                    ModTypeString = ModUtils.MODTYPENAME_MAPEXT;
                     break;
                 default:
-                    ModTypeString = MODTYPE_UNKNOWN;
+                    ModTypeString = ModUtils.MODTYPENAME_UNKNOWN;
                     break;
             }
         }
@@ -534,7 +528,7 @@ namespace ARK_Server_Manager.Lib.Model
             List<string> mapNames;
             ModUtils.ReadModFile(modFile, out modId, out metaInformation, out mapNames);
 
-            ModType = metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : "0";
+            ModType = metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : ModUtils.MODTYPE_UNKNOWN;
             MapName = mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
         }
     }

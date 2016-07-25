@@ -13,6 +13,18 @@ namespace ARK_Server_Manager.Lib
 {
     public static class ModUtils
     {
+        public const string MODTYPE_UNKNOWN = "0";
+        public const string MODTYPE_MAP = "2";
+        public const string MODTYPE_MAPEXT = "4";
+        public const string MODTYPE_MOD = "1";
+        public const string MODTYPE_TOTCONV = "3";
+
+        public const string MODTYPENAME_UNKNOWN = "<not downloaded>";
+        public const string MODTYPENAME_MAP = "Map";
+        public const string MODTYPENAME_MAPEXT = "Map Extension";
+        public const string MODTYPENAME_MOD = "Mod";
+        public const string MODTYPENAME_TOTCONV = "Total Conversion";
+
         private class FCompressedChunkInfo
         {
             public const uint LOADING_COMPRESSION_CHUNK_SIZE = 131072U;
@@ -140,6 +152,10 @@ namespace ARK_Server_Manager.Lib
             // split the map string into parts, using the '/' separator.
             var parts = serverMap.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
+            long mapModId;
+            if (parts.Count == 1 && long.TryParse(parts[0], out mapModId))
+                return mapModId.ToString();
+
             // check if any parts were returned.
             if (parts.Count != 4)
                 return string.Empty;
@@ -179,7 +195,7 @@ namespace ARK_Server_Manager.Lib
             if (string.IsNullOrWhiteSpace(modId))
                 return string.Empty;
 
-            var modFolder = Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId);
+            var modFolder = GetModPath(installDirectory, modId);
             var modFile = $"{modFolder}.mod";
 
             if (!File.Exists(modFile))
@@ -222,6 +238,20 @@ namespace ARK_Server_Manager.Lib
 
         public static string GetModPath(string installDirectory, string modId) => Updater.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId));
 
+        public static string GetModType(string installDirectory, string modId)
+        {
+            if (string.IsNullOrWhiteSpace(modId))
+                return string.Empty;
+
+            var modFolder = GetModPath(installDirectory, modId);
+            var modFile = $"{modFolder}.mod";
+
+            Dictionary<string, string> metaInformation;
+            List<string> mapNames;
+            ReadModFile(modFile, out modId, out metaInformation, out mapNames);
+
+            return metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : MODTYPE_UNKNOWN;
+        }
         public static WorkshopFileDetailResponse GetSteamModDetails()
         {
             const int MAX_ITEMS = 100;

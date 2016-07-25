@@ -1176,5 +1176,17 @@ namespace ARK_Server_Manager {
                 this["SteamCmd_Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ValidateProfileOnServerStart {
+            get {
+                return ((bool)(this["ValidateProfileOnServerStart"]));
+            }
+            set {
+                this["ValidateProfileOnServerStart"] = value;
+            }
+        }
     }
 }

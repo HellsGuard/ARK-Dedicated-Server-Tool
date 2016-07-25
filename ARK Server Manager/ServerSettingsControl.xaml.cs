@@ -221,6 +221,14 @@ namespace ARK_Server_Manager
                         if (createdNew)
                         {
                             this.Settings.Save(false);
+
+                            string validateMessage;
+                            if (!this.Server.Profile.Validate(out validateMessage))
+                            {
+                                if (MessageBox.Show($"The following validation problems were encountered.\r\n\r\n{validateMessage}\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Profile Validation", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                                    return;
+                            }
+
                             await this.Server.StartAsync();
                         }
                         else
@@ -855,6 +863,33 @@ namespace ARK_Server_Manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Support ZipFile Creation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
+        }
+
+        private async void ValidateProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
+                await Task.Delay(500);
+
+                string validationMessage;
+                var result = this.Settings.Validate(out validationMessage);
+
+                if (result)
+                    MessageBox.Show("The profile passed the basic validation.", "Profile Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                else
+                    MessageBox.Show(validationMessage, "Profile Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Profile Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
