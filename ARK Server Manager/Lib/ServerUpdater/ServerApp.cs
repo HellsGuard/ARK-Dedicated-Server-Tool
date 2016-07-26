@@ -664,7 +664,7 @@ namespace ARK_Server_Manager.Lib
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"{modId} - {modName}");
 
-                                        ModUtils.CopyMod(modCachePath, modPath, modId, (int p, string m) => { LogProfileMessage(m); });
+                                        ModUtils.CopyMod(modCachePath, modPath, modId, null); // (int p, string m) => { LogProfileMessage(m); });
 
                                         var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
                                         LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
