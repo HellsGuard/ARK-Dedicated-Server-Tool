@@ -1198,5 +1198,50 @@ namespace ARK_Server_Manager
             }
         }
         #endregion
+
+        private void Password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var hideTextBox = sender as TextBox;
+            if (hideTextBox != null)
+            {
+                TextBox textBox = null;
+                if (hideTextBox == txbxHideServerPassword) 
+                    textBox = txbxServerPassword;
+                if (hideTextBox == txbxHideAdminPassword)
+                    textBox = txbxAdminPassword;
+                if (hideTextBox == txbxHideSpectatorPassword)
+                    textBox = txbxSpectatorPassword;
+
+                if (textBox != null)
+                {
+                    textBox.Visibility = System.Windows.Visibility.Visible;
+                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
+                    textBox.Focus();
+                }
+                UpdateLayout();
+            }
+        }
+
+        private void Password_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                TextBox hideTextBox = null;
+                if (textBox == txbxServerPassword)
+                    hideTextBox = txbxHideServerPassword;
+                if (textBox == txbxAdminPassword)
+                    hideTextBox = txbxHideAdminPassword;
+                if (textBox == txbxSpectatorPassword)
+                    hideTextBox = txbxHideSpectatorPassword;
+
+                if (hideTextBox != null)
+                {
+                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
+                    textBox.Visibility = System.Windows.Visibility.Collapsed;
+                }
+                UpdateLayout();
+            }
+        }
     }
 }
