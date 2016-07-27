@@ -870,45 +870,6 @@ namespace ARK_Server_Manager
             }
         }
 
-<<<<<<< HEAD
-        private void ServerPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideServerPassword.Visibility = System.Windows.Visibility.Visible;
-            UpdateLayout();
-        }
-
-        private void AdminPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideAdminPassword.Visibility = System.Windows.Visibility.Visible;
-            UpdateLayout();
-        }
-
-        private void SpectatorPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideSpectatorPassword.Visibility = System.Windows.Visibility.Visible;
-            UpdateLayout();
-        }
-
-        private void txbxHideServerPassword_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideServerPassword.Visibility = System.Windows.Visibility.Collapsed;
-            txbxServerPassword.Focus();
-            UpdateLayout();
-        }
-
-        private void txbxHideAdminPassword_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideAdminPassword.Visibility = System.Windows.Visibility.Collapsed;
-            txbxAdminPassword.Focus();
-            UpdateLayout();
-        }
-
-        private void txbxHideSpectatorPassword_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txbxHideSpectatorPassword.Visibility = System.Windows.Visibility.Collapsed;
-            txbxSpectatorPassword.Focus();
-            UpdateLayout();
-=======
         private async void ValidateProfile_Click(object sender, RoutedEventArgs e)
         {
             var cursor = this.Cursor;
@@ -934,7 +895,6 @@ namespace ARK_Server_Manager
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
->>>>>>> refs/remotes/ChronosWS/Bletch1971Changes
         }
         #endregion
 

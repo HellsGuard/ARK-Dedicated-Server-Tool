@@ -141,8 +141,6 @@
     <sys:String x:Key="ServerSettings_AdminPasswordTooltip">用户必须输入密码来执行权限。如果不设置，任何人都可以使用权限.</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">观察者密码:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">用户必须输入密码使用非管理员的观众模式.</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">网络</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">服务器源端口:</sys:String>
