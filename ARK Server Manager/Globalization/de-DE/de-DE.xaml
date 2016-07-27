@@ -169,6 +169,10 @@
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Zuschauerpasswort:</sys:String>
 
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">Das Passwort, das Spieler für den Zuschauermodus eingeben müssen.</sys:String>
+    
+    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
+    
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
 
 
 

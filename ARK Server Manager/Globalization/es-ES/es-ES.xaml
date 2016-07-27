@@ -141,6 +141,8 @@
     <sys:String x:Key="ServerSettings_AdminPasswordTooltip">Los usuarios deben introducir la contraseña para ejecutar comandos admin / trucos en el servidor. Si esto no está establecido, cualquier persona puede utilizar trampas.</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Contraseña de espectador</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">Los usuarios deben introducir la contraseña para utilizar el modo no-admin espectador en el servidor.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Redes</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Puerto del servidor</sys:String>

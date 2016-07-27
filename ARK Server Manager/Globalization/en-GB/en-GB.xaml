@@ -193,6 +193,8 @@
     <sys:String x:Key="ServerSettings_AdminPasswordTooltip">The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats.</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Spectator Password:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">The password users must enter to use non-admin spectator mode on the server.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Networking</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Server Port:</sys:String>

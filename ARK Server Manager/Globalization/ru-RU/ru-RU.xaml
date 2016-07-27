@@ -146,6 +146,8 @@
     <sys:String x:Key="ServerSettings_AdminPasswordTooltip">Игрокам необходимо ввести пароль для выполнения команд администратора/читов на сервере. Если его нет, любой игрок сможет использовать читы.</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Пароль Зрителя:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">Игрокам необходимо ввести пароль, чтобы использовать режим зрителя, без прав администратора на сервере.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Сетевые</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Порт сервера:</sys:String>
