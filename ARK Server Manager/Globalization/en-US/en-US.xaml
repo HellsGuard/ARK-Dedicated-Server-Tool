@@ -137,6 +137,8 @@
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputLabel">Output SteamCMD to the progress window</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputTooltip">If enabled, the SteamCMD output will be shown in the progress window instead of the command window. NOTE: if enabled, this could cause your server and mods updates to fail.</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartLabel">Validate profile on server start</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartTooltip">If enabled, when you manually start the server, a basic validation is performed on the server and mod files. NOTE: Will not be performed if Ark Mod Management enabled.</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateModSettingsLabel">Mod Update Settings</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateModWithServerLabel">Update mods when updating server</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateModWithServerTooltip">If enabled, the mods will be updated when the server is updated.</sys:String>
@@ -277,6 +279,7 @@
     <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
     <sys:String x:Key="ServerSettings_OpenLogFolderTooltip">Open the server's logs folder.</sys:String>
     <sys:String x:Key="ServerSettings_CreateSupportZipTooltip">Create a zip file that contains all the files necessary for use by the ASM support team to diagnose a problem.</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateProfileTooltip">Performs a basic profile validation on the server and mod files.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionLabel">Latest Available Version:</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionTooltip">The version of the Ark server that is currently available for download.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Refresh the latest version of the Ark server that is currently available to download.</sys:String>

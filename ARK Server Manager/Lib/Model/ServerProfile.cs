@@ -9,6 +9,8 @@ using System.Xml.Serialization;
 using TinyCsvParser;
 using System.Reflection;
 using System.Diagnostics;
+using System.Collections.Generic;
+using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -2102,8 +2104,28 @@ namespace ARK_Server_Manager.Lib
             // ensure that the auto update is switched off for SotF servers
             if (SOTF_Enabled)
                 EnableAutoUpdate = false;
+
+            // ensure that the ARK mod management is switched off for ASM controlled profiles
             if (EnableAutoUpdate)
                 AutoManagedMods = false;
+
+            // ensure that the MAX XP settings for player and dinos are set to the last custom level
+            if (EnableLevelProgressions)
+            {
+                // dinos
+                var list = GetLevelList(LevelProgression.Dino);
+                var lastxp = (list == null || list.Count == 0) ? 0 : list[list.Count - 1].XPRequired;
+
+                if (lastxp > OverrideMaxExperiencePointsDino)
+                    OverrideMaxExperiencePointsDino = lastxp;
+
+                // players
+                list = GetLevelList(LevelProgression.Player);
+                lastxp = (list == null || list.Count == 0) ? 0 : list[list.Count - 1].XPRequired;
+
+                if (lastxp > OverrideMaxExperiencePointsPlayer)
+                    OverrideMaxExperiencePointsPlayer = lastxp;
+            }
 
             this.DinoSettings.RenderToModel();
 
@@ -2270,6 +2292,126 @@ namespace ARK_Server_Manager.Lib
             {
                 MessageBox.Show(ex.Message, "Web Alarm Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public bool Validate(out string validationMessage)
+        {
+            validationMessage = string.Empty;
+            StringBuilder result = new StringBuilder();
+
+            if (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods)
+            {
+                // build a list of mods to be processed
+                var serverMapModId = ModUtils.GetMapModId(ServerMap);
+                var serverMapName = ModUtils.GetMapName(ServerMap);
+                var modIds = ModUtils.GetModIdList(ServerModIds);
+                modIds = modIds.Distinct().ToList();
+
+                var modIdList = new List<string>();
+                if (!string.IsNullOrWhiteSpace(serverMapModId))
+                    modIdList.Add(serverMapModId);
+                if (!string.IsNullOrWhiteSpace(TotalConversionModId))
+                    modIdList.Add(TotalConversionModId);
+                modIdList.AddRange(modIds);
+
+                // remove all duplicate mod ids.
+                modIdList = modIdList.Distinct().ToList();
+
+                var modDetails = ModUtils.GetSteamModDetails(modIdList);
+
+                // check for map name.
+                if (string.IsNullOrWhiteSpace(ServerMap))
+                    result.AppendLine("The map name has not been entered.");
+
+                // check if the map is a mod and confirm the map name.
+                if (!string.IsNullOrWhiteSpace(serverMapModId))
+                {
+                    var modFolder = ModUtils.GetModPath(InstallDirectory, serverMapModId);
+                    if (!Directory.Exists(modFolder))
+                        result.AppendLine("Map mod has not been downloaded.");
+                    else
+                    {
+                        var modType = ModUtils.GetModType(InstallDirectory, serverMapModId);
+                        if (modType == ModUtils.MODTYPE_UNKNOWN)
+                            result.AppendLine("Map mod has not been downloaded.");
+                        else if (modType != ModUtils.MODTYPE_MAP)
+                            result.AppendLine("The map mod is not a valid map mod.");
+                        else
+                        {
+                            var mapName = ModUtils.GetMapName(InstallDirectory, serverMapModId);
+                            if (string.IsNullOrWhiteSpace(mapName))
+                                result.AppendLine("Map mod file does not exist or is invalid.");
+                            else if (!mapName.Equals(serverMapName))
+                                result.AppendLine("The map name does not match the map mod's map name.");
+                            else
+                            {
+                                var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                if (modDetail != null)
+                                {
+                                    var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                    if (!modVersion.Equals(modDetail.time_updated))
+                                        result.AppendLine("The map mod is outdated.");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // check for a total conversion mod
+                if (!string.IsNullOrWhiteSpace(TotalConversionModId))
+                {
+                    var modFolder = ModUtils.GetModPath(InstallDirectory, TotalConversionModId);
+                    if (!Directory.Exists(modFolder))
+                        result.AppendLine("Total conversion mod has not been downloaded.");
+                    else
+                    {
+                        var modType = ModUtils.GetModType(InstallDirectory, TotalConversionModId);
+                        if (modType == ModUtils.MODTYPE_UNKNOWN)
+                            result.AppendLine("Total conversion mod has not been downloaded.");
+                        else if (modType != ModUtils.MODTYPE_TOTCONV)
+                            result.AppendLine("The total conversion mod is not a valid total conversion mod.");
+                        else
+                        {
+                            var mapName = ModUtils.GetMapName(InstallDirectory, TotalConversionModId);
+                            if (string.IsNullOrWhiteSpace(mapName))
+                                result.AppendLine("Total conversion mod file does not exist or is invalid.");
+                            else if (!mapName.Equals(serverMapName))
+                                result.AppendLine("The map name does not match the total conversion mod's map name.");
+                            else
+                            {
+                                var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                if (modDetail != null)
+                                {
+                                    var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                    if (!modVersion.Equals(modDetail.time_updated))
+                                        result.AppendLine("The total conversion mod is outdated.");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // check for the mods
+                foreach (var modId in modIds)
+                {
+                    var modFolder = ModUtils.GetModPath(InstallDirectory, modId);
+                    if (!Directory.Exists(modFolder))
+                        result.AppendLine($"Mod {modId} has not been downloaded.");
+                    else
+                    {
+                        var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(modId));
+                        if (modDetail != null)
+                        {
+                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, modId));
+                            if (modVersion == 0 || !modVersion.Equals(modDetail.time_updated))
+                                result.AppendLine($"Mod {modId} is outdated.");
+                        }
+                    }
+                }
+            }
+
+            validationMessage = result.ToString();
+            return string.IsNullOrWhiteSpace(validationMessage);
         }
 
         #region Export Methods

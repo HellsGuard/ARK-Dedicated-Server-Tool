@@ -630,10 +630,7 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
-                {
-                    SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed during the server update process.", true);
                     return;
-                }
 
                 // check if the mods need to be updated
                 if (updateModIds.Count > 0)
@@ -656,26 +653,13 @@ namespace ARK_Server_Manager.Lib
                             {
                                 if (Directory.Exists(modCachePath))
                                 {
-                                    // try to establish a mutex for the server cache folder.
-                                    var startTime = DateTime.Now;
-                                    var delay = 0;
-                                    do
-                                    {
-                                        Task.Delay(delay).Wait();
-                                        delay = MUTEX_ATTEMPTDELAY;
-
-                                        mutex = new Mutex(true, GetMutexName(modCachePath), out createdNew);
-                                    } while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+                                    // try to establish a mutex for the mod cache.
+                                    mutex = new Mutex(true, GetMutexName(modCachePath), out createdNew);
+                                    if (!createdNew)
+                                        createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
 
                                     // check if the mutex was established
-                                    if (mutex == null || !createdNew)
-                                    {
-                                        mutex = null;
-
-                                        ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                                        LogProfileMessage($"Cancelled server update process, could not lock mod cache.");
-                                    }
-                                    else
+                                    if (createdNew)
                                     {
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"{modId} - {modName}");
@@ -690,6 +674,11 @@ namespace ARK_Server_Manager.Lib
 
                                         LogProfileMessage($"Finished mod {modId} update from cache.");
                                     }
+                                    else
+                                    {
+                                        ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                                        LogProfileMessage($"Mod not updated, could not lock mod cache.");
+                                    }
                                 }
                                 else
                                 {
@@ -701,6 +690,18 @@ namespace ARK_Server_Manager.Lib
                             {
                                 LogProfileError($"Unable to update mod {modId} from cache.\r\n{ex.Message}");
                                 ExitCode = EXITCODE_MODUPDATEFAILED;
+                            }
+                            finally
+                            {
+                                if (mutex != null)
+                                {
+                                    if (createdNew)
+                                    {
+                                        mutex.ReleaseMutex();
+                                        mutex.Dispose();
+                                    }
+                                    mutex = null;
+                                }
                             }
                         }
 
@@ -721,10 +722,7 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
-                {
-                    SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed during the mod update process.", true);
                     return;
-                }
 
                 // restart the server
                 StartServer();
@@ -745,10 +743,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             if (ExitCode != EXITCODE_NORMALEXIT)
-            {
-                SendEmail($"{_profile.ProfileName} auto update failed", $"The auto update process has failed.", true);
                 return;
-            }
 
             LogProfileMessage("-----------------------");
             LogProfileMessage("Finished server update.");
@@ -945,11 +940,11 @@ namespace ARK_Server_Manager.Lib
             {
                 var dataValue = e.Data ?? string.Empty;
                 LogMessage(dataValue);
-                if(!gotNewVersion && dataValue.Contains("downloading,"))
+                if (!gotNewVersion && dataValue.Contains("downloading,"))
                 {
                     gotNewVersion = true;
                 }
-                if(dataValue.StartsWith("Success!"))
+                if (dataValue.StartsWith("Success!"))
                 {
                     downloadSuccessful = true;
                 }
@@ -969,7 +964,7 @@ namespace ARK_Server_Manager.Lib
                 ExitCode = EXITCODE_CACHESERVERUPDATEFAILED;
                 return;
             }
-            
+
             if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))
             {
                 if (!Config.Default.SteamCmdRedirectOutput)
@@ -1136,7 +1131,7 @@ namespace ARK_Server_Manager.Lib
                     return DateTime.MinValue;
 
                 var value = File.ReadAllText(timeFile);
-                return DateTime.Parse(value, CultureInfo.CurrentCulture , DateTimeStyles.RoundtripKind);
+                return DateTime.Parse(value, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind);
             }
             catch
             {
@@ -1269,7 +1264,10 @@ namespace ARK_Server_Manager.Lib
             if (includeProgressCallback)
                 ProgressCallback?.Invoke(0, message);
 
-            Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
+            if (_profile != null)
+                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
+            else
+                Debug.WriteLine(message);
         }
 
         private void SendCommand(string command, bool retryIfFailed)
@@ -1436,28 +1434,17 @@ namespace ARK_Server_Manager.Lib
             ExitCode = EXITCODE_NORMALEXIT;
 
             Mutex mutex = null;
-            bool createdNew = false;
+            var createdNew = false;
 
             try
             {
                 // try to establish a mutex for the profile.
-                var startTime = DateTime.Now;
-                var delay = 0;
-                do
-                {
-                    Task.Delay(delay).Wait();
-                    delay = MUTEX_ATTEMPTDELAY;
-
-                    mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
-                } while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+                mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
+                if (!createdNew)
+                    createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
 
                 // check if the mutex was established
-                if (mutex == null || !createdNew)
-                {
-                    mutex = null;
-                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                }
-                else
+                if (createdNew)
                 {
                     ShutdownServer(performRestart);
 
@@ -1468,6 +1455,14 @@ namespace ARK_Server_Manager.Lib
                         else
                             SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
                     }
+                }
+                else
+                {
+                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                    if (performRestart)
+                        LogProfileMessage("Cancelled server restart process, could not lock server.");
+                    else
+                        LogProfileMessage("Cancelled server shutdown process, could not lock server.");
                 }
             }
             catch (Exception ex)
@@ -1513,32 +1508,19 @@ namespace ARK_Server_Manager.Lib
             ExitCode = EXITCODE_NORMALEXIT;
 
             Mutex mutex = null;
-            bool createdNew = false;
+            var createdNew = false;
 
             try
             {
                 LogMessage($"[{_profile.ProfileName}] Started server update process.");
 
                 // try to establish a mutex for the profile.
-                var startTime = DateTime.Now;
-                var delay = 0;
-                do
-                {
-                    Task.Delay(delay).Wait();
-                    delay = MUTEX_ATTEMPTDELAY;
-
-                    mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
-                } while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+                mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
+                if (!createdNew)
+                    createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
 
                 // check if the mutex was established
-                if (mutex == null || !createdNew)
-                {
-                    mutex = null;
-
-                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                    LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock server.");
-                }
-                else
+                if (createdNew)
                 {
                     UpdateFiles();
 
@@ -1546,6 +1528,11 @@ namespace ARK_Server_Manager.Lib
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                         SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                }
+                else
+                {
+                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                    LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock server.");
                 }
             }
             catch (Exception ex)
@@ -1636,59 +1623,55 @@ namespace ARK_Server_Manager.Lib
                     return EXITCODE_INVALIDCACHEDIRECTORY;
 
                 // try to establish a mutex for the application.
-                var startTime = DateTime.Now;
-                var delay = 0;
-                do
-                {
-                    Task.Delay(delay).Wait();
-                    delay = MUTEX_ATTEMPTDELAY;
-
-                    mutex = new Mutex(true, GetMutexName(Config.Default.DataDir), out createdNew);
-                } while ((mutex == null || !createdNew) && DateTime.Now.Subtract(startTime).TotalMinutes < MUTEX_TIMEOUT);
+                mutex = new Mutex(true, GetMutexName(Config.Default.DataDir), out createdNew);
+                if (!createdNew)
+                    createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
 
                 // check if the mutex was established.
-                if (mutex == null || !createdNew)
+                if (createdNew)
                 {
-                    mutex = null;
-                    return EXITCODE_PROCESSALREADYRUNNING;
-                }
+                    // load all the profiles, do this at the very start incase the user changes one or more while the process is running.
+                    LoadProfiles();
 
-                // load all the profiles, do this at the very start incase the user changes one or more while the process is running.
-                LoadProfiles();
-
-                ServerApp app = new ServerApp();
-                app.UpdateServerCache();
-                app.ServerProcess = ServerProcessType.AutoUpdate;
-                exitCode = app.ExitCode;
-
-                if (exitCode == EXITCODE_NORMALEXIT)
-                {
-                    app.UpdateModCache();
+                    ServerApp app = new ServerApp();
+                    app.UpdateServerCache();
+                    app.ServerProcess = ServerProcessType.AutoUpdate;
                     exitCode = app.ExitCode;
-                }
 
-                if (exitCode == EXITCODE_NORMALEXIT)
-                {
-                    var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
-
-                    Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
-                        app = new ServerApp();
-                        app.SendEmails = true;
-                        app.ServerProcess = ServerProcessType.AutoUpdate;
-                        exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
-                    });
-
-                    foreach (var profile in _profiles.Keys)
+                    if (exitCode == EXITCODE_NORMALEXIT)
                     {
-                        if (profile.ServerUpdated)
-                        {
-                            profile.Update(_profiles[profile]);
-                            _profiles[profile].SaveProfile();
-                        }
+                        app.UpdateModCache();
+                        exitCode = app.ExitCode;
                     }
 
-                    if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
-                        exitCode = EXITCODE_EXITWITHERRORS;
+                    if (exitCode == EXITCODE_NORMALEXIT)
+                    {
+                        var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
+
+                        Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
+                            app = new ServerApp();
+                            app.SendEmails = true;
+                            app.ServerProcess = ServerProcessType.AutoUpdate;
+                            exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                        });
+
+                        foreach (var profile in _profiles.Keys)
+                        {
+                            if (profile.ServerUpdated)
+                            {
+                                profile.Update(_profiles[profile]);
+                                _profiles[profile].SaveProfile();
+                            }
+                        }
+
+                        if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
+                            exitCode = EXITCODE_EXITWITHERRORS;
+                    }
+                }
+                else
+                {
+                    LogMessage("Cancelled auto update process, could not lock application.");
+                    return EXITCODE_PROCESSALREADYRUNNING;
                 }
             }
             catch (Exception ex)
