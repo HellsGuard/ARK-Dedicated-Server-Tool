@@ -61,7 +61,7 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
             //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
-            this.CustomGameSections = new CustomSectionList();
+            //this.CustomGameSections = new CustomSectionList();
             this.CustomGameUserSettingsSections = new CustomSectionList();
 
             GetDefaultDirectories();
@@ -1600,14 +1600,14 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Custom Settings
-        public static readonly DependencyProperty CustomGameSectionsProperty = DependencyProperty.Register(nameof(CustomGameSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.Custom)]
-        public CustomSectionList CustomGameSections
-        {
-            get { return (CustomSectionList)GetValue(CustomGameSectionsProperty); }
-            set { SetValue(CustomGameSectionsProperty, value); }
-        }
+        //public static readonly DependencyProperty CustomGameSectionsProperty = DependencyProperty.Register(nameof(CustomGameSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
+        //[XmlIgnore]
+        //[IniFileEntry(IniFiles.Game, IniFileSections.Custom)]
+        //public CustomSectionList CustomGameSections
+        //{
+        //    get { return (CustomSectionList)GetValue(CustomGameSectionsProperty); }
+        //    set { SetValue(CustomGameSectionsProperty, value); }
+        //}
 
         public static readonly DependencyProperty CustomGameUserSettingsSectionsProperty = DependencyProperty.Register(nameof(CustomGameUserSettingsSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]

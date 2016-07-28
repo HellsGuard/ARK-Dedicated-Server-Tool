@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,11 +19,49 @@ namespace ARK_Server_Manager.Lib.Model
 
         public void Add(string sectionName, string[] values)
         {
-            var section = new CustomSection();
-            section.SectionName = sectionName;
-            section.FromIniValues(values);
+            var section = this.Items.FirstOrDefault(s => s.SectionName.Equals(sectionName, StringComparison.OrdinalIgnoreCase));
+            if (section == null)
+            {
+                section = new CustomSection();
+                section.SectionName = sectionName;
 
-            this.Add(section);
+                this.Add(section);
+            }
+
+            section.Clear();
+            section.FromIniValues(values);
+        }
+
+        public void Add(string sectionName, string[] values, bool clearExisting)
+        {
+            var section = this.Items.FirstOrDefault(s => s.SectionName.Equals(sectionName, StringComparison.OrdinalIgnoreCase) && !s.IsDeleted);
+            if (section == null)
+            {
+                section = new CustomSection();
+                section.SectionName = sectionName;
+
+                this.Add(section);
+            }
+
+            if (clearExisting)
+                section.Clear();
+            section.FromIniValues(values);
+        }
+
+        public new void Clear()
+        {
+            foreach (var section in this)
+            {
+                section.IsDeleted = true;
+            }
+            Update();
+        }
+
+        public new void Remove(CustomSection item)
+        {
+            if (item != null)
+                item.IsDeleted = true;
+            Update();
         }
 
         public override string ToString()
@@ -47,6 +86,13 @@ namespace ARK_Server_Manager.Lib.Model
         {
             SectionItems = new ObservableCollection<CustomItem>();
             Update();
+        }
+
+        public static readonly DependencyProperty IsDeletedProperty = DependencyProperty.Register(nameof(IsDeleted), typeof(bool), typeof(CustomSection), new PropertyMetadata(false));
+        public bool IsDeleted
+        {
+            get { return (bool)GetValue(IsDeletedProperty); }
+            set { SetValue(IsDeletedProperty, value); }
         }
 
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(nameof(IsEnabled), typeof(bool), typeof(CustomSection), new PropertyMetadata(false));
@@ -101,8 +147,6 @@ namespace ARK_Server_Manager.Lib.Model
 
         public void FromIniValues(IEnumerable<string> values)
         {
-            SectionItems.Clear();
-
             AddRange(values.Select(v => CustomItem.FromINIValue(v)));
         }
 
@@ -135,7 +179,7 @@ namespace ARK_Server_Manager.Lib.Model
 
         public void Update()
         {
-            this.IsEnabled = (SectionItems.Count != 0);
+            this.IsEnabled = (!IsDeleted && SectionItems.Count != 0);
         }
     }
 

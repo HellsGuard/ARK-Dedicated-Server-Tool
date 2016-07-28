@@ -105,7 +105,7 @@ namespace ARK_Server_Manager.Lib
     /// </remarks>
     class SystemIniFile
     {
-        private readonly Dictionary<IniFileSections, string> SectionNames = new Dictionary<IniFileSections, string>()
+        public static readonly Dictionary<IniFileSections, string> SectionNames = new Dictionary<IniFileSections, string>()
         {
             { IniFileSections.ServerSettings, "ServerSettings" },
             { IniFileSections.GameUserSettings, "/Script/ShooterGame.ShooterGameUserSettings" },
@@ -119,7 +119,7 @@ namespace ARK_Server_Manager.Lib
             { IniFileSections.ModInstaller, "ModInstaller" },
         };
 
-        private readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
+        public static readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
         {
             { IniFiles.GameUserSettings, "GameUserSettings.ini" },
             { IniFiles.Game, "Game.ini" }

@@ -2211,6 +2211,9 @@
                                         <Button Width="22" Height="22" Click="AddCustomSection_Click" ToolTip="{DynamicResource ServerSettings_AddCustomSectionTooltip}">
                                             <Image Source="Art/Add.png" Width="16"/>
                                         </Button>
+                                        <Button Width="22" Height="22" Click="PasteCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomSectionsTooltip}">
+                                            <Image Source="Art/Paste.png" Width="16"/>
+                                        </Button>
                                         <Button Width="22" Height="22" Click="ClearCustomSections_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomSectionsTooltip}">
                                             <Image Source="Art/Delete.png" Width="16"/>
                                         </Button>
@@ -2224,8 +2227,8 @@
                                                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                                             </Style.Resources>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding UpToDate}" Value="False">
-                                                    <Setter Property="Background" Value="#FFF5DFB8" />
+                                                <DataTrigger Binding="{Binding IsDeleted}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -2263,6 +2266,9 @@
                                         <Button Width="22" Height="22" Click="AddCustomItem_Click" ToolTip="{DynamicResource ServerSettings_AddCustomItemTooltip}">
                                             <Image Source="Art/Add.png" Width="16"/>
                                         </Button>
+                                        <Button Width="22" Height="22" Click="PasteCustomItems_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomItemsTooltip}">
+                                            <Image Source="Art/Paste.png" Width="16"/>
+                                        </Button>
                                         <Button Width="22" Height="22" Click="ClearCustomItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomItemsTooltip}">
                                             <Image Source="Art/Delete.png" Width="16"/>
                                         </Button>
@@ -2275,11 +2281,6 @@
                                                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
                                                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                                             </Style.Resources>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding UpToDate}" Value="False">
-                                                    <Setter Property="Background" Value="#FFF5DFB8" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
                                         </Style>
                                     </DataGrid.Resources>
 

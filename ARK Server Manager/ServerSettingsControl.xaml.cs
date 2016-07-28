@@ -907,10 +907,7 @@ namespace ARK_Server_Manager
 
         private void AddCustomItem_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedCustomSection == null)
-                return;
-
-            SelectedCustomSection.Add(string.Empty, string.Empty);
+            SelectedCustomSection?.Add(string.Empty, string.Empty);
         }
 
         private void AddCustomSection_Click(object sender, RoutedEventArgs e)
@@ -920,15 +917,64 @@ namespace ARK_Server_Manager
 
         private void ClearCustomItems_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedCustomSection == null)
-                return;
-
-            SelectedCustomSection.Clear();
+            SelectedCustomSection?.Clear();
         }
 
         private void ClearCustomSections_Click(object sender, RoutedEventArgs e)
         {
+            SelectedCustomSection = null;
             Settings.CustomGameUserSettingsSections.Clear();
+        }
+
+        private void PasteCustomItems_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                // read the pasted data into an ini file.
+                var iniFile = IniFileUtils.ReadString(window.ConfigData);
+                // get the section with the same name as the currently selected custom section.
+                var section = iniFile?.GetSection(SelectedCustomSection.SectionName);
+                // check if the section exists.
+                if (section == null)
+                    // section is not exists, get the section with the empty name.
+                    section = iniFile?.GetSection(string.Empty) ?? new IniSection();
+
+                // cycle through the section keys, adding them to the selected custom section.
+                foreach (var key in section.Keys)
+                {
+                    // check if the key name has been defined.
+                    if (!string.IsNullOrWhiteSpace(key.KeyName))
+                        SelectedCustomSection.Add(key.KeyName, key.KeyValue);
+                }
+            }
+        }
+
+        private void PasteCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                // read the pasted data into an ini file.
+                var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+                // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
+                foreach (var section in iniFile.Sections.Where(s => !string.IsNullOrWhiteSpace(s.SectionName) && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+                {
+                    Settings.CustomGameUserSettingsSections.Add(section.SectionName, section.KeysToStringArray(), false);
+                }
+            }
         }
 
         private void RemoveCustomItem_Click(object sender, RoutedEventArgs e)

@@ -47,6 +47,11 @@
     <sys:String x:Key="CommandLine_CopyButton_ErrorTitle">Copy to clipboard failed.</sys:String>
     <sys:String x:Key="CommandLine_CopyButton_ErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
 
+    <!-- CustomConfigDataWindow Window -->
+    <sys:String x:Key="CustomConfigData_Title">Custom Config Data</sys:String>
+    <sys:String x:Key="CustomConfigData_ProcessButtonLabel">Process</sys:String>
+    <sys:String x:Key="CustomConfigData_CancelButtonLabel">Cancel</sys:String>
+
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
@@ -908,6 +913,7 @@
     <sys:String x:Key="ServerSettings_CustomSettingsSectionsLabel">Custom Sections</sys:String>
     <sys:String x:Key="ServerSettings_CustomSettingsSectionNameColumnLabel">Section Name</sys:String>
     <sys:String x:Key="ServerSettings_AddCustomSectionTooltip">Add Section</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomSectionsTooltip">Paste Section Data</sys:String>
     <sys:String x:Key="ServerSettings_ClearCustomSectionsTooltip">Clear All Sections</sys:String>
     <sys:String x:Key="ServerSettings_RemoveCustomSectionTooltip">Delete Section</sys:String>
 
@@ -915,6 +921,7 @@
     <sys:String x:Key="ServerSettings_CustomSettingsItemKeyColumnLabel">Key</sys:String>
     <sys:String x:Key="ServerSettings_CustomSettingsItemValueColumnLabel">Value</sys:String>
     <sys:String x:Key="ServerSettings_AddCustomItemTooltip">Add Item</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomItemsTooltip">Paste Item Data</sys:String>
     <sys:String x:Key="ServerSettings_ClearCustomItemsTooltip">Delete All Items</sys:String>
     <sys:String x:Key="ServerSettings_RemoveCustomItemTooltip">Delete Item</sys:String>
 
