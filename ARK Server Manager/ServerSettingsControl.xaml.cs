@@ -14,6 +14,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager
 {
@@ -73,6 +74,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedCustomSectionProperty = DependencyProperty.Register(nameof(SelectedCustomSection), typeof(CustomSection), typeof(ServerSettingsControl));
 
         #region Properties
         public Config CurrentConfig
@@ -121,6 +123,12 @@ namespace ARK_Server_Manager
         {
             get { return GetValue(SettingsProperty) as ServerProfile; }
             set { SetValue(SettingsProperty, value); }
+        }
+
+        public CustomSection SelectedCustomSection
+        {
+            get { return GetValue(SelectedCustomSectionProperty) as CustomSection; }
+            set { SetValue(SelectedCustomSectionProperty, value); }
         }
         #endregion
 
@@ -895,6 +903,47 @@ namespace ARK_Server_Manager
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
+        }
+
+        private void AddCustomItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            SelectedCustomSection.Add(string.Empty, string.Empty);
+        }
+
+        private void AddCustomSection_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.CustomGameUserSettingsSections.Add(string.Empty, new string[0]);
+        }
+
+        private void ClearCustomItems_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            SelectedCustomSection.Clear();
+        }
+
+        private void ClearCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.CustomGameUserSettingsSections.Clear();
+        }
+
+        private void RemoveCustomItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            var item = ((CustomItem)((Button)e.Source).DataContext);
+            SelectedCustomSection.Remove(item);
+        }
+
+        private void RemoveCustomSection_Click(object sender, RoutedEventArgs e)
+        {
+            var section = ((CustomSection)((Button)e.Source).DataContext);
+            Settings.CustomGameUserSettingsSections.Remove(section);
         }
         #endregion
 

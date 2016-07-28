@@ -2192,6 +2192,129 @@
                             </StackPanel>
                         </Grid>
                     </Expander>
+                    <Expander Name="SectionCustomSettings" IsExpanded="{Binding CurrentConfig.SectionCustomGameUserSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_CustomSettingsLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <Grid Margin ="10,5,10,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,5,0" Height="400">
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="{DynamicResource ServerSettings_CustomSettingsSectionsLabel}"/>
+                                        <Button Width="22" Height="22" Click="AddCustomSection_Click" ToolTip="{DynamicResource ServerSettings_AddCustomSectionTooltip}">
+                                            <Image Source="Art/Add.png" Width="16"/>
+                                        </Button>
+                                        <Button Width="22" Height="22" Click="ClearCustomSections_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomSectionsTooltip}">
+                                            <Image Source="Art/Delete.png" Width="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox.Header>
+                                <DataGrid ItemsSource="{Binding CustomGameUserSettingsSections}" SelectedItem="{Binding Path=SelectedCustomSection, ElementName=SettingsControl, Mode=TwoWay}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <Style.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                            </Style.Resources>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UpToDate}" Value="False">
+                                                    <Setter Property="Background" Value="#FFF5DFB8" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.HorizontalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.HorizontalGridLinesBrush>
+                                    <DataGrid.VerticalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.VerticalGridLinesBrush>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn     Width="*" Binding="{Binding SectionName}">
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text="{DynamicResource ServerSettings_CustomSettingsSectionNameColumnLabel}" />
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCustomSection_Click" ToolTip="{DynamicResource ServerSettings_RemoveCustomSectionTooltip}">
+                                                        <Image Source="Art/Delete.png" Width="16" />
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,0" Height="400">
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="{DynamicResource ServerSettings_CustomSettingsItemsLabel}"/>
+                                        <Button Width="22" Height="22" Click="AddCustomItem_Click" ToolTip="{DynamicResource ServerSettings_AddCustomItemTooltip}">
+                                            <Image Source="Art/Add.png" Width="16"/>
+                                        </Button>
+                                        <Button Width="22" Height="22" Click="ClearCustomItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomItemsTooltip}">
+                                            <Image Source="Art/Delete.png" Width="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox.Header>
+                                <DataGrid ItemsSource="{Binding Path=SelectedCustomSection.SectionItems, ElementName=SettingsControl}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <Style.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                            </Style.Resources>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UpToDate}" Value="False">
+                                                    <Setter Property="Background" Value="#FFF5DFB8" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.HorizontalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.HorizontalGridLinesBrush>
+                                    <DataGrid.VerticalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.VerticalGridLinesBrush>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn     Width="1*" Binding="{Binding ItemKey}">
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text="{DynamicResource ServerSettings_CustomSettingsItemKeyColumnLabel}" />
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn     Width="2*" Binding="{Binding ItemValue}">
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text="{DynamicResource ServerSettings_CustomSettingsItemValueColumnLabel}" />
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCustomItem_Click" ToolTip="{DynamicResource ServerSettings_RemoveCustomItemTooltip}">
+                                                        <Image Source="Art/Delete.png" Width="16" />
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                        </Grid>
+                    </Expander>
                     <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">

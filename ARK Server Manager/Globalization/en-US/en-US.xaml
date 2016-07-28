@@ -902,6 +902,22 @@
     <sys:String x:Key="ServerSettings_DinoLevels_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_DinoLevels_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino levels.</sys:String>
 
+    <!-- Server Settings - Custom GameUserSettings Details -->
+    <sys:String x:Key="ServerSettings_CustomSettingsLabel">Custom GameUserSettings Details</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomSettingsSectionsLabel">Custom Sections</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsSectionNameColumnLabel">Section Name</sys:String>
+    <sys:String x:Key="ServerSettings_AddCustomSectionTooltip">Add Section</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCustomSectionsTooltip">Clear All Sections</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCustomSectionTooltip">Delete Section</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomSettingsItemsLabel">Custom Items</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsItemKeyColumnLabel">Key</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsItemValueColumnLabel">Value</sys:String>
+    <sys:String x:Key="ServerSettings_AddCustomItemTooltip">Add Item</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCustomItemsTooltip">Delete All Items</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCustomItemTooltip">Delete Item</sys:String>
+
     <!-- Server Settings - Survival of the Fittest -->
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
