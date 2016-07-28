@@ -926,6 +926,37 @@ namespace ARK_Server_Manager
             Settings.CustomGameUserSettingsSections.Clear();
         }
 
+        private void ImportCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.EnsureFileExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Title");
+            dialog.Filters.Add(new CommonFileDialogFilter("Ini Files", "*.ini"));
+            dialog.InitialDirectory = Settings.InstallDirectory;
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    // read the selected ini file.
+                    var iniFile = IniFileUtils.ReadFromFile(dialog.FileName);
+
+                    // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
+                    foreach (var section in iniFile.Sections.Where(s => !string.IsNullOrWhiteSpace(s.SectionName) && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+                    {
+                        Settings.CustomGameUserSettingsSections.Add(section.SectionName, section.KeysToStringArray(), false);
+                    }
+
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Label"), _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
+
         private void PasteCustomItems_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCustomSection == null)

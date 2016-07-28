@@ -358,6 +358,9 @@
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_ResetLabel">Click 'Yes' to confirm you want to perform the reset.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Load Ini File.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">The ini file was successfully loaded.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ini File Load Error</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
@@ -914,6 +917,7 @@
     <sys:String x:Key="ServerSettings_CustomSettingsSectionNameColumnLabel">Section Name</sys:String>
     <sys:String x:Key="ServerSettings_AddCustomSectionTooltip">Add Section</sys:String>
     <sys:String x:Key="ServerSettings_PasteCustomSectionsTooltip">Paste Section Data</sys:String>
+    <sys:String x:Key="ServerSettings_ImportCustomSectionsTooltip">Import Data from Ini File</sys:String>
     <sys:String x:Key="ServerSettings_ClearCustomSectionsTooltip">Clear All Sections</sys:String>
     <sys:String x:Key="ServerSettings_RemoveCustomSectionTooltip">Delete Section</sys:String>
 

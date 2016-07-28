@@ -2214,6 +2214,9 @@
                                         <Button Width="22" Height="22" Click="PasteCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomSectionsTooltip}">
                                             <Image Source="Art/Paste.png" Width="16"/>
                                         </Button>
+                                        <Button Width="22" Height="22" Click="ImportCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportCustomSectionsTooltip}">
+                                            <Image Source="Art/Open_6529.png" Width="16"/>
+                                        </Button>
                                         <Button Width="22" Height="22" Click="ClearCustomSections_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomSectionsTooltip}">
                                             <Image Source="Art/Delete.png" Width="16"/>
                                         </Button>
