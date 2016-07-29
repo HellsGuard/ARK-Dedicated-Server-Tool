@@ -289,11 +289,10 @@ namespace ARK_Server_Manager
 
             try
             {
-                // remove all duplicate mod ids.
-                modIdList = modIdList.Distinct().ToList();
+                var newModIdList = ModUtils.ValidateModList(modIdList);
 
                 // get the details of the mods to be processed.
-                return await Task.Run( () =>  ModUtils.GetSteamModDetails(modIdList) );
+                return await Task.Run( () =>  ModUtils.GetSteamModDetails(newModIdList) );
             }
             catch (Exception ex)
             {

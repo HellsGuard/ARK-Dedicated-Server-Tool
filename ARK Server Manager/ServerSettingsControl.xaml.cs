@@ -47,6 +47,8 @@ namespace ARK_Server_Manager
         MapNameIslandProperty,
         MapNameCenterProperty,
         MapNameTotalConversionProperty,
+        TotalConversionPrimitivePlusProperty,
+
         PlayerMaxXpProperty,
         DinoMaxXpProperty,
         PlayerPerLevelStatMultipliers,
@@ -1230,17 +1232,29 @@ namespace ARK_Server_Manager
                                 break;
 
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:
-                                // we need to read the mod file and retreive the map name
-                                var mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
-                                if (string.IsNullOrWhiteSpace(mapName))
+                                // set the map name to the ARK default.
+                                var mapName = Config.Default.DefaultServerMap_TheIsland;
+
+                                // check if we are running an official total conversion mod.
+                                if (!this.Settings.TotalConversionModId.Equals(Config.Default.DefaultTotalConversion_PrimitivePlus))
                                 {
-                                    MessageBox.Show("The map name could not be found, please check the total conversion mod id is correct and the mod has been downloaded.", "Find Total Conversion Map Name Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    break;
+                                    // we need to read the mod file and retreive the map name
+                                    mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
+                                    if (string.IsNullOrWhiteSpace(mapName))
+                                    {
+                                        MessageBox.Show("The map name could not be found, please check the total conversion mod id is correct and the mod has been downloaded.", "Find Total Conversion Map Name Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        break;
+                                    }
                                 }
 
                                 this.Settings.ServerMap = mapName;
 
                                 MessageBox.Show("The map name has been updated.", "Find Total Conversion Map Name", MessageBoxButton.OK, MessageBoxImage.Information);
+                                break;
+
+                            case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
+                                this.Settings.TotalConversionModId = Config.Default.DefaultTotalConversion_PrimitivePlus;
+                                this.Settings.ServerMap = Config.Default.DefaultServerMap_TheIsland;
                                 break;
 
                             case ServerSettingsResetAction.PlayerMaxXpProperty:

@@ -890,8 +890,11 @@
 
                                     <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_TotalConversionLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
                                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TotalConversionModId}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
-                                    <Button Grid.Row="1" Grid.Column="2" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_FindTotalConversionMapNameTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameTotalConversionProperty}">
+                                    <Button Grid.Row="1" Grid.Column="3" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_FindTotalConversionMapNameTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameTotalConversionProperty}">
                                         <Image Source="Art/Find.png" Width="16" Height="16" />
+                                    </Button>
+                                    <Button Grid.Row="1" Grid.Column="4" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetTotalConversionPrimitivePlusTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.TotalConversionPrimitivePlusProperty}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
 
                                     <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}"/>
@@ -1318,6 +1321,7 @@
                                 <CheckBox IsChecked="{Binding AllowPVPGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvPTooltip}"/>
                                 <CheckBox IsChecked="{Binding AllowPvEGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvETooltip}"/>
                                 <CheckBox IsChecked="{Binding ShowFloatingDamageText}" Content="{DynamicResource ServerSettings_ShowFloatingDamageTextLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ShowFloatingDamageTextTooltip}"/>
+                                <CheckBox IsChecked="{Binding AllowHitMarkers}" Content="{DynamicResource ServerSettings_AllowHitMarkersLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowHitMarkersTooltip}"/>
                             </StackPanel>
                         </Grid>
                     </Expander>

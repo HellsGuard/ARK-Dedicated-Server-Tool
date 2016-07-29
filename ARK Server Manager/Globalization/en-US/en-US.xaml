@@ -428,6 +428,7 @@
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
     <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
+    <sys:String x:Key="ServerSettings_ResetTotalConversionPrimitivePlusTooltip">Reset total conversion to Primitive +</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
     <sys:String x:Key="ServerSettings_ModDetailsTooltip">View the mod details.</sys:String>
@@ -614,6 +615,8 @@
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">If enabled, allows gamma changes in PvE mode.</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Show Floating Damage Text</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">If enabled, enables RPG-style popup text stat mode.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHitMarkersLabel">Allow Hit Markers</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHitMarkersTooltip">If enabled, shows hit markers for ranged attacks.</sys:String>
 
     <!-- Server Settings - Player Settings -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>

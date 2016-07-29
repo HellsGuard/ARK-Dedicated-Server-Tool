@@ -252,6 +252,7 @@ namespace ARK_Server_Manager.Lib
 
             return metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : MODTYPE_UNKNOWN;
         }
+
         public static WorkshopFileDetailResponse GetSteamModDetails()
         {
             const int MAX_ITEMS = 100;
@@ -315,9 +316,6 @@ namespace ARK_Server_Manager.Lib
         {
             const int MAX_ITEMS = 20;
 
-            var totalRequests = 0;
-            var requestIndex = 0;
-
             PublishedFileDetailsResponse response = null;
 
             try
@@ -325,11 +323,14 @@ namespace ARK_Server_Manager.Lib
                 if (modIdList.Count == 0)
                     return new PublishedFileDetailsResponse();
 
+                modIdList = ValidateModList(modIdList);
+
                 int remainder;
-                totalRequests = Math.DivRem(modIdList.Count, MAX_ITEMS, out remainder);
+                var totalRequests = Math.DivRem(modIdList.Count, MAX_ITEMS, out remainder);
                 if (remainder > 0)
                     totalRequests++;
 
+                var requestIndex = 0;
                 while (requestIndex < totalRequests)
                 {
                     var count = 0;
@@ -373,7 +374,7 @@ namespace ARK_Server_Manager.Lib
                     requestIndex++;
                 };
 
-                return response;
+                return response ?? new PublishedFileDetailsResponse();
             }
             catch (Exception ex)
             {
@@ -580,6 +581,18 @@ namespace ARK_Server_Manager.Lib
             // Unix timestamp is seconds past epoch
             DateTime datetime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return datetime.AddSeconds(unixTimeStamp).ToLocalTime();
+        }
+
+        public static List<string> ValidateModList(List<string> modIdList)
+        {
+            // remove all duplicate mod ids.
+            var newModIdList = modIdList.Distinct().ToList();
+
+            // remove any official mods.
+            if (newModIdList.Contains(Config.Default.DefaultTotalConversion_PrimitivePlus))
+                newModIdList.Remove(Config.Default.DefaultTotalConversion_PrimitivePlus);
+
+            return newModIdList;
         }
 
         public static void WriteModFile(string fileName, string modId, Dictionary<string, string> metaInformation, List<string> mapNames)

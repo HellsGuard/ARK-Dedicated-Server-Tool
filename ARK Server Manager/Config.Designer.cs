@@ -1200,5 +1200,14 @@ namespace ARK_Server_Manager {
                 this["SectionCustomGameUserSettingsIsExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("111111111")]
+        public string DefaultTotalConversion_PrimitivePlus {
+            get {
+                return ((string)(this["DefaultTotalConversion_PrimitivePlus"]));
+            }
+        }
     }
 }
