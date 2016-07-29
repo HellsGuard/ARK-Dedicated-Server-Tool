@@ -1147,6 +1147,7 @@
     <sys:String x:Key="Settings_Title">Settings</sys:String>
     
     <!-- Dino/Creature Class Names -->
+    <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>
     <sys:String x:Key="Angler_Character_BP_C">Angler</sys:String>
     <sys:String x:Key="Ankylo_Character_BP_C">Ankylo</sys:String>
     <sys:String x:Key="Ant_Character_BP_C">Titanomyrma Drone</sys:String>
@@ -1190,6 +1191,7 @@
     <sys:String x:Key="Pachy_Character_BP_C">Pachy</sys:String>
     <sys:String x:Key="Para_Character_BP_C">Parasaur</sys:String>
     <sys:String x:Key="Paracer_Character_BP_C">Paracer</sys:String>
+    <sys:String x:Key="Pela_Character_BP_C">Pelagornis</sys:String>
     <sys:String x:Key="Phiomia_Character_BP_C">Phiomia</sys:String>
     <sys:String x:Key="Piranha_Character_BP_C">Megapiranha</sys:String>
     <sys:String x:Key="Plesiosaur_Character_BP_C">Plesiosaur</sys:String>
@@ -1249,6 +1251,7 @@
     <sys:String x:Key="PrimalItemResource_Polymer_Organic_C">Organic Polymer</sys:String>
     <sys:String x:Key="PrimalItemResource_RareFlower_C">Rare Flower</sys:String>
     <sys:String x:Key="PrimalItemResource_RareMushroom_C">Rare Mushroom</sys:String>
+    <sys:String x:Key="PrimalItemResource_Sap_C">Sap</sys:String>
     <sys:String x:Key="PrimalItemResource_Silicon_C">Silica Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Sparkpowder_C">Sparkpowder</sys:String>
     <sys:String x:Key="PrimalItemResource_Stone_C">Stone</sys:String>
@@ -1337,6 +1340,7 @@
     <sys:String x:Key="EngramEntry_Fabricator_C">Fabricator</sys:String>
     <sys:String x:Key="EngramEntry_FeedingTrough_C">Feeding Trough</sys:String>
     <sys:String x:Key="EngramEntry_Fireplace_C">Fireplace</sys:String>
+    <sys:String x:Key="EngramEntry_FishingRod_C">Fishing Rod</sys:String>
     <sys:String x:Key="EngramEntry_Flag_C">Multi-Panel Flag</sys:String>
     <sys:String x:Key="EngramEntry_FlagSingle_C">Single Panel Flag</sys:String>
     <sys:String x:Key="EngramEntry_FlareLauncher_C">Flare Gun</sys:String>
@@ -1368,6 +1372,7 @@
     <sys:String x:Key="EngramEntry_GreenhouseWindow_C">Greenhouse Window</sys:String>
     <sys:String x:Key="EngramEntry_Grenade_C">Grenade</sys:String>
     <sys:String x:Key="EngramEntry_Grill_C">Industrial Grill</sys:String>
+    <sys:String x:Key="EngramEntry_Grinder_C">Industrial Grinder</sys:String>
     <sys:String x:Key="EngramEntry_Gunpowder_C">Gunpowder</sys:String>
     <sys:String x:Key="EngramEntry_Handcuffs_C">Handcuffs</sys:String>
     <sys:String x:Key="EngramEntry_HideBoots_C">Hide Boots</sys:String>
@@ -1425,6 +1430,7 @@
     <sys:String x:Key="EngramEntry_MetalSlopedWall_Left_C">Metal Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_MetalSlopedWall_Right_C">Metal Wall Sloped Right</sys:String>
     <sys:String x:Key="EngramEntry_MetalSpikeWall_C">Metal Spike Wall</sys:String>
+    <sys:String x:Key="EngramEntry_MetalStairs_C">Metal Staircase</sys:String>
     <sys:String x:Key="EngramEntry_MetalTrapdoor_C">Metal Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_MetalWall_C">Metal Wall</sys:String>
     <sys:String x:Key="EngramEntry_MetalWallWithDoor_C">Metal Doorframe</sys:String>
@@ -1464,6 +1470,7 @@
     <sys:String x:Key="EngramEntry_RocketLauncher_C">Rocket Launcher</sys:String>
     <sys:String x:Key="EngramEntry_RocketTurret_C">Rocket Turret</sys:String>
     <sys:String x:Key="EngramEntry_RopeLadder_C">Rope Ladder</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Allo_C">Saddle - Allosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Ankylo_C">Saddle - Ankylo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Argentavis_C">Saddle - Argentavis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Arthro_C">Saddle - Arthropluera</sys:String>
@@ -1485,6 +1492,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Para_C">Saddle - Parasaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_C">Saddle - Paracer</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_Platform_C">Saddle - Paracer Platform</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Pela_C">Saddle - Pelagornis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Phiomia_C">Saddle - Phiomia</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Plesia_C">Saddle - Plesiosaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Plesio_Platform_C">Saddle - Plesiosaur Platform</sys:String>
@@ -1552,6 +1560,7 @@
     <sys:String x:Key="EngramEntry_StoneRoof_C">Stone Roof Sloped</sys:String>
     <sys:String x:Key="EngramEntry_StoneSlopedWall_Left_C">Stone Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_StoneSlopedWall_Right_C">Stone Wall Sloped Right</sys:String>
+    <sys:String x:Key="EngramEntry_StoneStairs_C">Stone Staircase</sys:String>
     <sys:String x:Key="EngramEntry_StoneTrapdoor_C">Reinforced Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_StoneWall_C">Stone Wall</sys:String>
     <sys:String x:Key="EngramEntry_StoneWallWithDoor_C">Stone Doorframe</sys:String>
@@ -1614,6 +1623,7 @@
     <sys:String x:Key="EngramEntry_WoodWall_C">Wooden Wall</sys:String>
     <sys:String x:Key="EngramEntry_WoodSlopedWall_Left_C">Wooden Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_WoodSlopedWall_Right_C">Wooden Wall Sloped Right</sys:String>
+    <sys:String x:Key="EngramEntry_WoodStairs_C">Wooden Staircase</sys:String>
     <sys:String x:Key="EngramEntry_WoodRoof_C">Wooden Roof Sloped</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithDoor_C">Wooden Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithWindow_C">Wooden Windowframe</sys:String>
