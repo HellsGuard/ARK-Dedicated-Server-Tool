@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -843,8 +844,9 @@ namespace ARK_Server_Manager
                 comment.AppendLine($"ASM Version: {App.Version}");
 
                 comment.AppendLine($"MachinePublicIP: {Config.Default.MachinePublicIP}");
-                comment.AppendLine($"ConfigDirectory: {Config.Default.ConfigDirectory}");
-                comment.AppendLine($"DataDir: {Config.Default.DataDir}");
+                comment.AppendLine($"ASM Directory: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
+                comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
+                comment.AppendLine($"Data Directory: {Config.Default.DataDir}");
 
                 comment.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
                 comment.AppendLine($"RunAsAdministratorPrompt: {Config.Default.RunAsAdministratorPrompt}");
