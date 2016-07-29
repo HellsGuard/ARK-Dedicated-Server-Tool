@@ -19,17 +19,7 @@ namespace ARK_Server_Manager.Lib.Model
 
         public void Add(string sectionName, string[] values)
         {
-            var section = this.Items.FirstOrDefault(s => s.SectionName.Equals(sectionName, StringComparison.OrdinalIgnoreCase));
-            if (section == null)
-            {
-                section = new CustomSection();
-                section.SectionName = sectionName;
-
-                this.Add(section);
-            }
-
-            section.Clear();
-            section.FromIniValues(values);
+            Add(sectionName, values, true);
         }
 
         public void Add(string sectionName, string[] values, bool clearExisting)
