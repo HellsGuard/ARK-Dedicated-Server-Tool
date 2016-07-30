@@ -1017,10 +1017,13 @@
                                     </Grid.ColumnDefinitions>
                                     
                                     <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_WebAlarmKeyLabel}" ToolTip="{DynamicResource ServerSettings_WebAlarmKeyTooltip}"/>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WebAlarmKey}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_WebAlarmKeyTooltip}"/>
+                                    <TextBox x:Name="txbxHideWebKey" Grid.Row="0" Grid.Column="1" Text="{DynamicResource ServerSettings_HidePasswordText}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" Background="Wheat" IsReadOnly="True" GotFocus="Password_GotFocus"/>
+                                    <TextBox x:Name="txbxWebKey" Grid.Row="0" Grid.Column="1" Text="{Binding WebAlarmKey}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_WebAlarmKeyTooltip}" Visibility="Collapsed" LostFocus="Password_LostFocus"/>
 
                                     <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_WebAlarmUrlLabel}" ToolTip="{DynamicResource ServerSettings_WebAlarmUrlTooltip}"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding WebAlarmUrl}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_WebAlarmUrlTooltip}"/>
+
+                                    <TextBox x:Name="txbxHideWebURL" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{DynamicResource ServerSettings_HidePasswordText}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" Background="Wheat" IsReadOnly="True" GotFocus="Password_GotFocus"/>
+                                    <TextBox x:Name="txbxWebURL" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding WebAlarmUrl}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_WebAlarmUrlTooltip}" Visibility="Collapsed" LostFocus="Password_LostFocus"/>
 
                                     <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,0" Text="{DynamicResource ServerSettings_WebAlarmNote}" FontWeight="Bold" TextWrapping="WrapWithOverflow" IsEnabled="False"/>
                                 </Grid>
