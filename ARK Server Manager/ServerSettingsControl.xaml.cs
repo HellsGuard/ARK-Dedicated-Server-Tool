@@ -1351,6 +1351,10 @@ namespace ARK_Server_Manager
                     textBox = txbxAdminPassword;
                 if (hideTextBox == txbxHideSpectatorPassword)
                     textBox = txbxSpectatorPassword;
+                if (hideTextBox == txbxHideWebKey)
+                    textBox = txbxWebKey;
+                if (hideTextBox == txbxHideWebURL)
+                    textBox = txbxWebURL;
 
                 if (textBox != null)
                 {
@@ -1374,6 +1378,10 @@ namespace ARK_Server_Manager
                     hideTextBox = txbxHideAdminPassword;
                 if (textBox == txbxSpectatorPassword)
                     hideTextBox = txbxHideSpectatorPassword;
+                if (textBox == txbxWebKey)
+                    hideTextBox = txbxHideWebKey;
+                if (textBox == txbxWebURL)
+                    hideTextBox = txbxHideWebURL;
 
                 if (hideTextBox != null)
                 {
