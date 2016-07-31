@@ -529,8 +529,7 @@ namespace ARK_Server_Manager.Lib
                             modIdList.Add(this.ProfileSnapshot.TotalConversionModId);
                         modIdList.AddRange(this.ProfileSnapshot.ServerModIds);
 
-                        // remove all duplicate mod ids.
-                        modIdList = modIdList.Distinct().ToList();
+                        modIdList = ModUtils.ValidateModList(modIdList);
 
                         // get the details of the mods to be processed.
                         var modDetails = ModUtils.GetSteamModDetails(modIdList);
@@ -625,7 +624,7 @@ namespace ARK_Server_Manager.Lib
                                                 if (Directory.Exists(modCachePath))
                                                 {
                                                     // check if any of the mod files have changed.
-                                                    gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Where(file => file.LastWriteTime >= startTime).Any();
+                                                    gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= startTime);
 
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
 

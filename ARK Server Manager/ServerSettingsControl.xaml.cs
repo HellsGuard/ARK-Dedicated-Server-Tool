@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager
 {
@@ -46,6 +48,8 @@ namespace ARK_Server_Manager
         MapNameIslandProperty,
         MapNameCenterProperty,
         MapNameTotalConversionProperty,
+        TotalConversionPrimitivePlusProperty,
+
         PlayerMaxXpProperty,
         DinoMaxXpProperty,
         PlayerPerLevelStatMultipliers,
@@ -73,6 +77,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedCustomSectionProperty = DependencyProperty.Register(nameof(SelectedCustomSection), typeof(CustomSection), typeof(ServerSettingsControl));
 
         #region Properties
         public Config CurrentConfig
@@ -121,6 +126,12 @@ namespace ARK_Server_Manager
         {
             get { return GetValue(SettingsProperty) as ServerProfile; }
             set { SetValue(SettingsProperty, value); }
+        }
+
+        public CustomSection SelectedCustomSection
+        {
+            get { return GetValue(SelectedCustomSectionProperty) as CustomSection; }
+            set { SetValue(SelectedCustomSectionProperty, value); }
         }
         #endregion
 
@@ -833,8 +844,9 @@ namespace ARK_Server_Manager
                 comment.AppendLine($"ASM Version: {App.Version}");
 
                 comment.AppendLine($"MachinePublicIP: {Config.Default.MachinePublicIP}");
-                comment.AppendLine($"ConfigDirectory: {Config.Default.ConfigDirectory}");
-                comment.AppendLine($"DataDir: {Config.Default.DataDir}");
+                comment.AppendLine($"ASM Directory: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
+                comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
+                comment.AppendLine($"Data Directory: {Config.Default.DataDir}");
 
                 comment.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
                 comment.AppendLine($"RunAsAdministratorPrompt: {Config.Default.RunAsAdministratorPrompt}");
@@ -895,6 +907,124 @@ namespace ARK_Server_Manager
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
+        }
+
+        private void AddCustomItem_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCustomSection?.Add(string.Empty, string.Empty);
+        }
+
+        private void AddCustomSection_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.CustomGameUserSettingsSections.Add(string.Empty, new string[0]);
+        }
+
+        private void ClearCustomItems_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCustomSection?.Clear();
+        }
+
+        private void ClearCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCustomSection = null;
+            Settings.CustomGameUserSettingsSections.Clear();
+        }
+
+        private void ImportCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.EnsureFileExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Title");
+            dialog.Filters.Add(new CommonFileDialogFilter("Ini Files", "*.ini"));
+            dialog.InitialDirectory = Settings.InstallDirectory;
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    // read the selected ini file.
+                    var iniFile = IniFileUtils.ReadFromFile(dialog.FileName);
+
+                    // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
+                    foreach (var section in iniFile.Sections.Where(s => !string.IsNullOrWhiteSpace(s.SectionName) && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+                    {
+                        Settings.CustomGameUserSettingsSections.Add(section.SectionName, section.KeysToStringArray(), false);
+                    }
+
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Label"), _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_LoadCustomConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
+
+        private void PasteCustomItems_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                // read the pasted data into an ini file.
+                var iniFile = IniFileUtils.ReadString(window.ConfigData);
+                // get the section with the same name as the currently selected custom section.
+                var section = iniFile?.GetSection(SelectedCustomSection.SectionName);
+                // check if the section exists.
+                if (section == null)
+                    // section is not exists, get the section with the empty name.
+                    section = iniFile?.GetSection(string.Empty) ?? new IniSection();
+
+                // cycle through the section keys, adding them to the selected custom section.
+                foreach (var key in section.Keys)
+                {
+                    // check if the key name has been defined.
+                    if (!string.IsNullOrWhiteSpace(key.KeyName))
+                        SelectedCustomSection.Add(key.KeyName, key.KeyValue);
+                }
+            }
+        }
+
+        private void PasteCustomSections_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                // read the pasted data into an ini file.
+                var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+                // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
+                foreach (var section in iniFile.Sections.Where(s => !string.IsNullOrWhiteSpace(s.SectionName) && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+                {
+                    Settings.CustomGameUserSettingsSections.Add(section.SectionName, section.KeysToStringArray(), false);
+                }
+            }
+        }
+
+        private void RemoveCustomItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomSection == null)
+                return;
+
+            var item = ((CustomItem)((Button)e.Source).DataContext);
+            SelectedCustomSection.Remove(item);
+        }
+
+        private void RemoveCustomSection_Click(object sender, RoutedEventArgs e)
+        {
+            var section = ((CustomSection)((Button)e.Source).DataContext);
+            Settings.CustomGameUserSettingsSections.Remove(section);
         }
         #endregion
 
@@ -1104,17 +1234,29 @@ namespace ARK_Server_Manager
                                 break;
 
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:
-                                // we need to read the mod file and retreive the map name
-                                var mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
-                                if (string.IsNullOrWhiteSpace(mapName))
+                                // set the map name to the ARK default.
+                                var mapName = Config.Default.DefaultServerMap_TheIsland;
+
+                                // check if we are running an official total conversion mod.
+                                if (!this.Settings.TotalConversionModId.Equals(Config.Default.DefaultTotalConversion_PrimitivePlus))
                                 {
-                                    MessageBox.Show("The map name could not be found, please check the total conversion mod id is correct and the mod has been downloaded.", "Find Total Conversion Map Name Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    break;
+                                    // we need to read the mod file and retreive the map name
+                                    mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
+                                    if (string.IsNullOrWhiteSpace(mapName))
+                                    {
+                                        MessageBox.Show("The map name could not be found, please check the total conversion mod id is correct and the mod has been downloaded.", "Find Total Conversion Map Name Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        break;
+                                    }
                                 }
 
                                 this.Settings.ServerMap = mapName;
 
                                 MessageBox.Show("The map name has been updated.", "Find Total Conversion Map Name", MessageBoxButton.OK, MessageBoxImage.Information);
+                                break;
+
+                            case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
+                                this.Settings.TotalConversionModId = Config.Default.DefaultTotalConversion_PrimitivePlus;
+                                this.Settings.ServerMap = Config.Default.DefaultServerMap_TheIsland;
                                 break;
 
                             case ServerSettingsResetAction.PlayerMaxXpProperty:

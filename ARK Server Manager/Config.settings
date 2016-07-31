@@ -335,5 +335,11 @@
     <Setting Name="ValidateProfileOnServerStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="SectionCustomGameUserSettingsIsExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultTotalConversion_PrimitivePlus" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">111111111</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -291,9 +291,9 @@ namespace ARK_Server_Manager.Lib.Utils
 
         public List<IniSection> Sections;
 
-        public IniSection AddSection(string sectionName)
+        public IniSection AddSection(string sectionName, bool allowEmptyName = false)
         {
-            if (string.IsNullOrWhiteSpace(sectionName))
+            if (!allowEmptyName && string.IsNullOrWhiteSpace(sectionName))
                 return null;
 
             var section = Sections.FirstOrDefault(s => s.SectionName.Equals(sectionName, StringComparison.OrdinalIgnoreCase));
@@ -309,7 +309,7 @@ namespace ARK_Server_Manager.Lib.Utils
         {
             var section = Sections.LastOrDefault();
             if (section == null)
-                section = AddSection(string.Empty);
+                section = AddSection(string.Empty, true);
 
             return section.AddKey(keyName, keyValue);
         }
@@ -318,7 +318,7 @@ namespace ARK_Server_Manager.Lib.Utils
         {
             var section = Sections.LastOrDefault();
             if (section == null)
-                return null;
+                section = AddSection(string.Empty, true);
 
             return section.AddKey(keyValuePair);
         }
@@ -365,9 +365,12 @@ namespace ARK_Server_Manager.Lib.Utils
             // create the section.
             section = AddSection(sectionName);
 
-            foreach (var key in keysValuePairs)
+            if (section != null)
             {
-                section.AddKey(key);
+                foreach (var key in keysValuePairs)
+                {
+                    section.AddKey(key);
+                }
             }
 
             return result;
@@ -470,20 +473,6 @@ namespace ARK_Server_Manager.Lib.Utils
             Keys.Add(key);
             return key;
         }
-
-        //public IniKey AddKey(string keyValuePair)
-        //{
-        //    var keyName = Regex.Match(keyValuePair, (@"(?<=^\p{Zs}*|])[^]=:]*(?==|:)")).Value.Trim();
-
-        //    if (string.IsNullOrWhiteSpace(keyName))
-        //        return null;
-
-        //    var keyValue = Regex.Match(keyValuePair, "(?<==|:)[^;#]*").Value.Trim();
-
-        //    var key = new IniKey() { KeyName = keyName, KeyValue = keyValue };
-        //    Keys.Add(key);
-        //    return key;
-        //}
 
         public IniKey AddKey(string keyValuePair)
         {

@@ -60,7 +60,9 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
-            this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
+            //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
+            //this.CustomGameSections = new CustomSectionList();
+            this.CustomGameUserSettingsSections = new CustomSectionList();
 
             GetDefaultDirectories();
         }
@@ -812,7 +814,7 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region HUD and Visuals
-        public static readonly DependencyProperty AllowCrosshairProperty = DependencyProperty.Register(nameof(AllowCrosshair), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty AllowCrosshairProperty = DependencyProperty.Register(nameof(AllowCrosshair), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerCrosshair")]
         public bool AllowCrosshair
         {
@@ -866,6 +868,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(ShowFloatingDamageTextProperty); }
             set { SetValue(ShowFloatingDamageTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowHitMarkersProperty = DependencyProperty.Register(nameof(AllowHitMarkers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AllowHitMarkers
+        {
+            get { return (bool)GetValue(AllowHitMarkersProperty); }
+            set { SetValue(AllowHitMarkersProperty, value); }
         }
         #endregion
 
@@ -1078,6 +1088,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(EnableAllowCaveFlyersProperty); }
             set { SetValue(EnableAllowCaveFlyersProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableNoFishLootProperty = DependencyProperty.Register(nameof(EnableNoFishLoot), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableNoFishLoot
+        {
+            get { return (bool)GetValue(EnableNoFishLootProperty); }
+            set { SetValue(EnableNoFishLootProperty, value); }
         }
 
         public static readonly DependencyProperty DisableDinoDecayPvEProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1597,6 +1614,26 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Custom Settings
+        //public static readonly DependencyProperty CustomGameSectionsProperty = DependencyProperty.Register(nameof(CustomGameSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
+        //[XmlIgnore]
+        //[IniFileEntry(IniFiles.Game, IniFileSections.Custom)]
+        //public CustomSectionList CustomGameSections
+        //{
+        //    get { return (CustomSectionList)GetValue(CustomGameSectionsProperty); }
+        //    set { SetValue(CustomGameSectionsProperty, value); }
+        //}
+
+        public static readonly DependencyProperty CustomGameUserSettingsSectionsProperty = DependencyProperty.Register(nameof(CustomGameUserSettingsSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Custom)]
+        public CustomSectionList CustomGameUserSettingsSections
+        {
+            get { return (CustomSectionList)GetValue(CustomGameUserSettingsSectionsProperty); }
+            set { SetValue(CustomGameUserSettingsSectionsProperty, value); }
+        }
+        #endregion
+
         #region Survival of the Fittest
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool SOTF_Enabled
@@ -1726,15 +1763,14 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
-        public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<Crafting> ConfigOverrideItemCraftingCosts
-        {
-            get { return (AggregateIniValueList<Crafting>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
-            set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
-        }
-
+        //public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
+        //[XmlIgnore]
+        //[IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        //public AggregateIniValueList<Crafting> ConfigOverrideItemCraftingCosts
+        //{
+        //    get { return (AggregateIniValueList<Crafting>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
+        //    set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
+        //}
         #endregion
 
         #region Methods
@@ -1898,6 +1934,11 @@ namespace ARK_Server_Manager.Lib
             if (this.EnableAllowCaveFlyers)
             {
                 serverArgs.Append(" -ForceAllowCaveFlyers");
+            }
+
+            if (this.EnableNoFishLoot)
+            {
+                serverArgs.Append(" -nofishloot");
             }
 
             if(this.SOTF_Enabled)
@@ -2305,7 +2346,7 @@ namespace ARK_Server_Manager.Lib
                 var serverMapModId = ModUtils.GetMapModId(ServerMap);
                 var serverMapName = ModUtils.GetMapName(ServerMap);
                 var modIds = ModUtils.GetModIdList(ServerModIds);
-                modIds = modIds.Distinct().ToList();
+                modIds = ModUtils.ValidateModList(modIds);
 
                 var modIdList = new List<string>();
                 if (!string.IsNullOrWhiteSpace(serverMapModId))
@@ -2314,8 +2355,7 @@ namespace ARK_Server_Manager.Lib
                     modIdList.Add(TotalConversionModId);
                 modIdList.AddRange(modIds);
 
-                // remove all duplicate mod ids.
-                modIdList = modIdList.Distinct().ToList();
+                modIdList = ModUtils.ValidateModList(modIdList);
 
                 var modDetails = ModUtils.GetSteamModDetails(modIdList);
 
@@ -2338,19 +2378,23 @@ namespace ARK_Server_Manager.Lib
                             result.AppendLine("The map mod is not a valid map mod.");
                         else
                         {
-                            var mapName = ModUtils.GetMapName(InstallDirectory, serverMapModId);
-                            if (string.IsNullOrWhiteSpace(mapName))
-                                result.AppendLine("Map mod file does not exist or is invalid.");
-                            else if (!mapName.Equals(serverMapName))
-                                result.AppendLine("The map name does not match the map mod's map name.");
-                            else
+                            // do not process any mods that are not included in the mod list.
+                            if (modIdList.Contains(serverMapModId))
                             {
-                                var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
-                                if (modDetail != null)
+                                var mapName = ModUtils.GetMapName(InstallDirectory, serverMapModId);
+                                if (string.IsNullOrWhiteSpace(mapName))
+                                    result.AppendLine("Map mod file does not exist or is invalid.");
+                                else if (!mapName.Equals(serverMapName))
+                                    result.AppendLine("The map name does not match the map mod's map name.");
+                                else
                                 {
-                                    var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
-                                    if (!modVersion.Equals(modDetail.time_updated))
-                                        result.AppendLine("The map mod is outdated.");
+                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                    if (modDetail != null)
+                                    {
+                                        var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                        if (!modVersion.Equals(modDetail.time_updated))
+                                            result.AppendLine("The map mod is outdated.");
+                                    }
                                 }
                             }
                         }
@@ -2372,19 +2416,23 @@ namespace ARK_Server_Manager.Lib
                             result.AppendLine("The total conversion mod is not a valid total conversion mod.");
                         else
                         {
-                            var mapName = ModUtils.GetMapName(InstallDirectory, TotalConversionModId);
-                            if (string.IsNullOrWhiteSpace(mapName))
-                                result.AppendLine("Total conversion mod file does not exist or is invalid.");
-                            else if (!mapName.Equals(serverMapName))
-                                result.AppendLine("The map name does not match the total conversion mod's map name.");
-                            else
+                            // do not process any mods that are not included in the mod list.
+                            if (modIdList.Contains(TotalConversionModId))
                             {
-                                var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
-                                if (modDetail != null)
+                                var mapName = ModUtils.GetMapName(InstallDirectory, TotalConversionModId);
+                                if (string.IsNullOrWhiteSpace(mapName))
+                                    result.AppendLine("Total conversion mod file does not exist or is invalid.");
+                                else if (!mapName.Equals(serverMapName))
+                                    result.AppendLine("The map name does not match the total conversion mod's map name.");
+                                else
                                 {
-                                    var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
-                                    if (!modVersion.Equals(modDetail.time_updated))
-                                        result.AppendLine("The total conversion mod is outdated.");
+                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                    if (modDetail != null)
+                                    {
+                                        var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                        if (!modVersion.Equals(modDetail.time_updated))
+                                            result.AppendLine("The total conversion mod is outdated.");
+                                    }
                                 }
                             }
                         }
@@ -2724,6 +2772,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowPVPGammaProperty);
             this.ClearValue(AllowPvEGammaProperty);
             this.ClearValue(ShowFloatingDamageTextProperty);
+            this.ClearValue(AllowHitMarkersProperty);
         }
 
         public void ResetPlayerSettings()

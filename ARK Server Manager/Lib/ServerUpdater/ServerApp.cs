@@ -20,7 +20,7 @@ namespace ARK_Server_Manager.Lib
 {
     internal class ServerApp
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         internal class ProfileSnapshot
         {
@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
         public const string ARGUMENT_AUTOUPDATE = "-au";
 
         private static DateTime _startTime = DateTime.Now;
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
         private static string _logPrefix = "";
         private static Dictionary<ProfileSnapshot, ServerProfile> _profiles = null;
 
@@ -1092,8 +1092,7 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            // remove all duplicate mod ids.
-            return modIdList.Distinct().ToList();
+            return ModUtils.ValidateModList(modIdList);
         }
 
         private string GetProfileLogFile() => _profile != null ? Updater.NormalizePath(Path.Combine(Updater.GetLogFolder(), _profile.ProfileName, _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log")) : GetLogFile();

@@ -1188,5 +1188,26 @@ namespace ARK_Server_Manager {
                 this["ValidateProfileOnServerStart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionCustomGameUserSettingsIsExpanded {
+            get {
+                return ((bool)(this["SectionCustomGameUserSettingsIsExpanded"]));
+            }
+            set {
+                this["SectionCustomGameUserSettingsIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("111111111")]
+        public string DefaultTotalConversion_PrimitivePlus {
+            get {
+                return ((string)(this["DefaultTotalConversion_PrimitivePlus"]));
+            }
+        }
     }
 }

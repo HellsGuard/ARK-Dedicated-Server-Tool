@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ARK_Server_Manager.Lib
 {
     public interface IIniValuesCollection
     {
-        IEnumerable<string> ToIniValues();
-        void FromIniValues(IEnumerable<string> values);
-        bool IsEnabled { get; set; }
-        bool IsArray { get; }
         string IniCollectionKey { get; }
+        bool IsArray { get; }
+        bool IsEnabled { get; set; }
+
+        void FromIniValues(IEnumerable<string> values);
+        IEnumerable<string> ToIniValues();
     }
 }

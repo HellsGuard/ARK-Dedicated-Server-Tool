@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>244</ApplicationRevision>
+    <ApplicationRevision>247</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -152,7 +152,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomConfigDataWindow.xaml.cs">
+      <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\SteamCmdWorkshopDetails.cs" />
+    <Compile Include="Lib\Serialization\IIniSectionCollection.cs" />
     <Compile Include="Lib\Utils\EmailUtil.cs" />
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
@@ -299,6 +304,7 @@
     <Resource Include="Art\Unchecked.png" />
     <Resource Include="Art\Find.png" />
     <Resource Include="Art\Zip.png" />
+    <Resource Include="Art\Paste.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -315,6 +321,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="CustomConfigDataWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkshopFilesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

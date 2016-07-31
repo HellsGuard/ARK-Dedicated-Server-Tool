@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ARK_Server_Manager.Lib.Model;
 using ARK_Server_Manager.Lib.Utils;
 
 namespace ARK_Server_Manager.Lib
@@ -18,11 +19,17 @@ namespace ARK_Server_Manager.Lib
     public enum IniFileSections
     {
         ServerSettings,
+        GameUserSettings,
+        ScalabilityGroups,
         SessionSettings,
         GameSession,
-        GameMode,
+        MultiHome,
         MessageOfTheDay,
-        MultiHome
+
+        GameMode,
+        ModInstaller,
+
+        Custom,
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=true)]
@@ -98,17 +105,21 @@ namespace ARK_Server_Manager.Lib
     /// </remarks>
     class SystemIniFile
     {
-        private readonly Dictionary<IniFileSections, string> SectionNames = new Dictionary<IniFileSections, string>()
+        public static readonly Dictionary<IniFileSections, string> SectionNames = new Dictionary<IniFileSections, string>()
         {
-            { IniFileSections.GameMode, "/script/shootergame.shootergamemode" },
-            { IniFileSections.GameSession, "/Script/Engine.GameSession"},
-            { IniFileSections.MessageOfTheDay, "MessageOfTheDay" },
-            { IniFileSections.MultiHome, "MultiHome" },
             { IniFileSections.ServerSettings, "ServerSettings" },
+            { IniFileSections.GameUserSettings, "/Script/ShooterGame.ShooterGameUserSettings" },
+            { IniFileSections.ScalabilityGroups, "ScalabilityGroups" },
             { IniFileSections.SessionSettings, "SessionSettings" },
+            { IniFileSections.GameSession, "/Script/Engine.GameSession"},
+            { IniFileSections.MultiHome, "MultiHome" },
+            { IniFileSections.MessageOfTheDay, "MessageOfTheDay" },
+
+            { IniFileSections.GameMode, "/script/shootergame.shootergamemode" },
+            { IniFileSections.ModInstaller, "ModInstaller" },
         };
 
-        private readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
+        public static readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
         {
             { IniFiles.GameUserSettings, "GameUserSettings.ini" },
             { IniFiles.Game, "Game.ini" }
@@ -132,60 +143,79 @@ namespace ARK_Server_Manager.Lib
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
-                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
-
-                    if (attr.WriteBoolValueIfNonEmpty)
+                    if (attr.Section == IniFileSections.Custom)
                     {
-                        // Don't really need to do anything here, we don't care about this on reading it.
-                        // extraBoolValue = Convert.ToBoolean(IniReadValue(SectionNames[attr.Section], attr.Key));
+                        // this code is to handle custom sections
+                        var collection = field.GetValue(obj) as IIniSectionCollection;
+                        if (collection != null)
+                        {
+                            ReadFile(iniFiles, attr.File);
+
+                            var sectionNames = ReadCustomSectionNames(iniFiles, attr.File);
+                            foreach (var sectionName in sectionNames)
+                            {
+                                var sectionValues = ReadSection(iniFiles, attr.File, sectionName);
+                                collection.Add(sectionName, sectionValues);
+                            }
+                        }
                     }
                     else
                     {
-                        var iniValue = ReadValue(iniFiles, attr.File, attr.Section, keyName);
-                        var fieldType = field.PropertyType;
-                        var collection = field.GetValue(obj) as IIniValuesCollection;
+                        var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
 
-                        if (collection != null)
+                        if (attr.WriteBoolValueIfNonEmpty)
                         {
-                            var section = ReadSection(iniFiles, attr.File, attr.Section);
-                            var filteredSection = collection.IsArray ? section.Where(s => s.StartsWith(collection.IniCollectionKey + "[")) :
-                                                                       section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
-                            collection.FromIniValues(filteredSection);
-                        }
-                        else if (fieldType == typeof(string))
-                        {
-                            var stringValue = iniValue;
-                            if (attr.Multiline)
-                            {
-                                stringValue = stringValue.Replace(@"\n", Environment.NewLine);
-                            }
-                            field.SetValue(obj, stringValue);
+                            // Don't really need to do anything here, we don't care about this on reading it.
+                            // extraBoolValue = Convert.ToBoolean(IniReadValue(SectionNames[attr.Section], attr.Key));
                         }
                         else
                         {
-                            // Update the ConditionedOn flag, if this field has one.
-                            if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
+                            var iniValue = ReadValue(iniFiles, attr.File, attr.Section, keyName);
+                            var fieldType = field.PropertyType;
+                            var collection = field.GetValue(obj) as IIniValuesCollection;
+
+                            if (collection != null)
                             {
-                                var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
+                                var section = ReadSection(iniFiles, attr.File, attr.Section);
+                                var filteredSection = collection.IsArray ? section.Where(s => s.StartsWith(collection.IniCollectionKey + "[")) :
+                                                                           section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
+                                collection.FromIniValues(filteredSection);
+                            }
+                            else if (fieldType == typeof(string))
+                            {
+                                var stringValue = iniValue;
+                                if (attr.Multiline)
+                                {
+                                    stringValue = stringValue.Replace(@"\n", Environment.NewLine);
+                                }
+                                field.SetValue(obj, stringValue);
+                            }
+                            else
+                            {
+                                // Update the ConditionedOn flag, if this field has one.
+                                if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
+                                {
+                                    var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
+                                    if (String.IsNullOrWhiteSpace(iniValue))
+                                    {
+                                        conditionField.SetValue(obj, false);
+                                    }
+                                    else
+                                    {
+                                        conditionField.SetValue(obj, true);
+                                    }
+                                }
+
                                 if (String.IsNullOrWhiteSpace(iniValue))
                                 {
-                                    conditionField.SetValue(obj, false);
+                                    // Skip non-string values which are not found
+                                    continue;
                                 }
-                                else
-                                {
-                                    conditionField.SetValue(obj, true);
-                                }
-                            }
 
-                            if (String.IsNullOrWhiteSpace(iniValue))
-                            {
-                                // Skip non-string values which are not found
-                                continue;
+                                var valueSet = StringUtils.SetPropertyValue(iniValue, obj, field, attr);
+                                if (!valueSet)
+                                    throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
                             }
-
-                            var valueSet = StringUtils.SetPropertyValue(iniValue, obj, field, attr);
-                            if (!valueSet)
-                                throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
                         }
                     }
                 }
@@ -203,100 +233,123 @@ namespace ARK_Server_Manager.Lib
                 foreach (var attribute in attributes)
                 {
                     var attr = attribute as IniFileEntryAttribute;
-                    var value = field.GetValue(obj);
-                    var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
-
-                    if (attr.ClearSection)
+                    if (attr.Section == IniFileSections.Custom)
                     {
-                        WriteValue(iniFiles, IniFiles.GameUserSettings, attr.Section, null, null);
-                    }
-
-                    //
-                    // If this is a collection, we need to first remove all of its values from the INI.
-                    //
-                    IIniValuesCollection collection = value as IIniValuesCollection;
-                    if (collection != null)
-                    {
-                        var section = ReadSection(iniFiles, attr.File, attr.Section);
-                        var filteredSection = section
-                                                    .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
-                                                    .ToArray();
-                        WriteSection(iniFiles, attr.File, attr.Section, filteredSection);
-                    }
-
-                    if (!String.IsNullOrEmpty(attr.ConditionedOn))
-                    {
-                        var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
-                        var conditionValue = conditionField.GetValue(obj);
-                        if (conditionValue is bool && (bool)conditionValue == false)
+                        // this code is to handle custom sections
+                        var collection = field.GetValue(obj) as IIniSectionCollection;
+                        if (collection != null)
                         {
-                            // The condition value was not set to true, so clear this attribute instead of writing it
-                            WriteValue(iniFiles, attr.File, attr.Section, keyName, null);
-                            continue;
-                        }
-                    }
+                            collection.Update();
 
-                    if (!String.IsNullOrEmpty(attr.ClearWhenOff))
-                    {
-                        var updateOffField = obj.GetType().GetProperty(attr.ClearWhenOff);
-                        var updateOffValue = updateOffField.GetValue(obj);
-                        if (updateOffValue is bool && (bool)updateOffValue == false)
-                        {
-                            // The attributed value was set to false, so clear this attribute instead of writing it
-                            WriteValue(iniFiles, attr.File, attr.Section, keyName, null);
-                        }
-                        continue;
-                    }
-
-                    if (attr.WriteBoolValueIfNonEmpty)
-                    {
-                        if (value == null)
-                        {
-                            WriteValue(iniFiles, attr.File, attr.Section, keyName, "False");
-                        }
-                        else
-                        {
-                            if (value is string)
+                            foreach (var section in collection.Sections)
                             {
-                                var strValue = value as string;
-                                WriteValue(iniFiles, attr.File, attr.Section, keyName, String.IsNullOrEmpty(strValue) ? "False" : "True");
-                            }
-                            else
-                            {
-                                // Not supported
-                                throw new NotSupportedException("Unexpected IniFileEntry value type.");
+                                // clear the entire section
+                                WriteValue(iniFiles, attr.File, section.IniCollectionKey, null, null);
+
+                                if (section.IsEnabled)
+                                {
+                                    WriteSection(iniFiles, attr.File, section.IniCollectionKey, section.ToIniValues().ToArray());
+                                }
                             }
                         }
                     }
                     else
                     {
+                        var value = field.GetValue(obj);
+                        var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+
+                        if (attr.ClearSection)
+                        {
+                            WriteValue(iniFiles, attr.File, attr.Section, null, null);
+                        }
+
+                        //
+                        // If this is a collection, we need to first remove all of its values from the INI.
+                        //
+                        IIniValuesCollection collection = value as IIniValuesCollection;
                         if (collection != null)
                         {
-                            if (collection.IsEnabled)
+                            var section = ReadSection(iniFiles, attr.File, attr.Section);
+                            var filteredSection = section
+                                                        .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
+                                                        .ToArray();
+                            WriteSection(iniFiles, attr.File, attr.Section, filteredSection);
+                        }
+
+                        if (!String.IsNullOrEmpty(attr.ConditionedOn))
+                        {
+                            var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
+                            var conditionValue = conditionField.GetValue(obj);
+                            if (conditionValue is bool && (bool)conditionValue == false)
                             {
-                                // Remove all the values in the collection with this key name
-                                var section = ReadSection(iniFiles, attr.File, attr.Section);
-                                var filteredSection = collection.IsArray ? section.Where(s => !s.StartsWith(keyName + "["))
-                                                                         : section.Where(s => !s.StartsWith(keyName + "="));
-                                var result = filteredSection.Concat(collection.ToIniValues()).ToArray();
-                                WriteSection(iniFiles, attr.File, attr.Section, result);
+                                // The condition value was not set to true, so clear this attribute instead of writing it
+                                WriteValue(iniFiles, attr.File, attr.Section, keyName, null);
+                                continue;
+                            }
+                        }
+
+                        if (!String.IsNullOrEmpty(attr.ClearWhenOff))
+                        {
+                            var updateOffField = obj.GetType().GetProperty(attr.ClearWhenOff);
+                            var updateOffValue = updateOffField.GetValue(obj);
+                            if (updateOffValue is bool && (bool)updateOffValue == false)
+                            {
+                                // The attributed value was set to false, so clear this attribute instead of writing it
+                                WriteValue(iniFiles, attr.File, attr.Section, keyName, null);
+                            }
+                            continue;
+                        }
+
+                        if (attr.WriteBoolValueIfNonEmpty)
+                        {
+                            if (value == null)
+                            {
+                                WriteValue(iniFiles, attr.File, attr.Section, keyName, "False");
+                            }
+                            else
+                            {
+                                if (value is string)
+                                {
+                                    var strValue = value as string;
+                                    WriteValue(iniFiles, attr.File, attr.Section, keyName, String.IsNullOrEmpty(strValue) ? "False" : "True");
+                                }
+                                else
+                                {
+                                    // Not supported
+                                    throw new NotSupportedException("Unexpected IniFileEntry value type.");
+                                }
                             }
                         }
                         else
                         {
-                            var strValue = StringUtils.GetPropertyValue(value, field, attr);
-                            if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
+                            if (collection != null)
                             {
-                                strValue = "\"" + strValue + "\"";
+                                if (collection.IsEnabled)
+                                {
+                                    // Remove all the values in the collection with this key name
+                                    var section = ReadSection(iniFiles, attr.File, attr.Section);
+                                    var filteredSection = collection.IsArray ? section.Where(s => !s.StartsWith(keyName + "["))
+                                                                             : section.Where(s => !s.StartsWith(keyName + "="));
+                                    var result = filteredSection.Concat(collection.ToIniValues()).ToArray();
+                                    WriteSection(iniFiles, attr.File, attr.Section, result);
+                                }
                             }
-
-                            if (attr.Multiline)
+                            else
                             {
-                                // substitutes the NewLine string with "\n"
-                                strValue = strValue.Replace(Environment.NewLine, @"\n");
-                            }
+                                var strValue = StringUtils.GetPropertyValue(value, field, attr);
+                                if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
+                                {
+                                    strValue = "\"" + strValue + "\"";
+                                }
 
-                            WriteValue(iniFiles, attr.File, attr.Section, keyName, strValue);
+                                if (attr.Multiline)
+                                {
+                                    // substitutes the NewLine string with "\n"
+                                    strValue = strValue.Replace(Environment.NewLine, @"\n");
+                                }
+
+                                WriteValue(iniFiles, attr.File, attr.Section, keyName, strValue);
+                            }
                         }
                     }
                 }
@@ -307,37 +360,54 @@ namespace ARK_Server_Manager.Lib
 
         public string[] ReadSection(IniFiles iniFile, IniFileSections section)
         {
+            return ReadSection(iniFile, SectionNames[section]);
+        }
+
+        public string[] ReadSection(IniFiles iniFile, string sectionName)
+        {
             var file = Path.Combine(this.basePath, FileNames[iniFile]);
-            return IniFileUtils.ReadSection(file, SectionNames[section]);
+            return IniFileUtils.ReadSection(file, sectionName);
         }
 
         public void WriteSection(IniFiles iniFile, IniFileSections section, string[] values)
         {
-            var file = Path.Combine(this.basePath, FileNames[iniFile]);
-            var result = IniFileUtils.WriteSection(file, SectionNames[section], values);
+            WriteSection(iniFile, SectionNames[section], values);
         }
 
-        private string[] ReadSection(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, IniFileSections section)
+        public void WriteSection(IniFiles iniFile, string sectionName, string[] values)
         {
-            if (!iniFiles.ContainsKey(FileNames[iniFile]))
-            {
-                var file = Path.Combine(this.basePath, FileNames[iniFile]);
-                iniFiles.Add(FileNames[iniFile], IniFileUtils.ReadFromFile(file));
-            }
+            var file = Path.Combine(this.basePath, FileNames[iniFile]);
+            var result = IniFileUtils.WriteSection(file, sectionName, values);
+        }
+
+        private string[] ReadCustomSectionNames(Dictionary<string, IniFile> iniFiles, IniFiles iniFile)
+        {
+            ReadFile(iniFiles, iniFile);
 
             if (!iniFiles.ContainsKey(FileNames[iniFile]))
                 return new string[0];
 
-            return iniFiles[FileNames[iniFile]].GetSection(SectionNames[section])?.KeysToStringArray() ?? new string[0];
+            return iniFiles[FileNames[iniFile]].Sections.Select(s => s.SectionName).Where(s => !SectionNames.ContainsValue(s)).ToArray();
+        }
+
+        private string[] ReadSection(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, IniFileSections section)
+        {
+            return ReadSection(iniFiles, iniFile, SectionNames[section]);
+        }
+
+        private string[] ReadSection(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, string sectionName)
+        {
+            ReadFile(iniFiles, iniFile);
+
+            if (!iniFiles.ContainsKey(FileNames[iniFile]))
+                return new string[0];
+
+            return iniFiles[FileNames[iniFile]].GetSection(sectionName)?.KeysToStringArray() ?? new string[0];
         }
 
         private string ReadValue(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, IniFileSections section, string keyName)
         {
-            if (!iniFiles.ContainsKey(FileNames[iniFile]))
-            {
-                var file = Path.Combine(this.basePath, FileNames[iniFile]);
-                iniFiles.Add(FileNames[iniFile], IniFileUtils.ReadFromFile(file));
-            }
+            ReadFile(iniFiles, iniFile);
 
             if (!iniFiles.ContainsKey(FileNames[iniFile]))
                 return string.Empty;
@@ -347,37 +417,45 @@ namespace ARK_Server_Manager.Lib
 
         private void WriteSection(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, IniFileSections section, string[] values)
         {
-            var file = Path.Combine(this.basePath, FileNames[iniFile]);
+            WriteSection(iniFiles, iniFile, SectionNames[section], values);
+        }
 
-            if (!iniFiles.ContainsKey(FileNames[iniFile]))
-                iniFiles.Add(FileNames[iniFile], IniFileUtils.ReadFromFile(file));
+        private void WriteSection(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, string sectionName, string[] values)
+        {
+            ReadFile(iniFiles, iniFile);
 
             if (!iniFiles.ContainsKey(FileNames[iniFile]))
                 return;
 
-            iniFiles[FileNames[iniFile]].WriteSection(SectionNames[section], values);
+            iniFiles[FileNames[iniFile]].WriteSection(sectionName, values);
         }
 
         private void WriteValue(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, IniFileSections section, string keyName, string keyValue)
         {
-            var file = Path.Combine(this.basePath, FileNames[iniFile]);
+            WriteValue(iniFiles, iniFile, SectionNames[section], keyName, keyValue);
+        }
 
-            if (!iniFiles.ContainsKey(FileNames[iniFile]))
-                iniFiles.Add(FileNames[iniFile], IniFileUtils.ReadFromFile(file));
+        private void WriteValue(Dictionary<string, IniFile> iniFiles, IniFiles iniFile, string sectionName, string keyName, string keyValue)
+        {
+            ReadFile(iniFiles, iniFile);
 
             if (!iniFiles.ContainsKey(FileNames[iniFile]))
                 return;
 
-            iniFiles[FileNames[iniFile]].WriteKey(SectionNames[section], keyName, keyValue);
+            iniFiles[FileNames[iniFile]].WriteKey(sectionName, keyName, keyValue);
+        }
+
+        private void ReadFile(Dictionary<string, IniFile> iniFiles, IniFiles iniFile)
+        {
+            if (!iniFiles.ContainsKey(FileNames[iniFile]))
+            {
+                var file = Path.Combine(this.basePath, FileNames[iniFile]);
+                iniFiles.Add(FileNames[iniFile], IniFileUtils.ReadFromFile(file));
+            }
         }
 
         private void SaveFiles(Dictionary<string, IniFile> iniFiles)
         {
-            //foreach (var iniFile in iniFiles)
-            //{
-            //    var file = Path.Combine(this.basePath, iniFile.Key);
-            //    var result = IniFileUtils.SaveToFile(file, iniFile.Value);
-            //}
             Parallel.ForEach(iniFiles, iniFile => {
                 var file = Path.Combine(this.basePath, iniFile.Key);
                 var result = IniFileUtils.SaveToFile(file, iniFile.Value);

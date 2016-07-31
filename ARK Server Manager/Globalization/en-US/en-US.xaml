@@ -47,6 +47,11 @@
     <sys:String x:Key="CommandLine_CopyButton_ErrorTitle">Copy to clipboard failed.</sys:String>
     <sys:String x:Key="CommandLine_CopyButton_ErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
 
+    <!-- CustomConfigDataWindow Window -->
+    <sys:String x:Key="CustomConfigData_Title">Custom Config Data</sys:String>
+    <sys:String x:Key="CustomConfigData_ProcessButtonLabel">Process</sys:String>
+    <sys:String x:Key="CustomConfigData_CancelButtonLabel">Cancel</sys:String>
+
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
@@ -353,6 +358,9 @@
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_ResetLabel">Click 'Yes' to confirm you want to perform the reset.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Load Ini File.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">The ini file was successfully loaded.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ini File Load Error</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
@@ -366,7 +374,7 @@
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Spectator Password:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">The password users must enter to use non-admin spectator mode on the server.</sys:String>
     <sys:String x:Key="ServerSettings_HidePasswordText">Hidden - Click to Show</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the hidden field will show, to to hide text simply unselect text field.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When selected the hidden text will show, to hide the text unselect the field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Networking</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Server Port:</sys:String>
@@ -420,6 +428,7 @@
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
     <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
+    <sys:String x:Key="ServerSettings_ResetTotalConversionPrimitivePlusTooltip">Reset total conversion to Primitive +</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
     <sys:String x:Key="ServerSettings_ModDetailsTooltip">View the mod details.</sys:String>
@@ -606,6 +615,8 @@
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">If enabled, allows gamma changes in PvE mode.</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Show Floating Damage Text</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">If enabled, enables RPG-style popup text stat mode.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHitMarkersLabel">Allow Hit Markers</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHitMarkersTooltip">If enabled, shows hit markers for ranged attacks.</sys:String>
 
     <!-- Server Settings - Player Settings -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Player Settings</sys:String>
@@ -679,6 +690,8 @@
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Allow Flyers in Caves</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
@@ -902,6 +915,25 @@
     <sys:String x:Key="ServerSettings_DinoLevels_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_DinoLevels_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino levels.</sys:String>
 
+    <!-- Server Settings - Custom GameUserSettings Details -->
+    <sys:String x:Key="ServerSettings_CustomSettingsLabel">Custom GameUserSettings Details</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomSettingsSectionsLabel">Custom Sections</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsSectionNameColumnLabel">Section Name</sys:String>
+    <sys:String x:Key="ServerSettings_AddCustomSectionTooltip">Add Section</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomSectionsTooltip">Paste Section Data</sys:String>
+    <sys:String x:Key="ServerSettings_ImportCustomSectionsTooltip">Import Data from Ini File</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCustomSectionsTooltip">Clear All Sections</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCustomSectionTooltip">Delete Section</sys:String>
+
+    <sys:String x:Key="ServerSettings_CustomSettingsItemsLabel">Custom Items</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsItemKeyColumnLabel">Key</sys:String>
+    <sys:String x:Key="ServerSettings_CustomSettingsItemValueColumnLabel">Value</sys:String>
+    <sys:String x:Key="ServerSettings_AddCustomItemTooltip">Add Item</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomItemsTooltip">Paste Item Data</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCustomItemsTooltip">Delete All Items</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCustomItemTooltip">Delete Item</sys:String>
+
     <!-- Server Settings - Survival of the Fittest -->
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
@@ -1117,6 +1149,7 @@
     <sys:String x:Key="Settings_Title">Settings</sys:String>
     
     <!-- Dino/Creature Class Names -->
+    <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>
     <sys:String x:Key="Angler_Character_BP_C">Angler</sys:String>
     <sys:String x:Key="Ankylo_Character_BP_C">Ankylo</sys:String>
     <sys:String x:Key="Ant_Character_BP_C">Titanomyrma Drone</sys:String>
@@ -1160,6 +1193,7 @@
     <sys:String x:Key="Pachy_Character_BP_C">Pachy</sys:String>
     <sys:String x:Key="Para_Character_BP_C">Parasaur</sys:String>
     <sys:String x:Key="Paracer_Character_BP_C">Paracer</sys:String>
+    <sys:String x:Key="Pela_Character_BP_C">Pelagornis</sys:String>
     <sys:String x:Key="Phiomia_Character_BP_C">Phiomia</sys:String>
     <sys:String x:Key="Piranha_Character_BP_C">Megapiranha</sys:String>
     <sys:String x:Key="Plesiosaur_Character_BP_C">Plesiosaur</sys:String>
@@ -1219,6 +1253,7 @@
     <sys:String x:Key="PrimalItemResource_Polymer_Organic_C">Organic Polymer</sys:String>
     <sys:String x:Key="PrimalItemResource_RareFlower_C">Rare Flower</sys:String>
     <sys:String x:Key="PrimalItemResource_RareMushroom_C">Rare Mushroom</sys:String>
+    <sys:String x:Key="PrimalItemResource_Sap_C">Sap</sys:String>
     <sys:String x:Key="PrimalItemResource_Silicon_C">Silica Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Sparkpowder_C">Sparkpowder</sys:String>
     <sys:String x:Key="PrimalItemResource_Stone_C">Stone</sys:String>
@@ -1307,6 +1342,7 @@
     <sys:String x:Key="EngramEntry_Fabricator_C">Fabricator</sys:String>
     <sys:String x:Key="EngramEntry_FeedingTrough_C">Feeding Trough</sys:String>
     <sys:String x:Key="EngramEntry_Fireplace_C">Fireplace</sys:String>
+    <sys:String x:Key="EngramEntry_FishingRod_C">Fishing Rod</sys:String>
     <sys:String x:Key="EngramEntry_Flag_C">Multi-Panel Flag</sys:String>
     <sys:String x:Key="EngramEntry_FlagSingle_C">Single Panel Flag</sys:String>
     <sys:String x:Key="EngramEntry_FlareLauncher_C">Flare Gun</sys:String>
@@ -1338,6 +1374,7 @@
     <sys:String x:Key="EngramEntry_GreenhouseWindow_C">Greenhouse Window</sys:String>
     <sys:String x:Key="EngramEntry_Grenade_C">Grenade</sys:String>
     <sys:String x:Key="EngramEntry_Grill_C">Industrial Grill</sys:String>
+    <sys:String x:Key="EngramEntry_Grinder_C">Industrial Grinder</sys:String>
     <sys:String x:Key="EngramEntry_Gunpowder_C">Gunpowder</sys:String>
     <sys:String x:Key="EngramEntry_Handcuffs_C">Handcuffs</sys:String>
     <sys:String x:Key="EngramEntry_HideBoots_C">Hide Boots</sys:String>
@@ -1395,6 +1432,7 @@
     <sys:String x:Key="EngramEntry_MetalSlopedWall_Left_C">Metal Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_MetalSlopedWall_Right_C">Metal Wall Sloped Right</sys:String>
     <sys:String x:Key="EngramEntry_MetalSpikeWall_C">Metal Spike Wall</sys:String>
+    <sys:String x:Key="EngramEntry_MetalStairs_C">Metal Staircase</sys:String>
     <sys:String x:Key="EngramEntry_MetalTrapdoor_C">Metal Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_MetalWall_C">Metal Wall</sys:String>
     <sys:String x:Key="EngramEntry_MetalWallWithDoor_C">Metal Doorframe</sys:String>
@@ -1434,6 +1472,7 @@
     <sys:String x:Key="EngramEntry_RocketLauncher_C">Rocket Launcher</sys:String>
     <sys:String x:Key="EngramEntry_RocketTurret_C">Rocket Turret</sys:String>
     <sys:String x:Key="EngramEntry_RopeLadder_C">Rope Ladder</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Allo_C">Saddle - Allosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Ankylo_C">Saddle - Ankylo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Argentavis_C">Saddle - Argentavis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Arthro_C">Saddle - Arthropluera</sys:String>
@@ -1455,6 +1494,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Para_C">Saddle - Parasaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_C">Saddle - Paracer</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_Platform_C">Saddle - Paracer Platform</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Pela_C">Saddle - Pelagornis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Phiomia_C">Saddle - Phiomia</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Plesia_C">Saddle - Plesiosaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Plesio_Platform_C">Saddle - Plesiosaur Platform</sys:String>
@@ -1522,6 +1562,7 @@
     <sys:String x:Key="EngramEntry_StoneRoof_C">Stone Roof Sloped</sys:String>
     <sys:String x:Key="EngramEntry_StoneSlopedWall_Left_C">Stone Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_StoneSlopedWall_Right_C">Stone Wall Sloped Right</sys:String>
+    <sys:String x:Key="EngramEntry_StoneStairs_C">Stone Staircase</sys:String>
     <sys:String x:Key="EngramEntry_StoneTrapdoor_C">Reinforced Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_StoneWall_C">Stone Wall</sys:String>
     <sys:String x:Key="EngramEntry_StoneWallWithDoor_C">Stone Doorframe</sys:String>
@@ -1584,6 +1625,7 @@
     <sys:String x:Key="EngramEntry_WoodWall_C">Wooden Wall</sys:String>
     <sys:String x:Key="EngramEntry_WoodSlopedWall_Left_C">Wooden Wall Sloped Left</sys:String>
     <sys:String x:Key="EngramEntry_WoodSlopedWall_Right_C">Wooden Wall Sloped Right</sys:String>
+    <sys:String x:Key="EngramEntry_WoodStairs_C">Wooden Staircase</sys:String>
     <sys:String x:Key="EngramEntry_WoodRoof_C">Wooden Roof Sloped</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithDoor_C">Wooden Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithWindow_C">Wooden Windowframe</sys:String>
