@@ -314,8 +314,8 @@
     <sys:String x:Key="ServerSettings_StartButtonTooltip">Start the Ark server.</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonTooltip">Open the RCON window.</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Upgrade</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Upgrade to the latest version of the Ark server that is currently available to download.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Upgrade / Verify</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Upgrade to the latest version of the Ark server that is currently available to download. If there is no update then it will verify your server files</sys:String>
     <sys:String x:Key="ServerSettings_InstallButtonLabel">Install</sys:String>
     <sys:String x:Key="ServerSettings_InstallButtonTooltip">Install the latest version of the Ark server.</sys:String>
     <sys:String x:Key="ServerSettings_CancelUpgradeButtonLabel">Cancel</sys:String>
@@ -373,8 +373,8 @@
     <sys:String x:Key="ServerSettings_AdminPasswordTooltip">The password users must enter to execute admin/cheat commands on the server. If this is not set, anyone can use cheats.</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Spectator Password:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">The password users must enter to use non-admin spectator mode on the server.</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordText">Password Hidden - Click to Show</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the password will show, to to hide password simply click off password field.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordText">Hidden - Click to Show</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the hidden field will show, to to hide text simply unselect text field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Networking</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Server Port:</sys:String>
