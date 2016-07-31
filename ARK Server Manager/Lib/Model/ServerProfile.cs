@@ -1090,6 +1090,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAllowCaveFlyersProperty, value); }
         }
 
+        public static readonly DependencyProperty EnableNoFishLootProperty = DependencyProperty.Register(nameof(EnableNoFishLoot), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableNoFishLoot
+        {
+            get { return (bool)GetValue(EnableNoFishLootProperty); }
+            set { SetValue(EnableNoFishLootProperty, value); }
+        }
+
         public static readonly DependencyProperty DisableDinoDecayPvEProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool DisableDinoDecayPvE
@@ -1927,6 +1934,11 @@ namespace ARK_Server_Manager.Lib
             if (this.EnableAllowCaveFlyers)
             {
                 serverArgs.Append(" -ForceAllowCaveFlyers");
+            }
+
+            if (this.EnableNoFishLoot)
+            {
+                serverArgs.Append(" -nofishloot");
             }
 
             if(this.SOTF_Enabled)

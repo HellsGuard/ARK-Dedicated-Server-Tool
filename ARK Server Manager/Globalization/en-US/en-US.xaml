@@ -374,7 +374,7 @@
     <sys:String x:Key="ServerSettings_SpectatorPasswordLabel">Spectator Password:</sys:String>
     <sys:String x:Key="ServerSettings_SpectatorPasswordTooltip">The password users must enter to use non-admin spectator mode on the server.</sys:String>
     <sys:String x:Key="ServerSettings_HidePasswordText">Hidden - Click to Show</sys:String>
-    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When clicked the hidden field will show, to to hide text simply unselect text field.</sys:String>
+    <sys:String x:Key="ServerSettings_HidePasswordTooltip">When selected the hidden text will show, to hide the text unselect the field.</sys:String>
 
     <sys:String x:Key="ServerSettings_NetworkingLabel">Networking</sys:String>
     <sys:String x:Key="ServerSettings_ServerPortLabel">Server Port:</sys:String>
@@ -690,6 +690,8 @@
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Allow Flyers in Caves</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
