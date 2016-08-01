@@ -15,6 +15,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using System.Xml.Serialization;
 using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager
@@ -750,6 +751,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
                 await Task.Delay(500);
 
+                var obfuscateFiles = new Dictionary<string, string>();
                 var files = new List<string>();
                 var folder = string.Empty;
                 var file = string.Empty;
@@ -776,9 +778,26 @@ namespace ARK_Server_Manager
 
                 // <server>\ShooterGame\Saved\Config\WindowsServer
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "Game.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var iniFile = IniFileUtils.ReadFromFile(file);
+                    if (iniFile != null)
+                    {
+                        obfuscateFiles.Add(file, iniFile.ToOutputString());
+                    }
+                }
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "GameUserSettings.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var iniFile = IniFileUtils.ReadFromFile(file);
+                    if (iniFile != null)
+                    {
+                        iniFile.WriteKey("ServerSettings", "ServerPassword", "obfuscated");
+                        iniFile.WriteKey("ServerSettings", "ServerAdminPassword", "obfuscated");
+                        iniFile.WriteKey("ServerSettings", "SpectatorPassword", "obfuscated");
+                        obfuscateFiles.Add(file, iniFile.ToOutputString());
+                    }
+                }
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
                 if (File.Exists(file)) files.Add(file);
 
@@ -806,13 +825,21 @@ namespace ARK_Server_Manager
                     files.AddRange(dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
-                // Profiles
+                // Profile
                 file = this.Settings.GetProfileFile();
-                if (File.Exists(file)) files.Add(file);
-                file = Path.Combine(this.Settings.GetProfileIniDir(), "Game.ini");
-                if (File.Exists(file)) files.Add(file);
-                file = Path.Combine(this.Settings.GetProfileIniDir(), "GameUserSettings.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var profileFile = ServerProfile.LoadFromProfileFile(file);
+                    if (profileFile != null)
+                    {
+                        profileFile.AdminPassword = "obfuscated";
+                        profileFile.ServerPassword = "obfuscated";
+                        profileFile.SpectatorPassword = "obfuscated";
+                        profileFile.WebAlarmKey = "obfuscated";
+                        profileFile.WebAlarmUrl = "obfuscated";
+                        obfuscateFiles.Add(file, profileFile.ToOutputString());
+                    }
+                }
 
                 // <data folder>\SteamCMD\steamapps\workshop\content\346110
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath);
@@ -864,6 +891,11 @@ namespace ARK_Server_Manager
 
                 var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
                 ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());
+
+                foreach (var kvp in obfuscateFiles)
+                {
+                    ZipUtils.ZipAFile(zipFile, kvp.Key, kvp.Value);
+                }
 
                 MessageBox.Show($"The support zip file has been created and saved to your desktop.\r\nThe filename is {Path.GetFileName(zipFile)}", "Support ZipFile Creation", MessageBoxButton.OK, MessageBoxImage.Information);
             }

@@ -2140,6 +2140,48 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
 
+        public static ServerProfile LoadFromProfileFile(string path)
+        {
+            ServerProfile settings = null;
+            if (Path.GetExtension(path) == Config.Default.ProfileExtension)
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
+
+                using (var reader = File.OpenRead(path))
+                {
+                    settings = (ServerProfile)serializer.Deserialize(reader);
+                    settings.IsDirty = false;
+                }
+
+                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
+                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+                if (File.Exists(configIniPath))
+                {
+                    settings = LoadFromINIFiles(configIniPath, settings);
+                }
+                else if (File.Exists(profileIniPath))
+                {
+                    settings = LoadFromINIFiles(profileIniPath, settings);
+                }
+
+                if (settings.PlayerLevels.Count == 0)
+                {
+                    settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
+                    settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
+                    settings.EnableLevelProgressions = false;
+                }
+
+                //
+                // Since these are not inserted the normal way, we force a recomputation here.
+                //
+                settings.PlayerLevels.UpdateTotals();
+                settings.DinoLevels.UpdateTotals();
+                settings.DinoSettings.RenderToView();
+                settings._lastSaveLocation = path;
+            }
+            return settings;
+        }
+
         public void Save(bool updateSchedules)
         {
             // ensure that the auto update is switched off for SotF servers
@@ -2220,7 +2262,7 @@ namespace ARK_Server_Manager.Lib
             //
             // Save the profile
             //
-            XmlSerializer serializer = new XmlSerializer(this.GetType());
+            var serializer = new XmlSerializer(this.GetType());
             using (var stream = File.Open(GetProfileFile(), FileMode.Create))
             {
                 serializer.Serialize(stream, this);
@@ -2466,6 +2508,20 @@ namespace ARK_Server_Manager.Lib
 
             validationMessage = result.ToString();
             return string.IsNullOrWhiteSpace(validationMessage);
+        }
+
+        public string ToOutputString()
+        {
+            //
+            // serializes the profile to a string
+            //
+            var result = new StringBuilder();
+            var serializer = new XmlSerializer(this.GetType());
+            using (var stream = new StringWriter(result))
+            {
+                serializer.Serialize(stream, this);
+            }
+            return result.ToString();
         }
 
         #region Export Methods
