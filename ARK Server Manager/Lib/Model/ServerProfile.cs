@@ -2368,12 +2368,14 @@ namespace ARK_Server_Manager.Lib
                 {
                     var modFolder = ModUtils.GetModPath(InstallDirectory, serverMapModId);
                     if (!Directory.Exists(modFolder))
-                        result.AppendLine("Map mod has not been downloaded.");
+                        result.AppendLine("Map mod has not been downloaded, mod folder does not exist.");
+                    else if (!File.Exists($"{modFolder}.mod"))
+                        result.AppendLine("Map mod has not been downloaded properly, mod file does not exist.");
                     else
                     {
                         var modType = ModUtils.GetModType(InstallDirectory, serverMapModId);
                         if (modType == ModUtils.MODTYPE_UNKNOWN)
-                            result.AppendLine("Map mod has not been downloaded.");
+                            result.AppendLine("Map mod has not been downloaded properly, mod file is invalid.");
                         else if (modType != ModUtils.MODTYPE_MAP)
                             result.AppendLine("The map mod is not a valid map mod.");
                         else
@@ -2406,12 +2408,14 @@ namespace ARK_Server_Manager.Lib
                 {
                     var modFolder = ModUtils.GetModPath(InstallDirectory, TotalConversionModId);
                     if (!Directory.Exists(modFolder))
-                        result.AppendLine("Total conversion mod has not been downloaded.");
+                        result.AppendLine("Total conversion mod has not been downloaded, mod folder does not exist.");
+                    else if (!File.Exists($"{modFolder}.mod"))
+                        result.AppendLine("Total conversion mod has not been downloaded properly, mod file does not exist.");
                     else
                     {
                         var modType = ModUtils.GetModType(InstallDirectory, TotalConversionModId);
                         if (modType == ModUtils.MODTYPE_UNKNOWN)
-                            result.AppendLine("Total conversion mod has not been downloaded.");
+                            result.AppendLine("Total conversion mod has not been downloaded properly, mod file is invalid.");
                         else if (modType != ModUtils.MODTYPE_TOTCONV)
                             result.AppendLine("The total conversion mod is not a valid total conversion mod.");
                         else
@@ -2444,7 +2448,9 @@ namespace ARK_Server_Manager.Lib
                 {
                     var modFolder = ModUtils.GetModPath(InstallDirectory, modId);
                     if (!Directory.Exists(modFolder))
-                        result.AppendLine($"Mod {modId} has not been downloaded.");
+                        result.AppendLine($"Mod {modId} has not been downloaded, mod folder does not exist.");
+                    else if (!File.Exists($"{modFolder}.mod"))
+                        result.AppendLine($"Mod {modId} has not been downloaded properly, mod file does not exist.");
                     else
                     {
                         var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(modId));
@@ -2702,6 +2708,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(RaidDinoCharacterFoodDrainMultiplierProperty);
 
             this.ClearValue(EnableAllowCaveFlyersProperty);
+            this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
 

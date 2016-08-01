@@ -741,6 +741,8 @@ namespace ARK_Server_Manager
 
         private async void CreateSupportZip_Click(object sender, RoutedEventArgs e)
         {
+            const int MAX_DAYS = 2;
+
             var cursor = this.Cursor;
 
             try
@@ -751,6 +753,7 @@ namespace ARK_Server_Manager
                 var files = new List<string>();
                 var folder = string.Empty;
                 var file = string.Empty;
+                DirectoryInfo dirInfo;
 
                 // <server>
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
@@ -760,15 +763,13 @@ namespace ARK_Server_Manager
 
                 // <server>\ShooterGame\Content\Mods
                 folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var modFile in Directory.GetFiles(folder, "*.mod"))
+                    files.AddRange(dirInfo.GetFiles("*.mod").Select(modFile => modFile.FullName));
+                    foreach (var modFolder in dirInfo.GetDirectories())
                     {
-                        files.Add(modFile);
-                    }
-                    foreach (var modFolder in Directory.GetDirectories(folder))
-                    {
-                        file = Path.Combine(modFolder, Config.Default.LastUpdatedTimeFile);
+                        file = Path.Combine(modFolder.FullName, Config.Default.LastUpdatedTimeFile);
                         if (File.Exists(file)) files.Add(file);
                     }
                 }
@@ -783,32 +784,26 @@ namespace ARK_Server_Manager
 
                 // <server>\ShooterGame\Saved\Logs
                 folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.SavedRelativePath, "Logs");
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
                 // Logs
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOUPDATE);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
                 // Logs/<server>
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, this.Settings.ProfileName);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
                 // Profiles
