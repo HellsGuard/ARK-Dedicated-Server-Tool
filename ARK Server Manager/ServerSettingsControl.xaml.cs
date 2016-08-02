@@ -241,6 +241,15 @@ namespace ARK_Server_Manager
                                     return;
                             }
 
+                            if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
+                            {
+                                if (!await UpdateServer(false, true))
+                                {
+                                    if (MessageBox.Show("There was a problem while performing the server update. This may leave your server in a incomplete state.\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Server Update", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                                        return;
+                                }
+                            }
+
                             await this.Server.StartAsync();
                         }
                         else
@@ -289,63 +298,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
-            if (_upgradeCancellationSource != null)
-                return;
-
-            ProgressWindow window = null;
-            Mutex mutex = null;
-            bool createdNew = false;
-
-            try
-            {
-                // try to establish a mutex for the profile.
-                mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
-
-                // check if the mutex was established
-                if (createdNew)
-                {
-                    this._upgradeCancellationSource = new CancellationTokenSource();
-
-                    window = new ProgressWindow(string.Format(_globalizer.GetResourceString("Progress_UpgradeServer_WindowTitle"), this.Server.Profile.ProfileName));
-                    window.Owner = Window.GetWindow(this);
-                    window.Closed += Window_Closed;
-                    window.Show();
-
-                    await Task.Delay(1000);
-                    await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
-                }
-                else
-                {
-                    // display an error message and exit
-                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (window != null)
-                {
-                    window.AddMessage(ex.Message);
-                    window.AddMessage(ex.StackTrace);
-                }
-                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                this._upgradeCancellationSource = null;
-
-                if (window != null)
-                    window.CloseWindow();
-
-                if (mutex != null)
-                {
-                    if (createdNew)
-                    {
-                        mutex.ReleaseMutex();
-                        mutex.Dispose();
-                    }
-                    mutex = null;
-                }
-            }
+            await UpdateServer(true, false);
         }
 
         private async void ModUpgrade_Click(object sender, RoutedEventArgs e)
@@ -1364,6 +1317,76 @@ namespace ARK_Server_Manager
                         return canSave;
                     }
                 );
+            }
+        }
+
+        private async Task<bool> UpdateServer(bool establishLock, bool closeProgressWindow)
+        {
+            if (_upgradeCancellationSource != null)
+                return false;
+
+            ProgressWindow window = null;
+            Mutex mutex = null;
+            bool createdNew = !establishLock;
+
+            try
+            {
+                if (establishLock)
+                {
+                    // try to establish a mutex for the profile.
+                    mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
+                }
+
+                // check if the mutex was established
+                if (createdNew)
+                {
+                    this._upgradeCancellationSource = new CancellationTokenSource();
+
+                    window = new ProgressWindow(string.Format(_globalizer.GetResourceString("Progress_UpgradeServer_WindowTitle"), this.Server.Profile.ProfileName));
+                    window.Owner = Window.GetWindow(this);
+                    window.Closed += Window_Closed;
+                    window.Show();
+
+                    await Task.Delay(1000);
+                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                }
+                else
+                {
+                    // display an error message and exit
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (window != null)
+                {
+                    window.AddMessage(ex.Message);
+                    window.AddMessage(ex.StackTrace);
+                }
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            finally
+            {
+                this._upgradeCancellationSource = null;
+
+                if (window != null)
+                {
+                    window.CloseWindow();
+                    if (closeProgressWindow)
+                        window.Close();
+                }
+
+                if (mutex != null)
+                {
+                    if (createdNew)
+                    {
+                        mutex.ReleaseMutex();
+                        mutex.Dispose();
+                    }
+                    mutex = null;
+                }
             }
         }
         #endregion
