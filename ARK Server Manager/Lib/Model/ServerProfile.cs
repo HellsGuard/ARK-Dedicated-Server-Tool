@@ -2,13 +2,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
 using TinyCsvParser;
 using System.Reflection;
-using System.Diagnostics;
 using System.Collections.Generic;
 using ARK_Server_Manager.Lib.Model;
 
@@ -1833,44 +1831,7 @@ namespace ARK_Server_Manager.Lib
 
         public string GetProfileKey()
         {
-            try
-            {
-                using (var hashAlgo = MD5.Create())
-                {
-                    var hashStr = Encoding.UTF8.GetBytes(this.InstallDirectory);
-                    var hash = hashAlgo.ComputeHash(hashStr);
-
-                    StringBuilder sb = new StringBuilder();
-                    foreach (var b in hash)
-                    {
-                        // can be "x2" if you want lowercase
-                        sb.Append(b.ToString("x2"));
-                    }
-                    return sb.ToString();
-                }
-            }
-            catch (TargetInvocationException ex)
-            {
-                // Exception has been thrown by the target of an invocation. 
-                // This error message seems to occur when using MD5 hash algorithm on an environment where FIPS is enabled. 
-                // Swallow the exception and allow the SHA1 algorithm to be used.
-                Debug.WriteLine(ex.Message);
-            }
-
-            // An error occurred using the MD5 hash, try using SHA1 instead.
-            using (var hashAlgo = SHA1.Create())
-            {
-                var hashStr = Encoding.UTF8.GetBytes(this.InstallDirectory);
-                var hash = hashAlgo.ComputeHash(hashStr);
-
-                var sb = new StringBuilder(hash.Length * 2);
-                foreach (byte b in hash)
-                {
-                    // can be "x2" if you want lowercase
-                    sb.Append(b.ToString("x2"));
-                }
-                return sb.ToString();
-            }
+            return TaskSchedulerUtils.ComputeKey(this.InstallDirectory);
         }
 
         public string GetProfileFile()
@@ -2326,19 +2287,19 @@ namespace ARK_Server_Manager.Lib
                 return false;
             }
 
-            var schedulerKey = GetProfileKey();
+            var taskKey = GetProfileKey();
 
             // remove the old task schedule
-            TaskSchedulerUtils.ScheduleUpdates(schedulerKey, 0, Config.Default.AutoUpdate_CacheDir, this.InstallDirectory, null, 0, null, 0, null);
+            TaskSchedulerUtils.ScheduleUpdates(taskKey, 0, Config.Default.AutoUpdate_CacheDir, this.InstallDirectory, null, 0, null, 0, null);
 
-            if(!TaskSchedulerUtils.ScheduleAutoStart(schedulerKey, this.EnableAutoStart, GetLauncherFile(), String.Empty))
+            if(!TaskSchedulerUtils.ScheduleAutoStart(taskKey, this.EnableAutoStart, GetLauncherFile(), String.Empty))
             {
                 return false;
             }
 
             TimeSpan restartTime;
             var command = Assembly.GetEntryAssembly().Location;
-            if (!TaskSchedulerUtils.ScheduleAutoRestart(schedulerKey, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
+            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
             {
                 return false;
             }
