@@ -1,9 +1,12 @@
 ﻿using ARK_Server_Manager.Lib;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using WPFSharp.Globalizer;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ARK_Server_Manager
 {
@@ -12,7 +15,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public SettingsWindow()
         {
@@ -44,8 +47,10 @@ namespace ARK_Server_Manager
                     }
                 }
 
+                var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
                 var command = Assembly.GetEntryAssembly().Location;
-                if (!TaskSchedulerUtils.ScheduleAutoUpdate(command, Config.Default.AutoUpdate_EnableUpdate ? Config.Default.AutoUpdate_UpdatePeriod : 0))
+                if (!TaskSchedulerUtils.ScheduleAutoUpdate(taskKey, command, Config.Default.AutoUpdate_EnableUpdate ? Config.Default.AutoUpdate_UpdatePeriod : 0))
                 {
                     MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_CacheTaskUpdate_ErrorLabel"), _globalizer.GetResourceString("GlobalSettings_CacheTaskUpdate_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }

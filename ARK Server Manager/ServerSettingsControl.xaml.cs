@@ -15,6 +15,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using System.Xml.Serialization;
 using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager
@@ -240,6 +241,15 @@ namespace ARK_Server_Manager
                                     return;
                             }
 
+                            if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
+                            {
+                                if (!await UpdateServer(false, true))
+                                {
+                                    if (MessageBox.Show("There was a problem while performing the server update. This may leave your server in a incomplete state.\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Server Update", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                                        return;
+                                }
+                            }
+
                             await this.Server.StartAsync();
                         }
                         else
@@ -288,63 +298,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
-            if (_upgradeCancellationSource != null)
-                return;
-
-            ProgressWindow window = null;
-            Mutex mutex = null;
-            bool createdNew = false;
-
-            try
-            {
-                // try to establish a mutex for the profile.
-                mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
-
-                // check if the mutex was established
-                if (createdNew)
-                {
-                    this._upgradeCancellationSource = new CancellationTokenSource();
-
-                    window = new ProgressWindow(string.Format(_globalizer.GetResourceString("Progress_UpgradeServer_WindowTitle"), this.Server.Profile.ProfileName));
-                    window.Owner = Window.GetWindow(this);
-                    window.Closed += Window_Closed;
-                    window.Show();
-
-                    await Task.Delay(1000);
-                    await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
-                }
-                else
-                {
-                    // display an error message and exit
-                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (window != null)
-                {
-                    window.AddMessage(ex.Message);
-                    window.AddMessage(ex.StackTrace);
-                }
-                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                this._upgradeCancellationSource = null;
-
-                if (window != null)
-                    window.CloseWindow();
-
-                if (mutex != null)
-                {
-                    if (createdNew)
-                    {
-                        mutex.ReleaseMutex();
-                        mutex.Dispose();
-                    }
-                    mutex = null;
-                }
-            }
+            await UpdateServer(true, false);
         }
 
         private async void ModUpgrade_Click(object sender, RoutedEventArgs e)
@@ -741,6 +695,8 @@ namespace ARK_Server_Manager
 
         private async void CreateSupportZip_Click(object sender, RoutedEventArgs e)
         {
+            const int MAX_DAYS = 2;
+
             var cursor = this.Cursor;
 
             try
@@ -748,9 +704,11 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
                 await Task.Delay(500);
 
+                var obfuscateFiles = new Dictionary<string, string>();
                 var files = new List<string>();
                 var folder = string.Empty;
                 var file = string.Empty;
+                DirectoryInfo dirInfo;
 
                 // <server>
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
@@ -760,64 +718,81 @@ namespace ARK_Server_Manager
 
                 // <server>\ShooterGame\Content\Mods
                 folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var modFile in Directory.GetFiles(folder, "*.mod"))
+                    files.AddRange(dirInfo.GetFiles("*.mod").Select(modFile => modFile.FullName));
+                    foreach (var modFolder in dirInfo.GetDirectories())
                     {
-                        files.Add(modFile);
-                    }
-                    foreach (var modFolder in Directory.GetDirectories(folder))
-                    {
-                        file = Path.Combine(modFolder, Config.Default.LastUpdatedTimeFile);
+                        file = Path.Combine(modFolder.FullName, Config.Default.LastUpdatedTimeFile);
                         if (File.Exists(file)) files.Add(file);
                     }
                 }
 
                 // <server>\ShooterGame\Saved\Config\WindowsServer
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "Game.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var iniFile = IniFileUtils.ReadFromFile(file);
+                    if (iniFile != null)
+                    {
+                        obfuscateFiles.Add(file, iniFile.ToOutputString());
+                    }
+                }
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "GameUserSettings.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var iniFile = IniFileUtils.ReadFromFile(file);
+                    if (iniFile != null)
+                    {
+                        iniFile.WriteKey("ServerSettings", "ServerPassword", "obfuscated");
+                        iniFile.WriteKey("ServerSettings", "ServerAdminPassword", "obfuscated");
+                        iniFile.WriteKey("ServerSettings", "SpectatorPassword", "obfuscated");
+                        obfuscateFiles.Add(file, iniFile.ToOutputString());
+                    }
+                }
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
                 if (File.Exists(file)) files.Add(file);
 
                 // <server>\ShooterGame\Saved\Logs
                 folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.SavedRelativePath, "Logs");
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
                 // Logs
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOUPDATE);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.log"))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
                 // Logs/<server>
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, this.Settings.ProfileName);
-                if (Directory.Exists(folder))
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
                 {
-                    foreach (var logFile in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
-                    {
-                        files.Add(logFile);
-                    }
+                    files.AddRange(dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
                 }
 
-                // Profiles
+                // Profile
                 file = this.Settings.GetProfileFile();
-                if (File.Exists(file)) files.Add(file);
-                file = Path.Combine(this.Settings.GetProfileIniDir(), "Game.ini");
-                if (File.Exists(file)) files.Add(file);
-                file = Path.Combine(this.Settings.GetProfileIniDir(), "GameUserSettings.ini");
-                if (File.Exists(file)) files.Add(file);
+                if (File.Exists(file))
+                {
+                    var profileFile = ServerProfile.LoadFromProfileFile(file);
+                    if (profileFile != null)
+                    {
+                        profileFile.AdminPassword = "obfuscated";
+                        profileFile.ServerPassword = "obfuscated";
+                        profileFile.SpectatorPassword = "obfuscated";
+                        profileFile.WebAlarmKey = "obfuscated";
+                        profileFile.WebAlarmUrl = "obfuscated";
+                        obfuscateFiles.Add(file, profileFile.ToOutputString());
+                    }
+                }
 
                 // <data folder>\SteamCMD\steamapps\workshop\content\346110
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath);
@@ -869,6 +844,11 @@ namespace ARK_Server_Manager
 
                 var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
                 ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());
+
+                foreach (var kvp in obfuscateFiles)
+                {
+                    ZipUtils.ZipAFile(zipFile, kvp.Key, kvp.Value);
+                }
 
                 MessageBox.Show($"The support zip file has been created and saved to your desktop.\r\nThe filename is {Path.GetFileName(zipFile)}", "Support ZipFile Creation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -1337,6 +1317,76 @@ namespace ARK_Server_Manager
                         return canSave;
                     }
                 );
+            }
+        }
+
+        private async Task<bool> UpdateServer(bool establishLock, bool closeProgressWindow)
+        {
+            if (_upgradeCancellationSource != null)
+                return false;
+
+            ProgressWindow window = null;
+            Mutex mutex = null;
+            bool createdNew = !establishLock;
+
+            try
+            {
+                if (establishLock)
+                {
+                    // try to establish a mutex for the profile.
+                    mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
+                }
+
+                // check if the mutex was established
+                if (createdNew)
+                {
+                    this._upgradeCancellationSource = new CancellationTokenSource();
+
+                    window = new ProgressWindow(string.Format(_globalizer.GetResourceString("Progress_UpgradeServer_WindowTitle"), this.Server.Profile.ProfileName));
+                    window.Owner = Window.GetWindow(this);
+                    window.Closed += Window_Closed;
+                    window.Show();
+
+                    await Task.Delay(1000);
+                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                }
+                else
+                {
+                    // display an error message and exit
+                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeServer_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (window != null)
+                {
+                    window.AddMessage(ex.Message);
+                    window.AddMessage(ex.StackTrace);
+                }
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_UpgradeServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            finally
+            {
+                this._upgradeCancellationSource = null;
+
+                if (window != null)
+                {
+                    window.CloseWindow();
+                    if (closeProgressWindow)
+                        window.Close();
+                }
+
+                if (mutex != null)
+                {
+                    if (createdNew)
+                    {
+                        mutex.ReleaseMutex();
+                        mutex.Dispose();
+                    }
+                    mutex = null;
+                }
             }
         }
         #endregion
