@@ -454,6 +454,25 @@ namespace ARK_Server_Manager.Lib.Utils
 
             return result;
         }
+
+        public string ToOutputString()
+        {
+            var result = new StringBuilder();
+
+            foreach (var section in Sections)
+            {
+                result.AppendLine($"[{section.SectionName}]");
+
+                foreach (var keyString in section.KeysToStringArray())
+                {
+                    result.AppendLine(keyString);
+                }
+
+                result.AppendLine();
+            }
+
+            return result.ToString();
+        }
     }
 
     public class IniSection

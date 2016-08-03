@@ -341,5 +341,8 @@
     <Setting Name="DefaultTotalConversion_PrimitivePlus" Type="System.String" Scope="Application">
       <Value Profile="(Default)">111111111</Value>
     </Setting>
+    <Setting Name="ServerUpdate_OnServerStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

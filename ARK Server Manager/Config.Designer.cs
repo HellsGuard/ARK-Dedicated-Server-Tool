@@ -1209,5 +1209,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["DefaultTotalConversion_PrimitivePlus"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ServerUpdate_OnServerStart {
+            get {
+                return ((bool)(this["ServerUpdate_OnServerStart"]));
+            }
+            set {
+                this["ServerUpdate_OnServerStart"] = value;
+            }
+        }
     }
 }

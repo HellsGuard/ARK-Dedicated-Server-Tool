@@ -67,13 +67,11 @@
 
         <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="{DynamicResource GlobalSettings_SteamCmdRedirectOutputLabel}" IsChecked="{Binding CurrentConfig.SteamCmdRedirectOutput, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_SteamCmdRedirectOutputTooltip}"/>
 
-        <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="{DynamicResource GlobalSettings_ValidateProfileOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ValidateProfileOnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ValidateProfileOnServerStartTooltip}"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource GlobalSettings_DataDirectoryLabel}" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
+        <Button Grid.Row="4" Grid.Column="2" Margin="5,0,0,0" Content="{DynamicResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
 
-        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource GlobalSettings_DataDirectoryLabel}" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
-        <Button Grid.Row="5" Grid.Column="2" Margin="5,0,0,0" Content="{DynamicResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
-
-        <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+        <GroupBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
             <GroupBox.Header>
                 <Label Content="{DynamicResource GlobalSettings_LanguageSelectionLabel}"/>
             </GroupBox.Header>
@@ -92,7 +90,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
+        <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
             <GroupBox.Header>
                 <Label Content="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}"/>
             </GroupBox.Header>
@@ -109,6 +107,26 @@
                 <local:AnnotatedSlider Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" Label="{DynamicResource GlobalSettings_CustomLevelXPIncreasePlayerLabel}" Value="{Binding CurrentConfig.CustomLevelXPIncrease_Player}" Minimum="1" Maximum="100000" SmallChange="1" LargeChange="10" TickFrequency="1" Suffix="{DynamicResource SliderUnits_XP}" ToolTip="{DynamicResource GlobalSettings_CustomLevelXPIncreasePlayerTooltip}"/>
                 <local:AnnotatedSlider Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" Label="{DynamicResource GlobalSettings_CustomLevelXPIncreaseDinoLabel}" Value="{Binding CurrentConfig.CustomLevelXPIncrease_Dino}" Minimum="1" Maximum="100000" SmallChange="1" LargeChange="10" TickFrequency="1" Suffix="{DynamicResource SliderUnits_XP}" ToolTip="{DynamicResource GlobalSettings_CustomLevelXPIncreaseDinoTooltip}"/>
             </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
+            <GroupBox.Header>
+                <Label Content="{DynamicResource GlobalSettings_ServerStartupLabel}"/>
+            </GroupBox.Header>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Content="{DynamicResource GlobalSettings_ValidateProfileOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ValidateProfileOnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ValidateProfileOnServerStartTooltip}"/>
+                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Content="{DynamicResource GlobalSettings_ServerUpdateOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ServerUpdate_OnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ServerUpdateOnServerStartTooltip}"/>
+            </Grid>
+
         </GroupBox>
 
         <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">

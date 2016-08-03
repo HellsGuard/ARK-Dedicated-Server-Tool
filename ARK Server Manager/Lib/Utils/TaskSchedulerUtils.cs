@@ -1,22 +1,22 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ARK_Server_Manager.Lib
 {
     public static class TaskSchedulerUtils
     {
-        private const string TaskFolder = "ArkServerManager";
+        private const string TASK_FOLDER = "ArkServerManager";
 
-        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        //private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static bool ScheduleAutoRestart(string profileKey, string command, TimeSpan? restartTime)
+        public static bool ScheduleAutoRestart(string taskKey, string command, TimeSpan? restartTime)
         {
-            var schedulerKey = $"{TaskFolder}\\AutoRestart_{profileKey}";
-            var args = $"{ServerApp.ARGUMENT_AUTORESTART}{profileKey}";
+            var schedulerKey = $"{TASK_FOLDER}\\AutoRestart_{taskKey}";
+            var args = $"{ServerApp.ARGUMENT_AUTORESTART}{taskKey}";
 
             var builder = new StringBuilder();
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
@@ -32,9 +32,9 @@ namespace ARK_Server_Manager.Lib
             return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoRestart), builder.ToString());
         }
 
-        public static bool ScheduleAutoStart(string profileKey, bool enableAutoStart, string command, string args)
+        public static bool ScheduleAutoStart(string taskKey, bool enableAutoStart, string command, string args)
         {
-            var schedulerKey = $"{TaskFolder}\\AutoStart_{profileKey}";
+            var schedulerKey = $"{TASK_FOLDER}\\AutoStart_{taskKey}";
 
             var builder = new StringBuilder();
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
@@ -58,9 +58,9 @@ namespace ARK_Server_Manager.Lib
             return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoStart), builder.ToString());
         }
 
-        public static bool ScheduleAutoUpdate(string command, int autoUpdatePeriod)
+        public static bool ScheduleAutoUpdate(string taskKey, string command, int autoUpdatePeriod)
         {
-            var schedulerKey = $"{TaskFolder}\\AutoUpdateServer";
+            var schedulerKey = $"{TASK_FOLDER}\\AutoUpdate_{taskKey}";
             var args = ServerApp.ARGUMENT_AUTOUPDATE;
 
             var builder = new StringBuilder();
@@ -79,10 +79,53 @@ namespace ARK_Server_Manager.Lib
             return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoUpdate), builder.ToString());
         }
 
+        public static string ComputeKey(string folder)
+        {
+            try
+            {
+                using (var hashAlgo = MD5.Create())
+                {
+                    var hashStr = Encoding.UTF8.GetBytes(folder);
+                    var hash = hashAlgo.ComputeHash(hashStr);
+
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var b in hash)
+                    {
+                        // can be "x2" if you want lowercase
+                        sb.Append(b.ToString("x2"));
+                    }
+                    return sb.ToString();
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                // Exception has been thrown by the target of an invocation. 
+                // This error message seems to occur when using MD5 hash algorithm on an environment where FIPS is enabled. 
+                // Swallow the exception and allow the SHA1 algorithm to be used.
+                Debug.WriteLine(ex.Message);
+            }
+
+            // An error occurred using the MD5 hash, try using SHA1 instead.
+            using (var hashAlgo = SHA1.Create())
+            {
+                var hashStr = Encoding.UTF8.GetBytes(folder);
+                var hash = hashAlgo.ComputeHash(hashStr);
+
+                var sb = new StringBuilder(hash.Length * 2);
+                foreach (byte b in hash)
+                {
+                    // can be "x2" if you want lowercase
+                    sb.Append(b.ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+
         #region Archive Methods
         public static bool ScheduleCacheUpdater(string cacheDir, string steamCmdDir, int autoUpdatePeriod)
         {
-            var schedulerKey = $"{TaskFolder}\\AutoUpdateSeverCache";
+            var schedulerKey = $"{TASK_FOLDER}\\AutoUpdateSeverCache";
+            var schedulerKey2 = $"{TASK_FOLDER}\\AutoUpdateServer";
 
             var rootSrcPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var scriptPath = Path.Combine(rootSrcPath, "Lib", "ServerUpdater", "AutoUpdateServerCache.ps1");
@@ -104,6 +147,7 @@ namespace ARK_Server_Manager.Lib
             //
             var builder = new StringBuilder();
             builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
+            builder.AppendLine($"schtasks /Delete /TN {schedulerKey2} /F");
             //if (autoUpdatePeriod != 0)
             //{
             //    builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{cacheUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL HIGHEST ");
@@ -115,10 +159,10 @@ namespace ARK_Server_Manager.Lib
             return ScriptUtils.RunElevatedShellScript(nameof(ScheduleCacheUpdater), builder.ToString());
         }
 
-        public static bool ScheduleUpdates(string profileKey, int autoUpdatePeriod, string cacheDir, string installDir, string rconIP, int rconPort, string rconPass, int graceMinutes, TimeSpan? forceRestartTime)
+        public static bool ScheduleUpdates(string taskKey, int autoUpdatePeriod, string cacheDir, string installDir, string rconIP, int rconPort, string rconPass, int graceMinutes, TimeSpan? forceRestartTime)
         {
-            var schedulerKey = $"{TaskFolder}\\AutoUpgrade_{profileKey}";
-            var forceSchedulerKey = $"{TaskFolder}\\AutoUpgrade_Force_{profileKey}";
+            var schedulerKey = $"{TASK_FOLDER}\\AutoUpgrade_{taskKey}";
+            var forceSchedulerKey = $"{TASK_FOLDER}\\AutoUpgrade_Force_{taskKey}";
 
             var rootSrcPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var scriptPath = Path.Combine(rootSrcPath, "Lib", "ServerUpdater", "AutoUpdateFromCache.ps1");

@@ -502,6 +502,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
+                        success = false;
                         progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************");
                         progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed server update.");
                         progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************\r\n");
@@ -538,7 +539,7 @@ namespace ARK_Server_Manager.Lib
                             for (var index = 0; index < modIdList.Count; index++)
                             {
                                 var modId = modIdList[index];
-                                success = false;
+                                var modSuccess = false;
                                 gotNewVersion = false;
                                 downloadSuccessful = false;
 
@@ -615,8 +616,8 @@ namespace ARK_Server_Manager.Lib
                                             else
                                                 steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username,  modId);
 
-                                            success = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
-                                            if (success && downloadSuccessful)
+                                            modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
+                                            if (modSuccess && downloadSuccessful)
                                             {
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");
                                                 copyMod = true;
@@ -643,6 +644,7 @@ namespace ARK_Server_Manager.Lib
                                             }
                                             else
                                             {
+                                                modSuccess = false;
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************");
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod download failed.");
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************\r\n");
@@ -652,7 +654,11 @@ namespace ARK_Server_Manager.Lib
                                                 copyMod = false;
                                             }
                                         }
+                                        else
+                                            modSuccess = true;
                                     }
+                                    else
+                                        modSuccess = true;
 
                                     if (copyMod)
                                     {
@@ -696,6 +702,7 @@ namespace ARK_Server_Manager.Lib
                                                 }
                                                 else
                                                 {
+                                                    modSuccess = false;
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
@@ -703,6 +710,7 @@ namespace ARK_Server_Manager.Lib
                                             }
                                             catch (Exception ex)
                                             {
+                                                modSuccess = false;
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
                                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
@@ -718,11 +726,14 @@ namespace ARK_Server_Manager.Lib
                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
                                 }
 
+                                if (!modSuccess)
+                                    success = false;
                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
                             }
                         }
                         else
                         {
+                            success = false;
                             // no steam information downloaded, display an error
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************");
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods cannot be updated, unable to download steam information.");
