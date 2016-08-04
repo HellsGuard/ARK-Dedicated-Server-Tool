@@ -17,9 +17,13 @@
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
             <SolidColorBrush x:Key="BeigeLabel" Color="#FFE6DFD8"/>
-            
+            <SolidColorBrush x:Key="BeigeBorder" Color="#FFD8CCBC"/>
+
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <Style x:Key="GroupBoxStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="BorderBrush" Value="{StaticResource BeigeBorder}"/>
+            </Style>
 
             <ContentControl x:Key="ShutdownButtonContent">
                 <StackPanel Orientation="Horizontal">
@@ -56,19 +60,19 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <Grid Grid.Row="0" DataContext="{Binding Server.Runtime}" Margin="5,5,5,0" >
+        <Grid Grid.Row="0" DataContext="{Binding Server.Runtime}" Margin="2,0,2,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
-            <Border Grid.Column="0" Margin="0,2,2,2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_StatusTooltip}" Style="{DynamicResource BorderLabel}">
+            <Border Grid.Column="0" Margin="0,2,0,2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_StatusTooltip}">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label FontSize="15" Content="{DynamicResource ServerSettings_StatusLabel}"/>
                     <Label FontSize="15" Content="{Binding Status}" MinWidth="100"/>
                 </StackPanel>
             </Border>
-            <Border Grid.Column="1" Margin="2,2,0,2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_PlayersTooltip}" Style="{DynamicResource BorderLabel}">
+            <Border Grid.Column="1" Margin="2,2,0,2" Background="{DynamicResource BeigeLabel}" ToolTip="{DynamicResource ServerSettings_PlayersTooltip}">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label FontSize="15" Content="{DynamicResource ServerSettings_PlayersLabel}"/>
                     <Label FontSize="15" Content="{Binding Players}"/>
@@ -77,10 +81,12 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <GroupBox Grid.Row="1" Margin="5,0,5,0">
+
+        <GroupBox Grid.Row="1" Style="{StaticResource GroupBoxStyle}" Margin="2,0,2,2">
             <GroupBox.Header>
                 <Label Content="{DynamicResource ShutdownWindow_ShutdownRestartOptionsLabel}"/>
             </GroupBox.Header>
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -88,11 +94,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-        
-                <local:AnnotatedSlider Grid.Row="0" Margin="5,0,5,0" Label="{DynamicResource ShutdownWindow_ShutdownIntervalLabel}" Value="{Binding ShutdownInterval}" Minimum="1" Maximum="60" SmallChange="1" LargeChange="5" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Minutes}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_ShutdownIntervalTooltip}"/>
+
+                <local:AnnotatedSlider Grid.Row="0" Margin="1" Label="{DynamicResource ShutdownWindow_ShutdownIntervalLabel}" Value="{Binding ShutdownInterval}" Minimum="1" Maximum="60" SmallChange="1" LargeChange="5" TickFrequency="1" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Minutes}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_ShutdownIntervalTooltip}"/>
                 <CheckBox Grid.Row="1" Margin="5" Content="{DynamicResource ShutdownWindow_RestartServerLabel}" IsChecked="{Binding RestartServer}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_RestartServerTooltip}"/>
                 <CheckBox Grid.Row="2" Margin="5" Content="{DynamicResource ShutdownWindow_BackupWorldFileLabel}" IsChecked="{Binding BackupWorldFile}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_BackupWorldFileTooltip}"/>
-                <TextBox Grid.Row="3" Name="MessageOutput" Margin="5" Height="200" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <TextBox Grid.Row="3" Name="MessageOutput" Margin="1" Height="200" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <TextBox.Style>
                         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
                             <Setter Property="Visibility" Value="Visible" />
@@ -112,7 +118,8 @@
                 </TextBox>
             </Grid>
         </GroupBox>
-        <Grid Grid.Row="2" Margin="5,10,5,5" >
+        
+        <Grid Grid.Row="2" Margin="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>

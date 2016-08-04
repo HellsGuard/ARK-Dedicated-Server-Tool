@@ -9,10 +9,16 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
+            <SolidColorBrush x:Key="BeigeBorder" Color="#FFD8CCBC"/>
+
+            <Style x:Key="GroupBoxStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="BorderBrush" Value="{StaticResource BeigeBorder}"/>
+            </Style>
             <Style x:Key="OnlineListViewItemStyle" TargetType="{x:Type ListViewItem}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsOnline}" Value="True">
@@ -27,7 +33,8 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="10,2,10,2" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        
+        <StackPanel Margin="3" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -39,17 +46,20 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Content="{DynamicResource Profile_NameLabel}"/>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Profile_NameLabel}"/>
                 <Label Grid.Row="0" Grid.Column="1" Content="{Binding Player.TribeName}" FontWeight="Bold" FontSize="13.333"/>
-                <Label Grid.Row="1" Content="{DynamicResource Profile_CreatedLabel}"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Profile_CreatedLabel}"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="{Binding CreatedDate}"/>
-                <Label Grid.Row="2" Content="{DynamicResource Profile_UpdatedLabel}"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Profile_UpdatedLabel}"/>
                 <Label Grid.Row="2" Grid.Column="1" Content="{Binding UpdatedDate}"/>
             </Grid>
-            <GroupBox  HorizontalAlignment="Stretch">
+
+            <GroupBox  HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_TribeSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>
+                
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -59,7 +69,8 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Content="{DynamicResource Profile_IdLabel}"/>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Profile_IdLabel}"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource Profile_NavigateProfile}">
                         <Hyperlink NavigateUri="{Binding TribeLink}" Command="{Binding ExplorerLinkCommand}" CommandParameter="{Binding TribeLink}">
                            <Hyperlink.Inlines>
@@ -67,14 +78,16 @@
                            </Hyperlink.Inlines>
                         </Hyperlink>
                     </TextBlock>
-                    <Label Grid.Row="1" Content="{DynamicResource Profile_TribeOwnerLabel}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Profile_TribeOwnerLabel}"/>
                     <Label Grid.Row="1" Grid.Column="1" Content="{Binding TribeOwner}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox  HorizontalAlignment="Stretch">
+
+            <GroupBox  HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_TribeMembersSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>
+                
                 <Grid>
                     <ListView x:Name="TribeMembersListView" ItemsSource="{Binding TribePlayers}" Height="200" HorizontalContentAlignment="Stretch" ItemContainerStyle="{DynamicResource OnlineListViewItemStyle}">
                         <ListView.View>

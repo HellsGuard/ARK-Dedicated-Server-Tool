@@ -51,7 +51,7 @@ namespace ARK_Server_Manager
         public ICommand ConnectCommand => new RelayCommand<object>(
             execute: _ => {
                 // set focus to the Connect button, if the Enter key is pressed, the value just entered has not yet been posted to the property.
-                buttonConnect.Focus();
+                ConnectButton.Focus();
 
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {

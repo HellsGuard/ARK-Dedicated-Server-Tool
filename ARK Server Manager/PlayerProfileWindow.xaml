@@ -10,12 +10,21 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="BeigeBorder" Color="#FFD8CCBC"/>
+
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
+            
             <vm:NullValueConverter x:Key="NullValueConverter"/>
+            
             <BitmapImage x:Key="NoAvatar" UriSource="Art/NoAvatar.png" />
+            
+            <Style x:Key="GroupBoxStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="BorderBrush" Value="{StaticResource BeigeBorder}"/>
+            </Style>
             <Style x:Key="Online" TargetType="{x:Type Label}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Player.IsOnline}" Value="True">
@@ -75,10 +84,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="{StaticResource BeigeGradient}">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Margin="10,2,10,2" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="3" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -91,7 +97,8 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Content="{DynamicResource Profile_NameLabel}"/>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Profile_NameLabel}"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333" ToolTip="{DynamicResource Profile_NavigateSteamProfile}">
                     <Hyperlink NavigateUri="{Binding ProfileLink}" Command="{Binding DirectLinkCommand}" CommandParameter="{Binding ProfileLink}">
                        <Hyperlink.Inlines>
@@ -100,14 +107,15 @@
                     </Hyperlink>
                 </TextBlock>
                 <Image Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding Player.AvatarImage, Converter={StaticResource ResourceKey=NullValueConverter}, ConverterParameter={StaticResource ResourceKey=NoAvatar}}" Width="48" Height="48" Stretch="Uniform"/>
-                <Label Grid.Row="1" Content="{DynamicResource Profile_OnlineLabel}"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Profile_OnlineLabel}"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="{Binding Player.IsOnline}" Style="{DynamicResource Online}"/>
-                <Label Grid.Row="2" Content="{DynamicResource Profile_CreatedLabel}"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Profile_CreatedLabel}"/>
                 <Label Grid.Row="2" Grid.Column="1" Content="{Binding CreatedDate}"/>
-                <Label Grid.Row="3" Content="{DynamicResource Profile_UpdatedLabel}"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Profile_UpdatedLabel}"/>
                 <Label Grid.Row="3" Grid.Column="1" Content="{Binding UpdatedDate}"/>
             </Grid>
-            <GroupBox HorizontalAlignment="Stretch">
+
+            <GroupBox HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_SteamSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>
@@ -135,7 +143,8 @@
                     <Label Grid.Row="4" Grid.Column="1" Content="{Binding ArkDataPlayer.DaysSinceLastBan}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox  HorizontalAlignment="Stretch">
+            
+            <GroupBox  HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_PlayerSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>
@@ -172,7 +181,8 @@
                     <Label Grid.Row="5" Grid.Column="1" Content="{Binding ArkDataPlayer.NumberOfGameBans}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox  HorizontalAlignment="Stretch">
+            
+            <GroupBox  HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource Profile_TribeSectionLabel}" VerticalAlignment="Center" FontWeight="Bold" FontSize="13.333"/>
                 </GroupBox.Header>

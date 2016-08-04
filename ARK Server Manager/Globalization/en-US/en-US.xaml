@@ -436,8 +436,6 @@
     <sys:String x:Key="ServerSettings_ModIdsTooltip">A comma-separated list of mod ids, in the order in which they should be applied.</sys:String>
     <sys:String x:Key="ServerSettings_ModDetailsTooltip">View the mod details.</sys:String>
     <sys:String x:Key="ServerSettings_ModUpgradeTooltip">Upgrade to the latest version of the mods that is currently available to download.</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeMods_FailedTitle">Mods Update Error</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeMods_MutexFailedLabel">Could not lock the server, another process is using the server. Mod update process was cancelled.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>

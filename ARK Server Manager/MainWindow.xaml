@@ -108,7 +108,7 @@
  
 
         </DockPanel>
-        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
+        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,0" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
             <eo:TabControl.HeaderTemplate>
                 <DataTemplate >
                     <TextBlock Text="{Binding Profile.ProfileName}"/>

@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
-        xmlns:lvs="clr-namespace:ARK_Server_Manager.Lib.ListViewSorting"
         Title="{DynamicResource WorkshopFiles_Title}"
         Width="700" Height="480" MinWidth="700" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Loaded="Window_Loaded">
     <Window.Resources>
@@ -43,7 +42,7 @@
             <TextBlock Margin="5,5,5,0" Text="{Binding WorkshopFiles.CachedTime}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Height="26" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
             <TextBlock Margin="5,5,5,0" Text="{DynamicResource WorkshopFiles_FilterLabel}" VerticalAlignment="Center" />
             <TextBox   Margin="5,5,5,0" Text="{Binding WorkshopFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
             <CheckBox  Margin="5,5,5,0" IsChecked="{Binding WorkshopFilterExisting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Content="{DynamicResource WorkshopFiles_FilterExistingLabel}" VerticalAlignment="Center"/>

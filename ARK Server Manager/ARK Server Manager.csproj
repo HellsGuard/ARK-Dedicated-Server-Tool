@@ -570,10 +570,6 @@
       <Project>{4ca9c894-518f-42d7-bbe2-cfdfe7a03f8a}</Project>
       <Name>QueryMaster</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SteamKit2\SteamKit2.csproj">
-      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
-      <Name>SteamKit2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFSharp.Globalizer\WPFSharp.Globalizer.csproj">
       <Project>{715461e8-4e54-4993-80a8-8e72892135e0}</Project>
       <Name>WPFSharp.Globalizer</Name>

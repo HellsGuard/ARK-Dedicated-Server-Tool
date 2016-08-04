@@ -66,7 +66,7 @@ namespace ARK_Server_Manager
     /// </summary>
     partial class ServerSettingsControl : UserControl
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private CancellationTokenSource _upgradeCancellationSource = null;
 
         // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
@@ -234,20 +234,20 @@ namespace ARK_Server_Manager
                         {
                             this.Settings.Save(false);
 
+                            if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
+                            {
+                                if (!await UpdateServer(false, true, Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, true))
+                                {
+                                    if (MessageBox.Show("There was a problem while performing the server update. This may leave your server in a incomplete state.\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Server Update", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                                        return;
+                                }
+                            }
+
                             string validateMessage;
                             if (!this.Server.Profile.Validate(out validateMessage))
                             {
                                 if (MessageBox.Show($"The following validation problems were encountered.\r\n\r\n{validateMessage}\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Profile Validation", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                                     return;
-                            }
-
-                            if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
-                            {
-                                if (!await UpdateServer(false, true))
-                                {
-                                    if (MessageBox.Show("There was a problem while performing the server update. This may leave your server in a incomplete state.\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Server Update", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                                        return;
-                                }
                             }
 
                             await this.Server.StartAsync();
@@ -298,7 +298,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
-            await UpdateServer(true, false);
+            await UpdateServer(true, true, Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, false);
         }
 
         private async void ModUpgrade_Click(object sender, RoutedEventArgs e)
@@ -313,63 +313,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
-            if (_upgradeCancellationSource != null)
-                return;
-
-            ProgressWindow window = null;
-            Mutex mutex = null;
-            bool createdNew = false;
-
-            try
-            {
-                // try to establish a mutex for the profile.
-                mutex = new Mutex(true, ServerApp.GetMutexName(this.Server.Profile.InstallDirectory), out createdNew);
-
-                // check if the mutex was established
-                if (createdNew)
-                {
-                    this._upgradeCancellationSource = new CancellationTokenSource();
-
-                    window = new ProgressWindow(string.Format(_globalizer.GetResourceString("Progress_UpgradeServer_WindowTitle"), this.Server.Profile.ProfileName));
-                    window.Owner = Window.GetWindow(this);
-                    window.Closed += Window_Closed;
-                    window.Show();
-
-                    await Task.Delay(1000);
-                    await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: false, validate: true, updateMods: true, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
-                }
-                else
-                {
-                    // display an error message and exit
-                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_UpgradeMods_MutexFailedLabel"), _globalizer.GetResourceString("ServerSettings_UpgradeMods_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (window != null)
-                {
-                    window.AddMessage(ex.Message);
-                    window.AddMessage(ex.StackTrace);
-                }
-                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_UpgradeMods_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                this._upgradeCancellationSource = null;
-
-                if (window != null)
-                    window.CloseWindow();
-
-                if (mutex != null)
-                {
-                    if (createdNew)
-                    {
-                        mutex.ReleaseMutex();
-                        mutex.Dispose();
-                    }
-                    mutex = null;
-                }
-            }
+            await UpdateServer(true, false, true, false);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -430,14 +374,6 @@ namespace ARK_Server_Manager
                     MessageBox.Show(String.Format(_globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorLabel"), dialog.FileName, ex.Message, ex.StackTrace), _globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
-        }
-
-        private void CopyProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void DeleteProfile_Click(object sender, RoutedEventArgs e)
-        {
         }
 
         private void ShowCmd_Click(object sender, RoutedEventArgs e)
@@ -565,31 +501,6 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
-        }
-
-        private void DinoSpawn_Reset(object sender, RoutedEventArgs e)
-        {
-            this.Settings.DinoSpawnWeightMultipliers.Reset();
-        }
-
-        private void TamedDinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            this.Settings.TamedDinoClassDamageMultipliers.Reset();
-        }
-
-        private void TamedDinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            this.Settings.TamedDinoClassResistanceMultipliers.Reset();
-        }
-
-        private void DinoClassDamageMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            this.Settings.DinoClassDamageMultipliers.Reset();
-        }
-
-        private void DinoClassResistanceMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            this.Settings.DinoClassResistanceMultipliers.Reset();
         }
 
         private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
@@ -1006,6 +917,59 @@ namespace ARK_Server_Manager
             var section = ((CustomSection)((Button)e.Source).DataContext);
             Settings.CustomGameUserSettingsSections.Remove(section);
         }
+
+        private void HiddenField_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var hideTextBox = sender as TextBox;
+            if (hideTextBox != null)
+            {
+                TextBox textBox = null;
+                if (hideTextBox == HideServerPasswordTextBox) 
+                    textBox = ServerPasswordTextBox;
+                if (hideTextBox == HideAdminPasswordTextBox)
+                    textBox = AdminPasswordTextBox;
+                if (hideTextBox == HideSpectatorPasswordTextBox)
+                    textBox = SpectatorPasswordTextBox;
+                if (hideTextBox == HideWebKeyTextBox)
+                    textBox = WebKeyTextBox;
+                if (hideTextBox == HideWebURLTextBox)
+                    textBox = WebURLTextBox;
+
+                if (textBox != null)
+                {
+                    textBox.Visibility = System.Windows.Visibility.Visible;
+                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
+                    textBox.Focus();
+                }
+                UpdateLayout();
+            }
+        }
+
+        private void HiddenField_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                TextBox hideTextBox = null;
+                if (textBox == ServerPasswordTextBox)
+                    hideTextBox = HideServerPasswordTextBox;
+                if (textBox == AdminPasswordTextBox)
+                    hideTextBox = HideAdminPasswordTextBox;
+                if (textBox == SpectatorPasswordTextBox)
+                    hideTextBox = HideSpectatorPasswordTextBox;
+                if (textBox == WebKeyTextBox)
+                    hideTextBox = HideWebKeyTextBox;
+                if (textBox == WebURLTextBox)
+                    hideTextBox = HideWebURLTextBox;
+
+                if (hideTextBox != null)
+                {
+                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
+                    textBox.Visibility = System.Windows.Visibility.Collapsed;
+                }
+                UpdateLayout();
+            }
+        }
         #endregion
 
         #region Methods
@@ -1320,7 +1284,7 @@ namespace ARK_Server_Manager
             }
         }
 
-        private async Task<bool> UpdateServer(bool establishLock, bool closeProgressWindow)
+        private async Task<bool> UpdateServer(bool establishLock, bool updateServer, bool updateMods, bool closeProgressWindow)
         {
             if (_upgradeCancellationSource != null)
                 return false;
@@ -1348,7 +1312,7 @@ namespace ARK_Server_Manager
                     window.Show();
 
                     await Task.Delay(1000);
-                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer: true, validate: true, updateMods: Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer, true, updateMods, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
                 }
                 else
                 {
@@ -1390,58 +1354,5 @@ namespace ARK_Server_Manager
             }
         }
         #endregion
-
-        private void Password_GotFocus(object sender, RoutedEventArgs e)
-        {
-            var hideTextBox = sender as TextBox;
-            if (hideTextBox != null)
-            {
-                TextBox textBox = null;
-                if (hideTextBox == txbxHideServerPassword) 
-                    textBox = txbxServerPassword;
-                if (hideTextBox == txbxHideAdminPassword)
-                    textBox = txbxAdminPassword;
-                if (hideTextBox == txbxHideSpectatorPassword)
-                    textBox = txbxSpectatorPassword;
-                if (hideTextBox == txbxHideWebKey)
-                    textBox = txbxWebKey;
-                if (hideTextBox == txbxHideWebURL)
-                    textBox = txbxWebURL;
-
-                if (textBox != null)
-                {
-                    textBox.Visibility = System.Windows.Visibility.Visible;
-                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
-                    textBox.Focus();
-                }
-                UpdateLayout();
-            }
-        }
-
-        private void Password_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                TextBox hideTextBox = null;
-                if (textBox == txbxServerPassword)
-                    hideTextBox = txbxHideServerPassword;
-                if (textBox == txbxAdminPassword)
-                    hideTextBox = txbxHideAdminPassword;
-                if (textBox == txbxSpectatorPassword)
-                    hideTextBox = txbxHideSpectatorPassword;
-                if (textBox == txbxWebKey)
-                    hideTextBox = txbxHideWebKey;
-                if (textBox == txbxWebURL)
-                    hideTextBox = txbxHideWebURL;
-
-                if (hideTextBox != null)
-                {
-                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
-                    textBox.Visibility = System.Windows.Visibility.Collapsed;
-                }
-                UpdateLayout();
-            }
-        }
     }
 }
