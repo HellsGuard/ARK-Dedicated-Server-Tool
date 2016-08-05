@@ -1052,7 +1052,7 @@
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_AutoSavesPeriodLabel}" Value="{Binding AutoSavePeriodMinutes}" Suffix="{DynamicResource ServerSettings_AutoSavesPeriodUnits}" VerticalAlignment="Center" Minimum="1" Maximum="720" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_AutoSavesPeriodTooltip}"/>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_MOTDLabel}" Style="{StaticResource GroupBoxStyle}" Height="100">
+                            <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_MOTDLabel}" Style="{StaticResource GroupBoxStyle}" Height="200">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
