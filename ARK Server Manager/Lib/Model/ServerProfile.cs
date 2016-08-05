@@ -1861,14 +1861,7 @@ namespace ARK_Server_Manager.Lib
         {
             var serverArgs = new StringBuilder();
 
-            if (this.SOTF_Enabled)
-            {
-                serverArgs.Append(Config.Default.DefaultServerMap_TheIsland);
-            }
-            else
-            {
-                serverArgs.Append(this.ServerMap);
-            }
+            serverArgs.Append(this.ServerMap);
 
             serverArgs.Append("?listen");
 
@@ -1900,7 +1893,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(addArgs);
             }
 
-            if (!string.IsNullOrWhiteSpace(this.TotalConversionModId) && !this.SOTF_Enabled)
+            if (!string.IsNullOrWhiteSpace(this.TotalConversionModId))
             {
                 serverArgs.Append($" -TotalConversionMod={this.TotalConversionModId}");
             }
