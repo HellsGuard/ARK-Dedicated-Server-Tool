@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:local="clr-namespace:ARK_Server_Manager"
              xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
              xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
@@ -16,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <vm:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
             <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
             <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
@@ -270,44 +270,11 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Expander}">
-                            <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true" Padding="1" Margin="0,0,0,3" BorderBrush="Black">
-                                <DockPanel Background="#FFEAE7E0">
-                                    <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" Content="{TemplateBinding Header}" DockPanel.Dock="Top" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="4,4,1,4" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="10,0,0,0"/>
-                                </DockPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsExpanded" Value="true">
-                                    <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="IsExpanded" Value="false">
-                                    <Setter Property="Visibility" TargetName="ExpandSite" Value="Collapsed"/>
-                                </Trigger>
-                                <Trigger Property="ExpandDirection" Value="Right">
-                                    <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
-                                    <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
-                                    <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderRightHeaderStyle}"/>
-                                </Trigger>
-                                <Trigger Property="ExpandDirection" Value="Up">
-                                    <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Top"/>
-                                    <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Bottom"/>
-                                    <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderUpHeaderStyle}"/>
-                                </Trigger>
-                                <Trigger Property="ExpandDirection" Value="Left">
-                                    <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
-                                    <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
-                                    <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderLeftHeaderStyle}"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                        <Setter Property="Foreground" Value="DarkRed"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
             <Style x:Key="CenteredCheckboxStyle" TargetType="CheckBox">
                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -318,6 +285,8 @@
             </Style>
             <Style x:Key="GroupBoxStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
                 <Setter Property="BorderBrush" Value="{StaticResource BeigeBorder}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="Background" Value="Transparent"/>
             </Style>
             <Style x:Key="BorderDarkStyle" TargetType="Border">
                 <Setter Property="BorderBrush" Value="{StaticResource DarkBorder}"/>
@@ -420,6 +389,75 @@
                     <Label Content="{DynamicResource ServerSettings_ShowCommandButtonLabel}" VerticalAlignment="Center" Margin="0,-5,0,-5"/>
                 </StackPanel>
             </ContentControl>
+            
+            <ControlTemplate x:Key="ExpanderTemplateSE" TargetType="{x:Type Expander}">
+                <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true" Padding="1" Margin="0,0,0,3" BorderBrush="Black">
+                    <DockPanel Background="#FFEAE7E0">
+                        <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" Content="{TemplateBinding Header}" DockPanel.Dock="Top" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="4,4,1,4" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="10,0,0,0"/>
+                    </DockPanel>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsExpanded" Value="true">
+                        <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                    </Trigger>
+                    <Trigger Property="IsExpanded" Value="false">
+                        <Setter Property="Visibility" TargetName="ExpandSite" Value="Collapsed"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Right">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderRightHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Up">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Top"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Bottom"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderUpHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Left">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderLeftHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <ControlTemplate x:Key="ExpanderTemplateSotF" TargetType="{x:Type Expander}">
+                <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true" Padding="1" Margin="0,0,0,3" BorderBrush="Black">
+                    <DockPanel Background="#FFEAE0E0">
+                        <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" Content="{TemplateBinding Header}" DockPanel.Dock="Top" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="4,4,1,4" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="10,0,0,0"/>
+                    </DockPanel>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsExpanded" Value="true">
+                        <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                    </Trigger>
+                    <Trigger Property="IsExpanded" Value="false">
+                        <Setter Property="Visibility" TargetName="ExpandSite" Value="Collapsed"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Right">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderRightHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Up">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Top"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Bottom"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderUpHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="ExpandDirection" Value="Left">
+                        <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
+                        <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
+                        <Setter Property="Style" TargetName="HeaderSite" Value="{StaticResource ExpanderLeftHeaderStyle}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
             
             <DataTemplate x:Key="PlayerLevelItemTemplate">
                 <Border BorderBrush="Black" BorderThickness="1" Background="Beige">
@@ -726,7 +764,7 @@
             </Border.Background>
             <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Auto">
                 <StackPanel CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <Expander Name="SectionAdministration" IsExpanded="{Binding CurrentConfig.SectionAdministrationIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionAdministration" IsExpanded="{Binding CurrentConfig.SectionAdministrationIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_AdministrationSectionLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -737,7 +775,20 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
-                        
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+
                         <Grid Margin="-8,0,2,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -886,22 +937,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
-                                <GroupBox.Style>
-                                    <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                                <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsSOTFLabel}"/>
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
-                                                <Setter Property="Header" Value="{DynamicResource ServerSettings_MapsAndModsLabel}"/>
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </GroupBox.Style>
-                                
+                            <GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_MapsAndModsLabel}" Style="{StaticResource GroupBoxStyle}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25"/>
@@ -925,6 +961,18 @@
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
                                     <Button  Grid.Row="0" Grid.Column="4" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameCenterTooltip}" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=MapNameTextbox, Path=IsEnabled}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameCenterProperty}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
 
@@ -934,6 +982,18 @@
                                         <Image Source="Art/Find.png" Width="16" Height="16" />
                                     </Button>
                                     <Button  Grid.Row="1" Grid.Column="4" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetTotalConversionPrimitivePlusTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.TotalConversionPrimitivePlusProperty}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                     </Button>
 
@@ -1092,7 +1152,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionAutomaticManagement" IsExpanded="{Binding CurrentConfig.SectionAutomaticManagementIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionAutomaticManagement" IsExpanded="{Binding CurrentConfig.SectionAutomaticManagementIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Left" Text="{DynamicResource ServerSettings_AutomaticManagementLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1112,6 +1172,19 @@
                                 </Button>
                             </DockPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <StackPanel Margin="-8,0,2,0">
                             <GroupBox Header="{DynamicResource ServerSettings_ASMSettingLabel}" Style="{StaticResource GroupBoxStyle}">
@@ -1137,7 +1210,7 @@
                                         </StackPanel.Style>
 
                                         <CheckBox Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" />
-                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
                                             <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoRestart}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
                                             <TextBox Margin="20,0,0,0" Width="100" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
                                                 <Validation.ErrorTemplate>
@@ -1161,7 +1234,7 @@
                                     </StackPanel>
 
                                     <CheckBox Grid.Row="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding EnableAutoUpdate}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PeriodicUpdatesLabel}" ToolTip="{DynamicResource ServerSettings_PeriodicUpdatesTooltip}" />
-                                    <CheckBox Grid.Row="2" Margin="5,5,5,0" IsChecked="{Binding AutoRestartIfShutdown}" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}"/>
+                                    <CheckBox Grid.Row="2" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding AutoRestartIfShutdown}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}"/>
                                 </Grid>
                             </GroupBox>
                             
@@ -1204,7 +1277,7 @@
                         </StackPanel>
                     </Expander>
                     
-                    <Expander Name="SectionRules" IsExpanded="{Binding CurrentConfig.SectionRulesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionRules" IsExpanded="{Binding CurrentConfig.SectionRulesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_RulesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1216,15 +1289,43 @@
                             </StackPanel>
                         </Expander.Header>
 
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+
                         <Grid Margin="-8,0,2,0">
                             <StackPanel>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnableHardcore}" Content="{DynamicResource ServerSettings_EnableHardcoreLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableHardcoreTooltip}"/>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnablePVP}" Content="{DynamicResource ServerSettings_EnablePvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvPTooltip}"/>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding AllowCaveBuildingPvE}" Content="{DynamicResource ServerSettings_EnablePvECaveBuildingLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvECaveBuildingTooltip}"/>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnableExtraStructurePreventionVolumes}" Content="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesTooltip}"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableHardcore}" Content="{DynamicResource ServerSettings_EnableHardcoreLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableHardcoreTooltip}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
+                                    <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableExtraStructurePreventionVolumes}" Content="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesTooltip}"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnablePVP}" Content="{DynamicResource ServerSettings_EnablePvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvPTooltip}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding AllowCaveBuildingPvE}" Content="{DynamicResource ServerSettings_EnablePvECaveBuildingLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvECaveBuildingTooltip}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
+                                </Grid>
                                 
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_DifficultyLabel}" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Suffix="{DynamicResource ServerSettings_DifficultyUnits}" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_DifficultyTooltip}" />
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeLabel}" Value="{Binding MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeUnits}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="5" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeTooltip}" />
@@ -1234,11 +1335,17 @@
                                         <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
                                     </GroupBox.Header>
                                     
-                                    <StackPanel IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
-                                        <CheckBox Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
-                                        <CheckBox Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
-                                        <CheckBox Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
-                                    </StackPanel>
+                                    <Grid IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                        <CheckBox Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                        <CheckBox Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                    </Grid>
                                 </GroupBox>
                                 
                                 <GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -1270,62 +1377,70 @@
                                     
                                     <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         
                                         <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="{DynamicResource ServerSettings_UseServerTimeLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseServerTimeTooltip}"/>
-                                        <Label    Grid.Column="1" Content="{DynamicResource ServerSettings_StartTimeLabel}"  Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}"/>
-                                        <TextBox  Grid.Column="2" FontSize="12" Width="100" Margin="5,1,0,1" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}" >
-                                            <Validation.ErrorTemplate>
-                                                <ControlTemplate>
-                                                    <StackPanel>
-                                                        <!-- Placeholder for the TextBox itself -->
-                                                        <AdornedElementPlaceholder x:Name="textBox"/>
-                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                                    </StackPanel>
-                                                </ControlTemplate>
-                                            </Validation.ErrorTemplate>
-                                            <TextBox.Text>
-                                                <Binding Path="AutoPvEStartTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
-                                                    <Binding.ValidationRules>
-                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <Label   Grid.Column="3" Content="{DynamicResource ServerSettings_StopTimeLabel}" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}"/>
-                                        <TextBox Grid.Column="4" FontSize="12" Width="100" Margin="5,1,0,1" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}" >
-                                            <Validation.ErrorTemplate>
-                                                <ControlTemplate>
-                                                    <StackPanel>
-                                                        <!-- Placeholder for the TextBox itself -->
-                                                        <AdornedElementPlaceholder x:Name="textBox"/>
-                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                                    </StackPanel>
-                                                </ControlTemplate>
-                                            </Validation.ErrorTemplate>
-                                            <TextBox.Text>
-                                                <Binding Path="AutoPvEStopTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
-                                                    <Binding.ValidationRules>
-                                                        <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Label   Content="{DynamicResource ServerSettings_StartTimeLabel}" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}" VerticalAlignment="Center"/>
+                                            <TextBox FontSize="12" Width="100" Margin="5,1,0,1" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}" >
+                                                <Validation.ErrorTemplate>
+                                                    <ControlTemplate>
+                                                        <StackPanel>
+                                                            <!-- Placeholder for the TextBox itself -->
+                                                            <AdornedElementPlaceholder x:Name="textBox"/>
+                                                            <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Validation.ErrorTemplate>
+                                                <TextBox.Text>
+                                                    <Binding Path="AutoPvEStartTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
+                                                        <Binding.ValidationRules>
+                                                            <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_StopTimeLabel}" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}" VerticalAlignment="Center"/>
+                                            <TextBox FontSize="12" Width="100" Margin="5,1,0,1" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_StopTimeTooltip}" >
+                                                <Validation.ErrorTemplate>
+                                                    <ControlTemplate>
+                                                        <StackPanel>
+                                                            <!-- Placeholder for the TextBox itself -->
+                                                            <AdornedElementPlaceholder x:Name="textBox"/>
+                                                            <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Validation.ErrorTemplate>
+                                                <TextBox.Text>
+                                                    <Binding Path="AutoPvEStopTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
+                                                        <Binding.ValidationRules>
+                                                            <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
                                     </Grid>
                                 </GroupBox>
                                 
                                 <CheckBox Margin="5" IsChecked="{Binding AllowTribeAlliances}" Content="{DynamicResource ServerSettings_AllowTribeAlliancesLabel}" ToolTip="{DynamicResource ServerSettings_AllowTribeAlliancesTooltip}" />
                                 
                                 <GroupBox Header="{DynamicResource ServerSettings_TribeWarfareLabel}" Style="{StaticResource GroupBoxStyle}">
-                                    <StackPanel>
-                                        <CheckBox Margin="5,5,5,0" Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
-                                        <CheckBox Margin="5,5,5,0" IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Column="0" Margin="5,5,5,0" Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
+                                        <CheckBox Grid.Column="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
+                                    </Grid>
                                 </GroupBox>
                                 
                                 <GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -1343,16 +1458,22 @@
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableDiseasesCheckbox" IsChecked="{Binding EnableDiseases}" Content="{DynamicResource ServerSettings_EnableDiseasesLabel}" ToolTip="{DynamicResource ServerSettings_EnableDiseasesTooltip}" />
                                     </GroupBox.Header>
-                                    
-                                    <StackPanel IsEnabled="{Binding ElementName=EnableDiseasesCheckbox, Path=IsChecked}">
-                                        <CheckBox Margin="5,5,5,0" IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
-                                    </StackPanel>
+
+                                    <Grid IsEnabled="{Binding ElementName=EnableDiseasesCheckbox, Path=IsChecked}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
+                                    </Grid>
                                 </GroupBox>
                             </StackPanel>
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionChatAndNotifications" IsExpanded="{Binding CurrentConfig.SectionChatAndNotificationsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionChatAndNotifications" IsExpanded="{Binding CurrentConfig.SectionChatAndNotificationsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_ChatAndNotificationsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1362,17 +1483,41 @@
                             </StackPanel>
                         </Expander.Header>
 
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+
                         <Grid Margin="-8,0,2,0">
-                            <StackPanel>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnableGlobalVoiceChat}" Content="{DynamicResource ServerSettings_EnableGlobalVoiceChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableGlobalVoiceChatTooltip}"/>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnableProximityChat}" Content="{DynamicResource ServerSettings_EnableProximityChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableProximityChatTooltip}"/>
-                                <CheckBox Margin="5,5,5,0" IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerLeftLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerLeftTooltip}"/>
-                                <CheckBox Margin="5" IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerJoinedLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerJoinedTooltip}"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableGlobalVoiceChat}" Content="{DynamicResource ServerSettings_EnableGlobalVoiceChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableGlobalVoiceChatTooltip}"/>
+                                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" IsChecked="{Binding EnableProximityChat}" Content="{DynamicResource ServerSettings_EnableProximityChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableProximityChatTooltip}"/>
+                                
+                                <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerLeftLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerLeftTooltip}"/>
+                                <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerJoinedLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerJoinedTooltip}"/>
+                            </Grid>
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionHUDAndVisuals" IsExpanded="{Binding CurrentConfig.SectionHUDAndVisualsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionHUDAndVisuals" IsExpanded="{Binding CurrentConfig.SectionHUDAndVisualsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_HUDAndVisualsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1384,31 +1529,46 @@
                             </StackPanel>
                         </Expander.Header>
 
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+
                         <Grid Margin="-8,0,2,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding AllowCrosshair}" Content="{DynamicResource ServerSettings_AllowCrosshairLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowCrosshairTooltip}"/>
                             <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding AllowHUD}" Content="{DynamicResource ServerSettings_AllowHUDLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowHUDTooltip}"/>
-                            <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding AllowThirdPersonView}" Content="{DynamicResource ServerSettings_AllowThirdPersonViewLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowThirdPersonViewTooltip}"/>
-                            <CheckBox Grid.Row="3" Grid.Column="0" Margin="5" IsChecked="{Binding AllowMapPlayerLocation}" Content="{DynamicResource ServerSettings_AllowMapPlayerLocationLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowMapPlayerLocationTooltip}"/>
-                            
-                            <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AllowPVPGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvPTooltip}"/>
-                            <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AllowPvEGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvETooltip}"/>
-                            <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ShowFloatingDamageText}" Content="{DynamicResource ServerSettings_ShowFloatingDamageTextLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ShowFloatingDamageTextTooltip}"/>
-                            <CheckBox Grid.Row="3" Grid.Column="1" Margin="5" IsChecked="{Binding AllowHitMarkers}" Content="{DynamicResource ServerSettings_AllowHitMarkersLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowHitMarkersTooltip}"/>
+                            <CheckBox Grid.Row="2" Grid.Column="0" Margin="5" IsChecked="{Binding AllowMapPlayerLocation}" Content="{DynamicResource ServerSettings_AllowMapPlayerLocationLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowMapPlayerLocationTooltip}"/>
+
+                            <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AllowThirdPersonView}" Content="{DynamicResource ServerSettings_AllowThirdPersonViewLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowThirdPersonViewTooltip}"/>
+                            <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ShowFloatingDamageText}" Content="{DynamicResource ServerSettings_ShowFloatingDamageTextLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ShowFloatingDamageTextTooltip}"/>
+                            <CheckBox Grid.Row="2" Grid.Column="1" Margin="5" IsChecked="{Binding AllowHitMarkers}" Content="{DynamicResource ServerSettings_AllowHitMarkersLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowHitMarkersTooltip}"/>
+
+                            <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding AllowPVPGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvPTooltip}"/>
+                            <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding AllowPvEGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvETooltip}"/>
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionPlayerSettings" IsExpanded="{Binding CurrentConfig.SectionPlayerSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionPlayerSettings" IsExpanded="{Binding CurrentConfig.SectionPlayerSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_PlayerSettingsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1419,6 +1579,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel Grid.Column="0">
@@ -1476,7 +1649,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionDinoSettings" IsExpanded="{Binding CurrentConfig.SectionDinoSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionDinoSettings" IsExpanded="{Binding CurrentConfig.SectionDinoSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_DinoSettingsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1487,6 +1660,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel Grid.Column="0">
@@ -1917,7 +2103,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionEnvironment" IsExpanded="{Binding CurrentConfig.SectionEnvironmentIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionEnvironment" IsExpanded="{Binding CurrentConfig.SectionEnvironmentIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_EnvironmentLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -1928,6 +2114,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel>
@@ -2025,7 +2224,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionStructures" IsExpanded="{Binding CurrentConfig.SectionStructuresIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionStructures" IsExpanded="{Binding CurrentConfig.SectionStructuresIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_StructuresLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -2036,6 +2235,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel Grid.Column="0">
@@ -2072,7 +2284,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionEngrams" IsExpanded="{Binding CurrentConfig.SectionEngramsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionEngrams" IsExpanded="{Binding CurrentConfig.SectionEngramsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_EngramsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -2083,6 +2295,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -2171,7 +2396,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionCustomLevels" IsExpanded="{Binding CurrentConfig.SectionCustomLevelsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionCustomLevels" IsExpanded="{Binding CurrentConfig.SectionCustomLevelsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -2182,6 +2407,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel>
@@ -2310,12 +2548,25 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionCustomSettings" IsExpanded="{Binding CurrentConfig.SectionCustomGameUserSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionCustomSettings" IsExpanded="{Binding CurrentConfig.SectionCustomGameUserSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_CustomSettingsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <Grid.ColumnDefinitions>
@@ -2442,7 +2693,7 @@
                         </Grid>
                     </Expander>
                     
-                    <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Style="{DynamicResource ExpanderStyle1}">
+                    <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -2453,6 +2704,19 @@
                                 </Button>
                             </StackPanel>
                         </Expander.Header>
+
+                        <Expander.Style>
+                            <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="False">
+                                        <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
                             <GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -2484,24 +2748,27 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     
                                     <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}"/>
                                     <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
+                                    
                                     <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
                                     <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>
-                                    <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}"/>
-                                    <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}"/>
-                                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}"/>
 
-                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
-                                    <local:AnnotatedSlider Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
+                                    <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}"/>
+                                    <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}"/>
+
+                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
+                                    <local:AnnotatedSlider Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
                                 </Grid>
                             </GroupBox>
                         </Grid>

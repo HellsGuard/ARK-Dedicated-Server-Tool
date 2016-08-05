@@ -42,7 +42,7 @@ namespace ARK_Server_Manager.Lib
             public bool AutoRestartIfShutdown;
 
             public bool EnableAutoUpdate;
-            public bool SOTFEnabled;
+            public bool SotFEnabled;
 
             public bool ServerUpdated;
 
@@ -53,7 +53,7 @@ namespace ARK_Server_Manager.Lib
                     ProfileName = profile.ProfileName,
                     InstallDirectory = profile.InstallDirectory,
                     AdminPassword = profile.AdminPassword,
-                    ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
+                    ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP.Trim(),
                     ServerPort = profile.ServerPort,
                     RCONEnabled = profile.RCONEnabled,
                     RCONPort = profile.RCONPort,
@@ -68,7 +68,7 @@ namespace ARK_Server_Manager.Lib
                     AutoRestartIfShutdown = profile.AutoRestartIfShutdown,
 
                     EnableAutoUpdate = profile.EnableAutoUpdate,
-                    SOTFEnabled = profile.SOTF_Enabled,
+                    SotFEnabled = profile.SOTF_Enabled,
 
                     ServerUpdated = false,
                 };
@@ -135,8 +135,8 @@ namespace ARK_Server_Manager.Lib
         public const string ARGUMENT_AUTORESTART = "-ar";
         public const string ARGUMENT_AUTOUPDATE = "-au";
 
+        private static readonly object LockObject = new object();
         private static DateTime _startTime = DateTime.Now;
-        private static readonly object _lockObject = new object();
         private static string _logPrefix = "";
         private static Dictionary<ProfileSnapshot, ServerProfile> _profiles = null;
 
@@ -187,7 +187,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        LogProfileMessage($"Backing up world file...");
+                        LogProfileMessage("Backing up world file...");
 
                         var backupFile = GetServerWorldBackupFile();
                         File.Copy(worldFile, backupFile, true);
@@ -245,7 +245,7 @@ namespace ARK_Server_Manager.Lib
                 ExitCode = EXITCODE_NORMALEXIT;
                 return;
             }
-            else if (!_serverRunning && _profile.AutoRestartIfShutdown)
+            if (!_serverRunning && _profile.AutoRestartIfShutdown)
             {
                 LogProfileMessage("Server was not running, server will be started as the setting to restart if shutdown is TRUE.");
             }
@@ -314,7 +314,7 @@ namespace ARK_Server_Manager.Lib
                 try
                 {
                     // create a connection to the server
-                    var endPoint = new IPEndPoint(IPAddress.Parse(string.IsNullOrWhiteSpace(_profile.ServerIP) ? "127.0.0.1" : _profile.ServerIP), _profile.ServerPort);
+                    var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
                     gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
 
                     LogProfileMessage("Starting shutdown timer...");
@@ -322,20 +322,30 @@ namespace ARK_Server_Manager.Lib
                     var minutesLeft = ShutdownInterval;
                     while (minutesLeft > 0)
                     {
-                        var playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList() ?? null;
-
-                        // check if anyone is logged into the server
-                        var playerCount = playerInfo?.Count ?? 0;
-                        if (playerCount == 0)
+                        try
                         {
-                            LogProfileMessage("No online players, shutdown timer cancelled.");
-                            break;
+                            List<Player> playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList();
+
+                            // check if anyone is logged into the server
+                            var playerCount = playerInfo?.Count ?? -1;
+                            if (playerCount <= 0)
+                            {
+                                LogProfileMessage("No online players, shutdown timer cancelled.");
+                                break;
+                            }
+
+                            LogProfileMessage($"Online players: {playerCount}.");
+                            if (playerInfo != null)
+                            {
+                                foreach (var player in playerInfo)
+                                {
+                                    LogProfileMessage($"{player.Name}; joined {player.Time} ago");
+                                }
+                            }
                         }
-
-                        LogProfileMessage($"Online players: {playerCount}.");
-                        foreach (var player in playerInfo)
+                        catch (Exception ex)
                         {
-                            LogProfileMessage($"{player.Name}; joined {player.Time.ToString()} ago");
+                            Debug.WriteLine($"Error getting/displaying online players.\r\n{ex.Message}");
                         }
 
                         if (minutesLeft >= 5)
@@ -538,7 +548,7 @@ namespace ARK_Server_Manager.Lib
             foreach (var modId in modIdList)
             {
                 // check if the mod needs to be updated.
-                var modCacheLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModCacheTimeFile(modId));
+                var modCacheLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModCacheTimeFile(modId, false));
                 var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
                 if (modCacheLastUpdated > modLastUpdated || modLastUpdated == 0)
                     updateModIds.Add(modId);
@@ -555,7 +565,7 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                SendEmail($"{_profile.ProfileName} auto update started", $"The auto update process has started.", false);
+                SendEmail($"{_profile.ProfileName} auto update started", "The auto update process has started.", false);
 
                 if (BackupWorldFile)
                 {
@@ -565,7 +575,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         try
                         {
-                            LogProfileMessage($"Backing up world file...");
+                            LogProfileMessage("Backing up world file...");
 
                             var backupFile = GetServerWorldBackupFile();
                             File.Copy(worldFile, backupFile, true);
@@ -610,7 +620,7 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage("Updated server from cache.");
                             LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
 
-                            LogProfileMessage($"Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287/.");
+                            LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287/.");
                         }
                         else
                         {
@@ -645,7 +655,7 @@ namespace ARK_Server_Manager.Lib
                         for (var index = 0; index < updateModIds.Count; index++)
                         {
                             var modId = updateModIds[index];
-                            var modCachePath = ModUtils.GetModCachePath(modId);
+                            var modCachePath = ModUtils.GetModCachePath(modId, false);
                             var modPath = GetModPath(modId);
                             var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
 
@@ -677,7 +687,7 @@ namespace ARK_Server_Manager.Lib
                                     else
                                     {
                                         ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                                        LogProfileMessage($"Mod not updated, could not lock mod cache.");
+                                        LogProfileMessage("Mod not updated, could not lock mod cache.");
                                     }
                                 }
                                 else
@@ -727,14 +737,14 @@ namespace ARK_Server_Manager.Lib
                 // restart the server
                 StartServer();
 
-                SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.", true);
+                SendEmail($"{_profile.ProfileName} auto update finished", "The auto update process has finished.", true);
             }
             else
             {
                 if (updateModIds.Count > 0)
-                    LogProfileMessage($"The server and mods files are already up to date, no updates required.");
+                    LogProfileMessage("The server and mods files are already up to date, no updates required.");
                 else
-                    LogProfileMessage($"The server files are already up to date, no updates required.");
+                    LogProfileMessage("The server files are already up to date, no updates required.");
 
                 _serverRunning = GetServerProcess() != null;
 
@@ -787,12 +797,12 @@ namespace ARK_Server_Manager.Lib
             var updateModIds = new List<string>();
             if (Config.Default.ServerUpdate_ForceUpdateMods)
             {
-                LogMessage($"All mods will be updated - force mod update is TRUE.");
+                LogMessage("All mods will be updated - force mod update is TRUE.");
                 updateModIds.AddRange(modIdList);
             }
             else
             {
-                LogMessage($"Mods will be selectively updated - force mod update is FALSE.");
+                LogMessage("Mods will be selectively updated - force mod update is FALSE.");
 
                 foreach (var modId in modIdList)
                 {
@@ -810,7 +820,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
-                        var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
+                        var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, false);
 
                         // check if the mod needs to be updated
                         var steamLastUpdated = modDetail.time_updated;
@@ -848,12 +858,11 @@ namespace ARK_Server_Manager.Lib
             for (var index = 0; index < updateModIds.Count; index++)
             {
                 var modId = updateModIds[index];
-                var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
+                var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
 
-                var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
-                var modCachePath = ModUtils.GetModCachePath(modId);
+                var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, false);
+                var modCachePath = ModUtils.GetModCachePath(modId, false);
 
-                var gotNewVersion = false;
                 var downloadSuccessful = false;
 
                 downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
@@ -869,7 +878,7 @@ namespace ARK_Server_Manager.Lib
 
                 LogMessage("");
                 LogMessage($"Started mod cache update {index + 1} of {updateModIds.Count}");
-                LogMessage($"{modId} - {modDetail.title}");
+                LogMessage($"{modId} - {modDetail?.title}");
 
                 // update the mod cache
                 var steamCmdArgs = string.Empty;
@@ -888,18 +897,18 @@ namespace ARK_Server_Manager.Lib
                 // check if any of the mod files have changed.
                 if (Directory.Exists(modCachePath))
                 {
-                    gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Where(file => file.LastWriteTime >= _startTime).Any();
+                    var gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= _startTime);
 
                     if (gotNewVersion)
                         LogMessage("***** New version downloaded. *****");
                     else
                         LogMessage("No new version.");
 
-                    var steamLastUpdated = modDetail.time_updated.ToString();
-                    if (modDetail.time_updated <= 0)
+                    var steamLastUpdated = modDetail?.time_updated.ToString() ?? string.Empty;
+                    if (modDetail == null || modDetail.time_updated <= 0)
                     {
                         // get the version number from the steamcmd workshop file.
-                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(), modId).ToString();
+                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(false), modId).ToString();
                     }
 
                     File.WriteAllText(cacheTimeFile, steamLastUpdated);
@@ -912,7 +921,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             LogMessage("---------------------------");
-            LogMessage($"Finished mod cache update.");
+            LogMessage("Finished mod cache update.");
             LogMessage("---------------------------");
             LogMessage("");
             ExitCode = EXITCODE_NORMALEXIT;
@@ -1229,7 +1238,7 @@ namespace ARK_Server_Manager.Lib
             message = message ?? string.Empty;
 
             var logFile = GetLogFile();
-            lock (_lockObject)
+            lock (LockObject)
             {
                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                     Directory.CreateDirectory(Path.GetDirectoryName(logFile));
@@ -1372,21 +1381,7 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                var ipAddress = string.IsNullOrWhiteSpace(_profile.ServerIP) ? "127.0.0.1" : _profile.ServerIP;
-
-                var endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), _profile.RCONPort);
-                if (endPoint == null)
-                {
-#if DEBUG
-                    LogProfileMessage($"FAILED: {nameof(SetupRconConsole)} - IPEndPoint could not be created ({ipAddress}:{_profile.RCONPort}).", false);
-#endif
-                    return;
-                }
-
-#if DEBUG
-                LogProfileMessage($"SUCCESS: {nameof(SetupRconConsole)} - IPEndPoint was created ({ipAddress}:{_profile.RCONPort}).", false);
-#endif
-
+                var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.RCONPort);
                 var server = ServerQuery.GetServerInstance(EngineType.Source, endPoint, sendTimeOut: 10000, receiveTimeOut: 10000);
                 if (server == null)
                 {
@@ -1501,7 +1496,7 @@ namespace ARK_Server_Manager.Lib
             if (_profile == null)
                 return EXITCODE_NORMALEXIT;
 
-            if (_profile.SOTFEnabled)
+            if (_profile.SotFEnabled)
                 return EXITCODE_NORMALEXIT;
 
             ExitCode = EXITCODE_NORMALEXIT;

@@ -174,6 +174,20 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
+        {
+            this.Settings.DinoSettings.UpdateForLocalization();
+
+            this.RefreshDinoSettingsCombobox();
+            this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
+            this.EngramsOverrideListView.Items.Refresh();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Window.GetWindow(this)?.Activate();
+        }
+
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBoxResult.None;
@@ -316,201 +330,6 @@ namespace ARK_Server_Manager
             await UpdateServer(true, false, true, false);
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Window.GetWindow(this)?.Activate();
-        }
-
-        private void ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
-        {
-            this.Settings.DinoSettings.UpdateForLocalization();
-
-            this.RefreshDinoSettingsCombobox();
-            this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
-            this.EngramsOverrideListView.Items.Refresh();
-        }
-
-        private void SelectInstallDirectory_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            dialog.Title = _globalizer.GetResourceString("ServerSettings_InstallServer_Title");
-            if (!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
-            {
-                dialog.InitialDirectory = Settings.InstallDirectory;
-            }
-
-            var result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok)
-            {
-                Settings.InstallDirectory = dialog.FileName;
-            }
-        }
-
-        private void Load_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new CommonOpenFileDialog();
-            dialog.EnsureFileExists = true;
-            dialog.Multiselect = false;
-            dialog.Title = _globalizer.GetResourceString("ServerSettings_LoadConfig_Title");
-            dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.LoadProfileExtensionList));
-            if (!Directory.Exists(Config.Default.ConfigDirectory))
-            {
-                System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
-            }
-
-            dialog.InitialDirectory = Config.Default.ConfigDirectory;
-            var result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok)
-            {
-                try
-                {
-                    this.Server.ImportFromPath(dialog.FileName);
-                    this.Settings = this.Server.Profile;
-                    this.Runtime = this.Server.Runtime;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(String.Format(_globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorLabel"), dialog.FileName, ex.Message, ex.StackTrace), _globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-            }
-        }
-
-        private void ShowCmd_Click(object sender, RoutedEventArgs e)
-        {
-            var cmdLine = new CommandLineWindow(String.Format("{0} {1}", this.Runtime.GetServerExe(), this.Settings.GetServerArgs()));
-            cmdLine.Owner = Window.GetWindow(this);
-            cmdLine.ShowDialog();
-        }
-
-        private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.Settings.PlayerLevels.Count == 1)
-            {
-                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
-            }
-            else
-            {
-                var level = ((Level)((Button)e.Source).DataContext);
-                this.Settings.PlayerLevels.RemoveLevel(level);
-            }
-        }
-
-        private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
-        {
-            var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
-        }
-
-        private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.Settings.DinoLevels.Count == 1)
-            {
-                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
-            }
-            else
-            {
-                var level = ((Level)((Button)e.Source).DataContext);
-                this.Settings.DinoLevels.RemoveLevel(level);
-            }
-        }
-
-        private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
-        {
-            var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
-        }
-
-        private void RemoveDinoSetting_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            var dino = ((DinoSettings)((Button)e.Source).DataContext);
-            if (!dino.KnownDino)
-            {
-                this.Settings.DinoSettings.Remove(dino);
-                RefreshDinoSettingsCombobox();
-            }
-        }
-
-        private void RemoveHarvestResource_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            var resource = ((ResourceClassMultiplier)((Button)e.Source).DataContext);
-            if (!resource.KnownResource)
-                this.Settings.HarvestResourceItemAmountClassMultipliers.Remove(resource);
-        }
-
-        private void RemoveEngramOverride_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            var engram = ((EngramEntry)((Button)e.Source).DataContext);
-            if (!engram.KnownEngram)
-                this.Settings.OverrideNamedEngramEntries.Remove(engram);
-        }
-
-        private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
-        {
-            this.Settings.PlayerLevels.UpdateTotals();
-            this.CustomPlayerLevelsView.Items.Refresh();
-        }
-
-        private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
-        {
-            this.Settings.DinoLevels.UpdateTotals();
-            this.CustomDinoLevelsView.Items.Refresh();
-        }
-
-        private void RefreshLocalIPs_Click(object sender, RoutedEventArgs e)
-        {
-            ReinitializeNetworkAdapters();
-        }
-
-        private void DinoLevels_Clear(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
-        }
-
-        private void DinoLevels_ResetOfficial(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
-        }
-
-        private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
-        }
-
-        private void PlayerLevels_ResetOfficial(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
-        }
-
-        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetLabel"), _globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
-        }
-
         private void OpenRCON_Click(object sender, RoutedEventArgs e)
         {
             var window = RCONWindow.GetRCONForServer(this.Server);
@@ -533,14 +352,6 @@ namespace ARK_Server_Manager
             window.Focus();
         }
 
-        private void Engrams_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.OverrideNamedEngramEntries.Reset();
-        }
-
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(Config.Default.ArkSotfUrl);
@@ -559,34 +370,9 @@ namespace ARK_Server_Manager
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_AdminRequired_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_AdminRequired_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
+        private void RefreshLocalIPs_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.DinoSettings.Reset();
-            RefreshDinoSettingsCombobox();
-        }
-
-        private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerMaxXP_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetOverrideMaxExperiencePointsPlayer();
-        }
-
-        private void MaxXPDino_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoMaxXP_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetOverrideMaxExperiencePointsDino();
+            ReinitializeNetworkAdapters();
         }
 
         private void OpenLogFolder_Click(object sender, RoutedEventArgs e)
@@ -705,8 +491,11 @@ namespace ARK_Server_Manager
                     }
                 }
 
-                // <data folder>\SteamCMD\steamapps\workshop\content\346110
-                folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath);
+                // <data folder>\SteamCMD\steamapps\workshop\content\<app id>
+                if (this.Settings.SOTF_Enabled)
+                    folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath_SotF);
+                else
+                    folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath);
                 if (Directory.Exists(folder))
                 {
                     foreach (var modFolder in Directory.GetDirectories(folder))
@@ -716,13 +505,16 @@ namespace ARK_Server_Manager
                     }
                 }
 
-                // <server cache>
-                if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
+                if (!this.Settings.SOTF_Enabled)
                 {
-                    file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile);
-                    if (File.Exists(file)) files.Add(file);
-                    file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.VersionFile);
-                    if (File.Exists(file)) files.Add(file);
+                    // <server cache>
+                    if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
+                    {
+                        file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile);
+                        if (File.Exists(file)) files.Add(file);
+                        file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.VersionFile);
+                        if (File.Exists(file)) files.Add(file);
+                    }
                 }
 
                 var comment = new StringBuilder();
@@ -733,6 +525,8 @@ namespace ARK_Server_Manager
                 comment.AppendLine($"ASM Directory: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
                 comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
                 comment.AppendLine($"Data Directory: {Config.Default.DataDir}");
+
+                comment.AppendLine($"SotF Server: {this.Settings.SOTF_Enabled}");
 
                 comment.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
                 comment.AppendLine($"RunAsAdministratorPrompt: {Config.Default.RunAsAdministratorPrompt}");
@@ -798,6 +592,135 @@ namespace ARK_Server_Manager
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
+        }
+
+        private void SelectInstallDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            dialog.Title = _globalizer.GetResourceString("ServerSettings_InstallServer_Title");
+            if (!String.IsNullOrWhiteSpace(Settings.InstallDirectory))
+            {
+                dialog.InitialDirectory = Settings.InstallDirectory;
+            }
+
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                Settings.InstallDirectory = dialog.FileName;
+            }
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.EnsureFileExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = _globalizer.GetResourceString("ServerSettings_LoadConfig_Title");
+            dialog.Filters.Add(new CommonFileDialogFilter("Profile", Config.Default.LoadProfileExtensionList));
+            if (!Directory.Exists(Config.Default.ConfigDirectory))
+            {
+                System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
+            }
+
+            dialog.InitialDirectory = Config.Default.ConfigDirectory;
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    this.Server.ImportFromPath(dialog.FileName);
+                    this.Settings = this.Server.Profile;
+                    this.Runtime = this.Server.Runtime;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format(_globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorLabel"), dialog.FileName, ex.Message, ex.StackTrace), _globalizer.GetResourceString("ServerSettings_LoadConfig_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
+
+        private void ShowCmd_Click(object sender, RoutedEventArgs e)
+        {
+            var cmdLine = new CommandLineWindow(String.Format("{0} {1}", this.Runtime.GetServerExe(), this.Settings.GetServerArgs()));
+            cmdLine.Owner = Window.GetWindow(this);
+            cmdLine.ShowDialog();
+        }
+
+        private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Settings.PlayerLevels.Count == 1)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.PlayerLevels.RemoveLevel(level);
+            }
+        }
+
+        private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
+        {
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
+        }
+
+        private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Settings.DinoLevels.Count == 1)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.DinoLevels.RemoveLevel(level);
+            }
+        }
+
+        private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
+        {
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
+        }
+
+        private void RemoveDinoSetting_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_DinoRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var dino = ((DinoSettings)((Button)e.Source).DataContext);
+            if (!dino.KnownDino)
+            {
+                this.Settings.DinoSettings.Remove(dino);
+                RefreshDinoSettingsCombobox();
+            }
+        }
+
+        private void RemoveHarvestResource_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_Harvest_HarvestRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var resource = ((ResourceClassMultiplier)((Button)e.Source).DataContext);
+            if (!resource.KnownResource)
+                this.Settings.HarvestResourceItemAmountClassMultipliers.Remove(resource);
+        }
+
+        private void RemoveEngramOverride_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var engram = ((EngramEntry)((Button)e.Source).DataContext);
+            if (!engram.KnownEngram)
+                this.Settings.OverrideNamedEngramEntries.Remove(engram);
         }
 
         private void AddCustomItem_Click(object sender, RoutedEventArgs e)
@@ -916,6 +839,91 @@ namespace ARK_Server_Manager
         {
             var section = ((CustomSection)((Button)e.Source).DataContext);
             Settings.CustomGameUserSettingsSections.Remove(section);
+        }
+
+        private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.PlayerLevels.UpdateTotals();
+            this.CustomPlayerLevelsView.Items.Refresh();
+        }
+
+        private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoLevels.UpdateTotals();
+            this.CustomDinoLevelsView.Items.Refresh();
+        }
+
+        private void DinoLevels_Clear(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
+        }
+
+        private void DinoLevels_ResetOfficial(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
+        }
+
+        private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
+        }
+
+        private void PlayerLevels_ResetOfficial(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
+        }
+
+        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetLabel"), _globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
+        }
+
+        private void Engrams_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.OverrideNamedEngramEntries.Reset();
+        }
+
+        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.DinoSettings.Reset();
+            RefreshDinoSettingsCombobox();
+        }
+
+        private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerMaxXP_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetOverrideMaxExperiencePointsPlayer();
+        }
+
+        private void MaxXPDino_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoMaxXP_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoMaxXP_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetOverrideMaxExperiencePointsDino();
         }
 
         private void HiddenField_GotFocus(object sender, RoutedEventArgs e)
@@ -1250,18 +1258,23 @@ namespace ARK_Server_Manager
                     {
                         // NOTE: This parameter is of type object and must be cast in most cases before use.
                         var settings = (Server)parameter;
+                        if (settings.Profile.EnableAutoRestart)
+                        {
+                            if (settings.Profile.SOTF_Enabled)
+                            {
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                settings.Profile.EnableAutoRestart = false;
+                                settings.Profile.AutoRestartIfShutdown = false;
+                            }
+                        }
+
                         if (settings.Profile.EnableAutoUpdate)
                         {
                             if (settings.Profile.SOTF_Enabled)
                             {
                                 MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
                                 settings.Profile.EnableAutoUpdate = false;
-                            }
-
-                            if (settings.Profile.AutoManagedMods)
-                            {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                settings.Profile.AutoManagedMods = false;
+                                settings.Profile.AutoRestartIfShutdown = false;
                             }
                         }
 

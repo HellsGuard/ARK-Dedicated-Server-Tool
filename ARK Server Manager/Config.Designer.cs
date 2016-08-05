@@ -109,7 +109,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unnamed Server")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unnamed Profile")]
         public string DefaultServerProfileName {
             get {
                 return ((string)(this["DefaultServerProfileName"]));
@@ -371,9 +371,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/latest.zip")]
-        public string ASMDownloadUrl {
+        public string ASM_DownloadUrl {
             get {
-                return ((string)(this["ASMDownloadUrl"]));
+                return ((string)(this["ASM_DownloadUrl"]));
             }
         }
         
@@ -1219,6 +1219,87 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["ServerUpdate_OnServerStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login {0} +workshop_download_item 407530 {1} +quit")]
+        public string SteamCmdInstallModArgsFormat_SotF {
+            get {
+                return ((string)(this["SteamCmdInstallModArgsFormat_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("appworkshop_407530.acf")]
+        public string ArkSteamWorkshopFile_SotF {
+            get {
+                return ((string)(this["ArkSteamWorkshopFile_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("steamapps\\workshop\\content\\407530\\")]
+        public string ArkSteamWorkshopFolderRelativePath_SotF {
+            get {
+                return ((string)(this["ArkSteamWorkshopFolderRelativePath_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WorkshopCacheSotF.xml")]
+        public string WorkshopCacheFile_SotF {
+            get {
+                return ((string)(this["WorkshopCacheFile_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("346110")]
+        public string AppId {
+            get {
+                return ((string)(this["AppId"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("407530")]
+        public string AppId_SotF {
+            get {
+                return ((string)(this["AppId_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("376030")]
+        public string AppIdServer {
+            get {
+                return ((string)(this["AppIdServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("445400")]
+        public string AppIdServer_SotF {
+            get {
+                return ((string)(this["AppIdServer_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("steam_appid.txt")]
+        public string ServerAppIdFile {
+            get {
+                return ((string)(this["ServerAppIdFile"]));
             }
         }
     }

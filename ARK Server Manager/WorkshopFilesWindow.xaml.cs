@@ -20,18 +20,24 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class WorkshopFilesWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly ServerProfile _profile = null;
         private ModDetailList _modDetails = null;
+        private bool _isSotF = false;
 
         public static readonly DependencyProperty WorkshopFilesProperty = DependencyProperty.Register(nameof(WorkshopFiles), typeof(WorkshopFileList), typeof(WorkshopFilesWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty WorkshopFilesViewProperty = DependencyProperty.Register(nameof(WorkshopFilesView), typeof(ICollectionView), typeof(WorkshopFilesWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty WorkshopFilterStringProperty = DependencyProperty.Register(nameof(WorkshopFilterString), typeof(string), typeof(WorkshopFilesWindow), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty WorkshopFilterExistingProperty = DependencyProperty.Register(nameof(WorkshopFilterExisting), typeof(bool), typeof(WorkshopFilesWindow), new PropertyMetadata(false));
 
-        public WorkshopFilesWindow(ModDetailList modDetails)
+        public WorkshopFilesWindow(ModDetailList modDetails, ServerProfile profile)
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
+
+            _profile = profile;
+            _isSotF = _profile?.SOTF_Enabled ?? false;
+            this.Title = string.Format(_globalizer.GetResourceString("WorkshopFiles_ProfileTitle"), _profile?.ProfileName);
 
             UpdateModDetailsList(modDetails);
 
@@ -156,7 +162,7 @@ namespace ARK_Server_Manager
                 WorkshopFileDetailResponse cache = null;
 
                 await Task.Run( () => {
-                    var file = Path.Combine(Config.Default.DataDir, Config.Default.WorkshopCacheFile);
+                    var file = Path.Combine(Config.Default.DataDir, _isSotF ? Config.Default.WorkshopCacheFile_SotF : Config.Default.WorkshopCacheFile);
 
                     if (loadFromCacheFile)
                         // try to load the cache file.
@@ -165,7 +171,7 @@ namespace ARK_Server_Manager
                     // check if the cache exists
                     if (cache == null)
                     {
-                        cache = ModUtils.GetSteamModDetails();
+                        cache = ModUtils.GetSteamModDetails(_isSotF ? Config.Default.AppId_SotF : Config.Default.AppId);
                         if (cache != null)
                             cache.Save(file);
                     }

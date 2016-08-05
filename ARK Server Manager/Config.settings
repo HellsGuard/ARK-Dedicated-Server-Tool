@@ -30,7 +30,7 @@
       <Value Profile="(Default)">Servers</Value>
     </Setting>
     <Setting Name="DefaultServerProfileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Unnamed Server</Value>
+      <Value Profile="(Default)">Unnamed Profile</Value>
     </Setting>
     <Setting Name="DefaultServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Unnamed Server</Value>
@@ -113,7 +113,7 @@
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
     </Setting>
-    <Setting Name="ASMDownloadUrl" Type="System.String" Scope="Application">
+    <Setting Name="ASM_DownloadUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/latest.zip</Value>
     </Setting>
     <Setting Name="UpgradeConfig" Type="System.Boolean" Scope="User">
@@ -343,6 +343,33 @@
     </Setting>
     <Setting Name="ServerUpdate_OnServerStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SteamCmdInstallModArgsFormat_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">+login {0} +workshop_download_item 407530 {1} +quit</Value>
+    </Setting>
+    <Setting Name="ArkSteamWorkshopFile_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">appworkshop_407530.acf</Value>
+    </Setting>
+    <Setting Name="ArkSteamWorkshopFolderRelativePath_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">steamapps\workshop\content\407530\</Value>
+    </Setting>
+    <Setting Name="WorkshopCacheFile_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WorkshopCacheSotF.xml</Value>
+    </Setting>
+    <Setting Name="AppId" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">346110</Value>
+    </Setting>
+    <Setting Name="AppId_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">407530</Value>
+    </Setting>
+    <Setting Name="AppIdServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">376030</Value>
+    </Setting>
+    <Setting Name="AppIdServer_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">445400</Value>
+    </Setting>
+    <Setting Name="ServerAppIdFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">steam_appid.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

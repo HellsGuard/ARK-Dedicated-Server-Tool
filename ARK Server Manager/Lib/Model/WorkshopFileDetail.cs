@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -62,9 +61,9 @@ namespace ARK_Server_Manager.Lib.Model
 
         public string creator { get; set; }
 
-        public int creator_appid { get; set; }
+        public string creator_appid { get; set; }
 
-        public int consumer_appid { get; set; }
+        public string consumer_appid { get; set; }
 
         public int consumer_shortcutid { get; set; }
 
@@ -167,9 +166,12 @@ namespace ARK_Server_Manager.Lib.Model
         {
             var result = new WorkshopFileList();
             result.CachedTime = response.cached.ToLocalTime();
-            foreach (var detail in response.publishedfiledetails)
+            if (response.publishedfiledetails != null)
             {
-                result.Add(WorkshopFileItem.GetItem(detail));
+                foreach (var detail in response.publishedfiledetails)
+                {
+                    result.Add(WorkshopFileItem.GetItem(detail));
+                }
             }
             return result;
         }
@@ -177,9 +179,16 @@ namespace ARK_Server_Manager.Lib.Model
 
     public class WorkshopFileItem : DependencyObject
     {
+        public static readonly DependencyProperty AppIdProperty = DependencyProperty.Register(nameof(AppId), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(WorkshopFileItem), new PropertyMetadata(0));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty WorkshopIdProperty = DependencyProperty.Register(nameof(WorkshopId), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
+
+        public string AppId
+        {
+            get { return (string)GetValue(AppIdProperty); }
+            set { SetValue(AppIdProperty, value); }
+        }
 
         public int TimeUpdated
         {
@@ -211,14 +220,7 @@ namespace ARK_Server_Manager.Lib.Model
             private set;
         }
 
-        public string WorkshopUrl
-        {
-            get
-            {
-                return $"http://steamcommunity.com/sharedfiles/filedetails/?id={WorkshopId}";
-            }
-        }
-
+        public string WorkshopUrl => $"http://steamcommunity.com/sharedfiles/filedetails/?id={WorkshopId}";
 
         public static WorkshopFileItem GetItem(WorkshopFileDetail item)
         {
@@ -226,6 +228,7 @@ namespace ARK_Server_Manager.Lib.Model
                 return null;
 
             var result = new WorkshopFileItem();
+            result.AppId = item.creator_appid;
             result.TimeUpdated = item.time_updated;
             result.Title = item.title ?? string.Empty;
             result.WorkshopId = item.publishedfileid ?? string.Empty;

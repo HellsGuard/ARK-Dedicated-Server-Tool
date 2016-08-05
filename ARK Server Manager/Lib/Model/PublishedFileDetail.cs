@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -105,9 +104,9 @@ namespace ARK_Server_Manager.Lib.Model
 
         public string creator { get; set; }
 
-        public int creator_app_id { get; set; }
+        public string creator_app_id { get; set; }
 
-        public int consumer_app_id { get; set; }
+        public string consumer_app_id { get; set; }
 
         public string filename { get; set; }
 
@@ -294,6 +293,7 @@ namespace ARK_Server_Manager.Lib.Model
 
     public class ModDetail : DependencyObject
     {
+        public static readonly DependencyProperty AppIdProperty = DependencyProperty.Register(nameof(AppId), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty IndexProperty = DependencyProperty.Register(nameof(Index), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty IsFirstProperty = DependencyProperty.Register(nameof(IsFirst), typeof(bool), typeof(ModDetail), new PropertyMetadata(false));
         public static readonly DependencyProperty IsLastProperty = DependencyProperty.Register(nameof(IsLast), typeof(bool), typeof(ModDetail), new PropertyMetadata(false));
@@ -306,6 +306,12 @@ namespace ARK_Server_Manager.Lib.Model
         public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
 
+
+        public string AppId
+        {
+            get { return (string)GetValue(AppIdProperty); }
+            set { SetValue(AppIdProperty, value); }
+        }
 
         public int Index
         {
@@ -377,21 +383,9 @@ namespace ARK_Server_Manager.Lib.Model
         }
 
 
-        public bool IsValidModType
-        {
-            get
-            {
-                return !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN);
-            }
-        }
+        public bool IsValidModType => !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN);
 
-        public string LastWriteTimeString
-        {
-            get
-            {
-                return LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();
-            }
-        }
+        public string LastWriteTimeString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();
 
         public string LastWriteTimeSortString
         {
@@ -417,14 +411,7 @@ namespace ARK_Server_Manager.Lib.Model
             private set;
         }
 
-        public bool UpToDate
-        {
-            get
-            {
-                return LastTimeUpdated > 0 && LastTimeUpdated == TimeUpdated;
-            }
-        }
-
+        public bool UpToDate => LastTimeUpdated > 0 && LastTimeUpdated == TimeUpdated;
 
         public void PopulateExtended(ModDetailExtended extended)
         {
@@ -463,6 +450,7 @@ namespace ARK_Server_Manager.Lib.Model
         public static ModDetail GetModDetail(PublishedFileDetail detail)
         {
             var result = new ModDetail();
+            result.AppId = detail.creator_app_id;
             result.ModId = detail.publishedfileid;
             result.TimeUpdated = detail.time_updated;
             result.Title = detail.title;
@@ -472,6 +460,7 @@ namespace ARK_Server_Manager.Lib.Model
         public static ModDetail GetModDetail(WorkshopFileDetail detail)
         {
             var result = new ModDetail();
+            result.AppId = detail.creator_appid;
             result.ModId = detail.publishedfileid;
             result.TimeUpdated = detail.time_updated;
             result.Title = detail.title;
@@ -481,6 +470,7 @@ namespace ARK_Server_Manager.Lib.Model
         public static ModDetail GetModDetail(WorkshopFileItem detail)
         {
             var result = new ModDetail();
+            result.AppId = detail.AppId;
             result.ModId = detail.WorkshopId;
             result.TimeUpdated = detail.TimeUpdated;
             result.Title = detail.Title;

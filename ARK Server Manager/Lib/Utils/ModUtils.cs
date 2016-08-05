@@ -140,7 +140,7 @@ namespace ARK_Server_Manager.Lib
             return timespan.TotalSeconds;
         }
 
-        public static string GetLatestModCacheTimeFile(string modId) => Updater.NormalizePath(Path.Combine(ModUtils.GetModCachePath(modId), Config.Default.LastUpdatedTimeFile));
+        public static string GetLatestModCacheTimeFile(string modId, bool isSotF) => Updater.NormalizePath(Path.Combine(ModUtils.GetModCachePath(modId, isSotF), Config.Default.LastUpdatedTimeFile));
 
         public static string GetLatestModTimeFile(string installDirectory, string modId) => Updater.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId, Config.Default.LastUpdatedTimeFile));
 
@@ -150,7 +150,7 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             // split the map string into parts, using the '/' separator.
-            var parts = serverMap.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var parts = serverMap.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             long mapModId;
             if (parts.Count == 1 && long.TryParse(parts[0], out mapModId))
@@ -174,7 +174,7 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             // split the map string into parts, using the '/' separator.
-            var parts = serverMap.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var parts = serverMap.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // check if any parts were returned.
             if (parts.Count == 1)
@@ -208,14 +208,20 @@ namespace ARK_Server_Manager.Lib
             return mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
         }
 
-        public static string GetModCachePath(string modId) => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath, modId));
+        public static string GetModCachePath(string modId, bool isSotF)
+        {
+            if (isSotF)
+                return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath_SotF, modId));
+
+            return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath, modId));
+        }
 
         public static List<string> GetModIdList(string modIds)
         {
             if (string.IsNullOrWhiteSpace(modIds))
                 return new List<string>();
 
-            return modIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            return modIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         public static int GetModLatestTime(string timeFile)
@@ -253,7 +259,7 @@ namespace ARK_Server_Manager.Lib
             return metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : MODTYPE_UNKNOWN;
         }
 
-        public static WorkshopFileDetailResponse GetSteamModDetails()
+        public static WorkshopFileDetailResponse GetSteamModDetails(string appId)
         {
             const int MAX_ITEMS = 100;
 
@@ -266,10 +272,10 @@ namespace ARK_Server_Manager.Lib
             {
                 do
                 {
-                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={Config.Default.SteamAPIKey}&format=json&query_type=1&page={requestIndex}&numperpage={MAX_ITEMS}&creator_appid=346110&appid=346110&match_all_tags=0&include_recent_votes_only=0&totalonly=0&return_vote_data=0&return_tags=0&return_kv_tags=0&return_previews=0&return_children=0&return_short_description=0&return_for_sale_data=0&return_metadata=1");
+                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={Config.Default.SteamAPIKey}&format=json&query_type=1&page={requestIndex}&numperpage={MAX_ITEMS}&appid={appId}&match_all_tags=0&include_recent_votes_only=0&totalonly=0&return_vote_data=0&return_tags=0&return_kv_tags=0&return_previews=0&return_children=0&return_short_description=0&return_for_sale_data=0&return_metadata=1");
                     httpRequest.Timeout = 30000;
                     var httpResponse = httpRequest.GetResponse();
-                    var responseString =  new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                    var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
                     var result = JsonUtils.Deserialize<WorkshopFileDetailResult>(responseString);
                     if (result == null || result.response == null)
@@ -304,12 +310,6 @@ namespace ARK_Server_Manager.Lib
                 Debug.WriteLine($"ERROR: {nameof(GetSteamModDetails)}\r\n{ex.Message}");
                 return null;
             }
-        }
-
-        public static PublishedFileDetailsResponse GetSteamModDetails(string modIds)
-        {
-            var modIdList = GetModIdList(modIds);
-            return GetSteamModDetails(modIdList);
         }
 
         public static PublishedFileDetailsResponse GetSteamModDetails(List<string> modIdList)
@@ -372,7 +372,8 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     requestIndex++;
-                };
+                }
+                ;
 
                 return response ?? new PublishedFileDetailsResponse();
             }
@@ -383,7 +384,13 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static string GetSteamWorkshopFile() => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile));
+        public static string GetSteamWorkshopFile(bool isSotF)
+        {
+            if (isSotF)
+                return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile_SotF));
+
+            return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile));
+        }
 
         public static int GetSteamWorkshopLatestTime(string workshopFile, string modId)
         {

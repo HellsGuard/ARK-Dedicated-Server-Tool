@@ -248,7 +248,7 @@ namespace ARK_Server_Manager.Lib
             // Grab the latest bits
             using (var client = new WebClient())
             {
-                client.DownloadFile(Config.Default.ASMDownloadUrl, applicationZip);
+                client.DownloadFile(Config.Default.ASM_DownloadUrl, applicationZip);
                 Unblock(applicationZip);
             }
 

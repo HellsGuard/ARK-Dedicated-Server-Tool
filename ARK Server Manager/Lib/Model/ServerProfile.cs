@@ -1839,6 +1839,19 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
         }
 
+        public string GetServerAppId()
+        {
+            try
+            {
+                var appFile = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerAppIdFile);
+                return File.Exists(appFile) ? File.ReadAllText(appFile).Trim() : string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         public string GetServerExeFile()
         {
             return Path.Combine(this.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
@@ -2145,9 +2158,13 @@ namespace ARK_Server_Manager.Lib
 
         public void Save(bool updateSchedules)
         {
-            // ensure that the auto update is switched off for SotF servers
+            // ensure that the auto settings are switched off for SotF servers
             if (SOTF_Enabled)
+            {
+                EnableAutoRestart = false;
                 EnableAutoUpdate = false;
+                AutoRestartIfShutdown = false;
+            }
 
             // ensure that the ARK mod management is switched off for ASM controlled profiles
             if (EnableAutoUpdate)
@@ -2343,6 +2360,8 @@ namespace ARK_Server_Manager.Lib
             validationMessage = string.Empty;
             StringBuilder result = new StringBuilder();
 
+            var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
+
             if (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods)
             {
                 // build a list of mods to be processed
@@ -2365,6 +2384,20 @@ namespace ARK_Server_Manager.Lib
                 // check for map name.
                 if (string.IsNullOrWhiteSpace(ServerMap))
                     result.AppendLine("The map name has not been entered.");
+
+                // check if the server executable exists
+                var serverFolder = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                var serverFile = Path.Combine(serverFolder, Config.Default.ServerExe);
+                if (!Directory.Exists(serverFolder))
+                    result.AppendLine("Server files have not been downloaded, server folder does not exist.");
+                else if (!File.Exists(serverFile))
+                    result.AppendLine($"Server files have not been downloaded properly, server executable file ({Config.Default.ServerExe}) does not exist.");
+                else
+                {
+                    var serverAppId = GetServerAppId();
+                    if (!serverAppId.Equals(appId))
+                        result.AppendLine("The server files are for a different Ark application.");
+                }
 
                 // check if the map is a mod and confirm the map name.
                 if (!string.IsNullOrWhiteSpace(serverMapModId))
@@ -2396,9 +2429,14 @@ namespace ARK_Server_Manager.Lib
                                     var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
                                     if (modDetail != null)
                                     {
-                                        var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
-                                        if (!modVersion.Equals(modDetail.time_updated))
-                                            result.AppendLine("The map mod is outdated.");
+                                        if (!modDetail.creator_app_id.Equals(appId))
+                                            result.AppendLine("The map mod is for a different Ark application.");
+                                        else
+                                        {
+                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                            if (!modVersion.Equals(modDetail.time_updated))
+                                                result.AppendLine("The map mod is outdated.");
+                                        }
                                     }
                                 }
                             }
@@ -2436,9 +2474,14 @@ namespace ARK_Server_Manager.Lib
                                     var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
                                     if (modDetail != null)
                                     {
-                                        var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
-                                        if (!modVersion.Equals(modDetail.time_updated))
-                                            result.AppendLine("The total conversion mod is outdated.");
+                                        if (!modDetail.creator_app_id.Equals(appId))
+                                            result.AppendLine("The total conversion mod is for a different Ark application.");
+                                        else
+                                        {
+                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                            if (!modVersion.Equals(modDetail.time_updated))
+                                                result.AppendLine("The total conversion mod is outdated.");
+                                        }
                                     }
                                 }
                             }
@@ -2459,9 +2502,14 @@ namespace ARK_Server_Manager.Lib
                         var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(modId));
                         if (modDetail != null)
                         {
-                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, modId));
-                            if (modVersion == 0 || !modVersion.Equals(modDetail.time_updated))
-                                result.AppendLine($"Mod {modId} is outdated.");
+                            if (!modDetail.creator_app_id.Equals(appId))
+                                result.AppendLine($"Mod {modId} is for a different Ark application.");
+                            else
+                            {
+                                var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, modId));
+                                if (modVersion == 0 || !modVersion.Equals(modDetail.time_updated))
+                                    result.AppendLine($"Mod {modId} is outdated.");
+                            }
                         }
                     }
                 }

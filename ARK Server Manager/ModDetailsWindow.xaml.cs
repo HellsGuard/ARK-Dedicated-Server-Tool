@@ -22,8 +22,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class ModDetailsWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
-        private ServerProfile _profile = null;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly ServerProfile _profile = null;
 
         private WorkshopFilesWindow _workshopFilesWindow = null;
 
@@ -129,7 +129,7 @@ namespace ARK_Server_Manager
             if (_workshopFilesWindow != null)
                 return;
 
-            _workshopFilesWindow = new WorkshopFilesWindow(ModDetails);
+            _workshopFilesWindow = new WorkshopFilesWindow(ModDetails, _profile);
             _workshopFilesWindow.Owner = this;
             _workshopFilesWindow.Closed += WorkshopFilesWindow_Closed;
             _workshopFilesWindow.Show();

@@ -552,8 +552,8 @@ namespace ARK_Server_Manager.Lib
                                 {
                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title ?? string.Empty}.\r\n");
 
-                                    var modCachePath = ModUtils.GetModCachePath(modId);
-                                    var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId);
+                                    var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
+                                    var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFServer);
                                     var modPath = ModUtils.GetModPath(this.ProfileSnapshot.InstallDirectory, modId);
                                     var modTimeFile = ModUtils.GetLatestModTimeFile(this.ProfileSnapshot.InstallDirectory, modId);
 
@@ -611,10 +611,20 @@ namespace ARK_Server_Manager.Lib
                                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod download.\r\n");
 
                                             var steamCmdArgs = string.Empty;
-                                            if (Config.Default.SteamCmd_UseAnonymousCredentials)
-                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
+                                            if (this.ProfileSnapshot.SotFServer)
+                                            {
+                                                if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_AnonymousUsername, modId);
+                                                else
+                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_Username, modId);
+                                            }
                                             else
-                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username,  modId);
+                                            {
+                                                if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
+                                                else
+                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
+                                            }
 
                                             modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
                                             if (modSuccess && downloadSuccessful)
@@ -633,7 +643,7 @@ namespace ARK_Server_Manager.Lib
                                                     if (modDetail.time_updated <= 0)
                                                     {
                                                         // get the version number from the steamcmd workshop file.
-                                                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(), modId).ToString();
+                                                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(this.ProfileSnapshot.SotFServer), modId).ToString();
                                                     }
 
                                                     // update the last updated file with the steam updated time.
