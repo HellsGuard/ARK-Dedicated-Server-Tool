@@ -377,8 +377,8 @@ namespace ARK_Server_Manager.Lib
                         Task.Delay(60000).Wait();
                     }
 
-                    // check if we need to perform a world save
-                    if (Config.Default.ServerShutdown_EnableWorldSave)
+                    // check if we need to perform a world save (not required for SotF servers)
+                    if (Config.Default.ServerShutdown_EnableWorldSave && !_profile.SotFEnabled)
                     {
                         try
                         {

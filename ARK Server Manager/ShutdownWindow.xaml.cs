@@ -16,9 +16,9 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class ShutdownWindow : Window
     {
-        private static List<Server> instances = new List<Server>();
+        private static readonly List<Server> Instances = new List<Server>();
 
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public static readonly DependencyProperty BackupWorldFileProperty = DependencyProperty.Register(nameof(BackupWorldFile), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(true));
         public static readonly DependencyProperty RestartServerProperty = DependencyProperty.Register(nameof(RestartServer), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(false));
@@ -34,6 +34,7 @@ namespace ARK_Server_Manager
             WindowUtils.RemoveDefaultResourceDictionary(this);
 
             Server = server;
+            BackupWorldFile = !server?.Profile?.SOTF_Enabled ?? false;
             this.Title = string.Format(_globalizer.GetResourceString("ShutdownWindow_ProfileTitle"), server?.Profile?.ProfileName);
 
             this.DataContext = this;
@@ -88,7 +89,7 @@ namespace ARK_Server_Manager
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            instances.Remove(Server);
+            Instances.Remove(Server);
             Server = null;
         }
 
@@ -179,7 +180,7 @@ namespace ARK_Server_Manager
 
         public static bool HasInstance(Server server)
         {
-            return instances.Contains(server);
+            return Instances.Contains(server);
         }
 
         public static ShutdownWindow OpenShutdownWindow(Server server)
@@ -187,7 +188,7 @@ namespace ARK_Server_Manager
             if (HasInstance(server))
                 return null;
 
-            instances.Add(server);
+            Instances.Add(server);
             return new ShutdownWindow(server);
         }
     }
