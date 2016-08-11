@@ -318,12 +318,15 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(logDir);
             var target = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
             target.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
+            target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.{#}.log");
 
             target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
             target.FileName = Path.Combine(logDir, "ASM_Debug.log");
+            target.ArchiveFileName = Path.Combine(logDir, "ASM_Debug.{#}.log");
 
             target = (FileTarget)LogManager.Configuration.FindTargetByName("scripts");
             target.FileName = Path.Combine(logDir, "ASM_Scripts.log");
+            target.ArchiveFileName = Path.Combine(logDir, "ASM_Scripts.{#}.log");
 
             LogManager.ReconfigExistingLoggers();
         }   
