@@ -31,7 +31,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Text="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
+                <Label Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Content="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{DynamicResource MainWindow_VersionLabel}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
