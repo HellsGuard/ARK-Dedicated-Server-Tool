@@ -852,15 +852,21 @@
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
 
-    <sys:String x:Key="ServerSettings_EnableStructureDecayLabel">Enable Structure Decay PvE</sys:String>
-    <sys:String x:Key="ServerSettings_EnableStructureDecayTooltip">If enabled, enables decay of player structures in PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayPvELabel">Enable Structure Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_EnableStructureDecayPvETooltip">If enabled, enables decay of player structures in PvE.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayPeriodLabel">Structure Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayPeriodTooltip">Specifies the time required for player structures to decay in PvE mode.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">Structure Decay Multiplier:</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">Specifies the scaling factor for the decay rate of player structures in PvE mode.</sys:String>
 
+    <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresLabel">Auto Destroy Structures</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresTooltip">If enabled, will auto destroy structures once the demolish timer expires.</sys:String>
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Auto Destroy Old Structures Multiplier:</sys:String>
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">Allows Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed. Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyDecayUnsnappedCoreStructuresLabel">Only Decay Unsnapped Core Structures</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyDecayUnsnappedCoreStructuresTooltip">If enabled, only unsnapped core structures will decay. Useful for eliminating lone pillar/foundation spam on servers.</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresLabel">Fast Decay Unsnapped Core Structures</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresTooltip">If enabled, will decay unsnapped foundations/pillars at faster speed.</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Force All Structure Locking</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>

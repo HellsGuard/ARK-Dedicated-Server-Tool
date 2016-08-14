@@ -933,7 +933,7 @@
                                     <Label    Grid.Row="1" Grid.Column="0" Margin="20,0,0,0" Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}" VerticalAlignment="Center"/>
                                     <TextBox  Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding RCONServerGameLogBuffer}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left"/>
                                     
-                                    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" IsChecked="{Binding AdminLogging}" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
+                                    <CheckBox Grid.Row="2" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" IsChecked="{Binding AdminLogging}" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -1086,21 +1086,21 @@
                                     <local:AnnotatedSlider Grid.Row="2" Grid.Column="0" Margin="20,1,5,1" Label="{DynamicResource ServerSettings_AntiSpeedHackBiasLabel}" Value="{Binding SpeedHackBias}" Suffix="{DynamicResource ServerSettings_AntiSpeedHackBiasUnits}" Minimum="0.0" Maximum="1.0" SmallChange="0.1" LargeChange="0.25" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_AntiSpeedHackBiasTooltip}" />
                                     <CheckBox Grid.Row="3" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="{DynamicResource ServerSettings_DisablePMVOptimizationLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePMVOptimizationTooltip}"/>
                                     <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseBattlEye}" Content="{DynamicResource ServerSettings_UseBattlEyeLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseBattlEyeTooltip}"/>
-                                    <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseAllAvailableCores}" Content="{DynamicResource ServerSettings_UseAllAvailableCoresLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_UseAllAvailableCoresTooltip}"/>
-                                    <CheckBox Grid.Row="6" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseCache}" Content="{DynamicResource ServerSettings_UseCacheLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_UseCacheTooltip}"/>
-                                    <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseOldSaveFormat}" Content="{DynamicResource ServerSettings_UseOldSaveFormatLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_UseOldSaveFormatTooltip}"/>
+                                    <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseAllAvailableCores}" Content="{DynamicResource ServerSettings_UseAllAvailableCoresLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseAllAvailableCoresTooltip}"/>
+                                    <CheckBox Grid.Row="6" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseCache}" Content="{DynamicResource ServerSettings_UseCacheLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseCacheTooltip}"/>
+                                    <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseOldSaveFormat}" Content="{DynamicResource ServerSettings_UseOldSaveFormatLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseOldSaveFormatTooltip}"/>
 
-                                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>
-                                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}"/>
+                                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}"/>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="20,0,5,0" Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_MaxTribeLogsLabel}" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Text="{Binding MaxTribeLogs}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}"/>
                                     </StackPanel>
-                                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceDirectX10}" Content="{DynamicResource ServerSettings_ForceDirectX10Label}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ForceDirectX10Tooltip}"/>
-                                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceShaderModel4}" Content="{DynamicResource ServerSettings_ForceShaderModel4Label}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ForceShaderModel4Tooltip}"/>
-                                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceLowMemory}" Content="{DynamicResource ServerSettings_ForceLowMemoryLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ForceLowMemoryTooltip}"/>
-                                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceNoManSky}" Content="{DynamicResource ServerSettings_ForceNoManSkyLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_ForceNoManSkyTooltip}"/>
-                                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoMemoryBias}" Content="{DynamicResource ServerSettings_UseNoMemoryBiasLabel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_UseNoMemoryBiasTooltip}"/>
+                                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceDirectX10}" Content="{DynamicResource ServerSettings_ForceDirectX10Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceDirectX10Tooltip}"/>
+                                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceShaderModel4}" Content="{DynamicResource ServerSettings_ForceShaderModel4Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceShaderModel4Tooltip}"/>
+                                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceLowMemory}" Content="{DynamicResource ServerSettings_ForceLowMemoryLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceLowMemoryTooltip}"/>
+                                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceNoManSky}" Content="{DynamicResource ServerSettings_ForceNoManSkyLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceNoManSkyTooltip}"/>
+                                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoMemoryBias}" Content="{DynamicResource ServerSettings_UseNoMemoryBiasLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseNoMemoryBiasTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
@@ -1209,7 +1209,7 @@
                                             </Style>
                                         </StackPanel.Style>
 
-                                        <CheckBox Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" />
+                                        <CheckBox Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" HorizontalAlignment="Left"/>
                                         <StackPanel Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
                                             <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoRestart}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
                                             <TextBox Margin="20,0,0,0" Width="100" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
@@ -1233,8 +1233,8 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <CheckBox Grid.Row="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding EnableAutoUpdate}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PeriodicUpdatesLabel}" ToolTip="{DynamicResource ServerSettings_PeriodicUpdatesTooltip}" />
-                                    <CheckBox Grid.Row="2" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding AutoRestartIfShutdown}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}"/>
+                                    <CheckBox Grid.Row="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding EnableAutoUpdate}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PeriodicUpdatesLabel}" ToolTip="{DynamicResource ServerSettings_PeriodicUpdatesTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox Grid.Row="2" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding AutoRestartIfShutdown}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}" HorizontalAlignment="Left"/>
                                 </Grid>
                             </GroupBox>
                             
@@ -1258,8 +1258,8 @@
                                         </Button>
                                     </DockPanel>
                                 </GroupBox.Header>
-                                
-                                <CheckBox Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}">
+
+                                <CheckBox Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}" HorizontalAlignment="Left">
                                     <CheckBox.Style>
                                         <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                             <Style.Triggers>
@@ -1439,7 +1439,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <CheckBox Grid.Column="0" Margin="5,5,5,0" Name="AllowTribeWarPvECheckbox"  IsChecked="{Binding AllowTribeWarPvE}" Content="{DynamicResource ServerSettings_AllowTribeWarfareLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowTribeWarfareTooltip}"/>
-                                        <CheckBox Grid.Column="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}"/>
+                                        <CheckBox Grid.Column="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}" HorizontalAlignment="Left"/>
                                     </Grid>
                                 </GroupBox>
                                 
@@ -1704,10 +1704,10 @@
                                         <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel}" Value="{Binding RaidDinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip}"/>
                                     </StackPanel>
                                 </GroupBox>
-                                
-                                <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}"/>
-                                <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}"/>
-                                <CheckBox Margin="5" Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}"/>
+
+                                <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}" HorizontalAlignment="Left"/>
+                                <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
+                                <CheckBox Margin="5" Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}" HorizontalAlignment="Left"/>
 
                                 <local:AnnotatedSlider Margin="0,1,22,1" Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
                                 
@@ -2091,8 +2091,8 @@
                                     </GroupBox.Header>
 
                                     <StackPanel>
-                                        <CheckBox Margin="5,0,5,5" Content="{DynamicResource ServerSettings_DisableImprintDinoBuffLabel}" IsChecked="{Binding DisableImprintDinoBuff}" ToolTip="{DynamicResource ServerSettings_DisableImprintDinoBuffTooltip}"/>
-                                        <CheckBox Margin="5,0,5,5" Content="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleLabel}" IsChecked="{Binding AllowAnyoneBabyImprintCuddle}" ToolTip="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleTooltip}"/>
+                                        <CheckBox Margin="5,0,5,5" Content="{DynamicResource ServerSettings_DisableImprintDinoBuffLabel}" IsChecked="{Binding DisableImprintDinoBuff}" ToolTip="{DynamicResource ServerSettings_DisableImprintDinoBuffTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Margin="5,0,5,5" Content="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleLabel}" IsChecked="{Binding AllowAnyoneBabyImprintCuddle}" ToolTip="{DynamicResource ServerSettings_AllowAnyoneBabyImprintCuddleTooltip}" HorizontalAlignment="Left"/>
                                         <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierLabel}" Value="{Binding BabyImprintingStatScaleMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyImprintingStatScaleMultiplierTooltip}"/>
                                         <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierLabel}" Value="{Binding BabyCuddleIntervalMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleIntervalMultiplierTooltip}"/>
                                         <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierLabel}" Value="{Binding BabyCuddleGracePeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_BabyCuddleGracePeriodMultiplierTooltip}"/>
@@ -2254,32 +2254,35 @@
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StructureResistanceLabel}" Value="{Binding StructureResistanceMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureResistanceTooltip}"/>
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StructureDamageLabel}" Value="{Binding StructureDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDamageTooltip}"/>
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StructureDamageRepairCooldownLabel}" Value="{Binding StructureDamageRepairCooldown}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="0" Maximum="1000" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_StructureDamageRepairCooldownTooltip}" />
-                                
-                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_EnablePvPStructureDecayLabel}" IsChecked="{Binding PvPStructureDecay}" ToolTip="{DynamicResource ServerSettings_EnablePvPStructureDecayTooltip}"/>
+
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_EnablePvPStructureDecayLabel}" IsChecked="{Binding PvPStructureDecay}" ToolTip="{DynamicResource ServerSettings_EnablePvPStructureDecayTooltip}" HorizontalAlignment="Left"/>
 
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_PvPZoneStructureDamageLabel}" Value="{Binding PvPZoneStructureDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_PvPZoneStructureDamageTooltip}"/>
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_MaxStructuresVisibleLabel}" Value="{Binding MaxStructuresVisible}" Minimum="50" Maximum="5000" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxStructuresVisibleTooltip}"/>
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierLabel}" Value="{Binding PerPlatformMaxStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_PerPlatformStructuresMultiplierTooltip}"/>
                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresLabel}" Value="{Binding MaxPlatformSaddleStructureLimit}" Minimum="1" Maximum="65535" LargeChange="50" SmallChange="10" TickFrequency="100" Suffix="{DynamicResource SliderUnits_Items}" ToolTip="{DynamicResource ServerSettings_MaxPlatformSaddleStructuresTooltip}"/>
 
-                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionLabel}" IsChecked="{Binding OverrideStructurePlatformPrevention}" ToolTip="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionTooltip}"/>
-                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionLabel}" IsChecked="{Binding OverrideStructurePlatformPrevention}" ToolTip="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionTooltip}" HorizontalAlignment="Left"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}" HorizontalAlignment="Left"/>
                                 
                                 <GroupBox Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
-                                        <CheckBox x:Name="StructureDecayCheckbox" IsChecked="{Binding EnableStructureDecay}" Content="{DynamicResource ServerSettings_EnableStructureDecayLabel}" ToolTip="{DynamicResource ServerSettings_EnableStructureDecayTooltip}"/>
+                                        <CheckBox x:Name="StructureDecayPvECheckbox" IsChecked="{Binding EnableStructureDecayPvE}" Content="{DynamicResource ServerSettings_EnableStructureDecayPvELabel}" ToolTip="{DynamicResource ServerSettings_EnableStructureDecayPvETooltip}"/>
                                     </GroupBox.Header>
                                     
                                     <StackPanel Orientation="Vertical">
-                                        <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayPeriodLabel}" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayPeriodTooltip}" />
-                                        <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayMultiplierLabel}" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayMultiplierTooltip}" />
+                                        <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayPvECheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayPeriodLabel}" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayPeriodTooltip}" />
+                                        <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayPvECheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayMultiplierLabel}" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayMultiplierTooltip}" />
                                     </StackPanel>
                                 </GroupBox>
 
-                                <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_AutoDestroyOldStructuresLabel}" Value="{Binding AutoDestroyOldStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_AutoDestroyOldStructuresTooltip}"/>
-                                
-                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_ForceAllStructureLockingLabel}" IsChecked="{Binding ForceAllStructureLocking}" ToolTip="{DynamicResource ServerSettings_ForceAllStructureLockingTooltip}"/>
-                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PassiveDefensesDamageDinosLabel}" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" ToolTip="{DynamicResource ServerSettings_PassiveDefensesDamageDinosTooltip}"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_EnableAutoDestroyStructuresLabel}" IsChecked="{Binding EnableAutoDestroyStructures}" ToolTip="{DynamicResource ServerSettings_EnableAutoDestroyStructuresTooltip}" HorizontalAlignment="Left"/>
+                                <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_AutoDestroyOldStructuresLabel}" Value="{Binding AutoDestroyOldStructuresMultiplier}" Minimum="0" Maximum="10" LargeChange="1" SmallChange="0.1" TickFrequency="1" LabelRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_AutoDestroyOldStructuresTooltip}"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_OnlyDecayUnsnappedCoreStructuresLabel}" IsChecked="{Binding OnlyDecayUnsnappedCoreStructures}" ToolTip="{DynamicResource ServerSettings_OnlyDecayUnsnappedCoreStructuresTooltip}" HorizontalAlignment="Left"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_FastDecayUnsnappedCoreStructuresLabel}" IsChecked="{Binding FastDecayUnsnappedCoreStructures}" ToolTip="{DynamicResource ServerSettings_FastDecayUnsnappedCoreStructuresTooltip}" HorizontalAlignment="Left"/>
+
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_ForceAllStructureLockingLabel}" IsChecked="{Binding ForceAllStructureLocking}" ToolTip="{DynamicResource ServerSettings_ForceAllStructureLockingTooltip}" HorizontalAlignment="Left"/>
+                                <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PassiveDefensesDamageDinosLabel}" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" ToolTip="{DynamicResource ServerSettings_PassiveDefensesDamageDinosTooltip}" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
@@ -2423,7 +2426,7 @@
 
                         <Grid Margin="-8,0,2,0">
                             <StackPanel>
-                                <CheckBox Margin="5" Name="EnableLevelsCheckbox" Content="{DynamicResource ServerSettings_EnableCustomLevelProgressionsLabel}" IsChecked="{Binding EnableLevelProgressions}" ToolTip="{DynamicResource ServerSettings_EnableCustomLevelProgressionsTooltip}"/>
+                                <CheckBox Margin="5" Name="EnableLevelsCheckbox" Content="{DynamicResource ServerSettings_EnableCustomLevelProgressionsLabel}" IsChecked="{Binding EnableLevelProgressions}" ToolTip="{DynamicResource ServerSettings_EnableCustomLevelProgressionsTooltip}" HorizontalAlignment="Left"/>
                                 
                                 <GroupBox HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
@@ -2750,16 +2753,16 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    
-                                    <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}"/>
-                                    <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}"/>
-                                    
-                                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}"/>
-                                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}"/>
 
-                                    <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}"/>
-                                    <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}"/>
-                                    <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}"/>
+                                    <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}" HorizontalAlignment="Left"/>
+
+                                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}" HorizontalAlignment="Left"/>
+
+                                    <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}" HorizontalAlignment="Left"/>
 
                                     <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
                                     <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>

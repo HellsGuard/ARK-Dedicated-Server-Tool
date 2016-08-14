@@ -65,11 +65,11 @@
             <Label DockPanel.Dock="Right" Content="{DynamicResource GlobalSettings_VersionLabel}" FontSize="15" VerticalAlignment="Bottom" />
         </DockPanel>
 
-        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_RunAsAdministratorLabel}" IsChecked="{Binding CurrentConfig.RunAsAdministratorPrompt, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_RunAsAdministratorLabel}" IsChecked="{Binding CurrentConfig.RunAsAdministratorPrompt, Mode=TwoWay}" HorizontalAlignment="Left"/>
 
-        <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_ManageFirewallLabel}" IsChecked="{Binding CurrentConfig.ManageFirewallAutomatically, Mode=TwoWay}" HorizontalAlignment="Left"/>
 
-        <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_SteamCmdRedirectOutputLabel}" IsChecked="{Binding CurrentConfig.SteamCmdRedirectOutput, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_SteamCmdRedirectOutputTooltip}"/>
+        <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_SteamCmdRedirectOutputLabel}" IsChecked="{Binding CurrentConfig.SteamCmdRedirectOutput, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_SteamCmdRedirectOutputTooltip}" HorizontalAlignment="Left"/>
 
         <Label    Grid.Row="4" Grid.Column="0" Margin="1" Content="{DynamicResource GlobalSettings_DataDirectoryLabel}" VerticalAlignment="Center"/>
         <TextBox  Grid.Row="4" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
@@ -129,8 +129,8 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_ValidateProfileOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ValidateProfileOnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ValidateProfileOnServerStartTooltip}"/>
-                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" Content="{DynamicResource GlobalSettings_ServerUpdateOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ServerUpdate_OnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ServerUpdateOnServerStartTooltip}"/>
+                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_ValidateProfileOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ValidateProfileOnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ValidateProfileOnServerStartTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" Content="{DynamicResource GlobalSettings_ServerUpdateOnServerStartLabel}" IsChecked="{Binding CurrentConfig.ServerUpdate_OnServerStart, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ServerUpdateOnServerStartTooltip}" HorizontalAlignment="Left"/>
             </Grid>
 
         </GroupBox>
@@ -158,11 +158,11 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_UpdateModsWhenUpdatingServer, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_UpdateModWithServerLabel}" ToolTip="{DynamicResource GlobalSettings_UpdateModWithServerTooltip}"/>
-                <CheckBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceUpdateMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceUpdateModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceUpdateModsTooltip}"/>
-                <CheckBox Grid.Row="0" Grid.Column="6" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceCopyMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceCopyModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceCopyModsTooltip}"/>
+                <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_UpdateModsWhenUpdatingServer, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_UpdateModWithServerLabel}" ToolTip="{DynamicResource GlobalSettings_UpdateModWithServerTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceUpdateMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceUpdateModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceUpdateModsTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="0" Grid.Column="6" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceCopyMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceCopyModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceCopyModsTooltip}" HorizontalAlignment="Left"/>
 
-                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Content="{DynamicResource GlobalSettings_SteamCmdCredentialsLabel}" VerticalAlignment="Bottom" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdCredentialsTooltip}">
+                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Content="{DynamicResource GlobalSettings_SteamCmdCredentialsLabel}" VerticalAlignment="Bottom" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdCredentialsTooltip}" HorizontalAlignment="Left">
                     <CheckBox.Style>
                         <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                             <Style.Triggers>
@@ -273,7 +273,7 @@
                     </TextBox.Text>
                 </TextBox>
 
-                <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,0,0,0" Content="{DynamicResource GlobalSettings_UseSmartCopyLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_UseSmartCopy, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_UseSmartCopyTooltip}" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,0,0,0" Content="{DynamicResource GlobalSettings_UseSmartCopyLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_UseSmartCopy, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_UseSmartCopyTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Grid>
         </GroupBox>
 
@@ -337,9 +337,9 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Email_Host}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailHostTooltip}"/>
                 <Label Grid.Row="0" Grid.Column="3" Content="{DynamicResource GlobalSettings_EmailPortLabel}" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="0" Grid.Column="4" Margin="1" Text="{Binding CurrentConfig.Email_Port}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailPortTooltip}"/>
-                <CheckBox Grid.Row="0" Grid.Column="7" Content="{DynamicResource GlobalSettings_EmailUseSSLLabel}" IsChecked="{Binding CurrentConfig.Email_UseSSL}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUseSSLTooltip}"/>
+                <CheckBox Grid.Row="0" Grid.Column="7" Content="{DynamicResource GlobalSettings_EmailUseSSLLabel}" IsChecked="{Binding CurrentConfig.Email_UseSSL}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUseSSLTooltip}" HorizontalAlignment="Left"/>
 
-                <CheckBox Grid.Row="1" Grid.Column="1" Content="{DynamicResource GlobalSettings_EmailUseDefaultCredentialsLabel}" IsChecked="{Binding CurrentConfig.Email_UseDetaultCredentials}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUseDefaultCredentialsTooltip}"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" Content="{DynamicResource GlobalSettings_EmailUseDefaultCredentialsLabel}" IsChecked="{Binding CurrentConfig.Email_UseDetaultCredentials}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUseDefaultCredentialsTooltip}" HorizontalAlignment="Left"/>
                 <Label Grid.Row="1" Grid.Column="3" Content="{DynamicResource GlobalSettings_EmailUsernameLabel}" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="1" Grid.Column="4" Margin="1" Text="{Binding CurrentConfig.Email_Username}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUsernameTooltip}" IsEnabled="{Binding CurrentConfig.Email_UseDetaultCredentials, Converter={StaticResource InvertBooleanConverter}}"/>
                 <Label Grid.Row="1" Grid.Column="6" Content="{DynamicResource GlobalSettings_EmailPasswordLabel}" VerticalAlignment="Center"/>
@@ -370,8 +370,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_EmailNotify_AutoUpdateLabel}" IsChecked="{Binding CurrentConfig.EmailNotify_AutoUpdate}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailNotify_AutoUpdateTooltip}"/>
-                <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_EmailNotify_AutoRestartLabel}" IsChecked="{Binding CurrentConfig.EmailNotify_AutoRestart}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailNotify_AutoRestartTooltip}"/>
+                <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_EmailNotify_AutoUpdateLabel}" IsChecked="{Binding CurrentConfig.EmailNotify_AutoUpdate}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailNotify_AutoUpdateTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_EmailNotify_AutoRestartLabel}" IsChecked="{Binding CurrentConfig.EmailNotify_AutoRestart}" VerticalAlignment="Center" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailNotify_AutoRestartTooltip}" HorizontalAlignment="Left"/>
             </Grid>
         </GroupBox>
     </Grid>

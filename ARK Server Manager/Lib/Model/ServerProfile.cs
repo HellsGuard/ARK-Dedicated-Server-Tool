@@ -1529,12 +1529,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(FlyerPlatformAllowUnalignedDinoBasingProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableStructureDecayProperty = DependencyProperty.Register(nameof(EnableStructureDecay), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableStructureDecayPvEProperty = DependencyProperty.Register(nameof(EnableStructureDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
-        public bool EnableStructureDecay
+        public bool EnableStructureDecayPvE
         {
-            get { return (bool)GetValue(EnableStructureDecayProperty); }
-            set { SetValue(EnableStructureDecayProperty, value); }
+            get { return (bool)GetValue(EnableStructureDecayPvEProperty); }
+            set { SetValue(EnableStructureDecayPvEProperty, value); }
         }
 
         public static readonly DependencyProperty PvEStructureDecayDestructionPeriodProperty = DependencyProperty.Register(nameof(PvEStructureDecayDestructionPeriod), typeof(float), typeof(ServerProfile), new PropertyMetadata(0f));
@@ -1575,6 +1575,29 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(PassiveDefensesDamageRiderlessDinosProperty); }
             set { SetValue(PassiveDefensesDamageRiderlessDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableAutoDestroyStructuresProperty = DependencyProperty.Register(nameof(EnableAutoDestroyStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoDestroyStructures
+        {
+            get { return (bool)GetValue(EnableAutoDestroyStructuresProperty); }
+            set { SetValue(EnableAutoDestroyStructuresProperty, value); }
+        }
+
+        public static readonly DependencyProperty OnlyDecayUnsnappedCoreStructuresProperty = DependencyProperty.Register(nameof(OnlyDecayUnsnappedCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool OnlyDecayUnsnappedCoreStructures
+        {
+            get { return (bool)GetValue(OnlyDecayUnsnappedCoreStructuresProperty); }
+            set { SetValue(OnlyDecayUnsnappedCoreStructuresProperty, value); }
+        }
+
+        public static readonly DependencyProperty FastDecayUnsnappedCoreStructuresProperty = DependencyProperty.Register(nameof(FastDecayUnsnappedCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool FastDecayUnsnappedCoreStructures
+        {
+            get { return (bool)GetValue(FastDecayUnsnappedCoreStructuresProperty); }
+            set { SetValue(FastDecayUnsnappedCoreStructuresProperty, value); }
         }
         #endregion
 
@@ -1901,6 +1924,11 @@ namespace ARK_Server_Manager.Lib
             if (this.EnableAllowCaveFlyers)
             {
                 serverArgs.Append(" -ForceAllowCaveFlyers");
+            }
+
+            if (this.EnableAutoDestroyStructures)
+            {
+                serverArgs.Append(" -AutoDestroyStructures");
             }
 
             if (this.EnableNoFishLoot)
@@ -2938,7 +2966,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MaxPlatformSaddleStructureLimitProperty);
             this.ClearValue(OverrideStructurePlatformPreventionProperty);
             this.ClearValue(FlyerPlatformAllowUnalignedDinoBasingProperty);
-            this.ClearValue(EnableStructureDecayProperty);
+            this.ClearValue(EnableStructureDecayPvEProperty);
             this.ClearValue(PvEStructureDecayDestructionPeriodProperty);
             this.ClearValue(PvEStructureDecayPeriodMultiplierProperty);
             this.ClearValue(AutoDestroyOldStructuresMultiplierProperty);
