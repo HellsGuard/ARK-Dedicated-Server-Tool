@@ -762,7 +762,7 @@
                     <GradientStop Color="#FFEAE8E6" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Visible">
                 <StackPanel CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Expander Name="SectionAdministration" IsExpanded="{Binding CurrentConfig.SectionAdministrationIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                         <Expander.Header>
