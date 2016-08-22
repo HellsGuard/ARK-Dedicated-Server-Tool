@@ -1584,6 +1584,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAutoDestroyStructuresProperty, value); }
         }
 
+        public static readonly DependencyProperty OnlyAutoDestroyCoreStructuresProperty = DependencyProperty.Register(nameof(OnlyAutoDestroyCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool OnlyAutoDestroyCoreStructures
+        {
+            get { return (bool)GetValue(OnlyAutoDestroyCoreStructuresProperty); }
+            set { SetValue(OnlyAutoDestroyCoreStructuresProperty, value); }
+        }
+
         public static readonly DependencyProperty OnlyDecayUnsnappedCoreStructuresProperty = DependencyProperty.Register(nameof(OnlyDecayUnsnappedCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool OnlyDecayUnsnappedCoreStructures

@@ -863,6 +863,8 @@
     <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresTooltip">If enabled, will auto destroy structures once the demolish timer expires.</sys:String>
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Auto Destroy Old Structures Multiplier:</sys:String>
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">Allows Auto-Destroying Structures after sufficient 'no nearby Tribe' time has passed. Useful for servers to clear off abandoned structures automatically over time if they wish. Set to 0 to disable it.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAutoDestroyCoreStructuresLabel">Only Auto Destroy Core Structures</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAutoDestroyCoreStructuresTooltip">If enabled, will prevent any non-core/non-foundation structures from auto destroying (however they'll still get auto destroyed if a floor that they're on gets auto destroyed).</sys:String>
     <sys:String x:Key="ServerSettings_OnlyDecayUnsnappedCoreStructuresLabel">Only Decay Unsnapped Core Structures</sys:String>
     <sys:String x:Key="ServerSettings_OnlyDecayUnsnappedCoreStructuresTooltip">If enabled, only unsnapped core structures will decay. Useful for eliminating lone pillar/foundation spam on servers.</sys:String>
     <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresLabel">Fast Decay Unsnapped Core Structures</sys:String>
