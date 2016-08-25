@@ -23,7 +23,9 @@ namespace ARK_Server_Manager
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private readonly ServerProfile _profile = null;
         private ModDetailList _modDetails = null;
-        private bool _isSotF = false;
+        private readonly bool _isSotF = false;
+
+        private readonly ModDetailsWindow _window = null;
 
         public static readonly DependencyProperty WorkshopFilesProperty = DependencyProperty.Register(nameof(WorkshopFiles), typeof(WorkshopFileList), typeof(WorkshopFilesWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty WorkshopFilesViewProperty = DependencyProperty.Register(nameof(WorkshopFilesView), typeof(ICollectionView), typeof(WorkshopFilesWindow), new PropertyMetadata(null));
@@ -40,6 +42,21 @@ namespace ARK_Server_Manager
             this.Title = string.Format(_globalizer.GetResourceString("WorkshopFiles_ProfileTitle"), _profile?.ProfileName);
 
             UpdateModDetailsList(modDetails);
+
+            this.DataContext = this;
+        }
+
+        public WorkshopFilesWindow(ModDetailsWindow window, ServerProfile profile)
+        {
+            InitializeComponent();
+            WindowUtils.RemoveDefaultResourceDictionary(this);
+
+            _window = window;
+            _profile = profile;
+            _isSotF = _profile?.SOTF_Enabled ?? false;
+            this.Title = string.Format(_globalizer.GetResourceString("WorkshopFiles_ProfileTitle"), _profile?.ProfileName);
+
+            UpdateModDetailsList(window?.ModDetails);
 
             this.DataContext = this;
         }
@@ -101,7 +118,12 @@ namespace ARK_Server_Manager
             var item = ((WorkshopFileItem)((Button)e.Source).DataContext);
 
             var mod = ModDetail.GetModDetail(item);
-            _modDetails.Add(mod);
+
+            var selectedIndex = _window?.SelectedRowIndex() ?? -1;
+            if (selectedIndex >= 0)
+                _modDetails.Insert(selectedIndex, mod);
+            else
+                _modDetails.Add(mod);
         }
 
         private async void Reload_Click(object sender, RoutedEventArgs e)

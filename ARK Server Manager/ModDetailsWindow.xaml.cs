@@ -129,7 +129,7 @@ namespace ARK_Server_Manager
             if (_workshopFilesWindow != null)
                 return;
 
-            _workshopFilesWindow = new WorkshopFilesWindow(ModDetails, _profile);
+            _workshopFilesWindow = new WorkshopFilesWindow(this, _profile);
             _workshopFilesWindow.Owner = this;
             _workshopFilesWindow.Closed += WorkshopFilesWindow_Closed;
             _workshopFilesWindow.Show();
@@ -267,7 +267,6 @@ namespace ARK_Server_Manager
             }
         }
 
-
         public bool Filter(object obj)
         {
             var data = obj as ModDetail;
@@ -280,6 +279,11 @@ namespace ARK_Server_Manager
                 return true;
 
             return data.ModId.Contains(filterString) || data.TitleFilterString.Contains(filterString);
+        }
+
+        public int SelectedRowIndex()
+        {
+            return ModDetailsGrid.SelectedIndex;
         }
 
         private async Task<PublishedFileDetailsResponse> GetModDetails(List<string> modIdList)
