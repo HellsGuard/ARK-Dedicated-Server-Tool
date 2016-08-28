@@ -99,6 +99,10 @@
     <sys:String x:Key="WorkshopFiles_SelectedColumnLabel">Selected</sys:String>
     <sys:String x:Key="WorkshopFiles_ModIdColumnLabel">Mod ID</sys:String>
     <sys:String x:Key="WorkshopFiles_TitleColumnLabel">Name</sys:String>
+    <sys:String x:Key="WorkshopFiles_CreatedDateColumnLabel">Created</sys:String>
+    <sys:String x:Key="WorkshopFiles_UpdatedDateColumnLabel">Last Updated</sys:String>
+    <sys:String x:Key="WorkshopFiles_SubscriptionsColumnLabel">Subs</sys:String>
+    <sys:String x:Key="WorkshopFiles_FileSizeColumnLabel">File Size</sys:String>
 
     <sys:String x:Key="WorkshopFiles_AddTooltip">Add mod</sys:String>
     <sys:String x:Key="WorkshopFiles_AddSelectedTooltip">Add selected mods</sys:String>
