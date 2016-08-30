@@ -175,6 +175,11 @@ namespace ARK_Server_Manager.Lib.Model
             }
             return result;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(WorkshopFileList)} - {Count}";
+        }
     }
 
     public class WorkshopFileItem : DependencyObject
@@ -270,6 +275,11 @@ namespace ARK_Server_Manager.Lib.Model
                 result.FileSize = fileSize;
 
             return result;
+        }
+
+        public override string ToString()
+        {
+            return $"{WorkshopId} - {Title}";
         }
     }
 }

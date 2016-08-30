@@ -177,6 +177,15 @@ namespace ARK_Server_Manager.Lib.Model
             SetPublishedFileIndex();
         }
 
+        public new void Insert(int index, ModDetail mod)
+        {
+            if (mod == null)
+                return;
+
+            base.Insert(index, mod);
+            SetPublishedFileIndex();
+        }
+
         public void MoveDown(ModDetail mod)
         {
             if (mod == null)
@@ -288,6 +297,11 @@ namespace ARK_Server_Manager.Lib.Model
                 result.PopulateExtended(modsRootFolder);
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(ModDetailList)} - {Count}";
         }
     }
 
@@ -475,6 +489,11 @@ namespace ARK_Server_Manager.Lib.Model
             result.TimeUpdated = detail.TimeUpdated;
             result.Title = detail.Title;
             return result;
+        }
+
+        public override string ToString()
+        {
+            return $"{ModId} - {Title}";
         }
     }
 

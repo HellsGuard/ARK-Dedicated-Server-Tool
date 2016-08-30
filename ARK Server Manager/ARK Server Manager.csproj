@@ -309,6 +309,7 @@
     <Resource Include="Art\Find.png" />
     <Resource Include="Art\Zip.png" />
     <Resource Include="Art\Paste.png" />
+    <Resource Include="Art\DragInsert.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

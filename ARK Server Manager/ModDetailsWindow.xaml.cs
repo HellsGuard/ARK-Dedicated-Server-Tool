@@ -8,8 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using ARK_Server_Manager.Lib;
 using ARK_Server_Manager.Lib.Model;
@@ -370,5 +373,115 @@ namespace ARK_Server_Manager
 
             ModDetailsView?.Refresh();
         }
+
+
+        #region Drag and Drop
+
+        public static readonly DependencyProperty DraggedItemProperty = DependencyProperty.Register(nameof(DraggedItem), typeof(ModDetail), typeof(ModDetailsWindow), new PropertyMetadata(null));
+
+        public ModDetail DraggedItem
+        {
+            get { return (ModDetail)GetValue(DraggedItemProperty); }
+            set { SetValue(DraggedItemProperty, value); }
+        }
+
+        public bool IsDragging { get; set; }
+
+        public bool IsEditing { get; set; }
+
+        private void OnBeginEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            IsEditing = true;
+
+            //in case we are in the middle of a drag/drop operation, cancel it...
+            if (IsDragging)
+                ResetDragDrop();
+        }
+
+        private void OnEndEdit(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            IsEditing = false;
+        }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsEditing) return;
+
+            var row = WindowUtils.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(ModDetailsGrid));
+            if (row == null || row.IsEditing) return;
+
+            //set flag that indicates we're capturing mouse movements
+            IsDragging = true;
+            DraggedItem = (ModDetail)row.Item;
+        }
+
+        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsDragging || IsEditing)
+            {
+                if (popup.IsOpen)
+                    popup.IsOpen = false;
+                return;
+            }
+
+            //get the target item
+            var targetItem = (ModDetail)ModDetailsGrid.SelectedItem;
+
+            if (targetItem == null || !ReferenceEquals(DraggedItem, targetItem))
+            {
+                //remove the source from the list
+                ModDetails.Remove(DraggedItem);
+
+                //get target index
+                var targetIndex = ModDetails.IndexOf(targetItem);
+
+                //move source at the target's location
+                ModDetails.Insert(targetIndex, DraggedItem);
+
+                //select the dropped item
+                ModDetailsGrid.SelectedItem = DraggedItem;
+            }
+
+            //reset
+            ResetDragDrop();
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!IsDragging || e.LeftButton != MouseButtonState.Pressed)
+            {
+                if (popup.IsOpen)
+                    popup.IsOpen = false;
+                return;
+            }
+
+            //display the popup if it hasn't been opened yet
+            if (!popup.IsOpen)
+            {
+                //switch to read-only mode
+                ModDetailsGrid.IsReadOnly = true;
+
+                //make sure the popup is visible
+                popup.IsOpen = true;
+            }
+
+
+            Size popupSize = new Size(popup.ActualWidth, popup.ActualHeight);
+            popup.PlacementRectangle = new Rect(e.GetPosition(this), popupSize);
+
+            //make sure the row under the grid is being selected
+            Point position = e.GetPosition(ModDetailsGrid);
+            var row = WindowUtils.TryFindFromPoint<DataGridRow>(ModDetailsGrid, position);
+            if (row != null) ModDetailsGrid.SelectedItem = row.Item;
+        }
+
+        private void ResetDragDrop()
+        {
+            IsDragging = false;
+            popup.IsOpen = false;
+            ModDetailsGrid.IsReadOnly = false;
+        }
+
+        #endregion
     }
 }
