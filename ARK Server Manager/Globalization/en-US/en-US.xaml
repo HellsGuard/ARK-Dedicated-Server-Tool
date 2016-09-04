@@ -102,7 +102,7 @@
     <sys:String x:Key="WorkshopFiles_CreatedDateColumnLabel">Created</sys:String>
     <sys:String x:Key="WorkshopFiles_UpdatedDateColumnLabel">Last Updated</sys:String>
     <sys:String x:Key="WorkshopFiles_SubscriptionsColumnLabel">Subs</sys:String>
-    <sys:String x:Key="WorkshopFiles_FileSizeColumnLabel">File Size</sys:String>
+    <sys:String x:Key="WorkshopFiles_FileSizeColumnLabel">File Size (b)</sys:String>
 
     <sys:String x:Key="WorkshopFiles_AddTooltip">Add mod</sys:String>
     <sys:String x:Key="WorkshopFiles_AddSelectedTooltip">Add selected mods</sys:String>

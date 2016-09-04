@@ -387,37 +387,24 @@ namespace ARK_Server_Manager
 
         public bool IsDragging { get; set; }
 
-        public bool IsEditing { get; set; }
-
-        private void OnBeginEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            IsEditing = true;
-
-            //in case we are in the middle of a drag/drop operation, cancel it...
-            if (IsDragging)
-                ResetDragDrop();
-        }
-
-        private void OnEndEdit(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            IsEditing = false;
-        }
-
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsEditing) return;
+            // check fi the column is a template column (no drag-n-drop for those column types)
+            var cell = WindowUtils.TryFindFromPoint<DataGridCell>((UIElement)sender, e.GetPosition(ModDetailsGrid));
+            if (cell == null || cell.Column is DataGridTemplateColumn) return;
 
+            // check if we have a valid row
             var row = WindowUtils.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(ModDetailsGrid));
-            if (row == null || row.IsEditing) return;
+            if (row == null) return;
 
-            //set flag that indicates we're capturing mouse movements
+            // set flag that indicates we're capturing mouse movements
             IsDragging = true;
             DraggedItem = (ModDetail)row.Item;
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (!IsDragging || IsEditing)
+            if (!IsDragging)
             {
                 if (popup.IsOpen)
                     popup.IsOpen = false;
@@ -455,22 +442,21 @@ namespace ARK_Server_Manager
                 return;
             }
 
-            //display the popup if it hasn't been opened yet
+            // display the popup if it hasn't been opened yet
             if (!popup.IsOpen)
             {
-                //switch to read-only mode
+                // switch to read-only mode
                 ModDetailsGrid.IsReadOnly = true;
 
-                //make sure the popup is visible
+                // make sure the popup is visible
                 popup.IsOpen = true;
             }
 
-
-            Size popupSize = new Size(popup.ActualWidth, popup.ActualHeight);
+            var popupSize = new Size(popup.ActualWidth, popup.ActualHeight);
             popup.PlacementRectangle = new Rect(e.GetPosition(this), popupSize);
 
-            //make sure the row under the grid is being selected
-            Point position = e.GetPosition(ModDetailsGrid);
+            // make sure the row under the grid is being selected
+            var position = e.GetPosition(ModDetailsGrid);
             var row = WindowUtils.TryFindFromPoint<DataGridRow>(ModDetailsGrid, position);
             if (row != null) ModDetailsGrid.SelectedItem = row.Item;
         }

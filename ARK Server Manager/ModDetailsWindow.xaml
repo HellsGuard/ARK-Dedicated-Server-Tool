@@ -69,7 +69,7 @@
             <TextBox   Margin="5,5,5,0" Text="{Binding ModDetailsFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" BeginningEdit="OnBeginEdit" CellEditEnding="OnEndEdit" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Style.Resources>
