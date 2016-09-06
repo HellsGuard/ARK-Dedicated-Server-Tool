@@ -23,6 +23,7 @@ namespace ARK_Server_Manager.Lib
         {
             public string ProfileName;            
             public string InstallDirectory;
+            public string AltSaveDirectoryName;
             public string AdminPassword;
             public string ServerName;
             public string ServerArgs;
@@ -135,6 +136,7 @@ namespace ARK_Server_Manager.Lib
             {
                 ProfileName = profile.ProfileName,
                 InstallDirectory = profile.InstallDirectory,
+                AltSaveDirectoryName = profile.AltSaveDirectoryName,
                 AdminPassword = profile.AdminPassword,
                 ServerName = profile.ServerName,
                 ServerArgs = profile.GetServerArgs(),

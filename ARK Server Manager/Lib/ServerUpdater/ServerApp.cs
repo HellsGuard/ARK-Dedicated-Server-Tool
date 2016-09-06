@@ -26,6 +26,7 @@ namespace ARK_Server_Manager.Lib
         {
             public string ProfileName;
             public string InstallDirectory;
+            public string AltSaveDirectoryName;
             public string AdminPassword;
             public string ServerIP;
             public int ServerPort;
@@ -52,6 +53,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     ProfileName = profile.ProfileName,
                     InstallDirectory = profile.InstallDirectory,
+                    AltSaveDirectoryName = profile.AltSaveDirectoryName,
                     AdminPassword = profile.AdminPassword,
                     ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP.Trim(),
                     ServerPort = profile.ServerPort,
@@ -1171,9 +1173,21 @@ namespace ARK_Server_Manager.Lib
 
         private string GetServerVersionFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.VersionFile));
 
-        private string GetServerWorldFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}.ark"));
+        private string GetServerWorldFile()
+        {
+            if (!string.IsNullOrWhiteSpace(_profile.AltSaveDirectoryName))
+                return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedRelativePath, _profile.AltSaveDirectoryName, $"{_profile.ServerMap}.ark"));
 
-        private string GetServerWorldBackupFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
+            return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}.ark"));
+        }
+
+        private string GetServerWorldBackupFile()
+        {
+            if (!string.IsNullOrWhiteSpace(_profile.AltSaveDirectoryName))
+                return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedRelativePath, _profile.AltSaveDirectoryName, $"{_profile.ServerMap}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
+
+            return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
+        }
 
         public static bool HasNewServerVersion(string directory, DateTime checkTime)
         {
@@ -1649,14 +1663,14 @@ namespace ARK_Server_Manager.Lib
                             exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
                         });
 
-                        foreach (var profile in _profiles.Keys)
-                        {
-                            if (profile.ServerUpdated)
-                            {
-                                profile.Update(_profiles[profile]);
-                                _profiles[profile].SaveProfile();
-                            }
-                        }
+                        //foreach (var profile in _profiles.Keys)
+                        //{
+                        //    if (profile.ServerUpdated)
+                        //    {
+                        //        profile.Update(_profiles[profile]);
+                        //        _profiles[profile].SaveProfile();
+                        //    }
+                        //}
 
                         if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
                             exitCode = EXITCODE_EXITWITHERRORS;

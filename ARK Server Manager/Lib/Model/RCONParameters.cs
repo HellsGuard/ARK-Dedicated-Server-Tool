@@ -15,6 +15,8 @@ namespace ARK_Server_Manager.Lib
 
         public string InstallDirectory { get; set; }
 
+        public string AltSaveDirectoryName { get; set; }
+
         public Rect RCONWindowExtents { get; set; }
 
         public int MaxPlayers { get; set; }

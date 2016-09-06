@@ -60,6 +60,7 @@ namespace ARK_Server_Manager
                     RCONPort = RCONPort,
                     AdminPassword = Password,
                     InstallDirectory = String.Empty,
+                    AltSaveDirectoryName = String.Empty,
                     RCONWindowExtents = Rect.Empty
                 });
 

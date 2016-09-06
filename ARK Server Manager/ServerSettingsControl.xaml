@@ -1101,6 +1101,7 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
@@ -1115,6 +1116,11 @@
                                     <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseAllAvailableCores}" Content="{DynamicResource ServerSettings_UseAllAvailableCoresLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseAllAvailableCoresTooltip}"/>
                                     <CheckBox Grid.Row="6" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseCache}" Content="{DynamicResource ServerSettings_UseCacheLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseCacheTooltip}"/>
                                     <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseOldSaveFormat}" Content="{DynamicResource ServerSettings_UseOldSaveFormatLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseOldSaveFormatTooltip}"/>
+                                    <StackPanel Grid.Row="8" Grid.Column="0" Margin="20,0,5,0" Orientation="Horizontal">
+                                        <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center"/>
+                                        <TextBox Text="{Binding AltSaveDirectoryName}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}"/>
+                                        <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel2}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center"/>
+                                    </StackPanel>
 
                                     <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>
                                     <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnableServerAdminLogs}" Content="{DynamicResource ServerSettings_EnableAdminLogsLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableAdminLogsTooltip}"/>
@@ -1362,15 +1368,23 @@
                                     </GroupBox.Header>
                                     
                                     <Grid IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        
-                                        <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
-                                        <CheckBox Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
-                                        <CheckBox Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+
+                                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventUploadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorUploadsTooltip}"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventUploadItems}" Content="{DynamicResource ServerSettings_NoItemUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemUploadsTooltip}"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventUploadDinos}" Content="{DynamicResource ServerSettings_NoDinoUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoUploadsTooltip}"/>
                                     </Grid>
                                 </GroupBox>
                                 

@@ -428,6 +428,9 @@
     <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force Respawn Dinos on Startup (Causes lag after 'Ready' while repopulating)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">If enabled, when the server is started ALL wild creatures will be wiped and respawned (this will only destroy wild creatures that are NOT currently being tamed).</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Alternate Save Directory Name:</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel2">(Optional)</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameTooltip">Sets the directory name (underneath the servers Saved folder) to store the world, player and tribe files.</sys:String>
 
     <sys:String x:Key="ServerSettings_MapsAndModsLabel">Maps and Mods</sys:String>
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest enabled - Maps and Mods disabled</sys:String>
@@ -550,6 +553,12 @@
     <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">If enabled, the item downloads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">No Dino Downloads</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">If enabled, the dino downloads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorUploadsLabel">No Survivor Uploads</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorUploadsTooltip">If enabled, the survivor uploads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemUploadsLabel">No Item Uploads</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">If enabled, the item uploads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">No Dino Uploads</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">If enabled, the dino uploads are disabled.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>

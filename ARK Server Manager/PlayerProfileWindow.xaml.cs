@@ -16,7 +16,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class PlayerProfileWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public PlayerProfileWindow(PlayerInfo player, String serverFolder)
         {
@@ -48,11 +48,11 @@ namespace ARK_Server_Manager
 
         public Boolean IsTribeOwner => ArkDataPlayer != null && ArkDataTribe != null && ArkDataTribe.OwnerId == ArkDataPlayer.Id;
 
-        public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, Config.Default.SavedArksRelativePath, $"{Player.SteamId}.arkprofile")}";
+        public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, $"{Player.SteamId}.arkprofile")}";
 
         public String ProfileLink => ArkDataPlayer?.ProfileUrl;
 
-        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, Config.Default.SavedArksRelativePath, $"{ArkDataTribe.Id}.arktribe")}";
+        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}.arktribe")}";
 
         public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? $"{ArkDataTribe.Owner.SteamName} ({ArkDataTribe.Owner.CharacterName})" : null;
 

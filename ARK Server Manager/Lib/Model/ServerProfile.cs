@@ -400,6 +400,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseCacheProperty, value); }
         }
 
+        public static readonly DependencyProperty AltSaveDirectoryNameProperty = DependencyProperty.Register(nameof(AltSaveDirectoryName), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string AltSaveDirectoryName
+        {
+            get { return (string)GetValue(AltSaveDirectoryNameProperty); }
+            set { SetValue(AltSaveDirectoryNameProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableWebAlarmProperty = DependencyProperty.Register(nameof(EnableWebAlarm), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableWebAlarm
         {
@@ -590,6 +597,30 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(PreventDownloadDinosProperty); }
             set { SetValue(PreventDownloadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventUploadSurvivorsProperty = DependencyProperty.Register(nameof(PreventUploadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventUploadSurvivors
+        {
+            get { return (bool)GetValue(PreventUploadSurvivorsProperty); }
+            set { SetValue(PreventUploadSurvivorsProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventUploadItemsProperty = DependencyProperty.Register(nameof(PreventUploadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventUploadItems
+        {
+            get { return (bool)GetValue(PreventUploadItemsProperty); }
+            set { SetValue(PreventUploadItemsProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventUploadDinosProperty = DependencyProperty.Register(nameof(PreventUploadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventUploadDinos
+        {
+            get { return (bool)GetValue(PreventUploadDinosProperty); }
+            set { SetValue(PreventUploadDinosProperty, value); }
         }
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1908,6 +1939,11 @@ namespace ARK_Server_Manager.Lib
             if (this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.AltSaveDirectoryName))
+            {
+                serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
 
             if (this.SOTF_Enabled)

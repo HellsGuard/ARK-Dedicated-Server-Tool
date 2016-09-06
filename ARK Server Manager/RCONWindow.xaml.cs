@@ -268,7 +268,8 @@ namespace ARK_Server_Manager
                 window = new RCONWindow(new RCONParameters()
                 {
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
-                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    InstallDirectory = server.Profile.InstallDirectory,
+                    AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
                     ProfileName = server.Profile.ProfileName,
                     RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
@@ -615,7 +616,10 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var window = new PlayerProfileWindow(player, this.RCONParameters.InstallDirectory);
+                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
+                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
+                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var window = new PlayerProfileWindow(player, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
@@ -630,7 +634,10 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var window = new TribeProfileWindow(player, this.ServerRCON.Players, this.RCONParameters.InstallDirectory);
+                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
+                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
+                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var window = new TribeProfileWindow(player, this.ServerRCON.Players, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
