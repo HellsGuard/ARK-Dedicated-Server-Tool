@@ -374,5 +374,8 @@
     <Setting Name="DefaultServerMap_ScorchedEarth" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ScorchedEarth_P</Value>
     </Setting>
+    <Setting Name="ClustersDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Clusters</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

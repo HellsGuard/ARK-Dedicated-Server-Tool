@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +17,6 @@ using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
 using System.Windows.Data;
-using System.Xml.Serialization;
 using ARK_Server_Manager.Lib.Model;
 
 namespace ARK_Server_Manager
@@ -668,6 +668,35 @@ namespace ARK_Server_Manager
             var cmdLine = new CommandLineWindow(String.Format("{0} {1}", this.Runtime.GetServerExe(), this.Settings.GetServerArgs()));
             cmdLine.Owner = Window.GetWindow(this);
             cmdLine.ShowDialog();
+        }
+
+        private void CreateSymLink_Click(object sender, RoutedEventArgs e)
+        {
+            // check if the ASM clusters folder exists
+            var asmClustersFolder = Path.Combine(Config.Default.DataDir, Config.Default.ClustersDir);
+            if (!Directory.Exists(asmClustersFolder))
+                Directory.CreateDirectory(asmClustersFolder);
+
+            var profileClustersFolder = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ClustersDir);
+            if (Directory.Exists(profileClustersFolder))
+            {
+                if (MessageBox.Show("Cluster folder already exists for this server, do you want to recreate?", "Cluster Folder Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
+                Directory.Delete(profileClustersFolder);
+            }
+
+            try
+            {
+                if (!MachineUtils.CreateSymLink(profileClustersFolder, asmClustersFolder, true))
+                    MessageBox.Show("The SymLink could not be created.", "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            Settings.SetHasClusterSymLink();
         }
 
         private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)

@@ -1823,6 +1823,30 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Cross Ark Data Transfer
+        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NoTransferFromFiltering
+        {
+            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
+            set { SetValue(NoTransferFromFilteringProperty, value); }
+        }
+
+        public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
+        public string CrossArkClusterId
+        {
+            get { return (string)GetValue(CrossArkClusterIdProperty); }
+            set { SetValue(CrossArkClusterIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasClusterSymLinkProperty = DependencyProperty.Register(nameof(HasClusterSymLink), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [XmlIgnore]
+        public bool HasClusterSymLink
+        {
+            get { return (bool)GetValue(HasClusterSymLinkProperty); }
+            set { SetValue(HasClusterSymLinkProperty, value); }
+        }
+        #endregion
+
         //public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
         //[XmlIgnore]
         //[IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -2017,6 +2041,26 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
+            if (this.EnableTributeDownloads && this.NoTransferFromFiltering)
+            {
+                serverArgs.Append(" -NoTransferFromFiltering");
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.CrossArkClusterId))
+            {
+                serverArgs.Append($" -clusterid={this.CrossArkClusterId}");
+            }
+
+            if (this.EnableWebAlarm)
+            {
+                serverArgs.Append(" -webalarm");
+            }
+
+            if (this.AutoManagedMods)
+            {
+                serverArgs.Append(" -automanagedmods");
+            }
+
             if (this.UseBattlEye)
             {
                 serverArgs.Append(" -UseBattlEye");
@@ -2081,16 +2125,6 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -usecache");
             }
 
-            if (this.EnableWebAlarm)
-            {
-                serverArgs.Append(" -webalarm");
-            }
-
-            if (this.AutoManagedMods)
-            {
-                serverArgs.Append(" -automanagedmods");
-            }
-
             if (this.UseOldSaveFormat)
             {
                 serverArgs.Append(" -oldsaveformat");
@@ -2151,6 +2185,8 @@ namespace ARK_Server_Manager.Lib
             settings.DinoLevels.UpdateTotals();
             settings.DinoSettings.RenderToView();
             settings._lastSaveLocation = path;
+
+            settings.SetHasClusterSymLink();
             return settings;
         }
 
@@ -2217,6 +2253,8 @@ namespace ARK_Server_Manager.Lib
                 settings.DinoLevels.UpdateTotals();
                 settings.DinoSettings.RenderToView();
                 settings._lastSaveLocation = path;
+
+                settings.SetHasClusterSymLink();
             }
             return settings;
         }
@@ -2596,6 +2634,12 @@ namespace ARK_Server_Manager.Lib
                 serializer.Serialize(stream, this);
             }
             return result.ToString();
+        }
+
+        public void SetHasClusterSymLink()
+        {
+            var clustersFolder = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ClustersDir);
+            HasClusterSymLink = MachineUtils.IsDirectorySymbolic(clustersFolder);
         }
 
         #region Export Methods

@@ -1311,5 +1311,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["DefaultServerMap_ScorchedEarth"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Clusters")]
+        public string ClustersDir {
+            get {
+                return ((string)(this["ClustersDir"]));
+            }
+        }
     }
 }
