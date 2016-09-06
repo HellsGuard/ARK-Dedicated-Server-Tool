@@ -179,7 +179,7 @@ namespace ARK_Server_Manager.Lib.Model
 
         public new void Insert(int index, ModDetail mod)
         {
-            if (mod == null)
+            if (mod == null || this.Any(m => m.ModId.Equals(mod.ModId)))
                 return;
 
             base.Insert(index, mod);

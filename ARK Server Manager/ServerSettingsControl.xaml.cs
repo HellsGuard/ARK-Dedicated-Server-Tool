@@ -15,6 +15,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using System.Windows.Data;
 using System.Xml.Serialization;
 using ARK_Server_Manager.Lib.Model;
 
@@ -48,6 +49,7 @@ namespace ARK_Server_Manager
         // Properties
         MapNameIslandProperty,
         MapNameCenterProperty,
+        MapNameScorchedEarthProperty,
         MapNameTotalConversionProperty,
         TotalConversionPrimitivePlusProperty,
 
@@ -79,6 +81,9 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ServerSettingsControl), new PropertyMetadata(null, ServerPropertyChanged));
         public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(nameof(Settings), typeof(ServerProfile), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedCustomSectionProperty = DependencyProperty.Register(nameof(SelectedCustomSection), typeof(CustomSection), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedArkApplicationDinoProperty = DependencyProperty.Register(nameof(SelectedArkApplicationDino), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
+        public static readonly DependencyProperty SelectedArkApplicationEngramProperty = DependencyProperty.Register(nameof(SelectedArkApplicationEngram), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
+        public static readonly DependencyProperty SelectedArkApplicationResourceProperty = DependencyProperty.Register(nameof(SelectedArkApplicationResource), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
 
         #region Properties
         public Config CurrentConfig
@@ -133,6 +138,24 @@ namespace ARK_Server_Manager
         {
             get { return GetValue(SelectedCustomSectionProperty) as CustomSection; }
             set { SetValue(SelectedCustomSectionProperty, value); }
+        }
+
+        public ArkApplication SelectedArkApplicationDino
+        {
+            get { return (ArkApplication)GetValue(SelectedArkApplicationDinoProperty); }
+            set { SetValue(SelectedArkApplicationDinoProperty, value); }
+        }
+
+        public ArkApplication SelectedArkApplicationEngram
+        {
+            get { return (ArkApplication)GetValue(SelectedArkApplicationEngramProperty); }
+            set { SetValue(SelectedArkApplicationEngramProperty, value); }
+        }
+
+        public ArkApplication SelectedArkApplicationResource
+        {
+            get { return (ArkApplication)GetValue(SelectedArkApplicationResourceProperty); }
+            set { SetValue(SelectedArkApplicationResourceProperty, value); }
         }
         #endregion
 
@@ -978,6 +1001,51 @@ namespace ARK_Server_Manager
                 UpdateLayout();
             }
         }
+
+        private void DinoArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as DinoSettings;
+            if (item == null)
+                e.Accepted = false;
+            else
+                e.Accepted = (SelectedArkApplicationDino == ArkApplication.All || item.ArkApplication == SelectedArkApplicationDino);
+        }
+
+        private void DinoArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var view = this.DinoSettingsGrid.ItemsSource as ListCollectionView;
+            view?.Refresh();
+        }
+
+        private void EngramArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as EngramEntry;
+            if (item == null)
+                e.Accepted = false;
+            else
+                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram);
+        }
+
+        private void EngramArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var view = this.EngramsOverrideListView.ItemsSource as ListCollectionView;
+            view?.Refresh();
+        }
+
+        private void ResourceArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as ResourceClassMultiplier;
+            if (item == null)
+                e.Accepted = false;
+            else
+                e.Accepted = (SelectedArkApplicationResource == ArkApplication.All || item.ArkApplication == SelectedArkApplicationResource);
+        }
+
+        private void ResourceArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var view = this.HarvestResourceItemAmountClassMultipliersListBox.ItemsSource as ListCollectionView;
+            view?.Refresh();
+        }
         #endregion
 
         #region Methods
@@ -1183,6 +1251,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.MapNameCenterProperty:
                                 this.Settings.ResetMapName(Config.Default.DefaultServerMap_TheCenter);
+                                break;
+
+                            case ServerSettingsResetAction.MapNameScorchedEarthProperty:
+                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_ScorchedEarth);
                                 break;
 
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:

@@ -990,8 +990,8 @@ namespace ARK_Server_Manager.Lib
                 else
                     LogMessage("No new version.");
 
-                var cacheVersion = Updater.GetServerVersion(GetServerCacheVersionFile()).ToString();
-                LogMessage($"Server cache version: {cacheVersion}");
+                //var cacheVersion = Updater.GetServerVersion(GetServerCacheVersionFile()).ToString();
+                //LogMessage($"Server cache version: {cacheVersion}");
             }
             else
                 LogMessage($"Server cache does not exist.");

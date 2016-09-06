@@ -1,9 +1,18 @@
-﻿using ARK_Server_Manager.Lib.ViewModel;
+﻿using System.Windows;
+using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
     public class ResourceClassMultiplier : ClassMultiplier
     {
+        public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(ResourceClassMultiplier), new PropertyMetadata(ArkApplication.SurvivalEvolved));
+
+        public ArkApplication ArkApplication
+        {
+            get { return (ArkApplication)GetValue(ArkApplicationProperty); }
+            set { SetValue(ArkApplicationProperty, value); }
+        }
+
         public bool KnownResource
         {
             get

@@ -15,6 +15,8 @@ namespace ARK_Server_Manager.Lib
 {
     public class ServerRuntime : DependencyObject, IDisposable
     {
+        public event EventHandler StatusUpdate;
+
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public struct RuntimeProfileSnapshot
@@ -297,6 +299,8 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 this.serverProcess = update.Process;
+
+                StatusUpdate?.Invoke(this, EventArgs.Empty);
             }).DoNotWait();
         }
 
@@ -493,11 +497,11 @@ namespace ARK_Server_Manager.Lib
 
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New server version - {gotNewVersion.ToString().ToUpperInvariant()}.");
 
-                            // update the version number of the server.
-                            var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
-                            this.Version = Updater.GetServerVersion(versionFile);
+                            //// update the version number of the server.
+                            //var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
+                            //this.Version = Updater.GetServerVersion(versionFile);
 
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Server version: {this.Version}\r\n");
+                            //progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Server version: {this.Version}\r\n");
                         }
                     }
                     else

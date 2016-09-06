@@ -30,11 +30,13 @@ namespace ARK_Server_Manager.Lib
 
         public T Duplicate<T>() where T : AggregateIniValue, new()
         {
-            GetPropertyInfos();
+            GetPropertyInfos(true);
+
             var result = new T();
             foreach (var prop in this.properties)
             {
-                prop.SetValue(result, prop.GetValue(this));
+                if (prop.CanWrite)
+                    prop.SetValue(result, prop.GetValue(this));
             }
 
             return result;
@@ -83,11 +85,14 @@ namespace ARK_Server_Manager.Lib
         public abstract string GetSortKey();
         public virtual bool ShouldSave() { return true; }
 
-        protected void GetPropertyInfos()
+        protected void GetPropertyInfos(bool allProperties = false)
         {
             if (this.properties.Count == 0)
             {
-                this.properties.AddRange(this.GetType().GetProperties().Where(p => p.GetCustomAttribute(typeof(AggregateIniValueEntryAttribute)) != null));
+                if (allProperties)
+                    this.properties.AddRange(this.GetType().GetProperties());
+                else
+                    this.properties.AddRange(this.GetType().GetProperties().Where(p => p.GetCustomAttribute(typeof(AggregateIniValueEntryAttribute)) != null));
             }
         }
 

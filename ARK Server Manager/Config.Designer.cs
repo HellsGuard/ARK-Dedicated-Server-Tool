@@ -1302,5 +1302,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ServerAppIdFile"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ScorchedEarth_P")]
+        public string DefaultServerMap_ScorchedEarth {
+            get {
+                return ((string)(this["DefaultServerMap_ScorchedEarth"]));
+            }
+        }
     }
 }

@@ -1,89 +1,125 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using ARK_Server_Manager.Lib.ViewModel;
 using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DefaultValue(SurvivalEvolved)]
+    public enum ArkApplication
+    {
+        /// <summary>
+        /// All has been added only for filter selection.
+        /// </summary>
+        All = 0,
+        SurvivalEvolved,
+        SurvivalOfTheFittest,
+        PrimitivePlus,
+        ScorchedEarth,
+        Unknown,
+    }
+
     public static class GameData
     {
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 600000;
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1368538;
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 900000;
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1798540;
 
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
         {
-            new DinoSpawn { ClassName="Allo_Character_BP_C",            DinoNameTag="Allo" },
-            new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler" },
-            new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky" },
-            new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant" },
-            new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent" },
-            new DinoSpawn { ClassName="Arthro_Character_BP_C",          DinoNameTag="Arthro" },
-            new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat" },
-            new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver" },
-            new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot" },
-            new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa" },
-            new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno" },
-            new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel" },
-            new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy" },
-            new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo" },
-            new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro" },
-            new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph" },
-            new DinoSpawn { ClassName="Diplodocus_Character_BP_C",      DinoNameTag="Diplo" },
-            new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear" },
-            new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf" },
-            new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo" },
-            new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed" },
-            new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin" },
-            new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly" },
-            new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle" },
-            new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle" },
-            new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp" },
-            new DinoSpawn { ClassName="Galli_Character_BP_C",           DinoNameTag="Galli" },
-            new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant" },
-            new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku" },
-            new DinoSpawn { ClassName="Leech_Character_C",              DinoNameTag="Leech" },
-            new DinoSpawn { ClassName="Lystro_Character_BP_C",          DinoNameTag="Lystro" },
-            new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno" },
-            new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor" },
-            new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex" },
-            new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth" },
-            new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta" },
-            new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega" },
-            new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey" },
-            new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur" },
-            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",       DinoNameTag="Alpha Mosasaur" },
-            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor" },
-            new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy" },
-            new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para" },
-            new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer" },
-            new DinoSpawn { ClassName="Pela_Character_BP_C",            DinoNameTag="Pela" },
-            new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia" },
-            new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha" },
-            new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur" },
-            new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo" },
-            new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera" },
-            new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz" },
-            new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor" },
-            new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex" },
-            new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino" },
-            new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth" },
-            new DinoSpawn { ClassName="Salmon_Character_BP_C",          DinoNameTag="Salmon" },
-            new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco" },
-            new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto" },
-            new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion" },
-            new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider" },
-            new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino" },
-            new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag" },
-            new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego" },
-            new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird" },
-            new DinoSpawn { ClassName="Titanosaur_Character_BP_C",      DinoNameTag="Titanosaur" },
-            new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad" },
-            new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike" },
-            new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite" },
-            new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle" },
+            new DinoSpawn { ClassName="Allo_Character_BP_C",                DinoNameTag="Allo" },
+            new DinoSpawn { ClassName="Angler_Character_BP_C",              DinoNameTag="Angler" },
+            new DinoSpawn { ClassName="Ankylo_Character_BP_C",              DinoNameTag="Anky" },
+            new DinoSpawn { ClassName="Ant_Character_BP_C",                 DinoNameTag="Ant" },
+            new DinoSpawn { ClassName="Argent_Character_BP_C",              DinoNameTag="Argent" },
+            new DinoSpawn { ClassName="Arthro_Character_BP_C",              DinoNameTag="Arthro" },
+            new DinoSpawn { ClassName="Bat_Character_BP_C",                 DinoNameTag="Bat" },
+            new DinoSpawn { ClassName="Beaver_Character_BP_C",              DinoNameTag="Beaver" },
+            new DinoSpawn { ClassName="BigFoot_Character_BP_C",             DinoNameTag="Bigfoot" },
+            new DinoSpawn { ClassName="BoaFrill_Character_BP_C",            DinoNameTag="Titanboa" },
+            new DinoSpawn { ClassName="Carno_Character_BP_C",               DinoNameTag="Carno" },
+            new DinoSpawn { ClassName="Coel_Character_BP_C",                DinoNameTag="Coel" },
+            new DinoSpawn { ClassName="Compy_Character_BP_C",               DinoNameTag="Compy" },
+            new DinoSpawn { ClassName="Dilo_Character_BP_C",                DinoNameTag="Dilo" },
+            new DinoSpawn { ClassName="Dimetro_Character_BP_C",             DinoNameTag="Dimetro" },
+            new DinoSpawn { ClassName="Dimorph_Character_BP_C",             DinoNameTag="Dimorph" },
+            new DinoSpawn { ClassName="Diplodocus_Character_BP_C",          DinoNameTag="Diplo" },
+            new DinoSpawn { ClassName="Direbear_Character_BP_C",            DinoNameTag="Direbear" },
+            new DinoSpawn { ClassName="Direwolf_Character_BP_C",            DinoNameTag="Direwolf" },
+            new DinoSpawn { ClassName="Dodo_Character_BP_C",                DinoNameTag="Dodo" },
+            new DinoSpawn { ClassName="Doed_Character_BP_C",                DinoNameTag="Doed" },
+            new DinoSpawn { ClassName="Dolphin_Character_BP_C",             DinoNameTag="Dolphin" },
+            new DinoSpawn { ClassName="Dragonfly_Character_BP_C",           DinoNameTag="Dragonfly" },
+            new DinoSpawn { ClassName="DungBeetle_Character_BP_C",          DinoNameTag="Beetle" },
+            new DinoSpawn { ClassName="Dunkle_Character_BP_C",              DinoNameTag="Dunkle" },
+            new DinoSpawn { ClassName="Euryp_Character_C",                  DinoNameTag="Euryp" },
+            new DinoSpawn { ClassName="Galli_Character_BP_C",               DinoNameTag="Galli" },
+            new DinoSpawn { ClassName="Gigant_Character_BP_C",              DinoNameTag="Gigant" },
+            new DinoSpawn { ClassName="Kairuku_Character_BP_C",             DinoNameTag="Kairuku" },
+            new DinoSpawn { ClassName="Leech_Character_C",                  DinoNameTag="Leech" },
+            new DinoSpawn { ClassName="Lystro_Character_BP_C",              DinoNameTag="Lystro" },
+            new DinoSpawn { ClassName="MegaCarno_Character_BP_C",           DinoNameTag="Elite Carno" },
+            new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",          DinoNameTag="Elite Raptor" },
+            new DinoSpawn { ClassName="MegaRex_Character_BP_C",             DinoNameTag="Elite Rex" },
+            new DinoSpawn { ClassName="Mammoth_Character_BP_C",             DinoNameTag="Mammoth" },
+            new DinoSpawn { ClassName="Manta_Character_BP_C",               DinoNameTag="Manta" },
+            new DinoSpawn { ClassName="Megalodon_Character_BP_C",           DinoNameTag="Mega" },
+            new DinoSpawn { ClassName="Monkey_Character_BP_C",              DinoNameTag="Monkey" },
+            new DinoSpawn { ClassName="Mosa_Character_BP_C",                DinoNameTag="Mosasaur" },
+            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",           DinoNameTag="Alpha Mosasaur" },
+            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",           DinoNameTag="Oviraptor" },
+            new DinoSpawn { ClassName="Pachy_Character_BP_C",               DinoNameTag="Pachy" },
+            new DinoSpawn { ClassName="Para_Character_BP_C",                DinoNameTag="Para" },
+            new DinoSpawn { ClassName="Paracer_Character_BP_C",             DinoNameTag="Paracer" },
+            new DinoSpawn { ClassName="Pela_Character_BP_C",                DinoNameTag="Pela" },
+            new DinoSpawn { ClassName="Phiomia_Character_BP_C",             DinoNameTag="Phiomia" },
+            new DinoSpawn { ClassName="Piranha_Character_BP_C",             DinoNameTag="Piranha" },
+            new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",          DinoNameTag="Plesiosaur" },
+            new DinoSpawn { ClassName="Procoptodon_Character_BP_C",         DinoNameTag="Kangaroo" },
+            new DinoSpawn { ClassName="Ptero_Character_BP_C",               DinoNameTag="Ptera" },
+            new DinoSpawn { ClassName="Quetz_Character_BP_C",               DinoNameTag="Quetz" },
+            new DinoSpawn { ClassName="Raptor_Character_BP_C",              DinoNameTag="Raptor" },
+            new DinoSpawn { ClassName="Rex_Character_BP_C",                 DinoNameTag="Rex" },
+            new DinoSpawn { ClassName="Rhino_Character_BP_C",               DinoNameTag="Rhino" },
+            new DinoSpawn { ClassName="Saber_Character_BP_C",               DinoNameTag="Sabertooth" },
+            new DinoSpawn { ClassName="Salmon_Character_BP_C",              DinoNameTag="Salmon" },
+            new DinoSpawn { ClassName="Sarco_Character_BP_C",               DinoNameTag="Sarco" },
+            new DinoSpawn { ClassName="Sauropod_Character_BP_C",            DinoNameTag="Bronto" },
+            new DinoSpawn { ClassName="Scorpion_Character_BP_C",            DinoNameTag="Scorpion" },
+            new DinoSpawn { ClassName="SpiderS_Character_BP_C",             DinoNameTag="Spider" },
+            new DinoSpawn { ClassName="Spino_Character_BP_C",               DinoNameTag="Spino" },
+            new DinoSpawn { ClassName="Stag_Character_BP_C",                DinoNameTag="Stag" },
+            new DinoSpawn { ClassName="Stego_Character_BP_C",               DinoNameTag="Stego" },
+            new DinoSpawn { ClassName="TerrorBird_Character_BP_C",          DinoNameTag="TerrorBird" },
+            new DinoSpawn { ClassName="Titanosaur_Character_BP_C",          DinoNameTag="Titanosaur" },
+            new DinoSpawn { ClassName="Toad_Character_BP_C",                DinoNameTag="Toad" },
+            new DinoSpawn { ClassName="Trike_Character_BP_C",               DinoNameTag="Trike" },
+            new DinoSpawn { ClassName="Trilobite_Character_C",              DinoNameTag="Trilobite" },
+            new DinoSpawn { ClassName="Turtle_Character_BP_C",              DinoNameTag="Turtle" },
+
+            new DinoSpawn { ClassName="FlyingAnt_Character_BP_C",           DinoNameTag=null },
+            new DinoSpawn { ClassName="Leech_Character_Diseased_C",         DinoNameTag=null },
+
+            // Scorched Earth dinos
+            new DinoSpawn { ClassName="camelsaurus_Character_BP_C",         DinoNameTag="Morellatops" ,            ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Deathworm_Character_BP_C",           DinoNameTag="Deathworm" ,              ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Jerboa_Character_BP_C",              DinoNameTag="Jerboa" ,                 ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Jugbug_Oil_Character_BP_C",          DinoNameTag="Oil Jug Bug" ,            ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Jugbug_Water_Character_BP",          DinoNameTag="Water Jug Bug" ,          ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Manticore_Character_BP_C",           DinoNameTag="Manticore" ,              ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Mantis_Character_BP_C",              DinoNameTag="Mantis" ,                 ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Moth_Character_BP_C",                DinoNameTag="Lymantria" ,              ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="RockGolem_Character_BP_C",           DinoNameTag="Rock Elemental" ,         ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="SpineyLizard_Character_BP_C",        DinoNameTag="Thorny Dragon" ,          ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Vulture_Character_BP_C",             DinoNameTag="Vulture" ,                ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Wyvern_Character_BP_Fire_C",         DinoNameTag="Fire Wyvern" ,            ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Wyvern_Character_BP_Lightning_C",    DinoNameTag="Lightning Wyvern" ,       ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Wyvern_Character_BP_Poison_C",       DinoNameTag="Poison Wyvern" ,          ArkApplication=ArkApplication.ScorchedEarth },
         };
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
+
+        public static IEnumerable<NPCReplacement> GetNPCReplacements() => dinoSpawns.Select(d => new NPCReplacement() { FromClassName = d.ClassName, ToClassName = d.ClassName });
 
         public static bool IsTameableForClass(string className)
         {
@@ -93,9 +129,7 @@ namespace ARK_Server_Manager.Lib
                 case "BoaFrill_Character_BP_C":
                 case "Coel_Character_BP_C":
                 case "Dragonfly_Character_BP_C":
-                case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_C":
-                case "Leech_Character_Diseased_C":
                 case "MegaCarno_Character_BP_C":
                 case "MegaRaptor_Character_BP_C":
                 case "MegaRex_Character_BP_C":
@@ -104,6 +138,20 @@ namespace ARK_Server_Manager.Lib
                 case "Salmon_Character_BP_C":
                 case "Trilobite_Character_C":
                     return false;
+
+                case "FlyingAnt_Character_BP_C":
+                case "Leech_Character_Diseased_C":
+                    return false;
+
+                case "Deathworm_Character_BP_C":
+                case "Jugbug_Oil_Character_BP_C":
+                case "Jugbug_Water_Character_BP":
+                case "Manticore_Character_BP_C":
+                case "Wyvern_Character_BP_Fire_C":
+                case "Wyvern_Character_BP_Lightning_C":
+                case "Wyvern_Character_BP_Poison_C":
+                    return false;
+
                 default:
                     return true;
             }
@@ -116,9 +164,10 @@ namespace ARK_Server_Manager.Lib
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                     return null;
+
                 default:
                     var dinoSpawn = dinoSpawns.FirstOrDefault(d => d.ClassName == className);
-                    return dinoSpawn != null ? dinoSpawn.DinoNameTag : className;
+                    return dinoSpawn?.DinoNameTag ?? className;
             }
         }
 
@@ -201,11 +250,23 @@ namespace ARK_Server_Manager.Lib
 
             new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C" },
             new ClassMultiplier { ClassName="Leech_Character_Diseased_C" },
+
+            // Scorched Earth
+            new ClassMultiplier { ClassName="camelsaurus_Character_BP_C" },
+            new ClassMultiplier { ClassName="Deathworm_Character_BP_C" },
+            new ClassMultiplier { ClassName="Jerboa_Character_BP_C" },
+            new ClassMultiplier { ClassName="Jugbug_Oil_Character_BP_C" },
+            new ClassMultiplier { ClassName="Jugbug_Water_Character_BP" },
+            new ClassMultiplier { ClassName="Manticore_Character_BP_C" },
+            new ClassMultiplier { ClassName="Mantis_Character_BP_C" },
+            new ClassMultiplier { ClassName="Moth_Character_BP_C" },
+            new ClassMultiplier { ClassName="RockGolem_Character_BP_C" },
+            new ClassMultiplier { ClassName="SpineyLizard_Character_BP_C" },
+            new ClassMultiplier { ClassName="Vulture_Character_BP_C" },
+            new ClassMultiplier { ClassName="Wyvern_Character_BP_Fire_C" },
+            new ClassMultiplier { ClassName="Wyvern_Character_BP_Lightning_C" },
+            new ClassMultiplier { ClassName="Wyvern_Character_BP_Poison_C" },
         };
-
-        public static IEnumerable<string> GetDinoClasses() => standardDinoMultipliers.Select(d => d.ClassName);
-
-        public static IEnumerable<NPCReplacement> GetNPCReplacements() => standardDinoMultipliers.Select(d => new NPCReplacement() { FromClassName = d.ClassName, ToClassName = d.ClassName });
 
         public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
 
@@ -271,6 +332,22 @@ namespace ARK_Server_Manager.Lib
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Longrass_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Rockarrot_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Savoroot_C" },
+
+            // Scorched Earth
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_FireWyvern_C" ,            ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_LightningWyvern_C" ,       ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_PoisonWyvern_C" ,          ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Clay_C" ,                           ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_KeratinSpike_C" ,                   ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_PreservingSalt_C" ,                 ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Propellant_C" ,                     ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_RawSalt_C" ,                        ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Sand_C" ,                           ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Silk_C" ,                           ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemResource_Sulfur_C" ,                         ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_CactusSap_C" ,                    ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_PlantSpeciesY_C" ,           ArkApplication=ArkApplication.ScorchedEarth },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_WyvernMilk_C" ,                   ArkApplication=ArkApplication.ScorchedEarth },
         };
 
         public static IEnumerable<ResourceClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
@@ -351,6 +428,8 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=415000 },
                 new Level { XPRequired=500000 },
                 new Level { XPRequired=600000 },
+                new Level { XPRequired=730000 },
+                new Level { XPRequired=900000 },
             };
 
         private static readonly Level[] levelProgressionPlayerOfficial = new Level[]
@@ -452,6 +531,8 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=1083538, EngramPoints=60 },
                 new Level { XPRequired=1213538, EngramPoints=60 },
                 new Level { XPRequired=1368538, EngramPoints=60 },
+                new Level { XPRequired=1558538, EngramPoints=70 },
+                new Level { XPRequired=1798538, EngramPoints=70 },
             };
 
 
@@ -805,6 +886,60 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWallWithDoor_C",              EngramLevelRequirement=10, EngramPointsCost=6 },
             new EngramEntry { EngramClassName="EngramEntry_WoodWallWithWindow_C",            EngramLevelRequirement=20, EngramPointsCost=9 },
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=25, EngramPointsCost=6 },
+
+            // Scorched Earth
+            new EngramEntry { EngramClassName="EngramEntry_AdobeCeiling_C",                  EngramLevelRequirement=15, EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeCeilingDoorGiant_C",         EngramLevelRequirement=30, EngramPointsCost=12   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeCeilingWithDoorWay_Giant_C", EngramLevelRequirement=30, EngramPointsCost=15   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeCeilingWithTrapdoor_C",      EngramLevelRequirement=20, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeDoor_C",                     EngramLevelRequirement=15, EngramPointsCost=4    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeFenceFoundation_C",          EngramLevelRequirement=15, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeFloor_C",                    EngramLevelRequirement=15, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeGate_C",                     EngramLevelRequirement=25, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeGate_Large_C",               EngramLevelRequirement=40, EngramPointsCost=15   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeGateway_C",                  EngramLevelRequirement=25, EngramPointsCost=12   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeGateway_Large_C",            EngramLevelRequirement=40, EngramPointsCost=18   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeLadder_C",                   EngramLevelRequirement=15, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobePillar_C",                   EngramLevelRequirement=20, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeRailing_C",                  EngramLevelRequirement=15, EngramPointsCost=2    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeRamp_C",                     EngramLevelRequirement=20, EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeRoof_C",                     EngramLevelRequirement=20, EngramPointsCost=5    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeSlopedWall_Left_C",          EngramLevelRequirement=20, EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeSlopedWall_Right_C",         EngramLevelRequirement=20, EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeStairs_C",                   EngramLevelRequirement=20, EngramPointsCost=15   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeTrapdoor_C",                 EngramLevelRequirement=20, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeWall_C",                     EngramLevelRequirement=15, EngramPointsCost=7    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeWallWithDoor_C",             EngramLevelRequirement=15, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeWallWithWindow_C",           EngramLevelRequirement=20, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_AdobeWindow_C",                   EngramLevelRequirement=20, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Boomerang_C",                     EngramLevelRequirement=10, EngramPointsCost=2    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_ChainSaw_C",                      EngramLevelRequirement=45, EngramPointsCost=21   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Clay_C",                          EngramLevelRequirement=5,  EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_ClusterGrenade_C",                EngramLevelRequirement=50, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_DesertClothBoots_C",              EngramLevelRequirement=30, EngramPointsCost=7    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_DesertClothGloves_C",             EngramLevelRequirement=30, EngramPointsCost=7    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_DesertClothGooglesHelmet_C",      EngramLevelRequirement=30, EngramPointsCost=7    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_DesertClothPants_C",              EngramLevelRequirement=25, EngramPointsCost=5    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_DesertClothShirt_C",              EngramLevelRequirement=25, EngramPointsCost=4    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_FlameArrow_C",                    EngramLevelRequirement=25, EngramPointsCost=15   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Flamethrower_C",                  EngramLevelRequirement=55, EngramPointsCost=25   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_FlamethrowerAmmo_C",              EngramLevelRequirement=55, EngramPointsCost=10   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Mirror_C",                        EngramLevelRequirement=35, EngramPointsCost=25   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_OilJar_C",                        EngramLevelRequirement=20, EngramPointsCost=15   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_OilPump_C",                       EngramLevelRequirement=60, EngramPointsCost=24   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_PreservingSalt_C",                EngramLevelRequirement=5,  EngramPointsCost=3    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Propellant_C",                    EngramLevelRequirement=20, EngramPointsCost=12   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_RocketHommingAmmo_C",             EngramLevelRequirement=75, EngramPointsCost=25   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Camelsaurus_C",            EngramLevelRequirement=15, EngramPointsCost=11   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Mantis_C",                 EngramLevelRequirement=50, EngramPointsCost=18   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Moth_C",                   EngramLevelRequirement=45, EngramPointsCost=12   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_RockGolem_C",              EngramLevelRequirement=65, EngramPointsCost=40   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_SpineyLizard_C",           EngramLevelRequirement=40, EngramPointsCost=18   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Tent_C",                          EngramLevelRequirement=10, EngramPointsCost=8    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_Vessel_C",                        EngramLevelRequirement=15, EngramPointsCost=10   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_WaterWell_C",                     EngramLevelRequirement=15, EngramPointsCost=10   , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_WeaponWhip_C",                    EngramLevelRequirement=15, EngramPointsCost=6    , ArkApplication=ArkApplication.ScorchedEarth },
+            new EngramEntry { EngramClassName="EngramEntry_WindTurbine_C",                   EngramLevelRequirement=45, EngramPointsCost=18   , ArkApplication=ArkApplication.ScorchedEarth },
         };
 
         public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());

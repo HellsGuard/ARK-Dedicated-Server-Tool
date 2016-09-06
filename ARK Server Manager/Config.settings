@@ -371,5 +371,8 @@
     <Setting Name="ServerAppIdFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">steam_appid.txt</Value>
     </Setting>
+    <Setting Name="DefaultServerMap_ScorchedEarth" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ScorchedEarth_P</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

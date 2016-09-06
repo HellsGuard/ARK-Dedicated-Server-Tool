@@ -288,7 +288,7 @@
     <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
-    <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded.</sys:String>
+    <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded (NOTE: will not update until the server is started).</sys:String>
     <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
     <sys:String x:Key="ServerSettings_OpenLogFolderTooltip">Open the server's logs folder.</sys:String>
     <sys:String x:Key="ServerSettings_CreateSupportZipTooltip">Create a zip file that contains all the files necessary for use by the ASM support team to diagnose a problem.</sys:String>
@@ -437,6 +437,7 @@
     <sys:String x:Key="ServerSettings_TotalConversionTooltip">The id of the total conversion mod.</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameScorchedEarthTooltip">Reset map name to the Scorched Earth map</sys:String>
     <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
     <sys:String x:Key="ServerSettings_ResetTotalConversionPrimitivePlusTooltip">Reset total conversion to Primitive +</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
@@ -720,7 +721,9 @@
     <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">Wild Resistance</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
     <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_ArkAppColumnLabel">Ark App.</sys:String>
     <sys:String x:Key="ServerSettings_SpawnableColumnLabel">Spawnable</sys:String>
     <sys:String x:Key="ServerSettings_TameableColumnLabel">Tameable</sys:String>
     <sys:String x:Key="ServerSettings_ReplacementColumnLabel">Replace With</sys:String>
@@ -791,6 +794,7 @@
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
     <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResourcesFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
     <sys:String x:Key="ServerSettings_HarvestRemoveRecordTooltip">Remove this Resource</sys:String>
 
@@ -883,7 +887,9 @@
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Ark App.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>
     <sys:String x:Key="ServerSettings_EngramsCostColumnLabel">Cost</sys:String>
     <sys:String x:Key="ServerSettings_EngramsHiddenColumnLabel">Hidden</sys:String>
@@ -1239,6 +1245,22 @@
     <sys:String x:Key="FlyingAnt_Character_BP_C">Titanomyrma Soldier</sys:String>
     <sys:String x:Key="Leech_Character_Diseased_C">Diseased Leech</sys:String>
 
+    <!-- Dino/Creature Class Names - Scorched Earth -->
+    <sys:String x:Key="camelsaurus_Character_BP_C">Morellatops</sys:String>
+    <sys:String x:Key="Deathworm_Character_BP_C">Deathworm</sys:String>
+    <sys:String x:Key="Jerboa_Character_BP_C">Jerboa</sys:String>
+    <sys:String x:Key="Jugbug_Oil_Character_BP_C">Jug Bug (Oil)</sys:String>
+    <sys:String x:Key="Jugbug_Water_Character_BP">Jug Bug (Water)</sys:String>
+    <sys:String x:Key="Manticore_Character_BP_C">Manticore</sys:String>
+    <sys:String x:Key="Mantis_Character_BP_C">Mantis</sys:String>
+    <sys:String x:Key="Moth_Character_BP_C">Lymantria</sys:String>
+    <sys:String x:Key="RockGolem_Character_BP_C">Rock Elemental</sys:String>
+    <sys:String x:Key="SpineyLizard_Character_BP_C">Thorny Dragon</sys:String>
+    <sys:String x:Key="Vulture_Character_BP_C">Vulture</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Fire_C">Wyvern (Fire)</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Lightning_C">Wyvern (Lightning)</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Poison_C">Wyvern (Poison)</sys:String>
+
     <!-- Resource Class Names -->
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">AnglerGel</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
@@ -1300,6 +1322,22 @@
     <sys:String x:Key="PrimalItemConsumable_Seed_Longrass_C">Longrass Seed</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Seed_Rockarrot_C">Rockarrot Seed</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Seed_Savoroot_C">Savoroot Seed</sys:String>
+
+    <!-- Resource Class Names - Scorched Earth -->
+    <sys:String x:Key="PrimalItemResource_ApexDrop_FireWyvern_C">Talon (Fire)</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_LightningWyvern_C">Talon (Lightning)</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_PoisonWyvern_C">Talon (Poison)</sys:String>
+    <sys:String x:Key="PrimalItemResource_Clay_C">Clay</sys:String>
+    <sys:String x:Key="PrimalItemResource_KeratinSpike_C">Deathworm Horn</sys:String>
+    <sys:String x:Key="PrimalItemResource_PreservingSalt_C">Preserving Salt</sys:String>
+    <sys:String x:Key="PrimalItemResource_Propellant_C">Propellant</sys:String>
+    <sys:String x:Key="PrimalItemResource_RawSalt_C">Raw Salt</sys:String>
+    <sys:String x:Key="PrimalItemResource_Sand_C">Sand</sys:String>
+    <sys:String x:Key="PrimalItemResource_Silk_C">Silk</sys:String>
+    <sys:String x:Key="PrimalItemResource_Sulfur_C">Sulfur</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_CactusSap_C">Cactus Sap</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Seed_PlantSpeciesY_C">Plant Species Y Seed</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_WyvernMilk_C">Wyvern Milk</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Advanced Bullet</sys:String>
@@ -1646,5 +1684,59 @@
     <sys:String x:Key="EngramEntry_WoodWallWithDoor_C">Wooden Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithWindow_C">Wooden Windowframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWindow_C">Wooden Window</sys:String>
+
+    <!-- Engram Class Names - Scorched Earth -->
+    <sys:String x:Key="EngramEntry_AdobeCeiling_C">Adobe Ceiling</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeCeilingDoorGiant_C">Giant Adobe Trapdoor</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeCeilingWithDoorWay_Giant_C">Giant Adobe Hatchframe</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeCeilingWithTrapdoor_C">Adobe Hatchframe</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeDoor_C">Adobe Door</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeFenceFoundation_C">Adobe Fence Foundation</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeFloor_C">Adobe Foundation</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeGate_C">Adobe Dinosaur Gate</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeGate_Large_C">Behemoth Adobe Dinosaur Gate</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeGateway_C">Adobe Dinosaur Gateway</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeGateway_Large_C">Behemoth Adobe Dinosaur Gateway</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeLadder_C">Adobe Ladder</sys:String>
+    <sys:String x:Key="EngramEntry_AdobePillar_C">Adobe Pillar</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeRailing_C">Adobe Railing</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeRamp_C">Adobe Ramp</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeRoof_C">Adobe Roof Sloped</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeSlopedWall_Left_C">Adobe Wall Sloped Left</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeSlopedWall_Right_C">Adobe Wall Sloped Right</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeStairs_C">Adobe Staircase</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeTrapdoor_C">Adobe Trapdoor</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeWall_C">Adobe Wall</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeWallWithDoor_C">Adobe Doorframe</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeWallWithWindow_C">Adobe Windowframe</sys:String>
+    <sys:String x:Key="EngramEntry_AdobeWindow_C">Adobe Window</sys:String>
+    <sys:String x:Key="EngramEntry_Boomerang_C">Boomerang</sys:String>
+    <sys:String x:Key="EngramEntry_ChainSaw_C">Chainsaw</sys:String>
+    <sys:String x:Key="EngramEntry_Clay_C">Clay</sys:String>
+    <sys:String x:Key="EngramEntry_ClusterGrenade_C">Cluster Grenade</sys:String>
+    <sys:String x:Key="EngramEntry_DesertClothBoots_C">Desert Cloth Boots</sys:String>
+    <sys:String x:Key="EngramEntry_DesertClothGloves_C">Desert Cloth Gloves</sys:String>
+    <sys:String x:Key="EngramEntry_DesertClothGooglesHelmet_C">Desert Goggles and Hat</sys:String>
+    <sys:String x:Key="EngramEntry_DesertClothPants_C">Desert Cloth Pants</sys:String>
+    <sys:String x:Key="EngramEntry_DesertClothShirt_C">Desert Cloth Shirt</sys:String>
+    <sys:String x:Key="EngramEntry_FlameArrow_C">Flame Arrow</sys:String>
+    <sys:String x:Key="EngramEntry_Flamethrower_C">Flamethrower</sys:String>
+    <sys:String x:Key="EngramEntry_FlamethrowerAmmo_C">Flamethrower Ammo</sys:String>
+    <sys:String x:Key="EngramEntry_Mirror_C">Mirror</sys:String>
+    <sys:String x:Key="EngramEntry_OilJar_C">Oil Jar</sys:String>
+    <sys:String x:Key="EngramEntry_OilPump_C">Oil Pump</sys:String>
+    <sys:String x:Key="EngramEntry_PreservingSalt_C">Preserving Salt</sys:String>
+    <sys:String x:Key="EngramEntry_Propellant_C">Propellant</sys:String>
+    <sys:String x:Key="EngramEntry_RocketHommingAmmo_C">Rocket Homing Missile</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Camelsaurus_C">Saddle - Morellatops</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Mantis_C">Saddle - Mantis</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Moth_C">Saddle - Lymantria</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_RockGolem_C">Saddle - Rock Golem</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_SpineyLizard_C">Saddle - Thorny Dragon</sys:String>
+    <sys:String x:Key="EngramEntry_Tent_C">Tent</sys:String>
+    <sys:String x:Key="EngramEntry_Vessel_C">Vessel</sys:String>
+    <sys:String x:Key="EngramEntry_WaterWell_C">Water Well</sys:String>
+    <sys:String x:Key="EngramEntry_WeaponWhip_C">Whip</sys:String>
+    <sys:String x:Key="EngramEntry_WindTurbine_C">Wind Turbine</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>

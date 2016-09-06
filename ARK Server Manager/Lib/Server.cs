@@ -30,7 +30,13 @@ namespace ARK_Server_Manager.Lib
 
         public void Dispose()
         {
+            this.Runtime.StatusUpdate -= Runtime_StatusUpdate;
             this.Runtime.Dispose();
+        }
+
+        private void Runtime_StatusUpdate(object sender, EventArgs eventArgs)
+        {
+            this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
         }
 
         public void ImportFromPath(string path)
@@ -44,6 +50,8 @@ namespace ARK_Server_Manager.Lib
             this.Profile = profile;
             this.Runtime = new ServerRuntime();
             this.Runtime.AttachToProfile(this.Profile).Wait();
+
+            this.Runtime.StatusUpdate += Runtime_StatusUpdate;
         }
 
         public static Server FromPath(string path)

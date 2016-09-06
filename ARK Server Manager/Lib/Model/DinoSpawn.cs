@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Xml.Serialization;
-using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {   
@@ -13,11 +12,18 @@ namespace ARK_Server_Manager.Lib
         public const float DefaultSpawnLimitPercentage = ClassMultiplier.DefaultMultiplier;
         public const float DefaultSpawnWeightMultiplier = ClassMultiplier.DefaultMultiplier;
 
+        public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSpawn), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(DefaultOverrideSpawnLimitPercentage));
         public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DefaultSpawnLimitPercentage));
         public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DefaultSpawnWeightMultiplier));
+
+        public ArkApplication ArkApplication
+        {
+            get { return (ArkApplication)GetValue(ArkApplicationProperty); }
+            set { SetValue(ArkApplicationProperty, value); }
+        }
 
         public string ClassName
         {

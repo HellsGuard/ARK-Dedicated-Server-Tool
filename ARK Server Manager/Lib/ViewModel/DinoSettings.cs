@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib.ViewModel
@@ -12,6 +8,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
     //
     public class DinoSettings : DependencyObject
     {
+        public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSettings), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty FriendlyNameProperty = DependencyProperty.Register(nameof(FriendlyName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
@@ -24,6 +21,12 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public static readonly DependencyProperty TamedResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
         public static readonly DependencyProperty WildDamageMultiplierProperty = DependencyProperty.Register(nameof(WildDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
         public static readonly DependencyProperty WildResistanceMultiplierProperty = DependencyProperty.Register(nameof(WildResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
+
+        public ArkApplication ArkApplication
+        {
+            get { return (ArkApplication)GetValue(ArkApplicationProperty); }
+            set { SetValue(ArkApplicationProperty, value); }
+        }
 
         public string FriendlyName
         {
@@ -107,6 +110,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
         {
             return new DinoSettings()
             {
+                ArkApplication = ArkApplication,
                 ClassName = ClassName,
                 FriendlyName = FriendlyName,
                 NameTag = NameTag,

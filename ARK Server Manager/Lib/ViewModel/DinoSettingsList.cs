@@ -18,13 +18,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
             Reset();
         }
 
-        public DinoSettingsList(AggregateIniValueList<DinoSpawn> dinoSpawnWeightMultipliers, 
-                                StringIniValueList preventDinoTameClassNames,
-                                AggregateIniValueList<NPCReplacement> npcReplacements,
-                                AggregateIniValueList<ClassMultiplier> tamedDinoClassDamageMultipliers, 
-                                AggregateIniValueList<ClassMultiplier> tamedDinoClassResistanceMultipliers,
-                                AggregateIniValueList<ClassMultiplier> dinoClassDamageMultipliers,
-                                AggregateIniValueList<ClassMultiplier> dinoClassResistanceMultipliers)
+        public DinoSettingsList(AggregateIniValueList<DinoSpawn> dinoSpawnWeightMultipliers, StringIniValueList preventDinoTameClassNames, AggregateIniValueList<NPCReplacement> npcReplacements,
+                                AggregateIniValueList<ClassMultiplier> tamedDinoClassDamageMultipliers, AggregateIniValueList<ClassMultiplier> tamedDinoClassResistanceMultipliers,
+                                AggregateIniValueList<ClassMultiplier> dinoClassDamageMultipliers, AggregateIniValueList<ClassMultiplier> dinoClassResistanceMultipliers)
         {
             this.DinoSpawnWeightMultipliers = dinoSpawnWeightMultipliers;
             this.PreventDinoTameClassNames = preventDinoTameClassNames;
@@ -36,10 +32,11 @@ namespace ARK_Server_Manager.Lib.ViewModel
             Reset();
         }
 
-        private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName)
+        private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
         {
             return new DinoSettings()
             {
+                ArkApplication = arkApplication,
                 ClassName = className,
                 FriendlyName = GameData.FriendlyNameForClass(className),
                 NameTag = GameData.NameTagForClass(className),
@@ -80,9 +77,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public void Reset()
         {
             this.Clear();
-            foreach(var entry in GameData.GetDinoClasses())
+
+            foreach (var entry in GameData.GetDinoSpawns())
             {
-                this.Add(CreateDinoSetting(entry, true, true, true));
+                this.Add(CreateDinoSetting(entry.ClassName, true, true, true, entry.ArkApplication));
             }
 
             // sort the collection by the friendly name.
@@ -98,7 +96,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.DinoNameTag, false, true, false));
+                    this.Add(CreateDinoSetting(entry.DinoNameTag, false, true, false, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
@@ -115,7 +113,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry, false, false, true));
+                    this.Add(CreateDinoSetting(entry, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
@@ -130,7 +128,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.FromClassName, false, false, true));
+                    this.Add(CreateDinoSetting(entry.FromClassName, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
@@ -146,7 +144,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true));
+                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -161,7 +159,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true));
+                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -176,7 +174,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true));
+                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -191,7 +189,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true));
+                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
