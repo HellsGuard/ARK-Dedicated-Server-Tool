@@ -34,15 +34,19 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
         private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
         {
+            var nameTag = GameData.NameTagForClass(className);
+            var friendlyName = GameData.FriendlyNameForClass(className);
+            var isTameable = GameData.IsTameableForClass(className);
+
             return new DinoSettings()
             {
                 ArkApplication = arkApplication,
                 ClassName = className,
-                FriendlyName = GameData.FriendlyNameForClass(className),
-                NameTag = GameData.NameTagForClass(className),
+                FriendlyName = friendlyName,
+                NameTag = nameTag,
 
                 CanSpawn = true,
-                CanTame = GameData.IsTameableForClass(className),
+                CanTame = isTameable,
                 ReplacementClass = className,
 
                 SpawnWeightMultiplier = DinoSpawn.DefaultSpawnWeightMultiplier,
@@ -55,9 +59,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 WildResistanceMultiplier = ClassMultiplier.DefaultMultiplier,
 
                 KnownDino = knownDino,
-                HasNameTag = hasNameTag,
                 HasClassName = hasClassName,
-                IsTameable = GameData.IsTameableForClass(className),
+                HasNameTag = hasNameTag,
+                IsTameable = isTameable,
             };
         }
 
@@ -78,9 +82,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
         {
             this.Clear();
 
-            foreach (var entry in GameData.GetDinoSpawns())
+            var dinoSpawns = GameData.GetDinoSpawns();
+            foreach (var entry in dinoSpawns)
             {
-                this.Add(CreateDinoSetting(entry.ClassName, true, true, true, entry.ArkApplication));
+                this.Add(CreateDinoSetting(entry.ClassName, true, entry.DinoNameTag != null, true, entry.ArkApplication));
             }
 
             // sort the collection by the friendly name.

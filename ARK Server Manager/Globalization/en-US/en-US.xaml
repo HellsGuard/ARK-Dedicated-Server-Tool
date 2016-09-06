@@ -1249,17 +1249,18 @@
     <sys:String x:Key="camelsaurus_Character_BP_C">Morellatops</sys:String>
     <sys:String x:Key="Deathworm_Character_BP_C">Deathworm</sys:String>
     <sys:String x:Key="Jerboa_Character_BP_C">Jerboa</sys:String>
-    <sys:String x:Key="Jugbug_Oil_Character_BP_C">Jug Bug (Oil)</sys:String>
-    <sys:String x:Key="Jugbug_Water_Character_BP">Jug Bug (Water)</sys:String>
+    <sys:String x:Key="Jugbug_Oil_Character_BP_C">Oil Jug Bug</sys:String>
     <sys:String x:Key="Manticore_Character_BP_C">Manticore</sys:String>
     <sys:String x:Key="Mantis_Character_BP_C">Mantis</sys:String>
     <sys:String x:Key="Moth_Character_BP_C">Lymantria</sys:String>
     <sys:String x:Key="RockGolem_Character_BP_C">Rock Elemental</sys:String>
     <sys:String x:Key="SpineyLizard_Character_BP_C">Thorny Dragon</sys:String>
     <sys:String x:Key="Vulture_Character_BP_C">Vulture</sys:String>
-    <sys:String x:Key="Wyvern_Character_BP_Fire_C">Wyvern (Fire)</sys:String>
-    <sys:String x:Key="Wyvern_Character_BP_Lightning_C">Wyvern (Lightning)</sys:String>
-    <sys:String x:Key="Wyvern_Character_BP_Poison_C">Wyvern (Poison)</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Fire_C">Fire Wyvern</sys:String>
+
+    <sys:String x:Key="Jugbug_Water_Character_BP_C">Water Jug Bug</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Lightning_C">Lightning Wyvern</sys:String>
+    <sys:String x:Key="Wyvern_Character_BP_Poison_C">Poison Wyvern</sys:String>
 
     <!-- Resource Class Names -->
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">AnglerGel</sys:String>
