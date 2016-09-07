@@ -680,10 +680,17 @@ namespace ARK_Server_Manager
             var profileClustersFolder = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ClustersDir);
             if (Directory.Exists(profileClustersFolder))
             {
-                if (MessageBox.Show("Cluster folder already exists for this server, do you want to recreate?", "Cluster Folder Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                if (MachineUtils.IsDirectorySymbolic(profileClustersFolder))
+                {
+                    if (MessageBox.Show("Cluster folder already exists for this server, do you want to recreate?", "Cluster Folder Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                        return;
+                    Directory.Delete(profileClustersFolder);
+                }
+                else
+                {
+                    MessageBox.Show("The SymLink could not be created, a folder called Clusters already exists for this profile. Delete the Clusters folder and try again.", "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
-
-                Directory.Delete(profileClustersFolder);
+                }
             }
 
             try

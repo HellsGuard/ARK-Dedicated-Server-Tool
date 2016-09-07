@@ -2532,7 +2532,7 @@ namespace ARK_Server_Manager.Lib
                                     var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
                                     if (modDetail != null)
                                     {
-                                        if (!modDetail.creator_app_id.Equals(appId))
+                                        if (!modDetail.consumer_app_id.Equals(appId))
                                             result.AppendLine("The map mod is for a different Ark application.");
                                         else
                                         {
@@ -2577,7 +2577,7 @@ namespace ARK_Server_Manager.Lib
                                     var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
                                     if (modDetail != null)
                                     {
-                                        if (!modDetail.creator_app_id.Equals(appId))
+                                        if (!modDetail.consumer_app_id.Equals(appId))
                                             result.AppendLine("The total conversion mod is for a different Ark application.");
                                         else
                                         {
@@ -2605,7 +2605,7 @@ namespace ARK_Server_Manager.Lib
                         var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(modId));
                         if (modDetail != null)
                         {
-                            if (!modDetail.creator_app_id.Equals(appId))
+                            if (!modDetail.consumer_app_id.Equals(appId))
                                 result.AppendLine($"Mod {modId} is for a different Ark application.");
                             else
                             {
