@@ -622,7 +622,7 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage("Updated server from cache.");
                             LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
 
-                            LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287/.");
+                            LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287");
                         }
                         else
                         {
@@ -681,8 +681,8 @@ namespace ARK_Server_Manager.Lib
                                         var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
                                         LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
 
-                                        LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}.");
-                                        LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}.");
+                                        LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
+                                        LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
 
                                         LogProfileMessage($"Finished mod {modId} update from cache.");
                                     }
