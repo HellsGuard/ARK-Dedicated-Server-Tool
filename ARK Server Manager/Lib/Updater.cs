@@ -266,7 +266,7 @@ namespace ARK_Server_Manager.Lib
             script.AppendLine($"rmdir /s /q {backupPath.AsQuoted()}");
             script.AppendLine($"rename {currentInstallPath.AsQuoted()} {Path.GetFileName(backupPath).AsQuoted()}");
             script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
-            script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()}");
+            script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()} {App.Instance.Args}");
             script.AppendLine("exit");
 
             ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);

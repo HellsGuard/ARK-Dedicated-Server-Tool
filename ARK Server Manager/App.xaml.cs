@@ -21,10 +21,10 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class App : GlobalizedApplication
     {
-        private const string ARG_AUTORESTART = "-ar";
-        private const string ARG_AUTOUPDATE = "-au";
-        private const string ARG_BETA = "-beta";
-        private const string ARG_RCON = "-rcon";
+        public const string ARG_AUTORESTART = "-ar";
+        public const string ARG_AUTOUPDATE = "-au";
+        public const string ARG_BETA = "-beta";
+        public const string ARG_RCON = "-rcon";
 
         public new static App Instance
         {
@@ -49,6 +49,7 @@ namespace ARK_Server_Manager
         public App()
         {
             ApplicationStarted = false;
+            Args = string.Empty;
             BetaVersion = false;
 
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
@@ -57,6 +58,12 @@ namespace ARK_Server_Manager
 
             ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
+        }
+
+        public string Args
+        {
+            get;
+            set;
         }
 
         public bool BetaVersion
@@ -187,6 +194,8 @@ namespace ARK_Server_Manager
 
             if (!string.IsNullOrWhiteSpace(Config.Default.StyleName))
                 _globalizer.StyleManager.SwitchStyle($"{Config.Default.StyleName}.xaml");
+
+            Args = string.Join(" ", e.Args);
 
             // check if we are starting ASM for server restart
             if (e.Args.Any(a => a.StartsWith(ARG_BETA)))
