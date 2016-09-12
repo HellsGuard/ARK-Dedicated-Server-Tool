@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,10 +26,10 @@ namespace ARK_Server_Manager.Lib
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool AttachConsole(uint dwProcessId);
+        private static extern bool AttachConsole(uint dwProcessId);
 
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        static extern bool FreeConsole();
+        private static extern bool FreeConsole();
 
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -36,9 +38,22 @@ namespace ARK_Server_Manager.Lib
         [DllImport("kernel32.dll")]
         static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
 
+        [DllImport("user32.dll")]
+        private static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern int IsIconic(IntPtr hWnd);
+
         public static string FIELD_COMMANDLINE = "CommandLine";
         public static string FIELD_EXECUTABLEPATH = "ExecutablePath";
         public static string FIELD_PROCESSID = "ProcessId";
+
+        private const int SW_RESTORE = 9;
+
+        private static Mutex _mutex;
 
         public static string GetCommandLineForProcess(int processId)
         {
@@ -155,6 +170,56 @@ namespace ARK_Server_Manager.Lib
                 });
                 return tcs.Task;
             }
+        }
+
+        private static IntPtr GetCurrentInstanceWindowHandle()
+        {
+            var hWnd = IntPtr.Zero;
+            var currentProcess = Process.GetCurrentProcess();
+
+            var processes = Process.GetProcessesByName(currentProcess.ProcessName);
+            foreach (var process in processes)
+            {
+                // Get the first instance that is not this instance, has the same process name and was started from the same file name
+                // and location. Also check that the process has a valid window handle in this session to filter out other user's processes.
+                if (process.Id != currentProcess.Id && process.MainModule.FileName == currentProcess.MainModule.FileName && process.MainWindowHandle != IntPtr.Zero)
+                {
+                    hWnd = process.MainWindowHandle;
+                    break;
+                }
+            }
+
+            return hWnd;
+        }
+
+        public static bool IsAlreadyRunning()
+        {
+            var assemblyLocation = Assembly.GetEntryAssembly().Location;
+            var name = $"Global::{Path.GetFileName(assemblyLocation)}";
+
+            bool createdNew;
+            _mutex = new Mutex(true, name, out createdNew);
+            if (createdNew)
+                _mutex.ReleaseMutex();
+
+            return !createdNew;
+        }
+
+        public static bool SwitchToCurrentInstance()
+        {
+            var hWnd = GetCurrentInstanceWindowHandle();
+            if (hWnd == IntPtr.Zero)
+                return false;
+
+            // Restore window if minimised. Do not restore if already in normal or maximised window state, since we don't want to
+            // change the current state of the window.
+            if (IsIconic(hWnd) != 0)
+                ShowWindow(hWnd, SW_RESTORE);
+
+            // Set foreground window.
+            SetForegroundWindow(hWnd);
+
+            return true;
         }
     }
 }

@@ -257,6 +257,24 @@ namespace ARK_Server_Manager
                 }
             }
 
+            // check if application is already running
+            if (ProcessUtils.IsAlreadyRunning())
+            {
+                var result = MessageBox.Show(_globalizer.GetResourceString("Application_SingleInstanceLabel"), _globalizer.GetResourceString("Application_SingleInstanceTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (ProcessUtils.SwitchToCurrentInstance())
+                    {
+                        // Shut down the current process
+                        Application.Current.Shutdown();
+
+                        return;
+                    }
+
+                    MessageBox.Show(_globalizer.GetResourceString("Application_SingleInstance_FailedLabel"), _globalizer.GetResourceString("Application_SingleInstance_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
             ApplicationStarted = true;
 
             // Initial configuration setting

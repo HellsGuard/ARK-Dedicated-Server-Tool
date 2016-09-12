@@ -14,6 +14,10 @@
     <sys:String x:Key="Application_RunAsAdministratorLabel">This application requires administration priviledges to access ALL functionality. Would you like to Run as Administrator?</sys:String>
     <sys:String x:Key="Application_RunAsAdministrator_FailedTitle">Run as Administrator Failed</sys:String>
     <sys:String x:Key="Application_RunAsAdministrator_FailedLabel">Sorry, this application could not be Run as Administrator, reverting back to user priviledges.</sys:String>
+    <sys:String x:Key="Application_SingleInstanceTitle">Application Already Running</sys:String>
+    <sys:String x:Key="Application_SingleInstanceLabel">Another instance of the application is already running. Do you want to switch to that instance?</sys:String>
+    <sys:String x:Key="Application_SingleInstance_FailedTitle">Application Switch Failed</sys:String>
+    <sys:String x:Key="Application_SingleInstance_FailedLabel">Failed to switch to the other application instance. Starting new application instance.</sys:String>
 
 
     <sys:String x:Key="Application_DataDirectoryTitle">Select Data Directory</sys:String>
