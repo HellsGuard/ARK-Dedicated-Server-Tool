@@ -1561,7 +1561,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EnableStructureDecayPvEProperty = DependencyProperty.Register(nameof(EnableStructureDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "bDisableStructureDecayPVE", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecayPvE
         {
             get { return (bool)GetValue(EnableStructureDecayPvEProperty); }
