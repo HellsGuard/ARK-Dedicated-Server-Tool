@@ -24,12 +24,19 @@ namespace ARK_Server_Manager
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private ActionQueue versionChecker;
 
+        public static readonly DependencyProperty BetaVersionProperty = DependencyProperty.Register(nameof(BetaVersion), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
         public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register(nameof(IsIpValid), typeof(bool), typeof(MainWindow));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(MainWindow));
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
-        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));   
-        
+        public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        public bool BetaVersion
+        {
+            get { return (bool)GetValue(BetaVersionProperty); }
+            set { SetValue(BetaVersionProperty, value); }
+        }
+
         public bool IsIpValid
         {
             get { return (bool)GetValue(IsIpValidProperty); }
@@ -63,6 +70,7 @@ namespace ARK_Server_Manager
 
         public MainWindow()
         {
+            BetaVersion = App.Instance.BetaVersion;
             this.CurrentConfig = Config.Default;
 
             InitializeComponent();
@@ -110,7 +118,10 @@ namespace ARK_Server_Manager
 
         private void ASMPatchNotes_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(Config.Default.ASM_PatchNotesUrl);
+            if (BetaVersion)
+                Process.Start(Config.Default.LatestASMBetaPatchNotesUrl);
+            else
+                Process.Start(Config.Default.LatestASMPatchNotesUrl);
         }
 
         private void Donate_Click(object sender, RoutedEventArgs e)

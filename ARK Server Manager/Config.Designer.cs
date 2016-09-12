@@ -25,15 +25,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.dropbox.com/s/a6v1obnqigu2bpu/version.txt?dl=1")]
-        public string DefaultVersionCheckUrl {
-            get {
-                return ((string)(this["DefaultVersionCheckUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip")]
         public string SteamCmdUrl {
             get {
@@ -307,24 +298,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://api.ark.bar/version")]
-        public string AvailableVersionUrl {
-            get {
-                return ((string)(this["AvailableVersionUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkdedicated.com/version")]
-        public string AvailableVersionUrl2 {
-            get {
-                return ((string)(this["AvailableVersionUrl2"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://api.ark.bar/server/{0}/{1}")]
         public string ServerStatusUrlFormat {
             get {
@@ -365,15 +338,6 @@ namespace ARK_Server_Manager {
         public string SavedArksRelativePath {
             get {
                 return ((string)(this["SavedArksRelativePath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/latest.zip")]
-        public string ASM_DownloadUrl {
-            get {
-                return ((string)(this["ASM_DownloadUrl"]));
             }
         }
         
@@ -698,15 +662,6 @@ namespace ARK_Server_Manager {
         public string ArkSotfUrl {
             get {
                 return ((string)(this["ArkSotfUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3/downloads")]
-        public string ASM_PatchNotesUrl {
-            get {
-                return ((string)(this["ASM_PatchNotesUrl"]));
             }
         }
         
@@ -1318,6 +1273,57 @@ namespace ARK_Server_Manager {
         public string ClustersDir {
             get {
                 return ((string)(this["ClustersDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/beta/latest.txt")]
+        public string LatestASMBetaVersionUrl {
+            get {
+                return ((string)(this["LatestASMBetaVersionUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/beta/latest.zip")]
+        public string LatestASMBetaDownloadUrl {
+            get {
+                return ((string)(this["LatestASMBetaDownloadUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.s3.amazonaws.com/release/latest.zip")]
+        public string LatestASMDownloadUrl {
+            get {
+                return ((string)(this["LatestASMDownloadUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3/downloads")]
+        public string LatestASMPatchNotesUrl {
+            get {
+                return ((string)(this["LatestASMPatchNotesUrl"]));
+            }
+            set {
+                this["LatestASMPatchNotesUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/board/11/beta-testers")]
+        public string LatestASMBetaPatchNotesUrl {
+            get {
+                return ((string)(this["LatestASMBetaPatchNotesUrl"]));
+            }
+            set {
+                this["LatestASMBetaPatchNotesUrl"] = value;
             }
         }
     }

@@ -56,8 +56,7 @@ namespace ARK_Server_Manager.Lib
                 if(ipProperties != null)
                 {
                     adapters.AddRange(ipProperties.UnicastAddresses.Select(a => a.Address)
-                                                                   .Where(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && 
-                                                                               !IPAddress.IsLoopback(a))
+                                                                   .Where(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !IPAddress.IsLoopback(a))
                                                                    .Select(a => new NetworkAdapterEntry(a, ifc.Description)));
                 }
             }
@@ -71,7 +70,13 @@ namespace ARK_Server_Manager.Lib
             {
                 try
                 {
-                    var latestVersion = await webClient.DownloadStringTaskAsync(Config.Default.LatestASMVersionUrl);
+                    string latestVersion = null;
+
+                    if (App.Instance.BetaVersion)
+                        latestVersion = await webClient.DownloadStringTaskAsync(Config.Default.LatestASMBetaVersionUrl);
+                    else
+                        latestVersion = await webClient.DownloadStringTaskAsync(Config.Default.LatestASMVersionUrl);
+
                     return Version.Parse(latestVersion);
                 }
                 catch (Exception ex)
@@ -166,87 +171,6 @@ namespace ARK_Server_Manager.Lib
 
             ver = new Version();
             return false;
-        }
-
-        public static async Task<AvailableVersion> GetLatestAvailableVersion()
-        {
-            AvailableVersion result = new AvailableVersion();
-            try
-            {
-                string jsonString;                
-                using (var client = new WebClient())
-                {
-                    jsonString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl);
-                }
-                JObject query = JObject.Parse(jsonString);
-
-                var availableVersion = Convert.ToString(query.SelectToken("current"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
-                var upcomingVersion = Convert.ToString(query.SelectToken("upcoming.version"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
-                var upcomingStatus = query.SelectToken("upcoming.status");
-
-                if (availableVersion != null)
-                {
-                    Version ver;
-                    string versionString = availableVersion.ToString();
-                    if(versionString.IndexOf('.') == -1)
-                    {
-                        versionString = versionString + ".0";
-                    }
-                    result.IsValid = Version.TryParse(versionString, out ver);
-                    result.Current = ver;
-                }
-
-                if (upcomingVersion != null)
-                {
-                    Version ver;
-                    string versionString = upcomingVersion.ToString();
-                    if (versionString.IndexOf('.') == -1)
-                    {
-                        versionString = versionString + ".0";
-                    }
-                    Version.TryParse(versionString, out ver);
-                    result.Upcoming = ver;
-                }
-
-                if (upcomingStatus != null)
-                {
-                    result.UpcomingETA = upcomingStatus.ToString();
-                }
-
-                // if successful then exist here and return the result
-                return result;
-            }
-            catch (Exception ex)
-            {
-                logger.Debug(String.Format("Exception checking for version (method 1): {0}\r\n{1}", ex.Message, ex.StackTrace));                
-            }
-
-            try
-            {
-                string webString;
-                using (var client = new WebClient())
-                {
-                    webString = await client.DownloadStringTaskAsync(Config.Default.AvailableVersionUrl2);
-                }
-
-                if (!string.IsNullOrWhiteSpace(webString))
-                {
-                    Version ver;
-                    string versionString = webString.ToString();
-                    if (versionString.IndexOf('.') == -1)
-                    {
-                        versionString = versionString + ".0";
-                    }
-                    result.IsValid = Version.TryParse(versionString, out ver);
-                    result.Current = ver;
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Debug(String.Format("Exception checking for version (method 2): {0}\r\n{1}", ex.Message, ex.StackTrace));
-            }
-
-            return result;
         }
 
         public class ServerNetworkInfo

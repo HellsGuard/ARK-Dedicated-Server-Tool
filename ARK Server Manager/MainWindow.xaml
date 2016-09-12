@@ -25,16 +25,38 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="#FF4F4F4F" LastChildFill="False">
+        <DockPanel Grid.Row="0" LastChildFill="False">
+            <DockPanel.Style>
+                <Style TargetType="{x:Type DockPanel}">
+                    <Setter Property="Background" Value="#FF4F4F4F"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=Main, Path=BetaVersion}" Value="True">
+                            <Setter Property="Background" Value="#0D00FE"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            
             <Grid DockPanel.Dock="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Content="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
+                <Label Grid.Row="0" Background="Transparent" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Content="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{DynamicResource MainWindow_VersionLabel}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Label.Style>
+                            <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                <Setter Property="Content" Value="{DynamicResource MainWindow_VersionLabel}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Main, Path=BetaVersion}" Value="True">
+                                        <Setter Property="Content" Value="{DynamicResource MainWindow_BetaVersionLabel}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Button Margin="5" Click="ASMPatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
                         <Image Source="Art/Help.png" Height="16" Margin="0" />
                     </Button>
@@ -54,12 +76,13 @@
                     </Button>
                 </StackPanel>
             </Grid>
+            
             <Grid VerticalAlignment="Top" Margin="10,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="0" Background="#FF4F4F4F" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_MyIpLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Label Grid.Row="0" Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_MyIpLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
                     <TextBox FontSize="12"  Height="22" Width="250" VerticalAlignment="Bottom" Margin="0" VerticalContentAlignment="Center" ToolTip="{DynamicResource MainWindow_MyIpTooltip}">
                         <Validation.ErrorTemplate>
@@ -85,6 +108,7 @@
                     </Button>
                 </StackPanel>
             </Grid>
+            
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                     <Image Source="Art/Donate.png" />
@@ -105,9 +129,8 @@
                     <Image Source="Art/Help.png" Width="16"/>
                 </Button>
             </StackPanel>
- 
-
         </DockPanel>
+        
         <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,0" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
             <eo:TabControl.HeaderTemplate>
                 <DataTemplate >

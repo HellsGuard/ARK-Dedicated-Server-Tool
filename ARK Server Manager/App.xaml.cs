@@ -23,6 +23,7 @@ namespace ARK_Server_Manager
     {
         private const string ARG_AUTORESTART = "-ar";
         private const string ARG_AUTOUPDATE = "-au";
+        private const string ARG_BETA = "-beta";
         private const string ARG_RCON = "-rcon";
 
         public new static App Instance
@@ -48,6 +49,7 @@ namespace ARK_Server_Manager
         public App()
         {
             ApplicationStarted = false;
+            BetaVersion = false;
 
             AppDomain.CurrentDomain.UnhandledException += ErrorHandling.CurrentDomain_UnhandledException;
             App.Instance = this;
@@ -55,6 +57,12 @@ namespace ARK_Server_Manager
 
             ReconfigureLogging();
             App.Version = App.GetDeployedVersion();
+        }
+
+        public bool BetaVersion
+        {
+            get;
+            set;
         }
 
         public static async Task DiscoverMachinePublicIP(bool forceOverride)
@@ -179,6 +187,12 @@ namespace ARK_Server_Manager
 
             if (!string.IsNullOrWhiteSpace(Config.Default.StyleName))
                 _globalizer.StyleManager.SwitchStyle($"{Config.Default.StyleName}.xaml");
+
+            // check if we are starting ASM for server restart
+            if (e.Args.Any(a => a.StartsWith(ARG_BETA)))
+            {
+                BetaVersion = true;
+            }
 
             // check if we are starting ASM for server restart
             if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))
