@@ -44,8 +44,7 @@ Create-Zip $publishDestFile $publishSrcDir
 
 $batchFileContent = @"
 set AWS_DEFAULT_PROFILE=ASMPublish
-aws s3 cp "$($publishDestFile)" s3://arkservermanager/beta/
-aws s3 cp s3://arkservermanager/beta/$($publishDestFileName) s3://arkservermanager/beta/latest.zip
+aws s3 cp "$($publishDestFile)" s3://arkservermanager/beta/latest.zip
 aws s3 cp "$($destFile)" s3://arkservermanager/beta/latest.txt
 "@
 
