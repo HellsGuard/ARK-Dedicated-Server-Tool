@@ -1326,5 +1326,35 @@ namespace ARK_Server_Manager {
                 this["LatestASMBetaPatchNotesUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PlayersJoinNoCheckList.txt")]
+        public string ArkWhitelistFile {
+            get {
+                return ((string)(this["ArkWhitelistFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AllowedCheaterSteamIDs.txt")]
+        public string ArkAdminFile {
+            get {
+                return ((string)(this["ArkAdminFile"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionServerFilesIsExpanded {
+            get {
+                return ((bool)(this["SectionServerFilesIsExpanded"]));
+            }
+            set {
+                this["SectionServerFilesIsExpanded"] = value;
+            }
+        }
     }
 }

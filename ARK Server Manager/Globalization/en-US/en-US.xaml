@@ -56,6 +56,12 @@
     <sys:String x:Key="CustomConfigData_ProcessButtonLabel">Process</sys:String>
     <sys:String x:Key="CustomConfigData_CancelButtonLabel">Cancel</sys:String>
 
+    <!-- AddSteamUserWindow Window -->
+    <sys:String x:Key="AddSteamUser_Title">Add Steam Users</sys:String>
+    <sys:String x:Key="AddSteamUser_InstructionLabel">Enter one or more SteamIds. Each id must be on a new line.</sys:String>
+    <sys:String x:Key="AddSteamUser_ProcessButtonLabel">OK</sys:String>
+    <sys:String x:Key="AddSteamUser_CancelButtonLabel">Cancel</sys:String>
+
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
@@ -976,6 +982,25 @@
     <sys:String x:Key="ServerSettings_PasteCustomItemsTooltip">Paste Item Data</sys:String>
     <sys:String x:Key="ServerSettings_ClearCustomItemsTooltip">Delete All Items</sys:String>
     <sys:String x:Key="ServerSettings_RemoveCustomItemTooltip">Delete Item</sys:String>
+
+    <!-- Server Settings - Server File Details -->
+    <sys:String x:Key="ServerSettings_ServerFilesLabel">Server File Details</sys:String>
+
+    <sys:String x:Key="ServerSettings_ServerFilesAdminLabel">Administrators</sys:String>
+    <sys:String x:Key="ServerSettings_AddAdminPlayerTooltip">Add Administrator</sys:String>
+    <sys:String x:Key="ServerSettings_ClearAdminPlayerTooltip">Clear Administrators</sys:String>
+    <sys:String x:Key="ServerSettings_ReloadAdminPlayerTooltip">Reload from File</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveAdminPlayerTooltip">Delete Administrator</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesAdminIdColumnLabel">Steam ID</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesAdminNameColumnLabel">Steam Name</sys:String>
+
+    <sys:String x:Key="ServerSettings_ServerFilesWhitelistLabel">Whitelisted</sys:String>
+    <sys:String x:Key="ServerSettings_AddWhitelistPlayerTooltip">Add Whitelisted Player</sys:String>
+    <sys:String x:Key="ServerSettings_ClearWhitelistPlayerTooltip">Clear Whitelisted Players</sys:String>
+    <sys:String x:Key="ServerSettings_ReloadWhitelistPlayerTooltip">Reload from File</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveWhitelistPlayerTooltip">Delete Whitelisted Player</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesWhitelistIdColumnLabel">Steam ID</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesWhitelistNameColumnLabel">Steam Name</sys:String>
 
     <!-- Server Settings - Survival of the Fittest -->
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>

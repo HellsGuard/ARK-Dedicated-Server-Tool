@@ -377,5 +377,14 @@
     <Setting Name="LatestASMBetaPatchNotesUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/board/11/beta-testers</Value>
     </Setting>
+    <Setting Name="ArkWhitelistFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PlayersJoinNoCheckList.txt</Value>
+    </Setting>
+    <Setting Name="ArkAdminFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">AllowedCheaterSteamIDs.txt</Value>
+    </Setting>
+    <Setting Name="SectionServerFilesIsExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

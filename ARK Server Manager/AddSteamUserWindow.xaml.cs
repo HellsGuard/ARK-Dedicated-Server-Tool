@@ -5,13 +5,13 @@ using WPFSharp.Globalizer;
 namespace ARK_Server_Manager
 {
     /// <summary>
-    /// Interaction logic for CustomConfigDataWindow.xaml
+    /// Interaction logic for AddSteamUserWindow.xaml
     /// </summary>
-    public partial class CustomConfigDataWindow : Window
+    public partial class AddSteamUserWindow : Window
     {
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
-        public CustomConfigDataWindow()
+        public AddSteamUserWindow()
         {
             InitializeComponent();
             WindowUtils.RemoveDefaultResourceDictionary(this);
@@ -19,11 +19,11 @@ namespace ARK_Server_Manager
             this.DataContext = this;
         }
 
-        public static readonly DependencyProperty ConfigDataProperty = DependencyProperty.Register(nameof(ConfigData), typeof(string), typeof(CustomConfigDataWindow), new PropertyMetadata(string.Empty));
-        public string ConfigData
+        public static readonly DependencyProperty SteamUsersProperty = DependencyProperty.Register(nameof(SteamUsers), typeof(string), typeof(AddSteamUserWindow), new PropertyMetadata(string.Empty));
+        public string SteamUsers
         {
-            get { return (string)GetValue(ConfigDataProperty); }
-            set { SetValue(ConfigDataProperty, value); }
+            get { return (string)GetValue(SteamUsersProperty); }
+            set { SetValue(SteamUsersProperty, value); }
         }
 
         private void Process_Click(object sender, RoutedEventArgs e)

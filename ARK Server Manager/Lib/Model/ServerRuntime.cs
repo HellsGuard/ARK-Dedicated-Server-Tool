@@ -539,7 +539,7 @@ namespace ARK_Server_Manager.Lib
                         modIdList = ModUtils.ValidateModList(modIdList);
 
                         // get the details of the mods to be processed.
-                        var modDetails = ModUtils.GetSteamModDetails(modIdList);
+                        var modDetails = SteamUtils.GetSteamModDetails(modIdList);
                         if (modDetails != null)
                         {
                             for (var index = 0; index < modIdList.Count; index++)

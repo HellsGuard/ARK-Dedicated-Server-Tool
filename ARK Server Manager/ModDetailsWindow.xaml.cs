@@ -299,7 +299,7 @@ namespace ARK_Server_Manager
                 var newModIdList = ModUtils.ValidateModList(modIdList);
 
                 // get the details of the mods to be processed.
-                return await Task.Run( () =>  ModUtils.GetSteamModDetails(newModIdList) );
+                return await Task.Run( () => SteamUtils.GetSteamModDetails(newModIdList) );
             }
             catch (Exception ex)
             {

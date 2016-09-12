@@ -649,7 +649,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage($"Updating {updateModIds.Count} mods from cache...");
 
-                    var modDetails = ModUtils.GetSteamModDetails(updateModIds);
+                    var modDetails = SteamUtils.GetSteamModDetails(updateModIds);
 
                     try
                     {
@@ -784,7 +784,7 @@ namespace ARK_Server_Manager.Lib
             LogMessage($"Downloading mod information for {modIdList.Count} mods from steam.");
 
             // get the details of the mods to be processed.
-            var modDetails = ModUtils.GetSteamModDetails(modIdList);
+            var modDetails = SteamUtils.GetSteamModDetails(modIdList);
             if (modDetails == null)
             {
                 LogError("Mods cannot be updated, unable to download steam information.");

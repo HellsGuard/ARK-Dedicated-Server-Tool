@@ -156,16 +156,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddSteamUserWindow.xaml.cs">
+      <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\SteamCmdWorkshopDetails.cs" />
+    <Compile Include="Lib\Model\SteamUserDetail.cs" />
     <Compile Include="Lib\Serialization\IIniSectionCollection.cs" />
     <Compile Include="Lib\Utils\EmailUtil.cs" />
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
     <Compile Include="Lib\Utils\MachineUtils.cs" />
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
+    <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
     <Compile Include="WorkshopFilesWindow.xaml.cs">
       <DependentUpon>WorkshopFilesWindow.xaml</DependentUpon>
@@ -327,6 +332,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="AddSteamUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomConfigDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

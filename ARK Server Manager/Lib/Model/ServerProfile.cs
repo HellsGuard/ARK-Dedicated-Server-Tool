@@ -1694,6 +1694,9 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Server Files
+        #endregion
+
         #region Survival of the Fittest
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool SOTF_Enabled
@@ -2482,7 +2485,7 @@ namespace ARK_Server_Manager.Lib
 
                 modIdList = ModUtils.ValidateModList(modIdList);
 
-                var modDetails = ModUtils.GetSteamModDetails(modIdList);
+                var modDetails = SteamUtils.GetSteamModDetails(modIdList);
 
                 // check for map name.
                 if (string.IsNullOrWhiteSpace(ServerMap))

@@ -193,7 +193,7 @@ namespace ARK_Server_Manager
                     // check if the cache exists
                     if (cache == null)
                     {
-                        cache = ModUtils.GetSteamModDetails(_isSotF ? Config.Default.AppId_SotF : Config.Default.AppId);
+                        cache = SteamUtils.GetSteamModDetails(_isSotF ? Config.Default.AppId_SotF : Config.Default.AppId);
                         if (cache != null)
                             cache.Save(file);
                     }
