@@ -985,6 +985,7 @@
 
     <!-- Server Settings - Server File Details -->
     <sys:String x:Key="ServerSettings_ServerFilesLabel">Server File Details</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesWarningLabel">NOTE: Any changes will require a server restart to take effect.</sys:String>
 
     <sys:String x:Key="ServerSettings_ServerFilesAdminLabel">Administrators</sys:String>
     <sys:String x:Key="ServerSettings_AddAdminPlayerTooltip">Add Administrator</sys:String>

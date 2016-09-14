@@ -2855,13 +2855,19 @@
                         </Expander.Style>
 
                         <Grid Margin="-8,0,2,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Content="{DynamicResource ServerSettings_ServerFilesWarningLabel}"/>
+
+                            <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_ServerFilesAdminLabel}"/>
@@ -2929,7 +2935,7 @@
                                 </DataGrid>
                             </GroupBox>
 
-                            <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                            <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_ServerFilesWhitelistLabel}"/>
@@ -2992,7 +2998,7 @@
                                 </DataGrid>
                             </GroupBox>
 
-                            <GroupBox Grid.Column="2" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                            <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
