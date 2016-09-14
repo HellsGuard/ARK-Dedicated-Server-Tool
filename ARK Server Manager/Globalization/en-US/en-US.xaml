@@ -1232,6 +1232,7 @@
     <sys:String x:Key="Angler_Character_BP_C">Angler</sys:String>
     <sys:String x:Key="Ankylo_Character_BP_C">Ankylo</sys:String>
     <sys:String x:Key="Ant_Character_BP_C">Titanomyrma Drone</sys:String>
+    <sys:String x:Key="Archa_Character_BP_C">Archaeopteryx</sys:String>
     <sys:String x:Key="Argent_Character_BP_C">Argentavis</sys:String>
     <sys:String x:Key="Arthro_Character_BP_C">Arthropluera</sys:String>
     <sys:String x:Key="Bat_Character_BP_C">Onyc</sys:String>
@@ -1292,6 +1293,7 @@
     <sys:String x:Key="Spino_Character_BP_C">Spinosaurus</sys:String>
     <sys:String x:Key="Stag_Character_BP_C">Megaloceros</sys:String>
     <sys:String x:Key="Stego_Character_BP_C">Stego</sys:String>
+    <sys:String x:Key="Tapejara_Character_BP_C">Tapejara</sys:String>
     <sys:String x:Key="TerrorBird_Character_BP_C">Terror Bird</sys:String>
     <sys:String x:Key="Titanosaur_Character_BP_C">Titanosaur</sys:String>
     <sys:String x:Key="Toad_Character_BP_C">Beelzebufo</sys:String>
@@ -1512,6 +1514,7 @@
     <sys:String x:Key="EngramEntry_MetalCatwalk_C">Metal Catwalk</sys:String>
     <sys:String x:Key="EngramEntry_MetalCeiling_C">Metal Ceiling</sys:String>
     <sys:String x:Key="EngramEntry_MetalCeilingWithTrapdoor_C">Metal Hatchframe</sys:String>
+    <sys:String x:Key="EngramEntry_MetalCeilingWithTrapdoorGiant_C">Giant Metal Hatchframe</sys:String>
     <sys:String x:Key="EngramEntry_MetalDoor_C">Metal Door</sys:String>
     <sys:String x:Key="EngramEntry_MetalFenceFoundation_C">Metal Fence Foundation</sys:String>
     <sys:String x:Key="EngramEntry_MetalFloor_C">Metal Foundation</sys:String>
@@ -1546,6 +1549,7 @@
     <sys:String x:Key="EngramEntry_MetalSpikeWall_C">Metal Spike Wall</sys:String>
     <sys:String x:Key="EngramEntry_MetalStairs_C">Metal Staircase</sys:String>
     <sys:String x:Key="EngramEntry_MetalTrapdoor_C">Metal Trapdoor</sys:String>
+    <sys:String x:Key="EngramEntry_MetalTrapdoorGiant_C">Giant Metal Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_MetalWall_C">Metal Wall</sys:String>
     <sys:String x:Key="EngramEntry_MetalWallWithDoor_C">Metal Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_MetalWallWithWindow_C">Metal Windowframe</sys:String>
@@ -1556,6 +1560,7 @@
     <sys:String x:Key="EngramEntry_ModernBed_C">Bunk Bed</sys:String>
     <sys:String x:Key="EngramEntry_MortarAndPestle_C">Mortar and Pestle</sys:String>
     <sys:String x:Key="EngramEntry_Narcotic_C">Narcotic</sys:String>
+    <sys:String x:Key="EngramEntry_NightVisionGoggles_C">Night Vision Goggles</sys:String>
     <sys:String x:Key="EngramEntry_NotePaper_C">Note</sys:String>
     <sys:String x:Key="EngramEntry_Paintbrush_C">Paintbrush</sys:String>
     <sys:String x:Key="EngramEntry_PaintingCanvas_C">Painting Canvas</sys:String>
@@ -1626,6 +1631,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Spino_C">Saddle - Spino</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Stag_C">Saddle - Megaloceros</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Stego_C">Saddle - Stego</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Tapejara_C">Saddle - Tapejara</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_TerrorBird_C">Saddle - Terror Bird</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Titano_Platform_C">Saddle - Titanosaur Platform</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Toad_C">Saddle - Beelzebufo</sys:String>
@@ -1653,6 +1659,7 @@
     <sys:String x:Key="EngramEntry_Stimulant_C">Stimulant</sys:String>
     <sys:String x:Key="EngramEntry_StoneCeiling_C">Stone Ceiling</sys:String>
     <sys:String x:Key="EngramEntry_StoneCeilingWithTrapdoor_C">Stone Hatchframe</sys:String>
+    <sys:String x:Key="EngramEntry_StoneCeilingWithTrapdoorGiant_C">Giant Stone Hatchframe</sys:String>
     <sys:String x:Key="EngramEntry_StoneClub_C">Wooden Club</sys:String>
     <sys:String x:Key="EngramEntry_StoneDoor_C">Reinforced Wooden Door</sys:String>
     <sys:String x:Key="EngramEntry_StoneFenceFoundation_C">Stone Fence Foundation</sys:String>
@@ -1676,6 +1683,7 @@
     <sys:String x:Key="EngramEntry_StoneSlopedWall_Right_C">Stone Wall Sloped Right</sys:String>
     <sys:String x:Key="EngramEntry_StoneStairs_C">Stone Staircase</sys:String>
     <sys:String x:Key="EngramEntry_StoneTrapdoor_C">Reinforced Trapdoor</sys:String>
+    <sys:String x:Key="EngramEntry_StoneTrapdoorGiant_C">Giant Reinforced Trapdoor</sys:String>
     <sys:String x:Key="EngramEntry_StoneWall_C">Stone Wall</sys:String>
     <sys:String x:Key="EngramEntry_StoneWallWithDoor_C">Stone Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_StoneWallWithWindow_C">Stone Windowframe</sys:String>

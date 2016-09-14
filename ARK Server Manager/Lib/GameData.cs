@@ -31,6 +31,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Angler_Character_BP_C",              DinoNameTag="Angler" },
             new DinoSpawn { ClassName="Ankylo_Character_BP_C",              DinoNameTag="Anky" },
             new DinoSpawn { ClassName="Ant_Character_BP_C",                 DinoNameTag="Ant" },
+            new DinoSpawn { ClassName="Archa_Character_BP_C",               DinoNameTag="Archa" },
             new DinoSpawn { ClassName="Argent_Character_BP_C",              DinoNameTag="Argent" },
             new DinoSpawn { ClassName="Arthro_Character_BP_C",              DinoNameTag="Arthro" },
             new DinoSpawn { ClassName="Bat_Character_BP_C",                 DinoNameTag="Bat" },
@@ -90,6 +91,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Spino_Character_BP_C",               DinoNameTag="Spino" },
             new DinoSpawn { ClassName="Stag_Character_BP_C",                DinoNameTag="Stag" },
             new DinoSpawn { ClassName="Stego_Character_BP_C",               DinoNameTag="Stego" },
+            new DinoSpawn { ClassName="Tapejara_Character_BP_C",            DinoNameTag="Tapejara" },
             new DinoSpawn { ClassName="TerrorBird_Character_BP_C",          DinoNameTag="TerrorBird" },
             new DinoSpawn { ClassName="Titanosaur_Character_BP_C",          DinoNameTag="Titanosaur" },
             new DinoSpawn { ClassName="Toad_Character_BP_C",                DinoNameTag="Toad" },
@@ -144,6 +146,7 @@ namespace ARK_Server_Manager.Lib
                 case "Leech_Character_Diseased_C":
                     return false;
 
+                // Scorched Earth dinos
                 case "Deathworm_Character_BP_C":
                 case "Jugbug_Oil_Character_BP_C":
                 case "Manticore_Character_BP_C":
@@ -168,6 +171,7 @@ namespace ARK_Server_Manager.Lib
                 case "Leech_Character_Diseased_C":
                     return null;
 
+                // Scorched Earth dinos
                 case "Jugbug_Water_Character_BP_C":
                 case "Wyvern_Character_BP_Lightning_C":
                 case "Wyvern_Character_BP_Poison_C":
@@ -190,6 +194,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Angler_Character_BP_C" },
             new ClassMultiplier { ClassName="Ankylo_Character_BP_C" },
             new ClassMultiplier { ClassName="Ant_Character_BP_C" },
+            new ClassMultiplier { ClassName="Archa_Character_BP_C" },
             new ClassMultiplier { ClassName="Argent_Character_BP_C" },
             new ClassMultiplier { ClassName="Arthro_Character_BP_C" },
             new ClassMultiplier { ClassName="Bat_Character_BP_C" },
@@ -249,6 +254,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Spino_Character_BP_C" },
             new ClassMultiplier { ClassName="Stag_Character_BP_C" },
             new ClassMultiplier { ClassName="Stego_Character_BP_C" },
+            new ClassMultiplier { ClassName="Tapejara_Character_BP_C" },
             new ClassMultiplier { ClassName="TerrorBird_Character_BP_C" },
             new ClassMultiplier { ClassName="Titanosaur_Character_BP_C" },
             new ClassMultiplier { ClassName="Toad_Character_BP_C" },
@@ -665,6 +671,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_MetalCatwalk_C",                  EngramLevelRequirement=50, EngramPointsCost=18 },
             new EngramEntry { EngramClassName="EngramEntry_MetalCeiling_C",                  EngramLevelRequirement=35, EngramPointsCost=15 },
             new EngramEntry { EngramClassName="EngramEntry_MetalCeilingWithTrapdoor_C",      EngramLevelRequirement=40, EngramPointsCost=18 },
+            new EngramEntry { EngramClassName="EngramEntry_MetalCeilingWithTrapdoorGiant_C", EngramLevelRequirement=50, EngramPointsCost=30 },
             new EngramEntry { EngramClassName="EngramEntry_MetalDoor_C",                     EngramLevelRequirement=35, EngramPointsCost=12 },
             new EngramEntry { EngramClassName="EngramEntry_MetalFenceFoundation_C",          EngramLevelRequirement=40, EngramPointsCost=12 },
             new EngramEntry { EngramClassName="EngramEntry_MetalFloor_C",                    EngramLevelRequirement=30, EngramPointsCost=24 },
@@ -699,6 +706,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_MetalSpikeWall_C",                EngramLevelRequirement=25, EngramPointsCost=11 },
             new EngramEntry { EngramClassName="EngramEntry_MetalStairs_C",                   EngramLevelRequirement=35, EngramPointsCost=20 },
             new EngramEntry { EngramClassName="EngramEntry_MetalTrapdoor_C",                 EngramLevelRequirement=40, EngramPointsCost=14 },
+            new EngramEntry { EngramClassName="EngramEntry_MetalTrapdoorGiant_C",            EngramLevelRequirement=50, EngramPointsCost=30 },
             new EngramEntry { EngramClassName="EngramEntry_MetalWall_C",                     EngramLevelRequirement=30, EngramPointsCost=15 },
             new EngramEntry { EngramClassName="EngramEntry_MetalWallWithDoor_C",             EngramLevelRequirement=30, EngramPointsCost=24 },
             new EngramEntry { EngramClassName="EngramEntry_MetalWallWithWindow_C",           EngramLevelRequirement=45, EngramPointsCost=18 },
@@ -709,6 +717,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_ModernBed_C",                     EngramLevelRequirement=60, EngramPointsCost=28 },
             new EngramEntry { EngramClassName="EngramEntry_MortarAndPestle_C",               EngramLevelRequirement=5,  EngramPointsCost=6 },
             new EngramEntry { EngramClassName="EngramEntry_Narcotic_C",                      EngramLevelRequirement=5,  EngramPointsCost=6 },
+            new EngramEntry { EngramClassName="EngramEntry_NightVisionGoggles_C",            EngramLevelRequirement=90, EngramPointsCost=100 },
             new EngramEntry { EngramClassName="EngramEntry_NotePaper_C",                     EngramLevelRequirement=2,  EngramPointsCost=3 },
             new EngramEntry { EngramClassName="EngramEntry_Paintbrush_C",                    EngramLevelRequirement=5,  EngramPointsCost=3 },
             new EngramEntry { EngramClassName="EngramEntry_PaintingCanvas_C",                EngramLevelRequirement=10, EngramPointsCost=2 },
@@ -779,6 +788,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Spino_C",                  EngramLevelRequirement=60, EngramPointsCost=40 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Stag_C",                   EngramLevelRequirement=30, EngramPointsCost=20 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Stego_C",                  EngramLevelRequirement=30, EngramPointsCost=15 },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Tapejara_C",               EngramLevelRequirement=50, EngramPointsCost=21 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_TerrorBird_C",             EngramLevelRequirement=25, EngramPointsCost=15 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Titano_Platform_C",        EngramLevelRequirement=95, EngramPointsCost=170, },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Toad_C",                   EngramLevelRequirement=20, EngramPointsCost=16 },
@@ -806,6 +816,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Stimulant_C",                     EngramLevelRequirement=10, EngramPointsCost=6 },
             new EngramEntry { EngramClassName="EngramEntry_StoneCeiling_C",                  EngramLevelRequirement=20, EngramPointsCost=6 },
             new EngramEntry { EngramClassName="EngramEntry_StoneCeilingWithTrapdoor_C",      EngramLevelRequirement=25, EngramPointsCost=8 },
+            new EngramEntry { EngramClassName="EngramEntry_StoneCeilingWithTrapdoorGiant_C", EngramLevelRequirement=35, EngramPointsCost=20 },
             new EngramEntry { EngramClassName="EngramEntry_StoneClub_C",                     EngramLevelRequirement=2,  EngramPointsCost=4 },
             new EngramEntry { EngramClassName="EngramEntry_StoneDoor_C",                     EngramLevelRequirement=20, EngramPointsCost=4 },
             new EngramEntry { EngramClassName="EngramEntry_StoneFenceFoundation_C",          EngramLevelRequirement=15, EngramPointsCost=6 },
@@ -829,6 +840,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Right_C",         EngramLevelRequirement=15, EngramPointsCost=4 },
             new EngramEntry { EngramClassName="EngramEntry_StoneStairs_C",                   EngramLevelRequirement=20, EngramPointsCost=15 },
             new EngramEntry { EngramClassName="EngramEntry_StoneTrapdoor_C",                 EngramLevelRequirement=30, EngramPointsCost=10 },
+            new EngramEntry { EngramClassName="EngramEntry_StoneTrapdoorGiant_C",            EngramLevelRequirement=35, EngramPointsCost=20 },
             new EngramEntry { EngramClassName="EngramEntry_StoneWall_C",                     EngramLevelRequirement=15, EngramPointsCost=8 },
             new EngramEntry { EngramClassName="EngramEntry_StoneWallWithDoor_C",             EngramLevelRequirement=20, EngramPointsCost=6 },
             new EngramEntry { EngramClassName="EngramEntry_StoneWallWithWindow_C",           EngramLevelRequirement=25, EngramPointsCost=11 },
