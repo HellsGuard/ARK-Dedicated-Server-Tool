@@ -1356,5 +1356,14 @@ namespace ARK_Server_Manager {
                 this["SectionServerFilesIsExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PlayersExclusiveJoinList.txt")]
+        public string ArkExclusiveFile {
+            get {
+                return ((string)(this["ArkExclusiveFile"]));
+            }
+        }
     }
 }

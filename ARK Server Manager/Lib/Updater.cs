@@ -249,9 +249,9 @@ namespace ARK_Server_Manager.Lib
             using (var client = new WebClient())
             {
                 if (App.Instance.BetaVersion)
-                    client.DownloadFile(Config.Default.LatestASMDownloadUrl, applicationZip);
-                else
                     client.DownloadFile(Config.Default.LatestASMBetaDownloadUrl, applicationZip);
+                else
+                    client.DownloadFile(Config.Default.LatestASMDownloadUrl, applicationZip);
                 Unblock(applicationZip);
             }
 

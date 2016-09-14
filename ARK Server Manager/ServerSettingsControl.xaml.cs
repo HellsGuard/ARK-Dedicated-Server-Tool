@@ -87,6 +87,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedArkApplicationEngramProperty = DependencyProperty.Register(nameof(SelectedArkApplicationEngram), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
         public static readonly DependencyProperty SelectedArkApplicationResourceProperty = DependencyProperty.Register(nameof(SelectedArkApplicationResource), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
         public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
 
         #region Properties
@@ -166,6 +167,12 @@ namespace ARK_Server_Manager
         {
             get { return (SteamUserList)GetValue(ServerFilesAdminsProperty); }
             set { SetValue(ServerFilesAdminsProperty, value); }
+        }
+
+        public SteamUserList ServerFilesExclusive
+        {
+            get { return (SteamUserList)GetValue(ServerFilesExclusiveProperty); }
+            set { SetValue(ServerFilesExclusiveProperty, value); }
         }
 
         public SteamUserList ServerFilesWhitelisted
@@ -1128,6 +1135,32 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void AddExclusivePlayer_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddSteamUserWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                try
+                {
+                    var steamIdsString = window.SteamUsers;
+                    var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+                    var steamUserList = SteamUserList.GetList(steamUsers);
+                    this.ServerFilesExclusive.AddRange(steamUserList);
+
+                    SaveServerFileExclusive();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Add Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void AddWhitelistPlayer_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddSteamUserWindow();
@@ -1161,6 +1194,13 @@ namespace ARK_Server_Manager
             SaveServerFileAdministrators();
         }
 
+        private void ClearExclusivePlayers_Click(object sender, RoutedEventArgs e)
+        {
+            ServerFilesExclusive.Clear();
+
+            SaveServerFileExclusive();
+        }
+
         private void ClearWhitelistPlayers_Click(object sender, RoutedEventArgs e)
         {
             ServerFilesWhitelisted.Clear();
@@ -1178,6 +1218,27 @@ namespace ARK_Server_Manager
                 await Task.Delay(500);
 
                 LoadServerFileAdministrators();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Refresh Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
+        }
+
+        private async void ReloadExclusivePlayers_Click(object sender, RoutedEventArgs e)
+        {
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
+                await Task.Delay(500);
+
+                LoadServerFileExclusive();
             }
             catch (Exception ex)
             {
@@ -1216,6 +1277,14 @@ namespace ARK_Server_Manager
             ServerFilesAdmins.Remove(mod);
 
             SaveServerFileAdministrators();
+        }
+
+        private void RemoveExclusivePlayer_Click(object sender, RoutedEventArgs e)
+        {
+            var mod = ((SteamUserItem)((Button)e.Source).DataContext);
+            ServerFilesExclusive.Remove(mod);
+
+            SaveServerFileExclusive();
         }
 
         private void RemoveWhitelistPlayer_Click(object sender, RoutedEventArgs e)
@@ -1629,6 +1698,7 @@ namespace ARK_Server_Manager
         private void LoadServerFiles()
         {
             LoadServerFileAdministrators();
+            LoadServerFileExclusive();
             LoadServerFileWhitelisted();
         }
 
@@ -1654,13 +1724,35 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void LoadServerFileExclusive()
+        {
+            try
+            {
+                this.ServerFilesExclusive = new SteamUserList();
+
+                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
+                if (!File.Exists(file))
+                    return;
+
+                var steamIds = File.ReadAllLines(file);
+                var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                this.ServerFilesExclusive = SteamUserList.GetList(steamUsers);
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesExclusive = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void LoadServerFileWhitelisted()
         {
             try
             {
                 this.ServerFilesWhitelisted = new SteamUserList();
 
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkWhitelistFile);
+                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
                 if (!File.Exists(file))
                     return;
 
@@ -1690,11 +1782,25 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void SaveServerFileExclusive()
+        {
+            try
+            {
+                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
+
+                File.WriteAllLines(file, this.ServerFilesExclusive.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void SaveServerFileWhitelisted()
         {
             try
             {
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkWhitelistFile);
+                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
 
                 File.WriteAllLines(file, this.ServerFilesWhitelisted.ToArray());
             }

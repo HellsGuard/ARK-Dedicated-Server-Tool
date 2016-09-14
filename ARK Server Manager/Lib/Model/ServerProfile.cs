@@ -1695,6 +1695,12 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Server Files
+        public static readonly DependencyProperty EnableExclusiveJoinProperty = DependencyProperty.Register(nameof(EnableExclusiveJoin), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableExclusiveJoin
+        {
+            get { return (bool)GetValue(EnableExclusiveJoinProperty); }
+            set { SetValue(EnableExclusiveJoinProperty, value); }
+        }
         #endregion
 
         #region Survival of the Fittest
@@ -2136,6 +2142,11 @@ namespace ARK_Server_Manager.Lib
             if (this.UseNoMemoryBias)
             {
                 serverArgs.Append(" -nomemorybias");
+            }
+
+            if (this.EnableExclusiveJoin)
+            {
+                serverArgs.Append(" -exclusivejoin");
             }
 
             serverArgs.Append(' ');

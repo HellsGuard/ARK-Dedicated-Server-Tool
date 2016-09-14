@@ -2856,8 +2856,9 @@
 
                         <Grid Margin="-8,0,2,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
                             <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
@@ -2876,7 +2877,7 @@
                                     </StackPanel>
                                 </GroupBox.Header>
 
-                                <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
                                     <DataGrid.Resources>
                                         <Style TargetType="{x:Type DataGridRow}">
                                             <Style.Resources>
@@ -2899,7 +2900,7 @@
                                     </DataGrid.VerticalGridLinesBrush>
 
                                     <DataGrid.Columns>
-                                        <DataGridTemplateColumn Width="Auto" MinWidth="150" CanUserSort="True" SortMemberPath="SteamId" Header="{DynamicResource ServerSettings_ServerFilesAdminIdColumnLabel}">
+                                        <DataGridTemplateColumn Width="Auto" MinWidth="120" CanUserSort="True" SortMemberPath="SteamId" Header="{DynamicResource ServerSettings_ServerFilesAdminIdColumnLabel}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock>
@@ -2944,7 +2945,7 @@
                                     </StackPanel>
                                 </GroupBox.Header>
 
-                                <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
                                     <DataGrid.Resources>
                                         <Style TargetType="{x:Type DataGridRow}">
                                             <Style.Resources>
@@ -2962,7 +2963,7 @@
                                     </DataGrid.VerticalGridLinesBrush>
 
                                     <DataGrid.Columns>
-                                        <DataGridTemplateColumn Width="Auto" MinWidth="150" CanUserSort="True" SortMemberPath="SteamId" Header="{DynamicResource ServerSettings_ServerFilesWhitelistIdColumnLabel}">
+                                        <DataGridTemplateColumn Width="Auto" MinWidth="120" CanUserSort="True" SortMemberPath="SteamId" Header="{DynamicResource ServerSettings_ServerFilesWhitelistIdColumnLabel}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock>
@@ -2982,6 +2983,69 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveWhitelistPlayer_Click" ToolTip="{DynamicResource ServerSettings_RemoveWhitelistPlayerTooltip}">
+                                                        <Image Source="Art/Delete.png" Width="16" />
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                            <GroupBox Grid.Column="2" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
+                                        <Button Width="22" Height="22" Click="AddExclusivePlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddExclusivePlayerTooltip}">
+                                            <Image Source="Art/Add.png" Width="16"/>
+                                        </Button>
+                                        <Button Width="22" Height="22" Click="ClearExclusivePlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearExclusivePlayerTooltip}">
+                                            <Image Source="Art/Delete.png" Width="16"/>
+                                        </Button>
+                                        <Button Width="22" Height="22" Click="ReloadExclusivePlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadExclusivePlayerTooltip}">
+                                            <Image Source="Art/Reload.png" Width="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox.Header>
+
+                                <DataGrid ItemsSource="{Binding Path=ServerFilesExclusive, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <Style.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                            </Style.Resources>
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.HorizontalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.HorizontalGridLinesBrush>
+                                    <DataGrid.VerticalGridLinesBrush>
+                                        <SolidColorBrush Color="#FFB4B4B4"/>
+                                    </DataGrid.VerticalGridLinesBrush>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="Auto" MinWidth="120" CanUserSort="True" SortMemberPath="SteamId" Header="{DynamicResource ServerSettings_ServerFilesExclusiveIdColumnLabel}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock>
+                                                        <Hyperlink NavigateUri="{Binding ProfileUrl}" RequestNavigate="SteamProfileNavigate_Click">
+                                                            <TextBlock Text="{Binding SteamId}"/>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn     Width="1*" Binding="{Binding SteamName}">
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text="{DynamicResource ServerSettings_ServerFilesExclusiveNameColumnLabel}" />
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveExclusivePlayer_Click" ToolTip="{DynamicResource ServerSettings_RemoveExclusivePlayerTooltip}">
                                                         <Image Source="Art/Delete.png" Width="16" />
                                                     </Button>
                                                 </DataTemplate>

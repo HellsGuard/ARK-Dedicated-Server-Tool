@@ -1002,6 +1002,16 @@
     <sys:String x:Key="ServerSettings_ServerFilesWhitelistIdColumnLabel">Steam ID</sys:String>
     <sys:String x:Key="ServerSettings_ServerFilesWhitelistNameColumnLabel">Steam Name</sys:String>
 
+    <sys:String x:Key="ServerSettings_ServerFilesExclusiveLabel">Exclusive Join</sys:String>
+    <sys:String x:Key="ServerSettings_AddExclusivePlayerTooltip">Add Exclusive Player</sys:String>
+    <sys:String x:Key="ServerSettings_ClearExclusivePlayerTooltip">Clear Exclusive Players</sys:String>
+    <sys:String x:Key="ServerSettings_ReloadExclusivePlayerTooltip">Reload from File</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveExclusivePlayerTooltip">Delete Exclusive Player</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesExclusiveIdColumnLabel">Steam ID</sys:String>
+    <sys:String x:Key="ServerSettings_ServerFilesExclusiveNameColumnLabel">Steam Name</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExclusiveJoinLabel">Enable Exclusive Join</sys:String>
+    <sys:String x:Key="ServerSettings_EnableExclusiveJoinTooltip">If enabled, only players in the Exclusive Join list will be able to log into the server.</sys:String>
+
     <!-- Server Settings - Survival of the Fittest -->
     <sys:String x:Key="ServerSettings_SOTFLabel">Survival of the Fittest</sys:String>
     <sys:String x:Key="ServerSettings_EnableSOTFLabel">Enable Survival of the Fittest</sys:String>
