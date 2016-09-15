@@ -11,12 +11,12 @@
 )
 
 [string] $AppVersion = ""
+[string] $AppVersionShort = ""
 
-function Write-LatestTxt()
+function Get-LatestVersion()
 {    
     $xml = [xml](Get-Content $srcXml)
     $version = $xml.assembly.assemblyIdentity | Select version
-    $version.version | Set-Content $destFile
     return $version.version;
 }
 
@@ -26,19 +26,20 @@ function Create-Zip( $zipfilename, $sourcedir )
     {
         Remove-Item -LiteralPath:$zipfilename -Force
     }
-   Add-Type -Assembly System.IO.Compression.FileSystem
-   Write-Host "Zipping $($sourcedir) into $($zipfilename)"
-   $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-   [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir,
-        $zipfilename, $compressionLevel, $false)
+	Add-Type -Assembly System.IO.Compression.FileSystem
+	Write-Host "Zipping $($sourcedir) into $($zipfilename)"
+	$compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+	[System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $false)
 }
 
-$AppVersion = Write-LatestTxt
-Write-Host "LatestVersion $($AppVersion)"
+$AppVersion = Get-LatestVersion
+$AppVersionShort = $AppVersion
+$AppVersionShort | Set-Content $destFile
+Write-Host "LatestVersion $($AppVersionShort) ($($AppVersion))"
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
 $publishSrcDir = "$($rootDir)\publish\Application Files\Ark Server Manager_$($versionWithUnderscores)"
 Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application" -ErrorAction Ignore
-$publishDestFileName = "ArkServerManager_$($AppVersion)_beta.zip"
+$publishDestFileName = "ArkServerManager_$($AppVersionShort).zip"
 $publishDestFile = "$($rootDir)\publish\$($publishDestFileName)"
 Create-Zip $publishDestFile $publishSrcDir
 
