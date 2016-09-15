@@ -38,7 +38,7 @@ Write-Host "LatestVersion $($AppVersion)"
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
 $publishSrcDir = "$($rootDir)\publish\Application Files\Ark Server Manager_$($versionWithUnderscores)"
 Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application" -ErrorAction Ignore
-$publishDestFileName = "ArkServerManager_$($AppVersion).zip"
+$publishDestFileName = "ArkServerManager_$($AppVersion)_beta.zip"
 $publishDestFile = "$($rootDir)\publish\$($publishDestFileName)"
 Create-Zip $publishDestFile $publishSrcDir
 
