@@ -102,5 +102,13 @@ namespace ARK_Server_Manager.Lib
                 !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
                 !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
         }
+
+        protected override void InitializeFromINIValue(string value)
+        {
+            base.InitializeFromINIValue(value);
+
+            if (!KnownEngram)
+                ArkApplication = ArkApplication.Unknown;
+        }
     }
 }

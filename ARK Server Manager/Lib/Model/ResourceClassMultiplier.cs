@@ -44,5 +44,13 @@ namespace ARK_Server_Manager.Lib
 
             return (!resource.Multiplier.Equals(Multiplier));
         }
+
+        protected override void InitializeFromINIValue(string value)
+        {
+            base.InitializeFromINIValue(value);
+
+            if (!KnownResource)
+                ArkApplication = ArkApplication.Unknown;
+        }
     }
 }
