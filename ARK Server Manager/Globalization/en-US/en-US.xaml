@@ -1303,6 +1303,7 @@
 
     <sys:String x:Key="FlyingAnt_Character_BP_C">Titanomyrma Soldier</sys:String>
     <sys:String x:Key="Leech_Character_Diseased_C">Diseased Leech</sys:String>
+    <sys:String x:Key="Yeti_Character_BP_C">Yeti</sys:String>
 
     <!-- Dino/Creature Class Names - Scorched Earth -->
     <sys:String x:Key="camelsaurus_Character_BP_C">Morellatops</sys:String>
@@ -1318,6 +1319,9 @@
     <sys:String x:Key="Wyvern_Character_BP_Fire_C">Fire Wyvern</sys:String>
 
     <sys:String x:Key="Jugbug_Water_Character_BP_C">Water Jug Bug</sys:String>
+    <sys:String x:Key="MegaDeathworm_Character_BP_C">Alpha Deathworm</sys:String>
+    <sys:String x:Key="MegaWyvern_Character_BP_Fire_C">Alpha Wyvern</sys:String>
+    <sys:String x:Key="RubbleGolem_Character_BP_C">Rubble Golem</sys:String>
     <sys:String x:Key="Wyvern_Character_BP_Lightning_C">Lightning Wyvern</sys:String>
     <sys:String x:Key="Wyvern_Character_BP_Poison_C">Poison Wyvern</sys:String>
 

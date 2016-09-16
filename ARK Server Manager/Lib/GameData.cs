@@ -56,7 +56,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Euryp_Character_C",                  DinoNameTag="Euryp" },
             new DinoSpawn { ClassName="Galli_Character_BP_C",               DinoNameTag="Galli" },
             new DinoSpawn { ClassName="Gigant_Character_BP_C",              DinoNameTag="Gigant" },
-            new DinoSpawn { ClassName="Kairuku_Character_BP_C",             DinoNameTag="Kairuku" },
+            new DinoSpawn { ClassName="Kairuku_Character_BP_C",             DinoNameTag="Kairu" },
             new DinoSpawn { ClassName="Leech_Character_C",                  DinoNameTag="Leech" },
             new DinoSpawn { ClassName="Lystro_Character_BP_C",              DinoNameTag="Lystro" },
             new DinoSpawn { ClassName="MegaCarno_Character_BP_C",           DinoNameTag="Elite Carno" },
@@ -67,8 +67,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Megalodon_Character_BP_C",           DinoNameTag="Mega" },
             new DinoSpawn { ClassName="Monkey_Character_BP_C",              DinoNameTag="Monkey" },
             new DinoSpawn { ClassName="Mosa_Character_BP_C",                DinoNameTag="Mosasaur" },
-            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",           DinoNameTag="Alpha Mosasaur" },
-            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",           DinoNameTag="Oviraptor" },
+            new DinoSpawn { ClassName="Oviraptor_Character_BP_C",           DinoNameTag="Ovi" },
             new DinoSpawn { ClassName="Pachy_Character_BP_C",               DinoNameTag="Pachy" },
             new DinoSpawn { ClassName="Para_Character_BP_C",                DinoNameTag="Para" },
             new DinoSpawn { ClassName="Paracer_Character_BP_C",             DinoNameTag="Paracer" },
@@ -93,7 +92,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Stego_Character_BP_C",               DinoNameTag="Stego" },
             new DinoSpawn { ClassName="Tapejara_Character_BP_C",            DinoNameTag="Tapejara" },
             new DinoSpawn { ClassName="TerrorBird_Character_BP_C",          DinoNameTag="TerrorBird" },
-            new DinoSpawn { ClassName="Titanosaur_Character_BP_C",          DinoNameTag="Titanosaur" },
+            new DinoSpawn { ClassName="Titanosaur_Character_BP_C",          DinoNameTag="Titan" },
             new DinoSpawn { ClassName="Toad_Character_BP_C",                DinoNameTag="Toad" },
             new DinoSpawn { ClassName="Trike_Character_BP_C",               DinoNameTag="Trike" },
             new DinoSpawn { ClassName="Trilobite_Character_C",              DinoNameTag="Trilobite" },
@@ -101,21 +100,26 @@ namespace ARK_Server_Manager.Lib
 
             new DinoSpawn { ClassName="FlyingAnt_Character_BP_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Leech_Character_Diseased_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",           DinoNameTag=null },
+            new DinoSpawn { ClassName="Yeti_Character_BP_C",                DinoNameTag=null },
 
             // Scorched Earth dinos
-            new DinoSpawn { ClassName="camelsaurus_Character_BP_C",         DinoNameTag="camelsaurus",              ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="camelsaurus_Character_BP_C",         DinoNameTag="Camelsaurus",              ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Deathworm_Character_BP_C",           DinoNameTag="Deathworm",                ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Jerboa_Character_BP_C",              DinoNameTag="Jerboa",                   ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Jugbug_Oil_Character_BP_C",          DinoNameTag="JugBug",                   ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Manticore_Character_BP_C",           DinoNameTag="Manticore",                ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Mantis_Character_BP_C",              DinoNameTag="Mantis",                   ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Moth_Character_BP_C",                DinoNameTag="Moth",                     ArkApplication=ArkApplication.ScorchedEarth },
-            new DinoSpawn { ClassName="RockGolem_Character_BP_C",           DinoNameTag="RockGolem",                ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="RockGolem_Character_BP_C",           DinoNameTag="RockElemental",            ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="SpineyLizard_Character_BP_C",        DinoNameTag="SpineyLizard",             ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Vulture_Character_BP_C",             DinoNameTag="Vulture",                  ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Wyvern_Character_BP_Fire_C",         DinoNameTag="Wyvern",                   ArkApplication=ArkApplication.ScorchedEarth },
 
             new DinoSpawn { ClassName="Jugbug_Water_Character_BP_C",        DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="MegaDeathworm_Character_BP_C",       DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="MegaWyvern_Character_BP_Fire_C",     DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="RubbleGolem_Character_BP_C",         DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Wyvern_Character_BP_Lightning_C",    DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Wyvern_Character_BP_Poison_C",       DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
         };
@@ -136,7 +140,6 @@ namespace ARK_Server_Manager.Lib
                 case "MegaCarno_Character_BP_C":
                 case "MegaRaptor_Character_BP_C":
                 case "MegaRex_Character_BP_C":
-                case "Mosa_Character_BP_Mega_C":
                 case "Piranha_Character_BP_C":
                 case "Salmon_Character_BP_C":
                 case "Trilobite_Character_C":
@@ -144,6 +147,8 @@ namespace ARK_Server_Manager.Lib
 
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
+                case "Mosa_Character_BP_Mega_C":
+                case "Yeti_Character_BP_C":
                     return false;
 
                 // Scorched Earth dinos
@@ -154,6 +159,9 @@ namespace ARK_Server_Manager.Lib
                     return false;
 
                 case "Jugbug_Water_Character_BP_C":
+                case "MegaDeathworm_Character_BP_C":
+                case "MegaWyvern_Character_BP_Fire_C":
+                case "RubbleGolem_Character_BP_C":
                 case "Wyvern_Character_BP_Lightning_C":
                 case "Wyvern_Character_BP_Poison_C":
                     return false;
@@ -169,10 +177,15 @@ namespace ARK_Server_Manager.Lib
             {
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
+                case "Mosa_Character_BP_Mega_C":
+                case "Yeti_Character_BP_C":
                     return null;
 
                 // Scorched Earth dinos
                 case "Jugbug_Water_Character_BP_C":
+                case "MegaDeathworm_Character_BP_C":
+                case "MegaWyvern_Character_BP_Fire_C":
+                case "RubbleGolem_Character_BP_C":
                 case "Wyvern_Character_BP_Lightning_C":
                 case "Wyvern_Character_BP_Poison_C":
                     return null;
@@ -230,7 +243,6 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="MegaRex_Character_BP_C" },
             new ClassMultiplier { ClassName="Monkey_Character_BP_C" },
             new ClassMultiplier { ClassName="Mosa_Character_BP_C" },
-            new ClassMultiplier { ClassName="Mosa_Character_BP_Mega_C" },
             new ClassMultiplier { ClassName="Oviraptor_Character_BP_C" },
             new ClassMultiplier { ClassName="Pachy_Character_BP_C" },
             new ClassMultiplier { ClassName="Para_Character_BP_C" },
@@ -264,6 +276,8 @@ namespace ARK_Server_Manager.Lib
 
             new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C" },
             new ClassMultiplier { ClassName="Leech_Character_Diseased_C" },
+            new ClassMultiplier { ClassName="Mosa_Character_BP_Mega_C" },
+            new ClassMultiplier { ClassName="Yeti_Character_BP_C" },
 
             // Scorched Earth
             new ClassMultiplier { ClassName="camelsaurus_Character_BP_C" },
@@ -279,6 +293,9 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Wyvern_Character_BP_Fire_C" },
 
             new ClassMultiplier { ClassName="Jugbug_Water_Character_BP_C" },
+            new ClassMultiplier { ClassName="MegaDeathworm_Character_BP_C" },
+            new ClassMultiplier { ClassName="MegaWyvern_Character_BP_Fire_C" },
+            new ClassMultiplier { ClassName="RubbleGolem_Character_BP_C" },
             new ClassMultiplier { ClassName="Wyvern_Character_BP_Lightning_C" },
             new ClassMultiplier { ClassName="Wyvern_Character_BP_Poison_C" },
         };
