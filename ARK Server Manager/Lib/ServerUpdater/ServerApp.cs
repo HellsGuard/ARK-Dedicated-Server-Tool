@@ -615,14 +615,14 @@ namespace ARK_Server_Manager.Lib
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy);
 
-                            // update the version number
-                            _profile.LastInstalledVersion = Updater.GetServerVersion(GetServerVersionFile()).ToString();
-                            _profile.ServerUpdated = true;
-
                             LogProfileMessage("Updated server from cache.");
-                            LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
+
+                            // update the version number
+                            //_profile.LastInstalledVersion = Updater.GetServerVersion(GetServerVersionFile()).ToString();
+                            //LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
 
                             LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287");
+                            _profile.ServerUpdated = true;
                         }
                         else
                         {
