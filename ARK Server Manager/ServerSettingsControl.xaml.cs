@@ -2,12 +2,10 @@
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -1297,6 +1295,14 @@ namespace ARK_Server_Manager
 
             Process.Start(new ProcessStartInfo(item.ProfileUrl));
             e.Handled = true;
+        }
+
+        private void SaveRestore_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new WorldSaveRestoreWindow(Server.Profile);
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            window.ShowDialog();
         }
         #endregion
 

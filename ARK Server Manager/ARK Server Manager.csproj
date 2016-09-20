@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.250.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -172,6 +172,9 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
+    <Compile Include="WorldSaveRestoreWindow.xaml.cs">
+      <DependentUpon>WorldSaveRestoreWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkshopFilesWindow.xaml.cs">
       <DependentUpon>WorkshopFilesWindow.xaml</DependentUpon>
     </Compile>
@@ -339,6 +342,10 @@
     <Page Include="CustomConfigDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorldSaveRestoreWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkshopFilesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

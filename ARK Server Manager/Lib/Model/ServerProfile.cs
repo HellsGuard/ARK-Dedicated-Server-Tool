@@ -2676,6 +2676,19 @@ namespace ARK_Server_Manager.Lib
             HasClusterSymLink = MachineUtils.IsDirectorySymbolic(clustersFolder);
         }
 
+        public void RestoreWorldSave(string restoreFile)
+        {
+            var profileSaveFolder = Path.Combine(this.InstallDirectory, Config.Default.SavedArksRelativePath);
+            var mapFile = Path.Combine(profileSaveFolder, $"{this.ServerMap}.ark");
+            var mapFileBackup = Path.Combine(profileSaveFolder, $"{this.ServerMap}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
+
+            // rename the existing save file
+            File.Move(mapFile, mapFileBackup);
+
+            // copy the selected file
+            File.Copy(restoreFile, mapFile, true);
+        }
+
         #region Export Methods
         public void ExportDinoLevels(string fileName)
         {

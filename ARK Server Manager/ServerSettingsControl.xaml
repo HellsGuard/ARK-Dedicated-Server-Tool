@@ -1080,8 +1080,52 @@
                                 </StackPanel>
                             </GroupBox>
 
-                            <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_AutoSavesLabel}" Style="{StaticResource GroupBoxStyle}">
-                                <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_AutoSavesPeriodLabel}" Value="{Binding AutoSavePeriodMinutes}" Suffix="{DynamicResource ServerSettings_AutoSavesPeriodUnits}" VerticalAlignment="Center" Minimum="1" Maximum="720" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_AutoSavesPeriodTooltip}"/>
+                            <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_SavesLabel}" Style="{StaticResource GroupBoxStyle}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <local:AnnotatedSlider Grid.Row="0" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_AutoSavesPeriodLabel}" Value="{Binding AutoSavePeriodMinutes}" Suffix="{DynamicResource ServerSettings_AutoSavesPeriodUnits}" VerticalAlignment="Center" Minimum="1" Maximum="720" LargeChange="10" SmallChange="1" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_AutoSavesPeriodTooltip}"/>
+                                    <Button Grid.Row="0" Grid.Column="1" Margin="10,2,2,2" Padding="5,2,5,2" DataContext="{Binding Runtime, ElementName=SettingsControl}" Click="SaveRestore_Click">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                <Setter Property="Content" Value="{DynamicResource ServerSettings_SaveRestoreButtonLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource ServerSettings_SaveRestoreButtonTooltip}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </Grid>
                             </GroupBox>
 
                             <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_MOTDLabel}" Style="{StaticResource GroupBoxStyle}" Height="200">

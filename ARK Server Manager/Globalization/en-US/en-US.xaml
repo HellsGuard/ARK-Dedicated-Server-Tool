@@ -119,6 +119,20 @@
     <sys:String x:Key="WorkshopFiles_ReloadTooltip">Reload workshop information</sys:String>
     <sys:String x:Key="WorkshopFiles_UnselectTooltip">Unselect all</sys:String>
 
+    <!-- WorldSave Restore Window -->
+    <sys:String x:Key="WorldSaveRestore_Title">WorldSave Restore</sys:String>
+    <sys:String x:Key="WorldSaveRestore_ProfileTitle">WorldSave Restore - {0}</sys:String>
+    <sys:String x:Key="WorldSaveRestore_Load_FailedTitle">Load WorldSave Files Error</sys:String>
+    <sys:String x:Key="WorldSaveRestore_Refresh_FailedTitle">Refresh WorldSave Files Error</sys:String>
+
+    <sys:String x:Key="WorldSaveRestore_NameColumnLabel">Name</sys:String>
+    <sys:String x:Key="WorldSaveRestore_CreatedDateColumnLabel">Created</sys:String>
+    <sys:String x:Key="WorldSaveRestore_UpdatedDateColumnLabel">Last Updated</sys:String>
+
+    <sys:String x:Key="WorldSaveRestore_DeleteTooltip">Delete worldsave file</sys:String>
+    <sys:String x:Key="WorldSaveRestore_ReloadTooltip">Reload worldsave files</sys:String>
+    <sys:String x:Key="WorldSaveRestore_RestoreTooltip">Restore worldsave</sys:String>
+
     <!-- Progress Window -->
     <sys:String x:Key="Progress_Title">Progress</sys:String>
     <sys:String x:Key="Progress_UpgradeServer_WindowTitle">Update Progress - {0}</sys:String>
@@ -469,10 +483,12 @@
     <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">Time Interval</sys:String>
     <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of seconds to countdown before the extinction event will occur.</sys:String>
 
-    <sys:String x:Key="ServerSettings_AutoSavesLabel">Auto Saves</sys:String>
+    <sys:String x:Key="ServerSettings_SavesLabel">Saves</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodTooltip">The time between server auto-saves.</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodUnits">minutes</sys:String>
+    <sys:String x:Key="ServerSettings_SaveRestoreButtonLabel">Restore</sys:String>
+    <sys:String x:Key="ServerSettings_SaveRestoreButtonTooltip">Restore a previous world save.</sys:String>
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Message of the Day</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">The Message of the Day displayed to users when they connect to the server.</sys:String>
