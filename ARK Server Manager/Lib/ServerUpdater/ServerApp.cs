@@ -40,6 +40,7 @@ namespace ARK_Server_Manager.Lib
 
             public string SchedulerKey;
             public bool EnableAutoRestart;
+            public bool EnableAutoRestart2;
             public bool AutoRestartIfShutdown;
 
             public bool EnableAutoUpdate;
@@ -67,6 +68,7 @@ namespace ARK_Server_Manager.Lib
 
                     SchedulerKey = profile.GetProfileKey(),
                     EnableAutoRestart = profile.EnableAutoRestart,
+                    EnableAutoRestart2 = profile.EnableAutoRestart2,
                     AutoRestartIfShutdown = profile.AutoRestartIfShutdown,
 
                     EnableAutoUpdate = profile.EnableAutoUpdate,

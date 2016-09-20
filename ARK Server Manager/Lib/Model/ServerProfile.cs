@@ -486,6 +486,20 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AutoRestartTimeProperty, value); }
         }
 
+        public static readonly DependencyProperty EnableServerRestart2Property = DependencyProperty.Register(nameof(EnableAutoRestart2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoRestart2
+        {
+            get { return (bool)GetValue(EnableServerRestart2Property); }
+            set { SetValue(EnableServerRestart2Property, value); }
+        }
+
+        public static readonly DependencyProperty AutoRestartTime2Property = DependencyProperty.Register(nameof(AutoRestartTime2), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+        public string AutoRestartTime2
+        {
+            get { return (string)GetValue(AutoRestartTime2Property); }
+            set { SetValue(AutoRestartTime2Property, value); }
+        }
+
         public static readonly DependencyProperty AutoRestartIfShutdownProperty = DependencyProperty.Register(nameof(AutoRestartIfShutdown), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool AutoRestartIfShutdown
         {
@@ -2279,6 +2293,7 @@ namespace ARK_Server_Manager.Lib
             if (SOTF_Enabled)
             {
                 EnableAutoRestart = false;
+                EnableAutoRestart2 = false;
                 EnableAutoUpdate = false;
                 AutoRestartIfShutdown = false;
             }
@@ -2422,6 +2437,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             var taskKey = GetProfileKey();
+            var taskKey2 = $"{taskKey}_#2";
 
             // remove the old task schedule
             TaskSchedulerUtils.ScheduleUpdates(taskKey, 0, Config.Default.AutoUpdate_CacheDir, this.InstallDirectory, null, 0, null, 0, null);
@@ -2434,6 +2450,11 @@ namespace ARK_Server_Manager.Lib
             TimeSpan restartTime;
             var command = Assembly.GetEntryAssembly().Location;
             if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
+            {
+                return false;
+            }
+
+            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey2, command, this.EnableAutoRestart2 ? (TimeSpan.TryParseExact(this.AutoRestartTime2, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
             {
                 return false;
             }
