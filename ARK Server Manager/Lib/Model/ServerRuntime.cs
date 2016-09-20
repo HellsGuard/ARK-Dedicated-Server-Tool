@@ -15,6 +15,8 @@ namespace ARK_Server_Manager.Lib
 {
     public class ServerRuntime : DependencyObject, IDisposable
     {
+        private const int DIRECTORIES_PER_LINE = 200;
+
         public event EventHandler StatusUpdate;
 
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
@@ -441,6 +443,8 @@ namespace ARK_Server_Manager.Lib
             {
                 await StopAsync();
 
+                bool isNewInstallation = this.Status == ServerStatus.Uninstalled;
+
                 this.Status = ServerStatus.Updating;
 
                 // Run the SteamCMD to install the server
@@ -466,6 +470,32 @@ namespace ARK_Server_Manager.Lib
                     // Server Update Section
                     // *********************
 
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting server update.");
+
+                    // Check if this is a new server installation.
+                    if (isNewInstallation)
+                    {
+                        // check if the auto-update facility is enabled and the cache folder defined.
+                        if (!this.ProfileSnapshot.SotFServer && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir))
+                        {
+                            // Auto-Update enabled and cache foldler exists.
+                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
+
+                            // Install the server files from the cache.
+                            var installationFolder = this.ProfileSnapshot.InstallDirectory;
+                            int count = 0;
+                            await Task.Run(() => 
+                                ServerApp.DirectoryCopy(Config.Default.AutoUpdate_CacheDir, installationFolder, true, Config.Default.AutoUpdate_UseSmartCopy, (p, m, n) =>
+                                                                                                                                                              {
+                                                                                                                                                                  count++;
+                                                                                                                                                                  progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
+                                                                                                                                                              }), cancellationToken);
+                        }
+                    }
+
+                    progressCallback?.Invoke(0, "\r\n");
+                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Updating server from steam.\r\n");
+
                     downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
                     DataReceivedEventHandler serverOutputHandler = (s, e) =>
                     {
@@ -480,8 +510,6 @@ namespace ARK_Server_Manager.Lib
                             downloadSuccessful = true;
                         }
                     };
-
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started server update.\r\n");
 
                     var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
                     var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : string.Empty);
@@ -498,13 +526,9 @@ namespace ARK_Server_Manager.Lib
                                 gotNewVersion = ServerApp.HasNewServerVersion(this.ProfileSnapshot.InstallDirectory, startTime);
 
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New server version - {gotNewVersion.ToString().ToUpperInvariant()}.");
-
-                            //// update the version number of the server.
-                            //var versionFile = Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.VersionFile);
-                            //this.Version = Updater.GetServerVersion(versionFile);
-
-                            //progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Server version: {this.Version}\r\n");
                         }
+
+                        progressCallback?.Invoke(0, "\r\n");
                     }
                     else
                     {
@@ -614,7 +638,7 @@ namespace ARK_Server_Manager.Lib
                                                 }
                                             };
 
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod download.\r\n");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting mod download.\r\n");
 
                                             var steamCmdArgs = string.Empty;
                                             if (this.ProfileSnapshot.SotFServer)
@@ -710,7 +734,13 @@ namespace ARK_Server_Manager.Lib
                                                 if (Directory.Exists(modCachePath))
                                                 {
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
-                                                    ModUtils.CopyMod(modCachePath, modPath, modId, null);
+                                                    int count = 0;
+                                                    await Task.Run(() => ModUtils.CopyMod(modCachePath, modPath, modId, (p, m, n) =>
+                                                                                                                        {
+                                                                                                                            count++;
+                                                                                                                            progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
+                                                                                                                        }), cancellationToken);
+                                                    progressCallback?.Invoke(0, "\r\n");
                                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
 
                                                     var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);

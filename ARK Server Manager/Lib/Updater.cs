@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace ARK_Server_Manager.Lib
 {
-    public delegate void ProgressDelegate(int progress, string message);
+    public delegate void ProgressDelegate(int progress, string message, bool newLine = true);
 
     /// <summary>
     /// Checks for an updates this program

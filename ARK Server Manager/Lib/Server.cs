@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using static ARK_Server_Manager.Lib.ServerRuntime;
 
 namespace ARK_Server_Manager.Lib
 {

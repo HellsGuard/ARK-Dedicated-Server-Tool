@@ -613,13 +613,9 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage($"Smart cache copy: {Config.Default.AutoUpdate_UseSmartCopy}.");
 
                             // update the server files from the cache.
-                            DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy);
+                            DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
 
                             LogProfileMessage("Updated server from cache.");
-
-                            // update the version number
-                            //_profile.LastInstalledVersion = Updater.GetServerVersion(GetServerVersionFile()).ToString();
-                            //LogProfileMessage($"Server version: {_profile.LastInstalledVersion}.");
 
                             LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287");
                             _profile.ServerUpdated = true;
@@ -991,9 +987,6 @@ namespace ARK_Server_Manager.Lib
                 }
                 else
                     LogMessage("No new version.");
-
-                //var cacheVersion = Updater.GetServerVersion(GetServerCacheVersionFile()).ToString();
-                //LogMessage($"Server cache version: {cacheVersion}");
             }
             else
                 LogMessage($"Server cache does not exist.");
@@ -1016,7 +1009,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private void DirectoryCopy(string sourceFolder, string destinationFolder, bool copySubFolders, bool useSmartCopy)
+        public static void DirectoryCopy(string sourceFolder, string destinationFolder, bool copySubFolders, bool useSmartCopy, ProgressDelegate progressCallback)
         {
             var directory = new DirectoryInfo(sourceFolder);
             if (!directory.Exists)
@@ -1036,9 +1029,11 @@ namespace ARK_Server_Manager.Lib
                 foreach (var subDirectory in subDirectories)
                 {
                     var tempDirectory = Path.Combine(destinationFolder, subDirectory.Name);
-                    DirectoryCopy(subDirectory.FullName, tempDirectory, copySubFolders, useSmartCopy);
+                    DirectoryCopy(subDirectory.FullName, tempDirectory, copySubFolders, useSmartCopy, progressCallback);
                 }
             }
+
+            progressCallback?.Invoke(0, directory.FullName);
 
             // Get the files in the directory and copy them to the new location.
             var files = directory.GetFiles();
@@ -1054,9 +1049,6 @@ namespace ARK_Server_Manager.Lib
                     continue;
 
                 // destination file does not exist, or is older. Override with the source file.
-#if DEBUG
-                LogProfileMessage($"File copied: {destFile.FullName}");
-#endif
                 file.CopyTo(destFile.FullName, true);
             }
         }
@@ -1129,8 +1121,6 @@ namespace ARK_Server_Manager.Lib
 
         private static string GetServerCacheTimeFile() => Updater.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
 
-        private static string GetServerCacheVersionFile() => Updater.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.VersionFile));
-
         private string GetServerExecutableFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe));
 
         private DateTime GetServerLatestTime(string timeFile)
@@ -1171,8 +1161,6 @@ namespace ARK_Server_Manager.Lib
 
         private string GetServerTimeFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.LastUpdatedTimeFile));
 
-        private string GetServerVersionFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.VersionFile));
-
         private string GetServerWorldFile()
         {
             if (!string.IsNullOrWhiteSpace(_profile.AltSaveDirectoryName))
@@ -1195,7 +1183,7 @@ namespace ARK_Server_Manager.Lib
                 return false;
 
             // check if any of the files have changed in the root folder.
-            var hasNewVersion = new DirectoryInfo(directory).GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(file => file.LastWriteTime >= checkTime).Any();
+            var hasNewVersion = new DirectoryInfo(directory).GetFiles("*.*", SearchOption.TopDirectoryOnly).Any(file => file.LastWriteTime >= checkTime);
             if (!hasNewVersion)
             {
                 // get a list of the sub folders.
@@ -1206,7 +1194,7 @@ namespace ARK_Server_Manager.Lib
                     if (folder.Name.Equals("steamapps", StringComparison.OrdinalIgnoreCase))
                         continue;
 
-                    hasNewVersion = folder.GetFiles("*.*", SearchOption.AllDirectories).Where(file => file.LastWriteTime >= checkTime).Any();
+                    hasNewVersion = folder.GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= checkTime);
                     if (hasNewVersion)
                         break;
                 }
@@ -1662,15 +1650,6 @@ namespace ARK_Server_Manager.Lib
                             app.ServerProcess = ServerProcessType.AutoUpdate;
                             exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
                         });
-
-                        //foreach (var profile in _profiles.Keys)
-                        //{
-                        //    if (profile.ServerUpdated)
-                        //    {
-                        //        profile.Update(_profiles[profile]);
-                        //        _profiles[profile].SaveProfile();
-                        //    }
-                        //}
 
                         if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
                             exitCode = EXITCODE_EXITWITHERRORS;

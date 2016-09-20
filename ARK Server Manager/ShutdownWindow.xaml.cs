@@ -120,7 +120,7 @@ namespace ARK_Server_Manager
                     ShutdownInterval = this.ShutdownInterval,
                     OutputLogs = false,
                     ServerProcess = RestartServer ? ServerProcessType.Restart : ServerProcessType.Shutdown,
-                    ProgressCallback = (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { this.AddMessage(m); }).DoNotWait(); },
+                    ProgressCallback = (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { this.AddMessage(m, n); }).DoNotWait(); },
                 };
 
                 var profile = ProfileSnapshot.Create(Server.Profile);
@@ -169,10 +169,11 @@ namespace ARK_Server_Manager
             }
         }
 
-        public void AddMessage(string message)
+        public void AddMessage(string message, bool includeNewLine = true)
         {
             MessageOutput.AppendText(message);
-            MessageOutput.AppendText(Environment.NewLine);
+            if (includeNewLine)
+                MessageOutput.AppendText(Environment.NewLine);
             MessageOutput.ScrollToEnd();
 
             Debug.WriteLine(message);

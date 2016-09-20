@@ -459,8 +459,6 @@ namespace ARK_Server_Manager
                 // <server>
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
                 if (File.Exists(file)) files.Add(file);
-                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.VersionFile);
-                if (File.Exists(file)) files.Add(file);
 
                 // <server>\ShooterGame\Content\Mods
                 folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
@@ -560,8 +558,6 @@ namespace ARK_Server_Manager
                     if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
                     {
                         file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile);
-                        if (File.Exists(file)) files.Add(file);
-                        file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.VersionFile);
                         if (File.Exists(file)) files.Add(file);
                     }
                 }
@@ -1653,7 +1649,7 @@ namespace ARK_Server_Manager
                     window.Show();
 
                     await Task.Delay(1000);
-                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer, true, updateMods, progressCallback: (int p, string m) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m); }).DoNotWait(); });
+                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer, true, updateMods, (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m, n); }).DoNotWait(); });
                 }
                 else
                 {

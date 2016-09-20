@@ -11,7 +11,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class ProgressWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private bool _allowClose = false;
 
         public ProgressWindow(string windowTitle)
@@ -27,10 +27,11 @@ namespace ARK_Server_Manager
             this.DataContext = this;
         }
 
-        public void AddMessage(string message)
+        public void AddMessage(string message, bool includeNewLine = true)
         {
             MessageOutput.AppendText(message);
-            MessageOutput.AppendText(Environment.NewLine);
+            if (includeNewLine)
+                MessageOutput.AppendText(Environment.NewLine);
             MessageOutput.ScrollToEnd();
 
             Debug.WriteLine(message);

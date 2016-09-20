@@ -173,9 +173,6 @@
     <Setting Name="CustomLevelXPIncrease_Dino" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="VersionFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">version.txt</Value>
-    </Setting>
     <Setting Name="SteamCmdInstallServerArgsFormat_SotF" Type="System.String" Scope="Application">
       <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 445400 {1}" +quit</Value>
     </Setting>
