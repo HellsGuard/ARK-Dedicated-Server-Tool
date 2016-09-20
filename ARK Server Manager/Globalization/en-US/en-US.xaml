@@ -764,6 +764,7 @@
     <sys:String x:Key="ServerSettings_WildResistanceOptionLabel">Wild Resistance</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
     <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_PasteDinoCustomizationsTooltip">Paste custom dino data.</sys:String>
     <sys:String x:Key="ServerSettings_DinoFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_ArkAppColumnLabel">Ark App.</sys:String>
@@ -837,6 +838,7 @@
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
     <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomResourcesTooltip">Paste custom resource data.</sys:String>
     <sys:String x:Key="ServerSettings_ResourcesFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
     <sys:String x:Key="ServerSettings_HarvestRemoveRecordTooltip">Remove this Resource</sys:String>
@@ -930,6 +932,7 @@
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCustomEngramsTooltip">Paste custom engram data.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Ark App.</sys:String>

@@ -1868,6 +1868,9 @@
                                             <Button Width="22" Height="22" Margin="20,0,0,0" Click="DinoCustomization_Reset" ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16" />
                                             </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_PasteDinoCustomizationsTooltip}">
+                                                <Image Source="Art/Paste.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
@@ -2318,6 +2321,9 @@
                                             <Button   Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" ToolTip="{DynamicResource ServerSettings_ResetCustomHarvestTooltip}">
                                                 <Image Source="Art/Refresh.png" Width="16" Height="16"/>
                                             </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="PasteCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}">
+                                                <Image Source="Art/Paste.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
@@ -2512,6 +2518,9 @@
                                         <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="{DynamicResource ServerSettings_EnableEngramsOverrideLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableEngramsOverrideTooltip}"/>
                                         <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetEngramsLabel}">
                                             <Image Source="Art/Refresh.png" Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomEngrams_Click" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PasteCustomEngramsTooltip}">
+                                            <Image Source="Art/Paste.png" Width="16"/>
                                         </Button>
                                     </StackPanel>
                                 </GroupBox.Header>
