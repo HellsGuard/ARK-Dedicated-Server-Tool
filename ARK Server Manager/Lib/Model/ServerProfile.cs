@@ -2437,7 +2437,6 @@ namespace ARK_Server_Manager.Lib
             }
 
             var taskKey = GetProfileKey();
-            var taskKey2 = $"{taskKey}_#2";
 
             // remove the old task schedule
             TaskSchedulerUtils.ScheduleUpdates(taskKey, 0, Config.Default.AutoUpdate_CacheDir, this.InstallDirectory, null, 0, null, 0, null);
@@ -2449,12 +2448,12 @@ namespace ARK_Server_Manager.Lib
 
             TimeSpan restartTime;
             var command = Assembly.GetEntryAssembly().Location;
-            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
+            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, null, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
             {
                 return false;
             }
 
-            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey2, command, this.EnableAutoRestart2 ? (TimeSpan.TryParseExact(this.AutoRestartTime2, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
+            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, "#2", command, this.EnableAutoRestart2 ? (TimeSpan.TryParseExact(this.AutoRestartTime2, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null))
             {
                 return false;
             }

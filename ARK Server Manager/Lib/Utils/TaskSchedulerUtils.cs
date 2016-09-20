@@ -11,11 +11,11 @@ namespace ARK_Server_Manager.Lib
     {
         private const string TASK_FOLDER = "ArkServerManager";
 
-        //private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-
-        public static bool ScheduleAutoRestart(string taskKey, string command, TimeSpan? restartTime)
+        public static bool ScheduleAutoRestart(string taskKey, string taskSuffix, string command, TimeSpan? restartTime)
         {
             var schedulerKey = $"{TASK_FOLDER}\\AutoRestart_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                schedulerKey += $"_{taskSuffix}";
             var args = $"{ServerApp.ARGUMENT_AUTORESTART}{taskKey}";
 
             var builder = new StringBuilder();
