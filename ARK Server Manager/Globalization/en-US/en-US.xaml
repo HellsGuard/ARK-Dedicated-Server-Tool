@@ -231,6 +231,8 @@
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateTooltip">If enabled, an email will be sent if the server is updated during the auto-update process.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartLabel">Auto-Restart</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is restarted during the auto-restart process.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Shutdown/Restart</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">If enabled, an email will be sent when the server is shutdown or restarted.</sys:String>
 
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>

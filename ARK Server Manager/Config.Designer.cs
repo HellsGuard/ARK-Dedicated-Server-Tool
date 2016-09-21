@@ -1356,5 +1356,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ArkExclusiveFile"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmailNotify_ShutdownRestart {
+            get {
+                return ((bool)(this["EmailNotify_ShutdownRestart"]));
+            }
+            set {
+                this["EmailNotify_ShutdownRestart"] = value;
+            }
+        }
     }
 }

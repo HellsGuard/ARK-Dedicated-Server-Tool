@@ -279,7 +279,8 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("Started server successfully.");
                 LogProfileMessage("");
 
-                SendEmail($"{_profile.ProfileName} server started", $"The server has been started.", false);
+                if (Config.Default.EmailNotify_ShutdownRestart)
+                    SendEmail($"{_profile.ProfileName} server started", $"The server has been started.", false);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -518,7 +519,8 @@ namespace ARK_Server_Manager.Lib
             {
                 if (process.HasExited)
                 {
-                    SendEmail($"{_profile.ProfileName} server shutdown", $"The server has been shutdown to perform the {ServerProcess.ToString()} process.", false);
+                    if (Config.Default.EmailNotify_ShutdownRestart)
+                        SendEmail($"{_profile.ProfileName} server shutdown", $"The server has been shutdown to perform the {ServerProcess.ToString()} process.", false);
                 }
             }
 
@@ -534,6 +536,8 @@ namespace ARK_Server_Manager.Lib
                 ExitCode = EXITCODE_BADPROFILE;
                 return;
             }
+
+            var emailMessage = new StringBuilder();
 
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server update...");
@@ -569,7 +573,8 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                SendEmail($"{_profile.ProfileName} auto update started", "The auto update process has started.", false);
+                if (Config.Default.EmailNotify_AutoUpdate)
+                    SendEmail($"{_profile.ProfileName} auto update started", "The auto update process has started.", false);
 
                 if (BackupWorldFile)
                 {
@@ -577,6 +582,8 @@ namespace ARK_Server_Manager.Lib
                     var worldFile = GetServerWorldFile();
                     if (File.Exists(worldFile))
                     {
+                        emailMessage.AppendLine();
+
                         try
                         {
                             LogProfileMessage("Backing up world file...");
@@ -585,15 +592,18 @@ namespace ARK_Server_Manager.Lib
                             File.Copy(worldFile, backupFile, true);
 
                             LogProfileMessage($"Backed up world file '{worldFile}'.");
+                            emailMessage.AppendLine($"Backed up world file '{worldFile}'.");
                         }
                         catch (Exception ex)
                         {
                             LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
+                            emailMessage.AppendLine($"Unable to back up world file - {worldFile}.\r\n{ex.Message}");
                         }
                     }
                     else
                     {
                         LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
+                        emailMessage.AppendLine($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
                     }
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
@@ -617,9 +627,14 @@ namespace ARK_Server_Manager.Lib
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
 
-                            LogProfileMessage("Updated server from cache.");
+                            emailMessage.AppendLine();
 
-                            LogProfileMessage("Ark patch notes: http://steamcommunity.com/app/346110/discussions/0/594820656447032287");
+                            LogProfileMessage("Updated server from cache.");
+                            emailMessage.AppendLine("Updated server from cache.");
+
+                            LogProfileMessage($"Ark patch notes: {Config.Default.ArkSE_PatchNotesUrl}");
+                            emailMessage.AppendLine($"Ark patch notes: {Config.Default.ArkSE_PatchNotesUrl}");
+
                             _profile.ServerUpdated = true;
                         }
                         else
@@ -671,16 +686,21 @@ namespace ARK_Server_Manager.Lib
                                     // check if the mutex was established
                                     if (createdNew)
                                     {
+                                        emailMessage.AppendLine();
+
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"{modId} - {modName}");
+                                        emailMessage.AppendLine($"{modId} - {modName}");
 
-                                        ModUtils.CopyMod(modCachePath, modPath, modId, null); // (int p, string m) => { LogProfileMessage(m); });
+                                        ModUtils.CopyMod(modCachePath, modPath, modId, null);
 
                                         var modLastUpdated = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(_profile.InstallDirectory, modId));
                                         LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
 
                                         LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
+                                        emailMessage.AppendLine($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
                                         LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
+                                        emailMessage.AppendLine($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
 
                                         LogProfileMessage($"Finished mod {modId} update from cache.");
                                     }
@@ -737,7 +757,8 @@ namespace ARK_Server_Manager.Lib
                 // restart the server
                 StartServer();
 
-                SendEmail($"{_profile.ProfileName} auto update finished", "The auto update process has finished.", true);
+                if (Config.Default.EmailNotify_AutoUpdate)
+                    SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.\r\n\r\n{emailMessage}", true);
             }
             else
             {
@@ -1332,8 +1353,6 @@ namespace ARK_Server_Manager.Lib
         {
             if (!SendEmails)
                 return;
-            if (ServerProcess == ServerProcessType.AutoRestart && !Config.Default.EmailNotify_AutoRestart || ServerProcess == ServerProcessType.AutoUpdate && !Config.Default.EmailNotify_AutoUpdate)
-                return;
 
             try
             {
@@ -1354,15 +1373,15 @@ namespace ARK_Server_Manager.Lib
                     var logFile = GetProfileLogFile();
                     if (!string.IsNullOrWhiteSpace(logFile) && File.Exists(logFile))
                     {
-                        messageBody.AppendLine();
-                        messageBody.AppendLine();
-                        messageBody.AppendLine("Log Information:");
-                        foreach (var line in File.ReadAllLines(logFile))
-                        {
-                            messageBody.AppendLine(line);
-                        }
+                        attachment = new Attachment(logFile);
 
-                        attachment = new Attachment(GetProfileLogFile());
+                        //messageBody.AppendLine();
+                        //messageBody.AppendLine();
+                        //messageBody.AppendLine("Log Information:");
+                        //foreach (var line in File.ReadAllLines(logFile))
+                        //{
+                        //    messageBody.AppendLine(line);
+                        //}
                     }
                 }
 
@@ -1448,10 +1467,13 @@ namespace ARK_Server_Manager.Lib
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
-                        if (performRestart)
-                            SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
-                        else
-                            SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                        if (Config.Default.EmailNotify_AutoRestart)
+                        {
+                            if (performRestart)
+                                SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                            else
+                                SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                        }
                     }
                 }
                 else
@@ -1470,10 +1492,13 @@ namespace ARK_Server_Manager.Lib
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
-                if (performRestart)
-                    SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
-                else
-                    SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                if (Config.Default.EmailNotify_AutoRestart)
+                {
+                    if (performRestart)
+                        SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                    else
+                        SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                }
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -1525,7 +1550,10 @@ namespace ARK_Server_Manager.Lib
                     LogMessage($"[{_profile.ProfileName}] Finished server update process.");
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
-                        SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                    {
+                        if (Config.Default.EmailNotify_AutoUpdate)
+                            SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                    }
                 }
                 else
                 {
@@ -1540,7 +1568,8 @@ namespace ARK_Server_Manager.Lib
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
-                SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                if (Config.Default.EmailNotify_AutoUpdate)
+                    SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
