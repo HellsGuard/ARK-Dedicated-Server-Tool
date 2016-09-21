@@ -20,6 +20,14 @@ namespace ARK_Server_Manager.Lib
         Unknown,
     }
 
+    [DefaultValue(False)]
+    public enum DinoTamable
+    {
+        False,
+        True,
+        ByBreeding,
+    }
+
     public static class GameData
     {
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 900000;
@@ -128,7 +136,7 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<NPCReplacement> GetNPCReplacements() => dinoSpawns.Select(d => new NPCReplacement() { FromClassName = d.ClassName, ToClassName = d.ClassName });
 
-        public static bool IsTameableForClass(string className)
+        public static DinoTamable IsTameableForClass(string className)
         {
             switch (className)
             {
@@ -143,31 +151,33 @@ namespace ARK_Server_Manager.Lib
                 case "Piranha_Character_BP_C":
                 case "Salmon_Character_BP_C":
                 case "Trilobite_Character_C":
-                    return false;
+                    return DinoTamable.False;
 
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                 case "Mosa_Character_BP_Mega_C":
                 case "Yeti_Character_BP_C":
-                    return false;
+                    return DinoTamable.False;
 
                 // Scorched Earth dinos
                 case "Deathworm_Character_BP_C":
                 case "Jugbug_Oil_Character_BP_C":
                 case "Manticore_Character_BP_C":
-                case "Wyvern_Character_BP_Fire_C":
-                    return false;
+                    return DinoTamable.False;
 
                 case "Jugbug_Water_Character_BP_C":
                 case "MegaDeathworm_Character_BP_C":
                 case "MegaWyvern_Character_BP_Fire_C":
                 case "RubbleGolem_Character_BP_C":
+                    return DinoTamable.False;
+
+                case "Wyvern_Character_BP_Fire_C":
                 case "Wyvern_Character_BP_Lightning_C":
                 case "Wyvern_Character_BP_Poison_C":
-                    return false;
+                    return DinoTamable.ByBreeding;
 
                 default:
-                    return true;
+                    return DinoTamable.True;
             }
         }
 

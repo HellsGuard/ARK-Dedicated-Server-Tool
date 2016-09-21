@@ -1916,10 +1916,13 @@
                                                     <DataGridCheckBoxColumn.CellStyle>
                                                         <Style TargetType="{x:Type DataGridCell}">
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <DataTrigger Binding="{Binding HasClassName}" Value="False">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.False}">
+                                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.ByBreeding}">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -2009,7 +2012,7 @@
                                                                 <DataTrigger Binding="{Binding HasClassName}" Value="False">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.False}">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -2027,7 +2030,7 @@
                                                                 <DataTrigger Binding="{Binding HasClassName}" Value="False">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding IsTameable}" Value="False">
+                                                                <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.False}">
                                                                     <Setter Property="Visibility" Value="Hidden" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>

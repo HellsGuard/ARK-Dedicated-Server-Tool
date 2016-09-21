@@ -46,7 +46,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 NameTag = nameTag,
 
                 CanSpawn = true,
-                CanTame = isTameable,
+                CanTame = isTameable == DinoTamable.True,
                 ReplacementClass = className,
 
                 SpawnWeightMultiplier = DinoSpawn.DefaultSpawnWeightMultiplier,
@@ -222,7 +222,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                        
             foreach(var entry in this)
             {
-                if (entry.HasNameTag && !String.IsNullOrWhiteSpace(entry.NameTag))
+                if (entry.HasNameTag && !string.IsNullOrWhiteSpace(entry.NameTag))
                 {
                     if (!entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DefaultOverrideSpawnLimitPercentage) ||
                         !entry.SpawnLimitPercentage.Equals(DinoSpawn.DefaultSpawnLimitPercentage) ||
@@ -239,16 +239,16 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     }
                 }
 
-                if (entry.HasClassName && !String.IsNullOrWhiteSpace(entry.ClassName))
+                if (entry.HasClassName && !string.IsNullOrWhiteSpace(entry.ClassName))
                 {
-                    if (entry.IsTameable && !entry.CanTame)
+                    if (entry.IsTameable == DinoTamable.True && !entry.CanTame)
                     {
                         this.PreventDinoTameClassNames.Add(entry.ClassName);
                     }
 
-                    this.NpcReplacements.Add(new NPCReplacement() { FromClassName = entry.ClassName, ToClassName = entry.CanSpawn ? entry.ReplacementClass : String.Empty });
+                    this.NpcReplacements.Add(new NPCReplacement() { FromClassName = entry.ClassName, ToClassName = entry.CanSpawn ? entry.ReplacementClass : string.Empty });
 
-                    if (entry.IsTameable)
+                    if (entry.IsTameable == DinoTamable.True || entry.IsTameable == DinoTamable.ByBreeding)
                     {
                         // check if the value has changed.
                         if (!entry.TamedDamageMultiplier.Equals(ClassMultiplier.DefaultMultiplier))
