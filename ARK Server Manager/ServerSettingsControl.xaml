@@ -547,7 +547,23 @@
 
                 <DockPanel Grid.Row="0" Grid.Column="0" Margin="2" DataContext="{Binding Profile}" VerticalAlignment="Center" >
                     <Label FontSize="15" Content="{DynamicResource ServerSettings_ProfileLabel}"/>
-                    <TextBox Text="{Binding ProfileName}" VerticalContentAlignment="Center" />
+                    <TextBox VerticalContentAlignment="Center">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <StackPanel>
+                                    <AdornedElementPlaceholder x:Name="textBox"/>
+                                    <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+                        <TextBox.Text>
+                            <Binding Path="ProfileName">
+                                <Binding.ValidationRules>
+                                    <vm:ProfileNameValidationRule ValidatesOnTargetUpdated="true" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </DockPanel>
                 <Button Grid.Row="0" Grid.Column="1" Margin="2" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
                 <Button Grid.Row="0" Grid.Column="2" Margin="2" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
@@ -1169,7 +1185,23 @@
                                     <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseOldSaveFormat}" Content="{DynamicResource ServerSettings_UseOldSaveFormatLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseOldSaveFormatTooltip}"/>
                                     <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center" MinWidth="200"/>
-                                        <TextBox Text="{Binding AltSaveDirectoryName}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}"/>
+                                        <TextBox Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <StackPanel>
+                                                        <AdornedElementPlaceholder x:Name="textBox"/>
+                                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Text>
+                                                <Binding Path="AltSaveDirectoryName">
+                                                    <Binding.ValidationRules>
+                                                        <vm:StringNoSpacesValidationRule ValidatesOnTargetUpdated="true" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel2}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">

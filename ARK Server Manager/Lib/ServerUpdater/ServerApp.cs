@@ -576,8 +576,15 @@ namespace ARK_Server_Manager.Lib
                 if (Config.Default.EmailNotify_AutoUpdate)
                     SendEmail($"{_profile.ProfileName} auto update started", "The auto update process has started.", false);
 
+                emailMessage.AppendLine("ASM Update Summary:");
+                emailMessage.AppendLine();
+                emailMessage.AppendLine($"ASM Version: {App.Version}");
+
                 if (BackupWorldFile)
                 {
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine("Backup:");
+
                     // make a backup of the current world file.
                     var worldFile = GetServerWorldFile();
                     if (File.Exists(worldFile))
@@ -592,18 +599,26 @@ namespace ARK_Server_Manager.Lib
                             File.Copy(worldFile, backupFile, true);
 
                             LogProfileMessage($"Backed up world file '{worldFile}'.");
-                            emailMessage.AppendLine($"Backed up world file '{worldFile}'.");
+
+                            emailMessage.AppendLine("Backed up world file.");
+                            emailMessage.AppendLine(worldFile);
                         }
                         catch (Exception ex)
                         {
                             LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
-                            emailMessage.AppendLine($"Unable to back up world file - {worldFile}.\r\n{ex.Message}");
+
+                            emailMessage.AppendLine("Unable to back up world file.");
+                            emailMessage.AppendLine(worldFile);
+                            emailMessage.AppendLine(ex.Message);
                         }
                     }
                     else
                     {
                         LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
-                        emailMessage.AppendLine($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
+
+                        emailMessage.AppendLine("Unable to back up world file.");
+                        emailMessage.AppendLine(worldFile);
+                        emailMessage.AppendLine("File could not be found.");
                     }
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
@@ -618,6 +633,9 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage("Updating server from cache...");
 
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine("ARK Server Update:");
+
                     try
                     {
                         if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))
@@ -629,11 +647,11 @@ namespace ARK_Server_Manager.Lib
 
                             emailMessage.AppendLine();
 
-                            LogProfileMessage("Updated server from cache.");
-                            emailMessage.AppendLine("Updated server from cache.");
+                            LogProfileMessage("Updated server from cache. See ARK patch notes:");
+                            LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
-                            LogProfileMessage($"Ark patch notes: {Config.Default.ArkSE_PatchNotesUrl}");
-                            emailMessage.AppendLine($"Ark patch notes: {Config.Default.ArkSE_PatchNotesUrl}");
+                            emailMessage.AppendLine("Updated server from cache. See ARK patch notes:");
+                            emailMessage.AppendLine(Config.Default.ArkSE_PatchNotesUrl);
 
                             _profile.ServerUpdated = true;
                         }
@@ -662,6 +680,9 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage($"Updating {updateModIds.Count} mods from cache...");
 
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine("Mods:");
+
                     var modDetails = SteamUtils.GetSteamModDetails(updateModIds);
 
                     try
@@ -686,11 +707,11 @@ namespace ARK_Server_Manager.Lib
                                     // check if the mutex was established
                                     if (createdNew)
                                     {
-                                        emailMessage.AppendLine();
-
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
-                                        LogProfileMessage($"{modId} - {modName}");
-                                        emailMessage.AppendLine($"{modId} - {modName}");
+                                        LogProfileMessage($"Mod Name: {modName} (Mod ID: {modId})");
+
+                                        emailMessage.AppendLine();
+                                        emailMessage.AppendLine($"Mod Name: {modName} (Mod ID: {modId})");
 
                                         ModUtils.CopyMod(modCachePath, modPath, modId, null);
 
@@ -698,8 +719,9 @@ namespace ARK_Server_Manager.Lib
                                         LogProfileMessage($"Mod {modId} version: {modLastUpdated}.");
 
                                         LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
-                                        emailMessage.AppendLine($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
                                         LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
+
+                                        emailMessage.AppendLine($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
                                         emailMessage.AppendLine($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
 
                                         LogProfileMessage($"Finished mod {modId} update from cache.");
@@ -758,7 +780,11 @@ namespace ARK_Server_Manager.Lib
                 StartServer();
 
                 if (Config.Default.EmailNotify_AutoUpdate)
-                    SendEmail($"{_profile.ProfileName} auto update finished", $"The auto update process has finished.\r\n\r\n{emailMessage}", true);
+                {
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine("See attached log file more details.");
+                    SendEmail($"{_profile.ProfileName} auto update finished", emailMessage.ToString(), true);
+                }
             }
             else
             {
@@ -1349,7 +1375,7 @@ namespace ARK_Server_Manager.Lib
             SendCommand($"broadcast {message}", false);
         }
 
-        private void SendEmail(string subject, string body, bool includeLogFile)
+        private void SendEmail(string subject, string body, bool includeLogFile, bool isBodyHtml = false)
         {
             if (!SendEmails)
                 return;
@@ -1374,18 +1400,10 @@ namespace ARK_Server_Manager.Lib
                     if (!string.IsNullOrWhiteSpace(logFile) && File.Exists(logFile))
                     {
                         attachment = new Attachment(logFile);
-
-                        //messageBody.AppendLine();
-                        //messageBody.AppendLine();
-                        //messageBody.AppendLine("Log Information:");
-                        //foreach (var line in File.ReadAllLines(logFile))
-                        //{
-                        //    messageBody.AppendLine(line);
-                        //}
                     }
                 }
 
-                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody.ToString(), false, new[] { attachment });
+                email.SendEmail(Config.Default.Email_From, Config.Default.Email_To?.Split(','), subject, messageBody.ToString(), isBodyHtml, new[] { attachment });
 
                 LogProfileMessage($"Email Sent - {subject}\r\n{body}");
             }
