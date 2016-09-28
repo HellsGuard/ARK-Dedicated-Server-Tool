@@ -152,6 +152,7 @@ namespace ARK_Server_Manager.Lib
         public int ExitCode = EXITCODE_NORMALEXIT;
         public bool OutputLogs = true;
         public bool SendEmails = false;
+        public string ShutdownReason = null;
         public ServerProcessType ServerProcess = ServerProcessType.Unknown;
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
@@ -321,6 +322,16 @@ namespace ARK_Server_Manager.Lib
                     // create a connection to the server
                     var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
                     gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
+
+                    // check if there is a shutdown reason
+                    if (!string.IsNullOrWhiteSpace(ShutdownReason))
+                    {
+                        LogProfileMessage("Sending shutdown reason...");
+
+                        SendMessage(ShutdownReason);
+
+                        Task.Delay(10000).Wait();
+                    }
 
                     LogProfileMessage("Starting shutdown timer...");
 

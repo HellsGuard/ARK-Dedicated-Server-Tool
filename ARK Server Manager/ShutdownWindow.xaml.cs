@@ -27,6 +27,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ShutdownStartedProperty = DependencyProperty.Register(nameof(ShutdownStarted), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(false));
         public static readonly DependencyProperty ShutdownTypeProperty = DependencyProperty.Register(nameof(ShutdownType), typeof(int), typeof(ShutdownWindow), new PropertyMetadata(0));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ShutdownWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty ShutdownReasonProperty = DependencyProperty.Register(nameof(ShutdownReason), typeof(string), typeof(ShutdownWindow), new PropertyMetadata(null));
 
         protected ShutdownWindow(Server server)
         {
@@ -80,6 +81,11 @@ namespace ARK_Server_Manager
             get { return (Server)GetValue(ServerProperty); }
             set { SetValue(ServerProperty, value); }
         }
+        public string ShutdownReason
+        {
+            get { return (string)GetValue(ShutdownReasonProperty); }
+            set { SetValue(ShutdownReasonProperty, value); }
+        }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -118,6 +124,7 @@ namespace ARK_Server_Manager
                 {
                     BackupWorldFile = this.BackupWorldFile,
                     ShutdownInterval = this.ShutdownInterval,
+                    ShutdownReason = this.ShutdownReason,
                     OutputLogs = false,
                     ServerProcess = RestartServer ? ServerProcessType.Restart : ServerProcessType.Shutdown,
                     ProgressCallback = (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { this.AddMessage(m, n); }).DoNotWait(); },
