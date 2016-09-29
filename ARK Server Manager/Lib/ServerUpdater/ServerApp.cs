@@ -37,6 +37,7 @@ namespace ARK_Server_Manager.Lib
             public string TotalConversionModId;
             public List<string> ServerModIds;
             public string LastInstalledVersion;
+            public int MotDDuration;
 
             public string SchedulerKey;
             public bool EnableAutoRestart;
@@ -65,6 +66,7 @@ namespace ARK_Server_Manager.Lib
                     TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
                     ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                     LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
+                    MotDDuration = Math.Max(profile.MOTDDuration, 10),
 
                     SchedulerKey = profile.GetProfileKey(),
                     EnableAutoRestart = profile.EnableAutoRestart,
@@ -76,11 +78,6 @@ namespace ARK_Server_Manager.Lib
 
                     ServerUpdated = false,
                 };
-            }
-            public void Update(ServerProfile profile)
-            {
-                if (ServerUpdated)
-                    profile.LastInstalledVersion = LastInstalledVersion;
             }
         }
 
@@ -330,7 +327,7 @@ namespace ARK_Server_Manager.Lib
 
                         SendMessage(ShutdownReason);
 
-                        Task.Delay(10000).Wait();
+                        Task.Delay(_profile.MotDDuration * 1000).Wait();
                     }
 
                     LogProfileMessage("Starting shutdown timer...");

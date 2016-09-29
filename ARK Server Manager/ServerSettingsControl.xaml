@@ -1207,21 +1207,7 @@
                                     <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_CrossArkClusterIdLabel}" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}" VerticalAlignment="Center" MinWidth="200"/>
                                         <TextBox Text="{Binding CrossArkClusterId}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}"/>
-                                        <Button Content="{StaticResource CreateSymLinkButtonContent}" Margin="1,0,0,0" ToolTip="{DynamicResource ServerSettings_CreateSymbolicLinkButtonTooltip}" Click="CreateSymLink_Click">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="False">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ElementName=SettingsControl, Path=IsAdministrator}" Value="True">
-                                                            <Setter Property="IsEnabled" Value="True"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                        <CheckBox Margin="5,1,0,0" IsChecked="{Binding HasClusterSymLink}" Content="{DynamicResource ServerSettings_HasClusterSymLinkLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" IsEnabled="False" FlowDirection="RightToLeft" UseLayoutRounding="False"/>
+                                        <CheckBox Margin="5,1,0,0" IsChecked="{Binding ClusterDirOverride}" Content="{DynamicResource ServerSettings_ClusterDirOverrideLabel}" ToolTip="{DynamicResource ServerSettings_ClusterDirOverrideTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" UseLayoutRounding="False"/>
                                     </StackPanel>
 
                                     <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>

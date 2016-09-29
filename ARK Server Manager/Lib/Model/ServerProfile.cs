@@ -1861,12 +1861,11 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(CrossArkClusterIdProperty, value); }
         }
 
-        public static readonly DependencyProperty HasClusterSymLinkProperty = DependencyProperty.Register(nameof(HasClusterSymLink), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [XmlIgnore]
-        public bool HasClusterSymLink
+        public static readonly DependencyProperty ClusterDirOverrideProperty = DependencyProperty.Register(nameof(ClusterDirOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ClusterDirOverride
         {
-            get { return (bool)GetValue(HasClusterSymLinkProperty); }
-            set { SetValue(HasClusterSymLinkProperty, value); }
+            get { return (bool)GetValue(ClusterDirOverrideProperty); }
+            set { SetValue(ClusterDirOverrideProperty, value); }
         }
         #endregion
 
@@ -2074,6 +2073,12 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($" -clusterid={this.CrossArkClusterId}");
             }
 
+            if (this.ClusterDirOverride)
+            {
+                var asmClustersFolder = Path.Combine(Config.Default.DataDir, Config.Default.ClustersDir);
+                serverArgs.Append($" -ClusterDirOverride={asmClustersFolder}");
+            }
+
             if (this.EnableWebAlarm)
             {
                 serverArgs.Append(" -webalarm");
@@ -2214,7 +2219,6 @@ namespace ARK_Server_Manager.Lib
             settings.DinoSettings.RenderToView();
             settings._lastSaveLocation = path;
 
-            settings.SetHasClusterSymLink();
             return settings;
         }
 
@@ -2281,8 +2285,6 @@ namespace ARK_Server_Manager.Lib
                 settings.DinoLevels.UpdateTotals();
                 settings.DinoSettings.RenderToView();
                 settings._lastSaveLocation = path;
-
-                settings.SetHasClusterSymLink();
             }
             return settings;
         }
@@ -2668,12 +2670,6 @@ namespace ARK_Server_Manager.Lib
                 serializer.Serialize(stream, this);
             }
             return result.ToString();
-        }
-
-        public void SetHasClusterSymLink()
-        {
-            var clustersFolder = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ClustersDir);
-            HasClusterSymLink = MachineUtils.IsDirectorySymbolic(clustersFolder);
         }
 
         public void RestoreWorldSave(string restoreFile)

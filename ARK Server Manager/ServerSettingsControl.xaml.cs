@@ -691,42 +691,6 @@ namespace ARK_Server_Manager
             cmdLine.ShowDialog();
         }
 
-        private void CreateSymLink_Click(object sender, RoutedEventArgs e)
-        {
-            // check if the ASM clusters folder exists
-            var asmClustersFolder = Path.Combine(Config.Default.DataDir, Config.Default.ClustersDir);
-            if (!Directory.Exists(asmClustersFolder))
-                Directory.CreateDirectory(asmClustersFolder);
-
-            var profileClustersFolder = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ClustersDir);
-            if (Directory.Exists(profileClustersFolder))
-            {
-                if (MachineUtils.IsDirectorySymbolic(profileClustersFolder))
-                {
-                    if (MessageBox.Show("Cluster folder already exists for this server, do you want to recreate?", "Cluster Folder Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                        return;
-                    Directory.Delete(profileClustersFolder);
-                }
-                else
-                {
-                    MessageBox.Show("The SymLink could not be created, a folder called Clusters already exists for this profile. Delete the Clusters folder and try again.", "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-            }
-
-            try
-            {
-                if (!MachineUtils.CreateSymLink(profileClustersFolder, asmClustersFolder, true))
-                    MessageBox.Show("The SymLink could not be created.", "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Create Symlink Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            Settings.SetHasClusterSymLink();
-        }
-
         private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
