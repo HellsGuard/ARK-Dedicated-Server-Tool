@@ -192,6 +192,8 @@
     <sys:String x:Key="GlobalSettings_SteamCmdPasswordLabel">Password:</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdPasswordTooltip">The password associated with the steam account.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate</sys:String>
+    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursLabel">Workshop Cache Expiry</sys:String>
+    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursTooltip">The number of hours since the last refresh the workshop cache will be considered old and will auto refresh.</sys:String>
     <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
@@ -302,6 +304,7 @@
     <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
     <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
     <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
+    <sys:String x:Key="SliderUnits_Hours">hours</sys:String>
     <sys:String x:Key="SliderUnits_Items">items</sys:String>
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     <sys:String x:Key="SliderUnits_Players">players</sys:String>

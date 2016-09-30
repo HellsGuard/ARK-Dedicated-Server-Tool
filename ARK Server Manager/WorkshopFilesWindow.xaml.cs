@@ -187,8 +187,15 @@ namespace ARK_Server_Manager
                     var file = Path.Combine(Config.Default.DataDir, _isSotF ? Config.Default.WorkshopCacheFile_SotF : Config.Default.WorkshopCacheFile);
 
                     if (loadFromCacheFile)
+                    {
                         // try to load the cache file.
                         cache = WorkshopFileDetailResponse.Load(file);
+
+                        // check if the cache is old
+                        if (cache != null && cache.cached.AddHours(Config.Default.WorkshopCache_ExpiredHours) < DateTime.UtcNow)
+                            // cache is considered old, clear cache variable so it will reload from internet
+                            cache = null;
+                    }
 
                     // check if the cache exists
                     if (cache == null)

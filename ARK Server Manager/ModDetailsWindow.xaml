@@ -121,10 +121,17 @@
                         <TextBlock Text="{DynamicResource ModDetails_TypeColumnLabel}" />
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn     Width="Auto" MinWidth="130" Binding="{Binding LastWriteTimeString, Mode=OneWay}" SortMemberPath="LastWriteTimeSortString">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Text="{DynamicResource ModDetails_LastUpdatedColumnLabel}" />
-                    </DataGridTextColumn.Header>
+                <DataGridTextColumn     Width="Auto" MinWidth="130" Binding="{Binding LastWriteTimeString, Mode=OneWay}" Header="{DynamicResource ModDetails_LastUpdatedColumnLabel}" SortMemberPath="LastWriteTimeSortString">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Width="30" CanUserReorder="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>

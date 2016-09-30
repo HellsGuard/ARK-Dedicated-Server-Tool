@@ -1368,5 +1368,17 @@ namespace ARK_Server_Manager {
                 this["EmailNotify_ShutdownRestart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        public int WorkshopCache_ExpiredHours {
+            get {
+                return ((int)(this["WorkshopCache_ExpiredHours"]));
+            }
+            set {
+                this["WorkshopCache_ExpiredHours"] = value;
+            }
+        }
     }
 }
