@@ -2075,8 +2075,7 @@ namespace ARK_Server_Manager.Lib
 
             if (this.ClusterDirOverride)
             {
-                var asmClustersFolder = Path.Combine(Config.Default.DataDir, Config.Default.ClustersDir);
-                serverArgs.Append($" -ClusterDirOverride={asmClustersFolder}");
+                serverArgs.Append($" -ClusterDirOverride=\"{Config.Default.DataDir}\"");
             }
 
             if (this.EnableWebAlarm)
