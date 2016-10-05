@@ -522,6 +522,8 @@
     <sys:String x:Key="ServerSettings_UseCacheTooltip">If enabled, ~70% faster loading speed option. The first and second times that you start the game will be still be slow, but the third time onwards will be fast.</sys:String>
     <sys:String x:Key="ServerSettings_UseOldSaveFormatLabel">Use Old Save Format</sys:String>
     <sys:String x:Key="ServerSettings_UseOldSaveFormatTooltip">If enabled, will use the old save formatt. New saves are not backwards compatible.</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Label">Force DirectX 10</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">If enabled, the game is forced to use DirectX 10 instead of DirectX 11.</sys:String>
     <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Force Shader Model 4</sys:String>

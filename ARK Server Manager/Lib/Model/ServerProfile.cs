@@ -358,6 +358,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxTribeLogsProperty, value); }
         }
 
+        public static readonly DependencyProperty TribeLogDestroyedEnemyStructuresProperty = DependencyProperty.Register(nameof(TribeLogDestroyedEnemyStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool TribeLogDestroyedEnemyStructures
+        {
+            get { return (bool)GetValue(TribeLogDestroyedEnemyStructuresProperty); }
+            set { SetValue(TribeLogDestroyedEnemyStructuresProperty, value); }
+        }
+
         public static readonly DependencyProperty ForceDirectX10Property = DependencyProperty.Register(nameof(ForceDirectX10), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool ForceDirectX10
         {

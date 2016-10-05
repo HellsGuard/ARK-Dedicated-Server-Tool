@@ -1169,6 +1169,7 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
@@ -1183,7 +1184,7 @@
                                     <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseAllAvailableCores}" Content="{DynamicResource ServerSettings_UseAllAvailableCoresLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseAllAvailableCoresTooltip}"/>
                                     <CheckBox Grid.Row="6" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseCache}" Content="{DynamicResource ServerSettings_UseCacheLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseCacheTooltip}"/>
                                     <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseOldSaveFormat}" Content="{DynamicResource ServerSettings_UseOldSaveFormatLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseOldSaveFormatTooltip}"/>
-                                    <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
+                                    <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center" MinWidth="200"/>
                                         <TextBox Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}">
                                             <Validation.ErrorTemplate>
@@ -1204,7 +1205,7 @@
                                         </TextBox>
                                         <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel2}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
+                                    <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                         <Label Content="{DynamicResource ServerSettings_CrossArkClusterIdLabel}" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}" VerticalAlignment="Center" MinWidth="200"/>
                                         <TextBox Text="{Binding CrossArkClusterId}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}"/>
                                         <CheckBox Margin="5,1,0,0" IsChecked="{Binding ClusterDirOverride}" Content="{DynamicResource ServerSettings_ClusterDirOverrideLabel}" ToolTip="{DynamicResource ServerSettings_ClusterDirOverrideTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" UseLayoutRounding="False"/>
@@ -1216,11 +1217,12 @@
                                         <Label Content="{DynamicResource ServerSettings_MaxTribeLogsLabel}" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Text="{Binding MaxTribeLogs}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}"/>
                                     </StackPanel>
-                                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceDirectX10}" Content="{DynamicResource ServerSettings_ForceDirectX10Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceDirectX10Tooltip}"/>
-                                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceShaderModel4}" Content="{DynamicResource ServerSettings_ForceShaderModel4Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceShaderModel4Tooltip}"/>
-                                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceLowMemory}" Content="{DynamicResource ServerSettings_ForceLowMemoryLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceLowMemoryTooltip}"/>
-                                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceNoManSky}" Content="{DynamicResource ServerSettings_ForceNoManSkyLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceNoManSkyTooltip}"/>
-                                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoMemoryBias}" Content="{DynamicResource ServerSettings_UseNoMemoryBiasLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseNoMemoryBiasTooltip}"/>
+                                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding TribeLogDestroyedEnemyStructures}" Content="{DynamicResource ServerSettings_TribeLogDestroyedEnemyStructuresLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_TribeLogDestroyedEnemyStructuresTooltip}"/>
+                                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceDirectX10}" Content="{DynamicResource ServerSettings_ForceDirectX10Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceDirectX10Tooltip}"/>
+                                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceShaderModel4}" Content="{DynamicResource ServerSettings_ForceShaderModel4Label}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceShaderModel4Tooltip}"/>
+                                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceLowMemory}" Content="{DynamicResource ServerSettings_ForceLowMemoryLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceLowMemoryTooltip}"/>
+                                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceNoManSky}" Content="{DynamicResource ServerSettings_ForceNoManSkyLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceNoManSkyTooltip}"/>
+                                    <CheckBox Grid.Row="8" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoMemoryBias}" Content="{DynamicResource ServerSettings_UseNoMemoryBiasLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseNoMemoryBiasTooltip}"/>
                                 </Grid>
                             </GroupBox>
 
