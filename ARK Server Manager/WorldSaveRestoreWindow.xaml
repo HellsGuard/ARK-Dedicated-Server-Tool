@@ -61,7 +61,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                         </Style>
                     </DataGridTextColumn.CellStyle>
@@ -73,7 +73,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                         </Style>
                     </DataGridTextColumn.CellStyle>
@@ -87,7 +87,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="{x:Type DataGridCell}">
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsActiveFile}" Value="True">
                                     <Setter Property="Visibility" Value="Hidden" />
@@ -105,7 +105,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="{x:Type DataGridCell}">
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsActiveFile}" Value="True">
                                     <Setter Property="Visibility" Value="Hidden" />
