@@ -42,27 +42,24 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                FileSystemRights rights = FileSystemRights.FullControl;
+                var dirInfo = new DirectoryInfo(destinationDirectory);
+                var security = dirInfo.GetAccessControl(AccessControlSections.Access);
+                bool result;
+
+                var iFlags = InheritanceFlags.None;
 
                 // *** Add Access Rule to the actual directory itself
-                FileSystemAccessRule accessRule = new FileSystemAccessRule(USERSGROUP, rights, InheritanceFlags.None, PropagationFlags.NoPropagateInherit, AccessControlType.Allow);
-
-                DirectoryInfo dirInfo = new DirectoryInfo(destinationDirectory);
-                DirectorySecurity security = dirInfo.GetAccessControl(AccessControlSections.Access);
-
-                bool result;
+                var accessRule = new FileSystemAccessRule(USERSGROUP, FileSystemRights.FullControl, iFlags, PropagationFlags.NoPropagateInherit, AccessControlType.Allow);
                 security.ModifyAccessRule(AccessControlModification.Set, accessRule, out result);
 
                 if (!result)
                     return false;
 
                 // *** Always allow objects to inherit on a directory
-                InheritanceFlags iFlags = InheritanceFlags.ObjectInherit;
                 iFlags = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
 
                 // *** Add Access rule for the inheritance
-                accessRule = new FileSystemAccessRule(USERSGROUP, rights, iFlags, PropagationFlags.InheritOnly, AccessControlType.Allow);
-                result = false;
+                accessRule = new FileSystemAccessRule(USERSGROUP, FileSystemRights.FullControl, iFlags, PropagationFlags.InheritOnly, AccessControlType.Allow);
                 security.ModifyAccessRule(AccessControlModification.Add, accessRule, out result);
 
                 if (!result)

@@ -27,9 +27,6 @@ namespace ARK_Server_Manager
         {
             if (SecurityUtils.IsAdministrator())
             {
-                // remove the old task schedule
-                TaskSchedulerUtils.ScheduleCacheUpdater(Config.Default.AutoUpdate_CacheDir, null, 0);
-
                 // check if the Auto Update has been enabled.
                 if (Config.Default.AutoUpdate_EnableUpdate)
                 {
@@ -50,7 +47,7 @@ namespace ARK_Server_Manager
                 var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
 
                 var command = Assembly.GetEntryAssembly().Location;
-                if (!TaskSchedulerUtils.ScheduleAutoUpdate(taskKey, command, Config.Default.AutoUpdate_EnableUpdate ? Config.Default.AutoUpdate_UpdatePeriod : 0))
+                if (!TaskSchedulerUtils.ScheduleAutoUpdate(taskKey, null, command, Config.Default.AutoUpdate_EnableUpdate ? Config.Default.AutoUpdate_UpdatePeriod : 0))
                 {
                     MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_CacheTaskUpdate_ErrorLabel"), _globalizer.GetResourceString("GlobalSettings_CacheTaskUpdate_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }

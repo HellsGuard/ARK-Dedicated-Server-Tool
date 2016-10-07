@@ -4,79 +4,306 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Win32.TaskScheduler;
 
 namespace ARK_Server_Manager.Lib
 {
     public static class TaskSchedulerUtils
     {
         private const string TASK_FOLDER = "ArkServerManager";
+        private const int EXECUTION_TIME_LIMIT = 3;
 
-        public static bool ScheduleAutoRestart(string taskKey, string taskSuffix, string command, TimeSpan? restartTime)
+        public static bool ScheduleAutoRestart(string taskKey, string taskSuffix, string command, TimeSpan? restartTime, string profileName)
         {
-            var schedulerKey = $"{TASK_FOLDER}\\AutoRestart_{taskKey}";
+            var taskName = $"AutoRestart_{taskKey}";
             if (!string.IsNullOrWhiteSpace(taskSuffix))
-                schedulerKey += $"_{taskSuffix}";
-            var args = $"{ServerApp.ARGUMENT_AUTORESTART}{taskKey}";
+                taskName += $"_{taskSuffix}";
 
-            var builder = new StringBuilder();
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
 
             if (restartTime.HasValue)
             {
-                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC DAILY /ST {restartTime.Value.Hours:D2}:{restartTime.Value.Minutes:D2} {(MachineUtils.IsWindowsServer() ? "/NP" : "")} /RL HIGHEST");
-                builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
+                // create the task folder
+                if (taskFolder == null)
+                {
+                    try
+                    {
+                        taskFolder = TaskService.Instance.RootFolder.CreateFolder(TASK_FOLDER, null, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        return false;
+                    }
+                }
+
+                if (taskFolder == null)
+                    return false;
+
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                var taskDefinition = task?.Definition ?? TaskService.Instance.NewTask();
+
+                if (taskDefinition == null)
+                    return false;
+
+                Version appVersion;
+                Version.TryParse(App.Version, out appVersion);
+
+                taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
+                taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
+
+                taskDefinition.RegistrationInfo.Description = $"Ark Server Auto-Restart - {profileName}";
+                taskDefinition.RegistrationInfo.Source = "Ark Server Manager";
+                taskDefinition.RegistrationInfo.Version = appVersion;
+
+                taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
+                taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
+
+                // Add a trigger that will fire every day at the specified restart time
+                taskDefinition.Triggers.Clear();
+                var trigger = new DailyTrigger {
+                                  StartBoundary = DateTime.Today.Add(restartTime.Value),
+                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
+                              };
+                taskDefinition.Triggers.Add(trigger);
+
+                // Create an action that will launch whenever the trigger fires
+                taskDefinition.Actions.Clear();
+                var action = new ExecAction {
+                                 Path = command,
+                                 Arguments = $"{ServerApp.ARGUMENT_AUTORESTART}{taskKey}"
+                             };
+                taskDefinition.Actions.Add(action);
+
+                try
+                {
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken, null);
+                    return task != null;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            else
+            {
+                if (taskFolder == null)
+                    return false;
+
+                // Retrieve the task to be deleted
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                if (task == null)
+                    return true;
+
+                try
+                {
+                    // Delete the task
+                    taskFolder.DeleteTask(taskName, false);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
-            builder.AppendLine("EXIT 0");
-
-            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoRestart), builder.ToString());
+            return false;
         }
 
-        public static bool ScheduleAutoStart(string taskKey, bool enableAutoStart, string command, string args)
+        public static bool ScheduleAutoStart(string taskKey, string taskSuffix, bool enableAutoStart, string command, string profileName)
         {
-            var schedulerKey = $"{TASK_FOLDER}\\AutoStart_{taskKey}";
+            var taskName = $"AutoStart_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
 
-            var builder = new StringBuilder();
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
 
             if (enableAutoStart)
             {
-                if (string.IsNullOrWhiteSpace(args))
+                // create the task folder
+                if (taskFolder == null)
                 {
-                    builder.AppendLine($"schtasks /Create /RU SYSTEM /TN {schedulerKey} /TR \"'{command}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
+                    try
+                    {
+                        taskFolder = TaskService.Instance.RootFolder.CreateFolder(TASK_FOLDER, null, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        return false;
+                    }
                 }
-                else
+
+                if (taskFolder == null)
+                    return false;
+
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                var taskDefinition = task?.Definition ?? TaskService.Instance.NewTask();
+
+                if (taskDefinition == null)
+                    return false;
+
+                Version appVersion;
+                Version.TryParse(App.Version, out appVersion);
+
+                taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
+                taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
+
+                taskDefinition.RegistrationInfo.Description = $"Ark Server Auto-Start - {profileName}";
+                taskDefinition.RegistrationInfo.Source = "Ark Server Manager";
+                taskDefinition.RegistrationInfo.Version = appVersion;
+
+                taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
+                taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
+
+                // Add a trigger that will fire every day at the specified restart time
+                taskDefinition.Triggers.Clear();
+                var trigger = new LogonTrigger {
+                                  Delay = TimeSpan.FromMinutes(1),
+                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
+                              };
+                taskDefinition.Triggers.Add(trigger);
+
+                // Create an action that will launch whenever the trigger fires
+                taskDefinition.Actions.Clear();
+                var action = new ExecAction {
+                                 Path = command,
+                                 Arguments = string.Empty
+                             };
+                taskDefinition.Actions.Add(action);
+
+                try
                 {
-                    builder.AppendLine($"schtasks /Create /RU SYSTEM /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC ONSTART /DELAY 0001:00 /NP /RL HIGHEST");
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, "SYSTEM", null, TaskLogonType.InteractiveToken, null);
+                    return task != null;
                 }
-                    
-                builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            else
+            {
+                if (taskFolder == null)
+                    return false;
+
+                // Retrieve the task to be deleted
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                if (task == null)
+                    return true;
+
+                try
+                {
+                    // Delete the task
+                    taskFolder.DeleteTask(taskName, false);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
-            builder.AppendLine("EXIT 0");
-
-            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoStart), builder.ToString());
+            return false;
         }
 
-        public static bool ScheduleAutoUpdate(string taskKey, string command, int autoUpdatePeriod)
+        public static bool ScheduleAutoUpdate(string taskKey, string taskSuffix, string command, int autoUpdatePeriod)
         {
-            var schedulerKey = $"{TASK_FOLDER}\\AutoUpdate_{taskKey}";
-            var args = ServerApp.ARGUMENT_AUTOUPDATE;
+            var taskName = $"AutoUpdate_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
 
-            var builder = new StringBuilder();
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
 
-            if (autoUpdatePeriod != 0)
+            if (autoUpdatePeriod > 0)
             {
-                var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0).AddHours(1);
+                
+                // create the task folder
+                if (taskFolder == null)
+                {
+                    try
+                    {
+                        taskFolder = TaskService.Instance.RootFolder.CreateFolder(TASK_FOLDER, null, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        return false;
+                    }
+                }
 
-                builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{command}' '{args}'\" /SC MINUTE /MO {autoUpdatePeriod} /ST {startTime.Hour:D2}:{startTime.Minute:D2} {(MachineUtils.IsWindowsServer() ? "/NP" : "")} /RL HIGHEST");
-                builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
+                if (taskFolder == null)
+                    return false;
+
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                var taskDefinition = task?.Definition ?? TaskService.Instance.NewTask();
+
+                if (taskDefinition == null)
+                    return false;
+
+                Version appVersion;
+                Version.TryParse(App.Version, out appVersion);
+
+                taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
+                taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
+
+                taskDefinition.RegistrationInfo.Description = "Ark Server Auto-Update";
+                taskDefinition.RegistrationInfo.Source = "Ark Server Manager";
+                taskDefinition.RegistrationInfo.Version = appVersion;
+
+                taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
+                taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
+
+                // Add a trigger that will fire every day at the specified restart time
+                taskDefinition.Triggers.Clear();
+                var trigger = new TimeTrigger {
+                                  StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),
+                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT),
+                              };
+                trigger.Repetition.Interval = TimeSpan.FromMinutes(autoUpdatePeriod);
+                taskDefinition.Triggers.Add(trigger);
+
+                // Create an action that will launch whenever the trigger fires
+                taskDefinition.Actions.Clear();
+                var action = new ExecAction {
+                                 Path = command,
+                                 Arguments = ServerApp.ARGUMENT_AUTOUPDATE
+                             };
+                taskDefinition.Actions.Add(action);
+
+                try
+                {
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken, null);
+                    return task != null;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            else
+            {
+                if (taskFolder == null)
+                    return false;
+
+                // Retrieve the task to be deleted
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                if (task == null)
+                    return true;
+
+                try
+                {
+                    // Delete the task
+                    taskFolder.DeleteTask(taskName, false);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
-            builder.AppendLine("EXIT 0");
-
-            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleAutoUpdate), builder.ToString());
+            return false;
         }
 
         public static string ComputeKey(string folder)
@@ -120,119 +347,5 @@ namespace ARK_Server_Manager.Lib
                 return sb.ToString();
             }
         }
-
-        #region Archive Methods
-        public static bool ScheduleCacheUpdater(string cacheDir, string steamCmdDir, int autoUpdatePeriod)
-        {
-            var schedulerKey = $"{TASK_FOLDER}\\AutoUpdateSeverCache";
-            var schedulerKey2 = $"{TASK_FOLDER}\\AutoUpdateServer";
-
-            var rootSrcPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var scriptPath = Path.Combine(rootSrcPath, "Lib", "ServerUpdater", "AutoUpdateServerCache.ps1");
-            if (File.Exists(scriptPath)) File.Delete(scriptPath);
-
-            //
-            // Write the command to execute and copy mcrcon for updaters to use.
-            //
-            var cacheUpdateCmdPath = Path.Combine(cacheDir, "UpdateCache.cmd");
-            if (File.Exists(cacheUpdateCmdPath)) File.Delete(cacheUpdateCmdPath);
-            var logPath = Path.Combine(cacheDir, "UpdateCache.log");
-            if (File.Exists(logPath)) File.Delete(logPath);
-            //ScriptUtils.WriteCommandScript(cacheUpdateCmdPath, $"powershell -ExecutionPolicy Bypass -File \"{scriptPath}\" \"{cacheDir}\" \"{steamCmdDir}\" > \"{logPath}\"");
-
-            PlaceMCRcon(cacheDir);
-
-            //
-            // Schedule the task
-            //
-            var builder = new StringBuilder();
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey2} /F");
-            //if (autoUpdatePeriod != 0)
-            //{
-            //    builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{cacheUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL HIGHEST ");
-            //    builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
-            //}
-
-            builder.AppendLine("EXIT 0");
-
-            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleCacheUpdater), builder.ToString());
-        }
-
-        public static bool ScheduleUpdates(string taskKey, int autoUpdatePeriod, string cacheDir, string installDir, string rconIP, int rconPort, string rconPass, int graceMinutes, TimeSpan? forceRestartTime)
-        {
-            var schedulerKey = $"{TASK_FOLDER}\\AutoUpgrade_{taskKey}";
-            var forceSchedulerKey = $"{TASK_FOLDER}\\AutoUpgrade_Force_{taskKey}";
-
-            var rootSrcPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var scriptPath = Path.Combine(rootSrcPath, "Lib", "ServerUpdater", "AutoUpdateFromCache.ps1");
-            if (File.Exists(scriptPath)) File.Delete(scriptPath);
-
-            var serverUpdateCmdPath = Path.Combine(installDir, "ShooterGame", "Saved", "Config", "WindowsServer", "UpdateServerFromCache.cmd");
-            if (File.Exists(serverUpdateCmdPath)) File.Delete(serverUpdateCmdPath);
-            var logPath = Path.Combine(installDir, "ShooterGame", "Saved", "Config", "WindowsServer", "UpdateServerFromCache.log");
-            if (File.Exists(logPath)) File.Delete(logPath);
-            //ScriptUtils.WriteCommandScript(serverUpdateCmdPath, $"powershell -ExecutionPolicy Bypass -File \"{scriptPath}\"  \"{cacheDir}\" \"{installDir}\" \"{rconIP}\" \"{rconPort}\" \"{rconPass}\" \"{graceMinutes}\" > \"{logPath}\"");
-
-            //string forceServerUpdateCmdPath = null;
-            //if (forceRestartTime.HasValue)
-            //{
-            //    forceServerUpdateCmdPath = Path.Combine(installDir, "ShooterGame", "Saved", "Config", "WindowsServer", "ForceUpdateServerFromCache.cmd");
-            //    var cmdBuilder = new StringBuilder();
-            //    cmdBuilder.AppendLine($"echo force_update > {(installDir + @"\ForceUpdate.txt").AsQuoted()} ");
-            //    cmdBuilder.AppendLine($"schTasks /Run /TN {schedulerKey}");
-            //    ScriptUtils.WriteCommandScript(forceServerUpdateCmdPath, cmdBuilder.ToString());
-            //}
-
-            PlaceMCRcon(cacheDir);
-
-            var builder = new StringBuilder();
-            builder.AppendLine($"schtasks /Delete /TN {schedulerKey} /F");
-            builder.AppendLine($"schtasks /Delete /TN {forceSchedulerKey} /F");
-
-            //if (autoUpdatePeriod != 0)
-            //{
-            //    builder.AppendLine($"schTasks /Create /TN {schedulerKey} /TR \"'{serverUpdateCmdPath}'\" /SC MINUTE /MO {autoUpdatePeriod} /NP /RL HIGHEST ");
-            //    builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
-
-            //    if(forceRestartTime.HasValue)
-            //    {
-            //        builder.AppendLine($"schTasks /Create /TN {forceSchedulerKey} /TR \"'{forceServerUpdateCmdPath}'\" /SC DAILY /ST {forceRestartTime.Value.Hours:D2}:{forceRestartTime.Value.Minutes:D2} /NP /RL HIGHEST");
-            //        builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");
-            //    }
-            //    builder.AppendLine($"schtasks /Run /TN {schedulerKey}");
-            //    builder.AppendLine("IF ERRORLEVEL 1 EXIT 1");                
-            //}
-
-            builder.AppendLine("EXIT 0");
-
-            return ScriptUtils.RunElevatedShellScript(nameof(ScheduleUpdates), builder.ToString());
-        }
-
-        private static bool PlaceMCRcon(string dir)
-        {
-            const string McrconExe = "mcrcon.exe";
-
-            var rootSrcPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var mcrconSrcPath = Path.Combine(rootSrcPath, "Lib", "ServerUpdater", McrconExe);
-            var mcrconDestPath = Path.Combine(dir, McrconExe);
-
-            try
-            {
-                if (File.Exists(mcrconSrcPath)) File.Delete(mcrconSrcPath);
-                if (File.Exists(mcrconDestPath)) File.Delete(mcrconDestPath);
-                //if (!File.Exists(mcrconDestPath))
-                //{
-                //    File.Copy(mcrconSrcPath, mcrconDestPath);
-                //}
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-        #endregion
     }
 }
