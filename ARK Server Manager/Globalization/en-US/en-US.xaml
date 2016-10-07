@@ -316,7 +316,7 @@
     These are the profile settings, grouped by section.
     -->   
 
-    <!-- Server Settings - General -->    
+    <!-- Server Settings - General -->
     <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
@@ -396,6 +396,8 @@
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Auto-updates are enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Auto Managed Mods Not Compatible</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">ARK's auto managed mods are enabled but is not compatible with ASM's auto updates. Disabling ARK's auto managed mods.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Update directory permissions</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Failed to update directory permissions. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
     <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
@@ -1093,6 +1095,10 @@
     <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterExtension">*.csv</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterLabel">CSV Files</sys:String>
     <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterExtension">*.csv</sys:String>
+
+    <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Saving...</sys:String>
+    <sys:String x:Key="ServerSettings_OverlayMessage_PermissionsLabel">Checking Directory Permissions...</sys:String>
+    <sys:String x:Key="ServerSettings_OverlayMessage_SchedulesLabel">Checking Scheduled Tasks...</sys:String>
 
     <!-- Player/Tribe Profile Window -->
     <sys:String x:Key="Profile_SteamSectionLabel">Steam Details</sys:String>

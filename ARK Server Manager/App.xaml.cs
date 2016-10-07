@@ -336,7 +336,7 @@ namespace ARK_Server_Manager
                 {
                     try
                     {
-                        server.Profile.Save(false);
+                        server.Profile.Save(false, false, null);
                     }
                     catch(Exception ex)
                     {

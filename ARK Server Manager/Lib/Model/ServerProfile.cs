@@ -572,6 +572,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableExtraStructurePreventionVolumesProperty, value); }
         }
 
+        public static readonly DependencyProperty OverrideOfficialDifficultyProperty = DependencyProperty.Register(nameof(OverrideOfficialDifficulty), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
+        public float OverrideOfficialDifficulty
+        {
+            get { return (float)GetValue(OverrideOfficialDifficultyProperty); }
+            set { SetValue(OverrideOfficialDifficultyProperty, value); }
+        }
+
         public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register(nameof(DifficultyOffset), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DifficultyOffset")]
         public float DifficultyOffset
@@ -2010,6 +2017,8 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
 
+            //serverArgs.Append($"?OverrideOfficialDifficulty={this.OverrideOfficialDifficulty}");
+
             if (this.SOTF_Enabled)
             {
                 serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
@@ -2306,8 +2315,10 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
 
-        public void Save(bool updateSchedules)
+        public void Save(bool updateFolderPermissions, bool updateSchedules, ProgressDelegate progressCallback)
         {
+            progressCallback?.Invoke(0, "Saving...");
+
             // ensure that the auto settings are switched off for SotF servers
             if (SOTF_Enabled)
             {
@@ -2324,6 +2335,8 @@ namespace ARK_Server_Manager.Lib
             // ensure that the MAX XP settings for player and dinos are set to the last custom level
             if (EnableLevelProgressions)
             {
+                progressCallback?.Invoke(0, "Checking Player and Dino Max XP...");
+
                 // dinos
                 var list = GetLevelList(LevelProgression.Dino);
                 var lastxp = (list == null || list.Count == 0) ? 0 : list[list.Count - 1].XPRequired;
@@ -2339,16 +2352,19 @@ namespace ARK_Server_Manager.Lib
                     OverrideMaxExperiencePointsPlayer = lastxp;
             }
 
+            progressCallback?.Invoke(0, "Constructing Dino Information...");
             this.DinoSettings.RenderToModel();
 
             //
             // Save the profile
             //
+            progressCallback?.Invoke(0, "Saving Profile File...");
             SaveProfile();
 
             //
             // Write the INI files
             //
+            progressCallback?.Invoke(0, "Saving Config Files...");
             SaveINIFiles();
 
             //
@@ -2377,11 +2393,21 @@ namespace ARK_Server_Manager.Lib
                 this._lastSaveLocation = GetProfileFile();
             }
 
+            progressCallback?.Invoke(0, "Saving Launcher File...");
             SaveLauncher();
+
+            progressCallback?.Invoke(0, "Checking Web Alarm File...");
             UpdateWebAlarm();
+
+            if (updateFolderPermissions)
+            {
+                progressCallback?.Invoke(0, "Checking Directory Permissions...");
+                UpdateDirectoryPermissions();
+            }
 
             if (updateSchedules)
             {
+                progressCallback?.Invoke(0, "Checking Scheduled Tasks...");
                 UpdateSchedules();
             }
         }
@@ -2442,18 +2468,26 @@ namespace ARK_Server_Manager.Lib
             iniFile.WriteSection(IniFiles.Game, IniFileSections.GameMode, filteredValues.ToArray());
         }
 
+        public bool UpdateDirectoryPermissions()
+        {
+            if (!SecurityUtils.IsAdministrator())
+                return true;
+
+            if (!SecurityUtils.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
+            {
+                _logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
+                return false;
+            }
+
+            return true;
+        }
+
         public bool UpdateSchedules()
         {
             SaveLauncher();
 
             if (!SecurityUtils.IsAdministrator())
                 return true;
-
-            if (!SecurityUtils.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
-            {
-               _logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
-                return false;
-            }
 
             var taskKey = GetProfileKey();
 
@@ -3039,6 +3073,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DisableLootCratesProperty);
             this.ClearValue(EnableExtraStructurePreventionVolumesProperty);
 
+            this.ClearValue(OverrideOfficialDifficultyProperty);
             this.ClearValue(DifficultyOffsetProperty);
             this.ClearValue(MaxNumberOfPlayersInTribeProperty);
 

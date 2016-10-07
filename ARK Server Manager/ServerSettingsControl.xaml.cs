@@ -207,10 +207,7 @@ namespace ARK_Server_Manager
             {
                 TaskUtils.RunOnUIThreadAsync(() =>
                     {
-                        if (oldserver != null)
-                        {
-                            oldserver.Profile.Save(false);
-                        }
+                        oldserver?.Profile.Save(false, false, null);
 
                         ssc.Settings = server.Profile;
                         ssc.Runtime = server.Runtime;
@@ -293,7 +290,7 @@ namespace ARK_Server_Manager
                         // check if the mutex was established
                         if (createdNew)
                         {
-                            this.Settings.Save(false);
+                            this.Settings.Save(false, false, null);
 
                             if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
                             {
@@ -1644,36 +1641,61 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<object>(
-                    execute: (parameter) =>
+                    execute: async (parameter) =>
                     {
-                        // NOTE: This parameter is of type object and must be cast in most cases before use.
-                        var settings = (Server)parameter;
-                        if (settings.Profile.EnableAutoRestart || settings.Profile.EnableAutoRestart2)
+                        try
                         {
-                            if (settings.Profile.SOTF_Enabled)
+                            dockPanel.IsEnabled = false;
+                            OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_SavingLabel");
+                            OverlayGrid.Visibility = Visibility.Visible;
+
+                            await Task.Delay(500);
+
+                            // NOTE: This parameter is of type object and must be cast in most cases before use.
+                            var settings = (Server)parameter;
+                            if (settings.Profile.EnableAutoRestart || settings.Profile.EnableAutoRestart2)
                             {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                settings.Profile.EnableAutoRestart = false;
-                                settings.Profile.EnableAutoRestart2 = false;
-                                settings.Profile.AutoRestartIfShutdown = false;
+                                if (settings.Profile.SOTF_Enabled)
+                                {
+                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    settings.Profile.EnableAutoRestart = false;
+                                    settings.Profile.EnableAutoRestart2 = false;
+                                    settings.Profile.AutoRestartIfShutdown = false;
+                                }
+                            }
+
+                            if (settings.Profile.EnableAutoUpdate)
+                            {
+                                if (settings.Profile.SOTF_Enabled)
+                                {
+                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    settings.Profile.EnableAutoUpdate = false;
+                                    settings.Profile.AutoRestartIfShutdown = false;
+                                }
+                            }
+
+                            settings.Profile.Save(false, false, (p, m, n) => { OverlayMessage.Content = m; });
+
+                            OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
+                            await Task.Delay(500);
+
+                            if (!settings.Profile.UpdateDirectoryPermissions())
+                            {
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+
+                            OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_SchedulesLabel");
+                            await Task.Delay(500);
+
+                            if (!settings.Profile.UpdateSchedules())
+                            {
+                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
-
-                        if (settings.Profile.EnableAutoUpdate)
+                        finally
                         {
-                            if (settings.Profile.SOTF_Enabled)
-                            {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                settings.Profile.EnableAutoUpdate = false;
-                                settings.Profile.AutoRestartIfShutdown = false;
-                            }
-                        }
-
-                        settings.Profile.Save(false);
-
-                        if (!settings.Profile.UpdateSchedules())
-                        {
-                            MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                            OverlayGrid.Visibility = Visibility.Collapsed;
+                            dockPanel.IsEnabled = true;
                         }
                     },
                     canExecute: (parameter) =>
