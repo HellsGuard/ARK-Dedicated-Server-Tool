@@ -392,5 +392,8 @@
     <Setting Name="WorkshopCache_ExpiredHours" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">24</Value>
     </Setting>
+    <Setting Name="DefaultServerFolderName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -581,9 +581,6 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                if (Config.Default.EmailNotify_AutoUpdate)
-                    SendEmail($"{_profile.ProfileName} auto update started", "The auto update process has started.", false);
-
                 emailMessage.AppendLine("ASM Update Summary:");
                 emailMessage.AppendLine();
                 emailMessage.AppendLine($"ASM Version: {App.Version}");

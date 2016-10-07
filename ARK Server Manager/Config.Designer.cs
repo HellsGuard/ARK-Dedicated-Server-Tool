@@ -1380,5 +1380,14 @@ namespace ARK_Server_Manager {
                 this["WorkshopCache_ExpiredHours"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server")]
+        public string DefaultServerFolderName {
+            get {
+                return ((string)(this["DefaultServerFolderName"]));
+            }
+        }
     }
 }

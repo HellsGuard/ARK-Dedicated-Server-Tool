@@ -59,7 +59,6 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
             //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
-            //this.CustomGameSections = new CustomSectionList();
             this.CustomGameUserSettingsSections = new CustomSectionList();
 
             GetDefaultDirectories();
@@ -1697,15 +1696,6 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Custom Settings
-        //public static readonly DependencyProperty CustomGameSectionsProperty = DependencyProperty.Register(nameof(CustomGameSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
-        //[XmlIgnore]
-        //[IniFileEntry(IniFiles.Game, IniFileSections.Custom)]
-        //public CustomSectionList CustomGameSections
-        //{
-        //    get { return (CustomSectionList)GetValue(CustomGameSectionsProperty); }
-        //    set { SetValue(CustomGameSectionsProperty, value); }
-        //}
-
         public static readonly DependencyProperty CustomGameUserSettingsSectionsProperty = DependencyProperty.Register(nameof(CustomGameUserSettingsSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Custom)]
@@ -1909,10 +1899,30 @@ namespace ARK_Server_Manager.Lib
 
         private void GetDefaultDirectories()
         {
-            if (String.IsNullOrWhiteSpace(InstallDirectory))
+            if (!string.IsNullOrWhiteSpace(InstallDirectory))
+                return;
+
+            // get the root servers folder
+            var installDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir)
+                                       ? Path.Combine(Config.Default.ServersInstallDir)
+                                       : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir);
+            var index = 1;
+            while (true)
             {
-                InstallDirectory = Path.IsPathRooted(Config.Default.ServersInstallDir) ? Path.Combine(Config.Default.ServersInstallDir)
-                                                                                       : Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir);
+                // create a test profile folder name
+                var profileFolder = $"{Config.Default.DefaultServerFolderName}{index}";
+                // get the test profile directory
+                var profileDirectory = Path.Combine(installDirectory, profileFolder);
+
+                // check if the profile directory exists
+                if (!Directory.Exists(profileDirectory))
+                {
+                    // profile directory does not exist, assign the test profile directory to the profile
+                    InstallDirectory = profileDirectory;
+                    break;
+                }
+
+                index++;
             }
         }
 
