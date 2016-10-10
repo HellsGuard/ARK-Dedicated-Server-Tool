@@ -107,10 +107,27 @@ namespace ARK_Server_Manager
             ModDetailsView?.Refresh();
         }
 
-        private void ModDetails_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private async void ModDetails_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ModDetailsView?.Refresh();
-            ModDetailsChanged = true;
+            var cursor = this.Cursor;
+
+            try
+            {
+                ModDetailsChanged = true;
+
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                await LoadModsFromList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Refresh_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
         }
 
         private void WorkshopFilesWindow_Closed(object sender, EventArgs e)
@@ -172,6 +189,38 @@ namespace ARK_Server_Manager
         {
             var mod = ((ModDetail)((Button)e.Source).DataContext);
             ModDetails.MoveUp(mod);
+        }
+
+        private async void PurgeModsFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (_profile == null)
+                return;
+
+            var cursor = this.Cursor;
+
+            try
+            {
+                if (MessageBox.Show("You are about to purge ALL unused mods from your server's Mod folder. Do you want to continue?", _globalizer.GetResourceString("ModDetails_Purge_Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                int folderCount;
+                int fileCount;
+
+                PurgeModsFromServerFolder(out folderCount, out fileCount);
+
+                MessageBox.Show($"Mod purge complete, a total of {folderCount} mod folder(s) and {fileCount} mod file(s) were purged.", _globalizer.GetResourceString("ModDetails_Purge_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_Purge_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
         }
 
         private async void RefreshMods_Click(object sender, RoutedEventArgs e)
@@ -360,6 +409,42 @@ namespace ARK_Server_Manager
             UpdateModDetailsList(modDetails);
 
             ModDetailsChanged = true;
+        }
+
+        private void PurgeModsFromServerFolder(out int folderCount, out int fileCount)
+        {
+            folderCount = 0;
+            fileCount = 0;
+
+            // build a list of mods to be processed
+            var modIdList = ModDetails.Select(m => m.ModId).ToList();
+
+            var modDirectory = new DirectoryInfo(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            foreach (var directory in modDirectory.GetDirectories())
+            {
+                var modId = directory.Name;
+                if (ModUtils.IsOfficialMod(modId))
+                    continue;
+
+                if (modIdList.Contains(modId))
+                    continue;
+
+                directory.Delete(true);
+                folderCount++;
+            }
+
+            foreach (var file in modDirectory.GetFiles("*.mod"))
+            {
+                var modId = Path.GetFileNameWithoutExtension(file.Name);
+                if (ModUtils.IsOfficialMod(modId))
+                    continue;
+
+                if (modIdList.Contains(modId))
+                    continue;
+
+                file.Delete();
+                fileCount++;
+            }
         }
 
         private void UpdateModDetailsList(ModDetailList modDetails)

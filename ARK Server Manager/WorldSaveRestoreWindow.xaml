@@ -56,7 +56,7 @@
                 <DataGridTextColumn     Width="1*" Binding="{Binding FileName, Mode=OneWay}" Header="{DynamicResource WorldSaveRestore_NameColumnLabel}"/>
                 <DataGridTextColumn     Width="130" Binding="{Binding CreatedDate, Mode=OneWay}" Header="{DynamicResource WorldSaveRestore_CreatedDateColumnLabel}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Right"/>
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -68,7 +68,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn     Width="130" Binding="{Binding UpdatedDate, Mode=OneWay}" Header="{DynamicResource WorldSaveRestore_UpdatedDateColumnLabel}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Right"/>
                         </Style>
                     </DataGridTextColumn.HeaderStyle>

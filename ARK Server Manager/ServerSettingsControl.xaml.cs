@@ -61,6 +61,7 @@ namespace ARK_Server_Manager
         DinoTamedAddPerLevelStatMultipliers,
         DinoTamedAffinityPerLevelStatMultipliers,
         RCONWindowExtents,
+        ServerOptions,
     }
 
     /// <summary>
@@ -1577,7 +1578,7 @@ namespace ARK_Server_Manager
                                 var mapName = Config.Default.DefaultServerMap_TheIsland;
 
                                 // check if we are running an official total conversion mod.
-                                if (!this.Settings.TotalConversionModId.Equals(Config.Default.DefaultTotalConversion_PrimitivePlus))
+                                if (!this.Settings.TotalConversionModId.Equals(ModUtils.MODID_PRIMITIVEPLUS))
                                 {
                                     // we need to read the mod file and retreive the map name
                                     mapName = ModUtils.GetMapName(this.Settings.InstallDirectory, this.Settings.TotalConversionModId);
@@ -1594,7 +1595,7 @@ namespace ARK_Server_Manager
                                 break;
 
                             case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
-                                this.Settings.TotalConversionModId = Config.Default.DefaultTotalConversion_PrimitivePlus;
+                                this.Settings.TotalConversionModId = ModUtils.MODID_PRIMITIVEPLUS;
                                 this.Settings.ServerMap = Config.Default.DefaultServerMap_TheIsland;
                                 break;
 
@@ -1628,6 +1629,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.RCONWindowExtents:
                                 this.Settings.ResetRCONWindowExtents();
+                                break;
+
+                            case ServerSettingsResetAction.ServerOptions:
+                                this.Settings.ResetServerOptions();
                                 break;
                         }
                     },
@@ -1857,8 +1862,11 @@ namespace ARK_Server_Manager
         {
             try
             {
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkAdminFile);
+                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
 
+                var file = Path.Combine(folder, Config.Default.ArkAdminFile);
                 File.WriteAllLines(file, this.ServerFilesAdmins.ToArray());
             }
             catch (Exception ex)
@@ -1871,8 +1879,11 @@ namespace ARK_Server_Manager
         {
             try
             {
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
+                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
 
+                var file = Path.Combine(folder, Config.Default.ArkExclusiveFile);
                 File.WriteAllLines(file, this.ServerFilesExclusive.ToArray());
             }
             catch (Exception ex)
@@ -1885,8 +1896,11 @@ namespace ARK_Server_Manager
         {
             try
             {
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
+                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
 
+                var file = Path.Combine(folder, Config.Default.ArkWhitelistFile);
                 File.WriteAllLines(file, this.ServerFilesWhitelisted.ToArray());
             }
             catch (Exception ex)

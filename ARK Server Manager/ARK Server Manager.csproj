@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.252.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -172,6 +172,7 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
+    <Compile Include="Lib\ViewModel\OfficialDifficultyValueConverter.cs" />
     <Compile Include="Lib\ViewModel\ProfileNameValidationRule.cs" />
     <Compile Include="Lib\ViewModel\StringValidationRule.cs" />
     <Compile Include="WorldSaveRestoreWindow.xaml.cs">
@@ -321,6 +322,7 @@
     <Resource Include="Art\Zip.png" />
     <Resource Include="Art\Paste.png" />
     <Resource Include="Art\DragInsert.png" />
+    <Resource Include="Art\Delete_6529.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

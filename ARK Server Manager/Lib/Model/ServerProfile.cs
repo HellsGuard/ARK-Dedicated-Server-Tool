@@ -572,6 +572,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableExtraStructurePreventionVolumesProperty, value); }
         }
 
+        public static readonly DependencyProperty EnableDifficultyOverrideProperty = DependencyProperty.Register(nameof(EnableDifficultyOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableDifficultyOverride
+        {
+            get { return (bool)GetValue(EnableDifficultyOverrideProperty); }
+            set { SetValue(EnableDifficultyOverrideProperty, value); }
+        }
+
         public static readonly DependencyProperty OverrideOfficialDifficultyProperty = DependencyProperty.Register(nameof(OverrideOfficialDifficulty), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
         public float OverrideOfficialDifficulty
         {
@@ -2017,7 +2024,10 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
 
-            //serverArgs.Append($"?OverrideOfficialDifficulty={this.OverrideOfficialDifficulty}");
+            if (this.EnableDifficultyOverride)
+            {
+                serverArgs.Append($"?OverrideOfficialDifficulty={Math.Round(this.OverrideOfficialDifficulty, 3, MidpointRounding.AwayFromZero):F3}");
+            }
 
             if (this.SOTF_Enabled)
             {
@@ -2331,6 +2341,12 @@ namespace ARK_Server_Manager.Lib
             // ensure that the ARK mod management is switched off for ASM controlled profiles
             if (EnableAutoUpdate)
                 AutoManagedMods = false;
+
+            // ensure that the Difficulty Override is reset when override is enabled
+            if (EnableDifficultyOverride)
+            {
+                ClearValue(DifficultyOffsetProperty);
+            }
 
             // ensure that the MAX XP settings for player and dinos are set to the last custom level
             if (EnableLevelProgressions)
@@ -2873,6 +2889,32 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(RCONWindowExtentsProperty);
         }
 
+        public void ResetServerOptions()
+        {
+            this.ClearValue(DisableValveAntiCheatSystemProperty);
+            this.ClearValue(DisablePlayerMovePhysicsOptimizationProperty);
+            this.ClearValue(DisableAntiSpeedHackDetectionProperty);
+            this.ClearValue(SpeedHackBiasProperty);
+            this.ClearValue(UseBattlEyeProperty);
+            this.ClearValue(UseAllAvailableCoresProperty);
+            this.ClearValue(UseCacheProperty);
+            this.ClearValue(UseOldSaveFormatProperty);
+
+            this.ClearValue(ForceRespawnDinosProperty);
+            this.ClearValue(EnableServerAdminLogsProperty);
+            this.ClearValue(MaxTribeLogsProperty);
+            this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
+            this.ClearValue(ForceDirectX10Property);
+            this.ClearValue(ForceShaderModel4Property);
+            this.ClearValue(ForceLowMemoryProperty);
+            this.ClearValue(ForceNoManSkyProperty);
+            this.ClearValue(UseNoMemoryBiasProperty);
+
+            this.ClearValue(AltSaveDirectoryNameProperty);
+            this.ClearValue(CrossArkClusterIdProperty);
+            this.ClearValue(ClusterDirOverrideProperty);
+        }
+
         // section reset methods
         public void ResetAdministrationSection()
         {
@@ -2911,22 +2953,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MOTDProperty);
             this.ClearValue(MOTDDurationProperty);
 
-            this.ClearValue(DisableValveAntiCheatSystemProperty);
-            this.ClearValue(DisablePlayerMovePhysicsOptimizationProperty);
-            this.ClearValue(DisableAntiSpeedHackDetectionProperty);
-            this.ClearValue(SpeedHackBiasProperty);
-            this.ClearValue(UseBattlEyeProperty);
-            this.ClearValue(MaxTribeLogsProperty);
-            this.ClearValue(EnableServerAdminLogsProperty);
-            this.ClearValue(ForceRespawnDinosProperty);
-            this.ClearValue(ForceDirectX10Property);
-            this.ClearValue(ForceShaderModel4Property);
-            this.ClearValue(ForceLowMemoryProperty);
-            this.ClearValue(ForceNoManSkyProperty);
-            this.ClearValue(UseAllAvailableCoresProperty);
-            this.ClearValue(UseCacheProperty);
-            this.ClearValue(UseOldSaveFormatProperty);
-            this.ClearValue(UseNoMemoryBiasProperty);
+            ResetServerOptions();
 
             this.ClearValue(EnableWebAlarmProperty);
             this.ClearValue(WebAlarmKeyProperty);
@@ -3073,6 +3100,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DisableLootCratesProperty);
             this.ClearValue(EnableExtraStructurePreventionVolumesProperty);
 
+            this.ClearValue(EnableDifficultyOverrideProperty);
             this.ClearValue(OverrideOfficialDifficultyProperty);
             this.ClearValue(DifficultyOffsetProperty);
             this.ClearValue(MaxNumberOfPlayersInTribeProperty);

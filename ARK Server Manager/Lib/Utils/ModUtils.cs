@@ -21,6 +21,9 @@ namespace ARK_Server_Manager.Lib
         public const string MODTYPENAME_MOD = "Mod";
         public const string MODTYPENAME_TOTCONV = "Total Conversion";
 
+        public const string MODID_PRIMITIVEPLUS = "111111111";
+        public const string MODID_THECENTER = "TheCenter";
+
         private class FCompressedChunkInfo
         {
             public const uint LOADING_COMPRESSION_CHUNK_SIZE = 131072U;
@@ -284,6 +287,19 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public static bool IsOfficialMod(string modId)
+        {
+            switch (modId)
+            {
+                case MODID_PRIMITIVEPLUS:
+                case MODID_THECENTER:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
         public static bool ParseBaseInformation(string fileName, List<string> mapNames)
             {
                 if (!File.Exists(fileName))
@@ -456,8 +472,8 @@ namespace ARK_Server_Manager.Lib
             var newModIdList = modIdList.Distinct().ToList();
 
             // remove any official mods.
-            if (newModIdList.Contains(Config.Default.DefaultTotalConversion_PrimitivePlus))
-                newModIdList.Remove(Config.Default.DefaultTotalConversion_PrimitivePlus);
+            if (newModIdList.Contains(MODID_PRIMITIVEPLUS))
+                newModIdList.Remove(MODID_PRIMITIVEPLUS);
 
             return newModIdList;
         }

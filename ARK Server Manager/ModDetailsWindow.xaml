@@ -12,6 +12,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <vm:IsNullOrWhiteSpaceValueConverter x:Key="IsNullOrWhiteSpaceValueConverter"/>
+            <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
 
             <LinearGradientBrush x:Key="BeigeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
@@ -26,6 +27,7 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -59,17 +61,21 @@
             <Image Source="Art/Open_6529.png" Width="14" />
         </Button>
 
-        <StackPanel Grid.Row="0" Grid.Column="6" Orientation="Horizontal">
+        <Button Grid.Row="0" Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PurgeModsFolder_Click" Margin="10,5,5,0" Width="22" Height="22" IsEnabled="{Binding Path=ModDetailsChanged, ElementName=ModDetailsUI, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ModDetails_PurgeModsFolderTooltip}">
+            <Image Source="Art/Delete_6529.png" Width="14" />
+        </Button>
+
+        <StackPanel Grid.Row="0" Grid.Column="7" Orientation="Horizontal">
             <TextBlock Margin="30,5,5,0" Text="{DynamicResource ModDetails_TotalCountLabel}" VerticalAlignment="Center" />
             <TextBlock Margin="5,5,5,0" Text="{Binding ModDetails.Count}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
             <TextBlock Margin="5,5,5,0" Text="{DynamicResource ModDetails_FilterLabel}" VerticalAlignment="Center" />
             <TextBox   Margin="5,5,5,0" Text="{Binding ModDetailsFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Style.Resources>

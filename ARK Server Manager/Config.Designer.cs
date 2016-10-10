@@ -1147,15 +1147,6 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("111111111")]
-        public string DefaultTotalConversion_PrimitivePlus {
-            get {
-                return ((string)(this["DefaultTotalConversion_PrimitivePlus"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]

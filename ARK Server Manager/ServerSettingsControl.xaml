@@ -16,8 +16,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Globalization\en-US\en-US.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <vm:DifficultyOffsetValueConverter x:Key="DifficultyOffsetValueConverter" />
+
+            <vm:OfficialDifficultyValueConverter x:Key="OfficialDifficultyValueConverter" />
             <vm:LevelIndexToDisplayLevelConverter x:Key="LevelIndexToDisplayLevelConverter" />
             <vm:ResourceNameValueConverter x:Key="ResourceNameValueConverter" />
             <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
@@ -1152,7 +1152,16 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_ServerOptionsLabel}" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_ServerOptionsLabel}"/>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ServerOptions}" ToolTip="{DynamicResource ServerSettings_ResetServerOptionsTooltip}">
+                                                <Image Source="Art/Refresh.png" Width="16" Height="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -1477,9 +1486,18 @@
                                         <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
                                     </Grid>
 
-                                    <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_DifficultyLabel}" Value="{Binding DifficultyOffset, Converter={StaticResource DifficultyOffsetValueConverter}}" Suffix="{DynamicResource ServerSettings_DifficultyUnits}" Minimum="50" Maximum="400" SmallChange="10" LargeChange="50" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_DifficultyTooltip}" />
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeLabel}" Value="{Binding MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeUnits}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="5" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeTooltip}" />
-                                
+
+                                    <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                        <GroupBox.Header>
+                                            <CheckBox Name="EnableDifficultyOverrideCheckbox" IsChecked="{Binding EnableDifficultyOverride}" Content="{DynamicResource ServerSettings_EnableDifficultyOverrideLabel}" ToolTip="{DynamicResource ServerSettings_EnableDifficultyOverrideTooltip}"/>
+                                        </GroupBox.Header>
+
+                                        <Grid IsEnabled="{Binding ElementName=EnableDifficultyOverrideCheckbox, Path=IsChecked}">
+                                            <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OverrideOfficialDifficultyLabel}" Value="{Binding OverrideOfficialDifficulty, Converter={StaticResource OfficialDifficultyValueConverter}}" Suffix="{DynamicResource SliderUnits_Levels}" Minimum="30" Maximum="1200" SmallChange="1" LargeChange="5" TickFrequency="30" ToolTip="{DynamicResource ServerSettings_OverrideOfficialDifficultyTooltip}" />
+                                        </Grid>
+                                    </GroupBox>
+                                    
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>

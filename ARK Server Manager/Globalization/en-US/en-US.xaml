@@ -67,6 +67,8 @@
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
     <sys:String x:Key="ModDetails_Load_FailedTitle">Load Mod Details Error</sys:String>
     <sys:String x:Key="ModDetails_Load_FailedLabel">An error occurred while retrieving the mod details.\r\n{0}</sys:String>
+    <sys:String x:Key="ModDetails_Purge_FailedTitle">Purge Unused Mods Error</sys:String>
+    <sys:String x:Key="ModDetails_Purge_Title">Purge Unused Mods</sys:String>
     <sys:String x:Key="ModDetails_Refresh_FailedTitle">Refresh Mod Details Error</sys:String>
     <sys:String x:Key="ModDetails_Reload_FailedTitle">Reload Mod Details Error</sys:String>
     <sys:String x:Key="ModDetails_Save_FailedTitle">Save Mods Error</sys:String>
@@ -88,6 +90,7 @@
     <sys:String x:Key="ModDetails_LoadModsTooltip">Load mod list from server mods folder.</sys:String>
     <sys:String x:Key="ModDetails_MoveModUpTooltip">Move mod up in the list.</sys:String>
     <sys:String x:Key="ModDetails_MoveModDownTooltip">Move mod down in the list.</sys:String>
+    <sys:String x:Key="ModDetails_PurgeModsFolderTooltip">Purge unused mods from Mods folder.</sys:String>
     <sys:String x:Key="ModDetails_RefreshModsTooltip">Refresh mod list information.</sys:String>
     <sys:String x:Key="ModDetails_ReloadModsTooltip">Reload mod list from profile.</sys:String>
     <sys:String x:Key="ModDetails_RemoveModTooltip">Remove mod from the list.</sys:String>
@@ -309,6 +312,7 @@
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     <sys:String x:Key="SliderUnits_Players">players</sys:String>
     <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
+    <sys:String x:Key="SliderUnits_Levels">levels</sys:String>
 
     <!--
     Server Settings
@@ -507,6 +511,7 @@
     <sys:String x:Key="ServerSettings_MOTDDurationUnits">seconds</sys:String>
 
     <sys:String x:Key="ServerSettings_ServerOptionsLabel">Server Options</sys:String>
+    <sys:String x:Key="ServerSettings_ResetServerOptionsTooltip">Reset all server options to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACLabel">Disable Valve Anti-Cheat System (VAC)</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACTooltip">If enabled, the Valve anti-cheat system will be disabled. Please use this with caution!</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Disable Player-Move-Physics Optimization</sys:String>
@@ -582,12 +587,14 @@
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
-    <sys:String x:Key="ServerSettings_DifficultyLabel">Difficulty:</sys:String>
-    <sys:String x:Key="ServerSettings_DifficultyTooltip">Determines the levels of creatures in the world as well as the quality of loot drops. The higher the value, the higher the Maximum Creature Level and Loot Drop.</sys:String>
-    <sys:String x:Key="ServerSettings_DifficultyUnits">%</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">Max Players in Tribe:</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">Set to 0 for unlimited player in tribe, set to a number > 0 to act as a limit.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">players</sys:String>
+    
+    <sys:String x:Key="ServerSettings_EnableDifficultyOverrideLabel">Enable Difficulty Override</sys:String>
+    <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">If enabled, this will allow the max level of creatures in the world to be changed.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Max Dino Level:</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyTooltip">Determines the maximum levels of creatures in the world. The higher the value, the higher the Maximum Creature Level.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>

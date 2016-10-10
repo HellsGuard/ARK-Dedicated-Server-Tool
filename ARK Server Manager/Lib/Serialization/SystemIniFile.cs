@@ -224,7 +224,7 @@ namespace ARK_Server_Manager.Lib
 
         public void Serialize(object obj)
         {
-            Dictionary<string, IniFile> iniFiles = new Dictionary<string, IniFile>();
+            var iniFiles = new Dictionary<string, IniFile>();
 
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
             foreach (var field in fields)
@@ -256,7 +256,7 @@ namespace ARK_Server_Manager.Lib
                     else
                     {
                         var value = field.GetValue(obj);
-                        var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+                        var keyName = string.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
 
                         if (attr.ClearSection)
                         {
@@ -266,7 +266,7 @@ namespace ARK_Server_Manager.Lib
                         //
                         // If this is a collection, we need to first remove all of its values from the INI.
                         //
-                        IIniValuesCollection collection = value as IIniValuesCollection;
+                        var collection = value as IIniValuesCollection;
                         if (collection != null)
                         {
                             var section = ReadSection(iniFiles, attr.File, attr.Section);
@@ -276,7 +276,7 @@ namespace ARK_Server_Manager.Lib
                             WriteSection(iniFiles, attr.File, attr.Section, filteredSection);
                         }
 
-                        if (!String.IsNullOrEmpty(attr.ConditionedOn))
+                        if (!string.IsNullOrEmpty(attr.ConditionedOn))
                         {
                             var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
                             var conditionValue = conditionField.GetValue(obj);
@@ -288,7 +288,7 @@ namespace ARK_Server_Manager.Lib
                             }
                         }
 
-                        if (!String.IsNullOrEmpty(attr.ClearWhenOff))
+                        if (!string.IsNullOrEmpty(attr.ClearWhenOff))
                         {
                             var updateOffField = obj.GetType().GetProperty(attr.ClearWhenOff);
                             var updateOffValue = updateOffField.GetValue(obj);
@@ -311,7 +311,7 @@ namespace ARK_Server_Manager.Lib
                                 if (value is string)
                                 {
                                     var strValue = value as string;
-                                    WriteValue(iniFiles, attr.File, attr.Section, keyName, String.IsNullOrEmpty(strValue) ? "False" : "True");
+                                    WriteValue(iniFiles, attr.File, attr.Section, keyName, string.IsNullOrEmpty(strValue) ? "False" : "True");
                                 }
                                 else
                                 {
@@ -337,9 +337,12 @@ namespace ARK_Server_Manager.Lib
                             else
                             {
                                 var strValue = StringUtils.GetPropertyValue(value, field, attr);
-                                if (attr.QuotedString && !(strValue.StartsWith("\"") && strValue.EndsWith("\"")))
+                                if (attr.QuotedString)
                                 {
-                                    strValue = "\"" + strValue + "\"";
+                                    if (!strValue.StartsWith("\""))
+                                        strValue = "\"" + strValue;
+                                    if (!strValue.EndsWith("\""))
+                                        strValue = strValue + "\"";
                                 }
 
                                 if (attr.Multiline)
