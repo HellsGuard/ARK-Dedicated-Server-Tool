@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         xmlns:eo="http://schemas.essentialobjects.com/wpf/"
-        Title="{DynamicResource MainWindow_Title}" Height="900" Width="1100" Loaded="Window_Loaded"
+        Title="{DynamicResource MainWindow_Title}" MinWidth="800" MinHeight="600" Width="1100" Height="850" Loaded="Window_Loaded"
         Name="Main" Icon="Art/favicon.ico">
 	<Window.Resources>
         <ResourceDictionary>
@@ -25,16 +25,41 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="#FF4F4F4F" LastChildFill="False">
+        <DockPanel Grid.Row="0" LastChildFill="False">
+            <DockPanel.Style>
+                <Style TargetType="{x:Type DockPanel}">
+                    <Setter Property="Background" Value="#FF4F4F4F"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=Main, Path=BetaVersion}" Value="True">
+                            <Setter Property="Background" Value="#0D00FE"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            
             <Grid DockPanel.Dock="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Background="#FF4F4F4F" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Text="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
+                <Label Grid.Row="0" Background="Transparent" Foreground="White" FontSize="26.667" FontWeight="Bold" Margin="5,0,5,0" Content="{DynamicResource MainWindow_ArkNameLabel}" BorderThickness="0"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{DynamicResource MainWindow_VersionLabel}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <Label Margin="5,0,0,0" Background="#FF4F4F4F" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Label.Style>
+                            <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                <Setter Property="Content" Value="{DynamicResource MainWindow_VersionLabel}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Main, Path=BetaVersion}" Value="True">
+                                        <Setter Property="Content" Value="{DynamicResource MainWindow_BetaVersionLabel}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Button Margin="5" Click="ASMPatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
+                        <Image Source="Art/Help.png" Height="16" Margin="0" />
+                    </Button>
                     <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="{DynamicResource MainWindow_UpdateToLabelFormat}" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
@@ -51,12 +76,13 @@
                     </Button>
                 </StackPanel>
             </Grid>
+            
             <Grid VerticalAlignment="Top" Margin="10,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="0" Background="#FF4F4F4F" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_MyIpLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Label Grid.Row="0" Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_MyIpLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
                     <TextBox FontSize="12"  Height="22" Width="250" VerticalAlignment="Bottom" Margin="0" VerticalContentAlignment="Center" ToolTip="{DynamicResource MainWindow_MyIpTooltip}">
                         <Validation.ErrorTemplate>
@@ -82,12 +108,19 @@
                     </Button>
                 </StackPanel>
             </Grid>
+            
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
                 <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                     <Image Source="Art/Donate.png" />
                 </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
+                    <Image Source="Art/SteamCMD.png" Width="16"/>
+                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
                     <Image Source="Art/Command.png" Width="16"/>
+                </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}">
+                    <Image Source="Art/OpenLog.png" Width="16"/>
                 </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
                     <Image Source="Art/Settings.png" Width="16"/>
@@ -96,19 +129,48 @@
                     <Image Source="Art/Help.png" Width="16"/>
                 </Button>
             </StackPanel>
- 
-
         </DockPanel>
-        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,-5" 
-                       ShowCloseTabButton="True" ShowNewTabButton="True" 
-                       NewItemRequested="Servers_AddNew"
-                       PreviewItemClose="Servers_Remove"
-                       ItemsSource="{Binding ServerManager.Servers}">
+        
+        <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,0" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
             <eo:TabControl.HeaderTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Profile.ProfileName}"/>
+                <DataTemplate >
+                    <TextBlock Text="{Binding Profile.ProfileName}"/>
                 </DataTemplate>
             </eo:TabControl.HeaderTemplate>
+            <eo:TabControl.NewTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border BorderBrush="#8C8E94" BorderThickness="1,1,1,0" Padding="3,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#F3F3F3" />
+                                                <GradientStop Offset="0.5" Color="#EBEBEB" />
+                                                <GradientStop Offset="0.5" Color="#DDDDDD" />
+                                                <GradientStop Offset="1" Color="#CDCDCD" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Add.png" ToolTip="{DynamicResource MainWindow_NewProfileTooltip}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.NewTabButtonStyle>
+            <eo:TabControl.CloseTabButtonStyle>
+                <Style TargetType="eo:BareButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="Art/Delete.png" ToolTip="{DynamicResource MainWindow_CloseProfileTooltip}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </eo:TabControl.CloseTabButtonStyle>            
             <eo:TabControl.ContentTemplate>
                 <DataTemplate>
                     <local:ServerSettingsControl Server="{Binding}"/>

@@ -13,7 +13,7 @@ namespace WPFSharp.Globalizer
     {
         #region Members
 
-        public static String DefaultStyle = "Default Style.xaml";
+        public static String DefaultStyle = "Default.xaml";
 
         #endregion
 

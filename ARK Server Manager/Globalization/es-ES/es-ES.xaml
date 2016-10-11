@@ -526,8 +526,8 @@
     <sys:String x:Key="ServerSettings_PerPlatformStructuresMultiplierTooltip">Especifica el factor de escala para el número máximo de estructuras que pueden introducirse en una única plataforma / silla de montar.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresLabel">Estructuras Max Silla de Plataforma</sys:String>
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">El número máximo de criaturas con plataforma o balsas permitido en todo el servidor.</sys:String>
-	<sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionLabel">Anular prevención de estructuras en plataforma</sys:String>
-    <sys:String x:Key="ServerSettings_OverideStructurePlatformPreventionTooltip">Si está activado, permite construir y utilizar auto-torretas y plantas disparadoras en monturas de dino con plataforma.</sys:String>
+	<sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionLabel">Anular prevención de estructuras en plataforma</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">Si está activado, permite construir y utilizar auto-torretas y plantas disparadoras en monturas de dino con plataforma.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Permitir Dinos no alineados en la plataforma volante</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">Si está habilitado, dinos no aliados son capaces de mantenerse en las plataformas del Quetzal.</sys:String>
 

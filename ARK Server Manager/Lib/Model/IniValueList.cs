@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -48,16 +46,18 @@ namespace ARK_Server_Manager.Lib
         public void Reset()
         {
             this.Clear();
-            this.AddRange(this.ResetFunc());
+            if (this.ResetFunc != null)
+                this.AddRange(this.ResetFunc());
         }
 
-        public void FromIniValues(IEnumerable<string> values)
+        public virtual void FromIniValues(IEnumerable<string> values)
         {
             this.Clear();
             if (this.IsArray)
             {
                 var list = new List<T>();
-                list.AddRange(this.ResetFunc());
+                if (this.ResetFunc != null)
+                    list.AddRange(this.ResetFunc());
                 foreach(var v in values)
                 {
                     int indexStart = v.IndexOf('[');
@@ -88,18 +88,20 @@ namespace ARK_Server_Manager.Lib
             }
             else
             {
-                
                 this.AddRange(values.Select(v => v.Substring(v.IndexOf('=') + 1)).Select(this.FromIniValue));
                 this.IsEnabled = (this.Count != 0);
 
                 // Add any default values which were missing
-                var defaultItemsToAdd = this.ResetFunc().Where(r => !this.Any(v => this.EquivalencyFunc(v, r))).ToArray();
-                this.AddRange(defaultItemsToAdd);
-                this.Sort(this.SortKeySelectorFunc);
+                if (this.ResetFunc != null)
+                {
+                    var defaultItemsToAdd = this.ResetFunc().Where(r => !this.Any(v => this.EquivalencyFunc(v, r))).ToArray();
+                    this.AddRange(defaultItemsToAdd);
+                    this.Sort(this.SortKeySelectorFunc);
+                }
             }            
         }
 
-        public IEnumerable<string> ToIniValues()
+        public virtual IEnumerable<string> ToIniValues()
         {
             var values = new List<string>();
             if (this.IsArray)

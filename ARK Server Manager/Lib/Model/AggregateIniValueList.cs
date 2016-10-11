@@ -45,7 +45,8 @@ namespace ARK_Server_Manager.Lib
         public void Reset()
         {
             this.Clear();
-            this.AddRange(this.resetFunc());
+            if (this.resetFunc != null)
+                this.AddRange(this.resetFunc());
 
             this.Sort(AggregateIniValue.SortKeySelector);
         }
@@ -65,8 +66,11 @@ namespace ARK_Server_Manager.Lib
             this.IsEnabled = (this.Count != 0);
 
             // Add any default values which were missing
-            var defaultItemsToAdd = this.resetFunc().Where(r => !this.Any(v => v.IsEquivalent(r))).ToArray();
-            this.AddRange(defaultItemsToAdd);
+            if (this.resetFunc != null)
+            {
+                var defaultItemsToAdd = this.resetFunc().Where(r => !this.Any(v => v.IsEquivalent(r))).ToArray();
+                this.AddRange(defaultItemsToAdd);
+            }
 
             this.Sort(AggregateIniValue.SortKeySelector);
         }

@@ -5,20 +5,10 @@ namespace ARK_Server_Manager.Lib
 {
     public class ClassMultiplier : AggregateIniValue
     {
-        public static readonly DependencyProperty ClassNameProperty =
-            DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(ClassMultiplier), new PropertyMetadata(""));
-        public static readonly DependencyProperty MultiplierProperty =
-            DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(0F));
+        public const float DefaultMultiplier = 1.0f;
 
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.ClassName, ((ClassMultiplier)other).ClassName, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public override string GetSortKey()
-        {
-            return GameData.FriendlyNameForClass(this.ClassName);
-        }
+        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(ClassMultiplier), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty MultiplierProperty = DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(DefaultMultiplier));
 
         [AggregateIniValueEntry]
         public string ClassName
@@ -39,6 +29,16 @@ namespace ARK_Server_Manager.Lib
             var newSpawn = new ClassMultiplier();
             newSpawn.InitializeFromINIValue(iniValue);
             return newSpawn;
+        }
+
+        public override string GetSortKey()
+        {
+            return GameData.FriendlyNameForClass(this.ClassName);
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.ClassName, ((ClassMultiplier)other).ClassName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -32,7 +32,8 @@ namespace WPFSharp.Globalizer
                 _SelectedStyle = value;
                 NotifyPropertyChanged("SelectedStyle");
             }
-        } private string _SelectedStyle;
+        }
+        private string _SelectedStyle;
 
         public static void CreateInstance()
         {

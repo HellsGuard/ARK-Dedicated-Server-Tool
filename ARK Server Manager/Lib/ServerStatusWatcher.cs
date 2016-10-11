@@ -5,17 +5,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace ARK_Server_Manager.Lib
 {
     using NLog;
-    using StatusCallback = Action<IAsyncDisposable, ARK_Server_Manager.Lib.ServerStatusWatcher.ServerStatusUpdate>;
+    using StatusCallback = Action<IAsyncDisposable, ServerStatusWatcher.ServerStatusUpdate>;
 
     public class ServerStatusWatcher
     {
@@ -36,6 +34,11 @@ namespace ARK_Server_Manager.Lib
             Stopped,
 
             /// <summary>
+            /// The server binary was found, the process was found, but no permissions to access the process.
+            /// </summary>
+            Unknown,
+
+            /// <summary>
             /// The server process was found
             /// </summary>
             Running,
@@ -52,6 +55,11 @@ namespace ARK_Server_Manager.Lib
             /// The server binary was found, but the process was not
             /// </summary>
             Stopped,
+
+            /// <summary>
+            /// The server binary was found, the process was found, but no permissions to access the process.
+            /// </summary>
+            Unknown,
 
             /// <summary>
             /// The server process was found, but the server is not responding on its port
@@ -173,9 +181,9 @@ namespace ARK_Server_Manager.Lib
             {
                 foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
                 {
-                    var commandLine = ServerUpdater.GetCommandLineForProcess(process.Id);
+                    var commandLine = ProcessUtils.GetCommandLineForProcess(process.Id);
 
-                    if (commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
+                    if (commandLine != null && commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
                     {
                         // Does this match our server exe and port?
                         var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.LocalEndpoint.Port);
@@ -284,6 +292,9 @@ namespace ARK_Server_Manager.Lib
 
                 case ServerProcessStatus.Stopped:
                     return new ServerStatusUpdate { Status = ServerStatus.Stopped };
+
+                case ServerProcessStatus.Unknown:
+                    return new ServerStatusUpdate { Status = ServerStatus.Unknown };
 
                 case ServerProcessStatus.Running:
                     break;

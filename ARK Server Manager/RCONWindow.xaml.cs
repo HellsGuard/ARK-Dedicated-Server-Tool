@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using WPFSharp.Globalizer;
+using System.Collections.Specialized;
 
 namespace ARK_Server_Manager
 {
@@ -89,6 +90,7 @@ namespace ARK_Server_Manager
     {
         public RCONOutput_ChatSend(string target, string output) : base($"[{target}] {output}") { }
     }
+
     public class RCONOutput_Broadcast : RCONOutput_ChatSend
     {
         public RCONOutput_Broadcast(string output) : base("ALL", output) { }
@@ -119,73 +121,19 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class RCONWindow : Window
     {
-        private GlobalizedApplication _globalizedApplication = GlobalizedApplication.Instance;
+        private static Dictionary<Server, RCONWindow> RCONWindows = new Dictionary<Server, RCONWindow>();
 
-        public bool ScrollOnNewInput
-        {
-            get { return (bool)GetValue(ScrollOnNewInputProperty); }
-            set { SetValue(ScrollOnNewInputProperty, value); }
-        }
-
-        public static readonly DependencyProperty ScrollOnNewInputProperty = DependencyProperty.Register(nameof(ScrollOnNewInput), typeof(bool), typeof(RCONWindow), new PropertyMetadata(true));
-
-        public ICollectionView  PlayersView
-        {
-            get { return (ICollectionView)GetValue(PlayersViewProperty); }
-            set { SetValue(PlayersViewProperty, value); }
-        }
-
-        public static readonly DependencyProperty PlayersViewProperty = DependencyProperty.Register(nameof(PlayersView), typeof(ICollectionView), typeof(RCONWindow), new PropertyMetadata(null));
-
-
-        public PlayerSortType PlayerSorting
-        {
-            get { return (PlayerSortType)GetValue(PlayerSortingProperty); }
-            set { SetValue(PlayerSortingProperty, value); }
-        }
-
-        public static readonly DependencyProperty PlayerSortingProperty = DependencyProperty.Register(nameof(PlayerSorting), typeof(PlayerSortType), typeof(RCONWindow), new PropertyMetadata(PlayerSortType.Online));
-
-        public PlayerFilterType PlayerFiltering
-        {
-            get { return (PlayerFilterType)GetValue(PlayerFilteringProperty); }
-            set { SetValue(PlayerFilteringProperty, value); }
-        }
-
-        public static readonly DependencyProperty PlayerFilteringProperty = DependencyProperty.Register(nameof(PlayerFiltering), typeof(PlayerFilterType), typeof(RCONWindow), new PropertyMetadata(PlayerFilterType.Online | PlayerFilterType.Offline | PlayerFilterType.Banned | PlayerFilterType.Whitelisted));
-
-
-        public RCONParameters RCONParameters
-        {
-            get { return (RCONParameters)GetValue(ServerProperty); }
-            set { SetValue(ServerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(RCONParameters), typeof(RCONParameters), typeof(RCONWindow), new PropertyMetadata(null));
-
-        public Config CurrentConfig
-        {
-            get { return (Config)GetValue(CurrentConfigProperty); }
-            set { SetValue(CurrentConfigProperty, value); }
-        }
+        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(RCONWindow), new PropertyMetadata(Config.Default));
-
-        public ServerRCON ServerRCON
-        {
-            get { return (ServerRCON)GetValue(ServerRCONProperty); }
-            set { SetValue(ServerRCONProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));    
-
-        public InputMode CurrentInputMode
-        {
-            get { return (InputMode)GetValue(CurrentInputModeProperty); }
-            set { SetValue(CurrentInputModeProperty, value); }
-        }
-
         public static readonly DependencyProperty CurrentInputModeProperty = DependencyProperty.Register(nameof(CurrentInputMode), typeof(InputMode), typeof(RCONWindow), new PropertyMetadata(InputMode.Command));
+        public static readonly DependencyProperty PlayerFilteringProperty = DependencyProperty.Register(nameof(PlayerFiltering), typeof(PlayerFilterType), typeof(RCONWindow), new PropertyMetadata(PlayerFilterType.Online | PlayerFilterType.Offline | PlayerFilterType.Banned | PlayerFilterType.Whitelisted));
+        public static readonly DependencyProperty PlayerFilterStringProperty = DependencyProperty.Register(nameof(PlayerFilterString), typeof(string), typeof(RCONWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty PlayerSortingProperty = DependencyProperty.Register(nameof(PlayerSorting), typeof(PlayerSortType), typeof(RCONWindow), new PropertyMetadata(PlayerSortType.Online));
+        public static readonly DependencyProperty PlayersViewProperty = DependencyProperty.Register(nameof(PlayersView), typeof(ICollectionView), typeof(RCONWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty RCONParametersProperty = DependencyProperty.Register(nameof(RCONParameters), typeof(RCONParameters), typeof(RCONWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty ScrollOnNewInputProperty = DependencyProperty.Register(nameof(ScrollOnNewInput), typeof(bool), typeof(RCONWindow), new PropertyMetadata(true));
+        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));    
 
         public RCONWindow(RCONParameters parameters)
         {
@@ -193,35 +141,31 @@ namespace ARK_Server_Manager
             WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.CurrentInputWindowMode = InputWindowMode.None;
-            this.RCONParameters = parameters;
             this.PlayerFiltering = (PlayerFilterType)Config.Default.RCON_PlayerListFilter;
             this.PlayerSorting = (PlayerSortType)Config.Default.RCON_PlayerListSort;
+            this.RCONParameters = parameters;
             this.ServerRCON = new ServerRCON(parameters);
-            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);            
-            this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
-            this.PlayersView.Filter = p =>
-            {
-                var player = p as PlayerInfo;
+            this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);
+            this.ServerRCON.Players.CollectionChanged += Players_CollectionChanged;
 
-                return (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
-                       (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
-                       (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
-                       (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted);
-            };
+            this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
+            this.PlayersView.Filter = new Predicate<object>(PlayerFilter);
 
             var notifier = new PropertyChangeNotifier(this.ServerRCON, ServerRCON.StatusProperty, (s, a) =>
             {
                 this.RenderConnectionStateChange(a);
             });
+
             this.DataContext = this;
 
             AddCommentsBlock(
-                _globalizedApplication.GetResourceString("RCON_Comments_Line1"),
-                _globalizedApplication.GetResourceString("RCON_Comments_Line2"),
-                _globalizedApplication.GetResourceString("RCON_Comments_Line3"),
-                _globalizedApplication.GetResourceString("RCON_Comments_Line4"),
-                _globalizedApplication.GetResourceString("RCON_Comments_Line5"),
-                String.Format(_globalizedApplication.GetResourceString("RCON_Comments_Line6"), _globalizedApplication.GetResourceString("RCON_Help_Keyword")));
+                _globalizer.GetResourceString("RCON_Comments_Line1"),
+                _globalizer.GetResourceString("RCON_Comments_Line2"),
+                _globalizer.GetResourceString("RCON_Comments_Line3"),
+                _globalizer.GetResourceString("RCON_Comments_Line4"),
+                _globalizer.GetResourceString("RCON_Comments_Line5"),
+                String.Format(_globalizer.GetResourceString("RCON_Comments_Line6"), 
+                _globalizer.GetResourceString("RCON_Help_Keyword")));
 
             if (this.RCONParameters.RCONWindowExtents.Width > 50 && this.RCONParameters.RCONWindowExtents.Height > 50)
             {
@@ -246,7 +190,75 @@ namespace ARK_Server_Manager
             this.ConsoleInput.Focus();
         }
 
-        private static Dictionary<Server, RCONWindow> RCONWindows = new Dictionary<Server, RCONWindow>();
+
+        public Config CurrentConfig
+        {
+            get { return (Config)GetValue(CurrentConfigProperty); }
+            set { SetValue(CurrentConfigProperty, value); }
+        }
+
+        public InputMode CurrentInputMode
+        {
+            get { return (InputMode)GetValue(CurrentInputModeProperty); }
+            set { SetValue(CurrentInputModeProperty, value); }
+        }
+
+        public PlayerFilterType PlayerFiltering
+        {
+            get { return (PlayerFilterType)GetValue(PlayerFilteringProperty); }
+            set { SetValue(PlayerFilteringProperty, value); }
+        }
+
+        public string PlayerFilterString
+        {
+            get { return (string)GetValue(PlayerFilterStringProperty); }
+            set { SetValue(PlayerFilterStringProperty, value); }
+        }
+
+        public PlayerSortType PlayerSorting
+        {
+            get { return (PlayerSortType)GetValue(PlayerSortingProperty); }
+            set { SetValue(PlayerSortingProperty, value); }
+        }
+
+        public ICollectionView PlayersView
+        {
+            get { return (ICollectionView)GetValue(PlayersViewProperty); }
+            set { SetValue(PlayersViewProperty, value); }
+        }
+
+        public RCONParameters RCONParameters
+        {
+            get { return (RCONParameters)GetValue(RCONParametersProperty); }
+            set { SetValue(RCONParametersProperty, value); }
+        }
+
+        public bool ScrollOnNewInput
+        {
+            get { return (bool)GetValue(ScrollOnNewInputProperty); }
+            set { SetValue(ScrollOnNewInputProperty, value); }
+        }
+
+        public ServerRCON ServerRCON
+        {
+            get { return (ServerRCON)GetValue(ServerRCONProperty); }
+            set { SetValue(ServerRCONProperty, value); }
+        }
+
+
+        private InputWindowMode CurrentInputWindowMode
+        {
+            get;
+            set;
+        }
+
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
+            this.ServerRCON.DisposeAsync().DoNotWait();
+            base.OnClosing(e);
+        }
 
         public static RCONWindow GetRCONForServer(Server server)
         {
@@ -256,10 +268,11 @@ namespace ARK_Server_Manager
                 window = new RCONWindow(new RCONParameters()
                 {
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
-                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    InstallDirectory = server.Profile.InstallDirectory,
+                    AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
                     ProfileName = server.Profile.ProfileName,
+                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
-                    ServerIP = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
                     MaxPlayers = server.Runtime.MaxPlayers,
                     Server = server
@@ -286,18 +299,6 @@ namespace ARK_Server_Manager
             }
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            this.ServerRCON.DisposeAsync().DoNotWait();
-            base.OnClosing(e);
-        }
-
-        private InputWindowMode CurrentInputWindowMode
-        {
-            get;
-            set;
-        }
-
         public ICommand Button1Command
         {
             get
@@ -305,7 +306,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        inputBox.Visibility = System.Windows.Visibility.Collapsed;
+                        inputBox.Visibility = Visibility.Collapsed;
                         dockPanel.IsEnabled = true;
 
                         PlayerInfo player;
@@ -322,7 +323,7 @@ namespace ARK_Server_Manager
                             case InputWindowMode.RenamePlayer:
                                 player = inputBox.Tag as PlayerInfo;
                                 if (player != null && player.ArkData != null)
-                                    this.ServerRCON.IssueCommand($"RenamePlayer \"{player.ArkData.CharacterName}\" {inputText}");
+                                    this.ServerRCON.IssueCommand($"RenamePlayer \"{player.CharacterName}\" {inputText}");
                                 break;
 
                             case InputWindowMode.RenameTribe:
@@ -351,7 +352,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        inputBox.Visibility = System.Windows.Visibility.Collapsed;
+                        inputBox.Visibility = Visibility.Collapsed;
                         dockPanel.IsEnabled = true;
 
                         switch (this.CurrentInputWindowMode)
@@ -387,7 +388,7 @@ namespace ARK_Server_Manager
                             // Ignore any failures here, best effort only.
                         }
 
-                        MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("RCON_ClearLogs_Label"), logsDir), _globalizedApplication.GetResourceString("RCON_ClearLogs_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(String.Format(_globalizer.GetResourceString("RCON_ClearLogs_Label"), logsDir), _globalizer.GetResourceString("RCON_ClearLogs_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
                     },
                     canExecute: (_) => this.RCONParameters.Server != null
                 );
@@ -409,7 +410,7 @@ namespace ARK_Server_Manager
                         }
                         catch(Exception ex)
                         {
-                            MessageBox.Show(String.Format(_globalizedApplication.GetResourceString("RCON_ViewLogs_ErrorLabel"), logsDir, ex.Message), _globalizedApplication.GetResourceString("RCON_ViewLogs_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(String.Format(_globalizer.GetResourceString("RCON_ViewLogs_ErrorLabel"), logsDir, ex.Message), _globalizer.GetResourceString("RCON_ViewLogs_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     },
                     canExecute: (_) => this.RCONParameters.Server != null
@@ -424,7 +425,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = _globalizedApplication.GetResourceString("RCON_SaveWorldLabel");
+                        var message = _globalizer.GetResourceString("RCON_SaveWorldLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("saveworld");
@@ -441,7 +442,7 @@ namespace ARK_Server_Manager
                 return new RelayCommand<object>(
                     execute: (_) =>
                     {
-                        var message = _globalizedApplication.GetResourceString("RCON_DestroyWildDinosLabel");
+                        var message = _globalizer.GetResourceString("RCON_DestroyWildDinosLabel");
                         this.ServerRCON.IssueCommand($"broadcast {message}");
 
                         this.ServerRCON.IssueCommand("DestroyWildDinos");
@@ -458,26 +459,8 @@ namespace ARK_Server_Manager
                 return new RelayCommand<PlayerSortType>(
                     execute: (sort) => 
                     {
-                        this.PlayersView.SortDescriptions.Clear();
                         Config.Default.RCON_PlayerListSort = (int)this.PlayerSorting;
-                        switch(sort)
-                        {
-                            case PlayerSortType.Name:
-                                this.PlayersView.ToggleSorting(nameof(PlayerInfo.SteamName));
-                                break;
-
-                            case PlayerSortType.Online:
-                                this.PlayersView.ToggleSorting(nameof(PlayerInfo.IsOnline), ListSortDirection.Descending);
-                                break;
-
-                            case PlayerSortType.Tribe:
-                                this.PlayersView.ToggleSorting(nameof(PlayerInfo.TribeName));
-                                break;
-
-                            case PlayerSortType.LastUpdated:
-                                this.PlayersView.ToggleSorting(nameof(PlayerInfo.LastUpdated), ListSortDirection.Descending);
-                                break;
-                        }
+                        SortPlayers();
                     },
                     canExecute: (sort) => true
                 );
@@ -511,13 +494,13 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.ServerChatTo;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_ChatPlayerLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizer.GetResourceString("RCON_ChatPlayerLabel")} {player.SteamName ?? _globalizer.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Send");
-                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
-                        inputBox.Visibility = System.Windows.Visibility.Visible;
+                        button1.Content = _globalizer.GetResourceString("RCON_Button_Send");
+                        button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
+                        inputBox.Visibility = Visibility.Visible;
                     },
-                    canExecute: (player) => true //player != null && player.IsOnline
+                    canExecute: (player) => true
                 );
             }
         }
@@ -533,10 +516,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenamePlayer;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_RenamePlayerLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizer.GetResourceString("RCON_RenamePlayerLabel")} {player.SteamName ?? _globalizer.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Change");
-                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
+                        button1.Content = _globalizer.GetResourceString("RCON_Button_Change");
+                        button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => player != null && player.ArkData != null && player.IsOnline
@@ -555,10 +538,10 @@ namespace ARK_Server_Manager
 
                         CurrentInputWindowMode = InputWindowMode.RenameTribe;
                         inputBox.Tag = player;
-                        inputTitle.Text = $"{_globalizedApplication.GetResourceString("RCON_RenameTribeLabel")} {player.SteamName ?? _globalizedApplication.GetResourceString("RCON_UnnamedLabel")}";
+                        inputTitle.Text = $"{_globalizer.GetResourceString("RCON_RenameTribeLabel")} {player.SteamName ?? _globalizer.GetResourceString("RCON_UnnamedLabel")}";
                         inputTextBox.Text = string.Empty;
-                        button1.Content = _globalizedApplication.GetResourceString("RCON_Button_Change");
-                        button2.Content = _globalizedApplication.GetResourceString("RCON_Button_Cancel");
+                        button1.Content = _globalizer.GetResourceString("RCON_Button_Change");
+                        button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
                     canExecute: (player) => player != null && player.IsOnline
@@ -615,8 +598,14 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { Process.Start(player.ArkData.ProfileUrl); },
-                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.ArkData.ProfileUrl)
+                    execute: (player) => 
+                    {
+                        if (player.ArkData == null || string.IsNullOrWhiteSpace(player.ArkData.ProfileUrl))
+                            Process.Start($"http://steamcommunity.com/profiles/{player.SteamId}");
+                        else
+                            Process.Start(player.ArkData.ProfileUrl);
+                    },
+                    canExecute: (player) => player != null
                 );
             }
         }
@@ -627,7 +616,10 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var window = new PlayerProfile(player, this.RCONParameters.InstallDirectory);
+                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
+                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
+                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var window = new PlayerProfileWindow(player, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
@@ -642,7 +634,10 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var window = new TribeProfile(player, this.ServerRCON.Players, this.RCONParameters.InstallDirectory);
+                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
+                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
+                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var window = new TribeProfileWindow(player, this.ServerRCON.Players, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
@@ -661,11 +656,11 @@ namespace ARK_Server_Manager
                         try
                         {
                             System.Windows.Clipboard.SetText(player.SteamId.ToString());
-                            MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_CopySteamIdLabel")} {player.SteamName}", _globalizedApplication.GetResourceString("RCON_CopySteamIdTitle"), MessageBoxButton.OK);
+                            MessageBox.Show($"{_globalizer.GetResourceString("RCON_CopySteamIdLabel")} {player.SteamName}", _globalizer.GetResourceString("RCON_CopySteamIdTitle"), MessageBoxButton.OK);
                         }
                         catch
                         {
-                            MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizedApplication.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
+                            MessageBox.Show($"{_globalizer.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizer.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                         }
                     },
                     canExecute: (player) => player != null
@@ -686,11 +681,11 @@ namespace ARK_Server_Manager
                             try
                             {
                                 System.Windows.Clipboard.SetText(player.ArkData.Id.ToString());
-                                MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", _globalizedApplication.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
+                                MessageBox.Show($"{_globalizer.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", _globalizer.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
                             }
                             catch
                             {
-                                MessageBox.Show($"{_globalizedApplication.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizedApplication.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
+                                MessageBox.Show($"{_globalizer.GetResourceString("RCON_ClipboardErrorLabel")}", _globalizer.GetResourceString("RCON_ClipboardErrorTitle"), MessageBoxButton.OK);
                             }
                         }
                     },
@@ -826,41 +821,41 @@ namespace ARK_Server_Manager
                 var textBox = (TextBox)sender;
                 var effectiveMode = this.CurrentInputMode;
                 var commandText = textBox.Text.Trim();
-                if (commandText.StartsWith(_globalizedApplication.GetResourceString("RCON_Help_Keyword")))
+                if (commandText.StartsWith(_globalizer.GetResourceString("RCON_Help_Keyword")))
                 {
                     AddCommentsBlock(
-                        _globalizedApplication.GetResourceString("RCON_Help_Line1"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line2"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line3"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line4"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line5"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line6"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line7"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line8"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line9"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line10"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line11"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line12"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line13"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line14"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line15"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line16"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line17"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line18"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line19"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line20"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line21"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line22"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line23"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line24"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line25"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line26"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line27"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line28"),
-                        _globalizedApplication.GetResourceString("RCON_Help_Line29"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line30"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line31"),
-                        "   " + _globalizedApplication.GetResourceString("RCON_Help_Line32")
+                        _globalizer.GetResourceString("RCON_Help_Line1"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line2"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line3"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line4"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line5"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line6"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line7"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line8"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line9"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line10"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line11"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line12"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line13"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line14"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line15"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line16"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line17"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line18"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line19"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line20"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line21"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line22"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line23"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line24"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line25"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line26"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line27"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line28"),
+                        _globalizer.GetResourceString("RCON_Help_Line29"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line30"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line31"),
+                        "   " + _globalizer.GetResourceString("RCON_Help_Line32")
                         );
                 }
                 else
@@ -923,6 +918,69 @@ namespace ARK_Server_Manager
                 {
                     this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.RCONWindowExtents;
                 }
+            }
+        }
+
+        private void Players_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SortPlayers();
+            PlayersView?.Refresh();
+        }
+
+        private void PlayerFilter_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            PlayersView?.Refresh();
+        }
+
+        public bool PlayerFilter(object obj)
+        {
+            var player = obj as PlayerInfo;
+            if (player == null)
+                return false;
+
+            var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted);
+            if (!result)
+                return false;
+
+            var filterString = PlayerFilterString.ToLower();
+
+            if (string.IsNullOrWhiteSpace(filterString))
+                return true;
+
+            result = player.SteamNameFilterString != null && player.SteamNameFilterString.Contains(filterString) || 
+                    player.TribeNameFilterString != null && player.TribeNameFilterString.Contains(filterString) ||
+                    player.CharacterNameFilterString !=null && player.CharacterNameFilterString.Contains(filterString);
+
+            return result;
+        }
+
+        public void SortPlayers()
+        {
+            this.PlayersView.SortDescriptions.Clear();
+
+            switch (this.PlayerSorting)
+            {
+                case PlayerSortType.Name:
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.SteamName), ListSortDirection.Ascending));
+                    break;
+
+                case PlayerSortType.Online:
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.IsOnline), ListSortDirection.Descending));
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.SteamName), ListSortDirection.Ascending));
+                    break;
+
+                case PlayerSortType.Tribe:
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.TribeName), ListSortDirection.Ascending));
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.SteamName), ListSortDirection.Ascending));
+                    break;
+
+                case PlayerSortType.LastUpdated:
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.LastUpdated), ListSortDirection.Descending));
+                    this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.SteamName), ListSortDirection.Ascending));
+                    break;
             }
         }
     }
