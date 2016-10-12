@@ -15,6 +15,7 @@ using System.Reflection;
 using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Net.Mail;
+using System.Windows.Media;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -150,6 +151,7 @@ namespace ARK_Server_Manager.Lib
         public bool OutputLogs = true;
         public bool SendEmails = false;
         public string ShutdownReason = null;
+        public string UpdateReason = null;
         public ServerProcessType ServerProcess = ServerProcessType.Unknown;
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
@@ -361,12 +363,15 @@ namespace ARK_Server_Manager.Lib
                             Debug.WriteLine($"Error getting/displaying online players.\r\n{ex.Message}");
                         }
 
+                        var message = string.Empty;
                         if (minutesLeft >= 5)
                         {
                             // check if the we have just started the countdown
                             if (minutesLeft == ShutdownInterval)
                             {
-                                SendMessage(Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString()));
+                                message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
+                                if (!string.IsNullOrWhiteSpace(UpdateReason))
+                                    message += $"\n\n{UpdateReason}";
                             }
                             else
                             {
@@ -374,17 +379,28 @@ namespace ARK_Server_Manager.Lib
                                 Math.DivRem(minutesLeft, 5, out remainder);
 
                                 if (remainder == 0)
-                                    SendMessage(Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString()));
+                                {
+                                    message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
+                                    if (!string.IsNullOrWhiteSpace(UpdateReason))
+                                        message += $"\n\n{UpdateReason}";
+                                }
                             }
                         }
                         else if (minutesLeft > 1)
                         {
-                            SendMessage(Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString()));
+                            message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
+                            if (!string.IsNullOrWhiteSpace(UpdateReason))
+                                message += $"\n\n{UpdateReason}";
                         }
                         else
                         {
-                            SendMessage(Config.Default.ServerShutdown_GraceMessage2);
+                            message = Config.Default.ServerShutdown_GraceMessage2;
+                            if (!string.IsNullOrWhiteSpace(UpdateReason))
+                                message += $"\n\n{UpdateReason}";
                         }
+
+                        if (!string.IsNullOrWhiteSpace(message))
+                            SendMessage(message);
 
                         minutesLeft--;
                         Task.Delay(60000).Wait();
@@ -396,8 +412,7 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            var messageSave = Config.Default.ServerShutdown_WorldSaveMessage;
-                            SendMessage(messageSave);
+                            SendMessage(StringUtils.GetArkColoredMessage(Config.Default.ServerShutdown_WorldSaveMessage, Colors.DodgerBlue));
 
                             SendCommand("saveworld", false);
 
@@ -575,6 +590,37 @@ namespace ARK_Server_Manager.Lib
 
             if (updateServer || updateModIds.Count > 0)
             {
+                var modDetails = SteamUtils.GetSteamModDetails(updateModIds);
+
+                // create the update message to broadcast 
+                UpdateReason = string.Empty;
+                var delimiter = string.Empty;
+                if (updateServer)
+                {
+                    UpdateReason += $"{delimiter}Ark Server";
+                    delimiter = ", ";
+                }
+                if (updateModIds.Count > 0)
+                {
+                    for (var index = 0; index < updateModIds.Count; index++)
+                    {
+                        if (index == 5)
+                        {
+                            if (updateModIds.Count - index == 1)
+                                UpdateReason += $" and 1 other mod...";
+                            else
+                                UpdateReason += $" and {updateModIds.Count - index} other mods...";
+                            break;
+                        }
+
+                        var modId = updateModIds[index];
+                        var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
+
+                        UpdateReason += $"{delimiter}{modName}";
+                        delimiter = ", ";
+                    }
+                }
+
                 // stop the server
                 StopServer();
 
@@ -687,8 +733,6 @@ namespace ARK_Server_Manager.Lib
 
                     emailMessage.AppendLine();
                     emailMessage.AppendLine("Mods:");
-
-                    var modDetails = SteamUtils.GetSteamModDetails(updateModIds);
 
                     try
                     {

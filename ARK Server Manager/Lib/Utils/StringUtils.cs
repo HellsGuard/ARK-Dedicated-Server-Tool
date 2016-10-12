@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Media;
 
 namespace ARK_Server_Manager.Lib
 {
     public static class StringUtils
     {
         public const string DEFAULT_CULTURE_CODE = "en-US";
+
+        public static string GetArkColoredMessage(string message, Color color)
+        {
+            var r = Math.Round(color.R / 255.0, 2);
+            var g = Math.Round(color.G / 255.0, 2);
+            var b = Math.Round(color.B / 255.0, 2);
+            var a = Math.Round(color.A / 255.0, 2);
+
+            return $"<RichColor Color=\"{r},{g},{b},{a}\">{message}</>";
+        }
 
         public static List<string> SplitIncludingDelimiters(string input, string[] delimiters)
         {
