@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,6 +11,8 @@ namespace ARK_Server_Manager.Lib
     {
         private const string TASK_FOLDER = "ArkServerManager";
         private const int EXECUTION_TIME_LIMIT = 3;
+
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static bool ScheduleAutoRestart(string taskKey, string taskSuffix, string command, TimeSpan? restartTime, string profileName)
         {
@@ -32,7 +33,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.Message);
+                        Logger.Debug($"Unable to create the ASM task folder.\r\n{ex.Message}.");
                         return false;
                     }
                 }
@@ -77,18 +78,18 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken, null);
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken);
                     return task != null;
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to create the ScheduleAutoRestart task.\r\n{ex.Message}.");
                 }
             }
             else
             {
                 if (taskFolder == null)
-                    return false;
+                    return true;
 
                 // Retrieve the task to be deleted
                 var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
@@ -103,7 +104,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to delete the ScheduleAutoRestart task.\r\n{ex.Message}.");
                 }
             }
 
@@ -129,7 +130,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.Message);
+                        Logger.Debug($"Unable to create the ASM task folder.\r\n{ex.Message}.");
                         return false;
                     }
                 }
@@ -174,18 +175,18 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, "SYSTEM", null, TaskLogonType.InteractiveToken, null);
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, "SYSTEM", null, TaskLogonType.InteractiveToken);
                     return task != null;
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to create the ScheduleAutoStart task.\r\n{ex.Message}.");
                 }
             }
             else
             {
                 if (taskFolder == null)
-                    return false;
+                    return true;
 
                 // Retrieve the task to be deleted
                 var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
@@ -200,7 +201,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to delete the ScheduleAutoStart task.\r\n{ex.Message}.");
                 }
             }
 
@@ -227,7 +228,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.Message);
+                        Logger.Debug($"Unable to create the ASM task folder.\r\n{ex.Message}.");
                         return false;
                     }
                 }
@@ -259,8 +260,8 @@ namespace ARK_Server_Manager.Lib
                 var trigger = new TimeTrigger {
                                   StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),
                                   ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT),
+                                  Repetition = {Interval = TimeSpan.FromMinutes(autoUpdatePeriod)},
                               };
-                trigger.Repetition.Interval = TimeSpan.FromMinutes(autoUpdatePeriod);
                 taskDefinition.Triggers.Add(trigger);
 
                 // Create an action that will launch whenever the trigger fires
@@ -273,18 +274,18 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken, null);
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken);
                     return task != null;
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to create the ScheduleAutoUpdate task.\r\n{ex.Message}.");
                 }
             }
             else
             {
                 if (taskFolder == null)
-                    return false;
+                    return true;
 
                 // Retrieve the task to be deleted
                 var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
@@ -299,7 +300,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Logger.Debug($"Unable to delete the ScheduleAutoUpdate task.\r\n{ex.Message}.");
                 }
             }
 
@@ -329,6 +330,7 @@ namespace ARK_Server_Manager.Lib
                 // Exception has been thrown by the target of an invocation. 
                 // This error message seems to occur when using MD5 hash algorithm on an environment where FIPS is enabled. 
                 // Swallow the exception and allow the SHA1 algorithm to be used.
+                Logger.Error($"Unable to calculate the ComputeKey (MD5).\r\n{ex.Message}.");
                 Debug.WriteLine(ex.Message);
             }
 
