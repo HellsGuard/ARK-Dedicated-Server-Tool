@@ -46,7 +46,6 @@
     
     这是在顶部的主窗口 - 这不是任何配置文件的一部分.
     -->
-    <sys:String x:Key="MainWindow_Title">方舟服务器管理器</sys:String>
     <sys:String x:Key="MainWindow_ArkNameLabel">方舟服务器管理器</sys:String>
     <sys:String x:Key="MainWindow_VersionLabel">当前版本:</sys:String>
     <sys:String x:Key="MainWindow_MyIpLabel">我的公网 IP:</sys:String>

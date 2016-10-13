@@ -81,6 +81,9 @@ namespace ARK_Server_Manager
 
             this.DataContext = this;
             this.versionChecker = new ActionQueue();
+
+            if (SecurityUtils.IsAdministrator())
+                this.Title = _globalizer.GetResourceString("MainWindow_TitleWithAdmin");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
