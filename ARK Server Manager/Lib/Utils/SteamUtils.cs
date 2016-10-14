@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Model;
 using NeXt.Vdf;
 
@@ -205,6 +206,28 @@ namespace ARK_Server_Manager.Lib
             var vdf = vdfSerializer.Deserialize();
 
             return SteamCmdWorkshopDetailsResult.Deserialize(vdf);
+        }
+
+        public async static Task<SteamServerDetailResponse> GetSteamServerDetails(IPEndPoint endpoint)
+        {
+            try
+            {
+                var httpRequest = WebRequest.Create($"https://api.steampowered.com/ISteamApps/GetServersAtAddress/v1/?key={Config.Default.SteamAPIKey}&format=json&addr={endpoint.Address}:{endpoint.Port}");
+                httpRequest.Timeout = 30000;
+                var httpResponse = await httpRequest.GetResponseAsync();
+                var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+                var result = JsonUtils.Deserialize<SteamServerDetailResult>(responseString);
+                if (result?.response == null || !result.response.success.Equals("true"))
+                    return null;
+
+                return result.response;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR: {nameof(GetSteamServerDetails)}\r\n{ex.Message}");
+                return null;
+            }
         }
     }
 }

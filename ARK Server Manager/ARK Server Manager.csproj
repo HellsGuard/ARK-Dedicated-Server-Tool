@@ -165,6 +165,7 @@
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\SteamCmdWorkshopDetails.cs" />
     <Compile Include="Lib\Model\SteamUserDetail.cs" />
+    <Compile Include="Lib\Model\SteamServerDetail.cs" />
     <Compile Include="Lib\Serialization\IIniSectionCollection.cs" />
     <Compile Include="Lib\Utils\EmailUtil.cs" />
     <Compile Include="Lib\Utils\IniFileUtils.cs" />
