@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeXt.Vdf", "NeXtVdf\NeXt.Vd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMWebAPI", "ASMWebAPI\ASMWebAPI.csproj", "{F39DD28D-0903-42F2-8D05-F1108FE0F456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMWebAPI.UnitTests", "ASMWebAPI.UnitTests\ASMWebAPI.UnitTests.csproj", "{EEA42C43-262E-4D3B-BDB4-4161945BC00D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F39DD28D-0903-42F2-8D05-F1108FE0F456} = {F39DD28D-0903-42F2-8D05-F1108FE0F456}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +62,10 @@ Global
 		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA42C43-262E-4D3B-BDB4-4161945BC00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA42C43-262E-4D3B-BDB4-4161945BC00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA42C43-262E-4D3B-BDB4-4161945BC00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA42C43-262E-4D3B-BDB4-4161945BC00D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

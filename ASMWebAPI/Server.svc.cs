@@ -18,14 +18,14 @@ namespace ASMWebAPI
             {
                 using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
                 {
-                    Logger.Info($"Check server status requested for: {endpoint.Address}:{endpoint.Port}");
+                    Logger.Info($"Check server status requested for {endpoint.Address}:{endpoint.Port}");
                     var serverInfo = server.GetInfo();
                     return serverInfo != null;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception checking server status for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
+                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}\r\n{ex.Message}");
                 return false;
             }
         }
@@ -43,7 +43,7 @@ namespace ASMWebAPI
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception checking server status for: {ipString}:{port} {ex.Message}");
+                Logger.Debug($"Exception checking server status for {ipString}:{port}\r\n{ex.Message}");
                 return false;
             }
         }
@@ -54,7 +54,7 @@ namespace ASMWebAPI
             {
                 using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
                 {
-                    Logger.Info($"Get server info requested for: {endpoint.Address}:{endpoint.Port}");
+                    Logger.Info($"Get server info requested for {endpoint.Address}:{endpoint.Port}");
                     var serverInfo = server.GetInfo();
                     if (serverInfo != null)
                     {
@@ -111,7 +111,7 @@ namespace ASMWebAPI
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception getting server info for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
+                Logger.Debug($"Exception getting server info for {endpoint.Address}:{endpoint.Port}\r\n{ex.Message}");
                 return null;
             }
         }
@@ -129,7 +129,7 @@ namespace ASMWebAPI
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception getting server info for: {ipString}:{port} {ex.Message}");
+                Logger.Debug($"Exception getting server info for {ipString}:{port}\r\n{ex.Message}");
                 return null;
             }
         }
