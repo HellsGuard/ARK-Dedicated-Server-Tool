@@ -13,10 +13,10 @@ namespace ARK_Server_Manager.Lib
 
         public static string GetArkColoredMessage(string message, Color color)
         {
-            var r = Math.Round(color.R / 255.0, 2);
-            var g = Math.Round(color.G / 255.0, 2);
-            var b = Math.Round(color.B / 255.0, 2);
-            var a = Math.Round(color.A / 255.0, 2);
+            var r = Math.Round(color.R / 255.0, 2).ToString(CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
+            var g = Math.Round(color.G / 255.0, 2).ToString(CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
+            var b = Math.Round(color.B / 255.0, 2).ToString(CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
+            var a = Math.Round(color.A / 255.0, 2).ToString(CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
 
             return $"<RichColor Color=\"{r},{g},{b},{a}\">{message}</>";
         }
