@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARK Server Manager", "ARK Server Manager\ARK Server Manager.csproj", "{70CE930F-E1CB-424F-9833-A5E1CA42A785}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkData", "ArkData\ArkData.csproj", "{D2EE1483-021F-4900-BBE8-88338D1386F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeXt.Vdf", "NeXtVdf\NeXt.Vdf.csproj", "{E4EDA8B8-006C-4D41-822F-F64B6DB0021F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMWebAPI", "ASMWebAPI\ASMWebAPI.csproj", "{F39DD28D-0903-42F2-8D05-F1108FE0F456}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{E4EDA8B8-006C-4D41-822F-F64B6DB0021F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4EDA8B8-006C-4D41-822F-F64B6DB0021F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4EDA8B8-006C-4D41-822F-F64B6DB0021F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39DD28D-0903-42F2-8D05-F1108FE0F456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

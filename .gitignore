@@ -5,6 +5,7 @@
 *~
 *.pdb
 
+.vs/
 packages/
 ARK Dedicated Server Tool/bin/
 ARK Dedicated Server Tool/obj/
@@ -16,6 +17,10 @@ ARK Dedicated Server Tool Updater/obj/
 ARK Dedicated Server Tool Updater/publish/
 ASMWeb/bin/
 ASMWeb/obj/
+ASMWebAPI/bin/
+ASMWebAPI/obj/
+ASMWebAPI/publish/
+ASMWebAPI/Logs/
 WPFSharp.Globalizer/bin/
 WPFSharp.Globalizer/obj/
 QueryMaster/bin/
