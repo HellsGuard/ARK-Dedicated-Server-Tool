@@ -9,14 +9,15 @@ namespace ARK_Server_Manager.Lib
     public class AggregateIniValueList<T> : SortableObservableCollection<T>, IIniValuesCollection
          where T : AggregateIniValue, new()
     {
-        private bool isEnabled;
+        private bool _isEnabled;
+        private readonly Func<IEnumerable<T>> _resetFunc;
 
         public bool IsEnabled
         {
-            get { return this.isEnabled; }
+            get { return this._isEnabled; }
             set
             {
-                this.isEnabled = value;
+                this._isEnabled = value;
                 OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsEnabled)));
             }
         }
@@ -33,42 +34,39 @@ namespace ARK_Server_Manager.Lib
 
         public string IniCollectionKey { get; }
 
-        private Func<IEnumerable<T>> resetFunc;
-
         public AggregateIniValueList(string aggregateValueName, Func<IEnumerable<T>> resetFunc)
         {
             this.IniCollectionKey = aggregateValueName;
-            this.resetFunc = resetFunc;
+            this._resetFunc = resetFunc;
         }
 
 
         public void Reset()
         {
             this.Clear();
-            if (this.resetFunc != null)
-                this.AddRange(this.resetFunc());
+            if (this._resetFunc != null)
+                this.AddRange(this._resetFunc());
 
             this.Sort(AggregateIniValue.SortKeySelector);
         }
 
-        public IEnumerable<string> ToIniValues()
+        public virtual IEnumerable<string> ToIniValues()
         {
             var values = new List<string>();
-            values.AddRange(this.Where(d => d.ShouldSave())
-                                .Select(d => String.Format("{0}={1}", this.IniCollectionKey, d.ToINIValue())));
+            values.AddRange(this.Where(d => d.ShouldSave()).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
             return values;
         }
 
-        public void FromIniValues(IEnumerable<string> iniValues)
+        public virtual void FromIniValues(IEnumerable<string> iniValues)
         {
             this.Clear();
             this.AddRange(iniValues.Select(v => AggregateIniValue.FromINIValue<T>(v)));
             this.IsEnabled = (this.Count != 0);
 
             // Add any default values which were missing
-            if (this.resetFunc != null)
+            if (this._resetFunc != null)
             {
-                var defaultItemsToAdd = this.resetFunc().Where(r => !this.Any(v => v.IsEquivalent(r))).ToArray();
+                var defaultItemsToAdd = this._resetFunc().Where(r => !this.Any(v => v.IsEquivalent(r))).ToArray();
                 this.AddRange(defaultItemsToAdd);
             }
 

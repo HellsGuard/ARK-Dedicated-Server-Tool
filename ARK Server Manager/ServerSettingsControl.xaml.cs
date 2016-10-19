@@ -940,7 +940,23 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.OverrideNamedEngramEntries.Reset();
+            this.Settings.ResetEngramsSection();
+        }
+
+        private void Engrams_SelectAll(object sender, RoutedEventArgs e)
+        {
+            foreach (var engram in Settings.OverrideNamedEngramEntries)
+            {
+                engram.SaveEngramOverride = true;
+            }
+        }
+
+        private void Engrams_UnselectAll(object sender, RoutedEventArgs e)
+        {
+            foreach (var engram in Settings.OverrideNamedEngramEntries)
+            {
+                engram.SaveEngramOverride = false;
+            }
         }
 
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)

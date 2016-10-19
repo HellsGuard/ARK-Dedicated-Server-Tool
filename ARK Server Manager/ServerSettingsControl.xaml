@@ -2564,6 +2564,40 @@
                                     </GroupBox.Header>
 
                                     <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox x:Name="OnlyAllowSpecifiedEngramsCheckbox" Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams}" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_SelectAll" ToolTip="{DynamicResource ServerSettings_EngramsSelectAllTooltip}">
+                                                <Image Source="Art/Checked.png" Width="16" Height="16"/>
+                                                <Button.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ElementName=OnlyAllowSpecifiedEngramsCheckbox, Path=IsChecked}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_UnselectAll" ToolTip="{DynamicResource ServerSettings_EngramsUnselectAllTooltip}">
+                                                <Image Source="Art/Unchecked.png" Width="16" Height="16"/>
+                                                <Button.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ElementName=OnlyAllowSpecifiedEngramsCheckbox, Path=IsChecked}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <Label Content="{DynamicResource ServerSettings_EngramsFilterLabel}"/>
                                             <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto"/>
@@ -2572,6 +2606,16 @@
                                         <ListView Margin="0,5,0,0" Name="EngramsOverrideListView" ItemsSource="{Binding Source={StaticResource EngramsViewSource}}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
                                             <ListView.View>
                                                 <GridView>
+                                                    <GridViewColumn Width="Auto" lvs:SortBehavior.SortExpression="SaveEngramOverride">
+                                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" IsEnabled="{Binding ElementName=OnlyAllowSpecifiedEngramsCheckbox, Path=IsChecked}" >
+                                                            <TextBlock Text="{DynamicResource ServerSettings_SaveEngramOverrideColumnLabel}" />
+                                                        </GridViewColumnHeader>
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding SaveEngramOverride}" HorizontalAlignment="Center" Visibility="{Binding ElementName=OnlyAllowSpecifiedEngramsCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True" lvs:SortBehavior.IsDefaultSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsArkAppColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkApplication}" lvs:SortBehavior.CanUseSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">

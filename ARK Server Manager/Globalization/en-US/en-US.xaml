@@ -955,7 +955,12 @@
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_PasteCustomEngramsTooltip">Paste custom engram data.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsLabel">Only Allow Selected Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsTooltip">If enabled, only the selected engrams will be available to learn in game.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Select all the engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all then engrams.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
+    <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Selected</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Ark App.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>
