@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -136,6 +137,45 @@ namespace ARK_Server_Manager.Lib
             catch (Exception ex)
             {
                 Logger.Debug($"Exception checking status direct for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                return false;
+            }
+        }
+
+        public static async Task<bool> CheckServerStatusViaAPI(IPEndPoint endpoint)
+        {
+            try
+            {
+                string jsonString;
+                using (var client = new WebClient())
+                {
+                    jsonString = await client.DownloadStringTaskAsync(string.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
+                }
+
+                if (jsonString == null)
+                {
+                    Logger.Debug($"Server info request returned null string for {endpoint.Address}:{endpoint.Port}");
+                    return false;
+                }
+
+                JObject query = JObject.Parse(jsonString);
+                if (query == null)
+                {
+                    Logger.Debug($"Server info request failed to parse for {endpoint.Address}:{endpoint.Port} - '{jsonString}'");
+                    return false;
+                }
+
+                var available = query.SelectToken("available");
+                if (available == null)
+                {
+                    Logger.Debug($"Server at {endpoint.Address}:{endpoint.Port} returned no availability.");
+                    return false;
+                }
+
+                return (bool)available;
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug($"Exception checking status via API for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
                 return false;
             }
         }

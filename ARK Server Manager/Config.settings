@@ -389,5 +389,8 @@
     <Setting Name="DefaultServerFolderName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Server</Value>
     </Setting>
+    <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://101.165.222.249:43443/api/server/{0}/{1}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

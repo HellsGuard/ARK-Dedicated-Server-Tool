@@ -1371,5 +1371,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["DefaultServerFolderName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://101.165.222.249:43443/api/server/{0}/{1}")]
+        public string ServerStatusUrlFormat {
+            get {
+                return ((string)(this["ServerStatusUrlFormat"]));
+            }
+        }
     }
 }

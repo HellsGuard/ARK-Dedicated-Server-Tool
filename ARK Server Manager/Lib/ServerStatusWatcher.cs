@@ -323,11 +323,11 @@ namespace ARK_Server_Manager.Lib
                 // get the server information direct from the server.
                 var serverStatus = NetworkUtils.CheckServerStatusDirect(registration.SteamEndpoint);
                 // check if the server returned the information.
-                //if (!serverStatus)
-                //{
-                //    // server did not return any information, try to get the server information using 3rd party source.
-                //    serverStatus = await NetworkUtils.CheckServerStatusViaSteam(registration.SteamEndpoint);
-                //}
+                if (!serverStatus)
+                {
+                    // server did not return any information, try to get the server information using 3rd party source.
+                    serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
+                }
                 // check if the server returned the information.
                 if (serverStatus)
                 {                    
