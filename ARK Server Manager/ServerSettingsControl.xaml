@@ -2499,6 +2499,7 @@
 
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionLabel}" IsChecked="{Binding OverrideStructurePlatformPrevention}" ToolTip="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionTooltip}" HorizontalAlignment="Left"/>
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PvEAllowStructuresAtSupplyDropsLabel}" IsChecked="{Binding PvEAllowStructuresAtSupplyDrops}" ToolTip="{DynamicResource ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip}" HorizontalAlignment="Left"/>
                                 
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>

@@ -924,6 +924,8 @@
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">If enabled, allows auto-turrets to be buildable/working on dino platform saddles.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
+    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsLabel">Allow Structures at Supply Drops PvE</sys:String>
+    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">If enabled, will prevent placing structures at supply drop locations.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvELabel">Enable Structure Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvETooltip">If enabled, enables decay of player structures in PvE.</sys:String>

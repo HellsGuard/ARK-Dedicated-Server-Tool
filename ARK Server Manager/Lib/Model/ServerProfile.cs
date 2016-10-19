@@ -1595,6 +1595,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(FlyerPlatformAllowUnalignedDinoBasingProperty, value); }
         }
 
+        public static readonly DependencyProperty PvEAllowStructuresAtSupplyDropsProperty = DependencyProperty.Register(nameof(PvEAllowStructuresAtSupplyDrops), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PvEAllowStructuresAtSupplyDrops
+        {
+            get { return (bool)GetValue(PvEAllowStructuresAtSupplyDropsProperty); }
+            set { SetValue(PvEAllowStructuresAtSupplyDropsProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableStructureDecayPvEProperty = DependencyProperty.Register(nameof(EnableStructureDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecayPvE
