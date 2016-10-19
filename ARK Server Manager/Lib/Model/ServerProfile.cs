@@ -2362,6 +2362,12 @@ namespace ARK_Server_Manager.Lib
                 OnlyAllowSpecifiedEngrams = false;
             OverrideNamedEngramEntries.OnlyAllowSelectedEngrams = OnlyAllowSpecifiedEngrams;
 
+            // ensure that the extinction event date is cleared if the extinction event is disabled
+            if (!EnableExtinctionEvent)
+            {
+                ClearValue(ExtinctionEventUTCProperty);
+            }
+
             // ensure that the Difficulty Override is reset when override is enabled
             if (EnableDifficultyOverride)
             {

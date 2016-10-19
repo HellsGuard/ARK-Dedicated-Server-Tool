@@ -309,6 +309,7 @@
     <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
     <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
     <sys:String x:Key="SliderUnits_Hours">hours</sys:String>
+    <sys:String x:Key="SliderUnits_Days">days</sys:String>
     <sys:String x:Key="SliderUnits_Items">items</sys:String>
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     <sys:String x:Key="SliderUnits_Players">players</sys:String>
@@ -496,7 +497,8 @@
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
     <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">Time Interval</sys:String>
-    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of seconds to countdown before the extinction event will occur.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of days to countdown before the extinction event will occur.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventUTCTooltip">The date and time of the extinction event.</sys:String>
 
     <sys:String x:Key="ServerSettings_SavesLabel">Saves</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
