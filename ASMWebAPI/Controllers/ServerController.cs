@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
+using System.Web.Mvc;
 using NLog;
 
 namespace ASMWebAPI.Controllers
@@ -9,14 +10,9 @@ namespace ASMWebAPI.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        // GET: api/Server
-        public CheckServerResult Get()
-        {
-            return new CheckServerResult();
-        }
-
         // GET: api/Server/192.168.1.1/27017
-        [Route("api/Server/{ipString}/{port}")]
+        [System.Web.Http.Route("api/Server/{ipString}/{port}")]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public CheckServerResult Get(string ipString, int port)
         {
             var result = CheckServerStatusB(ipString, port).ToString();
@@ -33,14 +29,14 @@ namespace ASMWebAPI.Controllers
             {
                 using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
                 {
-                    Logger.Info($"Check server status requested for {endpoint.Address}:{endpoint.Port}");
                     var serverInfo = server.GetInfo();
+                    Logger.Info($"Check server status requested for {endpoint.Address}:{endpoint.Port}");
                     return serverInfo != null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}\r\n{ex.Message}");
+                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}");
                 return false;
             }
         }
@@ -56,9 +52,9 @@ namespace ASMWebAPI.Controllers
 
                 return CheckServerStatusA(endpoint);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Debug($"Exception checking server status for {ipString}:{port}\r\n{ex.Message}");
+                Logger.Debug($"Exception checking server status for {ipString}:{port}");
                 return false;
             }
         }
