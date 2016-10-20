@@ -23,6 +23,7 @@
             <vm:SecondsToTimeValueConverter x:Key="SecondsToTimeValueConverter"/>
             <vm:ExtinctionEventDateConverter x:Key="ExtinctionEventDateConverter"/>
             <vm:ExtinctionEventTimeIntervalConverter x:Key="ExtinctionEventTimeIntervalConverter"/>
+            <vm:InstalledVersionConverter x:Key="InstalledVersionConverter"/>
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
@@ -579,7 +580,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}"/>
-                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion}"/>
+                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}"/>
                             <Button Grid.Column="2" Margin="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Help.png" Height="16" Width="16"/>
                             </Button>
