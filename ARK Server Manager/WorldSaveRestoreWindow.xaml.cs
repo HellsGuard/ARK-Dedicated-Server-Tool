@@ -195,8 +195,9 @@ namespace ARK_Server_Manager
                 if (!Directory.Exists(profileSaveFolder))
                     return;
 
-                var mapFileName = $"{_profile.ServerMap}.ark";
-                var searchPattern = $"{_profile.ServerMap}*.ark";
+                var mapName = ModUtils.GetMapName(_profile.ServerMap);
+                var mapFileName = $"{mapName}.ark";
+                var searchPattern = $"{mapName}*.ark";
 
                 foreach (var file in Directory.GetFiles(profileSaveFolder, searchPattern))
                 {

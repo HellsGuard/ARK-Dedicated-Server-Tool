@@ -412,7 +412,7 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            SendMessage(StringUtils.GetArkColoredMessage(Config.Default.ServerShutdown_WorldSaveMessage, Colors.DodgerBlue));
+                            SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
 
                             SendCommand("saveworld", false);
 

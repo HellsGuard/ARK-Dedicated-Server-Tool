@@ -1,17 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -44,7 +38,8 @@ namespace ARK_Server_Manager.Lib
 
     public static class NetworkUtils
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
+        public static Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static List<NetworkAdapterEntry> GetAvailableIPV4NetworkAdapters()
         {
             List<NetworkAdapterEntry> adapters = new List<NetworkAdapterEntry>();
@@ -81,7 +76,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    logger.Debug(String.Format("Exception checking for ASM version: {0}\r\n{1}", ex.Message, ex.StackTrace));
+                    Logger.Debug(String.Format("Exception checking for ASM version: {0}\r\n{1}", ex.Message, ex.StackTrace));
                     return new Version();
                 }
             }
@@ -126,210 +121,77 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public class AvailableVersion
+        public static bool CheckServerStatusDirect(IPEndPoint endpoint)
         {
-            public AvailableVersion()
+            try
             {
-                IsValid = false;
-                Current = new Version(0, 0);
-                Upcoming = new Version(0, 0);
-                UpcomingETA = "unknown";
-            }
+                QueryMaster.ServerInfo serverInfo;
 
-            public bool IsValid
-            {
-                get;
-                set;
-            }
+                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
+                {
+                    serverInfo = server.GetInfo();
+                }
 
-            public Version Current
-            {
-                get;
-                set;
+                return serverInfo != null;
             }
-
-            public Version Upcoming
+            catch (Exception ex)
             {
-                get;
-                set;
-            }
-
-            public string UpcomingETA
-            {
-                get;
-                set;
+                Logger.Debug($"Exception checking status direct for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                return false;
             }
         }
 
-        private static bool ParseArkVersionString(string versionString, out Version ver)
+        public static async Task<bool> CheckServerStatusViaAPI(IPEndPoint endpoint)
         {
-            var versionMatch = new Regex(@"[^\d]*(?<version>\d*(\.\d*)?)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Match(versionString);
-            if (versionMatch.Success)
-            {
-                return Version.TryParse(versionMatch.Groups["version"].Value, out ver);
-            }
-
-            ver = new Version();
-            return false;
-        }
-
-        public class ServerNetworkInfo
-        {
-            public ServerNetworkInfo()
-            {
-                Name = "unknown";
-                Version = new Version(0, 0);
-                Map = "unknown";
-                Players = 0;
-                MaxPlayers = 0;
-            }
-
-            public string Name
-            {
-                get;
-                set;
-            }
-
-            public Version Version
-            {
-                get;
-                set;
-            }
-
-            public string Map
-            {
-                get;
-                set;
-            }
-
-            public int Players
-            {
-                get;
-                set;
-            }
-
-            public int MaxPlayers
-            {
-                get;
-                set;
-            }
-        }
-
-        public static async Task<ServerNetworkInfo> GetServerNetworkInfo(IPEndPoint endpoint)
-        {
-            ServerNetworkInfo result = null;
             try
             {
                 string jsonString;
                 using (var client = new WebClient())
                 {
-                    jsonString = await client.DownloadStringTaskAsync(String.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
+                    jsonString = await client.DownloadStringTaskAsync(string.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
                 }
 
-                if(jsonString == null)
+                if (jsonString == null)
                 {
-                    logger.Debug(String.Format("Server info request returned null string for {0}:{1}", endpoint.Address, endpoint.Port));
-                    return result;
+                    Logger.Debug($"Server info request returned null string for {endpoint.Address}:{endpoint.Port}");
+                    return false;
                 }
 
                 JObject query = JObject.Parse(jsonString);
-                if(query == null)
+                if (query == null)
                 {
-                    logger.Debug(String.Format("Server info request failed to parse for {0}:{1} - '{2}'", endpoint.Address, endpoint.Port, jsonString));
-                    return null;
+                    Logger.Debug($"Server info request failed to parse for {endpoint.Address}:{endpoint.Port} - '{jsonString}'");
+                    return false;
                 }
 
-                var status = query.SelectToken("status");
-                if(status == null || !(bool)status)
+                var available = query.SelectToken("available");
+                if (available == null)
                 {
-                    logger.Debug($"Server at {endpoint.Address}:{endpoint.Port} returned no status or a status of false.");
-                    return null;
+                    Logger.Debug($"Server at {endpoint.Address}:{endpoint.Port} returned no availability.");
+                    return false;
                 }
-                var server = query.SelectToken("server");
-                if (server.Type == JTokenType.String)
-                {
-                    logger.Debug(String.Format("Server at {0}:{1} returned status {2}", endpoint.Address, endpoint.Port, (string)server));
-                }
-                else
-                {
-                    result = new ServerNetworkInfo();
-                    result.Name = (string)query.SelectToken("server.name");
-                    Version ver;
-                    string versionString = Convert.ToString(query.SelectToken("server.version"), CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
-                    if (versionString.IndexOf('.') == -1)
-                    {
-                        versionString = versionString + ".0";
-                    }
 
-                    Version.TryParse(versionString, out ver);
-                    result.Version = ver;
-                    result.Map = (string)query.SelectToken("server.map");
-                    result.Players = Int32.Parse((string)query.SelectToken("server.playerCount"));
-                    result.MaxPlayers = Int32.Parse((string)query.SelectToken("server.playerMax"));
-                }
+                return (bool)available;
             }
             catch (Exception ex)
             {
-                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
+                Logger.Debug($"Exception checking status via API for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                return false;
             }
-
-            return result;
         }
 
-        public static ServerNetworkInfo GetServerNetworkInfoDirect(IPEndPoint endpoint)
+        public static async Task<bool> CheckServerStatusViaSteam(IPEndPoint endpoint)
         {
-            ServerNetworkInfo result = null;
-            QueryMaster.ServerInfo serverInfo = null;
-            ReadOnlyCollection<QueryMaster.Player> players = null;
-
             try
             {
-                using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
-                {
-                    serverInfo = server.GetInfo();
-                    players = server.GetPlayers();
-                }
-
-                if (serverInfo != null)
-                {
-                    result = new ServerNetworkInfo();
-                    result.Name = serverInfo.Name;
-                    result.Map = serverInfo.Map;
-                    result.Players = serverInfo.Players;
-                    result.MaxPlayers = serverInfo.MaxPlayers;
-
-                    // get the name and version of the server using regular expression.
-                    if (!string.IsNullOrWhiteSpace(result.Name))
-                    {
-                        var match = Regex.Match(result.Name, @" - \(v([0-9]+\.[0-9]*)\)");
-                        if (match.Success && match.Groups.Count >= 2)
-                        {
-                            // remove the version number from the name
-                            result.Name = result.Name.Replace(match.Groups[0].Value, "");
-
-                            // get the version number
-                            var serverVersion = match.Groups[1].Value;
-                            Version ver;
-                            if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out ver))
-                            {
-                                result.Version = ver;
-                            }
-                        }
-                    }
-                }
-
-                if (players != null)
-                {
-                    // set the number of players based on the player list, excludes any players in the list without a valid name.
-                    result.Players = players.Count(record => !string.IsNullOrWhiteSpace(record.Name));
-                }
+                var details = await SteamUtils.GetSteamServerDetails(endpoint);
+                return (details?.servers?.Count > 0);
             }
             catch (Exception ex)
             {
-                logger.Debug(String.Format("Exception checking status for: {0}:{1} {2}\r\n{3}", endpoint.Address, endpoint.Port, ex.Message, ex.StackTrace));
+                Logger.Debug($"Exception checking status via steam for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                return false;
             }
-
-            return result;
         }
     }
 }

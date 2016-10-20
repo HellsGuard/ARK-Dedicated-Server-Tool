@@ -17,9 +17,9 @@ namespace ARK_Server_Manager.Lib
 
     public class ServerStatusWatcher
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const int LocalStatusQueryDelay = 3500; // milliseconds
+        private const int LOCAL_STATUS_QUERY_DELAY = 5000; // milliseconds
 
         private enum ServerProcessStatus
         {
@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
                     {
                         if(serverRegistrations.Contains(registration))
                         {
-                            logger.Debug("Removing registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
+                            Logger.Debug("Removing registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
                             serverRegistrations.Remove(registration);
                         }
                         tcs.TrySetResult(true);
@@ -150,7 +150,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     if(!serverRegistrations.Contains(registration))
                     {
-                        logger.Debug("Adding registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
+                        Logger.Debug("Adding registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
                         serverRegistrations.Add(registration);
                     }
                     return Task.FromResult(true);
@@ -220,7 +220,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch(Exception ex)
             {
-                logger.Debug("Exception while checking process status: {0}\n{1}", ex.Message, ex.StackTrace);
+                Logger.Debug("Exception while checking process status: {0}\n{1}", ex.Message, ex.StackTrace);
             }
 
             return ServerProcessStatus.Stopped;
@@ -235,7 +235,7 @@ namespace ARK_Server_Manager.Lib
                     ServerStatusUpdate statusUpdate = new ServerStatusUpdate();
                     try
                     {
-                        logger.Debug("Start: {0}", registration.LocalEndpoint);
+                        Logger.Debug("Start: {0}", registration.LocalEndpoint);
                         statusUpdate = await GenerateServerStatusUpdateAsync(registration);
                         
                         PostServerStatusUpdate(registration, registration.UpdateCallback, statusUpdate);
@@ -243,20 +243,19 @@ namespace ARK_Server_Manager.Lib
                     catch (Exception ex)
                     {
                         // We don't want to stop other registration queries or break the ActionBlock
-                        logger.Debug("Exception in local update: {0} \n {1}", ex.Message, ex.StackTrace);
+                        Logger.Debug("Exception in local update: {0} \n {1}", ex.Message, ex.StackTrace);
                         Debugger.Break();
                     }
                     finally
                     {
-                        logger.Debug("End: {0}: {1}", registration.LocalEndpoint, statusUpdate.Status);
+                        Logger.Debug("End: {0}: {1}", registration.LocalEndpoint, statusUpdate.Status);
                     }
                 }
             }
             finally
             {
-                Task.Delay(LocalStatusQueryDelay).ContinueWith(_ => eventQueue.Post(DoLocalUpdate)).DoNotWait();
+                Task.Delay(LOCAL_STATUS_QUERY_DELAY).ContinueWith(_ => eventQueue.Post(DoLocalUpdate)).DoNotWait();
             }
-            return;
         }
 
         private void PostServerStatusUpdate(ServerStatusUpdateRegistration registration, StatusCallback callback, ServerStatusUpdate statusUpdate)
@@ -304,12 +303,14 @@ namespace ARK_Server_Manager.Lib
                     break;
             }
 
-            ServerStatus currentStatus = ServerStatus.Initializing;
+            var currentStatus = ServerStatus.Initializing;
+
             //
             // If the process was running do we then perform network checks.
             //
+            Logger.Debug("Checking server local status at {0}", registration.LocalEndpoint);
             ReadOnlyCollection<Player> players;
-            ServerInfo localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
+            var localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
 
             if(localInfo != null)
             {
@@ -318,20 +319,23 @@ namespace ARK_Server_Manager.Lib
                 //
                 // Now that it's running, we can check the publication status.
                 //
-                logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
+                Logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
                 // get the server information direct from the server.
-                var serverInfo = NetworkUtils.GetServerNetworkInfoDirect(registration.SteamEndpoint);
-                // check fi the server returned the information.
-                if (serverInfo == null)
+                var serverStatus = NetworkUtils.CheckServerStatusDirect(registration.SteamEndpoint);
+                // check if the server returned the information.
+                if (!serverStatus)
+                {
                     // server did not return any information, try to get the server information using 3rd party source.
-                    serverInfo = await NetworkUtils.GetServerNetworkInfo(registration.SteamEndpoint);
-                if (serverInfo != null)
+                    serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
+                }
+                // check if the server returned the information.
+                if (serverStatus)
                 {                    
                     currentStatus = ServerStatus.Published;
                 }
                 else
                 {
-                    logger.Debug("No public status returned for {0}", registration.SteamEndpoint);
+                    Logger.Debug("No public status returned for {0}", registration.SteamEndpoint);
                 }
             }
 
@@ -365,7 +369,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (SocketException ex)
             {
-                logger.Debug("GetInfo failed: {0}: {1}", specificEndpoint, ex.Message);
+                Logger.Debug("GetInfo failed: {0}: {1}", specificEndpoint, ex.Message);
                 // Common when the server is unreachable.  Ignore it.
             }
 

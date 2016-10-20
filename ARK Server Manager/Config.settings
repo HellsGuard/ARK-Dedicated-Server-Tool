@@ -89,9 +89,6 @@
     <Setting Name="ServerCommandLineArgsIPMatchFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">?MultiHome={0}</Value>
     </Setting>
-    <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://api.ark.bar/server/{0}/{1}</Value>
-    </Setting>
     <Setting Name="LatestASMVersionUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/latest.txt</Value>
     </Setting>
@@ -391,6 +388,9 @@
     </Setting>
     <Setting Name="DefaultServerFolderName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Server</Value>
+    </Setting>
+    <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://asmwebapi.azurewebsites.net/api/server/{0}/{1}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

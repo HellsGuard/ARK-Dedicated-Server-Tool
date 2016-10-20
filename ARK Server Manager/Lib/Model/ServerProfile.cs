@@ -48,7 +48,7 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
 
             this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
-            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
@@ -1595,6 +1595,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(FlyerPlatformAllowUnalignedDinoBasingProperty, value); }
         }
 
+        public static readonly DependencyProperty PvEAllowStructuresAtSupplyDropsProperty = DependencyProperty.Register(nameof(PvEAllowStructuresAtSupplyDrops), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PvEAllowStructuresAtSupplyDrops
+        {
+            get { return (bool)GetValue(PvEAllowStructuresAtSupplyDropsProperty); }
+            set { SetValue(PvEAllowStructuresAtSupplyDropsProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableStructureDecayPvEProperty = DependencyProperty.Register(nameof(EnableStructureDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisableStructureDecayPVE", InvertBoolean = true)]
         public bool EnableStructureDecayPvE
@@ -1676,12 +1684,20 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Engrams
-        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(AggregateIniValueList<EngramEntry>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty OnlyAllowSpecifiedEngramsProperty = DependencyProperty.Register(nameof(OnlyAllowSpecifiedEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams")]
+        public bool OnlyAllowSpecifiedEngrams
+        {
+            get { return (bool)GetValue(OnlyAllowSpecifiedEngramsProperty); }
+            set { SetValue(OnlyAllowSpecifiedEngramsProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList<EngramEntry>), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<EngramEntry> OverrideNamedEngramEntries
+        public EngramEntryList<EngramEntry> OverrideNamedEngramEntries
         {
-            get { return (AggregateIniValueList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
+            get { return (EngramEntryList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
             set { SetValue(OverrideNamedEngramEntriesProperty, value); }
         }
         #endregion
@@ -2341,6 +2357,16 @@ namespace ARK_Server_Manager.Lib
             // ensure that the ARK mod management is switched off for ASM controlled profiles
             if (EnableAutoUpdate)
                 AutoManagedMods = false;
+
+            if (!OverrideNamedEngramEntries.IsEnabled)
+                OnlyAllowSpecifiedEngrams = false;
+            OverrideNamedEngramEntries.OnlyAllowSelectedEngrams = OnlyAllowSpecifiedEngrams;
+
+            // ensure that the extinction event date is cleared if the extinction event is disabled
+            if (!EnableExtinctionEvent)
+            {
+                ClearValue(ExtinctionEventUTCProperty);
+            }
 
             // ensure that the Difficulty Override is reset when override is enabled
             if (EnableDifficultyOverride)
@@ -3033,7 +3059,8 @@ namespace ARK_Server_Manager.Lib
 
         public void ResetEngramsSection()
         {
-            this.OverrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.ClearValue(OnlyAllowSpecifiedEngramsProperty);
+            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             this.OverrideNamedEngramEntries.Reset();
         }
 
@@ -3174,12 +3201,14 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MaxPlatformSaddleStructureLimitProperty);
             this.ClearValue(OverrideStructurePlatformPreventionProperty);
             this.ClearValue(FlyerPlatformAllowUnalignedDinoBasingProperty);
+            this.ClearValue(PvEAllowStructuresAtSupplyDropsProperty);
             this.ClearValue(EnableStructureDecayPvEProperty);
             this.ClearValue(PvEStructureDecayDestructionPeriodProperty);
             this.ClearValue(PvEStructureDecayPeriodMultiplierProperty);
             this.ClearValue(AutoDestroyOldStructuresMultiplierProperty);
             this.ClearValue(ForceAllStructureLockingProperty);
             this.ClearValue(PassiveDefensesDamageRiderlessDinosProperty);
+            this.ClearValue(ForceAllStructureLockingProperty);
         }
 
         public void UpdateOverrideMaxExperiencePointsDino()

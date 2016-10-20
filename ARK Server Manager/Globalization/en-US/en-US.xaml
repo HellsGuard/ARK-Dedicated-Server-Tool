@@ -309,6 +309,7 @@
     <sys:String x:Key="SliderUnits_Seconds">seconds</sys:String>
     <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
     <sys:String x:Key="SliderUnits_Hours">hours</sys:String>
+    <sys:String x:Key="SliderUnits_Days">days</sys:String>
     <sys:String x:Key="SliderUnits_Items">items</sys:String>
     <sys:String x:Key="SliderUnits_XP">xp</sys:String>
     <sys:String x:Key="SliderUnits_Players">players</sys:String>
@@ -496,7 +497,8 @@
     <sys:String x:Key="ServerSettings_EnableExtinctionEventLabel">Enable Extinction Event</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtinctionEventTooltip">If enabled, the extinction countdown will be turned on. To reset the countdown, disable, save the profile and then enable.</sys:String>
     <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalLabel">Time Interval</sys:String>
-    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of seconds to countdown before the extinction event will occur.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Sets the number of days to countdown before the extinction event will occur.</sys:String>
+    <sys:String x:Key="ServerSettings_ExtinctionEventUTCTooltip">The date and time of the extinction event.</sys:String>
 
     <sys:String x:Key="ServerSettings_SavesLabel">Saves</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
@@ -924,6 +926,8 @@
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">If enabled, allows auto-turrets to be buildable/working on dino platform saddles.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
+    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsLabel">Allow Structures at Supply Drops PvE</sys:String>
+    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">If enabled, will prevent placing structures at supply drop locations.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvELabel">Enable Structure Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvETooltip">If enabled, enables decay of player structures in PvE.</sys:String>
@@ -953,7 +957,12 @@
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_PasteCustomEngramsTooltip">Paste custom engram data.</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsLabel">Only Allow Selected Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsTooltip">If enabled, only the selected engrams will be available to learn in game.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Select all the engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all then engrams.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
+    <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Selected</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Ark App.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLevelColumnLabel">Level</sys:String>

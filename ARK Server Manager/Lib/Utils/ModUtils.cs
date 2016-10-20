@@ -178,7 +178,7 @@ namespace ARK_Server_Manager.Lib
             // check if any parts were returned.
             if (parts.Count == 1)
                 return serverMap;
-            else if (parts.Count != 4)
+            if (parts.Count != 4)
                 return string.Empty;
 
             // check if the first two parts match what is expected.

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using ARK_Server_Manager.Lib.ViewModel;
 
@@ -12,6 +14,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EngramPointsCostProperty = DependencyProperty.Register(nameof(EngramPointsCost), typeof(int), typeof(EngramEntry), new PropertyMetadata(1));
         public static readonly DependencyProperty EngramHiddenProperty = DependencyProperty.Register(nameof(EngramHidden), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
         public static readonly DependencyProperty RemoveEngramPreReqProperty = DependencyProperty.Register(nameof(RemoveEngramPreReq), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
+        public static readonly DependencyProperty SaveEngramOverrideProperty = DependencyProperty.Register(nameof(SaveEngramOverride), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
 
         public ArkApplication ArkApplication
         {
@@ -71,6 +74,12 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public bool SaveEngramOverride
+        {
+            get { return (bool)GetValue(SaveEngramOverrideProperty); }
+            set { SetValue(SaveEngramOverrideProperty, value); }
+        }
+
         public static EngramEntry FromINIValue(string iniValue)
         {
             var newSpawn = new EngramEntry();
@@ -90,7 +99,7 @@ namespace ARK_Server_Manager.Lib
 
         public override bool ShouldSave()
         {
-            if (!KnownEngram)
+            if (!KnownEngram || SaveEngramOverride)
                 return true;
 
             var engramEntry = GameData.GetEngramForClass(EngramClassName);
@@ -109,6 +118,38 @@ namespace ARK_Server_Manager.Lib
 
             if (!KnownEngram)
                 ArkApplication = ArkApplication.Unknown;
+            SaveEngramOverride = true;
+        }
+    }
+
+    public class EngramEntryList<T> : AggregateIniValueList<T>
+         where T : EngramEntry, new()
+    {
+        private bool _onlyAllowSelectedEngrams;
+
+        public bool OnlyAllowSelectedEngrams
+        {
+            get { return this._onlyAllowSelectedEngrams; }
+            set
+            {
+                this._onlyAllowSelectedEngrams = value;
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(OnlyAllowSelectedEngrams)));
+            }
+        }
+
+        public EngramEntryList(string aggregateValueName, Func<IEnumerable<T>> resetFunc)
+            : base(aggregateValueName, resetFunc)
+        {
+        }
+
+        public override IEnumerable<string> ToIniValues()
+        {
+            if (!OnlyAllowSelectedEngrams)
+                return base.ToIniValues();
+
+            var values = new List<string>();
+            values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
+            return values;
         }
     }
 }
