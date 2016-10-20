@@ -34,9 +34,9 @@ namespace ASMWebAPI.Controllers
                     return serverInfo != null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}");
+                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}\r\n{ex.Message}");
                 return false;
             }
         }
@@ -52,9 +52,9 @@ namespace ASMWebAPI.Controllers
 
                 return CheckServerStatusA(endpoint);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.Debug($"Exception checking server status for {ipString}:{port}");
+                Logger.Debug($"Exception checking server status for {ipString}:{port}\r\n{ex.Message}");
                 return false;
             }
         }
