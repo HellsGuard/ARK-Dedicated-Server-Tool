@@ -1298,11 +1298,13 @@
     <sys:String x:Key="BigFoot_Character_BP_C">Gigantopithecus</sys:String>
     <sys:String x:Key="BoaFrill_Character_BP_C">Titanoboa</sys:String>
     <sys:String x:Key="Carno_Character_BP_C">Carnotaurus</sys:String>
+    <sys:String x:Key="Chalico_Character_BP_C">Chalicotherium</sys:String>
     <sys:String x:Key="Coel_Character_BP_C">Coel</sys:String>
     <sys:String x:Key="Compy_Character_BP_C">Compy</sys:String>
     <sys:String x:Key="Dilo_Character_BP_C">Dilophosaurus</sys:String>
     <sys:String x:Key="Dimetro_Character_BP_C">Dimetrodon</sys:String>
     <sys:String x:Key="Dimorph_Character_BP_C">Dimorphodon</sys:String>
+    <sys:String x:Key="Diplocaulus_Character_BP_C">Diplocalus</sys:String>
     <sys:String x:Key="Diplodocus_Character_BP_C">Diplodocus</sys:String>
     <sys:String x:Key="Direbear_Character_BP_C">Direbear</sys:String>
     <sys:String x:Key="Direwolf_Character_BP_C">Direwolf</sys:String>
@@ -1316,6 +1318,7 @@
     <sys:String x:Key="Galli_Character_BP_C">Gallimimus</sys:String>
     <sys:String x:Key="Gigant_Character_BP_C">Giganotosaurus</sys:String>
     <sys:String x:Key="Kairuku_Character_BP_C">Kairuku</sys:String>
+    <sys:String x:Key="Kaprosuchus_Character_BP_C">Kaprosuchus</sys:String>
     <sys:String x:Key="Leech_Character_C">Leech</sys:String>
     <sys:String x:Key="Lystro_Character_BP_C">Lystrosaurus</sys:String>
     <sys:String x:Key="MegaCarno_Character_BP_C">Alpha Carnotaurus</sys:String>
@@ -1673,6 +1676,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Arthro_C">Saddle - Arthropluera</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Beaver_C">Saddle - Castoroides</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Carno_C">Saddle - Carno</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Chalico_C">Saddle - Chalicotherium</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Diplodocus_C">Saddle - Diplodocus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Direbear_C">Saddle - Dire Bear</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Doed_C">Saddle - Doedicurus</sys:String>
@@ -1680,6 +1684,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Dunkle_C">Saddle - Dunkleosteus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Galli_C">Saddle - Gallimimus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Gigant_C">Saddle - Giganotosaurus</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Kaprosuchus_C">Saddle - Kaprosuchus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Mammoth_C">Saddle - Mammoth</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Manta_C">Saddle - Manta</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Megalodon_C">Saddle - Megalodon</sys:String>
