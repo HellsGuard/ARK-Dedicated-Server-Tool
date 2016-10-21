@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.255.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -173,6 +173,7 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
+    <Compile Include="Lib\ViewModel\TributeExpirationConverter.cs" />
     <Compile Include="Lib\ViewModel\InstalledVersionConverter.cs" />
     <Compile Include="Lib\ViewModel\ExtinctionEventDateConverter.cs" />
     <Compile Include="Lib\ViewModel\OfficialDifficultyValueConverter.cs" />

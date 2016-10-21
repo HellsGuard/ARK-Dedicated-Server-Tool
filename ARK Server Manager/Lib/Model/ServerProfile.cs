@@ -611,7 +611,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadSurvivorsProperty = DependencyProperty.Register(nameof(PreventDownloadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadSurvivors
         {
             get { return (bool)GetValue(PreventDownloadSurvivorsProperty); }
@@ -619,7 +619,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadItemsProperty = DependencyProperty.Register(nameof(PreventDownloadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadItems
         {
             get { return (bool)GetValue(PreventDownloadItemsProperty); }
@@ -627,7 +627,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadDinosProperty = DependencyProperty.Register(nameof(PreventDownloadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadDinos
         {
             get { return (bool)GetValue(PreventDownloadDinosProperty); }
@@ -635,7 +635,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadSurvivorsProperty = DependencyProperty.Register(nameof(PreventUploadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadSurvivors
         {
             get { return (bool)GetValue(PreventUploadSurvivorsProperty); }
@@ -643,7 +643,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadItemsProperty = DependencyProperty.Register(nameof(PreventUploadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadItems
         {
             get { return (bool)GetValue(PreventUploadItemsProperty); }
@@ -651,11 +651,35 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadDinosProperty = DependencyProperty.Register(nameof(PreventUploadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadDinos
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
             set { SetValue(PreventUploadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeCharacterExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeCharacterExpirationSeconds
+        {
+            get { return (int)GetValue(TributeCharacterExpirationSecondsProperty); }
+            set { SetValue(TributeCharacterExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeItemExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeItemExpirationSeconds
+        {
+            get { return (int)GetValue(TributeItemExpirationSecondsProperty); }
+            set { SetValue(TributeItemExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeDinoExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeDinoExpirationSeconds
+        {
+            get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
+            set { SetValue(TributeDinoExpirationSecondsProperty, value); }
         }
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1685,7 +1709,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Engrams
         public static readonly DependencyProperty OnlyAllowSpecifiedEngramsProperty = DependencyProperty.Register(nameof(OnlyAllowSpecifiedEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams", ConditionedOn = nameof(OnlyAllowSpecifiedEngrams))]
         public bool OnlyAllowSpecifiedEngrams
         {
             get { return (bool)GetValue(OnlyAllowSpecifiedEngramsProperty); }

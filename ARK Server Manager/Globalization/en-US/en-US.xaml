@@ -615,6 +615,12 @@
     <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">If enabled, the item uploads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">No Dino Uploads</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">If enabled, the dino uploads are disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsLabel">Tribute Survivor Upload Expiration</sys:String>
+    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsTooltip">Set the expiration timer for uploaded survivors.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsLabel">Tribute Item Upload Expiration</sys:String>
+    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsTooltip">Set the expiration timer for uploaded items.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsLabel">Tribute Dino Upload Expiration</sys:String>
+    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsTooltip">Set the expiration timer for uploaded dinos.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>

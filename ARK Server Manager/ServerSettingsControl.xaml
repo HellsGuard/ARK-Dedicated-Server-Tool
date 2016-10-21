@@ -24,6 +24,7 @@
             <vm:ExtinctionEventDateConverter x:Key="ExtinctionEventDateConverter"/>
             <vm:ExtinctionEventTimeIntervalConverter x:Key="ExtinctionEventTimeIntervalConverter"/>
             <vm:InstalledVersionConverter x:Key="InstalledVersionConverter"/>
+            <vm:TributeExpirationConverter x:Key="TributeExpirationConverter"/>
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
@@ -1517,6 +1518,9 @@
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -1533,6 +1537,10 @@
                                             <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventUploadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorUploadsTooltip}"/>
                                             <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventUploadItems}" Content="{DynamicResource ServerSettings_NoItemUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemUploadsTooltip}"/>
                                             <CheckBox Grid.Row="2" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventUploadDinos}" Content="{DynamicResource ServerSettings_NoDinoUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoUploadsTooltip}"/>
+
+                                            <local:AnnotatedSlider Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsLabel}" Value="{Binding TributeCharacterExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsTooltip}" />
+                                            <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TributeItemExpirationSecondsLabel}" Value="{Binding TributeItemExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_TributeItemExpirationSecondsTooltip}" />
+                                            <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TributeDinoExpirationSecondsLabel}" Value="{Binding TributeDinoExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_TributeDinoExpirationSecondsTooltip}" />
                                         </Grid>
                                     </GroupBox>
                                 
