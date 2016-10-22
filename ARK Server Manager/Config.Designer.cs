@@ -1380,5 +1380,44 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ServerStatusUrlFormat"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PGARK")]
+        public string DefaultServerMap_PGM {
+            get {
+                return ((string)(this["DefaultServerMap_PGM"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PGArks")]
+        public string SavedPGMRelativePath {
+            get {
+                return ((string)(this["SavedPGMRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AsmPGArk")]
+        public string DefaultPGMapName {
+            get {
+                return ((string)(this["DefaultPGMapName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public string SectionPGMIsExpanded {
+            get {
+                return ((string)(this["SectionPGMIsExpanded"]));
+            }
+            set {
+                this["SectionPGMIsExpanded"] = value;
+            }
+        }
     }
 }

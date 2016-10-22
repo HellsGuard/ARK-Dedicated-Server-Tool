@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.255.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -162,6 +162,7 @@
     <Compile Include="CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\Model\PGMTerrain.cs" />
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\SteamCmdWorkshopDetails.cs" />
     <Compile Include="Lib\Model\SteamUserDetail.cs" />

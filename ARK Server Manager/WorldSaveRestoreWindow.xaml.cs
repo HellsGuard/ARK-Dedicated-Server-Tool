@@ -191,11 +191,11 @@ namespace ARK_Server_Manager
 
                 WorldSaveFiles.Clear();
 
-                var profileSaveFolder = Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath);
+                var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile);
                 if (!Directory.Exists(profileSaveFolder))
                     return;
 
-                var mapName = ModUtils.GetMapName(_profile.ServerMap);
+                var mapName = ServerProfile.GetProfileMapFileName(_profile);
                 var mapFileName = $"{mapName}.ark";
                 var searchPattern = $"{mapName}*.ark";
 

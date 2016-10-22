@@ -45,6 +45,7 @@ namespace ARK_Server_Manager
         EngramsSection,
         CustomLevelsSection,
         SOTFSection,
+        PGMSection,
 
         // Properties
         MapNameIslandProperty,
@@ -1559,6 +1560,10 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.HudAndVisualsSection:
                                 this.Settings.ResetHUDAndVisualsSection();
                                 break;
+                            case ServerSettingsResetAction.PGMSection:
+                                this.Settings.ResetPGMSection();
+                                break;
+
 
                             case ServerSettingsResetAction.PlayerSettingsSection:
                                 this.Settings.ResetPlayerSettings();

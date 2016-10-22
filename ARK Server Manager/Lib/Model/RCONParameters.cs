@@ -17,6 +17,10 @@ namespace ARK_Server_Manager.Lib
 
         public string AltSaveDirectoryName { get; set; }
 
+        public bool PGM_Enabled { get; set; }
+
+        public string PGM_Name { get; set; }
+
         public Rect RCONWindowExtents { get; set; }
 
         public int MaxPlayers { get; set; }

@@ -60,6 +60,7 @@ namespace ARK_Server_Manager.Lib
 
             //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
             this.CustomGameUserSettingsSections = new CustomSectionList();
+            this.PGM_Terrain = new PGMTerrain();
 
             GetDefaultDirectories();
         }
@@ -1770,6 +1771,7 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Survival of the Fittest
+        // ReSharper disable InconsistentNaming
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool SOTF_Enabled
         {
@@ -1887,6 +1889,7 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(SOTF_RingStartTimeProperty); }
             set { SetValue(SOTF_RingStartTimeProperty, value); }
         }
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region RCON
@@ -1919,6 +1922,33 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(ClusterDirOverrideProperty); }
             set { SetValue(ClusterDirOverrideProperty, value); }
         }
+        #endregion
+
+        #region Procedurally Generated ARKS
+        // ReSharper disable InconsistentNaming
+        public static readonly DependencyProperty PGM_EnabledProperty = DependencyProperty.Register(nameof(PGM_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool PGM_Enabled
+        {
+            get { return (bool)GetValue(PGM_EnabledProperty); }
+            set { SetValue(PGM_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_NameProperty = DependencyProperty.Register(nameof(PGM_Name), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultPGMapName));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", ConditionedOn = nameof(PGM_Enabled))]
+        public string PGM_Name
+        {
+            get { return (string)GetValue(PGM_NameProperty); }
+            set { SetValue(PGM_NameProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_TerrainProperty = DependencyProperty.Register(nameof(PGM_Terrain), typeof(PGMTerrain), typeof(ServerProfile), new PropertyMetadata(null));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", ConditionedOn = nameof(PGM_Enabled))]
+        public PGMTerrain PGM_Terrain
+        {
+            get { return (PGMTerrain)GetValue(PGM_TerrainProperty); }
+            set { SetValue(PGM_TerrainProperty, value); }
+        }
+        // ReSharper restore InconsistentNaming
         #endregion
 
         //public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
@@ -2041,12 +2071,12 @@ namespace ARK_Server_Manager.Lib
         {
             var serverArgs = new StringBuilder();
 
-            serverArgs.Append(this.ServerMap);
+            serverArgs.Append(GetProfileMapName(this));
 
             serverArgs.Append("?listen");
 
             // These are used to match the server to the profile.
-            if (!String.IsNullOrWhiteSpace(this.ServerIP))
+            if (!string.IsNullOrWhiteSpace(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
@@ -2075,7 +2105,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
 
-            if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
+            if (!string.IsNullOrWhiteSpace(this.AdditionalArgs))
             {
                 var addArgs = this.AdditionalArgs.TrimStart();
                 if (!addArgs.StartsWith("?"))
@@ -2369,13 +2399,16 @@ namespace ARK_Server_Manager.Lib
         {
             progressCallback?.Invoke(0, "Saving...");
 
-            // ensure that the auto settings are switched off for SotF servers
             if (SOTF_Enabled)
             {
+                // ensure that the auto settings are switched off for SotF servers
                 EnableAutoRestart = false;
                 EnableAutoRestart2 = false;
                 EnableAutoUpdate = false;
                 AutoRestartIfShutdown = false;
+
+                // ensure the procedurally generated settings are switched off for SotF servers
+                PGM_Enabled = false;
             }
 
             // ensure that the ARK mod management is switched off for ASM controlled profiles
@@ -2618,8 +2651,8 @@ namespace ARK_Server_Manager.Lib
             if (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods)
             {
                 // build a list of mods to be processed
-                var serverMapModId = ModUtils.GetMapModId(ServerMap);
-                var serverMapName = ModUtils.GetMapName(ServerMap);
+                var serverMapModId = GetProfileMapModId(this);
+                var serverMapName = GetProfileMapName(this);
                 var modIds = ModUtils.GetModIdList(ServerModIds);
                 modIds = ModUtils.ValidateModList(modIds);
 
@@ -2788,9 +2821,10 @@ namespace ARK_Server_Manager.Lib
 
         public void RestoreWorldSave(string restoreFile)
         {
-            var profileSaveFolder = Path.Combine(this.InstallDirectory, Config.Default.SavedArksRelativePath);
-            var mapFile = Path.Combine(profileSaveFolder, $"{this.ServerMap}.ark");
-            var mapFileBackup = Path.Combine(profileSaveFolder, $"{this.ServerMap}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
+            var profileSaveFolder = GetProfileSavePath(this);
+            var mapName = GetProfileMapFileName(this);
+            var mapFile = Path.Combine(profileSaveFolder, $"{mapName}.ark");
+            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
 
             // rename the existing save file
             File.Move(mapFile, mapFileBackup);
@@ -3125,6 +3159,13 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowHitMarkersProperty);
         }
 
+        public void ResetPGMSection()
+        {
+            this.ClearValue(PGM_EnabledProperty);
+            this.ClearValue(PGM_NameProperty);
+            this.PGM_Terrain = new PGMTerrain();
+        }
+
         public void ResetPlayerSettings()
         {
             this.ClearValue(EnableFlyerCarryProperty);
@@ -3253,6 +3294,64 @@ namespace ARK_Server_Manager.Lib
             OverrideMaxExperiencePointsPlayer = list[list.Count - 1].XPRequired;
         }
         #endregion
+
+        public static string GetProfileMapName(ServerProfile profile)
+        {
+            return GetProfileMapName(profile?.ServerMap, profile?.PGM_Enabled ?? false);
+        }
+
+        public static string GetProfileMapName(string serverMap, bool pgmEnabled)
+        {
+            if (pgmEnabled)
+                return Config.Default.DefaultServerMap_PGM;
+
+            return ModUtils.GetMapName(serverMap);
+        }
+
+        public static string GetProfileMapModId(ServerProfile profile)
+        {
+            return GetProfileMapModId(profile?.ServerMap, profile?.PGM_Enabled ?? false);
+        }
+
+        public static string GetProfileMapModId(string serverMap, bool pgmEnabled)
+        {
+            if (pgmEnabled)
+                return string.Empty;
+
+            return ModUtils.GetMapModId(serverMap);
+        }
+
+        public static string GetProfileSavePath(ServerProfile profile)
+        {
+            return GetProfileSavePath(profile?.InstallDirectory, profile?.AltSaveDirectoryName, profile?.PGM_Enabled ?? false, profile?.PGM_Name);
+        }
+
+        public static string GetProfileSavePath(string installDirectory, string altSaveDirectoryName, bool pgmEnabled, string pgmName)
+        {
+            if (!string.IsNullOrWhiteSpace(altSaveDirectoryName))
+            {
+                if (pgmEnabled)
+                    return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedRelativePath, altSaveDirectoryName, Config.Default.SavedPGMRelativePath, pgmName ?? string.Empty);
+                return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedRelativePath, altSaveDirectoryName);
+            }
+
+            if (pgmEnabled)
+                return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedArksRelativePath, Config.Default.SavedPGMRelativePath, pgmName ?? string.Empty);
+            return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedArksRelativePath);
+        }
+
+        public static string GetProfileMapFileName(ServerProfile profile)
+        {
+            return GetProfileMapFileName(profile?.ServerMap, profile?.PGM_Enabled ?? false, profile?.PGM_Name);
+        }
+
+        public static string GetProfileMapFileName(string serverMap, bool pgmEnabled, string pgmName)
+        {
+            if (pgmEnabled)
+                return $"{pgmName ?? string.Empty}_V1";
+
+            return ModUtils.GetMapName(serverMap);
+        }
 
         #endregion
     }

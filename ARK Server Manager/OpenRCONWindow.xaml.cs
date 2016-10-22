@@ -61,6 +61,8 @@ namespace ARK_Server_Manager
                     AdminPassword = Password,
                     InstallDirectory = String.Empty,
                     AltSaveDirectoryName = String.Empty,
+                    PGM_Enabled = false,
+                    PGM_Name = string.Empty,
                     RCONWindowExtents = Rect.Empty
                 });
 

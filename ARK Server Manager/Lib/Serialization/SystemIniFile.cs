@@ -134,15 +134,14 @@ namespace ARK_Server_Manager.Lib
 
         public void Deserialize(object obj)
         {
-            Dictionary<string, IniFile> iniFiles = new Dictionary<string, IniFile>();
-
+            var iniFiles = new Dictionary<string, IniFile>();
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
+
             foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
-                foreach (var attribute in attributes)
+                foreach (var attr in attributes.OfType<IniFileEntryAttribute>())
                 {
-                    var attr = attribute as IniFileEntryAttribute;
                     if (attr.Section == IniFileSections.Custom)
                     {
                         // this code is to handle custom sections
@@ -161,7 +160,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     else
                     {
-                        var keyName = String.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
+                        var keyName = string.IsNullOrWhiteSpace(attr.Key) ? field.Name : attr.Key;
 
                         if (attr.WriteBoolValueIfNonEmpty)
                         {
@@ -178,7 +177,7 @@ namespace ARK_Server_Manager.Lib
                             {
                                 var section = ReadSection(iniFiles, attr.File, attr.Section);
                                 var filteredSection = collection.IsArray ? section.Where(s => s.StartsWith(collection.IniCollectionKey + "[")) :
-                                                                           section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
+                                                          section.Where(s => s.StartsWith(collection.IniCollectionKey + "="));
                                 collection.FromIniValues(filteredSection);
                             }
                             else if (fieldType == typeof(string))
@@ -193,10 +192,10 @@ namespace ARK_Server_Manager.Lib
                             else
                             {
                                 // Update the ConditionedOn flag, if this field has one.
-                                if (!String.IsNullOrWhiteSpace(attr.ConditionedOn))
+                                if (!string.IsNullOrWhiteSpace(attr.ConditionedOn))
                                 {
                                     var conditionField = obj.GetType().GetProperty(attr.ConditionedOn);
-                                    if (String.IsNullOrWhiteSpace(iniValue))
+                                    if (string.IsNullOrWhiteSpace(iniValue))
                                     {
                                         conditionField.SetValue(obj, false);
                                     }
@@ -206,7 +205,7 @@ namespace ARK_Server_Manager.Lib
                                     }
                                 }
 
-                                if (String.IsNullOrWhiteSpace(iniValue))
+                                if (string.IsNullOrWhiteSpace(iniValue))
                                 {
                                     // Skip non-string values which are not found
                                     continue;
@@ -214,7 +213,7 @@ namespace ARK_Server_Manager.Lib
 
                                 var valueSet = StringUtils.SetPropertyValue(iniValue, obj, field, attr);
                                 if (!valueSet)
-                                    throw new ArgumentException(String.Format("Unexpected field type {0} for INI key {1} in section {2}.", fieldType.ToString(), keyName, attr.Section));
+                                    throw new ArgumentException($"Unexpected field type {fieldType.ToString()} for INI key {keyName} in section {attr.Section}.");
                             }
                         }
                     }
@@ -225,14 +224,13 @@ namespace ARK_Server_Manager.Lib
         public void Serialize(object obj)
         {
             var iniFiles = new Dictionary<string, IniFile>();
-
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
+
             foreach (var field in fields)
             {
-                var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
-                foreach (var attribute in attributes)
+                var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>();
+                foreach (var attr in attributes)
                 {
-                    var attr = attribute as IniFileEntryAttribute;
                     if (attr.Section == IniFileSections.Custom)
                     {
                         // this code is to handle custom sections
@@ -271,8 +269,8 @@ namespace ARK_Server_Manager.Lib
                         {
                             var section = ReadSection(iniFiles, attr.File, attr.Section);
                             var filteredSection = section
-                                                        .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
-                                                        .ToArray();
+                                .Where(s => !s.StartsWith(collection.IniCollectionKey + (collection.IsArray ? "[" : "=")))
+                                .ToArray();
                             WriteSection(iniFiles, attr.File, attr.Section, filteredSection);
                         }
 
@@ -329,7 +327,7 @@ namespace ARK_Server_Manager.Lib
                                     // Remove all the values in the collection with this key name
                                     var section = ReadSection(iniFiles, attr.File, attr.Section);
                                     var filteredSection = collection.IsArray ? section.Where(s => !s.StartsWith(keyName + "["))
-                                                                             : section.Where(s => !s.StartsWith(keyName + "="));
+                                                              : section.Where(s => !s.StartsWith(keyName + "="));
                                     var result = filteredSection.Concat(collection.ToIniValues()).ToArray();
                                     WriteSection(iniFiles, attr.File, attr.Section, result);
                                 }

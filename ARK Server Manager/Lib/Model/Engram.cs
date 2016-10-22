@@ -87,14 +87,23 @@ namespace ARK_Server_Manager.Lib
             return newSpawn;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.EngramClassName, ((EngramEntry)other).EngramClassName, StringComparison.OrdinalIgnoreCase);
-        }
-
         public override string GetSortKey()
         {
             return DisplayName;
+        }
+
+        public override void InitializeFromINIValue(string value)
+        {
+            base.InitializeFromINIValue(value);
+
+            if (!KnownEngram)
+                ArkApplication = ArkApplication.Unknown;
+            SaveEngramOverride = true;
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.EngramClassName, ((EngramEntry)other).EngramClassName, StringComparison.OrdinalIgnoreCase);
         }
 
         public override bool ShouldSave()
@@ -110,15 +119,6 @@ namespace ARK_Server_Manager.Lib
                 !engramEntry.EngramPointsCost.Equals(EngramPointsCost) ||
                 !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
                 !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
-        }
-
-        protected override void InitializeFromINIValue(string value)
-        {
-            base.InitializeFromINIValue(value);
-
-            if (!KnownEngram)
-                ArkApplication = ArkApplication.Unknown;
-            SaveEngramOverride = true;
         }
     }
 
