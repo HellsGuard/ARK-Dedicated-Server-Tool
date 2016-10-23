@@ -78,6 +78,9 @@ namespace ARK_Server_Manager.Lib
 
         public override void InitializeFromINIValue(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
             GetPropertyInfos();
             if (this.Properties.Count == 0)
                 return;
@@ -204,6 +207,9 @@ namespace ARK_Server_Manager.Lib
 
         public override void InitializeFromINIValue(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
             GetPropertyInfos();
             if (this.Properties.Count == 0)
                 return;
@@ -355,6 +361,9 @@ namespace ARK_Server_Manager.Lib
 
         public override void InitializeFromINIValue(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
             GetPropertyInfos();
             if (this.Properties.Count == 0)
                 return;

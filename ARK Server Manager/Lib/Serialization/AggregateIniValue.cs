@@ -71,8 +71,11 @@ namespace ARK_Server_Manager.Lib
 
         public virtual void InitializeFromINIValue(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
             GetPropertyInfos();
-            if (this.Properties.Count != 0)
+            if (this.Properties.Count == 0)
                 return;
 
             var kvPair = value.Split(new[] { '=' }, 2);
