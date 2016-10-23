@@ -3438,25 +3438,37 @@
 
                             <Grid Margin="-8,0,2,0">
                                 <StackPanel>
-                                    <TextBlock Margin="5" Text="{DynamicResource ServerSettings_PGM_WarningLabel}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
+                                    <TextBlock Margin="5" Text="{DynamicResource ServerSettings_PGM_Warning1Label}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
 
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox Name="EnablePGMCheckbox" IsChecked="{Binding PGM_Enabled}" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PGM_EnableLabel}" ToolTip="{DynamicResource ServerSettings_PGM_EnableTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                                                <Button Width="22" Height="22" Click="PastePGMSettings_Click" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_PasteSettingsTooltip}">
+                                                    <Image Source="Art/Paste.png" Width="16"/>
+                                                </Button>
+                                                <Button Width="22" Height="22" Click="SavePGMSettings_Click" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_SaveSettingsTooltip}">
+                                                    <Image Source="Art/Save_6530.png" Width="16"/>
+                                                </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
 
                                         <StackPanel IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}">
                                             <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition MinWidth="150" Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_PGM_NameLabel}" ToolTip="{DynamicResource ServerSettings_PGM_NameTooltip}" VerticalAlignment="Center"/>
                                                 <TextBox Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding PGM_Name}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_PGM_NameTooltip}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" Text="{DynamicResource ServerSettings_PGM_Warning2Label}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
                                             </Grid>
                                         
                                             <GroupBox Style="{StaticResource GroupBoxStyle}" Header="{DynamicResource ServerSettings_PGM_TerrianSettingsLabel}">

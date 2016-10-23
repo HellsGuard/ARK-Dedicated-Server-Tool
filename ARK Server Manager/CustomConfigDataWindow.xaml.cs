@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using ARK_Server_Manager.Lib;
-using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
@@ -9,8 +8,6 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class CustomConfigDataWindow : Window
     {
-        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
-
         public CustomConfigDataWindow()
         {
             InitializeComponent();
@@ -24,6 +21,12 @@ namespace ARK_Server_Manager
         {
             get { return (string)GetValue(ConfigDataProperty); }
             set { SetValue(ConfigDataProperty, value); }
+        }
+
+        public TextWrapping ConfigDataTextWrapping
+        {
+            get { return ConfigDataTextBox.TextWrapping; }
+            set { ConfigDataTextBox.TextWrapping = value; }
         }
 
         private void Process_Click(object sender, RoutedEventArgs e)

@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ConfigData, Mode=TwoWay}" Margin="5,5,5,0" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
+        <TextBox Name="ConfigDataTextBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ConfigData, Mode=TwoWay}" Margin="5,5,5,0" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
         <Button Grid.Row="1" Grid.Column="0" Content="{DynamicResource CustomConfigData_ProcessButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Right" Click="Process_Click"/>
         <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource CustomConfigData_CancelButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Left" IsCancel="True"/>
     </Grid>

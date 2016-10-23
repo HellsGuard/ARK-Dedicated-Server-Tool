@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Windows;
-using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
