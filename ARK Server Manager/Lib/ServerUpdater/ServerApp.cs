@@ -1400,7 +1400,7 @@ namespace ARK_Server_Manager.Lib
 
                         return;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         LogProfileMessage($"RCON> {command} - attempt {retries + 1} (b).", false);
 #if DEBUG
@@ -1502,7 +1502,7 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage($"SUCCESS: {nameof(SetupRconConsole)} - RconConsole was created ({_profile.AdminPassword}).", false);
 #endif
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 #if DEBUG
                 LogProfileMessage($"ERROR: {nameof(SetupRconConsole)}\r\n{ex.Message}", false);

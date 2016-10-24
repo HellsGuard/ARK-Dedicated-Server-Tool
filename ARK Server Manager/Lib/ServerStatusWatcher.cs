@@ -19,7 +19,7 @@ namespace ARK_Server_Manager.Lib
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const int LOCAL_STATUS_QUERY_DELAY = 5000; // milliseconds
+        private const int LOCAL_STATUS_QUERY_DELAY = 60000; // milliseconds
 
         private enum ServerProcessStatus
         {
