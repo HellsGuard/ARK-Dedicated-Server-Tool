@@ -88,7 +88,7 @@ namespace ARK_Server_Manager.Lib
             else if (property.PropertyType == typeof(int))
             {
                 int intValue;
-                int.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
+                int.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
                 property.SetValue(obj, intValue);
             }
             else if (property.PropertyType == typeof(float))
@@ -96,7 +96,7 @@ namespace ARK_Server_Manager.Lib
                 value = value.Replace("f", "");
 
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
             }
             else if (property.PropertyType.IsSubclassOf(typeof(AggregateIniValue)))
@@ -127,7 +127,7 @@ namespace ARK_Server_Manager.Lib
             if (property.PropertyType == typeof(int))
             {
                 int intValue;
-                int.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
+                int.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
                 property.SetValue(obj, intValue);
                 return true;
             }
@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
                 value = value.Replace("f", "");
 
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
                 return true;
             }

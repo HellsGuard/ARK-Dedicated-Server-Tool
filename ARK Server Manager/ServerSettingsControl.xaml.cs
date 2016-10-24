@@ -1429,6 +1429,11 @@ namespace ARK_Server_Manager
             window.Owner = Window.GetWindow(this);
             window.ShowDialog();
         }
+
+        private void RandomPGMSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.RandomizePGMSettings();
+        }
         #endregion
 
         #region Methods

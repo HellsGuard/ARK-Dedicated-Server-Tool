@@ -3353,6 +3353,52 @@ namespace ARK_Server_Manager.Lib
             return ModUtils.GetMapName(serverMap);
         }
 
+        public void RandomizePGMSettings()
+        {
+            var random = new Random(DateTime.Now.Millisecond);
+
+            this.PGM_Terrain.MapSeed = random.Next(1, 999);
+
+            this.PGM_Terrain.WaterFrequency = (float)Math.Round(random.NextDouble() * 5f, 5);
+            this.PGM_Terrain.MountainsFrequency = (float)Math.Round(random.NextDouble() * 10f, 5);
+            if (this.PGM_Terrain.MountainsFrequency < 3.0f)
+                this.PGM_Terrain.MountainsFrequency += 3.0f;
+
+            this.PGM_Terrain.MountainsSlope = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsSlope < 0.5f)
+                this.PGM_Terrain.MountainsSlope += 0.5f;
+            this.PGM_Terrain.MountainsHeight = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsHeight < 0.5f)
+                this.PGM_Terrain.MountainsHeight += 0.5f;
+
+            this.PGM_Terrain.SnowBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.RedWoodBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            if (this.PGM_Terrain.RedWoodBiomeSize > 0.5f)
+                this.PGM_Terrain.RedWoodBiomeSize -= 0.5f;
+
+            this.PGM_Terrain.MountainBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.JungleBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+
+            this.PGM_Terrain.GrassDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.JungleGrassDensity = (float)Math.Round(random.Next(2, 9) / 100.1f, 3);
+            this.PGM_Terrain.MountainGrassDensity = (float)Math.Round(random.Next(3, 10) / 100.1f, 3);
+            this.PGM_Terrain.RedwoodGrassDensity = (float)Math.Round(random.Next(5, 15) / 100.1f, 3);
+            this.PGM_Terrain.SnowGrassDensity = (float)Math.Round(random.Next(10, 30) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainGrassDensity = (float)Math.Round(random.Next(10, 20) / 100.1f, 3);
+
+            this.PGM_Terrain.TreeDensity = (float)Math.Round(random.Next(11, 135) / 10000.1f, 3);
+            this.PGM_Terrain.JungleTreeDensity = (float)Math.Round(random.Next(48, 83) / 100.1f, 3);
+            this.PGM_Terrain.MountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.RedWoodTreeDensity = (float)Math.Round(random.Next(23, 51) / 100.1f, 3);
+            this.PGM_Terrain.SnowTreeDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.ShoreTreeDensity = (float)Math.Round(random.Next(48, 83) / 1000.1f, 3);
+            this.PGM_Terrain.SnowShoreTreeDensity = (float)Math.Round(random.Next(14, 31) / 1000.1f, 3);
+
+            this.PGM_Terrain.InlandWaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+            this.PGM_Terrain.UnderwaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+        }
+
         #endregion
     }
 }

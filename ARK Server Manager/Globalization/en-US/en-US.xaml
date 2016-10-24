@@ -1117,6 +1117,8 @@
     <sys:String x:Key="ServerSettings_PGM_PasteSettingsConfirmLabel">You are about to overwrite ALL your Procedurally Generated ARK settings. Do you want to continue?</sys:String>
     <sys:String x:Key="ServerSettings_PGM_SaveSettingsTooltip">Save Procedurally Generated Settings String</sys:String>
     <sys:String x:Key="ServerSettings_PGM_SaveSettingsTitle">Procedurally Generated Settings String</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_RandomSettingsLabel">Randomize</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_RandomSettingsTooltip">Randomize the Procedurally Generated Settings</sys:String>
     <sys:String x:Key="ServerSettings_PGM_NameLabel">World File Name</sys:String>
     <sys:String x:Key="ServerSettings_PGM_NameTooltip">The name to use for the world file (e.g. MyPGArk1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_XLabel">X</sys:String>
