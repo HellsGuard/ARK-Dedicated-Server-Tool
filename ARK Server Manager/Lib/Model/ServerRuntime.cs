@@ -19,7 +19,7 @@ namespace ARK_Server_Manager.Lib
 
         public event EventHandler StatusUpdate;
 
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public struct RuntimeProfileSnapshot
         {
@@ -63,13 +63,9 @@ namespace ARK_Server_Manager.Lib
             Available
         }
 
-        private List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
+        private readonly List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
         private Process serverProcess;
         private IAsyncDisposable updateRegistration;
-
-        public ServerRuntime()
-        {
-        }
 
         #region Properties
 
@@ -273,7 +269,13 @@ namespace ARK_Server_Manager.Lib
                         this.Steam = SteamStatus.Unknown;
                         break;
 
-                    case ServerStatusWatcher.ServerStatus.Running:
+                    case ServerStatusWatcher.ServerStatus.RunningLocalCheck:
+                        this.Status = ServerStatus.Running;
+                        if (this.Steam != SteamStatus.Available)
+                            this.Steam = SteamStatus.WaitingForPublication;
+                        break;
+
+                    case ServerStatusWatcher.ServerStatus.RunningExternalCheck:
                         this.Status = ServerStatus.Running;
                         this.Steam = SteamStatus.WaitingForPublication;
                         break;

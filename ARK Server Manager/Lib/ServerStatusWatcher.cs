@@ -19,7 +19,8 @@ namespace ARK_Server_Manager.Lib
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const int LOCAL_STATUS_QUERY_DELAY = 60000; // milliseconds
+        private const int LOCAL_STATUS_QUERY_DELAY = 5000; // milliseconds
+        private const int REMOTE_STATUS_QUERY_DELAY = 60000; // milliseconds
 
         private enum ServerProcessStatus
         {
@@ -67,12 +68,17 @@ namespace ARK_Server_Manager.Lib
             Initializing,
 
             /// <summary>
-            /// The server is responding on its port
+            /// The server is responding locally on its port, a local check was made
             /// </summary>
-            Running,
-            
+            RunningLocalCheck,
+
             /// <summary>
-            /// The server appears on the Steam Master servers
+            /// The server is responding locally on its port, a public check was made
+            /// </summary>
+            RunningExternalCheck,
+
+            /// <summary>
+            /// The server is responding externally on its port
             /// </summary>
             Published,
         }
@@ -101,6 +107,7 @@ namespace ARK_Server_Manager.Lib
 
         private readonly List<ServerStatusUpdateRegistration> serverRegistrations = new List<ServerStatusUpdateRegistration>();
         private readonly ActionBlock<Func<Task>> eventQueue;
+        private DateTime lastExternalStatusQuery = DateTime.MinValue;
 
         private ServerStatusWatcher()
         {
@@ -277,7 +284,7 @@ namespace ARK_Server_Manager.Lib
             });
         }
 
-        private static async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration)
+        private async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration)
         {
             //
             // First check the process status
@@ -309,25 +316,37 @@ namespace ARK_Server_Manager.Lib
             // If the process was running do we then perform network checks.
             //
             Logger.Debug("Checking server local status at {0}", registration.LocalEndpoint);
+
+            // get the server information direct from the server using local connection.
             ReadOnlyCollection<Player> players;
             var localInfo = GetLocalNetworkStatus(registration.LocalEndpoint, out players);
 
-            if(localInfo != null)
+            if (localInfo != null)
             {
-                currentStatus = ServerStatus.Running;
+                currentStatus = ServerStatus.RunningLocalCheck;
 
                 //
                 // Now that it's running, we can check the publication status.
                 //
                 Logger.Debug("Checking server public status at {0}", registration.SteamEndpoint);
-                // get the server information direct from the server.
+
+                // get the server information direct from the server using public connection.
                 var serverStatus = NetworkUtils.CheckServerStatusDirect(registration.SteamEndpoint);
                 // check if the server returned the information.
                 if (!serverStatus)
                 {
-                    // server did not return any information, try to get the server information using 3rd party source.
-                    serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
+                    // server did not return any information
+                    if (DateTime.Now >= lastExternalStatusQuery.AddMilliseconds(REMOTE_STATUS_QUERY_DELAY))
+                    {
+                        currentStatus = ServerStatus.RunningExternalCheck;
+
+                        // get the server information direct from the server using external connection.
+                        serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
+
+                        lastExternalStatusQuery = DateTime.Now;
+                    }
                 }
+
                 // check if the server returned the information.
                 if (serverStatus)
                 {                    

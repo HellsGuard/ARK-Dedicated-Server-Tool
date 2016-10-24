@@ -1122,7 +1122,7 @@
     <sys:String x:Key="ServerSettings_PGM_XLabel">X</sys:String>
     <sys:String x:Key="ServerSettings_PGM_YLabel">Y</sys:String>
     <sys:String x:Key="ServerSettings_PGM_ZLabel">Z</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Warning1Label">WARNING: The procedurally generated Ark system is HIGHLY EXPERIMENTAL. Your saved procedurally generated Arks will necessarily be wiped in subsequent updates as the synamic algorithms are further developed. We only recommend using this system at the present time if you're willing to accept the frequent clearing of your procedurally generated Ark's save data!</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Warning1Label">WARNING: The procedurally generated Ark system is HIGHLY EXPERIMENTAL. Your saved procedurally generated Arks will necessarily be wiped in subsequent updates as the dynamic algorithms are further developed. We only recommend using this system at the present time if you're willing to accept the frequent clearing of your procedurally generated Ark's save data!</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Warning2Label">NOTE: Once you have started your server, changing these settings will have NO effect. To create an ARK with your new settings, you must either change the World File Name, or delete the existing world save file. In both cases you will loss ALL progress.</sys:String>
 
     <sys:String x:Key="ServerSettings_PGM_TerrianSettingsLabel">Terrian Settings</sys:String>

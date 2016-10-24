@@ -15,7 +15,6 @@ using System.Reflection;
 using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Net.Mail;
-using System.Windows.Media;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -1400,7 +1399,7 @@ namespace ARK_Server_Manager.Lib
 
                         return;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         LogProfileMessage($"RCON> {command} - attempt {retries + 1} (b).", false);
 #if DEBUG
@@ -1502,7 +1501,7 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage($"SUCCESS: {nameof(SetupRconConsole)} - RconConsole was created ({_profile.AdminPassword}).", false);
 #endif
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 #if DEBUG
                 LogProfileMessage($"ERROR: {nameof(SetupRconConsole)}\r\n{ex.Message}", false);
