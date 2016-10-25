@@ -56,9 +56,9 @@ namespace ARK_Server_Manager.Lib
             string convertedVal;
 
             if (property.PropertyType == typeof(float))
-                convertedVal = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
+                convertedVal = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
             else
-                convertedVal = Convert.ToString(value, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
+                convertedVal = Convert.ToString(value, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
 
             return convertedVal;
         }
@@ -88,14 +88,21 @@ namespace ARK_Server_Manager.Lib
             else if (property.PropertyType == typeof(int))
             {
                 int intValue;
-                int.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
+                int.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
                 property.SetValue(obj, intValue);
             }
             else if (property.PropertyType == typeof(float))
             {
+                value = value.Replace("f", "");
+
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
+            }
+            else if (property.PropertyType.IsSubclassOf(typeof(AggregateIniValue)))
+            {
+                var field = property.GetValue(obj) as AggregateIniValue;
+                field?.InitializeFromINIValue(value);
             }
             else
             {
@@ -117,18 +124,26 @@ namespace ARK_Server_Manager.Lib
                 property.SetValue(obj, boolValue);
                 return true;
             }
-            else if (property.PropertyType == typeof(int))
+            if (property.PropertyType == typeof(int))
             {
                 int intValue;
-                int.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
+                int.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out intValue);
                 property.SetValue(obj, intValue);
                 return true;
             }
-            else if (property.PropertyType == typeof(float))
+            if (property.PropertyType == typeof(float))
             {
+                value = value.Replace("f", "");
+
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
+                return true;
+            }
+            if (property.PropertyType.IsSubclassOf(typeof(AggregateIniValue)))
+            {
+                var field = property.GetValue(obj) as AggregateIniValue;
+                field?.InitializeFromINIValue(value);
                 return true;
             }
 

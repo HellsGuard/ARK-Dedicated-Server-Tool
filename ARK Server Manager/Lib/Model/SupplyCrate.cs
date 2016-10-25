@@ -76,18 +76,16 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
+        public override void InitializeFromINIValue(string value)
         {
-            return String.Equals(this.SupplyCrateClassString, ((SupplyCrate)other).SupplyCrateClassString, StringComparison.OrdinalIgnoreCase);
-        }
-
-        protected override void InitializeFromINIValue(string value)
-        {
-            GetPropertyInfos();
-            if (this.properties.Count == 0)
+            if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            var propertyNames = this.properties.Select(p => p.Name).ToArray();
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return;
+
+            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
 
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
@@ -98,7 +96,7 @@ namespace ARK_Server_Manager.Lib
 
             var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
 
-            foreach (var property in this.properties)
+            foreach (var property in this.Properties)
             {
                 var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
                 if (propertyValue == null)
@@ -134,6 +132,11 @@ namespace ARK_Server_Manager.Lib
                     StringUtils.SetPropertyValue(kvPropertyValue, this, property);
                 }
             }
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.SupplyCrateClassString, ((SupplyCrate)other).SupplyCrateClassString, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToINIValue()
@@ -202,18 +205,16 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
+        public override void InitializeFromINIValue(string value)
         {
-            return false;
-        }
-
-        protected override void InitializeFromINIValue(string value)
-        {
-            GetPropertyInfos();
-            if (this.properties.Count == 0)
+            if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            var propertyNames = this.properties.Select(p => p.Name).ToArray();
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return;
+
+            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
 
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
@@ -224,7 +225,7 @@ namespace ARK_Server_Manager.Lib
 
             var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
 
-            foreach (var property in this.properties)
+            foreach (var property in this.Properties)
             {
                 var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
                 if (propertyValue == null)
@@ -260,6 +261,11 @@ namespace ARK_Server_Manager.Lib
                     StringUtils.SetPropertyValue(kvPropertyValue, this, property);
                 }
             }
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return false;
         }
 
         public override string ToINIValue()
@@ -353,18 +359,16 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
+        public override void InitializeFromINIValue(string value)
         {
-            return false;
-        }
-
-        protected override void InitializeFromINIValue(string value)
-        {
-            GetPropertyInfos();
-            if (this.properties.Count == 0)
+            if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            var propertyNames = this.properties.Select(p => p.Name).ToArray();
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return;
+
+            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
 
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
@@ -375,7 +379,7 @@ namespace ARK_Server_Manager.Lib
 
             var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
 
-            foreach (var property in this.properties)
+            foreach (var property in this.Properties)
             {
                 var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
                 if (propertyValue == null)
@@ -415,6 +419,11 @@ namespace ARK_Server_Manager.Lib
                     StringUtils.SetPropertyValue(kvPropertyValue, this, property);
                 }
             }
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return false;
         }
     }
 }

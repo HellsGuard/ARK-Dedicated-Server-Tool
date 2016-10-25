@@ -49,14 +49,14 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 CanTame = isTameable == DinoTamable.True,
                 ReplacementClass = className,
 
-                SpawnWeightMultiplier = DinoSpawn.DefaultSpawnWeightMultiplier,
-                OverrideSpawnLimitPercentage = DinoSpawn.DefaultOverrideSpawnLimitPercentage,
-                SpawnLimitPercentage = DinoSpawn.DefaultSpawnLimitPercentage,
+                SpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
+                OverrideSpawnLimitPercentage = DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE,
+                SpawnLimitPercentage = DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE,
 
-                TamedDamageMultiplier = ClassMultiplier.DefaultMultiplier,
-                TamedResistanceMultiplier = ClassMultiplier.DefaultMultiplier,
-                WildDamageMultiplier = ClassMultiplier.DefaultMultiplier,
-                WildResistanceMultiplier = ClassMultiplier.DefaultMultiplier,
+                TamedDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                TamedResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                WildDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                WildResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
 
                 KnownDino = knownDino,
                 HasClassName = hasClassName,
@@ -224,9 +224,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 if (entry.HasNameTag && !string.IsNullOrWhiteSpace(entry.NameTag))
                 {
-                    if (!entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DefaultOverrideSpawnLimitPercentage) ||
-                        !entry.SpawnLimitPercentage.Equals(DinoSpawn.DefaultSpawnLimitPercentage) ||
-                        !entry.SpawnWeightMultiplier.Equals(DinoSpawn.DefaultSpawnWeightMultiplier))
+                    if (!entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE) ||
+                        !entry.SpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE) ||
+                        !entry.SpawnWeightMultiplier.Equals(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER))
                     {
                         this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
                         {
@@ -251,20 +251,20 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     if (entry.IsTameable == DinoTamable.True || entry.IsTameable == DinoTamable.ByBreeding)
                     {
                         // check if the value has changed.
-                        if (!entry.TamedDamageMultiplier.Equals(ClassMultiplier.DefaultMultiplier))
+                        if (!entry.TamedDamageMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
                             this.TamedDinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedDamageMultiplier });
 
                         // check if the value has changed.
-                        if (!entry.TamedResistanceMultiplier.Equals(ClassMultiplier.DefaultMultiplier))
+                        if (!entry.TamedResistanceMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
                             this.TamedDinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedResistanceMultiplier });
                     }
 
                     // check if the value has changed.
-                    if (!entry.WildDamageMultiplier.Equals(ClassMultiplier.DefaultMultiplier))
+                    if (!entry.WildDamageMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
                         this.DinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildDamageMultiplier });
 
                     // check if the value has changed.
-                    if (!entry.WildResistanceMultiplier.Equals(ClassMultiplier.DefaultMultiplier))
+                    if (!entry.WildResistanceMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
                         this.DinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildResistanceMultiplier });
                 }
             }

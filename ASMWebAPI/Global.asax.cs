@@ -36,12 +36,25 @@ namespace ASMWebAPI
             LogManager.Configuration.Variables["logDir"] = logDir;
 
             var target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
-            target.FileName = Path.Combine(logDir, "ASM_Debug.log");
-            target.ArchiveFileName = Path.Combine(logDir, "ASM_Debug.{#}.log");
+            if (target != null)
+            {
+                target.FileName = Path.Combine(logDir, "ASM_Debug.log");
+                target.ArchiveFileName = Path.Combine(logDir, "ASM_Debug.{#}.log");
+            }
 
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverFile");
-            target.FileName = Path.Combine(logDir, "ASM_Server.log");
-            target.ArchiveFileName = Path.Combine(logDir, "ASM_Server.{#}.log");
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverInfoFile");
+            if (target != null)
+            {
+                target.FileName = Path.Combine(logDir, "ASM_ServerInfo.log");
+                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerInfo.{#}.log");
+            }
+
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverWarnFile");
+            if (target != null)
+            {
+                target.FileName = Path.Combine(logDir, "ASM_ServerWarn.log");
+                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerWarn.{#}.log");
+            }
 
             LogManager.ReconfigExistingLoggers();
         }

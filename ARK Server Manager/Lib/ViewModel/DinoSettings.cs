@@ -14,13 +14,13 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty CanSpawnProperty = DependencyProperty.Register(nameof(CanSpawn), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty ReplacementClassProperty = DependencyProperty.Register(nameof(ReplacementClass), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DefaultSpawnWeightMultiplier));
-        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DefaultOverrideSpawnLimitPercentage));
-        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DefaultSpawnLimitPercentage));
-        public static readonly DependencyProperty TamedDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
-        public static readonly DependencyProperty TamedResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
-        public static readonly DependencyProperty WildDamageMultiplierProperty = DependencyProperty.Register(nameof(WildDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
-        public static readonly DependencyProperty WildResistanceMultiplierProperty = DependencyProperty.Register(nameof(WildResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DefaultMultiplier));
+        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER));
+        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty TamedDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty TamedResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty WildDamageMultiplierProperty = DependencyProperty.Register(nameof(WildDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty WildResistanceMultiplierProperty = DependencyProperty.Register(nameof(WildResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
 
         public ArkApplication ArkApplication
         {

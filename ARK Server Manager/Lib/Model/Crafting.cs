@@ -10,12 +10,14 @@ namespace ARK_Server_Manager.Lib
 {
     public class Crafting : AggregateIniValue
     {
+        private const char DELIMITER = ',';
+
         public Crafting()
         {
             BaseCraftingResourceRequirements = new AggregateIniValueList<CraftingResourceRequirement>(nameof(BaseCraftingResourceRequirements), null);
         }
 
-        public static readonly DependencyProperty ItemClassStringProperty = DependencyProperty.Register(nameof(ItemClassString), typeof(string), typeof(Crafting), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ItemClassStringProperty = DependencyProperty.Register(nameof(ItemClassString), typeof(string), typeof(Crafting), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         public string ItemClassString
         {
@@ -48,16 +50,19 @@ namespace ARK_Server_Manager.Lib
 
         public override bool IsEquivalent(AggregateIniValue other)
         {
-            return String.Equals(this.ItemClassString, ((Crafting)other).ItemClassString, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(this.ItemClassString, ((Crafting)other).ItemClassString, StringComparison.OrdinalIgnoreCase);
         }
 
-        protected override void InitializeFromINIValue(string value)
+        public override void InitializeFromINIValue(string value)
         {
-            GetPropertyInfos();
-            if (this.properties.Count == 0)
+            if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            var propertyNames = this.properties.Select(p => p.Name).ToArray();
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return;
+
+            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
 
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
@@ -68,7 +73,7 @@ namespace ARK_Server_Manager.Lib
 
             var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
 
-            foreach (var property in this.properties)
+            foreach (var property in this.Properties)
             {
                 var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
                 if (propertyValue == null)
@@ -90,7 +95,7 @@ namespace ARK_Server_Manager.Lib
                         kvPropertyValue = kvPropertyPair[0].Trim() + "=" + kvPropertyValue;
                         kvPropertyValue = kvPropertyValue.Replace("),(", ")," + kvPropertyPair[0].Trim() + "=(");
 
-                        string[] delimiters = new[] { "," + kvPropertyPair[0].Trim() + "=" };
+                        string[] delimiters = { "," + kvPropertyPair[0].Trim() + "=" };
                         var items = StringUtils.SplitIncludingDelimiters("," + kvPropertyValue, delimiters);
                         collection.FromIniValues(items.Select(i => i.Trim(',', ' ')));
                     }
@@ -109,30 +114,28 @@ namespace ARK_Server_Manager.Lib
         public override string ToINIValue()
         {
             GetPropertyInfos();
-            if (this.properties.Count == 0)
+            if (this.Properties.Count == 0)
                 return string.Empty;
 
             StringBuilder result = new StringBuilder();
             result.Append("(");
 
-            bool firstItem = true;
-            foreach (var property in this.properties)
+            var delimiter = "";
+            foreach (var property in this.Properties)
             {
-                if (!firstItem)
-                    result.Append(",");
+                result.Append(delimiter);
 
                 var collection = property.GetValue(this) as IIniValuesCollection;
                 if (collection != null)
                 {
-                    result.Append(property.Name).Append("=(");
+                    result.Append($"{property.Name}=(");
 
                     var vals = collection.ToIniValues();
 
-                    bool firstVal = true;
+                    var delimiter2 = DELIMITER.ToString();
                     foreach (var val in vals)
                     {
-                        if (!firstVal)
-                            result.Append(",");
+                        result.Append(delimiter2);
 
                         if (property.Name == nameof(BaseCraftingResourceRequirements))
                         {
@@ -144,7 +147,7 @@ namespace ARK_Server_Manager.Lib
                         else
                             result.Append(val);
 
-                        firstVal = false;
+                        delimiter2 = "";
                     }
                     result.Append(")");
                 }
@@ -153,14 +156,14 @@ namespace ARK_Server_Manager.Lib
                     var val = property.GetValue(this);
                     var propertyValue = StringUtils.GetPropertyValue(val, property);
 
-                    result.Append(property.Name).Append("=");
-                    if (property.PropertyType == typeof(String))
-                        result.Append('"').Append(propertyValue).Append('"');
+                    result.Append($"{property.Name}=");
+                    if (property.PropertyType == typeof(string))
+                        result.Append($"\"{propertyValue}\"");
                     else
                         result.Append(propertyValue);
                 }
 
-                firstItem = false;
+                delimiter = DELIMITER.ToString();
             }
 
             result.Append(")");
@@ -170,7 +173,7 @@ namespace ARK_Server_Manager.Lib
 
     public class CraftingResourceRequirement : AggregateIniValue
     {
-        public static readonly DependencyProperty ResourceItemTypeStringProperty = DependencyProperty.Register(nameof(ResourceItemTypeString), typeof(string), typeof(CraftingResourceRequirement), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ResourceItemTypeStringProperty = DependencyProperty.Register(nameof(ResourceItemTypeString), typeof(string), typeof(CraftingResourceRequirement), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         public string ResourceItemTypeString
         {
@@ -219,7 +222,7 @@ namespace ARK_Server_Manager.Lib
 
         public override bool IsEquivalent(AggregateIniValue other)
         {
-            return String.Equals(this.ResourceItemTypeString, ((CraftingResourceRequirement)other).ResourceItemTypeString, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(this.ResourceItemTypeString, ((CraftingResourceRequirement)other).ResourceItemTypeString, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

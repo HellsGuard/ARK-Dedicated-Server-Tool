@@ -373,7 +373,7 @@ namespace ARK_Server_Manager
             // build a list of mods to be processed
             var modIdList = new List<string>();
 
-            var serverMapModId = ModUtils.GetMapModId(_profile.ServerMap);
+            var serverMapModId = ServerProfile.GetProfileMapModId(_profile);
             if (!string.IsNullOrWhiteSpace(serverMapModId))
                 modIdList.Add(serverMapModId);
 

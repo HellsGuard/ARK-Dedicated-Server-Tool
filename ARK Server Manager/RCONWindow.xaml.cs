@@ -270,6 +270,8 @@ namespace ARK_Server_Manager
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
                     InstallDirectory = server.Profile.InstallDirectory,
                     AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
+                    PGM_Enabled = server.Profile.PGM_Enabled,
+                    PGM_Name = server.Profile.PGM_Name,
                     ProfileName = server.Profile.ProfileName,
                     RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
@@ -616,14 +618,12 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
-                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
-                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var savedArksPath = ServerProfile.GetProfileSavePath(this.RCONParameters.InstallDirectory, this.RCONParameters.AltSaveDirectoryName, this.RCONParameters.PGM_Enabled, this.RCONParameters.PGM_Name);
                         var window = new PlayerProfileWindow(player, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player != null && player.ArkData != null
+                    canExecute: (player) => player?.ArkData != null
                     );
             }
         }
@@ -634,14 +634,12 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => {
-                        var savedArksPath = !string.IsNullOrWhiteSpace(this.RCONParameters.AltSaveDirectoryName)
-                                                ? Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedRelativePath, this.RCONParameters.AltSaveDirectoryName)
-                                                : Path.Combine(this.RCONParameters.InstallDirectory, Config.Default.SavedArksRelativePath);
+                        var savedArksPath = ServerProfile.GetProfileSavePath(this.RCONParameters.InstallDirectory, this.RCONParameters.AltSaveDirectoryName, this.RCONParameters.PGM_Enabled, this.RCONParameters.PGM_Name);
                         var window = new TribeProfileWindow(player, this.ServerRCON.Players, savedArksPath);
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player != null && player.ArkData != null && !String.IsNullOrWhiteSpace(player.TribeName)
+                    canExecute: (player) => player?.ArkData != null && !string.IsNullOrWhiteSpace(player.TribeName)
                     );
             }
         }

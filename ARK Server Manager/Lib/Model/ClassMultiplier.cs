@@ -5,10 +5,10 @@ namespace ARK_Server_Manager.Lib
 {
     public class ClassMultiplier : AggregateIniValue
     {
-        public const float DefaultMultiplier = 1.0f;
+        public const float DEFAULT_MULTIPLIER = 1.0f;
 
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(ClassMultiplier), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty MultiplierProperty = DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(DefaultMultiplier));
+        public static readonly DependencyProperty MultiplierProperty = DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(DEFAULT_MULTIPLIER));
 
         [AggregateIniValueEntry]
         public string ClassName

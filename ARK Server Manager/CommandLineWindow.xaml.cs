@@ -9,7 +9,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class CommandLineWindow : Window
     {
-        private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public CommandLineWindow(string commandLine)
         {

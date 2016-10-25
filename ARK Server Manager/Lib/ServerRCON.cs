@@ -349,9 +349,7 @@ namespace ARK_Server_Manager.Lib
         {
             if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
             {
-                var savedArksPath = !string.IsNullOrWhiteSpace(rconParams.AltSaveDirectoryName)
-                                        ? Path.Combine(rconParams.InstallDirectory, Config.Default.SavedRelativePath, rconParams.AltSaveDirectoryName)
-                                        : Path.Combine(rconParams.InstallDirectory, Config.Default.SavedArksRelativePath);
+                var savedArksPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
                 var arkData = await ArkData.ArkDataContainer.CreateAsync(savedArksPath);
                 await arkData.LoadSteamAsync(Config.Default.SteamAPIKey);
                 TaskUtils.RunOnUIThreadAsync(() =>

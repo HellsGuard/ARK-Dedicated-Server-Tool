@@ -15,7 +15,6 @@ using System.Reflection;
 using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Net.Mail;
-using System.Windows.Media;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -28,6 +27,8 @@ namespace ARK_Server_Manager.Lib
             public string ProfileName;
             public string InstallDirectory;
             public string AltSaveDirectoryName;
+            public bool PGM_Enabled;
+            public string PGM_Name;
             public string AdminPassword;
             public string ServerIP;
             public int ServerPort;
@@ -52,18 +53,20 @@ namespace ARK_Server_Manager.Lib
 
             public static ProfileSnapshot Create(ServerProfile profile)
             {
-                return new ProfileSnapshot()
+                return new ProfileSnapshot
                 {
                     ProfileName = profile.ProfileName,
                     InstallDirectory = profile.InstallDirectory,
                     AltSaveDirectoryName = profile.AltSaveDirectoryName,
+                    PGM_Enabled = profile.PGM_Enabled,
+                    PGM_Name = profile.PGM_Name,
                     AdminPassword = profile.AdminPassword,
                     ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP.Trim(),
                     ServerPort = profile.ServerPort,
                     RCONEnabled = profile.RCONEnabled,
                     RCONPort = profile.RCONPort,
-                    ServerMap = ModUtils.GetMapName(profile.ServerMap),
-                    ServerMapModId = ModUtils.GetMapModId(profile.ServerMap),
+                    ServerMap = ServerProfile.GetProfileMapName(profile),
+                    ServerMapModId = ServerProfile.GetProfileMapModId(profile),
                     TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
                     ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                     LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
@@ -1261,18 +1264,16 @@ namespace ARK_Server_Manager.Lib
 
         private string GetServerWorldFile()
         {
-            if (!string.IsNullOrWhiteSpace(_profile.AltSaveDirectoryName))
-                return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedRelativePath, _profile.AltSaveDirectoryName, $"{_profile.ServerMap}.ark"));
-
-            return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}.ark"));
+            var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
+            var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
+            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}.ark"));
         }
 
         private string GetServerWorldBackupFile()
         {
-            if (!string.IsNullOrWhiteSpace(_profile.AltSaveDirectoryName))
-                return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedRelativePath, _profile.AltSaveDirectoryName, $"{_profile.ServerMap}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
-
-            return Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.SavedArksRelativePath, $"{_profile.ServerMap}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
+            var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
+            var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
+            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
         }
 
         public static bool HasNewServerVersion(string directory, DateTime checkTime)

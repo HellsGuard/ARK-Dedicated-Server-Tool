@@ -60,6 +60,7 @@ namespace ARK_Server_Manager.Lib
 
             //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
             this.CustomGameUserSettingsSections = new CustomSectionList();
+            this.PGM_Terrain = new PGMTerrain();
 
             GetDefaultDirectories();
         }
@@ -611,7 +612,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadSurvivorsProperty = DependencyProperty.Register(nameof(PreventDownloadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadSurvivors
         {
             get { return (bool)GetValue(PreventDownloadSurvivorsProperty); }
@@ -619,7 +620,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadItemsProperty = DependencyProperty.Register(nameof(PreventDownloadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadItems
         {
             get { return (bool)GetValue(PreventDownloadItemsProperty); }
@@ -627,7 +628,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDownloadDinosProperty = DependencyProperty.Register(nameof(PreventDownloadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadDinos
         {
             get { return (bool)GetValue(PreventDownloadDinosProperty); }
@@ -635,7 +636,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadSurvivorsProperty = DependencyProperty.Register(nameof(PreventUploadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadSurvivors
         {
             get { return (bool)GetValue(PreventUploadSurvivorsProperty); }
@@ -643,7 +644,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadItemsProperty = DependencyProperty.Register(nameof(PreventUploadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadItems
         {
             get { return (bool)GetValue(PreventUploadItemsProperty); }
@@ -651,11 +652,35 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadDinosProperty = DependencyProperty.Register(nameof(PreventUploadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventUploadDinos
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
             set { SetValue(PreventUploadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeCharacterExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeCharacterExpirationSeconds
+        {
+            get { return (int)GetValue(TributeCharacterExpirationSecondsProperty); }
+            set { SetValue(TributeCharacterExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeItemExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeItemExpirationSeconds
+        {
+            get { return (int)GetValue(TributeItemExpirationSecondsProperty); }
+            set { SetValue(TributeItemExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeDinoExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        public int TributeDinoExpirationSeconds
+        {
+            get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
+            set { SetValue(TributeDinoExpirationSecondsProperty, value); }
         }
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1685,7 +1710,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Engrams
         public static readonly DependencyProperty OnlyAllowSpecifiedEngramsProperty = DependencyProperty.Register(nameof(OnlyAllowSpecifiedEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams", ConditionedOn = nameof(OnlyAllowSpecifiedEngrams))]
         public bool OnlyAllowSpecifiedEngrams
         {
             get { return (bool)GetValue(OnlyAllowSpecifiedEngramsProperty); }
@@ -1746,6 +1771,7 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Survival of the Fittest
+        // ReSharper disable InconsistentNaming
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool SOTF_Enabled
         {
@@ -1863,6 +1889,7 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(SOTF_RingStartTimeProperty); }
             set { SetValue(SOTF_RingStartTimeProperty, value); }
         }
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region RCON
@@ -1895,6 +1922,33 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(ClusterDirOverrideProperty); }
             set { SetValue(ClusterDirOverrideProperty, value); }
         }
+        #endregion
+
+        #region Procedurally Generated ARKS
+        // ReSharper disable InconsistentNaming
+        public static readonly DependencyProperty PGM_EnabledProperty = DependencyProperty.Register(nameof(PGM_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool PGM_Enabled
+        {
+            get { return (bool)GetValue(PGM_EnabledProperty); }
+            set { SetValue(PGM_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_NameProperty = DependencyProperty.Register(nameof(PGM_Name), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultPGMapName));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", ConditionedOn = nameof(PGM_Enabled))]
+        public string PGM_Name
+        {
+            get { return (string)GetValue(PGM_NameProperty); }
+            set { SetValue(PGM_NameProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_TerrainProperty = DependencyProperty.Register(nameof(PGM_Terrain), typeof(PGMTerrain), typeof(ServerProfile), new PropertyMetadata(null));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", ConditionedOn = nameof(PGM_Enabled))]
+        public PGMTerrain PGM_Terrain
+        {
+            get { return (PGMTerrain)GetValue(PGM_TerrainProperty); }
+            set { SetValue(PGM_TerrainProperty, value); }
+        }
+        // ReSharper restore InconsistentNaming
         #endregion
 
         //public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
@@ -2017,12 +2071,12 @@ namespace ARK_Server_Manager.Lib
         {
             var serverArgs = new StringBuilder();
 
-            serverArgs.Append(this.ServerMap);
+            serverArgs.Append(GetProfileMapName(this));
 
             serverArgs.Append("?listen");
 
             // These are used to match the server to the profile.
-            if (!String.IsNullOrWhiteSpace(this.ServerIP))
+            if (!string.IsNullOrWhiteSpace(this.ServerIP))
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
@@ -2051,7 +2105,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
             }
 
-            if (!String.IsNullOrWhiteSpace(this.AdditionalArgs))
+            if (!string.IsNullOrWhiteSpace(this.AdditionalArgs))
             {
                 var addArgs = this.AdditionalArgs.TrimStart();
                 if (!addArgs.StartsWith("?"))
@@ -2345,13 +2399,16 @@ namespace ARK_Server_Manager.Lib
         {
             progressCallback?.Invoke(0, "Saving...");
 
-            // ensure that the auto settings are switched off for SotF servers
             if (SOTF_Enabled)
             {
+                // ensure that the auto settings are switched off for SotF servers
                 EnableAutoRestart = false;
                 EnableAutoRestart2 = false;
                 EnableAutoUpdate = false;
                 AutoRestartIfShutdown = false;
+
+                // ensure the procedurally generated settings are switched off for SotF servers
+                PGM_Enabled = false;
             }
 
             // ensure that the ARK mod management is switched off for ASM controlled profiles
@@ -2594,8 +2651,8 @@ namespace ARK_Server_Manager.Lib
             if (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods)
             {
                 // build a list of mods to be processed
-                var serverMapModId = ModUtils.GetMapModId(ServerMap);
-                var serverMapName = ModUtils.GetMapName(ServerMap);
+                var serverMapModId = GetProfileMapModId(this);
+                var serverMapName = GetProfileMapName(this);
                 var modIds = ModUtils.GetModIdList(ServerModIds);
                 modIds = ModUtils.ValidateModList(modIds);
 
@@ -2764,9 +2821,10 @@ namespace ARK_Server_Manager.Lib
 
         public void RestoreWorldSave(string restoreFile)
         {
-            var profileSaveFolder = Path.Combine(this.InstallDirectory, Config.Default.SavedArksRelativePath);
-            var mapFile = Path.Combine(profileSaveFolder, $"{this.ServerMap}.ark");
-            var mapFileBackup = Path.Combine(profileSaveFolder, $"{this.ServerMap}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
+            var profileSaveFolder = GetProfileSavePath(this);
+            var mapName = GetProfileMapFileName(this);
+            var mapFile = Path.Combine(profileSaveFolder, $"{mapName}.ark");
+            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
 
             // rename the existing save file
             File.Move(mapFile, mapFileBackup);
@@ -3101,6 +3159,13 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowHitMarkersProperty);
         }
 
+        public void ResetPGMSection()
+        {
+            this.ClearValue(PGM_EnabledProperty);
+            this.ClearValue(PGM_NameProperty);
+            this.PGM_Terrain = new PGMTerrain();
+        }
+
         public void ResetPlayerSettings()
         {
             this.ClearValue(EnableFlyerCarryProperty);
@@ -3229,6 +3294,110 @@ namespace ARK_Server_Manager.Lib
             OverrideMaxExperiencePointsPlayer = list[list.Count - 1].XPRequired;
         }
         #endregion
+
+        public static string GetProfileMapName(ServerProfile profile)
+        {
+            return GetProfileMapName(profile?.ServerMap, profile?.PGM_Enabled ?? false);
+        }
+
+        public static string GetProfileMapName(string serverMap, bool pgmEnabled)
+        {
+            if (pgmEnabled)
+                return Config.Default.DefaultServerMap_PGM;
+
+            return ModUtils.GetMapName(serverMap);
+        }
+
+        public static string GetProfileMapModId(ServerProfile profile)
+        {
+            return GetProfileMapModId(profile?.ServerMap, profile?.PGM_Enabled ?? false);
+        }
+
+        public static string GetProfileMapModId(string serverMap, bool pgmEnabled)
+        {
+            if (pgmEnabled)
+                return string.Empty;
+
+            return ModUtils.GetMapModId(serverMap);
+        }
+
+        public static string GetProfileSavePath(ServerProfile profile)
+        {
+            return GetProfileSavePath(profile?.InstallDirectory, profile?.AltSaveDirectoryName, profile?.PGM_Enabled ?? false, profile?.PGM_Name);
+        }
+
+        public static string GetProfileSavePath(string installDirectory, string altSaveDirectoryName, bool pgmEnabled, string pgmName)
+        {
+            if (!string.IsNullOrWhiteSpace(altSaveDirectoryName))
+            {
+                if (pgmEnabled)
+                    return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedRelativePath, altSaveDirectoryName, Config.Default.SavedPGMRelativePath, pgmName ?? string.Empty);
+                return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedRelativePath, altSaveDirectoryName);
+            }
+
+            if (pgmEnabled)
+                return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedArksRelativePath, Config.Default.SavedPGMRelativePath, pgmName ?? string.Empty);
+            return Path.Combine(installDirectory ?? string.Empty, Config.Default.SavedArksRelativePath);
+        }
+
+        public static string GetProfileMapFileName(ServerProfile profile)
+        {
+            return GetProfileMapFileName(profile?.ServerMap, profile?.PGM_Enabled ?? false, profile?.PGM_Name);
+        }
+
+        public static string GetProfileMapFileName(string serverMap, bool pgmEnabled, string pgmName)
+        {
+            if (pgmEnabled)
+                return $"{pgmName ?? string.Empty}_V1";
+
+            return ModUtils.GetMapName(serverMap);
+        }
+
+        public void RandomizePGMSettings()
+        {
+            var random = new Random(DateTime.Now.Millisecond);
+
+            this.PGM_Terrain.MapSeed = random.Next(1, 999);
+
+            this.PGM_Terrain.WaterFrequency = (float)Math.Round(random.NextDouble() * 5f, 5);
+            this.PGM_Terrain.MountainsFrequency = (float)Math.Round(random.NextDouble() * 10f, 5);
+            if (this.PGM_Terrain.MountainsFrequency < 3.0f)
+                this.PGM_Terrain.MountainsFrequency += 3.0f;
+
+            this.PGM_Terrain.MountainsSlope = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsSlope < 0.5f)
+                this.PGM_Terrain.MountainsSlope += 0.5f;
+            this.PGM_Terrain.MountainsHeight = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsHeight < 0.5f)
+                this.PGM_Terrain.MountainsHeight += 0.5f;
+
+            this.PGM_Terrain.SnowBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.RedWoodBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            if (this.PGM_Terrain.RedWoodBiomeSize > 0.5f)
+                this.PGM_Terrain.RedWoodBiomeSize -= 0.5f;
+
+            this.PGM_Terrain.MountainBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.JungleBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+
+            this.PGM_Terrain.GrassDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.JungleGrassDensity = (float)Math.Round(random.Next(2, 9) / 100.1f, 3);
+            this.PGM_Terrain.MountainGrassDensity = (float)Math.Round(random.Next(3, 10) / 100.1f, 3);
+            this.PGM_Terrain.RedwoodGrassDensity = (float)Math.Round(random.Next(5, 15) / 100.1f, 3);
+            this.PGM_Terrain.SnowGrassDensity = (float)Math.Round(random.Next(10, 30) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainGrassDensity = (float)Math.Round(random.Next(10, 20) / 100.1f, 3);
+
+            this.PGM_Terrain.TreeDensity = (float)Math.Round(random.Next(11, 135) / 10000.1f, 3);
+            this.PGM_Terrain.JungleTreeDensity = (float)Math.Round(random.Next(48, 83) / 100.1f, 3);
+            this.PGM_Terrain.MountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.RedWoodTreeDensity = (float)Math.Round(random.Next(23, 51) / 100.1f, 3);
+            this.PGM_Terrain.SnowTreeDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.ShoreTreeDensity = (float)Math.Round(random.Next(48, 83) / 1000.1f, 3);
+            this.PGM_Terrain.SnowShoreTreeDensity = (float)Math.Round(random.Next(14, 31) / 1000.1f, 3);
+
+            this.PGM_Terrain.InlandWaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+            this.PGM_Terrain.UnderwaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+        }
 
         #endregion
     }

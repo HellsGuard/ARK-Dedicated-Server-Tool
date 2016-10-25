@@ -45,6 +45,7 @@ namespace ARK_Server_Manager
         EngramsSection,
         CustomLevelsSection,
         SOTFSection,
+        PGMSection,
 
         // Properties
         MapNameIslandProperty,
@@ -1378,6 +1379,61 @@ namespace ARK_Server_Manager
                 }
             }
         }
+
+        private void PastePGMSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.ConfigDataTextWrapping = TextWrapping.Wrap;
+            window.Title = _globalizer.GetResourceString("ServerSettings_PGM_PasteSettingsTitle");
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (result.HasValue && result.Value)
+            {
+                if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PGM_PasteSettingsConfirmLabel"), _globalizer.GetResourceString("ServerSettings_PGM_PasteSettingsConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
+                // read the pasted data into an ini file.
+                var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+                var prop = Settings.GetType().GetProperty(nameof(Settings.PGM_Terrain));
+                if (prop == null)
+                    return;
+                var attr = prop.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>().FirstOrDefault();
+                var keyName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
+
+                // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+                foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+                {
+                    foreach (var key in section.Keys.Where(s => s.KeyName.Equals(keyName)))
+                    {
+                        Settings.PGM_Terrain.InitializeFromINIValue(key.KeyValue);
+                    }
+                }
+            }
+        }
+
+        private void SavePGMSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var prop = Settings.GetType().GetProperty(nameof(Settings.PGM_Terrain));
+            if (prop == null)
+                return;
+            var attr = prop.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>().FirstOrDefault();
+            var keyName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
+            var pgmString = $"{keyName}={Settings.PGM_Terrain.ToINIValue()}";
+
+            var window = new CommandLineWindow(pgmString);
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_PGM_SaveSettingsTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
+
+        private void RandomPGMSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.RandomizePGMSettings();
+        }
         #endregion
 
         #region Methods
@@ -1559,6 +1615,10 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.HudAndVisualsSection:
                                 this.Settings.ResetHUDAndVisualsSection();
                                 break;
+                            case ServerSettingsResetAction.PGMSection:
+                                this.Settings.ResetPGMSection();
+                                break;
+
 
                             case ServerSettingsResetAction.PlayerSettingsSection:
                                 this.Settings.ResetPlayerSettings();

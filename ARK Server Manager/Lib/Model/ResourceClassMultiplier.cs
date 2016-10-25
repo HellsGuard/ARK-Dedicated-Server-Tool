@@ -33,6 +33,14 @@ namespace ARK_Server_Manager.Lib
             return ResourceNameValueConverter.Convert(this.ClassName).ToString();
         }
 
+        public override void InitializeFromINIValue(string value)
+        {
+            base.InitializeFromINIValue(value);
+
+            if (!KnownResource)
+                ArkApplication = ArkApplication.Unknown;
+        }
+
         public override bool ShouldSave()
         {
             if (!KnownResource)
@@ -43,14 +51,6 @@ namespace ARK_Server_Manager.Lib
                 return true;
 
             return (!resource.Multiplier.Equals(Multiplier));
-        }
-
-        protected override void InitializeFromINIValue(string value)
-        {
-            base.InitializeFromINIValue(value);
-
-            if (!KnownResource)
-                ArkApplication = ArkApplication.Unknown;
         }
     }
 }

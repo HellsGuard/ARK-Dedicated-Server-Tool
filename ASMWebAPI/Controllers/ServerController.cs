@@ -30,13 +30,14 @@ namespace ASMWebAPI.Controllers
                 using (var server = QueryMaster.ServerQuery.GetServerInstance(QueryMaster.EngineType.Source, endpoint))
                 {
                     var serverInfo = server.GetInfo();
-                    Logger.Info($"Check server status requested for {endpoint.Address}:{endpoint.Port}");
+                    Logger.Info($"{endpoint.Address}:{endpoint.Port}");
                     return serverInfo != null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Debug($"Exception checking server status for {endpoint.Address}:{endpoint.Port}\r\n{ex.Message}");
+                //Logger.Warn($"{endpoint.Address}:{endpoint.Port}; {ex.Message}");
+                Logger.Warn($"{endpoint.Address}:{endpoint.Port}");
                 return false;
             }
         }
@@ -52,9 +53,10 @@ namespace ASMWebAPI.Controllers
 
                 return CheckServerStatusA(endpoint);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Debug($"Exception checking server status for {ipString}:{port}\r\n{ex.Message}");
+                //Logger.Warn($"{ipString}:{port}; {ex.Message}");
+                Logger.Warn($"{ipString}:{port}");
                 return false;
             }
         }
