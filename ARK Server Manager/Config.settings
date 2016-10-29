@@ -65,7 +65,7 @@
     <Setting Name="ServerProcessName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGameServer</Value>
     </Setting>
-    <Setting Name="ServerGameUserSettingsFile" Type="System.String" Scope="Application">
+    <Setting Name="ServerGameUserSettingsConfigFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameUserSettings.ini</Value>
     </Setting>
     <Setting Name="IniExtension" Type="System.String" Scope="Application">
@@ -103,9 +103,6 @@
     </Setting>
     <Setting Name="UpgradeConfig" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="SchedulerWorkDir" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ASMScheduler</Value>
     </Setting>
     <Setting Name="RCON_PlayerListSort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
@@ -174,10 +171,10 @@
       <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 445400 {1}" +quit</Value>
     </Setting>
     <Setting Name="ArkSE_PatchNotesUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://steamcommunity.com/app/346110/discussions/0/594820656447032287/</Value>
+      <Value Profile="(Default)">https://survivetheark.com/index.php?/forums/forum/5-changelog-patch-notes/</Value>
     </Setting>
     <Setting Name="ArkSotF_PatchNotesUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://steamcommunity.com/app/407530/discussions/0/365163686069351564/</Value>
+      <Value Profile="(Default)">https://survivetheark.com/index.php?/forums/forum/9-changelog-patch-notes/</Value>
     </Setting>
     <Setting Name="ArkSEUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://store.steampowered.com/app/346110/</Value>
@@ -403,6 +400,12 @@
     </Setting>
     <Setting Name="SectionPGMIsExpanded" Type="System.String" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="BackupDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">_Backup</Value>
+    </Setting>
+    <Setting Name="ServerGameConfigFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Game.ini</Value>
     </Setting>
   </Settings>
 </SettingsFile>

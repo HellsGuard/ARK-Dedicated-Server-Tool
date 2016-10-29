@@ -2293,8 +2293,8 @@ namespace ARK_Server_Manager.Lib
                     settings.IsDirty = false;
                 }
 
-                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
-                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsConfigFile);
+                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
                 if (File.Exists(configIniPath))
                 {
                     settings = LoadFromINIFiles(configIniPath, settings);
@@ -2366,8 +2366,8 @@ namespace ARK_Server_Manager.Lib
                     settings.IsDirty = false;
                 }
 
-                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsFile);
-                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsFile);
+                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsConfigFile);
+                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
                 if (File.Exists(configIniPath))
                 {
                     settings = LoadFromINIFiles(configIniPath, settings);

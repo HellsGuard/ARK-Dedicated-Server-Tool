@@ -194,21 +194,57 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        LogProfileMessage("Backing up world file...");
+                        LogProfileMessage("Backing up world save file...");
 
                         var backupFile = GetServerWorldBackupFile();
                         File.Copy(worldFile, backupFile, true);
 
-                        LogProfileMessage($"Backed up world file '{worldFile}'.");
+                        LogProfileMessage($"Backed up world save file '{worldFile}'.");
                     }
                     catch (Exception ex)
                     {
-                        LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
+                        LogProfileError($"Unable to back up world save file - {worldFile}.\r\n{ex.Message}", false);
                     }
                 }
                 else
                 {
-                    LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
+                    LogProfileMessage($"Unable to back up world save file - '{worldFile}'\r\nWorld save file could not be found.");
+                }
+
+                if (ExitCode != EXITCODE_NORMALEXIT)
+                    return;
+
+                // make a backup of the current profile and config files.
+                try
+                {
+                    LogProfileMessage("Backing up profile and config files...");
+
+                    var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                    var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
+                    var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
+
+                    var profileBackupFolder = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName, DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+                    var profileBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                    var gameIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameConfigFile));
+                    var gusIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameUserSettingsConfigFile));
+
+                    if (!Directory.Exists(profileBackupFolder))
+                        Directory.CreateDirectory(profileBackupFolder);
+
+                    if (File.Exists(profileFile))
+                        File.Copy(profileFile, profileBackupFile, true);
+
+                    if (File.Exists(gameIniFile))
+                        File.Copy(gameIniFile, gameIniBackupFile, true);
+
+                    if (File.Exists(gusIniFile))
+                        File.Copy(gusIniFile, gusIniBackupFile, true);
+
+                    LogProfileMessage("Backed up profile and config files.");
+                }
+                catch (Exception ex)
+                {
+                    LogProfileError($"Unable to back up profile and config files.\r\n{ex.Message}", false);
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
