@@ -30,7 +30,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return ResourceNameValueConverter.Convert(this.ClassName).ToString();
+            return null;
         }
 
         public override void InitializeFromINIValue(string value)

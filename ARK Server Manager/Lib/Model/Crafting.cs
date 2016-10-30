@@ -156,11 +156,7 @@ namespace ARK_Server_Manager.Lib
                     var val = property.GetValue(this);
                     var propertyValue = StringUtils.GetPropertyValue(val, property);
 
-                    result.Append($"{property.Name}=");
-                    if (property.PropertyType == typeof(string))
-                        result.Append($"\"{propertyValue}\"");
-                    else
-                        result.Append(propertyValue);
+                    result.Append($"{property.Name}={propertyValue}");
                 }
 
                 delimiter = DELIMITER.ToString();

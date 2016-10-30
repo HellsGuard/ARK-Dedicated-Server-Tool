@@ -25,6 +25,21 @@ namespace ARK_Server_Manager.Lib
         /// The key of the value.
         /// </summary>
         public string Key;
+
+        /// <summary>
+        /// If true, the value will always be surrounded with brackets
+        /// </summary>
+        public bool ValueWithinBrackets;
+
+        /// <summary>
+        /// If true, the every list value will always be surrounded with brackets
+        /// </summary>
+        public bool ListValueWithinBrackets;
+
+        /// <summary>
+        /// The delimiter used between each of the values.
+        /// </summary>
+        public string Delimiter;
     }
 
     /// <summary>
@@ -131,11 +146,7 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                result.Append($"{propName}=");
-                if (prop.PropertyType == typeof(string))
-                    result.Append($"\"{propValue}\"");
-                else
-                    result.Append(propValue);
+                result.Append($"{propName}={propValue}");
 
                 delimiter = DELIMITER.ToString();
             }

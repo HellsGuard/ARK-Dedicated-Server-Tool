@@ -89,7 +89,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string GetSortKey()
         {
-            return DisplayName;
+            return null;
         }
 
         public override void InitializeFromINIValue(string value)

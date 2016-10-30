@@ -87,9 +87,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 this.Add(CreateDinoSetting(entry.ClassName, true, entry.DinoNameTag != null, true, entry.ArkApplication));
             }
-
-            // sort the collection by the friendly name.
-            this.Sort(row => row.FriendlyName);
         }
 
         public void RenderToView()
@@ -203,9 +200,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     dinoSettings.WildResistanceMultiplier = entry.Multiplier;
                 }
             }
-
-            // sort the collection by the friendly name.
-            this.Sort(row => row.FriendlyName);
         }
 
         public void RenderToModel()

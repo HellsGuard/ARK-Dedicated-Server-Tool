@@ -57,6 +57,8 @@ namespace ARK_Server_Manager.Lib
 
             if (property.PropertyType == typeof(float))
                 convertedVal = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
+            else if (property.PropertyType == typeof(string))
+                convertedVal = $"\"{value}\"";
             else
                 convertedVal = Convert.ToString(value, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
 

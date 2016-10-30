@@ -2711,7 +2711,7 @@
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True" lvs:SortBehavior.IsDefaultSort="True"/>
+                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsArkAppColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkApplication}" lvs:SortBehavior.CanUseSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                         <GridViewColumn.CellTemplate>
