@@ -58,9 +58,14 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
-            //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
             this.CustomGameUserSettingsSections = new CustomSectionList();
             this.PGM_Terrain = new PGMTerrain();
+
+            //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
+            this.ConfigAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
+            this.ConfigSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
+            this.ConfigOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
+            this.NPCSpawnSettings = new NPCSpawnSettingsList(this.ConfigAddNPCSpawnEntriesContainer, this.ConfigSubtractNPCSpawnEntriesContainer, this.ConfigOverrideNPCSpawnEntriesContainer);
 
             GetDefaultDirectories();
         }
@@ -1959,6 +1964,44 @@ namespace ARK_Server_Manager.Lib
         //    get { return (AggregateIniValueList<Crafting>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
         //    set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
         //}
+
+        #region Spawn Overrides
+        public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigAddNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigAddNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigAddNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfigSubtractNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigSubtractNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigSubtractNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigSubtractNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigSubtractNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfigOverrideNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigOverrideNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigOverrideNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigOverrideNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigOverrideNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty NPCSpawnSettingsProperty = DependencyProperty.Register(nameof(NPCSpawnSettings), typeof(NPCSpawnSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        public NPCSpawnSettingsList NPCSpawnSettings
+        {
+            get { return (NPCSpawnSettingsList)GetValue(NPCSpawnSettingsProperty); }
+            set { SetValue(NPCSpawnSettingsProperty, value); }
+        }
+        #endregion
+
         #endregion
 
         #region Methods
@@ -2323,6 +2366,7 @@ namespace ARK_Server_Manager.Lib
             settings.PlayerLevels.UpdateTotals();
             settings.DinoLevels.UpdateTotals();
             settings.DinoSettings.RenderToView();
+            settings.NPCSpawnSettings.RenderToView();
             settings._lastSaveLocation = path;
 
             return settings;
@@ -2390,6 +2434,7 @@ namespace ARK_Server_Manager.Lib
                 settings.PlayerLevels.UpdateTotals();
                 settings.DinoLevels.UpdateTotals();
                 settings.DinoSettings.RenderToView();
+                settings.NPCSpawnSettings.RenderToView();
                 settings._lastSaveLocation = path;
             }
             return settings;
@@ -2453,6 +2498,9 @@ namespace ARK_Server_Manager.Lib
 
             progressCallback?.Invoke(0, "Constructing Dino Information...");
             this.DinoSettings.RenderToModel();
+
+            progressCallback?.Invoke(0, "Constructing Spawn Override Information...");
+            this.NPCSpawnSettings.RenderToModel();
 
             //
             // Save the profile
@@ -2849,6 +2897,7 @@ namespace ARK_Server_Manager.Lib
 
             File.WriteAllText(fileName, output.ToString());
         }
+
         public void ExportPlayerLevels(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -3157,6 +3206,14 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowPvEGammaProperty);
             this.ClearValue(ShowFloatingDamageTextProperty);
             this.ClearValue(AllowHitMarkersProperty);
+        }
+
+        public void ResetNPCSpawnSettings()
+        {
+            this.ConfigAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
+            this.ConfigSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
+            this.ConfigOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
+            this.NPCSpawnSettings = new NPCSpawnSettingsList(this.ConfigAddNPCSpawnEntriesContainer, this.ConfigSubtractNPCSpawnEntriesContainer, this.ConfigOverrideNPCSpawnEntriesContainer);
         }
 
         public void ResetPGMSection()

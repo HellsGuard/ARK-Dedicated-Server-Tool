@@ -46,6 +46,7 @@ namespace ARK_Server_Manager
         CustomLevelsSection,
         SOTFSection,
         PGMSection,
+        NPCSpawnSettingsSection,
 
         // Properties
         MapNameIslandProperty,
@@ -223,6 +224,7 @@ namespace ARK_Server_Manager
         private void ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
         {
             this.Settings.DinoSettings.UpdateForLocalization();
+            this.Settings.NPCSpawnSettings.UpdateForLocalization();
 
             this.RefreshDinoSettingsCombobox();
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
@@ -1617,6 +1619,11 @@ namespace ARK_Server_Manager
                                 break;
                             case ServerSettingsResetAction.PGMSection:
                                 this.Settings.ResetPGMSection();
+                                break;
+
+                            case ServerSettingsResetAction.NPCSpawnSettingsSection:
+                                this.Settings.ResetNPCSpawnSettings();
+                                //RefreshDinoSettingsCombobox();
                                 break;
 
 
