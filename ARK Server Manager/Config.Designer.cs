@@ -1428,5 +1428,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ServerGameConfigFile"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionMapSpawnerOverridesIsExpanded {
+            get {
+                return ((bool)(this["SectionMapSpawnerOverridesIsExpanded"]));
+            }
+            set {
+                this["SectionMapSpawnerOverridesIsExpanded"] = value;
+            }
+        }
     }
 }

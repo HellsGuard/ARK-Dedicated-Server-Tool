@@ -407,5 +407,8 @@
     <Setting Name="ServerGameConfigFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Game.ini</Value>
     </Setting>
+    <Setting Name="SectionMapSpawnerOverridesIsExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

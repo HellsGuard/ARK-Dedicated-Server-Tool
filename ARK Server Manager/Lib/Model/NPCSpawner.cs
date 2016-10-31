@@ -27,9 +27,7 @@ namespace ARK_Server_Manager.Lib
     [DefaultValue(Override)]
     public enum NPCSpawnContainerType
     {
-        // do not use ALL in the NPCSpawnAttribute.
-        All = 0,
-        Add,
+        Add = 1,
         Subtract,
         Override,
     }
@@ -145,7 +143,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string ToINIValue()
         {
-            return ToIniValue(NPCSpawnContainerType.All);
+            throw new NotImplementedException();
         }
 
         public string ToIniValue(NPCSpawnContainerType containerType)
@@ -161,7 +159,7 @@ namespace ARK_Server_Manager.Lib
             foreach (var prop in this.Properties)
             {
                 var attrSpawn = prop.GetCustomAttributes(typeof(NPCSpawnAttribute), false).OfType<NPCSpawnAttribute>().FirstOrDefault();
-                if (containerType != NPCSpawnContainerType.All && (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false))
+                if (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false)
                     continue;
 
                 result.Append(delimiter);
@@ -331,7 +329,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string ToINIValue()
         {
-            return ToIniValue(NPCSpawnContainerType.All);
+            throw new NotImplementedException();
         }
 
         public string ToIniValue(NPCSpawnContainerType containerType)
@@ -347,7 +345,7 @@ namespace ARK_Server_Manager.Lib
             foreach (var prop in this.Properties)
             {
                 var attrSpawn = prop.GetCustomAttributes(typeof(NPCSpawnAttribute), false).OfType<NPCSpawnAttribute>().FirstOrDefault();
-                if (containerType != NPCSpawnContainerType.All && (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false))
+                if (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false)
                     continue;
 
                 result.Append(delimiter);
@@ -508,7 +506,7 @@ namespace ARK_Server_Manager.Lib
 
         public override string ToINIValue()
         {
-            return ToIniValue(NPCSpawnContainerType.All);
+            throw new NotImplementedException();
         }
 
         public string ToIniValue(NPCSpawnContainerType containerType)
@@ -524,7 +522,7 @@ namespace ARK_Server_Manager.Lib
             foreach (var prop in this.Properties)
             {
                 var attrSpawn = prop.GetCustomAttributes(typeof(NPCSpawnAttribute), false).OfType<NPCSpawnAttribute>().FirstOrDefault();
-                if (containerType != NPCSpawnContainerType.All && (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false))
+                if (!attrSpawn?.ContainerTypes?.Contains(containerType) ?? false)
                     continue;
 
                 result.Append(delimiter);
@@ -629,7 +627,7 @@ namespace ARK_Server_Manager.Lib
 
         public override IEnumerable<string> ToIniValues()
         {
-            return this.ToIniValues(NPCSpawnContainerType.All);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)

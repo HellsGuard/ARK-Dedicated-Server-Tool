@@ -604,7 +604,7 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<Level> LevelProgressionPlayerOfficial => levelProgressionPlayerOfficial.Select(l => l.Duplicate());
 
-        public static readonly EngramEntry[] engrams = new[]
+        private static readonly EngramEntry[] engrams = new[]
         {
             new EngramEntry { EngramClassName="EngramEntry_AdvancedBullet_C",                EngramLevelRequirement=50, EngramPointsCost=8 },
             new EngramEntry { EngramClassName="EngramEntry_AdvancedRifleBullet_C",           EngramLevelRequirement=55, EngramPointsCost=8 },
@@ -1167,7 +1167,7 @@ namespace ARK_Server_Manager.Lib
             return engrams.Any(e => e.EngramClassName.Equals(className));
         }
 
-        public static readonly PrimalItem[] primalItems = new[]
+        private static readonly PrimalItem[] primalItems = new[]
         {
             new PrimalItem { ClassName="PrimalItemConsumable_RawMeat_C" },
             new PrimalItem { ClassName="PrimalItemResource_Thatch_C" },
@@ -1219,6 +1219,109 @@ namespace ARK_Server_Manager.Lib
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Affinity()
         {
             return new float[12] { 0.45f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.45f, 1.0f, 1.0f, 1.0f };
+        }
+
+        private static readonly MapSpawner[] mapSpawners = new[]
+        {
+            new MapSpawner { ClassName="DinoSpawnEntries_Beavers_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_Mosa_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_DarkWaterAngler_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_DeepWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_InlandWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ocean_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesTheRedwoods_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_RedwoodWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_ShallowWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_SwampWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesArcha_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesBeach_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave1_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave2_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave2-LowSpiderScorp_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave3_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave5_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave5_Tough_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCave7-Fliers_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveIceWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveLava_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesDamiensAtoll_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesGigant_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesGrassland_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesIceCave_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesJungle_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesMonsterIsland_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesMountain_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesPelican_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesPenguins_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesQuetz_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSnow_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSwamp_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSwampCave_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSwampCaveWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesTinyCave_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesTitano_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesWater_C" },
+            new MapSpawner { ClassName="CustomAnglerSpawner_C" },
+            new MapSpawner { ClassName="CustomPenguinSpawner_C" },
+            new MapSpawner { ClassName="DunkEurSpawn_C" },
+            new MapSpawner { ClassName="GrasslandsUnderArea_WaterSpawn_C" },
+            new MapSpawner { ClassName="IceCave_Spawner_C" },
+            new MapSpawner { ClassName="IceCaveWater_Spawner_C" },
+            new MapSpawner { ClassName="Lava_Spawn_C" },
+            new MapSpawner { ClassName="Lava_Upper_Spawn_C" },
+            new MapSpawner { ClassName="LavaBeach_Spawn_C" },
+            new MapSpawner { ClassName="LavaWater_Spawn_C" },
+            new MapSpawner { ClassName="MiniCaveBearSpawner_C" },
+            new MapSpawner { ClassName="SnowGrasslands_Spawn_C" },
+            new MapSpawner { ClassName="SnowGrasslandsUnderArea_Spawn_C" },
+            new MapSpawner { ClassName="SnowyLake_Mosa_C" },
+            new MapSpawner { ClassName="SnowyMountain_Spawn_C" },
+            new MapSpawner { ClassName="SpiderCaveSpawner_C" },
+            new MapSpawner { ClassName="UnderwaterCaveSpawn_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_OceanUnderworld_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntries_DeathWorm_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntries_RexSolo_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesBadlands_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesCanyonCave_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesCanyons_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesDunes_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesEZMode_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesGreenDesert_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesMountain_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesMountainCave_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesOasis_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesRuinsCave_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesRuinsCaveNoGolem_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesSandworm_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesWater_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesWyvern_C" },
+            new MapSpawner { ClassName="SE_DinoSpawnEntriesWyvernTrench_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_InlandWater_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_TheDeepwater_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_TheOcean_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesBeach_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesGrassland_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesJungle_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesMountain_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSnow_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSnowMountain_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSnowShoreline_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesSwamp_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesTheRedwoods_PGM_C" },
+        };
+
+        public static IEnumerable<MapSpawner> GetStandardMapSpawners() => mapSpawners.Select(d => d.Duplicate());
+
+        public static MapSpawner GetMapSpawnerForClass(string className)
+        {
+            return mapSpawners.FirstOrDefault(e => e.ClassName.Equals(className));
+        }
+
+        public static bool HasMapSpawnerForClass(string className)
+        {
+            return mapSpawners.Any(e => e.ClassName.Equals(className));
         }
     }
 }

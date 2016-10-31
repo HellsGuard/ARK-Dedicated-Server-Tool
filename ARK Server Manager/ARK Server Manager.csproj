@@ -162,6 +162,7 @@
     <Compile Include="CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\BindingProxy.cs" />
     <Compile Include="Lib\Model\PGMTerrain.cs" />
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\NPCSpawner.cs" />
@@ -175,7 +176,9 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
+    <Compile Include="Lib\ViewModel\ComboBoxItem.cs" />
     <Compile Include="Lib\ViewModel\NPCSpawnSettings.cs" />
+    <Compile Include="Lib\ViewModel\MapSpawner.cs" />
     <Compile Include="Lib\ViewModel\TributeExpirationConverter.cs" />
     <Compile Include="Lib\ViewModel\InstalledVersionConverter.cs" />
     <Compile Include="Lib\ViewModel\ExtinctionEventDateConverter.cs" />
