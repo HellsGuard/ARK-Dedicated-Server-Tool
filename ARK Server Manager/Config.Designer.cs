@@ -1440,5 +1440,17 @@ namespace ARK_Server_Manager {
                 this["SectionMapSpawnerOverridesIsExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown has been cancelled.")]
+        public string ServerShutdown_CancelMessage {
+            get {
+                return ((string)(this["ServerShutdown_CancelMessage"]));
+            }
+            set {
+                this["ServerShutdown_CancelMessage"] = value;
+            }
+        }
     }
 }

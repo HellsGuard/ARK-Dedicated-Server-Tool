@@ -19,6 +19,7 @@ namespace ARK_Server_Manager
         private static readonly List<Server> Instances = new List<Server>();
 
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private CancellationTokenSource _shutdownCancellationSource = null;
 
         public static readonly DependencyProperty BackupWorldFileProperty = DependencyProperty.Register(nameof(BackupWorldFile), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(true));
         public static readonly DependencyProperty RestartServerProperty = DependencyProperty.Register(nameof(RestartServer), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(false));
@@ -108,6 +109,14 @@ namespace ARK_Server_Manager
             this.Close();
         }
 
+        private void CancelShutdown_Click(object sender, RoutedEventArgs e)
+        {
+            if (_shutdownCancellationSource == null || _shutdownCancellationSource.IsCancellationRequested)
+                return;
+
+            _shutdownCancellationSource.Cancel();
+        }
+
         private async void Shutdown_Click(object sender, RoutedEventArgs e)
         {
             if (ShutdownStarted)
@@ -119,6 +128,7 @@ namespace ARK_Server_Manager
 
                 ShutdownType = 1;
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                Application.Current.Dispatcher.Invoke(() => this.CancelShutdownButton.Cursor = System.Windows.Input.Cursors.Arrow);
 
                 var app = new ServerApp()
                 {
@@ -133,8 +143,10 @@ namespace ARK_Server_Manager
                 var profile = ProfileSnapshot.Create(Server.Profile);
                 var restartServer = RestartServer;
 
-                var exitCode = await Task.Run(() => app.PerformProfileShutdown(profile, restartServer));
-                if (exitCode != ServerApp.EXITCODE_NORMALEXIT)
+                _shutdownCancellationSource = new CancellationTokenSource();
+
+                var exitCode = await Task.Run(() => app.PerformProfileShutdown(profile, restartServer, _shutdownCancellationSource.Token));
+                if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
                     throw new ApplicationException($"An error occured during the shutdown process - ExitCode: {exitCode}");
 
                 ShutdownType = 0;
@@ -146,7 +158,9 @@ namespace ARK_Server_Manager
             }
             finally
             {
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = null );
+                _shutdownCancellationSource = null;
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = null);
+                Application.Current.Dispatcher.Invoke(() => this.CancelShutdownButton.Cursor = null);
             }
         }
 

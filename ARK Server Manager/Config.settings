@@ -410,5 +410,8 @@
     <Setting Name="SectionMapSpawnerOverridesIsExpanded" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ServerShutdown_CancelMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server shutdown has been cancelled.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

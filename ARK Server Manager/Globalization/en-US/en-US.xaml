@@ -157,6 +157,8 @@
     <sys:String x:Key="ShutdownWindow_ShutdownButtonTooltip">Perform a server shutdown with countdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartButtonLabel">Restart</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartButtonTooltip">Perform a server restart with countdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_CancelShutdownButtonLabel">Cancel Shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_CancelShutdownButtonTooltip">Cancel the server shutdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_StopButtonLabel">Stop</sys:String>
     <sys:String x:Key="ShutdownWindow_StopButtonTooltip">Stop the server immediately, without a countdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_CloseButtonLabel">Close</sys:String>
@@ -215,6 +217,8 @@
     <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">This message will be displayed when the server is about to shutdown.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">WorldSave Message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">This message will be displayed upon shutdown when the world is about to be saved.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Cancel Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">This message will be displayed when the server shutdown has been cancelled.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Email Settings</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostLabel">Host:</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostTooltip">The name or IP address of the host used for SMTP transmissions.</sys:String>
@@ -387,6 +391,7 @@
     <sys:String x:Key="ServerSettings_StartServer_FailedTitle">Starting Server Error</sys:String>
     <sys:String x:Key="ServerSettings_StartServer_MutexFailedLabel">Could not lock the server, another process is using the server. Server start was cancelled.</sys:String>
     <sys:String x:Key="ServerSettings_ShutdownServer_FailedTitle">Shutdown Server Error</sys:String>
+    <sys:String x:Key="ServerSettings_ShutdownServer_CancelledTitle">Shutdown Server Cancelled</sys:String>
     <sys:String x:Key="ServerSettings_ShutdownServer_AlreadyOpenLabel">The shutdown window is already open for this server.</sys:String>
     <sys:String x:Key="ServerSettings_StopServer_FailedTitle">Stopping Server Error</sys:String>
     <sys:String x:Key="ServerSettings_InstallServer_Title">Select Install Directory</sys:String>
