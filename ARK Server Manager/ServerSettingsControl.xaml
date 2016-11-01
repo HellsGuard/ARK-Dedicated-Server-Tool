@@ -602,7 +602,7 @@
                             <TextBox.Text>
                                 <Binding Path="ProfileName">
                                     <Binding.ValidationRules>
-                                        <vm:ProfileNameValidationRule ValidatesOnTargetUpdated="true" />
+                                        <lib:ProfileNameValidationRule ValidatesOnTargetUpdated="true" />
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -1135,7 +1135,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ServerModIds">
                                                     <Binding.ValidationRules>
-                                                        <vm:IdListValidationRule ValidatesOnTargetUpdated="true" />
+                                                        <lib:IdListValidationRule ValidatesOnTargetUpdated="true" />
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -1289,7 +1289,7 @@
                                                 <TextBox.Text>
                                                     <Binding Path="AltSaveDirectoryName">
                                                         <Binding.ValidationRules>
-                                                            <vm:StringNoSpacesValidationRule ValidatesOnTargetUpdated="true" />
+                                                            <lib:StringNoSpacesValidationRule ValidatesOnTargetUpdated="true" />
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
@@ -1449,7 +1449,7 @@
                                                     <TextBox.Text>
                                                         <Binding Path="AutoRestartTime">
                                                             <Binding.ValidationRules>
-                                                                <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                                <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>
@@ -1471,7 +1471,7 @@
                                                     <TextBox.Text>
                                                         <Binding Path="AutoRestartTime2">
                                                             <Binding.ValidationRules>
-                                                                <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                                <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>
@@ -1672,7 +1672,7 @@
                                                     <TextBox.Text>
                                                         <Binding Path="AutoPvEStartTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
                                                             <Binding.ValidationRules>
-                                                                <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                                <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>
@@ -1693,7 +1693,7 @@
                                                     <TextBox.Text>
                                                         <Binding Path="AutoPvEStopTimeSeconds" Converter="{StaticResource ResourceKey=SecondsToTimeValueConverter}">
                                                             <Binding.ValidationRules>
-                                                                <vm:TimeValidationRule ValidatesOnTargetUpdated="true" />
+                                                                <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>

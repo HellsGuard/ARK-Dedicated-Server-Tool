@@ -1,10 +1,10 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows.Controls;
 
-namespace ARK_Server_Manager.Lib.ViewModel
+namespace ARK_Server_Manager.Lib
 {
-    public class StringNoSpacesValidationRule : ValidationRule
+    public class ProfileNameValidationRule : ValidationRule
     {
         /// <summary>
         /// When overridden in a derived class, performs validation checks on a value.
@@ -17,11 +17,18 @@ namespace ARK_Server_Manager.Lib.ViewModel
         {
             var strValue = (string)value;
 
+            var invalidFolderChars = Path.GetInvalidPathChars();
+            var invalidFileChars = Path.GetInvalidFileNameChars();
+
             if (!string.IsNullOrWhiteSpace(strValue))
             {
-                // check if there are any spaces
-                if (strValue.Contains(" "))
-                    return new ValidationResult(false, "Spaces are not permitted");
+                // check for invalid folder characters
+                if (strValue.IndexOfAny(invalidFolderChars) >= 0)
+                    return new ValidationResult(false, "Contains an invalid folder character");
+
+                // check for invalid file characters
+                if (strValue.IndexOfAny(invalidFileChars) >= 0)
+                    return new ValidationResult(false, "Contains an invalid file character");
             }
 
             return new ValidationResult(true, null);

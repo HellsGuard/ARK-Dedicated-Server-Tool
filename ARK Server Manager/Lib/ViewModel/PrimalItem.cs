@@ -7,6 +7,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(PrimalItem), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(PrimalItem), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty CategoryProperty = DependencyProperty.Register(nameof(Category), typeof(string), typeof(PrimalItem), new PropertyMetadata(String.Empty));
 
         public ArkApplication ArkApplication
         {
@@ -20,21 +21,15 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ClassNameProperty, value); }
         }
 
-        public string DisplayName
+        public string Category
         {
-            get
-            {
-                return PrimalItemClassNameToDisplayNameConverter.Convert(ClassName).ToString();
-            }
+            get { return (string)GetValue(CategoryProperty); }
+            set { SetValue(CategoryProperty, value); }
         }
 
-        public bool KnownItem
-        {
-            get
-            {
-                return GameData.HasPrimalItemForClass(ClassName);
-            }
-        }
+        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
+
+        public bool KnownItem => GameData.HasPrimalItemForClass(ClassName);
 
         public PrimalItem Duplicate()
         {

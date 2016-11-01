@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Controls;
 
-namespace ARK_Server_Manager.Lib.ViewModel
+namespace ARK_Server_Manager.Lib
 {
     public class IdListValidationRule : ValidationRule
     {

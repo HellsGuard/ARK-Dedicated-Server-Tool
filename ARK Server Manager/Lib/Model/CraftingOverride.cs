@@ -8,16 +8,16 @@ using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class Crafting : AggregateIniValue
+    public class CraftingOverride : AggregateIniValue
     {
         private const char DELIMITER = ',';
 
-        public Crafting()
+        public CraftingOverride()
         {
             BaseCraftingResourceRequirements = new AggregateIniValueList<CraftingResourceRequirement>(nameof(BaseCraftingResourceRequirements), null);
         }
 
-        public static readonly DependencyProperty ItemClassStringProperty = DependencyProperty.Register(nameof(ItemClassString), typeof(string), typeof(Crafting), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ItemClassStringProperty = DependencyProperty.Register(nameof(ItemClassString), typeof(string), typeof(CraftingOverride), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         public string ItemClassString
         {
@@ -29,7 +29,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static readonly DependencyProperty BaseCraftingResourceRequirementsProperty = DependencyProperty.Register(nameof(BaseCraftingResourceRequirements), typeof(AggregateIniValueList<CraftingResourceRequirement>), typeof(Crafting), new PropertyMetadata(null));
+        public static readonly DependencyProperty BaseCraftingResourceRequirementsProperty = DependencyProperty.Register(nameof(BaseCraftingResourceRequirements), typeof(AggregateIniValueList<CraftingResourceRequirement>), typeof(CraftingOverride), new PropertyMetadata(null));
         [AggregateIniValueEntry]
         public AggregateIniValueList<CraftingResourceRequirement> BaseCraftingResourceRequirements
         {
@@ -50,7 +50,7 @@ namespace ARK_Server_Manager.Lib
 
         public override bool IsEquivalent(AggregateIniValue other)
         {
-            return string.Equals(this.ItemClassString, ((Crafting)other).ItemClassString, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(this.ItemClassString, ((CraftingOverride)other).ItemClassString, StringComparison.OrdinalIgnoreCase);
         }
 
         public override void InitializeFromINIValue(string value)

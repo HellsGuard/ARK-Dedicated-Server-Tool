@@ -6,14 +6,14 @@ using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class SupplyCrate : AggregateIniValue
+    public class SupplyCrateOverride : AggregateIniValue
     {
-        public SupplyCrate()
+        public SupplyCrateOverride()
         {
             ItemSets = new AggregateIniValueList<SupplyCrateItemSet>(nameof(ItemSets), null);
         }
 
-        public static readonly DependencyProperty SupplyCrateClassStringProperty = DependencyProperty.Register(nameof(SupplyCrateClassString), typeof(string), typeof(SupplyCrate), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty SupplyCrateClassStringProperty = DependencyProperty.Register(nameof(SupplyCrateClassString), typeof(string), typeof(SupplyCrateOverride), new PropertyMetadata(String.Empty));
         [AggregateIniValueEntry]
         public string SupplyCrateClassString
         {
@@ -25,7 +25,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static readonly DependencyProperty MinItemSetsProperty = DependencyProperty.Register(nameof(MinItemSets), typeof(int), typeof(SupplyCrate), new PropertyMetadata(1));
+        public static readonly DependencyProperty MinItemSetsProperty = DependencyProperty.Register(nameof(MinItemSets), typeof(int), typeof(SupplyCrateOverride), new PropertyMetadata(1));
         [AggregateIniValueEntry]
         public int MinItemSets
         {
@@ -33,7 +33,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MinItemSetsProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxItemSetsProperty = DependencyProperty.Register(nameof(MaxItemSets), typeof(int), typeof(SupplyCrate), new PropertyMetadata(1));
+        public static readonly DependencyProperty MaxItemSetsProperty = DependencyProperty.Register(nameof(MaxItemSets), typeof(int), typeof(SupplyCrateOverride), new PropertyMetadata(1));
         [AggregateIniValueEntry]
         public int MaxItemSets
         {
@@ -41,7 +41,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxItemSetsProperty, value); }
         }
 
-        public static readonly DependencyProperty NumItemSetsPowerProperty = DependencyProperty.Register(nameof(NumItemSetsPower), typeof(float), typeof(SupplyCrate), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty NumItemSetsPowerProperty = DependencyProperty.Register(nameof(NumItemSetsPower), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
         public float NumItemSetsPower
         {
@@ -49,7 +49,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NumItemSetsPowerProperty, value); }
         }
 
-        public static readonly DependencyProperty bSetsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(bSetsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrate), new PropertyMetadata(true));
+        public static readonly DependencyProperty bSetsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(bSetsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(true));
         [AggregateIniValueEntry]
         public bool bSetsRandomWithoutReplacement
         {
@@ -57,7 +57,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(bSetsRandomWithoutReplacementProperty, value); }
         }
 
-        public static readonly DependencyProperty ItemSetsProperty = DependencyProperty.Register(nameof(ItemSets), typeof(AggregateIniValueList<SupplyCrateItemSet>), typeof(SupplyCrate), new PropertyMetadata(null));
+        public static readonly DependencyProperty ItemSetsProperty = DependencyProperty.Register(nameof(ItemSets), typeof(AggregateIniValueList<SupplyCrateItemSet>), typeof(SupplyCrateOverride), new PropertyMetadata(null));
         [AggregateIniValueEntry]
         public AggregateIniValueList<SupplyCrateItemSet> ItemSets
         {
@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
 
         public override bool IsEquivalent(AggregateIniValue other)
         {
-            return String.Equals(this.SupplyCrateClassString, ((SupplyCrate)other).SupplyCrateClassString, StringComparison.OrdinalIgnoreCase);
+            return String.Equals(this.SupplyCrateClassString, ((SupplyCrateOverride)other).SupplyCrateClassString, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToINIValue()

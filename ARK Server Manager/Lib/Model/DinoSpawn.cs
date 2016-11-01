@@ -6,8 +6,6 @@ namespace ARK_Server_Manager.Lib
 {   
     public class DinoSpawn : AggregateIniValue
     {
-        public const string AGGREGATE_VALUE_NAME = "DinoSpawnWeightMultipliers";
-
         public const bool DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE = true;
         public const float DEFAULT_SPAWN_LIMIT_PERCENTAGE = ClassMultiplier.DEFAULT_MULTIPLIER;
         public const float DEFAULT_SPAWN_WEIGHT_MULTIPLIER = ClassMultiplier.DEFAULT_MULTIPLIER;
