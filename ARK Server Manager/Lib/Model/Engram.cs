@@ -6,6 +6,37 @@ using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
+    public class EngramEntryList<T> : AggregateIniValueList<T>
+         where T : EngramEntry, new()
+    {
+        private bool _onlyAllowSelectedEngrams;
+
+        public bool OnlyAllowSelectedEngrams
+        {
+            get { return this._onlyAllowSelectedEngrams; }
+            set
+            {
+                this._onlyAllowSelectedEngrams = value;
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(OnlyAllowSelectedEngrams)));
+            }
+        }
+
+        public EngramEntryList(string aggregateValueName, Func<IEnumerable<T>> resetFunc)
+            : base(aggregateValueName, resetFunc)
+        {
+        }
+
+        public override IEnumerable<string> ToIniValues()
+        {
+            if (!OnlyAllowSelectedEngrams)
+                return base.ToIniValues();
+
+            var values = new List<string>();
+            values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
+            return values;
+        }
+    }
+
     public class EngramEntry : AggregateIniValue
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(EngramEntry), new PropertyMetadata(ArkApplication.SurvivalEvolved));
@@ -119,37 +150,6 @@ namespace ARK_Server_Manager.Lib
                 !engramEntry.EngramPointsCost.Equals(EngramPointsCost) ||
                 !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
                 !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
-        }
-    }
-
-    public class EngramEntryList<T> : AggregateIniValueList<T>
-         where T : EngramEntry, new()
-    {
-        private bool _onlyAllowSelectedEngrams;
-
-        public bool OnlyAllowSelectedEngrams
-        {
-            get { return this._onlyAllowSelectedEngrams; }
-            set
-            {
-                this._onlyAllowSelectedEngrams = value;
-                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(OnlyAllowSelectedEngrams)));
-            }
-        }
-
-        public EngramEntryList(string aggregateValueName, Func<IEnumerable<T>> resetFunc)
-            : base(aggregateValueName, resetFunc)
-        {
-        }
-
-        public override IEnumerable<string> ToIniValues()
-        {
-            if (!OnlyAllowSelectedEngrams)
-                return base.ToIniValues();
-
-            var values = new List<string>();
-            values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
-            return values;
         }
     }
 }

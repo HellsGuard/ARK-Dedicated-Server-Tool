@@ -32,6 +32,34 @@ namespace ARK_Server_Manager.Lib
         Override,
     }
 
+    public class NPCSpawnContainerList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
+         where T : AggregateIniValue, new()
+    {
+        public NPCSpawnContainerList(string aggregateValueName, NPCSpawnContainerType containerType)
+            : base(aggregateValueName, null)
+        {
+            ContainerType = containerType;
+        }
+
+        public NPCSpawnContainerType ContainerType
+        {
+            get;
+            set;
+        }
+
+        public override IEnumerable<string> ToIniValues()
+        {
+            return this.ToIniValues(ContainerType);
+        }
+
+        public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
+        {
+            var values = new List<string>();
+            values.AddRange(this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => $"{this.IniCollectionKey}={d.ToIniValue(containerType)}"));
+            return values;
+        }
+    }
+
     public class NPCSpawnContainer : AggregateIniValue, ISpawnIniValue
     {
         private const char DELIMITER = ',';
@@ -223,6 +251,25 @@ namespace ARK_Server_Manager.Lib
         }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString) && NPCSpawnEntries.Count == NPCSpawnLimits.Count;
+    }
+
+    public class NPCSpawnList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
+         where T : AggregateIniValue, new()
+    {
+        public NPCSpawnList(string aggregateValueName)
+            : base(aggregateValueName, null)
+        {
+        }
+
+        public override IEnumerable<string> ToIniValues()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
+        {
+            return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => d.ToIniValue(containerType));
+        }
     }
 
     public class NPCSpawnEntry : AggregateIniValue, ISpawnIniValue
@@ -587,53 +634,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCClassString);
-    }
-
-    public class NPCSpawnContainerList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
-         where T : AggregateIniValue, new()
-    {
-        public NPCSpawnContainerList(string aggregateValueName, NPCSpawnContainerType containerType)
-            : base(aggregateValueName, null)
-        {
-            ContainerType = containerType;
-        }
-
-        public NPCSpawnContainerType ContainerType
-        {
-            get;
-            set;
-        }
-
-        public override IEnumerable<string> ToIniValues()
-        {
-            return this.ToIniValues(ContainerType);
-        }
-
-        public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
-        {
-            var values = new List<string>();
-            values.AddRange(this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => $"{this.IniCollectionKey}={d.ToIniValue(containerType)}"));
-            return values;
-        }
-    }
-
-    public class NPCSpawnList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
-         where T : AggregateIniValue, new()
-    {
-        public NPCSpawnList(string aggregateValueName)
-            : base(aggregateValueName, null)
-        {
-        }
-
-        public override IEnumerable<string> ToIniValues()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
-        {
-            return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => d.ToIniValue(containerType));
-        }
     }
 
     public interface ISpawnIniValuesCollection
