@@ -7,7 +7,7 @@ namespace ARK_Server_Manager.Lib
 {
     public class PGMTerrain : AggregateIniValue
     {
-        private const char DELIMITER = ';';
+        private new const char DELIMITER = ';';
 
         public PGMTerrain()
         {
@@ -618,8 +618,6 @@ namespace ARK_Server_Manager.Lib
 
     public class PGMTerrainXY : AggregateIniValue
     {
-        private const char DELIMITER = ',';
-
         public PGMTerrainXY()
         {
         }

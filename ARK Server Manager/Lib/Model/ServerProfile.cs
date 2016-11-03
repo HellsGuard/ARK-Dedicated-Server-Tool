@@ -61,7 +61,8 @@ namespace ARK_Server_Manager.Lib
             this.CustomGameUserSettingsSections = new CustomSectionList();
             this.PGM_Terrain = new PGMTerrain();
 
-            //this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<Crafting>(nameof(ConfigOverrideItemCraftingCosts), null);
+            this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(ConfigOverrideItemCraftingCosts), null);
+
             this.ConfigAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
             this.ConfigSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
             this.ConfigOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
@@ -1956,14 +1957,16 @@ namespace ARK_Server_Manager.Lib
         // ReSharper restore InconsistentNaming
         #endregion
 
-        //public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<Crafting>), typeof(ServerProfile), new PropertyMetadata(null));
-        //[XmlIgnore]
-        //[IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        //public AggregateIniValueList<Crafting> ConfigOverrideItemCraftingCosts
-        //{
-        //    get { return (AggregateIniValueList<Crafting>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
-        //    set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
-        //}
+        #region Crafting Overrides
+        public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<CraftingOverride>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<CraftingOverride> ConfigOverrideItemCraftingCosts
+        {
+            get { return (AggregateIniValueList<CraftingOverride>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
+            set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
+        }
+        #endregion
 
         #region Spawn Overrides
         public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));

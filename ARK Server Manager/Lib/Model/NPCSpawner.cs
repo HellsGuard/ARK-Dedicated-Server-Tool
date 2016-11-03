@@ -54,20 +54,19 @@ namespace ARK_Server_Manager.Lib
 
         public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
         {
-            var values = new List<string>();
-            values.AddRange(this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => $"{this.IniCollectionKey}={d.ToIniValue(containerType)}"));
-            return values;
+            if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => d.ToIniValue(containerType));
+
+            return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => $"{this.IniCollectionKey}={d.ToIniValue(containerType)}");
         }
     }
 
     public class NPCSpawnContainer : AggregateIniValue, ISpawnIniValue
     {
-        private const char DELIMITER = ',';
-
         public NPCSpawnContainer()
         {
-            NPCSpawnEntries = new NPCSpawnList<NPCSpawnEntry>(nameof(NPCSpawnEntries));
-            NPCSpawnLimits = new NPCSpawnList<NPCSpawnLimit>(nameof(NPCSpawnLimits));
+            NPCSpawnEntries = new NPCSpawnList<NPCSpawnEntry>(null);
+            NPCSpawnLimits = new NPCSpawnList<NPCSpawnLimit>(null);
         }
 
         public static readonly DependencyProperty NPCSpawnEntriesContainerClassStringProperty = DependencyProperty.Register(nameof(NPCSpawnEntriesContainerClassString), typeof(string), typeof(NPCSpawnContainer), new PropertyMetadata(string.Empty));
@@ -80,7 +79,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCSpawnEntriesProperty = DependencyProperty.Register(nameof(NPCSpawnEntries), typeof(NPCSpawnList<NPCSpawnEntry>), typeof(NPCSpawnContainer), new PropertyMetadata(null));
-        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true, Delimiter = ",")]
+        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public NPCSpawnList<NPCSpawnEntry> NPCSpawnEntries
         {
@@ -89,7 +88,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCSpawnLimitsProperty = DependencyProperty.Register(nameof(NPCSpawnLimits), typeof(NPCSpawnList<NPCSpawnLimit>), typeof(NPCSpawnContainer), new PropertyMetadata(null));
-        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true, Delimiter = ",")]
+        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public NPCSpawnList<NPCSpawnLimit> NPCSpawnLimits
         {
@@ -112,61 +111,14 @@ namespace ARK_Server_Manager.Lib
             if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToList();
-
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
             if (kvValue.StartsWith("("))
                 kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith(")))"))
+            if (kvValue.EndsWith(")"))
                 kvValue = kvValue.Substring(0, kvValue.Length - 1);
 
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames.ToArray());
-
-            foreach (var property in this.Properties)
-            {
-                var attr = property.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
-
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith($"{property.Name}="));
-                if (propertyValue != null)
-                {
-                    var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                    var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
-
-                    if (attr?.ValueWithinBrackets ?? false)
-                    {
-                        if (kvPropertyValue.StartsWith("("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith(")"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                    }
-
-                    var collection = property.GetValue(this) as IIniValuesCollection;
-                    if (collection != null)
-                    {
-                        var delimiter = attr?.Delimiter ?? string.Empty;
-                        if (attr?.ListValueWithinBrackets ?? false)
-                        {
-                            delimiter = $"){delimiter}(";
-                            if (kvPropertyValue.StartsWith("("))
-                                kvPropertyValue = kvPropertyValue.Substring(1);
-                            if (kvPropertyValue.EndsWith(")"))
-                                kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(attr?.Delimiter))
-                            collection.FromIniValues(kvPropertyValue.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
-                        else
-                            collection.FromIniValues(new[] {kvPropertyValue});
-                    }
-                    else
-                        StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
+            base.FromComplexINIValue(kvValue);
         }
 
         public override string ToINIValue()
@@ -208,9 +160,12 @@ namespace ARK_Server_Manager.Lib
                     foreach (var iniVal in iniVals)
                     {
                         result.Append(delimiter2);
-                        result.Append(iniVal);
+                        if (attr?.ListValueWithinBrackets ?? false)
+                            result.Append($"({iniVal})");
+                        else
+                            result.Append(iniVal);
 
-                        delimiter2 = attr?.Delimiter ?? string.Empty;
+                        delimiter2 = DELIMITER.ToString();
                     }
                 }
                 else
@@ -223,9 +178,12 @@ namespace ARK_Server_Manager.Lib
                         foreach (var iniVal in iniVals)
                         {
                             result.Append(delimiter2);
-                            result.Append(iniVal);
+                            if (attr?.ListValueWithinBrackets ?? false)
+                                result.Append($"({iniVal})");
+                            else
+                                result.Append(iniVal);
 
-                            delimiter2 = attr?.Delimiter ?? string.Empty;
+                            delimiter2 = DELIMITER.ToString();
                         }
                     }
                     else
@@ -268,14 +226,15 @@ namespace ARK_Server_Manager.Lib
 
         public IEnumerable<string> ToIniValues(NPCSpawnContainerType containerType)
         {
-            return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => d.ToIniValue(containerType));
+            if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => d.ToIniValue(containerType));
+
+            return this.Where(d => d.ShouldSave()).Cast<ISpawnIniValue>().Select(d => $"{this.IniCollectionKey}={d.ToIniValue(containerType)}");
         }
     }
 
     public class NPCSpawnEntry : AggregateIniValue, ISpawnIniValue
     {
-        private const char DELIMITER = ',';
-
         public static readonly DependencyProperty AnEntryNameProperty = DependencyProperty.Register(nameof(AnEntryName), typeof(string), typeof(NPCSpawnEntry), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Override })]
@@ -315,63 +274,7 @@ namespace ARK_Server_Manager.Lib
 
         public override void InitializeFromINIValue(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-                return;
-
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToList();
-
-            var kvValue = value.Trim(' ');
-            if (kvValue.StartsWith("("))
-                kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith("))"))
-                kvValue = kvValue.Substring(0, kvValue.Length - 1);
-
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames.ToArray());
-
-            foreach (var property in this.Properties)
-            {
-                var attr = property.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
-
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith($"{property.Name}="));
-                if (propertyValue != null)
-                {
-                    var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                    var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
-
-                    if (attr?.ValueWithinBrackets ?? false)
-                    {
-                        if (kvPropertyValue.StartsWith("("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith(")"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                    }
-
-                    var collection = property.GetValue(this) as IIniValuesCollection;
-                    if (collection != null)
-                    {
-                        var delimiter = attr?.Delimiter ?? string.Empty;
-                        if (attr?.ListValueWithinBrackets ?? false)
-                        {
-                            delimiter = $"){delimiter}(";
-                            if (kvPropertyValue.StartsWith("("))
-                                kvPropertyValue = kvPropertyValue.Substring(1);
-                            if (kvPropertyValue.EndsWith(")"))
-                                kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(attr?.Delimiter))
-                            collection.FromIniValues(kvPropertyValue.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
-                        else
-                            collection.FromIniValues(new[] { kvPropertyValue });
-                    }
-                    else
-                        StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
+            base.FromComplexINIValue(value);
         }
 
         public override string ToINIValue()
@@ -386,7 +289,6 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             var result = new StringBuilder();
-            result.Append("(");
 
             var delimiter = "";
             foreach (var prop in this.Properties)
@@ -413,9 +315,12 @@ namespace ARK_Server_Manager.Lib
                     foreach (var iniVal in iniVals)
                     {
                         result.Append(delimiter2);
-                        result.Append(iniVal);
+                        if (attr?.ListValueWithinBrackets ?? false)
+                            result.Append($"({iniVal})");
+                        else
+                            result.Append(iniVal);
 
-                        delimiter2 = attr?.Delimiter ?? string.Empty;
+                        delimiter2 = DELIMITER.ToString();
                     }
                 }
                 else
@@ -428,9 +333,12 @@ namespace ARK_Server_Manager.Lib
                         foreach (var iniVal in iniVals)
                         {
                             result.Append(delimiter2);
-                            result.Append(iniVal);
+                            if (attr?.ListValueWithinBrackets ?? false)
+                                result.Append($"({iniVal})");
+                            else
+                                result.Append(iniVal);
 
-                            delimiter2 = attr?.Delimiter ?? string.Empty;
+                            delimiter2 = DELIMITER.ToString();
                         }
                     }
                     else
@@ -446,7 +354,6 @@ namespace ARK_Server_Manager.Lib
                 delimiter = DELIMITER.ToString();
             }
 
-            result.Append(")");
             return result.ToString();
         }
 
@@ -460,8 +367,6 @@ namespace ARK_Server_Manager.Lib
 
     public class NPCSpawnLimit : AggregateIniValue, ISpawnIniValue
     {
-        private const char DELIMITER = ',';
-
         public static readonly DependencyProperty NPCClassStringProperty = DependencyProperty.Register(nameof(NPCClassString), typeof(string), typeof(NPCSpawnLimit), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
@@ -492,63 +397,7 @@ namespace ARK_Server_Manager.Lib
 
         public override void InitializeFromINIValue(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-                return;
-
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToList();
-
-            var kvValue = value.Trim(' ');
-            if (kvValue.StartsWith("("))
-                kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith("))"))
-                kvValue = kvValue.Substring(0, kvValue.Length - 1);
-
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames.ToArray());
-
-            foreach (var property in this.Properties)
-            {
-                var attr = property.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
-
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith($"{property.Name}="));
-                if (propertyValue != null)
-                {
-                    var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                    var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
-
-                    if (attr?.ValueWithinBrackets ?? false)
-                    {
-                        if (kvPropertyValue.StartsWith("("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith(")"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                    }
-
-                    var collection = property.GetValue(this) as IIniValuesCollection;
-                    if (collection != null)
-                    {
-                        var delimiter = attr?.Delimiter ?? string.Empty;
-                        if (attr?.ListValueWithinBrackets ?? false)
-                        {
-                            delimiter = $"){delimiter}(";
-                            if (kvPropertyValue.StartsWith("("))
-                                kvPropertyValue = kvPropertyValue.Substring(1);
-                            if (kvPropertyValue.EndsWith(")"))
-                                kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(attr?.Delimiter))
-                            collection.FromIniValues(kvPropertyValue.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
-                        else
-                            collection.FromIniValues(new[] { kvPropertyValue });
-                    }
-                    else
-                        StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
+            base.FromComplexINIValue(value);
         }
 
         public override string ToINIValue()
@@ -563,7 +412,6 @@ namespace ARK_Server_Manager.Lib
                 return string.Empty;
 
             var result = new StringBuilder();
-            result.Append("(");
 
             var delimiter = "";
             foreach (var prop in this.Properties)
@@ -590,9 +438,12 @@ namespace ARK_Server_Manager.Lib
                     foreach (var iniVal in iniVals)
                     {
                         result.Append(delimiter2);
-                        result.Append(iniVal);
+                        if (attr?.ListValueWithinBrackets ?? false)
+                            result.Append($"({iniVal})");
+                        else
+                            result.Append(iniVal);
 
-                        delimiter2 = attr?.Delimiter ?? string.Empty;
+                        delimiter2 = DELIMITER.ToString();
                     }
                 }
                 else
@@ -605,9 +456,12 @@ namespace ARK_Server_Manager.Lib
                         foreach (var iniVal in iniVals)
                         {
                             result.Append(delimiter2);
-                            result.Append(iniVal);
+                            if (attr?.ListValueWithinBrackets ?? false)
+                                result.Append($"({iniVal})");
+                            else
+                                result.Append(iniVal);
 
-                            delimiter2 = attr?.Delimiter ?? string.Empty;
+                            delimiter2 = DELIMITER.ToString();
                         }
                     }
                     else
@@ -624,7 +478,6 @@ namespace ARK_Server_Manager.Lib
                 delimiter = DELIMITER.ToString();
             }
 
-            result.Append(")");
             return result.ToString();
         }
 

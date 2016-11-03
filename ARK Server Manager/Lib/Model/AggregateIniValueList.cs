@@ -52,9 +52,10 @@ namespace ARK_Server_Manager.Lib
 
         public virtual IEnumerable<string> ToIniValues()
         {
-            var values = new List<string>();
-            values.AddRange(this.Where(d => d.ShouldSave()).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
-            return values;
+            if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                return this.Where(d => d.ShouldSave()).Select(d => d.ToINIValue());
+
+            return this.Where(d => d.ShouldSave()).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}");
         }
 
         public virtual void FromIniValues(IEnumerable<string> iniValues)

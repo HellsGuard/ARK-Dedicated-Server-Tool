@@ -103,7 +103,7 @@ namespace ARK_Server_Manager.Lib
                     continue;
 
                 var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
+                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
 
                 var collection = property.GetValue(this) as IIniValuesCollection;
                 if (collection != null)
@@ -232,7 +232,7 @@ namespace ARK_Server_Manager.Lib
                     continue;
 
                 var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
+                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
 
                 var collection = property.GetValue(this) as IIniValuesCollection;
                 if (collection != null)
@@ -386,7 +386,7 @@ namespace ARK_Server_Manager.Lib
                     continue;
 
                 var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
+                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
 
                 var collection = property.GetValue(this) as IIniValuesCollection;
                 if (collection != null)
