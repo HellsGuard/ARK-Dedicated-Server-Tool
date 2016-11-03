@@ -58,6 +58,8 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnWeightMultiplierProperty, value); }
         }
 
+        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
+
 
         public static DinoSpawn FromINIValue(string iniValue)
         {

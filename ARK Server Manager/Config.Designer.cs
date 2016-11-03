@@ -1452,5 +1452,17 @@ namespace ARK_Server_Manager {
                 this["ServerShutdown_CancelMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public string SectionCraftingOverridesIsExpanded {
+            get {
+                return ((string)(this["SectionCraftingOverridesIsExpanded"]));
+            }
+            set {
+                this["SectionCraftingOverridesIsExpanded"] = value;
+            }
+        }
     }
 }

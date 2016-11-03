@@ -35,14 +35,12 @@ namespace ARK_Server_Manager.Lib.ViewModel
         private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
         {
             var nameTag = GameData.NameTagForClass(className);
-            var friendlyName = GameData.FriendlyNameForClass(className);
             var isTameable = GameData.IsTameableForClass(className);
 
             return new DinoSettings()
             {
                 ArkApplication = arkApplication,
                 ClassName = className,
-                FriendlyName = friendlyName,
                 NameTag = nameTag,
 
                 CanSpawn = true,
@@ -266,10 +264,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
         public void UpdateForLocalization()
         {
-            foreach (var dinoSetting in this)
-            {
-                dinoSetting.FriendlyName = GameData.FriendlyNameForClass(dinoSetting.ClassName);
-            }
+            //foreach (var dinoSetting in this)
+            //{
+            //    dinoSetting.FriendlyName = GameData.FriendlyNameForClass(dinoSetting.ClassName);
+            //}
         }
     }
 }

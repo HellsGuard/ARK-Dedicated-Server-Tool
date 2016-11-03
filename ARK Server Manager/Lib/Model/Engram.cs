@@ -57,10 +57,7 @@ namespace ARK_Server_Manager.Lib
         public string EngramClassName
         {
             get { return (string)GetValue(EngramClassNameProperty); }
-            set {
-                SetValue(EngramClassNameProperty, value);
-                DisplayName = EngramClassNameToDisplayNameConverter.Convert(value).ToString();
-            }
+            set { SetValue(EngramClassNameProperty, value); }
         }
 
         [AggregateIniValueEntry]
@@ -91,11 +88,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RemoveEngramPreReqProperty, value); }
         }
 
-        public string DisplayName
-        {
-            get;
-            protected set;
-        }
+        public string DisplayName => GameData.FriendlyNameForClass(EngramClassName);
 
         public bool KnownEngram
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class WorldSaveRestoreWindow : Window
     {
-        public class WorldSaveFileList : ObservableCollection<WorldSaveFile>  
+        public class WorldSaveFileList : SortableObservableCollection<WorldSaveFile>  
         {
             public new void Add(WorldSaveFile item)
             {
@@ -72,6 +73,34 @@ namespace ARK_Server_Manager
             public override string ToString()
             {
                 return FileName;
+            }
+        }
+
+        public class WorldSaveFileComparer : IComparer<WorldSaveFile>
+        {
+            public int Compare(WorldSaveFile x, WorldSaveFile y)
+            {
+                if (x == null && y == null)
+                    return 0;
+                if (x == null)
+                    return 1;
+                if (y == null)
+                    return -1;
+
+                if (x.IsActiveFile && y.IsActiveFile)
+                {
+                    if (x.UpdatedDate == y.UpdatedDate)
+                        return 0;
+                    return x.UpdatedDate < y.UpdatedDate ? 1 : -1;
+                }
+                if (x.IsActiveFile)
+                    return -1;
+                if (y.IsActiveFile)
+                    return 1;
+
+                if (x.UpdatedDate == y.UpdatedDate)
+                    return 0;
+                return x.UpdatedDate < y.UpdatedDate ? 1 : -1;
             }
         }
 
@@ -160,7 +189,7 @@ namespace ARK_Server_Manager
         {
             var item = ((WorldSaveFile)((Button)e.Source).DataContext);
             
-            var message = $"You are able to restore worldsave file {item.FileName}.\r\n\r\nDo you want to continue?";
+            var message = $"You are about to restore worldsave file {item.FileName}.\r\n\r\nDo you want to continue?";
             if (MessageBox.Show(this, message, "Restore WorldSave Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
@@ -195,16 +224,17 @@ namespace ARK_Server_Manager
                 if (!Directory.Exists(profileSaveFolder))
                     return;
 
+                var profileSaveFolderInfo = new DirectoryInfo(profileSaveFolder);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile);
                 var mapFileName = $"{mapName}.ark";
                 var searchPattern = $"{mapName}*.ark";
 
-                foreach (var file in Directory.GetFiles(profileSaveFolder, searchPattern))
+                foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
                 {
-                    var fileInfo = new FileInfo(file);
-
-                    WorldSaveFiles.Add(new WorldSaveFile { File = file , FileName = fileInfo.Name, CreatedDate = fileInfo.CreationTime, UpdatedDate = fileInfo.LastAccessTime, IsActiveFile = fileInfo.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
+                    WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
                 }
+
+                WorldSaveFiles.Sort(f => f, new WorldSaveFileComparer());
             }
             finally
             {

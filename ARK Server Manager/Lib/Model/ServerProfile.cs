@@ -1733,6 +1733,17 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Crafting Overrides
+        public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<CraftingOverride>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public AggregateIniValueList<CraftingOverride> ConfigOverrideItemCraftingCosts
+        {
+            get { return (AggregateIniValueList<CraftingOverride>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
+            set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
+        }
+        #endregion
+
         #region Custom Levels
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableLevelProgressions
@@ -1957,18 +1968,7 @@ namespace ARK_Server_Manager.Lib
         // ReSharper restore InconsistentNaming
         #endregion
 
-        #region Crafting Overrides
-        public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<CraftingOverride>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<CraftingOverride> ConfigOverrideItemCraftingCosts
-        {
-            get { return (AggregateIniValueList<CraftingOverride>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
-            set { SetValue(ConfigOverrideItemCraftingCostsProperty, value); }
-        }
-        #endregion
-
-        #region Spawn Overrides
+        #region NPC Spawn Overrides
         public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -2502,7 +2502,7 @@ namespace ARK_Server_Manager.Lib
             progressCallback?.Invoke(0, "Constructing Dino Information...");
             this.DinoSettings.RenderToModel();
 
-            progressCallback?.Invoke(0, "Constructing Spawn Override Information...");
+            progressCallback?.Invoke(0, "Constructing Map Spawner Information...");
             this.NPCSpawnSettings.RenderToModel();
 
             //
@@ -3106,6 +3106,12 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnablePlayerJoinedNotificationsProperty);
         }
 
+        public void ResetCraftingOverridesSection()
+        {
+            this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(ConfigOverrideItemCraftingCosts), null);
+            this.ConfigOverrideItemCraftingCosts.Reset();
+        }
+
         public void ResetCustomLevelsSection()
         {
             this.ClearValue(EnableLevelProgressionsProperty);
@@ -3117,7 +3123,7 @@ namespace ARK_Server_Manager.Lib
             this.ResetLevelProgressionToOfficial(LevelProgression.Dino);
         }
 
-        public void ResetDinoSettings()
+        public void ResetDinoSettingsSection()
         {
             this.ClearValue(OverrideMaxExperiencePointsDinoProperty);
             this.ClearValue(DinoDamageMultiplierProperty);
@@ -3211,11 +3217,14 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowHitMarkersProperty);
         }
 
-        public void ResetNPCSpawnSettings()
+        public void ResetNPCSpawnOverridesSection()
         {
             this.ConfigAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
             this.ConfigSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
             this.ConfigOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
+            this.ConfigAddNPCSpawnEntriesContainer.Reset();
+            this.ConfigSubtractNPCSpawnEntriesContainer.Reset();
+            this.ConfigOverrideNPCSpawnEntriesContainer.Reset();
             this.NPCSpawnSettings = new NPCSpawnSettingsList(this.ConfigAddNPCSpawnEntriesContainer, this.ConfigSubtractNPCSpawnEntriesContainer, this.ConfigOverrideNPCSpawnEntriesContainer);
         }
 
@@ -3261,6 +3270,9 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PreventDownloadSurvivorsProperty);
             this.ClearValue(PreventDownloadItemsProperty);
             this.ClearValue(PreventDownloadDinosProperty);
+            this.ClearValue(PreventUploadSurvivorsProperty);
+            this.ClearValue(PreventUploadItemsProperty);
+            this.ClearValue(PreventUploadDinosProperty);
 
             this.ClearValue(IncreasePvPRespawnIntervalProperty);
             this.ClearValue(IncreasePvPRespawnIntervalCheckPeriodProperty);

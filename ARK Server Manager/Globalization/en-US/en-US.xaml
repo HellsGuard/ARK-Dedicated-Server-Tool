@@ -1023,6 +1023,18 @@
     <sys:String x:Key="ServerSettings_DinoLevels_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_DinoLevels_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino levels.</sys:String>
 
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_UpdateErrorTitle">Update Error</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customizations</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customization CSV file</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportDefaultExtension">csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterLabel">CSV Files</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterExtension">*.csv</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterLabel">CSV Files</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterExtension">*.csv</sys:String>
+
     <!-- Server Settings - Custom GameUserSettings Details -->
     <sys:String x:Key="ServerSettings_CustomSettingsLabel">Custom GameUserSettings Details</sys:String>
 
@@ -1291,18 +1303,30 @@
     <sys:String x:Key="ServerSettings_RemoveNPCSpawnTooltip">Delete map spawn container</sys:String>
     <sys:String x:Key="ServerSettings_RemoveNPCSpawnEntryTooltip">Delete dino spawn entry</sys:String>
 
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportErrorTitle">Export Error</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportErrorTitle">Import Error</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_UpdateErrorTitle">Update Error</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportDialogTitle">Save level customizations</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportDialogTitle">Select level customization CSV file</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportDefaultExtension">csv</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportDefaultExtension">csv</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterLabel">CSV Files</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ExportFilterExtension">*.csv</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterLabel">CSV Files</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevel_ImportFilterExtension">*.csv</sys:String>
+    <!-- Server Settings - Crafting Overrides -->
+    <sys:String x:Key="ServerSettings_CraftingOverridesLabel">Crafting Overrides</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideItemsLabel">Crafted Items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourcesLabel">Resource Items</sys:String>
 
+    <sys:String x:Key="ServerSettings_CraftingOverrideItemClassColumnLabel">Crafted Item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideItemClassColumnTooltip">Crafted Item Class String</sys:String>
+
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceClassColumnLabel">Resource Item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceClassColumnTooltip">Resource Item Class String.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceQuantityColumnLabel">Quantity</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceQuantityColumnTooltip">How much of the resource is required.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceExactColumnLabel">Require Exact Resource Type</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrideResourceExactColumnTooltip">Determines if a logical check takes place on whether the production makes any sense at all.</sys:String>
+
+    <sys:String x:Key="ServerSettings_AddCraftingOverrideItemTooltip">Add crafting item</sys:String>
+    <sys:String x:Key="ServerSettings_AddCraftingOverrideResourceTooltip">Add resource</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCraftingOverrideItemsTooltip">Delete all crafting items</sys:String>
+    <sys:String x:Key="ServerSettings_ClearCraftingOverrideResourcesTooltip">Delete all resources</sys:String>
+    <sys:String x:Key="ServerSettings_PasteCraftingOverrideItemsTooltip">Paste crafting items data</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCraftingOverrideItemTooltip">Delete crafting item</sys:String>
+    <sys:String x:Key="ServerSettings_RemoveCraftingOverrideResourceTooltip">Delete resource</sys:String>
+
+    <!-- Server Settings - Overlay -->
     <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Saving...</sys:String>
     <sys:String x:Key="ServerSettings_OverlayMessage_PermissionsLabel">Checking Directory Permissions...</sys:String>
     <sys:String x:Key="ServerSettings_OverlayMessage_SchedulesLabel">Checking Scheduled Tasks...</sys:String>

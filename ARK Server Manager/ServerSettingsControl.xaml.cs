@@ -47,6 +47,7 @@ namespace ARK_Server_Manager
         SOTFSection,
         PGMSection,
         MapSpawnerOverridesSection,
+        CraftingOverridesSection,
 
         // Properties
         MapNameIslandProperty,
@@ -78,6 +79,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty BaseDinoSettingsDinoListProperty = DependencyProperty.Register(nameof(BaseDinoSettingsDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerDinoListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BasePrimalItemListProperty = DependencyProperty.Register(nameof(BasePrimalItemList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -88,6 +90,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedArkApplicationDinoProperty = DependencyProperty.Register(nameof(SelectedArkApplicationDino), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
         public static readonly DependencyProperty SelectedArkApplicationEngramProperty = DependencyProperty.Register(nameof(SelectedArkApplicationEngram), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
         public static readonly DependencyProperty SelectedArkApplicationResourceProperty = DependencyProperty.Register(nameof(SelectedArkApplicationResource), typeof(ArkApplication), typeof(ServerSettingsControl), new PropertyMetadata(ArkApplication.All));
+        public static readonly DependencyProperty SelectedCraftingOverrideProperty = DependencyProperty.Register(nameof(SelectedCraftingOverride), typeof(CraftingOverride), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedCustomSectionProperty = DependencyProperty.Register(nameof(SelectedCustomSection), typeof(CustomSection), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedNPCSpawnSettingProperty = DependencyProperty.Register(nameof(SelectedNPCSpawnSetting), typeof(NPCSpawnSettings), typeof(ServerSettingsControl));
         public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
@@ -111,6 +114,12 @@ namespace ARK_Server_Manager
         {
             get { return (ComboBoxItemList)GetValue(BaseMapSpawnerDinoListProperty); }
             set { SetValue(BaseMapSpawnerDinoListProperty, value); }
+        }
+
+        public ComboBoxItemList BasePrimalItemList
+        {
+            get { return (ComboBoxItemList)GetValue(BasePrimalItemListProperty); }
+            set { SetValue(BasePrimalItemListProperty, value); }
         }
 
         public Config CurrentConfig
@@ -173,6 +182,12 @@ namespace ARK_Server_Manager
             set { SetValue(SelectedArkApplicationResourceProperty, value); }
         }
 
+        public CraftingOverride SelectedCraftingOverride
+        {
+            get { return GetValue(SelectedCraftingOverrideProperty) as CraftingOverride; }
+            set { SetValue(SelectedCraftingOverrideProperty, value); }
+        }
+
         public CustomSection SelectedCustomSection
         {
             get { return GetValue(SelectedCustomSectionProperty) as CustomSection; }
@@ -216,6 +231,7 @@ namespace ARK_Server_Manager
             this.BaseDinoSettingsDinoList = new ComboBoxItemList();
             this.BaseMapSpawnerList = new ComboBoxItemList();
             this.BaseMapSpawnerDinoList = new ComboBoxItemList();
+            this.BasePrimalItemList = new ComboBoxItemList();
 
             this.ServerFilesAdmins = new SteamUserList();
             this.ServerFilesWhitelisted = new SteamUserList();
@@ -242,6 +258,7 @@ namespace ARK_Server_Manager
                         ssc.RefreshBaseDinoSettingsDinoList();
                         ssc.RefreshBaseMapSpawnerList();
                         ssc.RefreshBaseMapSpawnerDinoList();
+                        ssc.RefreshBasePrimalItemList();
                         ssc.LoadServerFiles();
                     }).DoNotWait();
             }
@@ -255,6 +272,7 @@ namespace ARK_Server_Manager
             this.RefreshBaseDinoSettingsDinoList();
             this.RefreshBaseMapSpawnerList();
             this.RefreshBaseMapSpawnerDinoList();
+            this.RefreshBasePrimalItemList();
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
@@ -1114,6 +1132,7 @@ namespace ARK_Server_Manager
             view?.Refresh();
         }
 
+        #region Server Files 
         private void AddAdminPlayer_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddSteamUserWindow();
@@ -1307,6 +1326,7 @@ namespace ARK_Server_Manager
             Process.Start(new ProcessStartInfo(item.ProfileUrl));
             e.Handled = true;
         }
+        #endregion
 
         private void SaveRestore_Click(object sender, RoutedEventArgs e)
         {
@@ -1411,6 +1431,7 @@ namespace ARK_Server_Manager
             }
         }
 
+        #region PGM Settings
         private void PastePGMSettings_Click(object sender, RoutedEventArgs e)
         {
             var window = new CustomConfigDataWindow();
@@ -1465,6 +1486,7 @@ namespace ARK_Server_Manager
         {
             Settings.RandomizePGMSettings();
         }
+        #endregion
 
         private void ComboBoxItemList_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -1487,6 +1509,7 @@ namespace ARK_Server_Manager
             }
         }
 
+        #region Map Spawner Overrides
         private void AddNPCSpawn_Click(object sender, RoutedEventArgs e)
         {
             Settings.NPCSpawnSettings.Add(new NPCSpawnSettings());
@@ -1508,10 +1531,48 @@ namespace ARK_Server_Manager
             SelectedNPCSpawnSetting?.NPCSpawnEntrySettings.Clear();
         }
 
+        private void PasteNPCSpawn_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
+
+            Server.Profile.NPCSpawnSettings.RenderToModel();
+
+            // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var configAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
+                configAddNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configAddNPCSpawnEntriesContainer.IniCollectionKey}=")));
+                Server.Profile.ConfigAddNPCSpawnEntriesContainer.AddRange(configAddNPCSpawnEntriesContainer);
+
+                var configSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
+                configSubtractNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configSubtractNPCSpawnEntriesContainer.IniCollectionKey}=")));
+                Server.Profile.ConfigSubtractNPCSpawnEntriesContainer.AddRange(configSubtractNPCSpawnEntriesContainer);
+
+                var configOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
+                configOverrideNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideNPCSpawnEntriesContainer.IniCollectionKey}=")));
+                Server.Profile.ConfigOverrideNPCSpawnEntriesContainer.AddRange(configOverrideNPCSpawnEntriesContainer);
+            }
+
+            Server.Profile.NPCSpawnSettings = new NPCSpawnSettingsList(Server.Profile.ConfigAddNPCSpawnEntriesContainer, Server.Profile.ConfigSubtractNPCSpawnEntriesContainer, Server.Profile.ConfigOverrideNPCSpawnEntriesContainer);
+            Server.Profile.NPCSpawnSettings.RenderToView();
+
+            RefreshBaseMapSpawnerList();
+            RefreshBaseMapSpawnerDinoList();
+        }
+
         private void RemoveNPCSpawn_Click(object sender, RoutedEventArgs e)
         {
-            var section = ((NPCSpawnSettings)((Button)e.Source).DataContext);
-            Settings.NPCSpawnSettings.Remove(section);
+            var item = ((NPCSpawnSettings)((Button)e.Source).DataContext);
+            Settings.NPCSpawnSettings.Remove(item);
         }
 
         private void RemoveNPCSpawnEntry_Click(object sender, RoutedEventArgs e)
@@ -1522,6 +1583,70 @@ namespace ARK_Server_Manager
             var item = ((NPCSpawnEntrySettings)((Button)e.Source).DataContext);
             SelectedNPCSpawnSetting.NPCSpawnEntrySettings.Remove(item);
         }
+        #endregion
+
+        #region Crafting Overrides
+        private void AddCraftingOverride_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.ConfigOverrideItemCraftingCosts.Add(new CraftingOverride());
+        }
+
+        private void AddCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Add(new CraftingResourceRequirement());
+        }
+
+        private void ClearCraftingOverrides_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride = null;
+            Settings.ConfigOverrideItemCraftingCosts.Clear();
+        }
+
+        private void ClearCraftingOverrideResources_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Clear();
+        }
+
+        private void PasteCraftingOverride_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var configOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(Server.Profile.ConfigOverrideItemCraftingCosts), null);
+                configOverrideItemCraftingCosts.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideItemCraftingCosts.IniCollectionKey}=")));
+                Server.Profile.ConfigOverrideItemCraftingCosts.AddRange(configOverrideItemCraftingCosts);
+            }
+
+            RefreshBasePrimalItemList();
+        }
+
+        private void RemoveCraftingOverrideItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ((CraftingOverride)((Button)e.Source).DataContext);
+            Settings.ConfigOverrideItemCraftingCosts.Remove(item);
+        }
+
+        private void RemoveCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCraftingOverride == null)
+                return;
+
+            var item = ((CraftingResourceRequirement)((Button)e.Source).DataContext);
+            SelectedCraftingOverride.BaseCraftingResourceRequirements.Remove(item);
+        }
+        #endregion
+
         #endregion
 
         #region Methods
@@ -1618,88 +1743,167 @@ namespace ARK_Server_Manager
 
         public void RefreshBaseDinoSettingsDinoList()
         {
-            this.BaseDinoSettingsDinoList.Clear();
+            var newList = new ComboBoxItemList();
 
-            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => GameData.FriendlyNameForClass(d.ClassName)))
+            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
             {
-                this.BaseDinoSettingsDinoList.Add(new Lib.ViewModel.ComboBoxItem {
-                                                      DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
-                                                      ValueMember = dino.ClassName,
-                                                  });
+                newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
+                                ValueMember = dino.ClassName,
+                            });
             }
 
-            this.Settings.DinoSettings.RenderToView();
             foreach (var dinoSetting in this.Settings.DinoSettings)
             {
-                if (this.BaseDinoSettingsDinoList.Any(s => s.ValueMember.Equals(dinoSetting.ClassName, StringComparison.OrdinalIgnoreCase)))
-                    continue;
-
-                this.BaseDinoSettingsDinoList.Add(new Lib.ViewModel.ComboBoxItem {
-                                                      DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ClassName),
-                                                      ValueMember = dinoSetting.ClassName,
-                                                  });
+                if (!newList.Any(s => s.ValueMember.Equals(dinoSetting.ReplacementClass, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                    DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
+                                    ValueMember = dinoSetting.ReplacementClass,
+                                });
+                }
             }
 
-            this.DinoSettingsGrid.Items.Refresh();
+            try
+            {
+                this.DinoSettingsGrid.BeginInit();
+
+                this.BaseDinoSettingsDinoList = newList;
+                this.Settings.DinoSettings.RenderToView();
+            }
+            finally
+            {
+                this.DinoSettingsGrid.EndInit();
+            }
         }
 
         public void RefreshBaseMapSpawnerList()
         {
-            this.BaseMapSpawnerList.Clear();
+            var newList = new ComboBoxItemList();
 
             foreach (var mapSpawner in GameData.GetStandardMapSpawners())
             {
-                this.BaseMapSpawnerList.Add(new Lib.ViewModel.ComboBoxItem
-                {
-                    DisplayMember = mapSpawner.DisplayName,
-                    ValueMember = mapSpawner.ClassName,
-                });
+                newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                DisplayMember = mapSpawner.DisplayName,
+                                ValueMember = mapSpawner.ClassName,
+                            });
             }
 
-            this.Settings.NPCSpawnSettings.RenderToView();
             foreach (var spawnSetting in this.Settings.NPCSpawnSettings)
             {
-                if (this.BaseMapSpawnerList.Any(s => s.ValueMember.Equals(spawnSetting.NPCSpawnEntriesContainerClassString, StringComparison.OrdinalIgnoreCase)))
-                    continue;
-
-                this.BaseMapSpawnerList.Add(new Lib.ViewModel.ComboBoxItem
+                if (!newList.Any(s => s.ValueMember.Equals(spawnSetting.NPCSpawnEntriesContainerClassString, StringComparison.OrdinalIgnoreCase)))
                 {
-                    DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
-                    ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
-                });
+                    newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                    DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
+                                    ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
+                                });
+                }
             }
 
-            this.NPCSpawnSettingsGrid.Items.Refresh();
+            try
+            {
+                this.NPCSpawnSettingsGrid.BeginInit();
+
+                this.BaseMapSpawnerList = newList;
+                this.Settings.NPCSpawnSettings.RenderToView();
+            }
+            finally
+            {
+                this.NPCSpawnSettingsGrid.EndInit();
+            }
         }
 
         public void RefreshBaseMapSpawnerDinoList()
         {
-            this.BaseMapSpawnerDinoList.Clear();
+            var newList = new ComboBoxItemList();
 
-            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => GameData.FriendlyNameForClass(d.ClassName)))
+            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
             {
-                this.BaseMapSpawnerDinoList.Add(new Lib.ViewModel.ComboBoxItem {
-                                                  DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
-                                                  ValueMember = dino.ClassName,
-                                              });
+                newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
+                                ValueMember = dino.ClassName,
+                            });
             }
 
-            this.Settings.NPCSpawnSettings.RenderToView();
             foreach (var spawnSetting in this.Settings.NPCSpawnSettings)
             {
                 foreach (var spawnEntry in spawnSetting.NPCSpawnEntrySettings)
                 {
-                    if (this.BaseMapSpawnerDinoList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
-                        continue;
-
-                    this.BaseMapSpawnerDinoList.Add(new Lib.ViewModel.ComboBoxItem {
-                                                        DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
-                                                        ValueMember = spawnEntry.NPCClassString,
-                                                    });
+                    if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                        DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
+                                        ValueMember = spawnEntry.NPCClassString,
+                                    });
+                    }
                 }
             }
 
-            this.NPCSpawnEntrySettingsGrid.Items.Refresh();
+            try
+            {
+                this.NPCSpawnEntrySettingsGrid.BeginInit();
+                
+                this.BaseMapSpawnerDinoList = newList;
+                this.Settings.NPCSpawnSettings.RenderToView();
+            }
+            finally
+            {
+                this.NPCSpawnEntrySettingsGrid.EndInit();
+            }
+        }
+
+        public void RefreshBasePrimalItemList()
+        {
+            var newList = new ComboBoxItemList();
+
+            foreach (var primalItem in GameData.GetStandardPrimalItems().OrderBy(i => i.DisplayName))
+            {
+                newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                DisplayMember = primalItem.DisplayName,
+                                ValueMember = primalItem.ClassName,
+                            });
+            }
+
+            foreach (var craftingItem in this.Settings.ConfigOverrideItemCraftingCosts)
+            {
+                if (!newList.Any(s => s.ValueMember.Equals(craftingItem.ItemClassString, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                    DisplayMember = craftingItem.ItemClassString,
+                                    ValueMember = craftingItem.ItemClassString,
+                                });
+                }
+
+                foreach (var craftingResource in craftingItem.BaseCraftingResourceRequirements)
+                {
+                    if (!newList.Any(s => s.ValueMember.Equals(craftingResource.ResourceItemTypeString, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                        DisplayMember = craftingResource.ResourceItemTypeString,
+                                        ValueMember = craftingResource.ResourceItemTypeString,
+                                    });
+                    }
+                }
+            }
+
+            try
+            {
+                this.CraftingOverrideItemGrid.BeginInit();
+                this.CraftingOverrideResourceGrid.BeginInit();
+
+                // store the current data (as INI string) as when the list assignment happens, the columns bound to the lists are wiped.
+                var tempINIValues = this.Settings.ConfigOverrideItemCraftingCosts.ToIniValues().ToArray();
+
+                this.BasePrimalItemList = newList;
+
+                // restore the data (using the INI string)
+                this.Settings.ConfigOverrideItemCraftingCosts.FromIniValues(tempINIValues);
+            }
+            finally
+            {
+                this.CraftingOverrideItemGrid.EndInit();
+                this.CraftingOverrideResourceGrid.EndInit();
+            }
         }
 
         private void ReinitializeNetworkAdapters()
@@ -1768,7 +1972,7 @@ namespace ARK_Server_Manager
                                 break;
 
                             case ServerSettingsResetAction.DinoSettingsSection:
-                                this.Settings.ResetDinoSettings();
+                                this.Settings.ResetDinoSettingsSection();
                                 RefreshBaseDinoSettingsDinoList();
                                 break;
 
@@ -1788,9 +1992,14 @@ namespace ARK_Server_Manager
                                 break;
 
                             case ServerSettingsResetAction.MapSpawnerOverridesSection:
-                                this.Settings.ResetNPCSpawnSettings();
+                                this.Settings.ResetNPCSpawnOverridesSection();
                                 RefreshBaseMapSpawnerList();
                                 RefreshBaseMapSpawnerDinoList();
+                                break;
+
+                            case ServerSettingsResetAction.CraftingOverridesSection:
+                                this.Settings.ResetCraftingOverridesSection();
+                                RefreshBasePrimalItemList();
                                 break;
 
 
@@ -1934,6 +2143,7 @@ namespace ARK_Server_Manager
                             RefreshBaseDinoSettingsDinoList();
                             RefreshBaseMapSpawnerList();
                             RefreshBaseMapSpawnerDinoList();
+                            RefreshBasePrimalItemList();
 
                             OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
                             await Task.Delay(500);
@@ -2110,44 +2320,6 @@ namespace ARK_Server_Manager
                 this.ServerFilesWhitelisted = new SteamUserList();
                 MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void PasteNPCSpawn_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new CustomConfigDataWindow();
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            var result = window.ShowDialog();
-
-            if (!result.HasValue || !result.Value)
-                return;
-
-            // read the pasted data into an ini file.
-            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
-
-            Server.Profile.NPCSpawnSettings.RenderToModel();
-
-            // cycle through the sections, adding them to the custom section list. Will bypass any sections that are named as per the ARK default sections.
-            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
-            {
-                var configAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
-                configAddNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configAddNPCSpawnEntriesContainer.IniCollectionKey}=")));
-                Server.Profile.ConfigAddNPCSpawnEntriesContainer.AddRange(configAddNPCSpawnEntriesContainer);
-
-                var configSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
-                configSubtractNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configSubtractNPCSpawnEntriesContainer.IniCollectionKey}=")));
-                Server.Profile.ConfigSubtractNPCSpawnEntriesContainer.AddRange(configSubtractNPCSpawnEntriesContainer);
-
-                var configOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
-                configOverrideNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideNPCSpawnEntriesContainer.IniCollectionKey}=")));
-                Server.Profile.ConfigOverrideNPCSpawnEntriesContainer.AddRange(configOverrideNPCSpawnEntriesContainer);
-            }
-
-            Server.Profile.NPCSpawnSettings = new NPCSpawnSettingsList(Server.Profile.ConfigAddNPCSpawnEntriesContainer, Server.Profile.ConfigSubtractNPCSpawnEntriesContainer, Server.Profile.ConfigOverrideNPCSpawnEntriesContainer);
-            Server.Profile.NPCSpawnSettings.RenderToView();
-
-            RefreshBaseMapSpawnerList();
-            RefreshBaseMapSpawnerDinoList();
         }
 
         private void SaveServerFileAdministrators()

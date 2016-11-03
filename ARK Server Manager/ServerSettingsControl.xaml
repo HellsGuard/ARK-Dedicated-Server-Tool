@@ -1989,7 +1989,7 @@
 
                                     <local:AnnotatedSlider Margin="0,1,22,1" Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
                                 
-                                    <GroupBox  HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <Label Content="{DynamicResource ServerSettings_DinoCustomizationLabel}"/>
@@ -2013,9 +2013,9 @@
                                                 <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationDino, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto"/>
                                             </StackPanel>
 
-                                            <DataGrid Margin="0,5,0,0" Name="DinoSettingsGrid" ItemsSource="{Binding Source={StaticResource DinosViewSource}}" AutoGenerateColumns="False" Height="400" FrozenColumnCount="1" CanUserAddRows="False" HeadersVisibility="Column">
+                                            <DataGrid Margin="0,5,0,0" Name="DinoSettingsGrid" ItemsSource="{Binding Source={StaticResource DinosViewSource}}" Height="400" FrozenColumnCount="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn     Binding="{Binding FriendlyName, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
+                                                    <DataGridTextColumn     Binding="{Binding DisplayName}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
                                                         <DataGridTextColumn.Header>
                                                             <TextBlock Text="{DynamicResource ServerSettings_NameColumnLabel}"/>
                                                         </DataGridTextColumn.Header>
@@ -2063,11 +2063,11 @@
                                                         </DataGridCheckBoxColumn.CellStyle>
                                                     </DataGridCheckBoxColumn>
 
-                                                    <DataGridComboBoxColumn SelectedValueBinding="{Binding ReplacementClass, Mode=TwoWay}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember">
-                                                        <DataGridComboBoxColumn.Header>
+                                                    <DataGridTemplateColumn CanUserSort="True" SortMemberPath="DisplayName">
+                                                        <DataGridTemplateColumn.Header>
                                                             <TextBlock Text="{DynamicResource ServerSettings_ReplacementColumnLabel}" />
-                                                        </DataGridComboBoxColumn.Header>
-                                                        <DataGridComboBoxColumn.CellStyle>
+                                                        </DataGridTemplateColumn.Header>
+                                                        <DataGridTemplateColumn.CellStyle>
                                                             <Style TargetType="{x:Type DataGridCell}">
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding HasClassName}" Value="False">
@@ -2075,20 +2075,13 @@
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
-                                                        </DataGridComboBoxColumn.CellStyle>
-                                                        <DataGridComboBoxColumn.ElementStyle>
-                                                            <Style TargetType="ComboBox">
-                                                                <Setter Property="ItemsSource" Value="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" />
-                                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                            </Style>
-                                                        </DataGridComboBoxColumn.ElementStyle>
-                                                        <DataGridComboBoxColumn.EditingElementStyle>
-                                                            <Style TargetType="ComboBox">
-                                                                <Setter Property="ItemsSource" Value="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" />
-                                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                            </Style>
-                                                        </DataGridComboBoxColumn.EditingElementStyle>
-                                                    </DataGridComboBoxColumn>
+                                                        </DataGridTemplateColumn.CellStyle>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <ComboBox IsEditable="True" ItemsSource="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" SelectedValue="{Binding ReplacementClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
 
                                                     <DataGridTextColumn     Binding="{Binding SpawnWeightMultiplier, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" Visibility="{Binding Source={x:Reference EditSpawnsCheckbox}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                         <DataGridTextColumn.Header>
@@ -2805,6 +2798,161 @@
                                 </GroupBox>
                             </Grid>
                         </Expander>
+
+                        <Expander Name="SectionCraftingOverrides" IsExpanded="{Binding CurrentConfig.SectionCraftingOverridesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverridesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                            IsEnabled="{Binding ElementName=SectionCraftingOverrides, Path=IsExpanded}"
+                                            Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.CraftingOverridesSection}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
+                                </StackPanel>
+                            </Expander.Header>
+
+                            <Expander.Style>
+                                <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                    <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplatePGM}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Expander.Style>
+
+                            <Grid Margin="-8,0,2,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrideItemsLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverride_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCraftingOverrideItemTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="PasteCraftingOverride_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCraftingOverrideItemsTooltip}">
+                                                <Image Source="Art/Paste.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCraftingOverrideItemsTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="CraftingOverrideItemGrid" ItemsSource="{Binding ConfigOverrideItemCraftingCosts}" SelectedItem="{Binding Path=SelectedCraftingOverride, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideItemClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideItemClassColumnTooltip}" />
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_RemoveCraftingOverrideItemTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+
+                                <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrideResourcesLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverrideResource_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCraftingOverrideResourceTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrideResources_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCraftingOverrideResourcesTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="CraftingOverrideResourceGrid" ItemsSource="{Binding Path=SelectedCraftingOverride.BaseCraftingResourceRequirements, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceClassColumnTooltip}" />
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ResourceItemTypeString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn     Width="100" Binding="{Binding BaseResourceRequirement}" ElementStyle="{StaticResource CenteredTextBlockStyle}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceQuantityColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceQuantityColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridCheckBoxColumn Width="Auto" Binding="{Binding CraftingRequireExactResourceType, Mode=TwoWay}" >
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceExactColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceExactColumnTooltip}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+                                            <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideResource_Click" ToolTip="{DynamicResource ServerSettings_RemoveCraftingOverrideResourceTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+                            </Grid>
+                        </Expander>
                     
                         <Expander Name="SectionCustomLevels" IsExpanded="{Binding CurrentConfig.SectionCustomLevelsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
@@ -2833,129 +2981,136 @@
                             </Expander.Style>
 
                             <Grid Margin="-8,0,2,0">
-                                <StackPanel>
-                                    <CheckBox Margin="5" Name="EnableLevelsCheckbox" Content="{DynamicResource ServerSettings_EnableCustomLevelProgressionsLabel}" IsChecked="{Binding EnableLevelProgressions}" ToolTip="{DynamicResource ServerSettings_EnableCustomLevelProgressionsTooltip}" HorizontalAlignment="Left"/>
-                                
-                                    <GroupBox HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
-                                        <GroupBox.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource ServerSettings_CustomPlayerLevelsLabel}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
-                                                    <Image Source="Art/Delete.png" Width="16" Height="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
-                                                    <Image Source="Art/Refresh.png" Width="16" Height="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdatePlayerXPCap}">
-                                                    <Image Source="Art/Upgrade.png" Width="16" Height="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}">
-                                                    <Image Source="Art/Open_6529.png" Width="16" Height="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportPlayerLevels}">
-                                                    <Image Source="Art/Save_6530.png" Width="16" Height="16"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </GroupBox.Header>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="7*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="EnableLevelsCheckbox" Content="{DynamicResource ServerSettings_EnableCustomLevelProgressionsLabel}" IsChecked="{Binding EnableLevelProgressions}" ToolTip="{DynamicResource ServerSettings_EnableCustomLevelProgressionsTooltip}" HorizontalAlignment="Left"/>
+
+                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_CustomPlayerLevelsLabel}"/>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16" Height="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
+                                                <Image Source="Art/Refresh.png" Width="16" Height="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdatePlayerXPCap}">
+                                                <Image Source="Art/Upgrade.png" Width="16" Height="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}">
+                                                <Image Source="Art/Open_6529.png" Width="16" Height="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportPlayerLevels}">
+                                                <Image Source="Art/Save_6530.png" Width="16" Height="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
                                     
-                                        <ListView x:Name="CustomPlayerLevelsView" ItemsSource="{Binding PlayerLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
-                                            <ListView.View>
-                                                <GridView>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <Button Click="AddPlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
-                                                                    <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
-                                                                </Button>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <Button Click="RemovePlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}">
-                                                                    <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
-                                                                </Button>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramPointsColumnLabel}">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBox Text="{Binding EngramPoints}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramTotalColumnLabel}" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
-                                                </GridView>
-                                            </ListView.View>
-                                        </ListView>
-                                    </GroupBox>
-                                
-                                    <GroupBox HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
-                                        <GroupBox.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource ServerSettings_CustomDinoLevelsLabel}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
-                                                    <Image Source="Art/Delete.png" Width="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
-                                                    <Image Source="Art/Refresh.png" Width="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdateDinoXPCap}">
-                                                    <Image Source="Art/Upgrade.png" Width="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}">
-                                                    <Image Source="Art/Open_6529.png" Width="16"/>
-                                                </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportDinoLevels}">
-                                                    <Image Source="Art/Save_6530.png" Width="16"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </GroupBox.Header>
+                                    <ListView x:Name="CustomPlayerLevelsView" ItemsSource="{Binding PlayerLevels}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Click="AddPlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
+                                                                <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Click="RemovePlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}">
+                                                                <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramPointsColumnLabel}">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox Text="{Binding EngramPoints}" Width="75" VerticalContentAlignment="Center" LostFocus="PlayerLevels_Recalculate"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramTotalColumnLabel}" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </GroupBox>
+
+                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_CustomDinoLevelsLabel}"/>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
+                                                <Image Source="Art/Refresh.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdateDinoXPCap}">
+                                                <Image Source="Art/Upgrade.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}">
+                                                <Image Source="Art/Open_6529.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportDinoLevels}">
+                                                <Image Source="Art/Save_6530.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
                                     
-                                        <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" Height="400" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
-                                            <ListView.View>
-                                                <GridView>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <Button Click="AddDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}" >
-                                                                    <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
-                                                                </Button>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <Button Click="RemoveDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}" >
-                                                                    <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
-                                                                </Button>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="DinoLevels_Recalculate"/>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
-                                                </GridView>
-                                            </ListView.View>
-                                        </ListView>
-                                    </GroupBox>
-                                </StackPanel>
+                                    <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Click="AddDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}" >
+                                                                <Image Source="Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Click="RemoveDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}" >
+                                                                <Image Source="Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionXPRequiredColumnLabel}" Width="Auto">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox Text="{Binding XPRequired}" Width="75" VerticalContentAlignment="Center" LostFocus="DinoLevels_Recalculate"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </GroupBox>
                             </Grid>
                         </Expander>
 
@@ -3004,8 +3159,8 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                
-                                    <DataGrid ItemsSource="{Binding CustomGameUserSettingsSections}" SelectedItem="{Binding Path=SelectedCustomSection, ElementName=SettingsControl, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+
+                                    <DataGrid ItemsSource="{Binding CustomGameUserSettingsSections}" SelectedItem="{Binding Path=SelectedCustomSection, ElementName=SettingsControl, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3061,8 +3216,8 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                
-                                    <DataGrid ItemsSource="{Binding Path=SelectedCustomSection.SectionItems, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+
+                                    <DataGrid ItemsSource="{Binding Path=SelectedCustomSection.SectionItems, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3139,7 +3294,7 @@
 
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Content="{DynamicResource ServerSettings_ServerFilesWarningLabel}"/>
 
-                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesAdminLabel}"/>
@@ -3155,7 +3310,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3207,7 +3362,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesWhitelistLabel}"/>
@@ -3223,7 +3378,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3270,7 +3425,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="200" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
@@ -3286,7 +3441,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesExclusive, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding Path=ServerFilesExclusive, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3331,88 +3486,6 @@
                                             </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                </GroupBox>
-                            </Grid>
-                        </Expander>
-
-                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
-                            <Expander.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
-                                            IsEnabled="{Binding ElementName=SectionSOTF, Path=IsExpanded}"
-                                            Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SOTFSection}">
-                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                    </Button>
-                                </StackPanel>
-                            </Expander.Header>
-
-                            <Expander.Style>
-                                <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
-                                    <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
-                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplatePGM}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Expander.Style>
-
-                            <Grid Margin="-8,0,2,0">
-                                <GroupBox Style="{StaticResource GroupBoxStyle}">
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled}" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
-                                            <Button Margin="20,5,5,5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}">
-                                                <Image Source="Art/Help.png" Height="16" Margin="0" />
-                                            </Button>
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                
-                                    <Grid IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}" HorizontalAlignment="Left"/>
-
-                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}" HorizontalAlignment="Left"/>
-
-                                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}" HorizontalAlignment="Left"/>
-
-                                        <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
-                                        <local:AnnotatedSlider Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
-                                    </Grid>
                                 </GroupBox>
                             </Grid>
                         </Expander>
@@ -3748,7 +3821,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid Name="NPCSpawnSettingsGrid" ItemsSource="{Binding NPCSpawnSettings}" SelectedItem="{Binding Path=SelectedNPCSpawnSetting, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                    <DataGrid Name="NPCSpawnSettingsGrid" ItemsSource="{Binding NPCSpawnSettings}" SelectedItem="{Binding Path=SelectedNPCSpawnSetting, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3783,7 +3856,7 @@
                                                     </Style>
                                                 </DataGridComboBoxColumn.EditingElementStyle>
                                             </DataGridComboBoxColumn>
-                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="FriendlyName">
+                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
                                                 <DataGridTemplateColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesContainerClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesContainerClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
@@ -3819,9 +3892,9 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid Name="NPCSpawnEntrySettingsGrid" ItemsSource="{Binding Path=SelectedNPCSpawnSetting.NPCSpawnEntrySettings, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
+                                    <DataGrid Name="NPCSpawnEntrySettingsGrid" ItemsSource="{Binding Path=SelectedNPCSpawnSetting.NPCSpawnEntrySettings, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25">
                                         <DataGrid.Resources>
-                                            <lib:BindingProxy x:Key="proxy" Data="{Binding Path=SelectedNPCSpawnSetting, ElementName=SettingsControl}" />
+                                            <lib:BindingProxy x:Key="proxySelectedNPCSpawnSetting" Data="{Binding Path=SelectedNPCSpawnSetting, ElementName=SettingsControl}" />
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
                                                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
@@ -3838,12 +3911,12 @@
                                         </DataGrid.VerticalGridLinesBrush>
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn     Width="1*" Binding="{Binding AnEntryName}" Visibility="{Binding Data.ShowEntryNameColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxy}}">
+                                            <DataGridTextColumn     Width="1*" Binding="{Binding AnEntryName}" Visibility="{Binding Data.ShowEntryNameColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryNameColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryNameColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
-                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="FriendlyName" Visibility="{Binding Data.ShowClassStringColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxy}}">
+                                            <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName" Visibility="{Binding Data.ShowClassStringColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTemplateColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
@@ -3853,12 +3926,12 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTextColumn     Width="1*" Binding="{Binding EntryWeight}" Visibility="{Binding Data.ShowEntryWeightColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxy}}">
+                                            <DataGridTextColumn     Width="1*" Binding="{Binding EntryWeight}" Visibility="{Binding Data.ShowEntryWeightColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryWeightClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryWeightClassColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
-                                            <DataGridTextColumn     Width="1*" Binding="{Binding MaxPercentageOfDesiredNumToAllow}" Visibility="{Binding Data.ShowMaxPercentageColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxy}}">
+                                            <DataGridTextColumn     Width="1*" Binding="{Binding MaxPercentageOfDesiredNumToAllow}" Visibility="{Binding Data.ShowMaxPercentageColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
                                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
@@ -3874,6 +3947,88 @@
                                             </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
+                                </GroupBox>
+                            </Grid>
+                        </Expander>
+
+                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                            IsEnabled="{Binding ElementName=SectionSOTF, Path=IsExpanded}"
+                                            Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SOTFSection}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
+                                </StackPanel>
+                            </Expander.Header>
+
+                            <Expander.Style>
+                                <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                    <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplatePGM}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Expander.Style>
+
+                            <Grid Margin="-8,0,2,0">
+                                <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled}" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                                            <Button Margin="20,5,5,5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}">
+                                                <Image Source="Art/Help.png" Height="16" Margin="0" />
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                
+                                    <Grid IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_OutputGameReport}" Content="{DynamicResource ServerSettings_EnableOutputGameReportLabel}" ToolTip="{DynamicResource ServerSettings_EnableOutputGameReportTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding SOTF_GamePlayLogging}" Content="{DynamicResource ServerSettings_EnableGamePlayLoggingLabel}" ToolTip="{DynamicResource ServerSettings_EnableGamePlayLoggingTooltip}" HorizontalAlignment="Left"/>
+
+                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_DisableDeathSPectator}" Content="{DynamicResource ServerSettings_DisableDeathSpectatorLabel}" ToolTip="{DynamicResource ServerSettings_DisableDeathSpectatorTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding SOTF_OnlyAdminRejoinAsSpectator}" Content="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorLabel}"  ToolTip="{DynamicResource ServerSettings_OnlyAdminRejoinSpectatorTooltip}" HorizontalAlignment="Left"/>
+
+                                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoEvents}" Content="{DynamicResource ServerSettings_SOTFNoEventsLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoEventsTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding SOTF_NoBosses}" Content="{DynamicResource ServerSettings_SOTFNoBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFNoBossesTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" IsChecked="{Binding SOTF_BothBosses}" Content="{DynamicResource ServerSettings_SOTFBothBossesLabel}" ToolTip="{DynamicResource ServerSettings_SOTFBothBossesTooltip}" HorizontalAlignment="Left"/>
+
+                                        <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersInTribeLabel}" Value="{Binding SOTF_MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource SliderUnits_Players}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_MaxPlayersInTribeTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_TribesRequiredForGameLabel}" Value="{Binding SOTF_BattleNumOfTribesToStartGame}" Suffix="{DynamicResource SliderUnits_Tribes}" Minimum="1" Maximum="127" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_TribesRequiredForGameTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_RingOfDeathCollapseTimeLabel}" Value="{Binding SOTF_TimeToCollapseROD}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="86400" SmallChange="900" LargeChange="3600" TickFrequency="3600" ToolTip="{DynamicResource ServerSettings_RingOfDeathCollapseTimeTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoStartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoStartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoStartDelayTimeTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_AutoRestartDelayTimeLabel}" Value="{Binding SOTF_BattleAutoRestartGameInterval}" Suffix="{DynamicResource SliderUnits_Seconds}"  Minimum="5" Maximum="120" SmallChange="5" LargeChange="20" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_AutoRestartDelayTimeTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SuddenDeathTimeLabel}" Value="{Binding SOTF_BattleSuddenDeathInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="60" Maximum="3600" SmallChange="60" LargeChange="600" TickFrequency="300" ToolTip="{DynamicResource ServerSettings_SuddenDeathTimeTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFEvoEventIntervalLabel}" Value="{Binding SOTF_EvoEventInterval}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SOTFEvoEventIntervalTooltip}"/>
+                                        <local:AnnotatedSlider Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_SOTFRingStartTimeLabel}" Value="{Binding SOTF_RingStartTime}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="100" Maximum="10000" SmallChange="10" LargeChange="100" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_SOTFRingStartTimeTooltip}"/>
+                                    </Grid>
                                 </GroupBox>
                             </Grid>
                         </Expander>

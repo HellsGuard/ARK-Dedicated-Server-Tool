@@ -219,7 +219,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(NPCSpawnEntrySettingsProperty, value); }
         }
 
-        public string FriendlyName => GameData.FriendlyNameForClass(NPCSpawnEntriesContainerClassString);
+        public string DisplayName => GameData.FriendlyNameForClass(NPCSpawnEntriesContainerClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString) && NPCSpawnEntrySettings.Count > 0;
 
@@ -300,7 +300,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(MaxPercentageOfDesiredNumToAllowProperty, value); }
         }
 
-        public string FriendlyName => GameData.FriendlyNameForClass(NPCClassString);
+        public string DisplayName => GameData.FriendlyNameForClass(NPCClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCClassString);
     }
