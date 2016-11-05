@@ -57,6 +57,8 @@ namespace ARK_Server_Manager.Lib
 
             if (property.PropertyType == typeof(float))
                 convertedVal = ((float)value).ToString("0.0#########", CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
+            else if (property.PropertyType == typeof(string))
+                convertedVal = $"\"{value}\"";
             else
                 convertedVal = Convert.ToString(value, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE));
 
@@ -93,10 +95,10 @@ namespace ARK_Server_Manager.Lib
             }
             else if (property.PropertyType == typeof(float))
             {
-                value = value.Replace("f", "");
+                var tempValue = value.Replace("f", "");
 
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(tempValue, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
             }
             else if (property.PropertyType.IsSubclassOf(typeof(AggregateIniValue)))
@@ -133,10 +135,10 @@ namespace ARK_Server_Manager.Lib
             }
             if (property.PropertyType == typeof(float))
             {
-                value = value.Replace("f", "");
+                var tempValue = value.Replace("f", "");
 
                 float floatValue;
-                float.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
+                float.TryParse(tempValue, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(DEFAULT_CULTURE_CODE), out floatValue);
                 property.SetValue(obj, floatValue);
                 return true;
             }

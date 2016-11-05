@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
@@ -25,6 +23,16 @@ namespace ARK_Server_Manager.Lib
         /// The key of the value.
         /// </summary>
         public string Key;
+
+        /// <summary>
+        /// If true, the value will always be surrounded with brackets
+        /// </summary>
+        public bool ValueWithinBrackets;
+
+        /// <summary>
+        /// If true, the every list value will always be surrounded with brackets
+        /// </summary>
+        public bool ListValueWithinBrackets;
     }
 
     /// <summary>
@@ -32,7 +40,7 @@ namespace ARK_Server_Manager.Lib
     /// </summary>
     public abstract class AggregateIniValue : DependencyObject
     {
-        private const char DELIMITER = ',';
+        protected const char DELIMITER = ',';
 
         protected readonly List<PropertyInfo> Properties = new List<PropertyInfo>();
 
@@ -131,11 +139,7 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                result.Append($"{propName}=");
-                if (prop.PropertyType == typeof(string))
-                    result.Append($"\"{propValue}\"");
-                else
-                    result.Append(propValue);
+                result.Append($"{propName}={propValue}");
 
                 delimiter = DELIMITER.ToString();
             }
@@ -147,6 +151,116 @@ namespace ARK_Server_Manager.Lib
         public override string ToString()
         {
             return ToINIValue();
+        }
+
+        protected virtual void FromComplexINIValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return;
+
+            var kvValue = value.Trim(' ');
+
+            var propertyNames = this.Properties.Select(f => f.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().Select(a => !string.IsNullOrWhiteSpace(a.Key) ? a.Key : f.Name).FirstOrDefault());
+            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames.ToArray());
+
+            foreach (var property in this.Properties)
+            {
+                var attr = property.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
+                var propertyName = string.IsNullOrWhiteSpace(attr?.Key) ? property.Name : attr.Key;
+
+                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith($"{propertyName}="));
+                if (propertyValue == null)
+                    continue;
+
+                var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
+                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
+
+                if (attr?.ValueWithinBrackets ?? false)
+                {
+                    if (kvPropertyValue.StartsWith("("))
+                        kvPropertyValue = kvPropertyValue.Substring(1);
+                    if (kvPropertyValue.EndsWith(")"))
+                        kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
+                }
+
+                var collection = property.GetValue(this) as IIniValuesCollection;
+                if (collection != null)
+                {
+                    var delimiter = DELIMITER.ToString();
+                    if (attr?.ListValueWithinBrackets ?? false)
+                    {
+                        delimiter = $"){delimiter}(";
+                        if (kvPropertyValue.StartsWith("("))
+                            kvPropertyValue = kvPropertyValue.Substring(1);
+                        if (kvPropertyValue.EndsWith(")"))
+                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
+                    }
+
+                    collection.FromIniValues(kvPropertyValue.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
+                }
+                else
+                    StringUtils.SetPropertyValue(kvPropertyValue, this, property);
+            }
+        }
+
+        protected virtual string ToComplexINIValue(bool resultWithinBrackets)
+        {
+            GetPropertyInfos();
+            if (this.Properties.Count == 0)
+                return string.Empty;
+
+            var result = new StringBuilder();
+            if (resultWithinBrackets)
+                result.Append("(");
+
+            var delimiter = "";
+            foreach (var prop in this.Properties)
+            {
+                result.Append(delimiter);
+
+                var attr = prop.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
+                var propName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
+
+                result.Append($"{propName}=");
+                if (attr?.ValueWithinBrackets ?? false)
+                    result.Append("(");
+
+                var val = prop.GetValue(this);
+                var collection = val as IIniValuesCollection;
+                if (collection != null)
+                {
+                    var iniVals = collection.ToIniValues();
+                    var delimiter2 = "";
+                    foreach (var iniVal in iniVals)
+                    {
+                        result.Append(delimiter2);
+                        if (attr?.ListValueWithinBrackets ?? false)
+                            result.Append($"({iniVal})");
+                        else
+                            result.Append(iniVal);
+
+                        delimiter2 = DELIMITER.ToString();
+                    }
+                }
+                else
+                {
+                    var propValue = StringUtils.GetPropertyValue(val, prop);
+                    result.Append(propValue);
+                }
+
+                if (attr?.ValueWithinBrackets ?? false)
+                    result.Append(")");
+
+                delimiter = DELIMITER.ToString();
+            }
+
+            if (resultWithinBrackets)
+                result.Append(")");
+            return result.ToString();
         }
     }
 }

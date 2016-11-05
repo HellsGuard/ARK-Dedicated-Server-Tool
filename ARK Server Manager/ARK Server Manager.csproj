@@ -31,8 +31,8 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>9</ApplicationRevision>
-    <ApplicationVersion>1.0.255.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.257.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -162,8 +162,10 @@
     <Compile Include="CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\BindingProxy.cs" />
     <Compile Include="Lib\Model\PGMTerrain.cs" />
     <Compile Include="Lib\Model\CustomSection.cs" />
+    <Compile Include="Lib\Model\NPCSpawner.cs" />
     <Compile Include="Lib\Model\SteamCmdWorkshopDetails.cs" />
     <Compile Include="Lib\Model\SteamUserDetail.cs" />
     <Compile Include="Lib\Model\SteamServerDetail.cs" />
@@ -174,13 +176,17 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
-    <Compile Include="Lib\ViewModel\TributeExpirationConverter.cs" />
-    <Compile Include="Lib\ViewModel\InstalledVersionConverter.cs" />
-    <Compile Include="Lib\ViewModel\ExtinctionEventDateConverter.cs" />
-    <Compile Include="Lib\ViewModel\OfficialDifficultyValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\ProfileNameValidationRule.cs" />
-    <Compile Include="Lib\ViewModel\ExtinctionEventTimeIntervalConverter.cs" />
-    <Compile Include="Lib\ViewModel\StringValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\ComboBoxItem.cs" />
+    <Compile Include="Lib\ViewModel\SupplyCrate.cs" />
+    <Compile Include="Lib\ViewModel\NPCSpawnSettings.cs" />
+    <Compile Include="Lib\ViewModel\MapSpawner.cs" />
+    <Compile Include="Lib\ViewConverters\TributeExpirationConverter.cs" />
+    <Compile Include="Lib\ViewConverters\InstalledVersionConverter.cs" />
+    <Compile Include="Lib\ViewConverters\ExtinctionEventDateConverter.cs" />
+    <Compile Include="Lib\ViewConverters\OfficialDifficultyValueConverter.cs" />
+    <Compile Include="Lib\ValidationRules\ProfileNameValidationRule.cs" />
+    <Compile Include="Lib\ViewConverters\ExtinctionEventTimeIntervalConverter.cs" />
+    <Compile Include="Lib\ValidationRules\StringValidationRule.cs" />
     <Compile Include="WorldSaveRestoreWindow.xaml.cs">
       <DependentUpon>WorldSaveRestoreWindow.xaml</DependentUpon>
     </Compile>
@@ -190,7 +196,7 @@
     <Compile Include="ShutdownWindow.xaml.cs">
       <DependentUpon>ShutdownWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lib\ViewModel\UnixTimeToDateTimeConverter.cs" />
+    <Compile Include="Lib\ViewConverters\UnixTimeToDateTimeConverter.cs" />
     <Compile Include="ModDetailsWindow.xaml.cs">
       <DependentUpon>ModDetailsWindow.xaml</DependentUpon>
     </Compile>
@@ -198,20 +204,20 @@
     <Compile Include="Lib\Utils\JsonUtils.cs" />
     <Compile Include="Lib\Model\PublishedFileDetail.cs" />
     <Compile Include="Lib\Model\WorkshopFileDetail.cs" />
-    <Compile Include="Lib\ViewModel\InvertBooleanConverter.cs" />
+    <Compile Include="Lib\ViewConverters\InvertBooleanConverter.cs" />
     <Compile Include="ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ListViewSorting.cs" />
-    <Compile Include="Lib\Model\Crafting.cs" />
+    <Compile Include="Lib\Model\CraftingOverride.cs" />
     <Compile Include="Lib\Model\ResourceClassMultiplier.cs" />
     <Compile Include="Lib\Model\IntegerIniValueList.cs" />
-    <Compile Include="Lib\Model\SupplyCrate.cs" />
+    <Compile Include="Lib\Model\SupplyCrateOverride.cs" />
     <Compile Include="Lib\Utils\ModUtils.cs" />
     <Compile Include="Lib\Utils\StringUtils.cs" />
     <Compile Include="Lib\ViewModel\PrimalItem.cs" />
-    <Compile Include="Lib\ViewModel\PrimalItemClassNameToDisplayNameConverter.cs" />
-    <Compile Include="Lib\ViewModel\SupplyCrateClassNameToDisplayNameConverter.cs" />
+    <Compile Include="Lib\ViewConverters\PrimalItemClassNameToDisplayNameConverter.cs" />
+    <Compile Include="Lib\ViewConverters\SupplyCrateClassNameToDisplayNameConverter.cs" />
     <Compile Include="Lib\Utils\WindowUtils.cs" />
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
@@ -266,27 +272,27 @@
     <Compile Include="Lib\Utils\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
     <Compile Include="Lib\Model\ServerRuntime.cs" />
-    <Compile Include="Lib\ViewModel\AllTrueMultiValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\AllTrueMultiValueConverter.cs" />
     <Compile Include="Lib\ViewModel\BindingProxy.cs" />
-    <Compile Include="Lib\ViewModel\DifficultyOffsetValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\DifficultyOffsetValueConverter.cs" />
     <Compile Include="Lib\ViewModel\DinoSettings.cs" />
     <Compile Include="Lib\ViewModel\DinoSettingsList.cs" />
-    <Compile Include="Lib\ViewModel\EngramClassNameToDisplayNameConverter.cs" />
-    <Compile Include="Lib\ViewModel\DinoNameValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\EnumFlagsConverter.cs" />
-    <Compile Include="Lib\ViewModel\EnumConverter.cs" />
-    <Compile Include="Lib\ViewModel\IdListValidationRule.cs" />
-    <Compile Include="Lib\ViewModel\IsNullOrWhiteSpaceValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\IsNullValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\EngramClassNameToDisplayNameConverter.cs" />
+    <Compile Include="Lib\ViewConverters\DinoNameValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\EnumFlagsConverter.cs" />
+    <Compile Include="Lib\ViewConverters\EnumConverter.cs" />
+    <Compile Include="Lib\ValidationRules\IdListValidationRule.cs" />
+    <Compile Include="Lib\ViewConverters\IsNullOrWhiteSpaceValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\IsNullValueConverter.cs" />
     <Compile Include="Lib\ViewModel\RelayCommand.cs" />
-    <Compile Include="Lib\ViewModel\MinutesToTimeValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\TimeValidationRule.cs" />
-    <Compile Include="Lib\ViewModel\IpValidationRule.cs" />
-    <Compile Include="Lib\ViewModel\SecondsToTimeValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\NullValueConverter.cs" />
-    <Compile Include="Lib\ViewModel\LevelIndexToDisplayOffsetConverter.cs" />
+    <Compile Include="Lib\ViewConverters\MinutesToTimeValueConverter.cs" />
+    <Compile Include="Lib\ValidationRules\TimeValidationRule.cs" />
+    <Compile Include="Lib\ValidationRules\IpValidationRule.cs" />
+    <Compile Include="Lib\ViewConverters\SecondsToTimeValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\NullValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\LevelIndexToDisplayOffsetConverter.cs" />
     <Compile Include="Lib\ViewModel\RCON\PlayerInfo.cs" />
-    <Compile Include="Lib\ViewModel\ResourceNameValueConverter.cs" />
+    <Compile Include="Lib\ViewConverters\ResourceNameValueConverter.cs" />
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
@@ -329,6 +335,7 @@
     <Resource Include="Art\Paste.png" />
     <Resource Include="Art\DragInsert.png" />
     <Resource Include="Art\Delete_6529.png" />
+    <Resource Include="Art\Cancel.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

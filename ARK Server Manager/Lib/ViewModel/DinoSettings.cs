@@ -9,7 +9,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
     public class DinoSettings : DependencyObject
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSettings), new PropertyMetadata(ArkApplication.SurvivalEvolved));
-        public static readonly DependencyProperty FriendlyNameProperty = DependencyProperty.Register(nameof(FriendlyName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty CanSpawnProperty = DependencyProperty.Register(nameof(CanSpawn), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
@@ -28,12 +27,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ArkApplicationProperty, value); }
         }
 
-        public string FriendlyName
-        {
-            get { return (string)GetValue(FriendlyNameProperty); }
-            set { SetValue(FriendlyNameProperty, value); }
-        }
-      
         public string ClassName
         {
             get { return (string)GetValue(ClassNameProperty); }
@@ -100,6 +93,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(WildResistanceMultiplierProperty, value); }
         }
 
+        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
         public string NameTag { get; internal set; }
         public bool KnownDino { get; internal set; }
         public bool HasNameTag { get; internal set; }
@@ -112,7 +106,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 ArkApplication = ArkApplication,
                 ClassName = ClassName,
-                FriendlyName = FriendlyName,
                 NameTag = NameTag,
 
                 CanSpawn = CanSpawn,

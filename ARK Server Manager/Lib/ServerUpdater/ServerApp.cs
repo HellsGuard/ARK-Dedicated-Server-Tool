@@ -101,7 +101,7 @@ namespace ARK_Server_Manager.Lib
 
         public const int EXITCODE_NORMALEXIT = 0;
         private const int EXITCODE_EXITWITHERRORS = 98;
-        private const int EXITCODE_CANCELLED = 99;
+        public const int EXITCODE_CANCELLED = 99;
         // generic codes
         private const int EXITCODE_UNKNOWNERROR = 991;
         private const int EXITCODE_UNKNOWNTHREADERROR = 992;
@@ -159,7 +159,7 @@ namespace ARK_Server_Manager.Lib
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
 
-        private void ShutdownServer(bool restartServer)
+        private void ShutdownServer(bool restartServer, CancellationToken cancellationToken)
         {
             if (_profile == null)
             {
@@ -181,10 +181,15 @@ namespace ARK_Server_Manager.Lib
             }
 
             // stop the server
-            StopServer();
+            StopServer(cancellationToken);
 
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
+            if (cancellationToken.IsCancellationRequested)
+            {
+                ExitCode = EXITCODE_CANCELLED;
+                return;
+            }
 
             if (BackupWorldFile)
             {
@@ -194,26 +199,62 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        LogProfileMessage("Backing up world file...");
+                        LogProfileMessage("Backing up world save file...");
 
                         var backupFile = GetServerWorldBackupFile();
                         File.Copy(worldFile, backupFile, true);
 
-                        LogProfileMessage($"Backed up world file '{worldFile}'.");
+                        LogProfileMessage($"Backed up world save file '{worldFile}'.");
                     }
                     catch (Exception ex)
                     {
-                        LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
+                        LogProfileError($"Unable to back up world save file - {worldFile}.\r\n{ex.Message}", false);
                     }
                 }
                 else
                 {
-                    LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
+                    LogProfileMessage($"Unable to back up world save file - '{worldFile}'\r\nWorld save file could not be found.");
                 }
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
             }
+
+            // make a backup of the current profile and config files.
+            try
+            {
+                LogProfileMessage("Backing up profile and config files...");
+
+                var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
+                var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
+
+                var profileBackupFolder = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName, DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+                var profileBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                var gameIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameConfigFile));
+                var gusIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameUserSettingsConfigFile));
+
+                if (!Directory.Exists(profileBackupFolder))
+                    Directory.CreateDirectory(profileBackupFolder);
+
+                if (File.Exists(profileFile))
+                    File.Copy(profileFile, profileBackupFile, true);
+
+                if (File.Exists(gameIniFile))
+                    File.Copy(gameIniFile, gameIniBackupFile, true);
+
+                if (File.Exists(gusIniFile))
+                    File.Copy(gusIniFile, gusIniBackupFile, true);
+
+                LogProfileMessage("Backed up profile and config files.");
+            }
+            catch (Exception ex)
+            {
+                LogProfileError($"Unable to back up profile and config files.\r\n{ex.Message}", false);
+            }
+
+            if (ExitCode != EXITCODE_NORMALEXIT)
+                return;
 
             // check if this is a shutdown only, or a shutdown and restart.
             if (restartServer)
@@ -233,6 +274,7 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("Finished server shutdown.");
                 LogProfileMessage("-------------------------");
             }
+
             ExitCode = EXITCODE_NORMALEXIT;
         }
 
@@ -288,7 +330,7 @@ namespace ARK_Server_Manager.Lib
             ExitCode = EXITCODE_NORMALEXIT;
         }
 
-        private void StopServer()
+        private void StopServer(CancellationToken cancellationToken)
         {
             _serverRunning = false;
 
@@ -332,7 +374,7 @@ namespace ARK_Server_Manager.Lib
 
                         SendMessage(ShutdownReason);
 
-                        Task.Delay(_profile.MotDDuration * 1000).Wait();
+                        Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
                     }
 
                     LogProfileMessage("Starting shutdown timer...");
@@ -340,9 +382,19 @@ namespace ARK_Server_Manager.Lib
                     var minutesLeft = ShutdownInterval;
                     while (minutesLeft > 0)
                     {
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            LogProfileMessage("Cancelling shutdown...");
+
+                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
+
+                            ExitCode = EXITCODE_CANCELLED;
+                            return;
+                        }
+
                         try
                         {
-                            List<Player> playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList();
+                            var playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList();
 
                             // check if anyone is logged into the server
                             var playerCount = playerInfo?.Count ?? -1;
@@ -406,7 +458,7 @@ namespace ARK_Server_Manager.Lib
                             SendMessage(message);
 
                         minutesLeft--;
-                        Task.Delay(60000).Wait();
+                        Task.Delay(60000, cancellationToken).Wait(cancellationToken);
                     }
 
                     // check if we need to perform a world save (not required for SotF servers)
@@ -419,12 +471,22 @@ namespace ARK_Server_Manager.Lib
 
                             SendCommand("saveworld", false);
 
-                            Task.Delay(10000).Wait();
+                            Task.Delay(10000, cancellationToken).Wait(cancellationToken);
                         }
                         catch (Exception ex)
                         {
                             Debug.WriteLine($"RCON> saveworld command.\r\n{ex.Message}");
                         }
+                    }
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        LogProfileMessage("Cancelling shutdown...");
+
+                        SendMessage(Config.Default.ServerShutdown_CancelMessage);
+
+                        ExitCode = EXITCODE_CANCELLED;
+                        return;
                     }
 
                     // send the final shutdown message
@@ -445,6 +507,14 @@ namespace ARK_Server_Manager.Lib
             else
             {
                 LogProfileMessage("RCON not enabled.");
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                LogProfileMessage("Cancelling shutdown...");
+
+                ExitCode = EXITCODE_CANCELLED;
+                return;
             }
 
             try
@@ -625,7 +695,7 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 // stop the server
-                StopServer();
+                StopServer(CancellationToken.None);
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
@@ -1509,7 +1579,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public int PerformProfileShutdown(ProfileSnapshot profile, bool performRestart)
+        public int PerformProfileShutdown(ProfileSnapshot profile, bool performRestart, CancellationToken cancellationToken)
         {
             _profile = profile;
 
@@ -1531,7 +1601,7 @@ namespace ARK_Server_Manager.Lib
                 // check if the mutex was established
                 if (createdNew)
                 {
-                    ShutdownServer(performRestart);
+                    ShutdownServer(performRestart, cancellationToken);
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
@@ -1683,7 +1753,7 @@ namespace ARK_Server_Manager.Lib
                     var app = new ServerApp();
                     app.SendEmails = true;
                     app.ServerProcess = ServerProcessType.AutoRestart;
-                    exitCode = app.PerformProfileShutdown(profile, performRestart: true);
+                    exitCode = app.PerformProfileShutdown(profile, performRestart: true, cancellationToken: CancellationToken.None);
                 }
             }
             catch (Exception)

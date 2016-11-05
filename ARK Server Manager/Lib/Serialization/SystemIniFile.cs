@@ -121,8 +121,8 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()
         {
-            { IniFiles.GameUserSettings, "GameUserSettings.ini" },
-            { IniFiles.Game, "Game.ini" }
+            { IniFiles.GameUserSettings, Config.Default.ServerGameUserSettingsConfigFile },
+            { IniFiles.Game, Config.Default.ServerGameConfigFile }
         };
 
         public string basePath;

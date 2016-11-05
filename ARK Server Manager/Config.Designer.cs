@@ -221,9 +221,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameUserSettings.ini")]
-        public string ServerGameUserSettingsFile {
+        public string ServerGameUserSettingsConfigFile {
             get {
-                return ((string)(this["ServerGameUserSettingsFile"]));
+                return ((string)(this["ServerGameUserSettingsConfigFile"]));
             }
         }
         
@@ -341,15 +341,6 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["UpgradeConfig"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ASMScheduler")]
-        public string SchedulerWorkDir {
-            get {
-                return ((string)(this["SchedulerWorkDir"]));
             }
         }
         
@@ -613,7 +604,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://steamcommunity.com/app/346110/discussions/0/594820656447032287/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://survivetheark.com/index.php?/forums/forum/5-changelog-patch-notes/")]
         public string ArkSE_PatchNotesUrl {
             get {
                 return ((string)(this["ArkSE_PatchNotesUrl"]));
@@ -622,7 +613,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://steamcommunity.com/app/407530/discussions/0/365163686069351564/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://survivetheark.com/index.php?/forums/forum/9-changelog-patch-notes/")]
         public string ArkSotF_PatchNotesUrl {
             get {
                 return ((string)(this["ArkSotF_PatchNotesUrl"]));
@@ -1417,6 +1408,60 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["SectionPGMIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("_Backup")]
+        public string BackupDir {
+            get {
+                return ((string)(this["BackupDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Game.ini")]
+        public string ServerGameConfigFile {
+            get {
+                return ((string)(this["ServerGameConfigFile"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionMapSpawnerOverridesIsExpanded {
+            get {
+                return ((bool)(this["SectionMapSpawnerOverridesIsExpanded"]));
+            }
+            set {
+                this["SectionMapSpawnerOverridesIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server shutdown has been cancelled.")]
+        public string ServerShutdown_CancelMessage {
+            get {
+                return ((string)(this["ServerShutdown_CancelMessage"]));
+            }
+            set {
+                this["ServerShutdown_CancelMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public string SectionCraftingOverridesIsExpanded {
+            get {
+                return ((string)(this["SectionCraftingOverridesIsExpanded"]));
+            }
+            set {
+                this["SectionCraftingOverridesIsExpanded"] = value;
             }
         }
     }

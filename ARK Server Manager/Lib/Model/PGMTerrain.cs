@@ -7,7 +7,7 @@ namespace ARK_Server_Manager.Lib
 {
     public class PGMTerrain : AggregateIniValue
     {
-        private const char DELIMITER = ';';
+        private new const char DELIMITER = ';';
 
         public PGMTerrain()
         {
@@ -607,11 +607,7 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                result.Append($"{propName}=");
-                if (prop.PropertyType == typeof(string))
-                    result.Append($"\"{propValue}\"");
-                else
-                    result.Append(propValue);
+                result.Append($"{propName}={propValue}");
 
                 delimiter = DELIMITER.ToString();
             }
@@ -622,8 +618,6 @@ namespace ARK_Server_Manager.Lib
 
     public class PGMTerrainXY : AggregateIniValue
     {
-        private const char DELIMITER = ',';
-
         public PGMTerrainXY()
         {
         }
@@ -711,11 +705,7 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                result.Append($"{propName}=");
-                if (prop.PropertyType == typeof(string))
-                    result.Append($"\"{propValue}\"");
-                else
-                    result.Append(propValue);
+                result.Append($"{propName}={propValue}");
 
                 delimiter = DELIMITER.ToString();
             }
