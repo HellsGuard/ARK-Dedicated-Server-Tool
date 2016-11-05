@@ -1,6 +1,7 @@
 ﻿using ARK_Server_Manager.Lib;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,6 +16,7 @@ using WPFSharp.Globalizer;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Utils;
 using System.Text;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using ARK_Server_Manager.Lib.Model;
@@ -1507,6 +1509,12 @@ namespace ARK_Server_Manager
 
                 comboBox.SelectedValue = text;
             }
+
+            var expression = comboBox.GetBindingExpression(Selector.SelectedValueProperty);
+            expression?.UpdateSource();
+
+            expression = comboBox.GetBindingExpression(ComboBox.TextProperty);
+            expression?.UpdateSource();
         }
 
         #region Map Spawner Overrides
@@ -1769,7 +1777,6 @@ namespace ARK_Server_Manager
                 this.DinoSettingsGrid.BeginInit();
 
                 this.BaseDinoSettingsDinoList = newList;
-                this.Settings.DinoSettings.RenderToView();
             }
             finally
             {
@@ -1805,7 +1812,6 @@ namespace ARK_Server_Manager
                 this.NPCSpawnSettingsGrid.BeginInit();
 
                 this.BaseMapSpawnerList = newList;
-                this.Settings.NPCSpawnSettings.RenderToView();
             }
             finally
             {
@@ -1844,7 +1850,6 @@ namespace ARK_Server_Manager
                 this.NPCSpawnEntrySettingsGrid.BeginInit();
                 
                 this.BaseMapSpawnerDinoList = newList;
-                this.Settings.NPCSpawnSettings.RenderToView();
             }
             finally
             {
@@ -1891,13 +1896,7 @@ namespace ARK_Server_Manager
                 this.CraftingOverrideItemGrid.BeginInit();
                 this.CraftingOverrideResourceGrid.BeginInit();
 
-                // store the current data (as INI string) as when the list assignment happens, the columns bound to the lists are wiped.
-                var tempINIValues = this.Settings.ConfigOverrideItemCraftingCosts.ToIniValues().ToArray();
-
                 this.BasePrimalItemList = newList;
-
-                // restore the data (using the INI string)
-                this.Settings.ConfigOverrideItemCraftingCosts.FromIniValues(tempINIValues);
             }
             finally
             {

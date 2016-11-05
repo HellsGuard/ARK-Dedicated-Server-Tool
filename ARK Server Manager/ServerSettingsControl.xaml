@@ -2091,7 +2091,7 @@
                                                         </DataGridTemplateColumn.CellStyle>
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <ComboBox IsEditable="True" ItemsSource="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" SelectedValue="{Binding ReplacementClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                                <ComboBox IsEditable="True" ItemsSource="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" SelectedValue="{Binding ReplacementClass, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>
@@ -2890,7 +2890,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -2944,7 +2944,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ResourceItemTypeString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ResourceItemTypeString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -3874,7 +3874,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerList, ElementName=SettingsControl}" SelectedValue="{Binding NPCSpawnEntriesContainerClassString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerList, ElementName=SettingsControl}" SelectedValue="{Binding NPCSpawnEntriesContainerClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -3934,7 +3934,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerDinoList, ElementName=SettingsControl}" SelectedValue="{Binding NPCClassString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerDinoList, ElementName=SettingsControl}" SelectedValue="{Binding NPCClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
