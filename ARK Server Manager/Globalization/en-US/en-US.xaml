@@ -774,6 +774,8 @@
     <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip">Specifies the multiplier for food drain of the raid dinos. Higher values increase the food drain; lower values decrease the food drain.</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Allow Flyers in Caves</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventMateBoostLabel">Prevent Dino Mate Boost</sys:String>
+    <sys:String x:Key="ServerSettings_PreventMateBoostTooltip">If enabled, the dino mate boost will be disabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
@@ -1278,53 +1280,54 @@
 
     <!-- Server Settings - Map Spawner Overrides -->
     <sys:String x:Key="ServerSettings_MapSpawnerOverridesLabel">Map Spawner Overrides</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesContainerLabel">Containers</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryLabel">Entries</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerLabel">Containers</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryLabel">Entries</sys:String>
 
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesContainerTypeColumnLabel">Type</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesContainerTypeColumnTooltip">Spawner Override Type</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesContainerClassColumnLabel">Spawner</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesContainerClassColumnTooltip">Spawner Class String</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnLabel">Type</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnTooltip">Spawner Override Type</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerClassColumnLabel">Spawner</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerClassColumnTooltip">Spawner Class String</sys:String>
 
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryNameColumnLabel">Name</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryNameColumnTooltip">Spawn Name</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryClassColumnLabel">Dino</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryClassColumnTooltip">Entity ID of the dino to be added</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryWeightClassColumnLabel">Weight</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryWeightClassColumnTooltip">Weight Factor for this spawn</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnLabel">Max Percentage</sys:String>
-    <sys:String x:Key="ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnTooltip">Sets the maximum allowed dinosaurs or creatures for this instance</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryNameColumnLabel">Name</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryNameColumnTooltip">Spawn Name</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryClassColumnLabel">Dino</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryClassColumnTooltip">Entity ID of the dino to be added</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryWeightClassColumnLabel">Weight</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryWeightClassColumnTooltip">Weight Factor for this spawn</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryMaxPercentageColumnLabel">Max Percentage</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryMaxPercentageColumnTooltip">Sets the maximum allowed dinosaurs or creatures for this instance</sys:String>
 
-    <sys:String x:Key="ServerSettings_AddNPCSpawnTooltip">Add map spawn container</sys:String>
-    <sys:String x:Key="ServerSettings_AddNPCSpawnEntryTooltip">Add dino spawn entry</sys:String>
-    <sys:String x:Key="ServerSettings_ClearNPCSpawnTooltip">Delete all map spawn containers</sys:String>
-    <sys:String x:Key="ServerSettings_ClearNPCSpawnEntryTooltip">Delete all dino spawn entries</sys:String>
-    <sys:String x:Key="ServerSettings_PasteNPCSpawnTooltip">Paste map spawn container data</sys:String>
-    <sys:String x:Key="ServerSettings_RemoveNPCSpawnTooltip">Delete map spawn container</sys:String>
-    <sys:String x:Key="ServerSettings_RemoveNPCSpawnEntryTooltip">Delete dino spawn entry</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_AddContainerTooltip">Add map spawn container</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_AddEntryTooltip">Add dino spawn entry</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ClearContainerTooltip">Delete all map spawn containers</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ClearEntryTooltip">Delete all dino spawn entries</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_PasteContainerTooltip">Paste map spawn container data</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_RemoveContainerTooltip">Delete map spawn container</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_RemoveEntryTooltip">Delete dino spawn entry</sys:String>
 
     <!-- Server Settings - Crafting Overrides -->
     <sys:String x:Key="ServerSettings_CraftingOverridesLabel">Crafting Overrides</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideItemsLabel">Crafted Items</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourcesLabel">Resource Items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">WARNING: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already know, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
-    <sys:String x:Key="ServerSettings_CraftingOverrideItemClassColumnLabel">Crafted Item</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideItemClassColumnTooltip">Crafted Item Class String</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnTooltip">Crafted Item Class String</sys:String>
 
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceClassColumnLabel">Resource Item</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceClassColumnTooltip">Resource Item Class String.</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceQuantityColumnLabel">Quantity</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceQuantityColumnTooltip">How much of the resource is required.</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceExactColumnLabel">Require Exact Resource Type</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrideResourceExactColumnTooltip">Determines if a logical check takes place on whether the production makes any sense at all.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceClassColumnLabel">Resource Item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceClassColumnTooltip">Resource Item Class String.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceQuantityColumnLabel">Quantity</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceQuantityColumnTooltip">How much of the resource is required.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceExactColumnLabel">Require Exact Resource Type</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ResourceExactColumnTooltip">Determines if a logical check takes place on whether the production makes any sense at all.</sys:String>
 
-    <sys:String x:Key="ServerSettings_AddCraftingOverrideItemTooltip">Add crafting item</sys:String>
-    <sys:String x:Key="ServerSettings_AddCraftingOverrideResourceTooltip">Add resource</sys:String>
-    <sys:String x:Key="ServerSettings_ClearCraftingOverrideItemsTooltip">Delete all crafting items</sys:String>
-    <sys:String x:Key="ServerSettings_ClearCraftingOverrideResourcesTooltip">Delete all resources</sys:String>
-    <sys:String x:Key="ServerSettings_PasteCraftingOverrideItemsTooltip">Paste crafting items data</sys:String>
-    <sys:String x:Key="ServerSettings_RemoveCraftingOverrideItemTooltip">Delete crafting item</sys:String>
-    <sys:String x:Key="ServerSettings_RemoveCraftingOverrideResourceTooltip">Delete resource</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_AddItemTooltip">Add crafting item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_AddResourceTooltip">Add resource</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ClearItemsTooltip">Delete all crafting items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_ClearResourcesTooltip">Delete all resources</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_PasteItemsTooltip">Paste crafting items data</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_RemoveItemTooltip">Delete crafting item</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_RemoveResourceTooltip">Delete resource</sys:String>
 
     <!-- Server Settings - Overlay -->
     <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Saving...</sys:String>

@@ -1185,6 +1185,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAllowCaveFlyersProperty, value); }
         }
 
+        public static readonly DependencyProperty PreventMateBoostProperty = DependencyProperty.Register(nameof(PreventMateBoost), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(PreventMateBoost))]
+        public bool PreventMateBoost
+        {
+            get { return (bool)GetValue(PreventMateBoostProperty); }
+            set { SetValue(PreventMateBoostProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableNoFishLootProperty = DependencyProperty.Register(nameof(EnableNoFishLoot), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableNoFishLoot
         {

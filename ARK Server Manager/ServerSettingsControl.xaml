@@ -1983,9 +1983,22 @@
                                         </StackPanel>
                                     </GroupBox>
 
-                                    <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}" HorizontalAlignment="Left"/>
-                                    <CheckBox Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
-                                    <CheckBox Margin="5" Name="DisableDinoDecayPvECheckbox" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}" HorizontalAlignment="Left"/>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_PreventMateBoostLabel}" IsChecked="{Binding PreventMateBoost}" ToolTip="{DynamicResource ServerSettings_PreventMateBoostTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}" HorizontalAlignment="Left"/>
+                                    </Grid>
 
                                     <local:AnnotatedSlider Margin="0,1,22,1" Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
                                 
@@ -2826,22 +2839,28 @@
                             </Expander.Style>
 
                             <Grid Margin="-8,0,2,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Text="{DynamicResource ServerSettings_CraftingOverrides_WarningLabel}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
+
+                                <GroupBox  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrideItemsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCraftingOverride_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCraftingOverrideItemTooltip}">
+                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrides_ItemsLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverride_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddItemTooltip}">
                                                 <Image Source="Art/Add.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteCraftingOverride_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCraftingOverrideItemsTooltip}">
+                                            <Button Width="22" Height="22" Click="PasteCraftingOverride_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_PasteItemsTooltip}">
                                                 <Image Source="Art/Paste.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCraftingOverrideItemsTooltip}">
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearItemsTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -2867,7 +2886,7 @@
                                         <DataGrid.Columns>
                                             <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
                                                 <DataGridTemplateColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideItemClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideItemClassColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrides_ItemClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ItemClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -2878,7 +2897,7 @@
                                             <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_RemoveCraftingOverrideItemTooltip}">
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_RemoveItemTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
@@ -2888,14 +2907,14 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrideResourcesLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCraftingOverrideResource_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCraftingOverrideResourceTooltip}">
+                                            <Label Content="{DynamicResource ServerSettings_CraftingOverrides_ResourcesLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverrideResource_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddResourceTooltip}">
                                                 <Image Source="Art/Add.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCraftingOverrideResources_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCraftingOverrideResourcesTooltip}">
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrideResources_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearResourcesTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -2921,7 +2940,7 @@
                                         <DataGrid.Columns>
                                             <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
                                                 <DataGridTemplateColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceClassColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrides_ResourceClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ResourceClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -2931,18 +2950,18 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn     Width="100" Binding="{Binding BaseResourceRequirement}" ElementStyle="{StaticResource CenteredTextBlockStyle}" >
                                                 <DataGridTextColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceQuantityColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceQuantityColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrides_ResourceQuantityColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ResourceQuantityColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
                                             <DataGridCheckBoxColumn Width="Auto" Binding="{Binding CraftingRequireExactResourceType, Mode=TwoWay}" >
                                                 <DataGridCheckBoxColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrideResourceExactColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrideResourceExactColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_CraftingOverrides_ResourceExactColumnLabel}" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ResourceExactColumnTooltip}" />
                                                 </DataGridCheckBoxColumn.Header>
                                             </DataGridCheckBoxColumn>
                                             <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideResource_Click" ToolTip="{DynamicResource ServerSettings_RemoveCraftingOverrideResourceTooltip}">
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideResource_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_RemoveResourceTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
@@ -3808,14 +3827,14 @@
                                 <GroupBox Grid.Column="0" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="{DynamicResource ServerSettings_MapSpawnerOverridesContainerLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddNPCSpawn_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddNPCSpawnTooltip}">
+                                            <Label Content="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddNPCSpawn_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddContainerTooltip}">
                                                 <Image Source="Art/Add.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteNPCSpawn_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteNPCSpawnTooltip}">
+                                            <Button Width="22" Height="22" Click="PasteNPCSpawn_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_PasteContainerTooltip}">
                                                 <Image Source="Art/Paste.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearNPCSpawn_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearNPCSpawnTooltip}">
+                                            <Button Width="22" Height="22" Click="ClearNPCSpawn_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearContainerTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -3839,26 +3858,19 @@
                                         </DataGrid.VerticalGridLinesBrush>
                                         
                                         <DataGrid.Columns>
-                                            <DataGridComboBoxColumn Width="1*" TextBinding="{Binding ContainerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                <DataGridComboBoxColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesContainerTypeColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesContainerTypeColumnTooltip}" />
-                                                </DataGridComboBoxColumn.Header>
-                                                <DataGridComboBoxColumn.ElementStyle>
-                                                    <Style TargetType="ComboBox">
-                                                        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource NPCSpawnContainerTypes}}" />
-                                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                                    </Style>
-                                                </DataGridComboBoxColumn.ElementStyle>
-                                                <DataGridComboBoxColumn.EditingElementStyle>
-                                                    <Style TargetType="ComboBox">
-                                                        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource NPCSpawnContainerTypes}}" />
-                                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                                    </Style>
-                                                </DataGridComboBoxColumn.EditingElementStyle>
-                                            </DataGridComboBoxColumn>
+                                            <DataGridTemplateColumn Width="1*" CanUserSort="True">
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerTypeColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerTypeColumnTooltip}" />
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox IsReadOnly="True" IsEditable="True" ItemsSource="{Binding Source={StaticResource NPCSpawnContainerTypes}}" Text="{Binding ContainerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName">
                                                 <DataGridTemplateColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesContainerClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesContainerClassColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -3869,7 +3881,7 @@
                                             <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_RemoveNPCSpawnTooltip}">
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveContainerTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
@@ -3882,11 +3894,11 @@
                                 <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Content="{DynamicResource ServerSettings_MapSpawnerOverridesEntryLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddNPCSpawnEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddNPCSpawnEntryTooltip}">
+                                            <Label Content="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddNPCSpawnEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddEntryTooltip}">
                                                 <Image Source="Art/Add.png" Width="16"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearNPCSpawnEntry_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearNPCSpawnEntryTooltip}">
+                                            <Button Width="22" Height="22" Click="ClearNPCSpawnEntry_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearEntryTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
                                         </StackPanel>
@@ -3913,12 +3925,12 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn     Width="1*" Binding="{Binding AnEntryName}" Visibility="{Binding Data.ShowEntryNameColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryNameColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryNameColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryNameColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryNameColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
                                             <DataGridTemplateColumn Width="2*" CanUserSort="True" SortMemberPath="DisplayName" Visibility="{Binding Data.ShowClassStringColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTemplateColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryClassColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryClassColumnTooltip}" />
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -3928,18 +3940,18 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn     Width="1*" Binding="{Binding EntryWeight}" Visibility="{Binding Data.ShowEntryWeightColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryWeightClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryWeightClassColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryWeightClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryWeightClassColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
                                             <DataGridTextColumn     Width="1*" Binding="{Binding MaxPercentageOfDesiredNumToAllow}" Visibility="{Binding Data.ShowMaxPercentageColumn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource proxySelectedNPCSpawnSetting}}">
                                                 <DataGridTextColumn.Header>
-                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverridesEntryMaxPercentageColumnTooltip}" />
+                                                    <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryMaxPercentageColumnLabel}" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryMaxPercentageColumnTooltip}" />
                                                 </DataGridTextColumn.Header>
                                             </DataGridTextColumn>
                                             <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawnEntry_Click" ToolTip="{DynamicResource ServerSettings_RemoveNPCSpawnEntryTooltip}">
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawnEntry_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveEntryTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
