@@ -19,7 +19,7 @@ namespace ARK_Server_Manager.Lib
 
         private static int FromIniValueInternal(string iniVal)
         {
-            return int.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
+            return int.Parse(iniVal, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
     }
 }

@@ -746,42 +746,178 @@ namespace ARK_Server_Manager
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
+        private void SaveRestore_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Settings.PlayerLevels.Count == 1)
+            var window = new WorldSaveRestoreWindow(Server.Profile);
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            window.ShowDialog();
+        }
+
+        private void HiddenField_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var hideTextBox = sender as TextBox;
+            if (hideTextBox != null)
             {
-                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
+                TextBox textBox = null;
+                if (Equals(hideTextBox, HideServerPasswordTextBox)) 
+                    textBox = ServerPasswordTextBox;
+                if (Equals(hideTextBox, HideAdminPasswordTextBox))
+                    textBox = AdminPasswordTextBox;
+                if (Equals(hideTextBox, HideSpectatorPasswordTextBox))
+                    textBox = SpectatorPasswordTextBox;
+                if (Equals(hideTextBox, HideWebKeyTextBox))
+                    textBox = WebKeyTextBox;
+                if (Equals(hideTextBox, HideWebURLTextBox))
+                    textBox = WebURLTextBox;
+
+                if (textBox != null)
+                {
+                    textBox.Visibility = System.Windows.Visibility.Visible;
+                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
+                    textBox.Focus();
+                }
+
+                UpdateLayout();
             }
+        }
+
+        private void HiddenField_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                TextBox hideTextBox = null;
+                if (textBox == ServerPasswordTextBox)
+                    hideTextBox = HideServerPasswordTextBox;
+                if (textBox == AdminPasswordTextBox)
+                    hideTextBox = HideAdminPasswordTextBox;
+                if (textBox == SpectatorPasswordTextBox)
+                    hideTextBox = HideSpectatorPasswordTextBox;
+                if (textBox == WebKeyTextBox)
+                    hideTextBox = HideWebKeyTextBox;
+                if (textBox == WebURLTextBox)
+                    hideTextBox = HideWebURLTextBox;
+
+                if (hideTextBox != null)
+                {
+                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
+                    textBox.Visibility = System.Windows.Visibility.Collapsed;
+                }
+                UpdateLayout();
+            }
+        }
+
+        private void ComboBoxItemList_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            if (comboBox == null)
+                return;
+
+            if (comboBox.SelectedItem == null)
+            {
+                var text = comboBox.Text;
+
+                var source = comboBox.ItemsSource as ComboBoxItemList;
+                source?.Add(new Lib.ViewModel.ComboBoxItem
+                {
+                    ValueMember = text,
+                    DisplayMember = text,
+                });
+
+                comboBox.SelectedValue = text;
+            }
+
+            var expression = comboBox.GetBindingExpression(Selector.SelectedValueProperty);
+            expression?.UpdateSource();
+
+            expression = comboBox.GetBindingExpression(ComboBox.TextProperty);
+            expression?.UpdateSource();
+        }
+
+        #region Dinos
+        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.DinoSettings.Reset();
+            RefreshBaseDinoSettingsDinoList();
+        }
+
+        private void DinoArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as DinoSettings;
+            if (item == null)
+                e.Accepted = false;
             else
-            {
-                var level = ((Level)((Button)e.Source).DataContext);
-                this.Settings.PlayerLevels.RemoveLevel(level);
-            }
+                e.Accepted = (SelectedArkApplicationDino == ArkApplication.All || item.ArkApplication == SelectedArkApplicationDino);
         }
 
-        private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
+        private void DinoArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
         {
-            var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
+            var view = this.DinoSettingsGrid.ItemsSource as ListCollectionView;
+            view?.Refresh();
         }
 
-        private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
+        private void PasteCustomDinos_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Settings.DinoLevels.Count == 1)
-            {
-                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
-            }
-            else
-            {
-                var level = ((Level)((Button)e.Source).DataContext);
-                this.Settings.DinoLevels.RemoveLevel(level);
-            }
-        }
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
 
-        private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
-        {
-            var level = ((Level)((Button)e.Source).DataContext);
-            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+            Server.Profile.DinoSettings.RenderToModel();
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var dinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(Server.Profile.DinoSpawnWeightMultipliers), null);
+                dinoSpawnWeightMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoSpawnWeightMultipliers.IniCollectionKey}=")));
+                Server.Profile.DinoSpawnWeightMultipliers.AddRange(dinoSpawnWeightMultipliers);
+                Server.Profile.DinoSpawnWeightMultipliers.IsEnabled |= dinoSpawnWeightMultipliers.IsEnabled;
+
+                var preventDinoTameClassNames = new StringIniValueList(nameof(Server.Profile.PreventDinoTameClassNames), null);
+                preventDinoTameClassNames.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{preventDinoTameClassNames.IniCollectionKey}=")));
+                Server.Profile.PreventDinoTameClassNames.AddRange(preventDinoTameClassNames);
+                Server.Profile.PreventDinoTameClassNames.IsEnabled |= preventDinoTameClassNames.IsEnabled;
+
+                var npcReplacements = new AggregateIniValueList<NPCReplacement>(nameof(Server.Profile.NPCReplacements), null);
+                npcReplacements.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{npcReplacements.IniCollectionKey}=")));
+                Server.Profile.NPCReplacements.AddRange(npcReplacements);
+                Server.Profile.NPCReplacements.IsEnabled |= npcReplacements.IsEnabled;
+
+                var tamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.TamedDinoClassDamageMultipliers), null);
+                tamedDinoClassDamageMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{tamedDinoClassDamageMultipliers.IniCollectionKey}=")));
+                Server.Profile.TamedDinoClassDamageMultipliers.AddRange(tamedDinoClassDamageMultipliers);
+                Server.Profile.TamedDinoClassDamageMultipliers.IsEnabled |= tamedDinoClassDamageMultipliers.IsEnabled;
+
+                var tamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.TamedDinoClassResistanceMultipliers), null);
+                tamedDinoClassResistanceMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{tamedDinoClassResistanceMultipliers.IniCollectionKey}=")));
+                Server.Profile.TamedDinoClassResistanceMultipliers.AddRange(tamedDinoClassResistanceMultipliers);
+                Server.Profile.TamedDinoClassResistanceMultipliers.IsEnabled |= tamedDinoClassResistanceMultipliers.IsEnabled;
+
+                var dinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.DinoClassDamageMultipliers), null);
+                dinoClassDamageMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoClassDamageMultipliers.IniCollectionKey}=")));
+                Server.Profile.DinoClassDamageMultipliers.AddRange(dinoClassDamageMultipliers);
+                Server.Profile.DinoClassDamageMultipliers.IsEnabled |= dinoClassDamageMultipliers.IsEnabled;
+
+                var dinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.DinoClassResistanceMultipliers), null);
+                dinoClassResistanceMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoClassResistanceMultipliers.IniCollectionKey}=")));
+                Server.Profile.DinoClassResistanceMultipliers.AddRange(dinoClassResistanceMultipliers);
+                Server.Profile.DinoClassResistanceMultipliers.IsEnabled |= dinoClassResistanceMultipliers.IsEnabled;
+            }
+
+            Server.Profile.DinoSettings = new DinoSettingsList(Server.Profile.DinoSpawnWeightMultipliers, Server.Profile.PreventDinoTameClassNames, Server.Profile.NPCReplacements, Server.Profile.TamedDinoClassDamageMultipliers, Server.Profile.TamedDinoClassResistanceMultipliers, Server.Profile.DinoClassDamageMultipliers, Server.Profile.DinoClassResistanceMultipliers);
+            Server.Profile.DinoSettings.RenderToView();
+
+            RefreshBaseDinoSettingsDinoList();
         }
 
         private void RemoveDinoSetting_Click(object sender, RoutedEventArgs e)
@@ -796,6 +932,39 @@ namespace ARK_Server_Manager
                 RefreshBaseDinoSettingsDinoList();
             }
         }
+        #endregion
+
+        #region Resources
+        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetLabel"), _globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
+        }
+
+        private void PasteCustomResources_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var harvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(Server.Profile.HarvestResourceItemAmountClassMultipliers), null);
+                harvestResourceItemAmountClassMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{harvestResourceItemAmountClassMultipliers.IniCollectionKey}=")));
+                Server.Profile.HarvestResourceItemAmountClassMultipliers.AddRange(harvestResourceItemAmountClassMultipliers);
+                Server.Profile.HarvestResourceItemAmountClassMultipliers.IsEnabled |= harvestResourceItemAmountClassMultipliers.IsEnabled;
+            }
+        }
 
         private void RemoveHarvestResource_Click(object sender, RoutedEventArgs e)
         {
@@ -807,6 +976,85 @@ namespace ARK_Server_Manager
                 this.Settings.HarvestResourceItemAmountClassMultipliers.Remove(resource);
         }
 
+        private void ResourceArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as ResourceClassMultiplier;
+            if (item == null)
+                e.Accepted = false;
+            else
+                e.Accepted = (SelectedArkApplicationResource == ArkApplication.All || item.ArkApplication == SelectedArkApplicationResource);
+        }
+
+        private void ResourceArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var view = this.HarvestResourceItemAmountClassMultipliersListBox.ItemsSource as ListCollectionView;
+            view?.Refresh();
+        }
+        #endregion
+
+        #region Engrams
+        private void Engrams_Reset(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetEngramsSection();
+        }
+
+        private void Engrams_SelectAll(object sender, RoutedEventArgs e)
+        {
+            foreach (var engram in Settings.OverrideNamedEngramEntries)
+            {
+                engram.SaveEngramOverride = true;
+            }
+        }
+
+        private void Engrams_UnselectAll(object sender, RoutedEventArgs e)
+        {
+            foreach (var engram in Settings.OverrideNamedEngramEntries)
+            {
+                engram.SaveEngramOverride = false;
+            }
+        }
+
+        private void EngramArkApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var item = e.Item as EngramEntry;
+            if (item == null)
+                e.Accepted = false;
+            else
+                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram);
+        }
+
+        private void EngramArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var view = this.EngramsOverrideListView.ItemsSource as ListCollectionView;
+            view?.Refresh();
+        }
+
+        private void PasteCustomEngrams_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData);
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var overrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(Server.Profile.OverrideNamedEngramEntries), null);
+                overrideNamedEngramEntries.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{overrideNamedEngramEntries.IniCollectionKey}=")));
+                Server.Profile.OverrideNamedEngramEntries.AddRange(overrideNamedEngramEntries);
+                Server.Profile.OverrideNamedEngramEntries.IsEnabled |= overrideNamedEngramEntries.IsEnabled;
+            }
+        }
+
         private void RemoveEngramOverride_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_EngramsRemoveRecordTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
@@ -816,7 +1064,72 @@ namespace ARK_Server_Manager
             if (!engram.KnownEngram)
                 this.Settings.OverrideNamedEngramEntries.Remove(engram);
         }
+        #endregion
 
+        #region Crafting Overrides
+        private void AddCraftingOverride_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.ConfigOverrideItemCraftingCosts.Add(new CraftingOverride());
+        }
+
+        private void AddCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Add(new CraftingResourceRequirement());
+        }
+
+        private void ClearCraftingOverrides_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride = null;
+            Settings.ConfigOverrideItemCraftingCosts.Clear();
+        }
+
+        private void ClearCraftingOverrideResources_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Clear();
+        }
+
+        private void PasteCraftingOverride_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var configOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(Server.Profile.ConfigOverrideItemCraftingCosts), null);
+                configOverrideItemCraftingCosts.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideItemCraftingCosts.IniCollectionKey}=")));
+                Server.Profile.ConfigOverrideItemCraftingCosts.AddRange(configOverrideItemCraftingCosts);
+                Server.Profile.ConfigOverrideItemCraftingCosts.IsEnabled |= configOverrideItemCraftingCosts.IsEnabled;
+            }
+
+            RefreshBasePrimalItemList();
+        }
+
+        private void RemoveCraftingOverrideItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ((CraftingOverride)((Button)e.Source).DataContext);
+            Settings.ConfigOverrideItemCraftingCosts.Remove(item);
+        }
+
+        private void RemoveCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCraftingOverride == null)
+                return;
+
+            var item = ((CraftingResourceRequirement)((Button)e.Source).DataContext);
+            SelectedCraftingOverride.BaseCraftingResourceRequirements.Remove(item);
+        }
+        #endregion
+
+        #region Custom GameUserSettings
         private void AddCustomItem_Click(object sender, RoutedEventArgs e)
         {
             SelectedCustomSection?.Add(string.Empty, string.Empty);
@@ -934,17 +1247,19 @@ namespace ARK_Server_Manager
             var section = ((CustomSection)((Button)e.Source).DataContext);
             Settings.CustomGameUserSettingsSections.Remove(section);
         }
+        #endregion
 
-        private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
+        #region Custom Levels 
+        private void AddDinoLevel_Click(object sender, RoutedEventArgs e)
         {
-            this.Settings.PlayerLevels.UpdateTotals();
-            this.CustomPlayerLevelsView.Items.Refresh();
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.DinoLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Dino);
         }
 
-        private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
+        private void AddPlayerLevel_Click(object sender, RoutedEventArgs e)
         {
-            this.Settings.DinoLevels.UpdateTotals();
-            this.CustomDinoLevelsView.Items.Refresh();
+            var level = ((Level)((Button)e.Source).DataContext);
+            this.Settings.PlayerLevels.AddNewLevel(level, Config.Default.CustomLevelXPIncrease_Player);
         }
 
         private void DinoLevels_Clear(object sender, RoutedEventArgs e)
@@ -955,69 +1270,18 @@ namespace ARK_Server_Manager
             this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
         }
 
+        private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.DinoLevels.UpdateTotals();
+            this.CustomDinoLevelsView.Items.Refresh();
+        }
+
         private void DinoLevels_ResetOfficial(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
-        }
-
-        private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
-        }
-
-        private void PlayerLevels_ResetOfficial(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
-        }
-
-        private void HarvestResourceItemAmountClassMultipliers_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetLabel"), _globalizer.GetResourceString("ServerSettings_CustomHarvest_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.HarvestResourceItemAmountClassMultipliers.Reset();
-        }
-
-        private void Engrams_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.ResetEngramsSection();
-        }
-
-        private void Engrams_SelectAll(object sender, RoutedEventArgs e)
-        {
-            foreach (var engram in Settings.OverrideNamedEngramEntries)
-            {
-                engram.SaveEngramOverride = true;
-            }
-        }
-
-        private void Engrams_UnselectAll(object sender, RoutedEventArgs e)
-        {
-            foreach (var engram in Settings.OverrideNamedEngramEntries)
-            {
-                engram.SaveEngramOverride = false;
-            }
-        }
-
-        private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoCustomization_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            this.Settings.DinoSettings.Reset();
-            RefreshBaseDinoSettingsDinoList();
         }
 
         private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
@@ -1036,103 +1300,54 @@ namespace ARK_Server_Manager
             this.Settings.ResetOverrideMaxExperiencePointsDino();
         }
 
-        private void HiddenField_GotFocus(object sender, RoutedEventArgs e)
+        private void PlayerLevels_Clear(object sender, RoutedEventArgs e)
         {
-            var hideTextBox = sender as TextBox;
-            if (hideTextBox != null)
-            {
-                TextBox textBox = null;
-                if (hideTextBox == HideServerPasswordTextBox) 
-                    textBox = ServerPasswordTextBox;
-                if (hideTextBox == HideAdminPasswordTextBox)
-                    textBox = AdminPasswordTextBox;
-                if (hideTextBox == HideSpectatorPasswordTextBox)
-                    textBox = SpectatorPasswordTextBox;
-                if (hideTextBox == HideWebKeyTextBox)
-                    textBox = WebKeyTextBox;
-                if (hideTextBox == HideWebURLTextBox)
-                    textBox = WebURLTextBox;
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
 
-                if (textBox != null)
-                {
-                    textBox.Visibility = System.Windows.Visibility.Visible;
-                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
-                    textBox.Focus();
-                }
-                UpdateLayout();
+            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
+        }
+
+        private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
+        {
+            this.Settings.PlayerLevels.UpdateTotals();
+            this.CustomPlayerLevelsView.Items.Refresh();
+        }
+
+        private void PlayerLevels_ResetOfficial(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
+        }
+
+        private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Settings.DinoLevels.Count == 1)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.DinoLevels.RemoveLevel(level);
             }
         }
 
-        private void HiddenField_LostFocus(object sender, RoutedEventArgs e)
+        private void RemovePlayerLevel_Click(object sender, RoutedEventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null)
+            if (this.Settings.PlayerLevels.Count == 1)
             {
-                TextBox hideTextBox = null;
-                if (textBox == ServerPasswordTextBox)
-                    hideTextBox = HideServerPasswordTextBox;
-                if (textBox == AdminPasswordTextBox)
-                    hideTextBox = HideAdminPasswordTextBox;
-                if (textBox == SpectatorPasswordTextBox)
-                    hideTextBox = HideSpectatorPasswordTextBox;
-                if (textBox == WebKeyTextBox)
-                    hideTextBox = HideWebKeyTextBox;
-                if (textBox == WebURLTextBox)
-                    hideTextBox = HideWebURLTextBox;
-
-                if (hideTextBox != null)
-                {
-                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
-                    textBox.Visibility = System.Windows.Visibility.Collapsed;
-                }
-                UpdateLayout();
+                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_CustomLevels_LastRemove_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                var level = ((Level)((Button)e.Source).DataContext);
+                this.Settings.PlayerLevels.RemoveLevel(level);
             }
         }
-
-        private void DinoArkApplications_OnFilter(object sender, FilterEventArgs e)
-        {
-            var item = e.Item as DinoSettings;
-            if (item == null)
-                e.Accepted = false;
-            else
-                e.Accepted = (SelectedArkApplicationDino == ArkApplication.All || item.ArkApplication == SelectedArkApplicationDino);
-        }
-
-        private void DinoArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            var view = this.DinoSettingsGrid.ItemsSource as ListCollectionView;
-            view?.Refresh();
-        }
-
-        private void EngramArkApplications_OnFilter(object sender, FilterEventArgs e)
-        {
-            var item = e.Item as EngramEntry;
-            if (item == null)
-                e.Accepted = false;
-            else
-                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram);
-        }
-
-        private void EngramArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            var view = this.EngramsOverrideListView.ItemsSource as ListCollectionView;
-            view?.Refresh();
-        }
-
-        private void ResourceArkApplications_OnFilter(object sender, FilterEventArgs e)
-        {
-            var item = e.Item as ResourceClassMultiplier;
-            if (item == null)
-                e.Accepted = false;
-            else
-                e.Accepted = (SelectedArkApplicationResource == ArkApplication.All || item.ArkApplication == SelectedArkApplicationResource);
-        }
-
-        private void ResourceArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            var view = this.HarvestResourceItemAmountClassMultipliersListBox.ItemsSource as ListCollectionView;
-            view?.Refresh();
-        }
+        #endregion
 
         #region Server Files 
         private void AddAdminPlayer_Click(object sender, RoutedEventArgs e)
@@ -1330,109 +1545,6 @@ namespace ARK_Server_Manager
         }
         #endregion
 
-        private void SaveRestore_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new WorldSaveRestoreWindow(Server.Profile);
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            window.ShowDialog();
-        }
-
-        private void PasteCustomDinos_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new CustomConfigDataWindow();
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            var result = window.ShowDialog();
-
-            if (!result.HasValue || !result.Value)
-                return;
-
-            // read the pasted data into an ini file.
-            var iniFile = IniFileUtils.ReadString(window.ConfigData);
-
-            Server.Profile.DinoSettings.RenderToModel();
-
-            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
-            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
-            {
-                var dinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(Server.Profile.DinoSpawnWeightMultipliers), null);
-                dinoSpawnWeightMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoSpawnWeightMultipliers.IniCollectionKey}=")));
-                Server.Profile.DinoSpawnWeightMultipliers.AddRange(dinoSpawnWeightMultipliers);
-
-                var preventDinoTameClassNames = new StringIniValueList(nameof(Server.Profile.PreventDinoTameClassNames), null);
-                preventDinoTameClassNames.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{preventDinoTameClassNames.IniCollectionKey}=")));
-                Server.Profile.PreventDinoTameClassNames.AddRange(preventDinoTameClassNames);
-
-                var npcReplacements = new AggregateIniValueList<NPCReplacement>(nameof(Server.Profile.NPCReplacements), null);
-                npcReplacements.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{npcReplacements.IniCollectionKey}=")));
-                Server.Profile.NPCReplacements.AddRange(npcReplacements);
-
-                var tamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.TamedDinoClassDamageMultipliers), null);
-                tamedDinoClassDamageMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{tamedDinoClassDamageMultipliers.IniCollectionKey}=")));
-                Server.Profile.TamedDinoClassDamageMultipliers.AddRange(tamedDinoClassDamageMultipliers);
-
-                var tamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.TamedDinoClassResistanceMultipliers), null);
-                tamedDinoClassResistanceMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{tamedDinoClassResistanceMultipliers.IniCollectionKey}=")));
-                Server.Profile.TamedDinoClassResistanceMultipliers.AddRange(tamedDinoClassResistanceMultipliers);
-
-                var dinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.DinoClassDamageMultipliers), null);
-                dinoClassDamageMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoClassDamageMultipliers.IniCollectionKey}=")));
-                Server.Profile.DinoClassDamageMultipliers.AddRange(dinoClassDamageMultipliers);
-
-                var dinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(Server.Profile.DinoClassResistanceMultipliers), null);
-                dinoClassResistanceMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{dinoClassResistanceMultipliers.IniCollectionKey}=")));
-                Server.Profile.DinoClassResistanceMultipliers.AddRange(dinoClassResistanceMultipliers);
-            }
-
-            Server.Profile.DinoSettings = new DinoSettingsList(Server.Profile.DinoSpawnWeightMultipliers, Server.Profile.PreventDinoTameClassNames, Server.Profile.NPCReplacements, Server.Profile.TamedDinoClassDamageMultipliers, Server.Profile.TamedDinoClassResistanceMultipliers, Server.Profile.DinoClassDamageMultipliers, Server.Profile.DinoClassResistanceMultipliers);
-            Server.Profile.DinoSettings.RenderToView();
-        }
-
-        private void PasteCustomEngrams_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new CustomConfigDataWindow();
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            var result = window.ShowDialog();
-
-            if (!result.HasValue || !result.Value)
-                return;
-
-            // read the pasted data into an ini file.
-            var iniFile = IniFileUtils.ReadString(window.ConfigData);
-
-            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
-            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
-            {
-                var overrideNamedEngramEntries = new AggregateIniValueList<EngramEntry>(nameof(Server.Profile.OverrideNamedEngramEntries), null);
-                overrideNamedEngramEntries.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{overrideNamedEngramEntries.IniCollectionKey}=")));
-                Server.Profile.OverrideNamedEngramEntries.AddRange(overrideNamedEngramEntries);
-            }
-        }
-
-        private void PasteCustomResources_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new CustomConfigDataWindow();
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            var result = window.ShowDialog();
-
-            if (!result.HasValue || !result.Value)
-                return;
-
-            // read the pasted data into an ini file.
-            var iniFile = IniFileUtils.ReadString(window.ConfigData);
-
-            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
-            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
-            {
-                var harvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(Server.Profile.HarvestResourceItemAmountClassMultipliers), null);
-                harvestResourceItemAmountClassMultipliers.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{harvestResourceItemAmountClassMultipliers.IniCollectionKey}=")));
-                Server.Profile.HarvestResourceItemAmountClassMultipliers.AddRange(harvestResourceItemAmountClassMultipliers);
-            }
-        }
-
         #region PGM Settings
         private void PastePGMSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -1490,33 +1602,6 @@ namespace ARK_Server_Manager
         }
         #endregion
 
-        private void ComboBoxItemList_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var comboBox = sender as ComboBox;
-            if (comboBox == null)
-                return;
-
-            if (comboBox.SelectedItem == null)
-            {
-                var text = comboBox.Text;
-
-                var source = comboBox.ItemsSource as ComboBoxItemList;
-                source?.Add(new Lib.ViewModel.ComboBoxItem
-                {
-                    ValueMember = text,
-                    DisplayMember = text,
-                });
-
-                comboBox.SelectedValue = text;
-            }
-
-            var expression = comboBox.GetBindingExpression(Selector.SelectedValueProperty);
-            expression?.UpdateSource();
-
-            expression = comboBox.GetBindingExpression(ComboBox.TextProperty);
-            expression?.UpdateSource();
-        }
-
         #region Map Spawner Overrides
         private void AddNPCSpawn_Click(object sender, RoutedEventArgs e)
         {
@@ -1560,14 +1645,17 @@ namespace ARK_Server_Manager
                 var configAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
                 configAddNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configAddNPCSpawnEntriesContainer.IniCollectionKey}=")));
                 Server.Profile.ConfigAddNPCSpawnEntriesContainer.AddRange(configAddNPCSpawnEntriesContainer);
+                Server.Profile.ConfigAddNPCSpawnEntriesContainer.IsEnabled |= configAddNPCSpawnEntriesContainer.IsEnabled;
 
                 var configSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
                 configSubtractNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configSubtractNPCSpawnEntriesContainer.IniCollectionKey}=")));
                 Server.Profile.ConfigSubtractNPCSpawnEntriesContainer.AddRange(configSubtractNPCSpawnEntriesContainer);
+                Server.Profile.ConfigSubtractNPCSpawnEntriesContainer.IsEnabled |= configSubtractNPCSpawnEntriesContainer.IsEnabled;
 
                 var configOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(Server.Profile.ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
                 configOverrideNPCSpawnEntriesContainer.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideNPCSpawnEntriesContainer.IniCollectionKey}=")));
                 Server.Profile.ConfigOverrideNPCSpawnEntriesContainer.AddRange(configOverrideNPCSpawnEntriesContainer);
+                Server.Profile.ConfigOverrideNPCSpawnEntriesContainer.IsEnabled |= configOverrideNPCSpawnEntriesContainer.IsEnabled;
             }
 
             Server.Profile.NPCSpawnSettings = new NPCSpawnSettingsList(Server.Profile.ConfigAddNPCSpawnEntriesContainer, Server.Profile.ConfigSubtractNPCSpawnEntriesContainer, Server.Profile.ConfigOverrideNPCSpawnEntriesContainer);
@@ -1590,68 +1678,6 @@ namespace ARK_Server_Manager
 
             var item = ((NPCSpawnEntrySettings)((Button)e.Source).DataContext);
             SelectedNPCSpawnSetting.NPCSpawnEntrySettings.Remove(item);
-        }
-        #endregion
-
-        #region Crafting Overrides
-        private void AddCraftingOverride_Click(object sender, RoutedEventArgs e)
-        {
-            Settings.ConfigOverrideItemCraftingCosts.Add(new CraftingOverride());
-        }
-
-        private void AddCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Add(new CraftingResourceRequirement());
-        }
-
-        private void ClearCraftingOverrides_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedCraftingOverride = null;
-            Settings.ConfigOverrideItemCraftingCosts.Clear();
-        }
-
-        private void ClearCraftingOverrideResources_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedCraftingOverride?.BaseCraftingResourceRequirements.Clear();
-        }
-
-        private void PasteCraftingOverride_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new CustomConfigDataWindow();
-            window.Owner = Window.GetWindow(this);
-            window.Closed += Window_Closed;
-            var result = window.ShowDialog();
-
-            if (!result.HasValue || !result.Value)
-                return;
-
-            // read the pasted data into an ini file.
-            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
-
-            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
-            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
-            {
-                var configOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(Server.Profile.ConfigOverrideItemCraftingCosts), null);
-                configOverrideItemCraftingCosts.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideItemCraftingCosts.IniCollectionKey}=")));
-                Server.Profile.ConfigOverrideItemCraftingCosts.AddRange(configOverrideItemCraftingCosts);
-            }
-
-            RefreshBasePrimalItemList();
-        }
-
-        private void RemoveCraftingOverrideItem_Click(object sender, RoutedEventArgs e)
-        {
-            var item = ((CraftingOverride)((Button)e.Source).DataContext);
-            Settings.ConfigOverrideItemCraftingCosts.Remove(item);
-        }
-
-        private void RemoveCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedCraftingOverride == null)
-                return;
-
-            var item = ((CraftingResourceRequirement)((Button)e.Source).DataContext);
-            SelectedCraftingOverride.BaseCraftingResourceRequirements.Remove(item);
         }
         #endregion
 
