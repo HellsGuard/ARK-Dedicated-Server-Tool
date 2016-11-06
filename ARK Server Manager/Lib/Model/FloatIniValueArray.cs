@@ -21,7 +21,8 @@ namespace ARK_Server_Manager.Lib
 
         private static float FromIniValueInternal(string iniVal)
         {
-            return float.Parse(iniVal, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
+            var tempValue = iniVal.Replace("f", "");
+            return float.Parse(tempValue, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo(StringUtils.DEFAULT_CULTURE_CODE));
         }
     }
 }
