@@ -1,43 +1,93 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
+    public class SupplyCrateOverrideList : AggregateIniValueList<SupplyCrateOverride>
+    {
+        public SupplyCrateOverrideList(string aggregateValueName)
+            : base(aggregateValueName, null)
+        {
+        }
+
+        public void RenderToView()
+        {
+            foreach (var supplyCrate in this.Where(c => c.IsValid))
+            {
+                foreach (var itemSet in supplyCrate.ItemSets.Where(i => i.IsValid))
+                {
+                    foreach (var itemEntry in itemSet.ItemEntries.Where(e => e.IsValid))
+                    {
+                        itemEntry.ItemEntrySettings = new ObservableCollection<SupplyCrateItemEntrySettings>();
+
+                        for (var index = 0; index < itemEntry.ItemClassStrings.Count; index++)
+                        {
+                            itemEntry.ItemEntrySettings.Add(new SupplyCrateItemEntrySettings {
+                                                                ItemClassString = itemEntry.ItemClassStrings[index],
+                                                                EntryWeight = itemEntry.ItemsWeights[index],
+                                                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RenderToModel()
+        {
+            foreach (var supplyCrate in this.Where(c => c.IsValid))
+            {
+                foreach (var itemSet in supplyCrate.ItemSets.Where(i => i.IsValid))
+                {
+                    foreach (var itemEntry in itemSet.ItemEntries.Where(e => e.IsValid))
+                    {
+                        itemEntry.ItemClassStrings = new StringIniValueList(null, null);
+                        itemEntry.ItemsWeights = new FloatIniValueList(null, null);
+
+                        foreach (var itemClass in itemEntry.ItemEntrySettings)
+                        {
+                            itemEntry.ItemClassStrings.Add(itemClass.ItemClassString);
+                            itemEntry.ItemsWeights.Add(itemClass.EntryWeight);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void UpdateForLocalization()
+        {
+        }
+    }
+
     public class SupplyCrateOverride : AggregateIniValue
     {
         public SupplyCrateOverride()
         {
-            ItemSets = new AggregateIniValueList<SupplyCrateItemSet>(nameof(ItemSets), null);
+            ItemSets = new AggregateIniValueList<SupplyCrateItemSet>(null, null);
         }
 
-        public static readonly DependencyProperty SupplyCrateClassStringProperty = DependencyProperty.Register(nameof(SupplyCrateClassString), typeof(string), typeof(SupplyCrateOverride), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty SupplyCrateClassStringProperty = DependencyProperty.Register(nameof(SupplyCrateClassString), typeof(string), typeof(SupplyCrateOverride), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         public string SupplyCrateClassString
         {
             get { return (string)GetValue(SupplyCrateClassStringProperty); }
-            set
-            {
-                SetValue(SupplyCrateClassStringProperty, value);
-                DisplayName = SupplyCrateClassNameToDisplayNameConverter.Convert(value).ToString();
-            }
+            set { SetValue(SupplyCrateClassStringProperty, value); }
         }
 
-        public static readonly DependencyProperty MinItemSetsProperty = DependencyProperty.Register(nameof(MinItemSets), typeof(int), typeof(SupplyCrateOverride), new PropertyMetadata(1));
+        public static readonly DependencyProperty MinItemSetsProperty = DependencyProperty.Register(nameof(MinItemSets), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
-        public int MinItemSets
+        public float MinItemSets
         {
-            get { return (int)GetValue(MinItemSetsProperty); }
+            get { return (float)GetValue(MinItemSetsProperty); }
             set { SetValue(MinItemSetsProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxItemSetsProperty = DependencyProperty.Register(nameof(MaxItemSets), typeof(int), typeof(SupplyCrateOverride), new PropertyMetadata(1));
+        public static readonly DependencyProperty MaxItemSetsProperty = DependencyProperty.Register(nameof(MaxItemSets), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
-        public int MaxItemSets
+        public float MaxItemSets
         {
-            get { return (int)GetValue(MaxItemSetsProperty); }
+            get { return (float)GetValue(MaxItemSetsProperty); }
             set { SetValue(MaxItemSetsProperty, value); }
         }
 
@@ -49,26 +99,20 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NumItemSetsPowerProperty, value); }
         }
 
-        public static readonly DependencyProperty bSetsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(bSetsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(true));
-        [AggregateIniValueEntry]
-        public bool bSetsRandomWithoutReplacement
+        public static readonly DependencyProperty SetsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(SetsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(true));
+        [AggregateIniValueEntry(Key = "bSetsRandomWithoutReplacement")]
+        public bool SetsRandomWithoutReplacement
         {
-            get { return (bool)GetValue(bSetsRandomWithoutReplacementProperty); }
-            set { SetValue(bSetsRandomWithoutReplacementProperty, value); }
+            get { return (bool)GetValue(SetsRandomWithoutReplacementProperty); }
+            set { SetValue(SetsRandomWithoutReplacementProperty, value); }
         }
 
         public static readonly DependencyProperty ItemSetsProperty = DependencyProperty.Register(nameof(ItemSets), typeof(AggregateIniValueList<SupplyCrateItemSet>), typeof(SupplyCrateOverride), new PropertyMetadata(null));
-        [AggregateIniValueEntry]
+        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true, BracketsAroundValueDelimiter = 2)]
         public AggregateIniValueList<SupplyCrateItemSet> ItemSets
         {
             get { return (AggregateIniValueList<SupplyCrateItemSet>)GetValue(ItemSetsProperty); }
             set { SetValue(ItemSetsProperty, value); }
-        }
-
-        public string DisplayName
-        {
-            get;
-            protected set;
         }
 
         public override string GetSortKey()
@@ -76,95 +120,64 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return false;
+        }
+
         public override void InitializeFromINIValue(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
-
             var kvPair = value.Split(new[] { '=' }, 2);
             var kvValue = kvPair[1].Trim(' ');
             if (kvValue.StartsWith("("))
                 kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith(")))))"))
+            if (kvValue.EndsWith(")"))
                 kvValue = kvValue.Substring(0, kvValue.Length - 1);
 
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
-
-            foreach (var property in this.Properties)
-            {
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
-                if (propertyValue == null)
-                    continue;
-
-                var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
-
-                var collection = property.GetValue(this) as IIniValuesCollection;
-                if (collection != null)
-                {
-                    if (property.Name == nameof(ItemSets))
-                    {
-                        kvPropertyValue = kvPropertyPair[1].Trim();
-                        if (kvPropertyValue.StartsWith("(("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith("))))"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                        kvPropertyValue = kvPropertyPair[0].Trim() + "=" + kvPropertyValue;
-                        kvPropertyValue = kvPropertyValue.Replace(")),(", "))," + kvPropertyPair[0].Trim() + "=(");
-
-                        string[] delimiters = new[] { "," + kvPropertyPair[0].Trim() + "=" };
-                        var items = StringUtils.SplitIncludingDelimiters("," + kvPropertyValue, delimiters);
-                        collection.FromIniValues(items.Select(i => i.Trim(',', ' ')));
-                    }
-                    else
-                    {
-                        collection.FromIniValues(new[] { kvPropertyValue });
-                    }
-                }
-                else
-                {
-                    StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
-        }
-
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.SupplyCrateClassString, ((SupplyCrateOverride)other).SupplyCrateClassString, StringComparison.OrdinalIgnoreCase);
+            base.FromComplexINIValue(kvValue);
         }
 
         public override string ToINIValue()
         {
-            return base.ToINIValue();
+            return base.ToComplexINIValue(true);
         }
+
+        public string DisplayName => GameData.FriendlyNameForClass(SupplyCrateClassString);
+
+        public bool IsValid => !string.IsNullOrWhiteSpace(SupplyCrateClassString) && ItemSets.Count > 0;
     }
 
     public class SupplyCrateItemSet : AggregateIniValue
     {
         public SupplyCrateItemSet()
         {
-            ItemEntries = new AggregateIniValueList<SupplyCrateItemSetEntry>(nameof(ItemEntries), null);
+            ItemEntries = new AggregateIniValueList<SupplyCrateItemSetEntry>(null, null);
         }
 
-        public static readonly DependencyProperty MinNumItemsProperty = DependencyProperty.Register(nameof(MinNumItems), typeof(int), typeof(SupplyCrateItemSet), new PropertyMetadata(1));
+        public static readonly DependencyProperty SetNameProperty = DependencyProperty.Register(nameof(SetName), typeof(string), typeof(SupplyCrateItemSet), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
-        public int MinNumItems
+        public string SetName
         {
-            get { return (int)GetValue(MinNumItemsProperty); }
+            get { return (string)GetValue(SetNameProperty); }
+            set { SetValue(SetNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinNumItemsProperty = DependencyProperty.Register(nameof(MinNumItems), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
+        [AggregateIniValueEntry]
+        public float MinNumItems
+        {
+            get { return (float)GetValue(MinNumItemsProperty); }
             set { SetValue(MinNumItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxNumItemsProperty = DependencyProperty.Register(nameof(MaxNumItems), typeof(int), typeof(SupplyCrateItemSet), new PropertyMetadata(1));
+        public static readonly DependencyProperty MaxNumItemsProperty = DependencyProperty.Register(nameof(MaxNumItems), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
-        public int MaxNumItems
+        public float MaxNumItems
         {
-            get { return (int)GetValue(MaxNumItemsProperty); }
+            get { return (float)GetValue(MaxNumItemsProperty); }
             set { SetValue(MaxNumItemsProperty, value); }
         }
 
@@ -184,16 +197,16 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SetWeightProperty, value); }
         }
 
-        public static readonly DependencyProperty bItemsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(bItemsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateItemSet), new PropertyMetadata(true));
-        [AggregateIniValueEntry]
-        public bool bItemsRandomWithoutReplacement
+        public static readonly DependencyProperty ItemsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(ItemsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateItemSet), new PropertyMetadata(true));
+        [AggregateIniValueEntry(Key = "bItemsRandomWithoutReplacement")]
+        public bool ItemsRandomWithoutReplacement
         {
-            get { return (bool)GetValue(bItemsRandomWithoutReplacementProperty); }
-            set { SetValue(bItemsRandomWithoutReplacementProperty, value); }
+            get { return (bool)GetValue(ItemsRandomWithoutReplacementProperty); }
+            set { SetValue(ItemsRandomWithoutReplacementProperty, value); }
         }
 
         public static readonly DependencyProperty ItemEntriesProperty = DependencyProperty.Register(nameof(ItemEntries), typeof(AggregateIniValueList<SupplyCrateItemSetEntry>), typeof(SupplyCrateItemSet), new PropertyMetadata(null));
-        [AggregateIniValueEntry]
+        [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         public AggregateIniValueList<SupplyCrateItemSetEntry> ItemEntries
         {
             get { return (AggregateIniValueList<SupplyCrateItemSetEntry>)GetValue(ItemEntriesProperty); }
@@ -205,81 +218,40 @@ namespace ARK_Server_Manager.Lib
             return null;
         }
 
-        public override void InitializeFromINIValue(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return;
-
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
-
-            var kvPair = value.Split(new[] { '=' }, 2);
-            var kvValue = kvPair[1].Trim(' ');
-            if (kvValue.StartsWith("("))
-                kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith(")))"))
-                kvValue = kvValue.Substring(0, kvValue.Length - 1);
-
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
-
-            foreach (var property in this.Properties)
-            {
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
-                if (propertyValue == null)
-                    continue;
-
-                var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
-
-                var collection = property.GetValue(this) as IIniValuesCollection;
-                if (collection != null)
-                {
-                    if (property.Name == nameof(ItemEntries))
-                    {
-                        kvPropertyValue = kvPropertyPair[1].Trim();
-                        if (kvPropertyValue.StartsWith("(("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith("))"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                        kvPropertyValue = kvPropertyPair[0].Trim() + "=" + kvPropertyValue;
-                        kvPropertyValue = kvPropertyValue.Replace("),(", ")," + kvPropertyPair[0].Trim() + "=(");
-
-                        string[] delimiters = new[] { "," + kvPropertyPair[0].Trim() + "=" };
-                        var items = StringUtils.SplitIncludingDelimiters("," + kvPropertyValue, delimiters);
-                        collection.FromIniValues(items.Select(i => i.Trim(',', ' ')));
-                    }
-                    else
-                    {
-                        collection.FromIniValues(new[] { kvPropertyValue });
-                    }
-                }
-                else
-                {
-                    StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
-        }
-
         public override bool IsEquivalent(AggregateIniValue other)
         {
             return false;
         }
 
+        public override void InitializeFromINIValue(string value)
+        {
+            base.FromComplexINIValue(value);
+        }
+
         public override string ToINIValue()
         {
-            return base.ToINIValue();
+            return base.ToComplexINIValue(false);
         }
+
+        public bool IsValid => ItemEntries.Count > 0;
     }
 
     public class SupplyCrateItemSetEntry : AggregateIniValue
     {
         public SupplyCrateItemSetEntry()
         {
-            //ItemClassStrings = new StringIniValueList(nameof(ItemClassStrings), null);
-            //ItemsWeights = new SingleIniValueList(nameof(ItemsWeights), null);
+            ItemClassStrings = new StringIniValueList(null, null);
+            ItemsWeights = new FloatIniValueList(null, null);
+
+            ItemEntrySettings = new ObservableCollection<SupplyCrateItemEntrySettings>();
+        }
+
+        public static readonly DependencyProperty ItemEntryNameProperty = DependencyProperty.Register(nameof(ItemEntryName), typeof(string), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(string.Empty));
+        [AggregateIniValueEntry]
+        public string ItemEntryName
+        {
+            get { return (string)GetValue(ItemEntryNameProperty); }
+            set { SetValue(ItemEntryNameProperty, value); }
         }
 
         public static readonly DependencyProperty EntryWeightProperty = DependencyProperty.Register(nameof(EntryWeight), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
@@ -289,22 +261,6 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(EntryWeightProperty); }
             set { SetValue(EntryWeightProperty, value); }
         }
-
-        //public static readonly DependencyProperty ItemClassStringsProperty = DependencyProperty.Register(nameof(ItemClassStrings), typeof(StringIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
-        //[AggregateIniValueEntry]
-        //public StringIniValueList ItemClassStrings
-        //{
-        //    get { return (StringIniValueList)GetValue(ItemClassStringsProperty); }
-        //    set { SetValue(ItemClassStringsProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ItemsWeightsProperty = DependencyProperty.Register(nameof(ItemsWeights), typeof(SingleIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
-        //[AggregateIniValueEntry]
-        //public SingleIniValueList ItemsWeights
-        //{
-        //    get { return (SingleIniValueList)GetValue(ItemsWeightsProperty); }
-        //    set { SetValue(ItemsWeightsProperty, value); }
-        //}
 
         public static readonly DependencyProperty MinQuantityProperty = DependencyProperty.Register(nameof(MinQuantity), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
@@ -338,12 +294,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxQualityProperty, value); }
         }
 
-        public static readonly DependencyProperty bForceBlueprintProperty = DependencyProperty.Register(nameof(bForceBlueprint), typeof(bool), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(false));
-        [AggregateIniValueEntry]
-        public bool bForceBlueprint
+        public static readonly DependencyProperty ForceBlueprintProperty = DependencyProperty.Register(nameof(ForceBlueprint), typeof(bool), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(false));
+        [AggregateIniValueEntry(Key = "bForceBlueprint")]
+        public bool ForceBlueprint
         {
-            get { return (bool)GetValue(bForceBlueprintProperty); }
-            set { SetValue(bForceBlueprintProperty, value); }
+            get { return (bool)GetValue(ForceBlueprintProperty); }
+            set { SetValue(ForceBlueprintProperty, value); }
         }
 
         public static readonly DependencyProperty ChanceToBeBlueprintOverrideProperty = DependencyProperty.Register(nameof(ChanceToBeBlueprintOverride), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(0.0f));
@@ -354,76 +310,49 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ChanceToBeBlueprintOverrideProperty, value); }
         }
 
+        public static readonly DependencyProperty ItemClassStringsProperty = DependencyProperty.Register(nameof(ItemClassStrings), typeof(StringIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        [AggregateIniValueEntry(ValueWithinBrackets = true)]
+        public StringIniValueList ItemClassStrings
+        {
+            get { return (StringIniValueList)GetValue(ItemClassStringsProperty); }
+            set { SetValue(ItemClassStringsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemsWeightsProperty = DependencyProperty.Register(nameof(ItemsWeights), typeof(FloatIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        [AggregateIniValueEntry(ValueWithinBrackets = true)]
+        public FloatIniValueList ItemsWeights
+        {
+            get { return (FloatIniValueList)GetValue(ItemsWeightsProperty); }
+            set { SetValue(ItemsWeightsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemEntrySettingsProperty = DependencyProperty.Register(nameof(ItemEntrySettings), typeof(ObservableCollection<SupplyCrateItemEntrySettings>), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        public ObservableCollection<SupplyCrateItemEntrySettings> ItemEntrySettings
+        {
+            get { return (ObservableCollection<SupplyCrateItemEntrySettings>)GetValue(ItemEntrySettingsProperty); }
+            set { SetValue(ItemEntrySettingsProperty, value); }
+        }
+
         public override string GetSortKey()
         {
             return null;
-        }
-
-        public override void InitializeFromINIValue(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return;
-
-            GetPropertyInfos();
-            if (this.Properties.Count == 0)
-                return;
-
-            var propertyNames = this.Properties.Select(p => p.Name).ToArray();
-
-            var kvPair = value.Split(new[] { '=' }, 2);
-            var kvValue = kvPair[1].Trim(' ');
-            if (kvValue.StartsWith("("))
-                kvValue = kvValue.Substring(1);
-            if (kvValue.EndsWith(")"))
-                kvValue = kvValue.Substring(0, kvValue.Length - 1);
-
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames);
-
-            foreach (var property in this.Properties)
-            {
-                var propertyValue = propertyValues.FirstOrDefault(p => p.StartsWith(property.Name));
-                if (propertyValue == null)
-                    continue;
-
-                var kvPropertyPair = propertyValue.Split(new[] { '=' }, 2);
-                var kvPropertyValue = kvPropertyPair[1].Trim(DELIMITER, ' ');
-
-                var collection = property.GetValue(this) as IIniValuesCollection;
-                if (collection != null)
-                {
-                    //if (property.Name == nameof(ItemClassStrings))
-                    //{
-                    //    kvPropertyValue = kvPropertyPair[1].Trim(',', ' ');
-                    //    if (kvPropertyValue.StartsWith("("))
-                    //        kvPropertyValue = kvPropertyValue.Substring(1);
-                    //    if (kvPropertyValue.EndsWith(")"))
-                    //        kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
-                    //    kvPropertyValue = kvPropertyPair[0].Trim() + "=" + kvPropertyValue;
-                    //    kvPropertyValue = kvPropertyValue.Replace("),(", ")," + kvPropertyPair[0].Trim() + "=(");
-
-                    //    string[] delimiters = new[] { "," + kvPropertyPair[0].Trim() + "=" };
-                    //    var items = StringUtils.SplitIncludingDelimiters("," + kvPropertyValue, delimiters);
-                    //    collection.FromIniValues(items.Select(i => i.Trim(',', ' ')));
-                    //}
-                    //else if (property.Name == nameof(ItemsWeights))
-                    //{
-
-                    //}
-                    //else
-                    //{
-                    //    collection.FromIniValues(new[] { kvPropertyValue });
-                    //}
-                }
-                else
-                {
-                    StringUtils.SetPropertyValue(kvPropertyValue, this, property);
-                }
-            }
         }
 
         public override bool IsEquivalent(AggregateIniValue other)
         {
             return false;
         }
+
+        public override void InitializeFromINIValue(string value)
+        {
+            base.FromComplexINIValue(value);
+        }
+
+        public override string ToINIValue()
+        {
+            return base.ToComplexINIValue(false);
+        }
+
+        public bool IsValid => ItemClassStrings.Count > 0 && ItemClassStrings.Count == ItemsWeights.Count;
     }
 }

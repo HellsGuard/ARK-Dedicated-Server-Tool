@@ -21,24 +21,25 @@ namespace ARK_Server_Manager.Lib
             return $"<RichColor Color=\"{r},{g},{b},{a}\">{message}</>";
         }
 
-        public static List<string> SplitIncludingDelimiters(string input, string[] delimiters)
+        public static List<string> SplitIncludingDelimiters(string input, string[] delimiters, char valueDelimiter = ',')
         {
             var result = new List<string>();
+            var tempInput = $"{valueDelimiter}{input}";
 
-            var nextPosition = delimiters.SelectMany(d => AllIndexesOf(input, d)).ToArray();
+            var nextPosition = delimiters.SelectMany(d => AllIndexesOf(tempInput, $"{valueDelimiter}{d}=")).ToArray();
             Array.Sort(nextPosition);
             Array.Reverse(nextPosition);
 
-            var lastPos = input.Length;
+            var lastPos = tempInput.Length;
             foreach (var pos in nextPosition)
             {
-                var value = input.Substring(pos, lastPos - pos);
+                var value = tempInput.Substring(pos, lastPos - pos);
                 result.Add(value);
 
                 lastPos = pos;
             }
 
-            return result;
+            return result.Select(r => r.TrimStart(valueDelimiter)).ToList();
         }
 
         private static IEnumerable<int> AllIndexesOf(string input, string delimiter)

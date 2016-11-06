@@ -6,7 +6,8 @@ namespace ARK_Server_Manager.Lib
 {
     public class IntegerIniValueList : IniValueList<int>
     {
-        public IntegerIniValueList(string iniKeyName, Func<IEnumerable<int>> resetFunc) : base(iniKeyName, resetFunc, (a, b) => a == b, m => m, ToIniValueInternal, FromIniValueInternal)
+        public IntegerIniValueList(string iniKeyName, Func<IEnumerable<int>> resetFunc) : 
+            base(iniKeyName, resetFunc, (a, b) => a == b, m => m, ToIniValueInternal, FromIniValueInternal)
         {
         }
 

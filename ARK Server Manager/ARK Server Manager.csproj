@@ -163,6 +163,7 @@
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\BindingProxy.cs" />
+    <Compile Include="Lib\Model\FloatIniValueList.cs" />
     <Compile Include="Lib\Model\PGMTerrain.cs" />
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\NPCSpawner.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Lib\ValidationRules\ProfileNameValidationRule.cs" />
     <Compile Include="Lib\ViewConverters\ExtinctionEventTimeIntervalConverter.cs" />
     <Compile Include="Lib\ValidationRules\StringValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\SupplyCrateSettings.cs" />
     <Compile Include="WorldSaveRestoreWindow.xaml.cs">
       <DependentUpon>WorldSaveRestoreWindow.xaml</DependentUpon>
     </Compile>

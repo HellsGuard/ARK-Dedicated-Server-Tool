@@ -33,6 +33,11 @@ namespace ARK_Server_Manager.Lib
         /// If true, the every list value will always be surrounded with brackets
         /// </summary>
         public bool ListValueWithinBrackets;
+
+        /// <summary>
+        /// Determines the number od brackets around the Value delimiter. Default 1, but will be higher for hierarchial values.
+        /// </summary>
+        public int BracketsAroundValueDelimiter = 1;
     }
 
     /// <summary>
@@ -193,7 +198,10 @@ namespace ARK_Server_Manager.Lib
                     var delimiter = DELIMITER.ToString();
                     if (attr?.ListValueWithinBrackets ?? false)
                     {
-                        delimiter = $"){delimiter}(";
+                        var p = new string(')', attr.BracketsAroundValueDelimiter);
+                        var s = new string('(', attr.BracketsAroundValueDelimiter);
+                        delimiter = $"{p}{delimiter}{s}";
+
                         if (kvPropertyValue.StartsWith("("))
                             kvPropertyValue = kvPropertyValue.Substring(1);
                         if (kvPropertyValue.EndsWith(")"))

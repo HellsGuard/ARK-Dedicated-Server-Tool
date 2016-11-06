@@ -58,15 +58,18 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
             this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
 
-            this.CustomGameUserSettingsSections = new CustomSectionList();
-            this.PGM_Terrain = new PGMTerrain();
-
             this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(ConfigOverrideItemCraftingCosts), null);
+
+            this.CustomGameUserSettingsSections = new CustomSectionList();
+
+            this.PGM_Terrain = new PGMTerrain();
 
             this.ConfigAddNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigAddNPCSpawnEntriesContainer), NPCSpawnContainerType.Add);
             this.ConfigSubtractNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigSubtractNPCSpawnEntriesContainer), NPCSpawnContainerType.Subtract);
             this.ConfigOverrideNPCSpawnEntriesContainer = new NPCSpawnContainerList<NPCSpawnContainer>(nameof(ConfigOverrideNPCSpawnEntriesContainer), NPCSpawnContainerType.Override);
             this.NPCSpawnSettings = new NPCSpawnSettingsList(this.ConfigAddNPCSpawnEntriesContainer, this.ConfigSubtractNPCSpawnEntriesContainer, this.ConfigOverrideNPCSpawnEntriesContainer);
+
+            this.ConfigOverrideSupplyCrateItems = new SupplyCrateOverrideList(nameof(ConfigOverrideSupplyCrateItems));
 
             GetDefaultDirectories();
         }
@@ -461,6 +464,27 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(UseNoMemoryBiasProperty); }
             set { SetValue(UseNoMemoryBiasProperty, value); }
+        }
+
+        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NoTransferFromFiltering
+        {
+            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
+            set { SetValue(NoTransferFromFilteringProperty, value); }
+        }
+
+        public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
+        public string CrossArkClusterId
+        {
+            get { return (string)GetValue(CrossArkClusterIdProperty); }
+            set { SetValue(CrossArkClusterIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClusterDirOverrideProperty = DependencyProperty.Register(nameof(ClusterDirOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ClusterDirOverride
+        {
+            get { return (bool)GetValue(ClusterDirOverrideProperty); }
+            set { SetValue(ClusterDirOverrideProperty, value); }
         }
 
         public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -1795,6 +1819,81 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Procedurally Generated ARKS
+        // ReSharper disable InconsistentNaming
+        public static readonly DependencyProperty PGM_EnabledProperty = DependencyProperty.Register(nameof(PGM_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool PGM_Enabled
+        {
+            get { return (bool)GetValue(PGM_EnabledProperty); }
+            set { SetValue(PGM_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_NameProperty = DependencyProperty.Register(nameof(PGM_Name), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultPGMapName));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", ConditionedOn = nameof(PGM_Enabled))]
+        public string PGM_Name
+        {
+            get { return (string)GetValue(PGM_NameProperty); }
+            set { SetValue(PGM_NameProperty, value); }
+        }
+
+        public static readonly DependencyProperty PGM_TerrainProperty = DependencyProperty.Register(nameof(PGM_Terrain), typeof(PGMTerrain), typeof(ServerProfile), new PropertyMetadata(null));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", ConditionedOn = nameof(PGM_Enabled))]
+        public PGMTerrain PGM_Terrain
+        {
+            get { return (PGMTerrain)GetValue(PGM_TerrainProperty); }
+            set { SetValue(PGM_TerrainProperty, value); }
+        }
+        // ReSharper restore InconsistentNaming
+        #endregion
+
+        #region NPC Spawn Overrides
+        public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigAddNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigAddNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigAddNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfigSubtractNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigSubtractNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigSubtractNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigSubtractNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigSubtractNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfigOverrideNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigOverrideNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public NPCSpawnContainerList<NPCSpawnContainer> ConfigOverrideNPCSpawnEntriesContainer
+        {
+            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigOverrideNPCSpawnEntriesContainerProperty); }
+            set { SetValue(ConfigOverrideNPCSpawnEntriesContainerProperty, value); }
+        }
+
+        public static readonly DependencyProperty NPCSpawnSettingsProperty = DependencyProperty.Register(nameof(NPCSpawnSettings), typeof(NPCSpawnSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        public NPCSpawnSettingsList NPCSpawnSettings
+        {
+            get { return (NPCSpawnSettingsList)GetValue(NPCSpawnSettingsProperty); }
+            set { SetValue(NPCSpawnSettingsProperty, value); }
+        }
+        #endregion
+
+        #region Supply Drop Overrides
+        public static readonly DependencyProperty ConfigOverrideSupplyCrateItemsProperty = DependencyProperty.Register(nameof(ConfigOverrideSupplyCrateItems), typeof(SupplyCrateOverrideList), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public SupplyCrateOverrideList ConfigOverrideSupplyCrateItems
+        {
+            get { return (SupplyCrateOverrideList)GetValue(ConfigOverrideSupplyCrateItemsProperty); }
+            set { SetValue(ConfigOverrideSupplyCrateItemsProperty, value); }
+        }
+        #endregion
+
         #region Survival of the Fittest
         // ReSharper disable InconsistentNaming
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1923,93 +2022,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (Rect)GetValue(RCONWindowExtentsProperty); }
             set { SetValue(RCONWindowExtentsProperty, value); }
-        }
-        #endregion
-
-        #region Cross Ark Data Transfer
-        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool NoTransferFromFiltering
-        {
-            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
-            set { SetValue(NoTransferFromFilteringProperty, value); }
-        }
-
-        public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
-        public string CrossArkClusterId
-        {
-            get { return (string)GetValue(CrossArkClusterIdProperty); }
-            set { SetValue(CrossArkClusterIdProperty, value); }
-        }
-
-        public static readonly DependencyProperty ClusterDirOverrideProperty = DependencyProperty.Register(nameof(ClusterDirOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool ClusterDirOverride
-        {
-            get { return (bool)GetValue(ClusterDirOverrideProperty); }
-            set { SetValue(ClusterDirOverrideProperty, value); }
-        }
-        #endregion
-
-        #region Procedurally Generated ARKS
-        // ReSharper disable InconsistentNaming
-        public static readonly DependencyProperty PGM_EnabledProperty = DependencyProperty.Register(nameof(PGM_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool PGM_Enabled
-        {
-            get { return (bool)GetValue(PGM_EnabledProperty); }
-            set { SetValue(PGM_EnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty PGM_NameProperty = DependencyProperty.Register(nameof(PGM_Name), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultPGMapName));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", ConditionedOn = nameof(PGM_Enabled))]
-        public string PGM_Name
-        {
-            get { return (string)GetValue(PGM_NameProperty); }
-            set { SetValue(PGM_NameProperty, value); }
-        }
-
-        public static readonly DependencyProperty PGM_TerrainProperty = DependencyProperty.Register(nameof(PGM_Terrain), typeof(PGMTerrain), typeof(ServerProfile), new PropertyMetadata(null));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", ConditionedOn = nameof(PGM_Enabled))]
-        public PGMTerrain PGM_Terrain
-        {
-            get { return (PGMTerrain)GetValue(PGM_TerrainProperty); }
-            set { SetValue(PGM_TerrainProperty, value); }
-        }
-        // ReSharper restore InconsistentNaming
-        #endregion
-
-        #region NPC Spawn Overrides
-        public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public NPCSpawnContainerList<NPCSpawnContainer> ConfigAddNPCSpawnEntriesContainer
-        {
-            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigAddNPCSpawnEntriesContainerProperty); }
-            set { SetValue(ConfigAddNPCSpawnEntriesContainerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ConfigSubtractNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigSubtractNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public NPCSpawnContainerList<NPCSpawnContainer> ConfigSubtractNPCSpawnEntriesContainer
-        {
-            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigSubtractNPCSpawnEntriesContainerProperty); }
-            set { SetValue(ConfigSubtractNPCSpawnEntriesContainerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ConfigOverrideNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigOverrideNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public NPCSpawnContainerList<NPCSpawnContainer> ConfigOverrideNPCSpawnEntriesContainer
-        {
-            get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigOverrideNPCSpawnEntriesContainerProperty); }
-            set { SetValue(ConfigOverrideNPCSpawnEntriesContainerProperty, value); }
-        }
-
-        public static readonly DependencyProperty NPCSpawnSettingsProperty = DependencyProperty.Register(nameof(NPCSpawnSettings), typeof(NPCSpawnSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        public NPCSpawnSettingsList NPCSpawnSettings
-        {
-            get { return (NPCSpawnSettingsList)GetValue(NPCSpawnSettingsProperty); }
-            set { SetValue(NPCSpawnSettingsProperty, value); }
         }
         #endregion
 
@@ -2378,6 +2390,7 @@ namespace ARK_Server_Manager.Lib
             settings.DinoLevels.UpdateTotals();
             settings.DinoSettings.RenderToView();
             settings.NPCSpawnSettings.RenderToView();
+            settings.ConfigOverrideSupplyCrateItems.RenderToView();
             settings._lastSaveLocation = path;
 
             return settings;
@@ -2446,6 +2459,7 @@ namespace ARK_Server_Manager.Lib
                 settings.DinoLevels.UpdateTotals();
                 settings.DinoSettings.RenderToView();
                 settings.NPCSpawnSettings.RenderToView();
+                settings.ConfigOverrideSupplyCrateItems.RenderToView();
                 settings._lastSaveLocation = path;
             }
             return settings;
@@ -2512,6 +2526,9 @@ namespace ARK_Server_Manager.Lib
 
             progressCallback?.Invoke(0, "Constructing Map Spawner Information...");
             this.NPCSpawnSettings.RenderToModel();
+
+            progressCallback?.Invoke(0, "Constructing Supply Crate Information...");
+            this.ConfigOverrideSupplyCrateItems.RenderToModel();
 
             //
             // Save the profile
@@ -3354,6 +3371,12 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceAllStructureLockingProperty);
             this.ClearValue(PassiveDefensesDamageRiderlessDinosProperty);
             this.ClearValue(ForceAllStructureLockingProperty);
+        }
+
+        public void ResetSupplyCreateOverridesSection()
+        {
+            this.ConfigOverrideSupplyCrateItems = new SupplyCrateOverrideList(nameof(ConfigOverrideSupplyCrateItems));
+            this.ConfigOverrideSupplyCrateItems.Reset();
         }
 
         public void UpdateOverrideMaxExperiencePointsDino()

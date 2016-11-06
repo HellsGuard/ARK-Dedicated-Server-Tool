@@ -6,19 +6,9 @@ namespace ARK_Server_Manager.Lib
 {
     public abstract class IniValueList<T> : SortableObservableCollection<T>, IIniValuesCollection
     {
-        public Func<T, string> ToIniValue { get; }
-        public Func<string, T> FromIniValue { get; }
-        private Func<IEnumerable<T>> ResetFunc { get; }
-        private Func<T, T, bool> EquivalencyFunc { get; }
-        private Func<T, object> SortKeySelectorFunc { get; set; }
+        private bool _isEnabled;
 
-        public IniValueList(
-            string aggregateValueName, 
-            Func<IEnumerable<T>> resetFunc,
-            Func<T, T, bool> equivalencyFunc,
-            Func<T, object> sortKeySelectorFunc,
-            Func<T, string> toIniValue, 
-            Func<string, T> fromIniValue)
+        protected IniValueList(string aggregateValueName, Func<IEnumerable<T>> resetFunc, Func<T, T, bool> equivalencyFunc, Func<T, object> sortKeySelectorFunc, Func<T, string> toIniValue, Func<string, T> fromIniValue)
         {
             this.ToIniValue = toIniValue;
             this.FromIniValue = fromIniValue;
@@ -26,15 +16,23 @@ namespace ARK_Server_Manager.Lib
             this.EquivalencyFunc = equivalencyFunc;
             this.SortKeySelectorFunc = sortKeySelectorFunc;
             this.IniCollectionKey = aggregateValueName;
+
+            this.Reset();
+            this.IsEnabled = false;
         }
 
-        private bool isEnabled;
+        public Func<T, string> ToIniValue { get; }
+        public Func<string, T> FromIniValue { get; }
+        private Func<IEnumerable<T>> ResetFunc { get; }
+        private Func<T, T, bool> EquivalencyFunc { get; }
+        private Func<T, object> SortKeySelectorFunc { get; }
+
         public bool IsEnabled
         {
-            get { return this.isEnabled; }
+            get { return this._isEnabled; }
             set
             {
-                this.isEnabled = value;
+                this._isEnabled = value;
                 OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsEnabled)));
             }
         }
@@ -43,25 +41,29 @@ namespace ARK_Server_Manager.Lib
 
         public string IniCollectionKey { get; }
 
-        public void Reset()
+        public void AddRange(IEnumerable<T> values)
         {
-            this.Clear();
-            if (this.ResetFunc != null)
-                this.AddRange(this.ResetFunc());
+            foreach (var value in values)
+            {
+                base.Add(value);
+            }
         }
 
         public virtual void FromIniValues(IEnumerable<string> values)
         {
             this.Clear();
+
             if (this.IsArray)
             {
                 var list = new List<T>();
                 if (this.ResetFunc != null)
                     list.AddRange(this.ResetFunc());
+
                 foreach(var v in values)
                 {
-                    int indexStart = v.IndexOf('[');
-                    int indexEnd = v.IndexOf(']');
+                    var indexStart = v.IndexOf('[');
+                    var indexEnd = v.IndexOf(']');
+
                     if(indexStart >= indexEnd)
                     {
                         // Invalid format
@@ -69,7 +71,7 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     int index;
-                    if(!Int32.TryParse(v.Substring(indexStart + 1, indexEnd - indexStart - 1), out index))
+                    if(!int.TryParse(v.Substring(indexStart + 1, indexEnd - indexStart - 1), out index))
                     {
                         // Invalid index
                         continue;
@@ -84,6 +86,7 @@ namespace ARK_Server_Manager.Lib
                     list[index] = this.FromIniValue(v.Substring(v.IndexOf('=') + 1).Trim());
                     this.IsEnabled = true;
                 }
+
                 this.AddRange(list);
             }
             else
@@ -106,24 +109,29 @@ namespace ARK_Server_Manager.Lib
             var values = new List<string>();
             if (this.IsArray)
             {
-                for(int i = 0; i < this.Count; i++)
+                for(var i = 0; i < this.Count; i++)
                 {
-                    values.Add($"{this.IniCollectionKey}[{i}]={this.ToIniValue(this[i])}");
+                    if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                        values.Add(this.ToIniValue(this[i]));
+                    else
+                        values.Add($"{this.IniCollectionKey}[{i}]={this.ToIniValue(this[i])}");
                 }
             }
             else
             {
-                values.AddRange(this.Select(d => $"{this.IniCollectionKey}={this.ToIniValue(d)}"));
+                if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                    values.AddRange(this.Select(d => this.ToIniValue(d)));
+                else
+                    values.AddRange(this.Select(d => $"{this.IniCollectionKey}={this.ToIniValue(d)}"));
             }
             return values;
         }
 
-        public void AddRange(IEnumerable<T> values)
+        public void Reset()
         {
-            foreach (var value in values)
-            {
-                base.Add(value);
-            }
+            this.Clear();
+            if (this.ResetFunc != null)
+                this.AddRange(this.ResetFunc());
         }
     }
 }

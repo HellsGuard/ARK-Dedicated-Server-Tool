@@ -1,7 +1,6 @@
 ﻿using ARK_Server_Manager.Lib;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -50,6 +49,7 @@ namespace ARK_Server_Manager
         PGMSection,
         MapSpawnerOverridesSection,
         CraftingOverridesSection,
+        SupplyCreateOverridesSection,
 
         // Properties
         MapNameIslandProperty,
@@ -82,6 +82,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty BaseMapSpawnerListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerDinoListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BasePrimalItemListProperty = DependencyProperty.Register(nameof(BasePrimalItemList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BaseSupplyCrateListProperty = DependencyProperty.Register(nameof(BaseSupplyCrateList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -122,6 +123,12 @@ namespace ARK_Server_Manager
         {
             get { return (ComboBoxItemList)GetValue(BasePrimalItemListProperty); }
             set { SetValue(BasePrimalItemListProperty, value); }
+        }
+
+        public ComboBoxItemList BaseSupplyCrateList
+        {
+            get { return (ComboBoxItemList)GetValue(BaseSupplyCrateListProperty); }
+            set { SetValue(BaseSupplyCrateListProperty, value); }
         }
 
         public Config CurrentConfig
@@ -234,6 +241,7 @@ namespace ARK_Server_Manager
             this.BaseMapSpawnerList = new ComboBoxItemList();
             this.BaseMapSpawnerDinoList = new ComboBoxItemList();
             this.BasePrimalItemList = new ComboBoxItemList();
+            this.BaseSupplyCrateList = new ComboBoxItemList();
 
             this.ServerFilesAdmins = new SteamUserList();
             this.ServerFilesWhitelisted = new SteamUserList();
@@ -261,6 +269,7 @@ namespace ARK_Server_Manager
                         ssc.RefreshBaseMapSpawnerList();
                         ssc.RefreshBaseMapSpawnerDinoList();
                         ssc.RefreshBasePrimalItemList();
+                        ssc.RefreshBaseSupplyCrateList();
                         ssc.LoadServerFiles();
                     }).DoNotWait();
             }
@@ -270,11 +279,13 @@ namespace ARK_Server_Manager
         {
             this.Settings.DinoSettings.UpdateForLocalization();
             this.Settings.NPCSpawnSettings.UpdateForLocalization();
+            this.Settings.ConfigOverrideSupplyCrateItems.UpdateForLocalization();
 
             this.RefreshBaseDinoSettingsDinoList();
             this.RefreshBaseMapSpawnerList();
             this.RefreshBaseMapSpawnerDinoList();
             this.RefreshBasePrimalItemList();
+            this.RefreshBaseSupplyCrateList();
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
@@ -1681,6 +1692,9 @@ namespace ARK_Server_Manager
         }
         #endregion
 
+        #region Supply Crate Overrides
+        #endregion
+
         #endregion
 
         #region Methods
@@ -1917,6 +1931,27 @@ namespace ARK_Server_Manager
                 }
             }
 
+            foreach (var supplyCrate in this.Settings.ConfigOverrideSupplyCrateItems)
+            {
+                foreach (var itemSet in supplyCrate.ItemSets)
+                {
+                    foreach (var itemEntry in itemSet.ItemEntries)
+                    {
+                        foreach (var itemClass in itemEntry.ItemEntrySettings)
+                        {
+                            if (!newList.Any(s => s.ValueMember.Equals(itemClass.ItemClassString, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                newList.Add(new Lib.ViewModel.ComboBoxItem
+                                {
+                                    DisplayMember = itemClass.ItemClassString,
+                                    ValueMember = itemClass.ItemClassString,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
             try
             {
                 this.CraftingOverrideItemGrid.BeginInit();
@@ -1928,6 +1963,41 @@ namespace ARK_Server_Manager
             {
                 this.CraftingOverrideItemGrid.EndInit();
                 this.CraftingOverrideResourceGrid.EndInit();
+            }
+        }
+
+        public void RefreshBaseSupplyCrateList()
+        {
+            var newList = new ComboBoxItemList();
+
+            foreach (var primalItem in GameData.GetStandardSupplyCrates().OrderBy(i => i.DisplayName))
+            {
+                newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                DisplayMember = primalItem.DisplayName,
+                                ValueMember = primalItem.ClassName,
+                            });
+            }
+
+            foreach (var supplyCrate in this.Settings.ConfigOverrideSupplyCrateItems)
+            {
+                if (!newList.Any(s => s.ValueMember.Equals(supplyCrate.SupplyCrateClassString, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem {
+                                    DisplayMember = supplyCrate.SupplyCrateClassString,
+                                    ValueMember = supplyCrate.SupplyCrateClassString,
+                                });
+                }
+            }
+
+            try
+            {
+                //this.SupplyCrateOverrideItemGrid.BeginInit();
+
+                this.BaseSupplyCrateList = newList;
+            }
+            finally
+            {
+                //this.SupplyCrateOverrideItemGrid.EndInit();
             }
         }
 
@@ -1992,6 +2062,11 @@ namespace ARK_Server_Manager
                                 this.Settings.ResetChatAndNotificationSection();
                                 break;
 
+                            case ServerSettingsResetAction.CraftingOverridesSection:
+                                this.Settings.ResetCraftingOverridesSection();
+                                RefreshBasePrimalItemList();
+                                break;
+
                             case ServerSettingsResetAction.CustomLevelsSection:
                                 this.Settings.ResetCustomLevelsSection();
                                 break;
@@ -2012,9 +2087,6 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.HudAndVisualsSection:
                                 this.Settings.ResetHUDAndVisualsSection();
                                 break;
-                            case ServerSettingsResetAction.PGMSection:
-                                this.Settings.ResetPGMSection();
-                                break;
 
                             case ServerSettingsResetAction.MapSpawnerOverridesSection:
                                 this.Settings.ResetNPCSpawnOverridesSection();
@@ -2022,11 +2094,9 @@ namespace ARK_Server_Manager
                                 RefreshBaseMapSpawnerDinoList();
                                 break;
 
-                            case ServerSettingsResetAction.CraftingOverridesSection:
-                                this.Settings.ResetCraftingOverridesSection();
-                                RefreshBasePrimalItemList();
+                            case ServerSettingsResetAction.PGMSection:
+                                this.Settings.ResetPGMSection();
                                 break;
-
 
                             case ServerSettingsResetAction.PlayerSettingsSection:
                                 this.Settings.ResetPlayerSettings();
@@ -2042,6 +2112,12 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.StructuresSection:
                                 this.Settings.ResetStructuresSection();
+                                break;
+
+                            case ServerSettingsResetAction.SupplyCreateOverridesSection:
+                                this.Settings.ResetSupplyCreateOverridesSection();
+                                RefreshBaseSupplyCrateList();
+                                RefreshBasePrimalItemList();
                                 break;
 
                             // Properties
@@ -2169,6 +2245,7 @@ namespace ARK_Server_Manager
                             RefreshBaseMapSpawnerList();
                             RefreshBaseMapSpawnerDinoList();
                             RefreshBasePrimalItemList();
+                            RefreshBaseSupplyCrateList();
 
                             OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
                             await Task.Delay(500);
