@@ -14,11 +14,11 @@ namespace ARK_Server_Manager.Lib
 
         public void RenderToView()
         {
-            foreach (var supplyCrate in this.Where(c => c.IsValid))
+            foreach (var supplyCrate in this)
             {
-                foreach (var itemSet in supplyCrate.ItemSets.Where(i => i.IsValid))
+                foreach (var itemSet in supplyCrate.ItemSets)
                 {
-                    foreach (var itemEntry in itemSet.ItemEntries.Where(e => e.IsValid))
+                    foreach (var itemEntry in itemSet.ItemEntries)
                     {
                         itemEntry.Items = new ObservableCollection<SupplyCrateItemEntrySettings>();
 
@@ -36,11 +36,11 @@ namespace ARK_Server_Manager.Lib
 
         public void RenderToModel()
         {
-            foreach (var supplyCrate in this.Where(c => c.IsValid))
+            foreach (var supplyCrate in this)
             {
-                foreach (var itemSet in supplyCrate.ItemSets.Where(i => i.IsValid))
+                foreach (var itemSet in supplyCrate.ItemSets)
                 {
-                    foreach (var itemEntry in itemSet.ItemEntries.Where(e => e.IsValid))
+                    foreach (var itemEntry in itemSet.ItemEntries)
                     {
                         itemEntry.ItemClassStrings = new StringIniValueList(null, null);
                         itemEntry.ItemsWeights = new FloatIniValueList(null, null);
@@ -353,6 +353,8 @@ namespace ARK_Server_Manager.Lib
             return base.ToComplexINIValue(false);
         }
 
-        public bool IsValid => ItemClassStrings.Count > 0 && ItemClassStrings.Count == ItemsWeights.Count;
+        public bool IsModelValid => ItemClassStrings.Count > 0 && ItemClassStrings.Count == ItemsWeights.Count;
+
+        public bool IsViewValid => Items.Count > 0;
     }
 }
