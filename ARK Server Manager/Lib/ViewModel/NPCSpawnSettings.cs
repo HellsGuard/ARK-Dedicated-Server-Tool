@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -44,8 +45,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
                 var spawnSettings = new NPCSpawnSettings
                 {
+                    UniqueId = entry.UniqueId,
                     ContainerType = NPCSpawnContainerType.Add,
-                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString
+                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString,
                 };
                 foreach (var item in entry.NPCSpawnEntries)
                 {
@@ -76,8 +78,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
                 var spawnSettings = new NPCSpawnSettings
                 {
+                    UniqueId = entry.UniqueId,
                     ContainerType = NPCSpawnContainerType.Subtract,
-                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString
+                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString,
                 };
                 foreach (var item in entry.NPCSpawnEntries)
                 {
@@ -108,8 +111,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
                 var spawnSettings = new NPCSpawnSettings
                 {
+                    UniqueId = entry.UniqueId,
                     ContainerType = NPCSpawnContainerType.Override,
-                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString
+                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString,
                 };
                 foreach (var item in entry.NPCSpawnEntries)
                 {
@@ -149,7 +153,11 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 if (!entry.IsValid)
                     continue;
 
-                var spawnContainer = new NPCSpawnContainer { NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString };
+                var spawnContainer = new NPCSpawnContainer
+                {
+                    UniqueId = entry.UniqueId,
+                    NPCSpawnEntriesContainerClassString = entry.NPCSpawnEntriesContainerClassString,
+                };
                 spawnContainer.NPCSpawnEntries.AddRange(entry.NPCSpawnEntrySettings.Where(s => s.IsValid).Select(s => new NPCSpawnEntry
                 {
                     AnEntryName = string.IsNullOrWhiteSpace(s.AnEntryName) ? s.NPCClassString : s.AnEntryName,
@@ -193,6 +201,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
         {
             NPCSpawnEntrySettings = new ObservableCollection<NPCSpawnEntrySettings>();
         }
+
+        public Guid UniqueId = Guid.NewGuid();
 
         public static readonly DependencyProperty ContainerTypeProperty = DependencyProperty.Register(nameof(ContainerType), typeof(NPCSpawnContainerType), typeof(NPCSpawnSettings), new PropertyMetadata(NPCSpawnContainerType.Override));
         public NPCSpawnContainerType ContainerType

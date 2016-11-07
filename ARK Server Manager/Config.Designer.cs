@@ -1456,12 +1456,24 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public string SectionCraftingOverridesIsExpanded {
+        public bool SectionCraftingOverridesIsExpanded {
             get {
-                return ((string)(this["SectionCraftingOverridesIsExpanded"]));
+                return ((bool)(this["SectionCraftingOverridesIsExpanded"]));
             }
             set {
                 this["SectionCraftingOverridesIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionSupplyCrateOverridesIsExpanded {
+            get {
+                return ((bool)(this["SectionSupplyCrateOverridesIsExpanded"]));
+            }
+            set {
+                this["SectionSupplyCrateOverridesIsExpanded"] = value;
             }
         }
     }

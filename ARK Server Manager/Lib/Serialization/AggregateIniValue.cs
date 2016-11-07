@@ -169,8 +169,7 @@ namespace ARK_Server_Manager.Lib
 
             var kvValue = value.Trim(' ');
 
-            var propertyNames = this.Properties.Select(f => f.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().Select(a => !string.IsNullOrWhiteSpace(a.Key) ? a.Key : f.Name).FirstOrDefault());
-            var propertyValues = StringUtils.SplitIncludingDelimiters(kvValue, propertyNames.ToArray());
+            var propertyValues = SplitCollectionValues(kvValue, DELIMITER);
 
             foreach (var property in this.Properties)
             {
@@ -195,20 +194,15 @@ namespace ARK_Server_Manager.Lib
                 var collection = property.GetValue(this) as IIniValuesCollection;
                 if (collection != null)
                 {
-                    var delimiter = DELIMITER.ToString();
+                    var values = SplitCollectionValues(kvPropertyValue, DELIMITER);
+                    values = values.Where(v => !string.IsNullOrWhiteSpace(v)).ToArray();
+
                     if (attr?.ListValueWithinBrackets ?? false)
                     {
-                        var p = new string(')', attr.BracketsAroundValueDelimiter);
-                        var s = new string('(', attr.BracketsAroundValueDelimiter);
-                        delimiter = $"{p}{delimiter}{s}";
-
-                        if (kvPropertyValue.StartsWith("("))
-                            kvPropertyValue = kvPropertyValue.Substring(1);
-                        if (kvPropertyValue.EndsWith(")"))
-                            kvPropertyValue = kvPropertyValue.Substring(0, kvPropertyValue.Length - 1);
+                        values = values.Select(v => v.Substring(1)).ToArray();
+                        values = values.Select(v => v.Substring(0, v.Length - 1)).ToArray();
                     }
-
-                    collection.FromIniValues(kvPropertyValue.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
+                    collection.FromIniValues(values);
                 }
                 else
                     StringUtils.SetPropertyValue(kvPropertyValue, this, property);
@@ -269,6 +263,49 @@ namespace ARK_Server_Manager.Lib
             if (resultWithinBrackets)
                 result.Append(")");
             return result.ToString();
+        }
+
+        protected string[] SplitCollectionValues(string valueString, char delimiter)
+        {
+            if (string.IsNullOrWhiteSpace(valueString))
+                return new string[0];
+
+            // string any leading or trailing spaces
+            var tempString = valueString.Trim();
+
+            // check if any delimiters
+            var total1 = tempString.Count(c => c.Equals(delimiter));
+            if (total1 == 0)
+                return new[] {tempString};
+
+            var result = new List<string>();
+
+            var bracketCount = 0;
+            var startIndex = 0;
+            for (var index = 0; index < tempString.Length; index++)
+            {
+                var charValue = tempString[index];
+                if (charValue == '(')
+                {
+                    bracketCount++;
+                    continue;
+                }
+                if (charValue == ')')
+                {
+                    bracketCount--;
+                    continue;
+                }
+                if (charValue != delimiter || bracketCount != 0)
+                    continue;
+
+                result.Add(tempString.Substring(startIndex, index - startIndex));
+
+                startIndex = index + 1;
+            }
+
+            result.Add(tempString.Substring(startIndex));
+
+            return result.ToArray();
         }
     }
 }

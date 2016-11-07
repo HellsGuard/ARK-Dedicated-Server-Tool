@@ -49,7 +49,7 @@ namespace ARK_Server_Manager
         PGMSection,
         MapSpawnerOverridesSection,
         CraftingOverridesSection,
-        SupplyCreateOverridesSection,
+        SupplyCrateOverridesSection,
 
         // Properties
         MapNameIslandProperty,
@@ -96,6 +96,9 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedCraftingOverrideProperty = DependencyProperty.Register(nameof(SelectedCraftingOverride), typeof(CraftingOverride), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedCustomSectionProperty = DependencyProperty.Register(nameof(SelectedCustomSection), typeof(CustomSection), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedNPCSpawnSettingProperty = DependencyProperty.Register(nameof(SelectedNPCSpawnSetting), typeof(NPCSpawnSettings), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedSupplyCrateOverrideProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateOverride), typeof(SupplyCrateOverride), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedSupplyCrateItemSetProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSet), typeof(SupplyCrateItemSet), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty SelectedSupplyCrateItemSetEntryProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSetEntry), typeof(SupplyCrateItemSetEntry), typeof(ServerSettingsControl));
         public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
@@ -207,6 +210,24 @@ namespace ARK_Server_Manager
         {
             get { return GetValue(SelectedNPCSpawnSettingProperty) as NPCSpawnSettings; }
             set { SetValue(SelectedNPCSpawnSettingProperty, value); }
+        }
+
+        public SupplyCrateOverride SelectedSupplyCrateOverride
+        {
+            get { return GetValue(SelectedSupplyCrateOverrideProperty) as SupplyCrateOverride; }
+            set { SetValue(SelectedSupplyCrateOverrideProperty, value); }
+        }
+
+        public SupplyCrateItemSet SelectedSupplyCrateItemSet
+        {
+            get { return GetValue(SelectedSupplyCrateItemSetProperty) as SupplyCrateItemSet; }
+            set { SetValue(SelectedSupplyCrateItemSetProperty, value); }
+        }
+
+        public SupplyCrateItemSetEntry SelectedSupplyCrateItemSetEntry
+        {
+            get { return GetValue(SelectedSupplyCrateItemSetEntryProperty) as SupplyCrateItemSetEntry; }
+            set { SetValue(SelectedSupplyCrateItemSetEntryProperty, value); }
         }
 
         public SteamUserList ServerFilesAdmins
@@ -943,6 +964,27 @@ namespace ARK_Server_Manager
                 RefreshBaseDinoSettingsDinoList();
             }
         }
+
+        private void SaveCustomDinos_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.DinoSettings.RenderToModel();
+
+            var iniValues = Settings.DinoSpawnWeightMultipliers.ToIniValues().ToList();
+            iniValues.AddRange(Settings.PreventDinoTameClassNames.ToIniValues());
+            iniValues.AddRange(Settings.NPCReplacements.ToIniValues());
+            iniValues.AddRange(Settings.DinoClassDamageMultipliers.ToIniValues());
+            iniValues.AddRange(Settings.DinoClassResistanceMultipliers.ToIniValues());
+            iniValues.AddRange(Settings.TamedDinoClassDamageMultipliers.ToIniValues());
+            iniValues.AddRange(Settings.TamedDinoClassResistanceMultipliers.ToIniValues());
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_DinoCustomizations_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
         #endregion
 
         #region Resources
@@ -1000,6 +1042,19 @@ namespace ARK_Server_Manager
         {
             var view = this.HarvestResourceItemAmountClassMultipliersListBox.ItemsSource as ListCollectionView;
             view?.Refresh();
+        }
+
+        private void SaveCustomResources_Click(object sender, RoutedEventArgs e)
+        {
+            var iniValues = Settings.HarvestResourceItemAmountClassMultipliers.ToIniValues().ToList();
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_CustomResources_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
         }
         #endregion
 
@@ -1075,6 +1130,21 @@ namespace ARK_Server_Manager
             if (!engram.KnownEngram)
                 this.Settings.OverrideNamedEngramEntries.Remove(engram);
         }
+
+        private void SaveCustomEngrams_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.OverrideNamedEngramEntries.OnlyAllowSelectedEngrams = Settings.OnlyAllowSpecifiedEngrams;
+
+            var iniValues = Settings.OverrideNamedEngramEntries.ToIniValues().ToList();
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_CustomEngrams_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
         #endregion
 
         #region Crafting Overrides
@@ -1137,6 +1207,36 @@ namespace ARK_Server_Manager
 
             var item = ((CraftingResourceRequirement)((Button)e.Source).DataContext);
             SelectedCraftingOverride.BaseCraftingResourceRequirements.Remove(item);
+        }
+
+        private void SaveCraftingOverride_Click(object sender, RoutedEventArgs e)
+        {
+            var iniValues = Settings.ConfigOverrideItemCraftingCosts.ToIniValues().ToList();
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_CraftingOverrides_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
+
+        private void SaveCraftingOverrideItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ((CraftingOverride)((Button)e.Source).DataContext);
+            if (item == null)
+                return;
+
+            var iniName = Settings.ConfigOverrideItemCraftingCosts.IniCollectionKey;
+            var iniValue = $"{iniName}={item.ToINIValue()}";
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.Wrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_CraftingOverrides_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
         }
         #endregion
 
@@ -1597,10 +1697,11 @@ namespace ARK_Server_Manager
             if (prop == null)
                 return;
             var attr = prop.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>().FirstOrDefault();
-            var keyName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
-            var pgmString = $"{keyName}={Settings.PGM_Terrain.ToINIValue()}";
+            var iniName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
+            var iniValue = $"{iniName}={Settings.PGM_Terrain.ToINIValue()}";
 
-            var window = new CommandLineWindow(pgmString);
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.Wrap;
             window.Height = 500;
             window.Title = _globalizer.GetResourceString("ServerSettings_PGM_SaveSettingsTitle");
             window.Owner = Window.GetWindow(this);
@@ -1690,9 +1791,207 @@ namespace ARK_Server_Manager
             var item = ((NPCSpawnEntrySettings)((Button)e.Source).DataContext);
             SelectedNPCSpawnSetting.NPCSpawnEntrySettings.Remove(item);
         }
+
+        private void SaveNPCSpawns_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.NPCSpawnSettings.RenderToModel();
+
+            var iniValues = Settings.ConfigAddNPCSpawnEntriesContainer.ToIniValues().ToList();
+            iniValues.AddRange(Settings.ConfigSubtractNPCSpawnEntriesContainer.ToIniValues());
+            iniValues.AddRange(Settings.ConfigOverrideNPCSpawnEntriesContainer.ToIniValues());
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_MapSpawnerOverrides_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
+
+        private void SaveNPCSpawn_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.NPCSpawnSettings.RenderToModel();
+
+            var item = ((NPCSpawnSettings)((Button)e.Source).DataContext);
+            if (item == null)
+                return;
+
+            string iniName = null;
+            string iniValue = null;
+            switch (item.ContainerType)
+            {
+                case NPCSpawnContainerType.Add:
+                    iniName = Settings.ConfigAddNPCSpawnEntriesContainer.IniCollectionKey;
+                    var addItem = Settings.ConfigAddNPCSpawnEntriesContainer.FirstOrDefault(i => i.UniqueId == item.UniqueId);
+                    iniValue = $"{iniName}={addItem?.ToIniValue(Settings.ConfigAddNPCSpawnEntriesContainer.ContainerType)}";
+                    break;
+                case NPCSpawnContainerType.Subtract:
+                    iniName = Settings.ConfigSubtractNPCSpawnEntriesContainer.IniCollectionKey;
+                    var subtractItem = Settings.ConfigSubtractNPCSpawnEntriesContainer.FirstOrDefault(i => i.UniqueId == item.UniqueId);
+                    iniValue = $"{iniName}={subtractItem?.ToIniValue(Settings.ConfigSubtractNPCSpawnEntriesContainer.ContainerType)}";
+                    break;
+                case NPCSpawnContainerType.Override:
+                    iniName = Settings.ConfigOverrideNPCSpawnEntriesContainer.IniCollectionKey;
+                    var overrideItem = Settings.ConfigOverrideNPCSpawnEntriesContainer.FirstOrDefault(i => i.UniqueId == item.UniqueId);
+                    iniValue = $"{iniName}={overrideItem?.ToIniValue(Settings.ConfigOverrideNPCSpawnEntriesContainer.ContainerType)}";
+                    break;
+                default:
+                    return;
+            }
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.Wrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_CraftingOverrides_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
         #endregion
 
         #region Supply Crate Overrides
+        private void AddSupplyCrate_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.ConfigOverrideSupplyCrateItems.Add(new SupplyCrateOverride());
+        }
+
+        private void AddSupplyCrateItemSet_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateOverride?.ItemSets.Add(new SupplyCrateItemSet());
+        }
+
+        private void AddSupplyCrateItemSetEntry_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSet?.ItemEntries.Add(new SupplyCrateItemSetEntry());
+        }
+
+        private void AddSupplyCrateItem_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSetEntry?.Items.Add(new SupplyCrateItemEntrySettings());
+        }
+
+        private void ClearSupplyCrates_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSetEntry = null;
+            SelectedSupplyCrateItemSet = null;
+            SelectedSupplyCrateOverride = null;
+            Settings.ConfigOverrideSupplyCrateItems.Clear();
+        }
+
+        private void ClearSupplyCrateItemSets_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSetEntry = null;
+            SelectedSupplyCrateItemSet = null;
+            SelectedSupplyCrateOverride?.ItemSets.Clear();
+        }
+
+        private void ClearSupplyCrateItemSetEntries_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSetEntry = null;
+            SelectedSupplyCrateItemSet?.ItemEntries.Clear();
+        }
+
+        private void ClearSupplyCrateItems_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedSupplyCrateItemSetEntry?.Items.Clear();
+        }
+
+        private void PasteSupplyCrate_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CustomConfigDataWindow();
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            var result = window.ShowDialog();
+
+            if (!result.HasValue || !result.Value)
+                return;
+
+            // read the pasted data into an ini file.
+            var iniFile = IniFileUtils.ReadString(window.ConfigData.Replace(" ", ""));
+
+            Server.Profile.ConfigOverrideSupplyCrateItems.RenderToModel();
+
+            // cycle through the sections, adding them to the engrams list. Will bypass any sections that are named as per the ARK default sections.
+            foreach (var section in iniFile.Sections.Where(s => s.SectionName != null && !SystemIniFile.SectionNames.ContainsValue(s.SectionName)))
+            {
+                var configOverrideSupplyCrateItems = new SupplyCrateOverrideList(nameof(Server.Profile.ConfigOverrideSupplyCrateItems));
+                configOverrideSupplyCrateItems.FromIniValues(section.KeysToStringArray().Where(s => s.StartsWith($"{configOverrideSupplyCrateItems.IniCollectionKey}=")));
+                Server.Profile.ConfigOverrideSupplyCrateItems.AddRange(configOverrideSupplyCrateItems);
+                Server.Profile.ConfigOverrideSupplyCrateItems.IsEnabled |= configOverrideSupplyCrateItems.IsEnabled;
+            }
+
+            Server.Profile.ConfigOverrideSupplyCrateItems.RenderToView();
+
+            RefreshBaseSupplyCrateList();
+            RefreshBasePrimalItemList();
+        }
+
+        private void RemoveSupplyCrate_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ((SupplyCrateOverride)((Button)e.Source).DataContext);
+            Settings.ConfigOverrideSupplyCrateItems.Remove(item);
+        }
+
+        private void RemoveSupplyCrateItemSet_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSupplyCrateOverride == null)
+                return;
+
+            var item = ((SupplyCrateItemSet)((Button)e.Source).DataContext);
+            SelectedSupplyCrateOverride.ItemSets.Remove(item);
+        }
+
+        private void RemoveSupplyCrateItemSetEntry_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSupplyCrateItemSet == null)
+                return;
+
+            var item = ((SupplyCrateItemSetEntry)((Button)e.Source).DataContext);
+            SelectedSupplyCrateItemSet.ItemEntries.Remove(item);
+        }
+
+        private void RemoveSupplyCrateItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSupplyCrateItemSetEntry == null)
+                return;
+
+            var item = ((SupplyCrateItemEntrySettings)((Button)e.Source).DataContext);
+            SelectedSupplyCrateItemSetEntry.Items.Remove(item);
+        }
+
+        private void SaveSupplyCrates_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.ConfigOverrideSupplyCrateItems.RenderToModel();
+
+            var iniValues = Settings.ConfigOverrideSupplyCrateItems.ToIniValues().ToList();
+            var iniValue = string.Join("\r\n", iniValues);
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_SupplyCrate_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
+
+        private void SaveSupplyCrate_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ((SupplyCrateOverride)((Button)e.Source).DataContext);
+            if (item == null)
+                return;
+
+            Settings.ConfigOverrideSupplyCrateItems.RenderToModel();
+
+            var iniName = Settings.ConfigOverrideSupplyCrateItems.IniCollectionKey;
+            var iniValue = $"{iniName}={item.ToINIValue()}";
+
+            var window = new CommandLineWindow(iniValue);
+            window.OutputTextWrapping = TextWrapping.Wrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ServerSettings_SupplyCrate_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
         #endregion
 
         #endregion
@@ -1937,7 +2236,7 @@ namespace ARK_Server_Manager
                 {
                     foreach (var itemEntry in itemSet.ItemEntries)
                     {
-                        foreach (var itemClass in itemEntry.ItemEntrySettings)
+                        foreach (var itemClass in itemEntry.Items)
                         {
                             if (!newList.Any(s => s.ValueMember.Equals(itemClass.ItemClassString, StringComparison.OrdinalIgnoreCase)))
                             {
@@ -1956,6 +2255,7 @@ namespace ARK_Server_Manager
             {
                 this.CraftingOverrideItemGrid.BeginInit();
                 this.CraftingOverrideResourceGrid.BeginInit();
+                this.SupplyCrateItemsGrid.BeginInit();
 
                 this.BasePrimalItemList = newList;
             }
@@ -1963,6 +2263,7 @@ namespace ARK_Server_Manager
             {
                 this.CraftingOverrideItemGrid.EndInit();
                 this.CraftingOverrideResourceGrid.EndInit();
+                this.SupplyCrateItemsGrid.EndInit();
             }
         }
 
@@ -1991,13 +2292,13 @@ namespace ARK_Server_Manager
 
             try
             {
-                //this.SupplyCrateOverrideItemGrid.BeginInit();
+                this.SupplyCratesGrid.BeginInit();
 
                 this.BaseSupplyCrateList = newList;
             }
             finally
             {
-                //this.SupplyCrateOverrideItemGrid.EndInit();
+                this.SupplyCratesGrid.EndInit();
             }
         }
 
@@ -2114,7 +2415,7 @@ namespace ARK_Server_Manager
                                 this.Settings.ResetStructuresSection();
                                 break;
 
-                            case ServerSettingsResetAction.SupplyCreateOverridesSection:
+                            case ServerSettingsResetAction.SupplyCrateOverridesSection:
                                 this.Settings.ResetSupplyCreateOverridesSection();
                                 RefreshBaseSupplyCrateList();
                                 RefreshBasePrimalItemList();

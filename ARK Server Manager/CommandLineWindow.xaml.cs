@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using ARK_Server_Manager.Lib;
 using WPFSharp.Globalizer;
 
@@ -17,6 +18,12 @@ namespace ARK_Server_Manager
             WindowUtils.RemoveDefaultResourceDictionary(this);
 
             this.DataContext = commandLine;
+        }
+
+        public TextWrapping OutputTextWrapping
+        {
+            get { return OutputTextBox.TextWrapping; }
+            set { OutputTextBox.TextWrapping = value; }
         }
 
         private void CopyToClipboard_Click(object sender, RoutedEventArgs e)

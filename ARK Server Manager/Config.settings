@@ -413,7 +413,10 @@
     <Setting Name="ServerShutdown_CancelMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)">Server shutdown has been cancelled.</Value>
     </Setting>
-    <Setting Name="SectionCraftingOverridesIsExpanded" Type="System.String" Scope="User">
+    <Setting Name="SectionCraftingOverridesIsExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SectionSupplyCrateOverridesIsExpanded" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

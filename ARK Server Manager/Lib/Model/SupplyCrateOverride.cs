@@ -20,13 +20,13 @@ namespace ARK_Server_Manager.Lib
                 {
                     foreach (var itemEntry in itemSet.ItemEntries.Where(e => e.IsValid))
                     {
-                        itemEntry.ItemEntrySettings = new ObservableCollection<SupplyCrateItemEntrySettings>();
+                        itemEntry.Items = new ObservableCollection<SupplyCrateItemEntrySettings>();
 
                         for (var index = 0; index < itemEntry.ItemClassStrings.Count; index++)
                         {
-                            itemEntry.ItemEntrySettings.Add(new SupplyCrateItemEntrySettings {
+                            itemEntry.Items.Add(new SupplyCrateItemEntrySettings {
                                                                 ItemClassString = itemEntry.ItemClassStrings[index],
-                                                                EntryWeight = itemEntry.ItemsWeights[index],
+                                                                ItemWeight = itemEntry.ItemsWeights[index],
                                                             });
                         }
                     }
@@ -45,10 +45,10 @@ namespace ARK_Server_Manager.Lib
                         itemEntry.ItemClassStrings = new StringIniValueList(null, null);
                         itemEntry.ItemsWeights = new FloatIniValueList(null, null);
 
-                        foreach (var itemClass in itemEntry.ItemEntrySettings)
+                        foreach (var itemClass in itemEntry.Items)
                         {
                             itemEntry.ItemClassStrings.Add(itemClass.ItemClassString);
-                            itemEntry.ItemsWeights.Add(itemClass.EntryWeight);
+                            itemEntry.ItemsWeights.Add(itemClass.ItemWeight);
                         }
                     }
                 }
@@ -243,7 +243,7 @@ namespace ARK_Server_Manager.Lib
             ItemClassStrings = new StringIniValueList(null, null);
             ItemsWeights = new FloatIniValueList(null, null);
 
-            ItemEntrySettings = new ObservableCollection<SupplyCrateItemEntrySettings>();
+            Items = new ObservableCollection<SupplyCrateItemEntrySettings>();
         }
 
         public static readonly DependencyProperty ItemEntryNameProperty = DependencyProperty.Register(nameof(ItemEntryName), typeof(string), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(string.Empty));
@@ -326,11 +326,11 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ItemsWeightsProperty, value); }
         }
 
-        public static readonly DependencyProperty ItemEntrySettingsProperty = DependencyProperty.Register(nameof(ItemEntrySettings), typeof(ObservableCollection<SupplyCrateItemEntrySettings>), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
-        public ObservableCollection<SupplyCrateItemEntrySettings> ItemEntrySettings
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(ObservableCollection<SupplyCrateItemEntrySettings>), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        public ObservableCollection<SupplyCrateItemEntrySettings> Items
         {
-            get { return (ObservableCollection<SupplyCrateItemEntrySettings>)GetValue(ItemEntrySettingsProperty); }
-            set { SetValue(ItemEntrySettingsProperty, value); }
+            get { return (ObservableCollection<SupplyCrateItemEntrySettings>)GetValue(ItemsProperty); }
+            set { SetValue(ItemsProperty, value); }
         }
 
         public override string GetSortKey()

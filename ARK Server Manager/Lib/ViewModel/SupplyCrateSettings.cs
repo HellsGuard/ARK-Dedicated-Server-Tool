@@ -11,11 +11,11 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ItemClassStringProperty, value); }
         }
 
-        public static readonly DependencyProperty EntryWeightProperty = DependencyProperty.Register(nameof(EntryWeight), typeof(float), typeof(SupplyCrateItemEntrySettings), new PropertyMetadata(1.0f));
-        public float EntryWeight
+        public static readonly DependencyProperty ItemWeightProperty = DependencyProperty.Register(nameof(ItemWeight), typeof(float), typeof(SupplyCrateItemEntrySettings), new PropertyMetadata(1.0f));
+        public float ItemWeight
         {
-            get { return (float)GetValue(EntryWeightProperty); }
-            set { SetValue(EntryWeightProperty, value); }
+            get { return (float)GetValue(ItemWeightProperty); }
+            set { SetValue(ItemWeightProperty, value); }
         }
 
         public string DisplayName => GameData.FriendlyNameForClass(ItemClassString);

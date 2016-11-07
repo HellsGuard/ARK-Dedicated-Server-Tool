@@ -69,6 +69,8 @@ namespace ARK_Server_Manager.Lib
             NPCSpawnLimits = new NPCSpawnList<NPCSpawnLimit>(null);
         }
 
+        public Guid UniqueId = Guid.NewGuid();
+
         public static readonly DependencyProperty NPCSpawnEntriesContainerClassStringProperty = DependencyProperty.Register(nameof(NPCSpawnEntriesContainerClassString), typeof(string), typeof(NPCSpawnContainer), new PropertyMetadata(string.Empty));
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
