@@ -532,17 +532,14 @@ namespace ARK_Server_Manager
 
                 var obfuscateFiles = new Dictionary<string, string>();
                 var files = new List<string>();
-                var folder = string.Empty;
-                var file = string.Empty;
-                DirectoryInfo dirInfo;
 
                 // <server>
-                file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
+                var file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
                 if (File.Exists(file)) files.Add(file);
 
                 // <server>\ShooterGame\Content\Mods
-                folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
-                dirInfo = new DirectoryInfo(folder);
+                var folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
+                var dirInfo = new DirectoryInfo(folder);
                 if (dirInfo.Exists)
                 {
                     files.AddRange(dirInfo.GetFiles("*.mod").Select(modFile => modFile.FullName));
@@ -648,10 +645,12 @@ namespace ARK_Server_Manager
 
                 comment.AppendLine($"MachinePublicIP: {Config.Default.MachinePublicIP}");
                 comment.AppendLine($"ASM Directory: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
-                comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
                 comment.AppendLine($"Data Directory: {Config.Default.DataDir}");
+                comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
+                comment.AppendLine($"Server Directory: {this.Settings.InstallDirectory}");
 
                 comment.AppendLine($"SotF Server: {this.Settings.SOTF_Enabled}");
+                comment.AppendLine($"PGM Server: {this.Settings.PGM_Enabled}");
 
                 comment.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
                 comment.AppendLine($"RunAsAdministratorPrompt: {Config.Default.RunAsAdministratorPrompt}");
