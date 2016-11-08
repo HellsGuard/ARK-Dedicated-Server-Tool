@@ -224,7 +224,6 @@
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFControls\AnnotatedTextBox.cs" />
     <Compile Include="CommandLineWindow.xaml.cs">
       <DependentUpon>CommandLineWindow.xaml</DependentUpon>
     </Compile>
@@ -311,14 +310,8 @@
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ServerStatusWatcher.cs" />
-    <Compile Include="Testing\UITests.xaml.cs">
-      <DependentUpon>UITests.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TribeProfileWindow.xaml.cs">
       <DependentUpon>TribeProfileWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPFControls\AnnotatedGlowSlider.xaml.cs">
-      <DependentUpon>AnnotatedGlowSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -417,31 +410,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Testing\UITests.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="TribeProfileWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\GlowSlider.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\MainControlListBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\MainTabControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPFControls\AnnotatedGlowSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -510,10 +479,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <BlendEmbeddedFont Include="Fonts\Montserrat-Bold.otf">
       <IsSystemFont>True</IsSystemFont>
       <All>True</All>
@@ -559,7 +524,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <Resource Include="UIStyles\iStock_000003783032Medium.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
