@@ -108,8 +108,8 @@ namespace ARK_Server_Manager.Lib
 
         private readonly List<ServerStatusUpdateRegistration> _serverRegistrations = new List<ServerStatusUpdateRegistration>();
         private readonly ActionBlock<Func<Task>> _eventQueue;
-        private DateTime _lastExternalStatusQuery = DateTime.MinValue;
-        private DateTime _lastExternalCallQuery = DateTime.MinValue;
+        private readonly Dictionary<string, DateTime> _lastExternalCallQuery = new Dictionary<string, DateTime>();
+        private readonly Dictionary<string, DateTime> _lastExternalStatusQuery = new Dictionary<string, DateTime>();
 
         private ServerStatusWatcher()
         {
@@ -157,10 +157,14 @@ namespace ARK_Server_Manager.Lib
 
             _eventQueue.Post(() =>
                 {
-                    if(!_serverRegistrations.Contains(registration))
+                    if (!_serverRegistrations.Contains(registration))
                     {
                         Logger.Debug("Adding registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
                         _serverRegistrations.Add(registration);
+
+                        var registrationKey = registration.SteamEndpoint.ToString();
+                        _lastExternalCallQuery[registrationKey] = DateTime.MinValue;
+                        _lastExternalStatusQuery[registrationKey] = DateTime.MinValue;
                     }
                     return Task.FromResult(true);
                 }
@@ -288,6 +292,8 @@ namespace ARK_Server_Manager.Lib
 
         private async Task<ServerStatusUpdate> GenerateServerStatusUpdateAsync(ServerStatusUpdateRegistration registration)
         {
+            var registrationKey = registration.SteamEndpoint.ToString();
+
             //
             // First check the process status
             //
@@ -296,18 +302,12 @@ namespace ARK_Server_Manager.Lib
             switch(processStatus)
             {
                 case ServerProcessStatus.NotInstalled:
-                    _lastExternalStatusQuery = DateTime.MinValue;
-                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.NotInstalled };
 
                 case ServerProcessStatus.Stopped:
-                    _lastExternalStatusQuery = DateTime.MinValue;
-                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.Stopped };
 
                 case ServerProcessStatus.Unknown:
-                    _lastExternalStatusQuery = DateTime.MinValue;
-                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.Unknown };
 
                 case ServerProcessStatus.Running:
@@ -344,23 +344,25 @@ namespace ARK_Server_Manager.Lib
                 if (!serverStatus)
                 {
                     // server did not return any information
-                    if (DateTime.Now >= _lastExternalStatusQuery.AddMilliseconds(REMOTE_STATUS_QUERY_DELAY))
+                    var lastExternalStatusQuery = _lastExternalStatusQuery.ContainsKey(registrationKey) ? _lastExternalStatusQuery[registrationKey] : DateTime.MinValue;
+                    if (DateTime.Now >= lastExternalStatusQuery.AddMilliseconds(REMOTE_STATUS_QUERY_DELAY))
                     {
                         currentStatus = ServerStatus.RunningExternalCheck;
 
                         // get the server information direct from the server using external connection.
                         serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
 
-                        _lastExternalStatusQuery = DateTime.Now;
+                        _lastExternalStatusQuery[registrationKey] = DateTime.Now;
                     }
                 }
 
-                if (DateTime.Now >= _lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
+                var lastExternalCallQuery = _lastExternalCallQuery.ContainsKey(registrationKey) ? _lastExternalCallQuery[registrationKey] : DateTime.MinValue;
+                if (DateTime.Now >= lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
                 {
                     // perform a server call to the web api.
                     await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint);
 
-                    _lastExternalCallQuery = DateTime.Now;
+                    _lastExternalCallQuery[registrationKey] = DateTime.Now;
                 }
 
                 // check if the server returned the information.
