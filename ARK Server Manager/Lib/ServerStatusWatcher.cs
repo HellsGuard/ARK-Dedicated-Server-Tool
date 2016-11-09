@@ -357,7 +357,8 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 var lastExternalCallQuery = _lastExternalCallQuery.ContainsKey(registrationKey) ? _lastExternalCallQuery[registrationKey] : DateTime.MinValue;
-                if (DateTime.Now >= lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
+                //if (DateTime.Now >= lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
+                if (lastExternalCallQuery == DateTime.MinValue)
                 {
                     // perform a server call to the web api.
                     await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint);

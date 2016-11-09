@@ -2025,6 +2025,15 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        public static readonly DependencyProperty GUSVersionProperty = DependencyProperty.Register(nameof(GUSVersion), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.GameUserSettings, "Version")]
+        public int GUSVersion
+        {
+            get { return (int)GetValue(GUSVersionProperty); }
+            set { SetValue(GUSVersionProperty, value); }
+        }
+
         #endregion
 
         #region Methods
