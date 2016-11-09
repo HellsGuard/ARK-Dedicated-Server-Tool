@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.258.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -163,6 +163,7 @@
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\BindingProxy.cs" />
+    <Compile Include="Lib\Model\FloatIniValueList.cs" />
     <Compile Include="Lib\Model\PGMTerrain.cs" />
     <Compile Include="Lib\Model\CustomSection.cs" />
     <Compile Include="Lib\Model\NPCSpawner.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Lib\ValidationRules\ProfileNameValidationRule.cs" />
     <Compile Include="Lib\ViewConverters\ExtinctionEventTimeIntervalConverter.cs" />
     <Compile Include="Lib\ValidationRules\StringValidationRule.cs" />
+    <Compile Include="Lib\ViewModel\SupplyCrateSettings.cs" />
     <Compile Include="WorldSaveRestoreWindow.xaml.cs">
       <DependentUpon>WorldSaveRestoreWindow.xaml</DependentUpon>
     </Compile>
@@ -222,7 +224,6 @@
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFControls\AnnotatedTextBox.cs" />
     <Compile Include="CommandLineWindow.xaml.cs">
       <DependentUpon>CommandLineWindow.xaml</DependentUpon>
     </Compile>
@@ -309,14 +310,8 @@
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ServerStatusWatcher.cs" />
-    <Compile Include="Testing\UITests.xaml.cs">
-      <DependentUpon>UITests.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TribeProfileWindow.xaml.cs">
       <DependentUpon>TribeProfileWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPFControls\AnnotatedGlowSlider.xaml.cs">
-      <DependentUpon>AnnotatedGlowSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -415,31 +410,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Testing\UITests.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="TribeProfileWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\GlowSlider.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\MainControlListBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UIStyles\MainTabControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPFControls\AnnotatedGlowSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -508,10 +479,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <BlendEmbeddedFont Include="Fonts\Montserrat-Bold.otf">
       <IsSystemFont>True</IsSystemFont>
       <All>True</All>
@@ -557,7 +524,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <Resource Include="UIStyles\iStock_000003783032Medium.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

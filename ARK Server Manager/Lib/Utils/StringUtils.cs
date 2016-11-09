@@ -21,36 +21,6 @@ namespace ARK_Server_Manager.Lib
             return $"<RichColor Color=\"{r},{g},{b},{a}\">{message}</>";
         }
 
-        public static List<string> SplitIncludingDelimiters(string input, string[] delimiters)
-        {
-            var result = new List<string>();
-
-            var nextPosition = delimiters.SelectMany(d => AllIndexesOf(input, d)).ToArray();
-            Array.Sort(nextPosition);
-            Array.Reverse(nextPosition);
-
-            var lastPos = input.Length;
-            foreach (var pos in nextPosition)
-            {
-                var value = input.Substring(pos, lastPos - pos);
-                result.Add(value);
-
-                lastPos = pos;
-            }
-
-            return result;
-        }
-
-        private static IEnumerable<int> AllIndexesOf(string input, string delimiter)
-        {
-            var minIndex = input.IndexOf(delimiter, StringComparison.Ordinal);
-            while (minIndex != -1)
-            {
-                yield return minIndex;
-                minIndex = input.IndexOf(delimiter, minIndex + delimiter.Length, StringComparison.Ordinal);
-            }
-        }
-
         public static string GetPropertyValue(object value, PropertyInfo property)
         {
             string convertedVal;

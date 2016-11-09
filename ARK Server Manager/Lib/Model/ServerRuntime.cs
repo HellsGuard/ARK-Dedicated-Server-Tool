@@ -568,9 +568,13 @@ namespace ARK_Server_Manager.Lib
                         var modDetails = SteamUtils.GetSteamModDetails(modIdList);
                         if (modDetails != null)
                         {
+                            // create a new list for any failed mod updates
+                            var failedMods = new List<string>(modIdList.Count);
+
                             for (var index = 0; index < modIdList.Count; index++)
                             {
                                 var modId = modIdList[index];
+                                var modTitle = modId;
                                 var modSuccess = false;
                                 gotNewVersion = false;
                                 downloadSuccessful = false;
@@ -582,6 +586,7 @@ namespace ARK_Server_Manager.Lib
                                 var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
                                 if (modDetail != null)
                                 {
+                                    modTitle = $"{modDetail.title} ({modId})";
                                     progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title ?? string.Empty}.\r\n");
 
                                     var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
@@ -777,6 +782,20 @@ namespace ARK_Server_Manager.Lib
                                 if (!modSuccess)
                                     success = false;
                                 progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
+
+                                if (!success)
+                                {
+                                    failedMods.Add($"{index + 1} of {modIdList.Count} - {modTitle}");
+                                }
+                            }
+
+                            if (failedMods.Count > 0)
+                            {
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} **************************************************************************");
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: The following mods failed the update, check above for more details.");
+                                foreach (var failedMod in failedMods)
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {failedMod}");
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} **************************************************************************\r\n");
                             }
                         }
                         else

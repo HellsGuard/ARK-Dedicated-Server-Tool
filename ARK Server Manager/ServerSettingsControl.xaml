@@ -64,22 +64,6 @@
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
             
-            <Style TargetType="local:AnnotatedTextBox">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="local:AnnotatedTextBox">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="{TemplateBinding Label}"/>
-                                <TextBox Grid.Column="1" Text="{TemplateBinding Text}"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
             <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -2017,6 +2001,9 @@
                                                 <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_PasteDinoCustomizationsTooltip}">
                                                     <Image Source="Art/Paste.png" Width="16"/>
                                                 </Button>
+                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="SaveCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_SaveDinoCustomizationsTooltip}">
+                                                    <Image Source="Art/Save_6530.png" Width="16"/>
+                                                </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
 
@@ -2467,6 +2454,9 @@
                                                 <Button Width="22" Height="22" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="PasteCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}">
                                                     <Image Source="Art/Paste.png" Width="16"/>
                                                 </Button>
+                                                <Button Width="22" Height="22" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="SaveCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}">
+                                                    <Image Source="Art/Save_6530.png" Width="16"/>
+                                                </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
 
@@ -2668,6 +2658,9 @@
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomEngrams_Click" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PasteCustomEngramsTooltip}">
                                                 <Image Source="Art/Paste.png" Width="16"/>
                                             </Button>
+                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="SaveCustomEngrams_Click" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_SaveCustomEngramsTooltip}">
+                                                <Image Source="Art/Save_6530.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
@@ -2863,6 +2856,9 @@
                                             <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearItemsTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
+                                            <Button Width="22" Height="22" Click="SaveCraftingOverride_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_SaveItemsTooltip}">
+                                                <Image Source="Art/Save_6530.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
@@ -2899,6 +2895,15 @@
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_RemoveItemTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_SaveItemTooltip}">
+                                                            <Image Source="Art/Save_6530.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3837,6 +3842,9 @@
                                             <Button Width="22" Height="22" Click="ClearNPCSpawn_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearContainerTooltip}">
                                                 <Image Source="Art/Delete.png" Width="16"/>
                                             </Button>
+                                            <Button Width="22" Height="22" Click="SaveNPCSpawns_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_SaveContainersTooltip}">
+                                                <Image Source="Art/Save_6530.png" Width="16"/>
+                                            </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
 
@@ -3883,6 +3891,15 @@
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveContainerTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_SaveContainerTooltip}">
+                                                            <Image Source="Art/Save_6530.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3952,6 +3969,352 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawnEntry_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveEntryTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+                            </Grid>
+                        </Expander>
+
+                        <Expander Name="SectionSupplyCrateOverrides" IsExpanded="{Binding CurrentConfig.SectionSupplyCrateOverridesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrateOverridesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                            IsEnabled="{Binding ElementName=SectionSupplyCrateOverrides, Path=IsExpanded}"
+                                            Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SupplyCrateOverridesSection}">
+                                        <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                    </Button>
+                                </StackPanel>
+                            </Expander.Header>
+
+                            <Expander.Style>
+                                <Style BasedOn="{StaticResource ExpanderStyle1}" TargetType="{x:Type Expander}">
+                                    <Setter Property="Template" Value="{StaticResource ExpanderTemplateSE}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplateSotF}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
+                                            <Setter Property="Template" Value="{StaticResource ExpanderTemplatePGM}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Expander.Style>
+
+                            <Grid Margin="-8,0,2,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="200"/>
+                                    <RowDefinition Height="200"/>
+                                    <RowDefinition Height="200"/>
+                                    <RowDefinition Height="200"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <!--<ColumnDefinition Width="3*"/>-->
+                                </Grid.ColumnDefinitions>
+
+                                <GroupBox  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_SupplyCrate_CratesLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrate_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddCrateTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="PasteSupplyCrate_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_PasteCrateTooltip}">
+                                                <Image Source="Art/Paste.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearCratesTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="SaveSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_SaveCratesTooltip}">
+                                                <Image Source="Art/Save_6530.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="SupplyCratesGrid" ItemsSource="{Binding ConfigOverrideSupplyCrateItems}" SelectedItem="{Binding Path=SelectedSupplyCrateOverride, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="*" MinWidth="80" CanUserSort="True" SortMemberPath="DisplayName">
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Crate_ClassColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Crate_ClassColumnTooltip}" />
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseSupplyCrateList, ElementName=SettingsControl}" SelectedValue="{Binding SupplyCrateClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MinItemSets}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Crate_MinItemSetsColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Crate_MinItemSetsColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MaxItemSets}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Crate_MaxItemSetsColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Crate_MaxItemSetsColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding NumItemSetsPower}">
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridCheckBoxColumn Width="Auto" MinWidth="80" Binding="{Binding SetsRandomWithoutReplacement, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+                                            <DataGridTemplateColumn Width="30" MinWidth="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrate_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveCrateTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="30" MinWidth="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveSupplyCrate_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_SaveCrateTooltip}">
+                                                            <Image Source="Art/Save_6530.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+
+                                <GroupBox  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetsLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSet_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSets_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetsTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="SupplyCrateItemSetsGrid" ItemsSource="{Binding Path=SelectedSupplyCrateOverride.ItemSets, ElementName=SettingsControl}" SelectedItem="{Binding Path=SelectedSupplyCrateItemSet, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn     Width="*" MinWidth="80" Binding="{Binding SetName}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_NameColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MinNumItems}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_MinNumItemsColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_MinNumItemsColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MaxNumItems}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_MaxNumItemsColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_MaxNumItemsColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding NumItemsPower}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_NumItemsPowerColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_NumItemsPowerColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding SetWeight}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_SetWeightColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_SetWeightColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridCheckBoxColumn Width="Auto" MinWidth="80" Binding="{Binding ItemsRandomWithoutReplacement, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSet_ItemsRandomWithoutReplacementColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSet_ItemsRandomWithoutReplacementColumnTooltip}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+                                            <DataGridTemplateColumn Width="30" MinWidth="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItemSet_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemSetTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+
+                                <GroupBox  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntriesLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSetEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetEntryTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSetEntries_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetEntriesTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="SupplyCrateItemSetEntriesGrid" ItemsSource="{Binding Path=SelectedSupplyCrateItemSet.ItemEntries, ElementName=SettingsControl}" SelectedItem="{Binding Path=SelectedSupplyCrateItemSetEntry, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn     Width="*" MinWidth="80" Binding="{Binding ItemEntryName}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_NameColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_NameColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MinQuantity}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MinQuantityColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MinQuantityColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MaxQuantity}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MaxQuantityColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MaxQuantityColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MinQuality}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MinQualityColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MinQualityColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding MaxQuality}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MaxQualityColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_MaxQualityColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding EntryWeight}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_EntryWeightColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_EntryWeightColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridCheckBoxColumn Width="Auto" MinWidth="80" Binding="{Binding ForceBlueprint, Mode=TwoWay}">
+                                                <DataGridCheckBoxColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_ForceBlueprintColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_ForceBlueprintColumnTooltip}" />
+                                                </DataGridCheckBoxColumn.Header>
+                                            </DataGridCheckBoxColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding ChanceToBeBlueprintOverride}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_ChanceToBeBlueprintOverrideColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntry_ChanceToBeBlueprintOverrideColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTemplateColumn Width="30" MinWidth="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItemSetEntry_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemSetEntryTooltip}">
+                                                            <Image Source="Art/Delete.png" Width="16" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+
+                                <GroupBox  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemsLabel}"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItem_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemTooltip}">
+                                                <Image Source="Art/Add.png" Width="16"/>
+                                            </Button>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemsTooltip}">
+                                                <Image Source="Art/Delete.png" Width="16"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+
+                                    <DataGrid Name="SupplyCrateItemsGrid" ItemsSource="{Binding Path=SelectedSupplyCrateItemSetEntry.Items, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#FFB4B4B4"/>
+                                        </DataGrid.VerticalGridLinesBrush>
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="*" MinWidth="80" CanUserSort="True" SortMemberPath="DisplayName">
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Item_ItemClassStringColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Item_ItemClassStringColumnTooltip}" />
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn     Width="Auto" MinWidth="80" Binding="{Binding ItemWeight}" >
+                                                <DataGridTextColumn.Header>
+                                                    <TextBlock Text="{DynamicResource ServerSettings_SupplyCrate_Item_ItemWeightColumnLabel}" ToolTip="{DynamicResource ServerSettings_SupplyCrate_Item_ItemWeightColumnTooltip}" />
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTemplateColumn Width="30" MinWidth="30" CanUserReorder="False" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItem_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemTooltip}">
                                                             <Image Source="Art/Delete.png" Width="16" />
                                                         </Button>
                                                     </DataTemplate>

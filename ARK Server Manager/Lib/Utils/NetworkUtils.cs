@@ -193,5 +193,20 @@ namespace ARK_Server_Manager.Lib
                 return false;
             }
         }
+
+        public static async Task PerformServerCallToAPI(IPEndPoint endpoint)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    await client.DownloadStringTaskAsync(string.Format(Config.Default.ServerCallUrlFormat, endpoint.Address, endpoint.Port));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug($"Exception calling API for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+            }
+        }
     }
 }

@@ -110,9 +110,6 @@
             </Grid>
             
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Button Click="Donate_Click" Background="#00ffffff" Margin="5" Padding="5" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
-                    <Image Source="Art/Donate.png" />
-                </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
                     <Image Source="Art/SteamCMD.png" Width="16"/>
                 </Button>
@@ -127,6 +124,9 @@
                 </Button>
                 <Button Background="#00ffffff" Margin="5" Padding="5" Click="Help_Click" ToolTip="{DynamicResource MainWindow_OpenHelpTooltip}">
                     <Image Source="Art/Help.png" Width="16"/>
+                </Button>
+                <Button Background="#00ffffff" Margin="5" Padding="5" Click="Donate_Click" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
+                    <Image Source="Art/Donate.png" />
                 </Button>
             </StackPanel>
         </DockPanel>

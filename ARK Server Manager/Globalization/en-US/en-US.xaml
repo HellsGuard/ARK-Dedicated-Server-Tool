@@ -800,6 +800,8 @@
     <sys:String x:Key="ServerSettings_WildResistanceOptionTooltip">Show/Hide the wild dino resistance multiplier column.</sys:String>
     <sys:String x:Key="ServerSettings_ResetDinoCustomizationsTooltip">Reset all dino customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_PasteDinoCustomizationsTooltip">Paste custom dino data.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveDinoCustomizationsTooltip">Save custom dino data.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomizations_SaveTitle">Custom Dino Settings</sys:String>
     <sys:String x:Key="ServerSettings_DinoFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_NameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_ArkAppColumnLabel">Ark App.</sys:String>
@@ -874,6 +876,8 @@
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
     <sys:String x:Key="ServerSettings_ResetCustomHarvestTooltip">Reset all harvest customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_PasteCustomResourcesTooltip">Paste custom resource data.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveCustomResourcesTooltip">Save custom resource data.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomResources_SaveTitle">Custom Resource Settings</sys:String>
     <sys:String x:Key="ServerSettings_ResourcesFilterLabel">Filter:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountEntryLabel">Amount</sys:String>
     <sys:String x:Key="ServerSettings_HarvestRemoveRecordTooltip">Remove this Resource</sys:String>
@@ -970,6 +974,8 @@
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_PasteCustomEngramsTooltip">Paste custom engram data.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveCustomEngramsTooltip">Save custom engram data.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomEngrams_SaveTitle">Custom Engram Settings</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsLabel">Only Allow Selected Engrams</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsTooltip">If enabled, only the selected engrams will be available to learn in game.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Select all the engrams.</sys:String>
@@ -1282,6 +1288,7 @@
     <sys:String x:Key="ServerSettings_MapSpawnerOverridesLabel">Map Spawner Overrides</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerLabel">Containers</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryLabel">Entries</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_SaveTitle">Map Spawner Settings</sys:String>
 
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnLabel">Type</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnTooltip">Spawner Override Type</sys:String>
@@ -1304,11 +1311,14 @@
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_PasteContainerTooltip">Paste map spawn container data</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_RemoveContainerTooltip">Delete map spawn container</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_RemoveEntryTooltip">Delete dino spawn entry</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_SaveContainersTooltip">Save all map spawn containers</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_SaveContainerTooltip">Save map spawn container</sys:String>
 
     <!-- Server Settings - Crafting Overrides -->
     <sys:String x:Key="ServerSettings_CraftingOverridesLabel">Crafting Overrides</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_SaveTitle">Crafting Override Settings</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">WARNING: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already know, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
@@ -1328,6 +1338,78 @@
     <sys:String x:Key="ServerSettings_CraftingOverrides_PasteItemsTooltip">Paste crafting items data</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_RemoveItemTooltip">Delete crafting item</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_RemoveResourceTooltip">Delete resource</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_SaveItemsTooltip">Save crafting items data</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_SaveItemTooltip">Save crafting item</sys:String>
+
+    <!-- Server Settings - Supply Crate Overrides -->
+    <sys:String x:Key="ServerSettings_SupplyCrateOverridesLabel">Supply Crate Overrides</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_CratesLabel">Supply Crates</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetsLabel">Item Sets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntriesLabel">Item Set Entries</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemsLabel">Items</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_SaveTitle">Supply Crate Override Settings</sys:String>
+
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnLabel">Supply Crate</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnTooltip">Supply Crate class string of the crate to be overridden.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_MinItemSetsColumnLabel">Min ItemSets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_MinItemSetsColumnTooltip">The minimum number of sets that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_MaxItemSetsColumnLabel">Max ItemSets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_MaxItemSetsColumnTooltip">The maximum number of sets that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnLabel">Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip">This is a multiplier to modify the item set quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnLabel">Description</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip">A description to identify the item set.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_MinNumItemsColumnLabel">Min Items</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_MinNumItemsColumnTooltip">The minimum number of items from the set that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_MaxNumItemsColumnLabel">Max Items</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_MaxNumItemsColumnTooltip">The maximum number of items from the set that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NumItemsPowerColumnLabel">Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NumItemsPowerColumnTooltip">This is a multiplier to modify the item quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_SetWeightColumnLabel">Weight</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_SetWeightColumnTooltip">Specifies the chance that the item set would make it into the loot crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_ItemsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_ItemsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_NameColumnLabel">Description</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_NameColumnTooltip">A description to identify the item set entry.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_EntryWeightColumnLabel">Weight</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_EntryWeightColumnTooltip">Specifies the chance that the item would make it into the loot crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MinQuantityColumnLabel">Min Quantity</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MinQuantityColumnTooltip">The minimum quantity of the item that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MaxQuantityColumnLabel">Max Quantity</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MaxQuantityColumnTooltip">The maximum quantity of the item that will be in the supply crate.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MinQualityColumnLabel">Min Quality</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MinQualityColumnTooltip">The minimum quality of the item that will be in the supply crate (Wildcard recommends to keep it at 1.0).</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MaxQualityColumnLabel">Max Quality</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_MaxQualityColumnTooltip">The maximum quality of the item that will be in the supply crate (Wildcard recommends to keep it at 1.0).</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_ForceBlueprintColumnLabel">Force Blueprint</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_ForceBlueprintColumnTooltip">If enabled, you will always generate a blueprint instead of the item.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_ChanceToBeBlueprintOverrideColumnLabel">Blueprint Chance</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntry_ChanceToBeBlueprintOverrideColumnTooltip">Specifies the chance you will generate a blueprint instead of the item. Force Blueprint must be disabled.</sys:String>
+
+    <sys:String x:Key="ServerSettings_SupplyCrate_Item_ItemClassStringColumnLabel">Item</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Item_ItemClassStringColumnTooltip">Item class string of the item.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Item_ItemWeightColumnLabel">Weight</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Item_ItemWeightColumnTooltip">Specifies the chance that the item would make it into the loot crate.</sys:String>
+
+    <sys:String x:Key="ServerSettings_SupplyCrate_AddCrateTooltip">Add supply crate</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_AddItemSetTooltip">Add item set</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_AddItemSetEntryTooltip">Add item set entry</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_AddItemTooltip">Add item</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ClearCratesTooltip">Delete all supply crates</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ClearItemSetsTooltip">Delete all item sets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ClearItemSetEntriesTooltip">Delete all item set entries</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_ClearItemsTooltip">Delete all items</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_PasteCrateTooltip">Paste supply crate data</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_RemoveCrateTooltip">Delete supply crate</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_RemoveItemSetTooltip">Delete item set</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_RemoveItemSetEntryTooltip">Delete item set entry</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_RemoveItemTooltip">Delete item</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_SaveCratesTooltip">Save all supply crates</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_SaveCrateTooltip">Save supply crate</sys:String>
 
     <!-- Server Settings - Overlay -->
     <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Saving...</sys:String>
