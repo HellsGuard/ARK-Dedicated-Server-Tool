@@ -21,6 +21,7 @@ namespace ARK_Server_Manager.Lib
 
         private const int LOCAL_STATUS_QUERY_DELAY = 5000; // milliseconds
         private const int REMOTE_STATUS_QUERY_DELAY = 60000; // milliseconds
+        private const int REMOTE_CALL_QUERY_DELAY = 3600000; // milliseconds
 
         private enum ServerProcessStatus
         {
@@ -105,14 +106,15 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private readonly List<ServerStatusUpdateRegistration> serverRegistrations = new List<ServerStatusUpdateRegistration>();
-        private readonly ActionBlock<Func<Task>> eventQueue;
-        private DateTime lastExternalStatusQuery = DateTime.MinValue;
+        private readonly List<ServerStatusUpdateRegistration> _serverRegistrations = new List<ServerStatusUpdateRegistration>();
+        private readonly ActionBlock<Func<Task>> _eventQueue;
+        private DateTime _lastExternalStatusQuery = DateTime.MinValue;
+        private DateTime _lastExternalCallQuery = DateTime.MinValue;
 
         private ServerStatusWatcher()
         {
-            eventQueue = new ActionBlock<Func<Task>>(async f => await f.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
-            eventQueue.Post(DoLocalUpdate);
+            _eventQueue = new ActionBlock<Func<Task>>(async f => await f.Invoke(), new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
+            _eventQueue.Post(DoLocalUpdate);
         }
 
         static ServerStatusWatcher()
@@ -139,12 +141,12 @@ namespace ARK_Server_Manager.Lib
             registration.UnregisterAction = async () => 
                 {
                     var tcs = new TaskCompletionSource<bool>();
-                    eventQueue.Post(() => 
+                    _eventQueue.Post(() => 
                     {
-                        if(serverRegistrations.Contains(registration))
+                        if(_serverRegistrations.Contains(registration))
                         {
                             Logger.Debug("Removing registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
-                            serverRegistrations.Remove(registration);
+                            _serverRegistrations.Remove(registration);
                         }
                         tcs.TrySetResult(true);
                         return Task.FromResult(true);
@@ -153,12 +155,12 @@ namespace ARK_Server_Manager.Lib
                     await tcs.Task;
                 };
 
-            eventQueue.Post(() =>
+            _eventQueue.Post(() =>
                 {
-                    if(!serverRegistrations.Contains(registration))
+                    if(!_serverRegistrations.Contains(registration))
                     {
                         Logger.Debug("Adding registration for L:{0} S:{1}", registration.LocalEndpoint, registration.SteamEndpoint);
-                        serverRegistrations.Add(registration);
+                        _serverRegistrations.Add(registration);
                     }
                     return Task.FromResult(true);
                 }
@@ -237,7 +239,7 @@ namespace ARK_Server_Manager.Lib
         {
             try
             {
-                foreach (var registration in this.serverRegistrations)
+                foreach (var registration in this._serverRegistrations)
                 {
                     ServerStatusUpdate statusUpdate = new ServerStatusUpdate();
                     try
@@ -261,15 +263,15 @@ namespace ARK_Server_Manager.Lib
             }
             finally
             {
-                Task.Delay(LOCAL_STATUS_QUERY_DELAY).ContinueWith(_ => eventQueue.Post(DoLocalUpdate)).DoNotWait();
+                Task.Delay(LOCAL_STATUS_QUERY_DELAY).ContinueWith(_ => _eventQueue.Post(DoLocalUpdate)).DoNotWait();
             }
         }
 
         private void PostServerStatusUpdate(ServerStatusUpdateRegistration registration, StatusCallback callback, ServerStatusUpdate statusUpdate)
         {
-            eventQueue.Post(() =>
+            _eventQueue.Post(() =>
             {
-                if (this.serverRegistrations.Contains(registration))
+                if (this._serverRegistrations.Contains(registration))
                 {
                     try
                     {
@@ -294,12 +296,18 @@ namespace ARK_Server_Manager.Lib
             switch(processStatus)
             {
                 case ServerProcessStatus.NotInstalled:
+                    _lastExternalStatusQuery = DateTime.MinValue;
+                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.NotInstalled };
 
                 case ServerProcessStatus.Stopped:
+                    _lastExternalStatusQuery = DateTime.MinValue;
+                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.Stopped };
 
                 case ServerProcessStatus.Unknown:
+                    _lastExternalStatusQuery = DateTime.MinValue;
+                    _lastExternalCallQuery = DateTime.MinValue;
                     return new ServerStatusUpdate { Status = ServerStatus.Unknown };
 
                 case ServerProcessStatus.Running:
@@ -336,15 +344,23 @@ namespace ARK_Server_Manager.Lib
                 if (!serverStatus)
                 {
                     // server did not return any information
-                    if (DateTime.Now >= lastExternalStatusQuery.AddMilliseconds(REMOTE_STATUS_QUERY_DELAY))
+                    if (DateTime.Now >= _lastExternalStatusQuery.AddMilliseconds(REMOTE_STATUS_QUERY_DELAY))
                     {
                         currentStatus = ServerStatus.RunningExternalCheck;
 
                         // get the server information direct from the server using external connection.
                         serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
 
-                        lastExternalStatusQuery = DateTime.Now;
+                        _lastExternalStatusQuery = DateTime.Now;
                     }
+                }
+
+                if (DateTime.Now >= _lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
+                {
+                    // perform a server call to the web api.
+                    await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint);
+
+                    _lastExternalCallQuery = DateTime.Now;
                 }
 
                 // check if the server returned the information.

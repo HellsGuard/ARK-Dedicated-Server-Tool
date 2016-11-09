@@ -10,7 +10,25 @@ namespace ASMWebAPI.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        // GET: api/Server/call/192.168.1.1/27017
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/Server/call/{ipString}/{port}")]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool Call(string ipString, int port)
+        {
+            try
+            {
+                Logger.Trace($"{ipString}:{port}");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         // GET: api/Server/192.168.1.1/27017
+        [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/Server/{ipString}/{port}")]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public CheckServerResult Get(string ipString, int port)

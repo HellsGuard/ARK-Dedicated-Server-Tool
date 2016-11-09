@@ -419,5 +419,8 @@
     <Setting Name="SectionSupplyCrateOverridesIsExpanded" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

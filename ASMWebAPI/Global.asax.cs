@@ -49,6 +49,13 @@ namespace ASMWebAPI
                 target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerInfo.{#}.log");
             }
 
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverTraceFile");
+            if (target != null)
+            {
+                target.FileName = Path.Combine(logDir, "ASM_ServerTrace.log");
+                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerTrace.{#}.log");
+            }
+
             target = (FileTarget)LogManager.Configuration.FindTargetByName("serverWarnFile");
             if (target != null)
             {
