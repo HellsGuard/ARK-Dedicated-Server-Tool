@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using ARK_Server_Manager.Lib.ViewModel;
 
@@ -7,13 +7,17 @@ namespace ARK_Server_Manager.Lib
 {
     public class SupplyCrateOverrideList : AggregateIniValueList<SupplyCrateOverride>
     {
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         public SupplyCrateOverrideList(string aggregateValueName)
             : base(aggregateValueName, null)
         {
         }
 
-        public void RenderToView()
+        public string[] RenderToView()
         {
+            List<string> errors = new List<string>();
+
             foreach (var supplyCrate in this)
             {
                 foreach (var itemSet in supplyCrate.ItemSets)
@@ -24,14 +28,26 @@ namespace ARK_Server_Manager.Lib
 
                         for (var index = 0; index < itemEntry.ItemClassStrings.Count; index++)
                         {
+                            var itemsWeight = 0.0f;
+                            if (index < itemEntry.ItemsWeights.Count)
+                                itemsWeight = itemEntry.ItemsWeights[index];
+                            else
+                            {
+                                var error = $"Missing Supply Crate Item Weight: {supplyCrate.SupplyCrateClassString}; {itemSet.SetName}; {itemEntry.ItemEntryName}; {itemEntry.ItemClassStrings[index]}.";
+                                errors.Add(error);
+                                _logger.Debug(error);
+                            }
+
                             itemEntry.Items.Add(new SupplyCrateItemEntrySettings {
                                                                 ItemClassString = itemEntry.ItemClassStrings[index],
-                                                                ItemWeight = itemEntry.ItemsWeights[index],
+                                                                ItemWeight = itemsWeight,
                                                             });
                         }
                     }
                 }
             }
+
+            return errors.ToArray();
         }
 
         public void RenderToModel()
