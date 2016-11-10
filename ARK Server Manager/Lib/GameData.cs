@@ -1695,9 +1695,9 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_PowerGenerator_C",                    Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_PowerOutlet_C",                       Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_PreservingBin_C",                     Category="Structures" },
-            new PrimalItem { ClassName="PrimalItemStructure_Pumpkin_C",                           Category="Structure" },
+            new PrimalItem { ClassName="PrimalItemStructure_Pumpkin_C",                           Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_RopeLadder_C",                        Category="Structures" },
-            new PrimalItem { ClassName="PrimalItemStructure_Scarecrow_C",                         Category="Structure" },
+            new PrimalItem { ClassName="PrimalItemStructure_Scarecrow_C",                         Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_SeaMine_C",                           Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_SleepingBag_Hide_C",                  Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_StandingTorch_C",                     Category="Structures" },
@@ -1871,6 +1871,8 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_Vessel_C",                            Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemStructure_WaterWell_C",                         Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemStructure_WindTurbine_C",                       Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_AlphaWorm_C",                            Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_AlphaWyvern_C",                          Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemTrophy_Manticore_C",                            Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
         };
 

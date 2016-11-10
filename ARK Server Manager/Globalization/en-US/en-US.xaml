@@ -1169,14 +1169,24 @@
     <sys:String x:Key="ServerSettings_PGM_Terrain_TurbulencePowerTooltip">The power of the turbulence function used to randomly perturb the coordinates input to the noise function, to add some realism to the noise.</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_ShoreSlopeLabel">Shore Slope</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_ShoreSlopeTooltip">How hard the transition is from water floor to shore, the higher the value the smoother the transition (from 0 to 2).</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ShoreLineEndLabel">Shore Line End</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ShoreLineEndTooltip">.</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_WaterLevelLabel">Water Level</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_WaterLevelTooltip">The height value for the water surface (from Ocean Floor level to 1).</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionIterationsLabel">Erosion Iterations</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionIterationsTooltip">Number of droplets which are used to simulate erosion.</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_OceanFloorLevelLabel">Ocean Floor Level</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_OceanFloorLevelTooltip">The height value for the ocean floor (from -1 to Water Level).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_TerrainScaleMultiplierLabel">Terrain Scale Multiplier</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_TerrainScaleMultiplierTooltip">X, Y, Z to scale the whole terrain.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionStepsLabel">Erosion Steps</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionStepsTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionStrengthLabel">Erosion Strength</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_ErosionStrengthTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_DepositionStrengthLabel">Deposition Strength</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_DepositionStrengthTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_TreesGroundSlopeAccuracyLabel">Trees Slope Threshold</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_TreesGroundSlopeAccuracyTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_MountainGeneralTreesPercentLabel">General Mountain Trees %</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Terrain_MountainGeneralTreesPercentTooltip">.</sys:String>
 
     <sys:String x:Key="ServerSettings_PGM_BiomeSettingsLabel">Biome Settings</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Biome_SnowBiomeSizeLabel">Snow Biome Size</sys:String>
@@ -1348,6 +1358,7 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntriesLabel">Item Set Entries</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemsLabel">Items</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_SaveTitle">Supply Crate Override Settings</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_WarningLabel">WARNING: If you do not populate each grid properly, it could result in the Supply Crate not spawning into the world. Please ensure ALL sections are populated.</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnLabel">Supply Crate</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnTooltip">Supply Crate class string of the crate to be overridden.</sys:String>
@@ -2931,6 +2942,8 @@
     <sys:String x:Key="PrimalItemStructure_Vessel_C">Vessel</sys:String>
     <sys:String x:Key="PrimalItemStructure_WaterWell_C">Water Well</sys:String>
     <sys:String x:Key="PrimalItemStructure_WindTurbine_C">Wind Turbine</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_AlphaWorm_C">Alpha Deathworm Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_AlphaWyvern_C">Alpha Wyvern Trophy</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Manticore_C">Manticore Trophy</sys:String>
 
     <!-- Item Class Names - Primitive Plus -->

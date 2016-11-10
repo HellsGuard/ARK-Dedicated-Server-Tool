@@ -1919,10 +1919,22 @@ namespace ARK_Server_Manager
                 Server.Profile.ConfigOverrideSupplyCrateItems.IsEnabled |= configOverrideSupplyCrateItems.IsEnabled;
             }
 
-            Server.Profile.ConfigOverrideSupplyCrateItems.RenderToView();
+            var errors = Server.Profile.ConfigOverrideSupplyCrateItems.RenderToView();
 
             RefreshBaseSupplyCrateList();
             RefreshBasePrimalItemList();
+
+            if (errors.Length > 0)
+            {
+                var error = $"The following errors have been found:\r\n\r\n{string.Join("\r\n", errors)}";
+
+                var window2 = new CommandLineWindow(error);
+                window2.OutputTextWrapping = TextWrapping.NoWrap;
+                window2.Height = 500;
+                window2.Title = "Import Errors";
+                window2.Owner = Window.GetWindow(this);
+                window2.ShowDialog();
+            }
         }
 
         private void RemoveSupplyCrate_Click(object sender, RoutedEventArgs e)

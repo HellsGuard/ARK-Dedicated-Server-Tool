@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using ARK_Server_Manager.Lib.ViewModel;
 
@@ -12,8 +12,10 @@ namespace ARK_Server_Manager.Lib
         {
         }
 
-        public void RenderToView()
+        public string[] RenderToView()
         {
+            List<string> errors = new List<string>();
+
             foreach (var supplyCrate in this)
             {
                 foreach (var itemSet in supplyCrate.ItemSets)
@@ -24,14 +26,22 @@ namespace ARK_Server_Manager.Lib
 
                         for (var index = 0; index < itemEntry.ItemClassStrings.Count; index++)
                         {
+                            var itemsWeight = 0.0f;
+                            if (index < itemEntry.ItemsWeights.Count)
+                                itemsWeight = itemEntry.ItemsWeights[index];
+                            else
+                                errors.Add($"Missing Supply Crate Item Weight: Crate '{supplyCrate.SupplyCrateClassString}'; Set '{itemSet.SetName}'; Entry '{itemEntry.ItemEntryName}'; Item '{itemEntry.ItemClassStrings[index]}'.");
+
                             itemEntry.Items.Add(new SupplyCrateItemEntrySettings {
                                                                 ItemClassString = itemEntry.ItemClassStrings[index],
-                                                                ItemWeight = itemEntry.ItemsWeights[index],
+                                                                ItemWeight = itemsWeight,
                                                             });
                         }
                     }
                 }
             }
+
+            return errors.ToArray();
         }
 
         public void RenderToModel()
