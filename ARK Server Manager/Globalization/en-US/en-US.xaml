@@ -2942,6 +2942,8 @@
     <sys:String x:Key="PrimalItemStructure_Vessel_C">Vessel</sys:String>
     <sys:String x:Key="PrimalItemStructure_WaterWell_C">Water Well</sys:String>
     <sys:String x:Key="PrimalItemStructure_WindTurbine_C">Wind Turbine</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_AlphaWorm_C">Alpha Deathworm Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_AlphaWyvern_C">Alpha Wyvern Trophy</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Manticore_C">Manticore Trophy</sys:String>
 
     <!-- Item Class Names - Primitive Plus -->

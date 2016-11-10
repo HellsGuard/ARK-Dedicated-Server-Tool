@@ -1871,6 +1871,8 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_Vessel_C",                            Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemStructure_WaterWell_C",                         Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemStructure_WindTurbine_C",                       Category="Structures",   ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_AlphaWorm_C",                            Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_AlphaWyvern_C",                          Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemTrophy_Manticore_C",                            Category="Trophy",       ArkApplication=ArkApplication.ScorchedEarth },
         };
 
