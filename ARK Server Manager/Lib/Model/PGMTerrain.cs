@@ -11,8 +11,6 @@ namespace ARK_Server_Manager.Lib
 
         public PGMTerrain()
         {
-            TerrainScaleMultiplier = new PGMTerrainXYZ(1.0f, 1.0f, 1.0f);
-
             SnowBiomeLocation = new PGMTerrainXY(0.2f, 0.2f);
             RedWoodForestBiomeLocation = new PGMTerrainXY(0.5f, 0.5f);
 
@@ -40,6 +38,8 @@ namespace ARK_Server_Manager.Lib
             WestRegion2End = new PGMTerrainXY(0.25f, 0.666f);
             WestRegion3Start = new PGMTerrainXY(0.0f, 0.666f);
             WestRegion3End = new PGMTerrainXY(0.25f, 1.0f);
+
+            TerrainScaleMultiplier = new PGMTerrainXYZ(1.0f, 1.0f, 1.0f);
         }
 
         public static readonly DependencyProperty MapSeedProperty = DependencyProperty.Register(nameof(MapSeed), typeof(int), typeof(PGMTerrain), new PropertyMetadata(999));
@@ -66,7 +66,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(WaterFrequencyProperty, value); }
         }
 
-        public static readonly DependencyProperty MountainsFrequencyProperty = DependencyProperty.Register(nameof(MountainsFrequency), typeof(float), typeof(PGMTerrain), new PropertyMetadata(8.0f));
+        public static readonly DependencyProperty MountainsFrequencyProperty = DependencyProperty.Register(nameof(MountainsFrequency), typeof(float), typeof(PGMTerrain), new PropertyMetadata(12.0f));
         [AggregateIniValueEntry(Key = "Mountains Frequency")]
         public float MountainsFrequency
         {
@@ -74,7 +74,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MountainsFrequencyProperty, value); }
         }
 
-        public static readonly DependencyProperty MountainsSlopeProperty = DependencyProperty.Register(nameof(MountainsSlope), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty MountainsSlopeProperty = DependencyProperty.Register(nameof(MountainsSlope), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.8f));
         [AggregateIniValueEntry(Key = "Mountains Slope")]
         public float MountainsSlope
         {
@@ -82,7 +82,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MountainsSlopeProperty, value); }
         }
 
-        public static readonly DependencyProperty MountainsHeightProperty = DependencyProperty.Register(nameof(MountainsHeight), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty MountainsHeightProperty = DependencyProperty.Register(nameof(MountainsHeight), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.25f));
         [AggregateIniValueEntry]
         public float MountainsHeight
         {
@@ -114,6 +114,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(WaterLevelProperty, value); }
         }
 
+        public static readonly DependencyProperty ShoreLineEndProperty = DependencyProperty.Register(nameof(ShoreLineEnd), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.715f));
+        [AggregateIniValueEntry]
+        public float ShoreLineEnd
+        {
+            get { return (float)GetValue(ShoreLineEndProperty); }
+            set { SetValue(ShoreLineEndProperty, value); }
+        }
+
         public static readonly DependencyProperty GrassDensityProperty = DependencyProperty.Register(nameof(GrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
         [AggregateIniValueEntry]
         public float GrassDensity
@@ -128,14 +136,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(JungleGrassDensityProperty); }
             set { SetValue(JungleGrassDensityProperty, value); }
-        }
-
-        public static readonly DependencyProperty ErosionIterationsProperty = DependencyProperty.Register(nameof(ErosionIterations), typeof(int), typeof(PGMTerrain), new PropertyMetadata(200000));
-        [AggregateIniValueEntry]
-        public int ErosionIterations
-        {
-            get { return (int)GetValue(ErosionIterationsProperty); }
-            set { SetValue(ErosionIterationsProperty, value); }
         }
 
         public static readonly DependencyProperty OceanFloorLevelProperty = DependencyProperty.Register(nameof(OceanFloorLevel), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-1.0f));
@@ -202,14 +202,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MaxSpawnPointHeightProperty, value); }
         }
 
-        public static readonly DependencyProperty SnowGrassDensityProperty = DependencyProperty.Register(nameof(SnowGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.25f));
-        [AggregateIniValueEntry]
-        public float SnowGrassDensity
-        {
-            get { return (float)GetValue(SnowGrassDensityProperty); }
-            set { SetValue(SnowGrassDensityProperty, value); }
-        }
-
         public static readonly DependencyProperty MountainGrassDensityProperty = DependencyProperty.Register(nameof(MountainGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.05f));
         [AggregateIniValueEntry]
         public float MountainGrassDensity
@@ -224,6 +216,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(SnowMountainGrassDensityProperty); }
             set { SetValue(SnowMountainGrassDensityProperty, value); }
+        }
+
+        public static readonly DependencyProperty SnowGrassDensityProperty = DependencyProperty.Register(nameof(SnowGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.25f));
+        [AggregateIniValueEntry]
+        public float SnowGrassDensity
+        {
+            get { return (float)GetValue(SnowGrassDensityProperty); }
+            set { SetValue(SnowGrassDensityProperty, value); }
         }
 
         public static readonly DependencyProperty UnderwaterObjectsDensityProperty = DependencyProperty.Register(nameof(UnderwaterObjectsDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
@@ -330,12 +330,44 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ShorelineThicknessProperty, value); }
         }
 
-        public static readonly DependencyProperty TerrainScaleMultiplierProperty = DependencyProperty.Register(nameof(TerrainScaleMultiplier), typeof(PGMTerrainXYZ), typeof(PGMTerrain), new PropertyMetadata(null));
+        public static readonly DependencyProperty TreesGroundSlopeAccuracyProperty = DependencyProperty.Register(nameof(TreesGroundSlopeAccuracy), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
         [AggregateIniValueEntry]
-        public PGMTerrainXYZ TerrainScaleMultiplier
+        public float TreesGroundSlopeAccuracy
         {
-            get { return (PGMTerrainXYZ)GetValue(TerrainScaleMultiplierProperty); }
-            set { SetValue(TerrainScaleMultiplierProperty, value); }
+            get { return (float)GetValue(TreesGroundSlopeAccuracyProperty); }
+            set { SetValue(TreesGroundSlopeAccuracyProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErosionStepsProperty = DependencyProperty.Register(nameof(ErosionSteps), typeof(int), typeof(PGMTerrain), new PropertyMetadata(4));
+        [AggregateIniValueEntry]
+        public int ErosionSteps
+        {
+            get { return (int)GetValue(ErosionStepsProperty); }
+            set { SetValue(ErosionStepsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErosionStrengthProperty = DependencyProperty.Register(nameof(ErosionStrength), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.75f));
+        [AggregateIniValueEntry]
+        public float ErosionStrength
+        {
+            get { return (float)GetValue(ErosionStrengthProperty); }
+            set { SetValue(ErosionStrengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty DepositionStrengthProperty = DependencyProperty.Register(nameof(DepositionStrength), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
+        [AggregateIniValueEntry]
+        public float DepositionStrength
+        {
+            get { return (float)GetValue(DepositionStrengthProperty); }
+            set { SetValue(DepositionStrengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty MountainGeneralTreesPercentProperty = DependencyProperty.Register(nameof(MountainGeneralTreesPercent), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.1f));
+        [AggregateIniValueEntry]
+        public float MountainGeneralTreesPercent
+        {
+            get { return (float)GetValue(MountainGeneralTreesPercentProperty); }
+            set { SetValue(MountainGeneralTreesPercentProperty, value); }
         }
 
         public static readonly DependencyProperty SnowBiomeLocationProperty = DependencyProperty.Register(nameof(SnowBiomeLocation), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
@@ -544,6 +576,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (PGMTerrainXY)GetValue(WestRegion3EndProperty); }
             set { SetValue(WestRegion3EndProperty, value); }
+        }
+
+        public static readonly DependencyProperty TerrainScaleMultiplierProperty = DependencyProperty.Register(nameof(TerrainScaleMultiplier), typeof(PGMTerrainXYZ), typeof(PGMTerrain), new PropertyMetadata(null));
+        [AggregateIniValueEntry]
+        public PGMTerrainXYZ TerrainScaleMultiplier
+        {
+            get { return (PGMTerrainXYZ)GetValue(TerrainScaleMultiplierProperty); }
+            set { SetValue(TerrainScaleMultiplierProperty, value); }
         }
 
         public override string GetSortKey()

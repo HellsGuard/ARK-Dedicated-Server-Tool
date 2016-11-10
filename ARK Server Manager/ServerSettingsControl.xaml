@@ -3586,6 +3586,10 @@
                                                         <RowDefinition/>
                                                         <RowDefinition/>
                                                         <RowDefinition/>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
                                                     </Grid.RowDefinitions>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>
@@ -3594,18 +3598,23 @@
 
                                                     <local:AnnotatedSlider Grid.Row="0" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MapSeedLabel}" Value="{Binding PGM_Terrain.MapSeed}" Suffix="" Minimum="1" Maximum="999" SmallChange="1" LargeChange="5" TickFrequency="50" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MapSeedTooltip}"/>
                                                     <local:AnnotatedSlider Grid.Row="1" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_TurbulencePowerLabel}" Value="{Binding PGM_Terrain.TurbulencePower}" Suffix="" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_TurbulencePowerTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="2" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_ErosionIterationsLabel}" Value="{Binding PGM_Terrain.ErosionIterations}" Suffix="" Minimum="1" Maximum="1000000" SmallChange="1000" LargeChange="10000" TickFrequency="100000" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_ErosionIterationsTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="3" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsFrequencyLabel}" Value="{Binding PGM_Terrain.MountainsFrequency}" Suffix="" Minimum="0" Maximum="20" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsFrequencyTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsSlopeLabel}" Value="{Binding PGM_Terrain.MountainsSlope}" Suffix="" Minimum="0" Maximum="2" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsSlopeTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsHeightLabel}" Value="{Binding PGM_Terrain.MountainsHeight}" Suffix="" Minimum="0" Maximum="5" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsHeightTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="2" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsFrequencyLabel}" Value="{Binding PGM_Terrain.MountainsFrequency}" Suffix="" Minimum="0" Maximum="20" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsFrequencyTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="3" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsSlopeLabel}" Value="{Binding PGM_Terrain.MountainsSlope}" Suffix="" Minimum="0" Maximum="2" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsSlopeTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainsHeightLabel}" Value="{Binding PGM_Terrain.MountainsHeight}" Suffix="" Minimum="0" Maximum="5" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainsHeightTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="5" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_ErosionStepsLabel}" Value="{Binding PGM_Terrain.ErosionSteps}" Suffix="" Minimum="1" Maximum="10" SmallChange="1" LargeChange="2" TickFrequency="2" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_ErosionStepsTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_ErosionStrengthLabel}" Value="{Binding PGM_Terrain.ErosionStrength}" Suffix="" Minimum="0.1" Maximum="1.0" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.2" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_ErosionStrengthTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_DepositionStrengthLabel}" Value="{Binding PGM_Terrain.DepositionStrength}" Suffix="" Minimum="0.01" Maximum="1.0" SmallChange="0.01" LargeChange=".1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_DepositionStrengthTooltip}"/>
 
                                                     <local:AnnotatedSlider Grid.Row="0" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_LandscapeRadiusLabel}" Value="{Binding PGM_Terrain.LandscapeRadius}" Suffix="" Minimum="0" Maximum="5" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_LandscapeRadiusTooltip}"/>
                                                     <local:AnnotatedSlider Grid.Row="1" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_ShoreSlopeLabel}" Value="{Binding PGM_Terrain.ShoreSlope}" Suffix="" Minimum="0" Maximum="2" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_ShoreSlopeTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="2" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_WaterFrequencyLabel}" Value="{Binding PGM_Terrain.WaterFrequency}" Suffix="" Minimum="0" Maximum="20" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_WaterFrequencyTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="3" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_WaterLevelLabel}" Value="{Binding PGM_Terrain.WaterLevel}" Suffix="" Minimum="-1" Maximum="1" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_WaterLevelTooltip}"/>
-                                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_OceanFloorLevelLabel}" Value="{Binding PGM_Terrain.OceanFloorLevel}" Suffix="" Minimum="-1" Maximum="1" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_OceanFloorLevelTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="2" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_ShoreLineEndLabel}" Value="{Binding PGM_Terrain.ShoreLineEnd}" Suffix="" Minimum="-1" Maximum="0" SmallChange="0.1" LargeChange="0.2" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_ShoreLineEndTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="3" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_WaterFrequencyLabel}" Value="{Binding PGM_Terrain.WaterFrequency}" Suffix="" Minimum="0" Maximum="20" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_WaterFrequencyTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_WaterLevelLabel}" Value="{Binding PGM_Terrain.WaterLevel}" Suffix="" Minimum="-1" Maximum="1" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_WaterLevelTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="5" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_OceanFloorLevelLabel}" Value="{Binding PGM_Terrain.OceanFloorLevel}" Suffix="" Minimum="-1" Maximum="1" SmallChange="1" LargeChange="1" TickFrequency="1" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_OceanFloorLevelTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="6" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_TreesGroundSlopeAccuracyLabel}" Value="{Binding PGM_Terrain.TreesGroundSlopeAccuracy}" Suffix="" Minimum="0.1" Maximum="1.0" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.2" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_TreesGroundSlopeAccuracyTooltip}"/>
+                                                    <local:AnnotatedSlider Grid.Row="7" Grid.Column="1" Margin="1" Label="{DynamicResource ServerSettings_PGM_Terrain_MountainGeneralTreesPercentLabel}" Value="{Binding PGM_Terrain.MountainGeneralTreesPercent}" Suffix="" Minimum="0.1" Maximum="1.0" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.2" LabelRelativeWidth="2*" SliderRelativeWidth="3*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_PGM_Terrain_MountainGeneralTreesPercentTooltip}"/>
 
-                                                    <Grid                  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                                                    <Grid                  Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition/>
                                                             <ColumnDefinition/>
@@ -4008,6 +4017,7 @@
 
                             <Grid Margin="-8,0,2,0">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition Height="200"/>
                                     <RowDefinition Height="200"/>
                                     <RowDefinition Height="200"/>
@@ -4018,7 +4028,9 @@
                                     <!--<ColumnDefinition Width="3*"/>-->
                                 </Grid.ColumnDefinitions>
 
-                                <GroupBox  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" Text="{DynamicResource ServerSettings_SupplyCrate_WarningLabel}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
+
+                                <GroupBox  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_CratesLabel}"/>
@@ -4107,7 +4119,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetsLabel}"/>
@@ -4181,7 +4193,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntriesLabel}"/>
@@ -4265,7 +4277,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox  Grid.Row="4" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemsLabel}"/>
