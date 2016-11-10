@@ -7,8 +7,6 @@ namespace ARK_Server_Manager.Lib
 {
     public class SupplyCrateOverrideList : AggregateIniValueList<SupplyCrateOverride>
     {
-        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-
         public SupplyCrateOverrideList(string aggregateValueName)
             : base(aggregateValueName, null)
         {
@@ -32,11 +30,7 @@ namespace ARK_Server_Manager.Lib
                             if (index < itemEntry.ItemsWeights.Count)
                                 itemsWeight = itemEntry.ItemsWeights[index];
                             else
-                            {
-                                var error = $"Missing Supply Crate Item Weight: {supplyCrate.SupplyCrateClassString}; {itemSet.SetName}; {itemEntry.ItemEntryName}; {itemEntry.ItemClassStrings[index]}.";
-                                errors.Add(error);
-                                _logger.Debug(error);
-                            }
+                                errors.Add($"Missing Supply Crate Item Weight: Crate '{supplyCrate.SupplyCrateClassString}'; Set '{itemSet.SetName}'; Entry '{itemEntry.ItemEntryName}'; Item '{itemEntry.ItemClassStrings[index]}'.");
 
                             itemEntry.Items.Add(new SupplyCrateItemEntrySettings {
                                                                 ItemClassString = itemEntry.ItemClassStrings[index],
