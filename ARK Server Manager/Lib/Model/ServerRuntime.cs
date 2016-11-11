@@ -780,13 +780,12 @@ namespace ARK_Server_Manager.Lib
                                 }
 
                                 if (!modSuccess)
-                                    success = false;
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
-
-                                if (!success)
                                 {
+                                    success = false;
                                     failedMods.Add($"{index + 1} of {modIdList.Count} - {modTitle}");
                                 }
+
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
                             }
 
                             if (failedMods.Count > 0)
