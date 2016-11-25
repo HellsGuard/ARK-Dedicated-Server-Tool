@@ -1590,6 +1590,7 @@
     <sys:String x:Key="Settings_Title">Settings</sys:String>
     
     <!-- Dino/Creature Class Names -->
+    <sys:String x:Key="Achatina_Character_BP_C">Achatina</sys:String>
     <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>
     <sys:String x:Key="Angler_Character_BP_C">Angler</sys:String>
     <sys:String x:Key="Ankylo_Character_BP_C">Ankylo</sys:String>
@@ -1625,17 +1626,20 @@
     <sys:String x:Key="Kaprosuchus_Character_BP_C">Kaprosuchus</sys:String>
     <sys:String x:Key="Leech_Character_C">Leech</sys:String>
     <sys:String x:Key="Lystro_Character_BP_C">Lystrosaurus</sys:String>
-    <sys:String x:Key="MegaCarno_Character_BP_C">Alpha Carnotaurus</sys:String>
-    <sys:String x:Key="MegaRaptor_Character_BP_C">Alpha Raptor</sys:String>
-    <sys:String x:Key="MegaRex_Character_BP_C">Alpha T-Rex</sys:String>
     <sys:String x:Key="Mammoth_Character_BP_C">Mammoth</sys:String>
     <sys:String x:Key="Manta_Character_BP_C">Manta</sys:String>
+    <sys:String x:Key="MegaCarno_Character_BP_C">Alpha Carnotaurus</sys:String>
     <sys:String x:Key="Megalodon_Character_BP_C">Megalodon</sys:String>
+    <sys:String x:Key="Megalosaurus_Character_BP_C">Megalosaurus</sys:String>
+    <sys:String x:Key="MegaRaptor_Character_BP_C">Alpha Raptor</sys:String>
+    <sys:String x:Key="MegaRex_Character_BP_C">Alpha T-Rex</sys:String>
     <sys:String x:Key="Monkey_Character_BP_C">Mesopithecus</sys:String>
     <sys:String x:Key="Mosa_Character_BP_C">Mosasaurus</sys:String>
     <sys:String x:Key="Mosa_Character_BP_Mega_C">Alpha Mosasaurus</sys:String>
+    <sys:String x:Key="Moschops_Character_BP_C">Moschops</sys:String>
     <sys:String x:Key="Oviraptor_Character_BP_C">Oviraptor</sys:String>
     <sys:String x:Key="Pachy_Character_BP_C">Pachy</sys:String>
+    <sys:String x:Key="Pachyrhino_Character_BP_C">Pachyrhinosaurus</sys:String>
     <sys:String x:Key="Para_Character_BP_C">Parasaur</sys:String>
     <sys:String x:Key="Paracer_Character_BP_C">Paracer</sys:String>
     <sys:String x:Key="Pela_Character_BP_C">Pelagornis</sys:String>
@@ -1898,9 +1902,11 @@
     <sys:String x:Key="EngramEntry_Saddle_Mammoth_C">Saddle - Mammoth</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Manta_C">Saddle - Manta</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Megalodon_C">Saddle - Megalodon</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Megalosaurus_C">Saddle - Megalosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Mosa_C">Saddle - Mosasaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Mosa_Platform_C">Saddle - Mosasaur Platform</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Pachy_C">Saddle - Pachy</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_PachyRhino_C">Saddle - Pachyrhinosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Para_C">Saddle - Parasaur</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_C">Saddle - Paracer</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Paracer_Platform_C">Saddle - Paracer Platform</sys:String>
@@ -2360,6 +2366,7 @@
     <sys:String x:Key="PrimalItemArmor_MammothSaddle_C">Mammoth Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MantaSaddle_C">Manta Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MegalodonSaddle_C">Megalodon Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_MegalosaurusSaddle_C">Megalosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MetalBoots_C">Flak Boots</sys:String>
     <sys:String x:Key="PrimalItemArmor_MetalGloves_C">Flak Gauntlets</sys:String>
     <sys:String x:Key="PrimalItemArmor_MetalHelmet_C">Flak Helmet</sys:String>
@@ -2371,6 +2378,7 @@
     <sys:String x:Key="PrimalItemArmor_MosaSaddle_Platform_C">Mosasaur Platform Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_NightVisionGoggles_C">Night Vision Goggles</sys:String>
     <sys:String x:Key="PrimalItemArmor_PachySaddle_C">Pachy Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_PachyrhinoSaddle_C">Pachyrhinosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_Paracer_Saddle_C">Paracer Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ParacerSaddle_Platform_C">Paracer Platform Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ParaSaddle_C">Parasaur Saddle</sys:String>
@@ -2465,8 +2473,11 @@
     <sys:String x:Key="PrimalItemConsumable_Egg_Kairuku_C">Kairuku Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Kaprosuchus_C">Kaprosuchus Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Lystro_C">Lystro Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Megalosaurus_C">Megalosaurus Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Moschops_C">Moschops Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Oviraptor_C">Oviraptor Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Pachy_C">Pachycephalosaurus Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Pachyrhino_C">Pachyrhinosaurus Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Para_C">Parasaur Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Pela_C">Pelagornis Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Ptero_C">Pteranodon Egg</sys:String>
@@ -2503,7 +2514,9 @@
     <sys:String x:Key="PrimalItemConsumable_Kibble_DodoEgg_C">Kibble (Dodo Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_GalliEgg_C">Kibble (Gallimimus Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_KairukuEgg_C">Kibble (Kairuku Egg)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Kibble_KaproEgg_C">Kibble (Kaprosuchus Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_LystroEgg_C">Kibble (Lystrosaurus Egg)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Kibble_OviraptorEgg_C">Kibble (Oviraptor Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_PachyEgg_C">Kibble (Pachy Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_ParaEgg_C">Kibble (Parasaur Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_Pela_C">Kibble (Pelagornis Egg)</sys:String>
