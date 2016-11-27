@@ -1618,8 +1618,8 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PvPZoneStructureDamageMultiplierProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register(nameof(MaxStructuresVisible), typeof(float), typeof(ServerProfile), new PropertyMetadata(1300f));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NewMaxStructuresInRange")]
+        public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register(nameof(MaxStructuresVisible), typeof(float), typeof(ServerProfile), new PropertyMetadata(10500f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "TheMaxStructuresInRange")]
         public float MaxStructuresVisible
         {
             get { return (float)GetValue(MaxStructuresVisibleProperty); }
@@ -3461,7 +3461,7 @@ namespace ARK_Server_Manager.Lib
         public static string GetProfileMapFileName(string serverMap, bool pgmEnabled, string pgmName)
         {
             if (pgmEnabled)
-                return $"{pgmName ?? string.Empty}_V1";
+                return $"{pgmName ?? string.Empty}_V2";
 
             return ModUtils.GetMapName(serverMap);
         }
