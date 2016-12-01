@@ -963,6 +963,8 @@
     <sys:String x:Key="ServerSettings_OnlyDecayUnsnappedCoreStructuresTooltip">If enabled, only unsnapped core structures will decay. Useful for eliminating lone pillar/foundation spam on servers.</sys:String>
     <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresLabel">Fast Decay Unsnapped Core Structures</sys:String>
     <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresTooltip">If enabled, will decay unsnapped foundations/pillars at faster speed.</sys:String>
+    <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesLabel">Destroy Unconnected Water Pipes</sys:String>
+    <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesTooltip">If enabled, after two real-time days the pipes will auto-destroy if unconnected to any non-pipe (directly or indirectly) and no allied player is nearby</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Force All Structure Locking</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
