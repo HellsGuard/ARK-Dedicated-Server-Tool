@@ -1241,6 +1241,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PvEDinoDecayPeriodMultiplierProperty, value); }
         }
 
+        public static readonly DependencyProperty ForceFlyerExplosivesProperty = DependencyProperty.Register(nameof(ForceFlyerExplosives), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceFlyerExplosives
+        {
+            get { return (bool)GetValue(ForceFlyerExplosivesProperty); }
+            set { SetValue(ForceFlyerExplosivesProperty, value); }
+        }
+
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         public DinoSettingsList DinoSettings
@@ -2162,6 +2169,11 @@ namespace ARK_Server_Manager.Lib
             if (this.UseRawSockets)
             {
                 serverArgs.Append("?bRawSockets");
+            }
+
+            if (this.ForceFlyerExplosives)
+            {
+                serverArgs.Append("?ForceFlyerExplosives=true");
             }
 
             if (!string.IsNullOrWhiteSpace(this.AltSaveDirectoryName))
