@@ -157,9 +157,9 @@ namespace ARK_Server_Manager.Lib
                 taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
                 taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
 
-                // Add a trigger that will fire every day at the specified restart time
+                // Add a trigger that will fire after the machine has started
                 taskDefinition.Triggers.Clear();
-                var trigger = new LogonTrigger {
+                var trigger = new BootTrigger {
                                   Delay = TimeSpan.FromMinutes(1),
                                   ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
                               };
@@ -255,7 +255,7 @@ namespace ARK_Server_Manager.Lib
                 taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
                 taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
 
-                // Add a trigger that will fire every day at the specified restart time
+                // Add a trigger that will fire every x minutes
                 taskDefinition.Triggers.Clear();
                 var trigger = new TimeTrigger {
                                   StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),

@@ -31,7 +31,7 @@ namespace ARK_Server_Manager.Lib
 
         [XmlIgnore]
         private string _lastSaveLocation = String.Empty;
-        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private ServerProfile()
         {
@@ -611,6 +611,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty OverrideOfficialDifficultyProperty = DependencyProperty.Register(nameof(OverrideOfficialDifficulty), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDifficultyOverride))]
         public float OverrideOfficialDifficulty
         {
             get { return (float)GetValue(OverrideOfficialDifficultyProperty); }
@@ -618,7 +619,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register(nameof(DifficultyOffset), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DifficultyOffset")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float DifficultyOffset
         {
             get { return (float)GetValue(DifficultyOffsetProperty); }
@@ -1744,6 +1745,14 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(FastDecayUnsnappedCoreStructuresProperty); }
             set { SetValue(FastDecayUnsnappedCoreStructuresProperty, value); }
         }
+
+        public static readonly DependencyProperty DestroyUnconnectedWaterPipesProperty = DependencyProperty.Register(nameof(DestroyUnconnectedWaterPipes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool DestroyUnconnectedWaterPipes
+        {
+            get { return (bool)GetValue(DestroyUnconnectedWaterPipesProperty); }
+            set { SetValue(DestroyUnconnectedWaterPipesProperty, value); }
+        }
         #endregion
 
         #region Engrams
@@ -2025,16 +2034,6 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
-        // Removed this ARK 250.0 bugfix as now they have fixed the bug, this causes some problems with the GUS.ini file not being written properly.
-        //public static readonly DependencyProperty GUSVersionProperty = DependencyProperty.Register(nameof(GUSVersion), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
-        //[XmlIgnore]
-        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.GameUserSettings, "Version")]
-        //public int GUSVersion
-        //{
-        //    get { return (int)GetValue(GUSVersionProperty); }
-        //    set { SetValue(GUSVersionProperty, value); }
-        //}
-
         #endregion
 
         #region Methods
@@ -2168,11 +2167,6 @@ namespace ARK_Server_Manager.Lib
             if (!string.IsNullOrWhiteSpace(this.AltSaveDirectoryName))
             {
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
-            }
-
-            if (this.EnableDifficultyOverride)
-            {
-                serverArgs.Append($"?OverrideOfficialDifficulty={Math.Round(this.OverrideOfficialDifficulty, 3, MidpointRounding.AwayFromZero):F3}");
             }
 
             if (this.SOTF_Enabled)
@@ -2660,7 +2654,7 @@ namespace ARK_Server_Manager.Lib
 
             if (!SecurityUtils.SetDirectoryOwnershipForAllUsers(this.InstallDirectory))
             {
-                _logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
+                Logger.Error($"Unable to set directory permissions for {this.InstallDirectory}.");
                 return false;
             }
 
@@ -3380,7 +3374,10 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AutoDestroyOldStructuresMultiplierProperty);
             this.ClearValue(ForceAllStructureLockingProperty);
             this.ClearValue(PassiveDefensesDamageRiderlessDinosProperty);
-            this.ClearValue(ForceAllStructureLockingProperty);
+            this.ClearValue(OnlyAutoDestroyCoreStructuresProperty);
+            this.ClearValue(OnlyDecayUnsnappedCoreStructuresProperty);
+            this.ClearValue(FastDecayUnsnappedCoreStructuresProperty);
+            this.ClearValue(DestroyUnconnectedWaterPipesProperty);
         }
 
         public void ResetSupplyCreateOverridesSection()
