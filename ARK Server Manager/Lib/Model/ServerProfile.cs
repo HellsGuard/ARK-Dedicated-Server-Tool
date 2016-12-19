@@ -2296,6 +2296,11 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -UseBattlEye");
             }
 
+            if (!this.UseBattlEye)
+            {
+                serverArgs.Append(" -NoBattlEye");
+            }
+
             if (this.DisableValveAntiCheatSystem)
             {
                 serverArgs.Append(" -insecure");
@@ -3202,6 +3207,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
+            this.ClearValue(ForceFlyerExplosivesProperty);
 
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0]);
