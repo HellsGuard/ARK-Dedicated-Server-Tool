@@ -2530,13 +2530,15 @@ namespace ARK_Server_Manager
 
                             // NOTE: This parameter is of type object and must be cast in most cases before use.
                             var settings = (Server)parameter;
-                            if (settings.Profile.EnableAutoRestart || settings.Profile.EnableAutoRestart2)
+                            if (settings.Profile.EnableAutoShutdown1 || settings.Profile.EnableAutoShutdown2)
                             {
                                 if (settings.Profile.SOTF_Enabled)
                                 {
                                     MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                    settings.Profile.EnableAutoRestart = false;
-                                    settings.Profile.EnableAutoRestart2 = false;
+                                    settings.Profile.EnableAutoShutdown1 = false;
+                                    settings.Profile.RestartAfterShutdown1 = true;
+                                    settings.Profile.EnableAutoShutdown2 = false;
+                                    settings.Profile.RestartAfterShutdown2 = true;
                                     settings.Profile.AutoRestartIfShutdown = false;
                                 }
                             }

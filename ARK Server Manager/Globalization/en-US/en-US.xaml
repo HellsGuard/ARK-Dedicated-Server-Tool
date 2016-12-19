@@ -569,8 +569,10 @@
     <sys:String x:Key="ServerSettings_ASMSettingLabel">Ark Server Manager Settings</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-Start server on boot</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
-    <sys:String x:Key="ServerSettings_RestartServerLabel">Restart server at</sys:String>
-    <sys:String x:Key="ServerSettings_RestartServerTooltip">The hour and minute of the day to force a server restart.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoShutdownLabel">Shutdown server at</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoShutdownTooltip">The hour and minute of the day to force a server shutdown.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartAfterShutdownLabel">then restart</sys:String>
+    <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">If enabled, will restart server immediately after the shutdown</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Include server in the Auto-Update cycle</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">If enabled, the server will be periodically updated during the Auto-Update cycle. See the settings for Auto-Update options.</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Restart server if shutdown</sys:String>

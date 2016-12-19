@@ -1401,7 +1401,6 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.Style>
@@ -1419,8 +1418,8 @@
 
                                             <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" HorizontalAlignment="Left"/>
                                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
-                                                <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoRestart}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
-                                                <TextBox Margin="20,0,0,0" Width="100" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
+                                                <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoShutdown1}" Content="{DynamicResource ServerSettings_EnableAutoShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}"/>
+                                                <TextBox Margin="10,0,0,0" Width="60" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}">
                                                     <Validation.ErrorTemplate>
                                                         <ControlTemplate>
                                                             <StackPanel>
@@ -1431,18 +1430,19 @@
                                                         </ControlTemplate>
                                                     </Validation.ErrorTemplate>
                                                     <TextBox.Text>
-                                                        <Binding Path="AutoRestartTime">
+                                                        <Binding Path="AutoShutdownTime1">
                                                             <Binding.ValidationRules>
                                                                 <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>
                                                 </TextBox>
+                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown1}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Margin="10,0,0,0" />
                                             </StackPanel>
 
                                             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
-                                                <CheckBox Name="ForceUpdatesCheckbox2" IsChecked="{Binding EnableAutoRestart2}" Content="{DynamicResource ServerSettings_RestartServerLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}"/>
-                                                <TextBox Margin="20,0,0,0" Width="100" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox2, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_RestartServerTooltip}">
+                                                <CheckBox Name="ForceUpdatesCheckbox2" IsChecked="{Binding EnableAutoShutdown2}" Content="{DynamicResource ServerSettings_EnableAutoShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}"/>
+                                                <TextBox Margin="10,0,0,0" Width="60" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox2, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}">
                                                     <Validation.ErrorTemplate>
                                                         <ControlTemplate>
                                                             <StackPanel>
@@ -1453,13 +1453,14 @@
                                                         </ControlTemplate>
                                                     </Validation.ErrorTemplate>
                                                     <TextBox.Text>
-                                                        <Binding Path="AutoRestartTime2">
+                                                        <Binding Path="AutoShutdownTime2">
                                                             <Binding.ValidationRules>
                                                                 <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
                                                     </TextBox.Text>
                                                 </TextBox>
+                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown2}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Padding="4,-1,0,0" Margin="10,0,0,0"/>
                                             </StackPanel>
                                         </Grid>
 

@@ -21,7 +21,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class App : GlobalizedApplication
     {
-        public const string ARG_AUTORESTART = "-ar";
+        public const string ARG_AUTOSHUTDOWN1 = "-as1";
+        public const string ARG_AUTOSHUTDOWN2 = "-as2";
         public const string ARG_AUTOUPDATE = "-au";
         public const string ARG_BETA = "-beta";
         public const string ARG_RCON = "-rcon";
@@ -203,11 +204,21 @@ namespace ARK_Server_Manager
                 BetaVersion = true;
             }
 
-            // check if we are starting ASM for server restart
-            if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))
+            // check if we are starting ASM for server shutdown
+            if (e.Args.Any(a => a.StartsWith(ARG_AUTOSHUTDOWN1)))
             {
-                var arg = e.Args.FirstOrDefault(a => a.StartsWith(ARG_AUTORESTART));
-                var exitCode = ServerApp.PerformAutoRestart(arg);
+                var arg = e.Args.FirstOrDefault(a => a.StartsWith(ARG_AUTOSHUTDOWN1));
+                var exitCode = ServerApp.PerformAutoShutdown(arg, ServerApp.ServerProcessType.AutoShutdown1);
+
+                // once we are finished, just exit
+                Environment.Exit(exitCode);
+            }
+
+            // check if we are starting ASM for server shutdown
+            if (e.Args.Any(a => a.StartsWith(ARG_AUTOSHUTDOWN2)))
+            {
+                var arg = e.Args.FirstOrDefault(a => a.StartsWith(ARG_AUTOSHUTDOWN2));
+                var exitCode = ServerApp.PerformAutoShutdown(arg, ServerApp.ServerProcessType.AutoShutdown2);
 
                 // once we are finished, just exit
                 Environment.Exit(exitCode);
