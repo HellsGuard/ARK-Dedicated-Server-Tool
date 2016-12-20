@@ -1418,8 +1418,8 @@
 
                                             <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" HorizontalAlignment="Left"/>
                                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
-                                                <CheckBox Name="ForceUpdatesCheckbox" IsChecked="{Binding EnableAutoShutdown1}" Content="{DynamicResource ServerSettings_EnableAutoShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}"/>
-                                                <TextBox Margin="10,0,0,0" Width="60" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}">
+                                                <CheckBox Name="ForceUpdatesCheckbox1" IsChecked="{Binding EnableAutoShutdown1}" Content="{DynamicResource ServerSettings_EnableAutoShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}"/>
+                                                <TextBox Margin="10,0,0,0" Width="60" IsEnabled="{Binding ElementName=ForceUpdatesCheckbox1, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}">
                                                     <Validation.ErrorTemplate>
                                                         <ControlTemplate>
                                                             <StackPanel>
@@ -1437,7 +1437,7 @@
                                                         </Binding>
                                                     </TextBox.Text>
                                                 </TextBox>
-                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown1}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Margin="10,0,0,0" />
+                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox1, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown1}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Margin="10,0,0,0" />
                                             </StackPanel>
 
                                             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
@@ -1460,7 +1460,7 @@
                                                         </Binding>
                                                     </TextBox.Text>
                                                 </TextBox>
-                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown2}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Padding="4,-1,0,0" Margin="10,0,0,0"/>
+                                                <CheckBox IsEnabled="{Binding ElementName=ForceUpdatesCheckbox2, Path=IsChecked}" IsChecked="{Binding RestartAfterShutdown2}" Content="{DynamicResource ServerSettings_RestartAfterShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_RestartAfterShutdownTooltip}" FlowDirection="RightToLeft" Padding="4,-1,0,0" Margin="10,0,0,0"/>
                                             </StackPanel>
                                         </Grid>
 
