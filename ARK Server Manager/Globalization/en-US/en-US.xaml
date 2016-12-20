@@ -551,6 +551,8 @@
     <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">If enabled, servers can now get web notifications posted somewhere when important things happen to a tribe.</sys:String>
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasLabel">Use No Memory Bias</sys:String>
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">If enabled, will use the old method, more RAM usage but no potential performance loss.</sys:String>
+    <sys:String x:Key="ServerSettings_StasisKeepControllersLabel">Stasis Keep Controllers</sys:String>
+    <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">If enabled, the server can gain performance by keeping the AI's in memory of statised creatures. NOTE: your server must have a lot of RAM otherwise your server will suffer with a large memory overhead.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -569,8 +571,10 @@
     <sys:String x:Key="ServerSettings_ASMSettingLabel">Ark Server Manager Settings</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartLabel">Auto-Start server on boot</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartTooltip">Automatically start the server when the machine starts.</sys:String>
-    <sys:String x:Key="ServerSettings_RestartServerLabel">Restart server at</sys:String>
-    <sys:String x:Key="ServerSettings_RestartServerTooltip">The hour and minute of the day to force a server restart.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoShutdownLabel">Shutdown server at</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoShutdownTooltip">The hour and minute of the day to force a server shutdown.</sys:String>
+    <sys:String x:Key="ServerSettings_RestartAfterShutdownLabel">then restart</sys:String>
+    <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">If enabled, will restart server immediately after the shutdown</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Include server in the Auto-Update cycle</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">If enabled, the server will be periodically updated during the Auto-Update cycle. See the settings for Auto-Update options.</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Restart server if shutdown</sys:String>
@@ -776,6 +780,8 @@
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">If enabled, allows Flyers into caves.</sys:String>
     <sys:String x:Key="ServerSettings_PreventMateBoostLabel">Prevent Dino Mate Boost</sys:String>
     <sys:String x:Key="ServerSettings_PreventMateBoostTooltip">If enabled, the dino mate boost will be disabled.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Disable Force Ground Flyer with Explosives</sys:String>
+    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesTooltip">If enabled, will disable the grounding of the flyer when explosives are put on them.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
@@ -2993,7 +2999,7 @@
     <sys:String x:Key="DinoSpawnEntries_DeepWater_C">(TheIsland) DinoSpawnEntries_DeepWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_InlandWater_C">(TheIsland) DinoSpawnEntries_InlandWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_Ocean_C">(TheIsland) DinoSpawnEntries_Ocean_C</sys:String>
-    <sys:String x:Key="DinoSpawnEntriesTheRedwoods_C">(TheIsland) DinoSpawnEntriesTheRedwoods_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesRedwoods_C">(TheIsland) DinoSpawnEntriesRedwoods_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_RedwoodWater_C">(TheIsland) DinoSpawnEntries_RedwoodWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_ShallowWater_C">(TheIsland) DinoSpawnEntries_ShallowWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_SwampWater_C">(TheIsland) DinoSpawnEntries_SwampWater_C</sys:String>
@@ -3075,7 +3081,7 @@
     <sys:String x:Key="DinoSpawnEntriesSnowMountain_PGM_C">(PGM) DinoSpawnEntriesSnowMountain_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSnowShoreline_PGM_C">(PGM) DinoSpawnEntriesSnowShoreline_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSwamp_PGM_C">(PGM) DinoSpawnEntriesSwamp_PGM_C</sys:String>
-    <sys:String x:Key="DinoSpawnEntriesTheRedwoods_PGM_C">(PGM) DinoSpawnEntriesTheRedwoods_PGM_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesRedwoodsPGM_C">(PGM) DinoSpawnEntriesRedwoodsPGM_C</sys:String>
 
     <!-- Supply Crate Class Names -->
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_C">(TheIsland) Cave Beacon 1</sys:String>

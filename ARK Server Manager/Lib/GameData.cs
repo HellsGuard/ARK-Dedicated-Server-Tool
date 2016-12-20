@@ -1950,7 +1950,7 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntries_DeepWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_InlandWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_Ocean_C" },
-            new MapSpawner { ClassName="DinoSpawnEntriesTheRedwoods_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesRedwoods_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_RedwoodWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_ShallowWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_SwampWater_C" },
@@ -2035,7 +2035,7 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntriesSnowMountain_PGM_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesSnowShoreline_PGM_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesSwamp_PGM_C" },
-            new MapSpawner { ClassName="DinoSpawnEntriesTheRedwoods_PGM_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesRedwoodsPGM_C" },
         };
 
         public static IEnumerable<MapSpawner> GetStandardMapSpawners() => mapSpawners.Select(d => d.Duplicate());

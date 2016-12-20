@@ -42,8 +42,10 @@ namespace ARK_Server_Manager.Lib
             public int MotDDuration;
 
             public string SchedulerKey;
-            public bool EnableAutoRestart;
-            public bool EnableAutoRestart2;
+            public bool EnableAutoShutdown1;
+            public bool RestartAfterShutdown1;
+            public bool EnableAutoShutdown2;
+            public bool RestartAfterShutdown2;
             public bool AutoRestartIfShutdown;
 
             public bool EnableAutoUpdate;
@@ -73,11 +75,13 @@ namespace ARK_Server_Manager.Lib
                     MotDDuration = Math.Max(profile.MOTDDuration, 10),
 
                     SchedulerKey = profile.GetProfileKey(),
-                    EnableAutoRestart = profile.EnableAutoRestart,
-                    EnableAutoRestart2 = profile.EnableAutoRestart2,
+                    EnableAutoUpdate = profile.EnableAutoUpdate,
+                    EnableAutoShutdown1 = profile.EnableAutoShutdown1,
+                    RestartAfterShutdown1 = profile.RestartAfterShutdown1,
+                    EnableAutoShutdown2 = profile.EnableAutoShutdown2,
+                    RestartAfterShutdown2 = profile.RestartAfterShutdown2,
                     AutoRestartIfShutdown = profile.AutoRestartIfShutdown,
 
-                    EnableAutoUpdate = profile.EnableAutoUpdate,
                     SotFEnabled = profile.SOTF_Enabled,
 
                     ServerUpdated = false,
@@ -89,7 +93,8 @@ namespace ARK_Server_Manager.Lib
         {
             Unknown = 0,
             AutoUpdate,
-            AutoRestart,
+            AutoShutdown1,
+            AutoShutdown2,
             Shutdown,
             Restart,
         }
@@ -110,7 +115,7 @@ namespace ARK_Server_Manager.Lib
         private const int EXITCODE_BADARGUMENT = 995;
 
         private const int EXITCODE_AUTOUPDATENOTENABLED = 1001;
-        private const int EXITCODE_AUTORESTARTNOTENABLED = 1002;
+        private const int EXITCODE_AUTOSHUTDOWNNOTENABLED = 1002;
 
         private const int EXITCODE_PROCESSALREADYRUNNING = 1011;
         private const int EXITCODE_INVALIDDATADIRECTORY = 1012;
@@ -134,11 +139,8 @@ namespace ARK_Server_Manager.Lib
         private const int EXITCODE_RESTART_FAILED = 5001;
         private const int EXITCODE_RESTART_BADLAUNCHER = 5002;
 
-        public const string LOGPREFIX_AUTORESTART = "#AutoRestartLogs";
+        public const string LOGPREFIX_AUTOSHUTDOWN = "#AutoShutdownLogs";
         public const string LOGPREFIX_AUTOUPDATE = "#AutoUpdateLogs";
-
-        public const string ARGUMENT_AUTORESTART = "-ar";
-        public const string ARGUMENT_AUTOUPDATE = "-au";
 
         private static readonly object LockObject = new object();
         private static DateTime _startTime = DateTime.Now;
@@ -1727,34 +1729,60 @@ namespace ARK_Server_Manager.Lib
             return ExitCode;
         }
 
-        public static int PerformAutoRestart(string argument)
+        public static int PerformAutoShutdown(string argument, ServerProcessType type)
         {
-            _logPrefix = LOGPREFIX_AUTORESTART;
+            _logPrefix = LOGPREFIX_AUTOSHUTDOWN;
 
             int exitCode = EXITCODE_NORMALEXIT;
 
             try
             {
-                if (string.IsNullOrWhiteSpace(argument) || !argument.StartsWith(ARGUMENT_AUTORESTART))
+                if (string.IsNullOrWhiteSpace(argument) || (!argument.StartsWith(App.ARG_AUTOSHUTDOWN1) && !argument.StartsWith(App.ARG_AUTOSHUTDOWN2)))
                     return EXITCODE_BADARGUMENT;
 
                 // load all the profiles, do this at the very start incase the user changes one or more while the process is running.
                 LoadProfiles();
 
-                var profileKey = argument?.Substring(ARGUMENT_AUTORESTART.Length) ?? string.Empty;
-                var profile = _profiles?.Keys.FirstOrDefault(p => p.SchedulerKey.Equals(profileKey, StringComparison.Ordinal));
-
-                if (profile == null)
-                    exitCode = EXITCODE_PROFILENOTFOUND;
-                else if (!profile.EnableAutoRestart)
-                    exitCode = EXITCODE_AUTORESTARTNOTENABLED;
-                else
+                var profileKey = string.Empty;
+                switch (type)
                 {
-                    var app = new ServerApp();
-                    app.SendEmails = true;
-                    app.ServerProcess = ServerProcessType.AutoRestart;
-                    exitCode = app.PerformProfileShutdown(profile, performRestart: true, cancellationToken: CancellationToken.None);
+                    case ServerProcessType.AutoShutdown1:
+                        profileKey = argument?.Substring(App.ARG_AUTOSHUTDOWN1.Length) ?? string.Empty;
+                        break;
+                    case ServerProcessType.AutoShutdown2:
+                        profileKey = argument?.Substring(App.ARG_AUTOSHUTDOWN2.Length) ?? string.Empty;
+                        break;
+                    default:
+                        return EXITCODE_BADARGUMENT;
                 }
+
+                var profile = _profiles?.Keys.FirstOrDefault(p => p.SchedulerKey.Equals(profileKey, StringComparison.Ordinal));
+                if (profile == null)
+                    return EXITCODE_PROFILENOTFOUND;
+
+                var enableAutoShutdown = false;
+                var performRestart = false;
+                switch (type)
+                {
+                    case ServerProcessType.AutoShutdown1:
+                        enableAutoShutdown = profile.EnableAutoShutdown1;
+                        performRestart = profile.RestartAfterShutdown1;
+                        break;
+                    case ServerProcessType.AutoShutdown2:
+                        enableAutoShutdown = profile.EnableAutoShutdown2;
+                        performRestart = profile.RestartAfterShutdown2;
+                        break;
+                    default:
+                        return EXITCODE_BADARGUMENT;
+                }
+
+                if (!enableAutoShutdown)
+                    return EXITCODE_AUTOSHUTDOWNNOTENABLED;
+
+                var app = new ServerApp();
+                app.SendEmails = true;
+                app.ServerProcess = type;
+                exitCode = app.PerformProfileShutdown(profile, performRestart, CancellationToken.None);
             }
             catch (Exception)
             {

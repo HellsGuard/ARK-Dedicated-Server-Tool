@@ -14,9 +14,15 @@ namespace ARK_Server_Manager.Lib
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static bool ScheduleAutoRestart(string taskKey, string taskSuffix, string command, TimeSpan? restartTime, string profileName)
+        public enum ShutdownType
         {
-            var taskName = $"AutoRestart_{taskKey}";
+            Shutdown1,
+            Shutdown2,
+        }
+
+        public static bool ScheduleAutoShutdown(string taskKey, string taskSuffix, string command, TimeSpan? restartTime, string profileName, ShutdownType type)
+        {
+            var taskName = $"AutoShutdown_{taskKey}";
             if (!string.IsNullOrWhiteSpace(taskSuffix))
                 taskName += $"_{taskSuffix}";
 
@@ -53,7 +59,7 @@ namespace ARK_Server_Manager.Lib
                 taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
                 taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
 
-                taskDefinition.RegistrationInfo.Description = $"Ark Server Auto-Restart - {profileName}";
+                taskDefinition.RegistrationInfo.Description = $"Ark Server Auto-Shutdown - {profileName}";
                 taskDefinition.RegistrationInfo.Source = "Ark Server Manager";
                 taskDefinition.RegistrationInfo.Version = appVersion;
 
@@ -69,10 +75,23 @@ namespace ARK_Server_Manager.Lib
                 taskDefinition.Triggers.Add(trigger);
 
                 // Create an action that will launch whenever the trigger fires
+                var arguments = string.Empty;
+                switch (type)
+                {
+                    case ShutdownType.Shutdown1:
+                        arguments = App.ARG_AUTOSHUTDOWN1;
+                        break;
+                    case ShutdownType.Shutdown2:
+                        arguments = App.ARG_AUTOSHUTDOWN2;
+                        break;
+                    default:
+                        return false;
+                }
+
                 taskDefinition.Actions.Clear();
                 var action = new ExecAction {
-                                 Path = command,
-                                 Arguments = $"{ServerApp.ARGUMENT_AUTORESTART}{taskKey}"
+                                 Path = command,                                 
+                                 Arguments = $"{arguments}{taskKey}"
                              };
                 taskDefinition.Actions.Add(action);
 
@@ -83,7 +102,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug($"Unable to create the ScheduleAutoRestart task.\r\n{ex.Message}.");
+                    Logger.Debug($"Unable to create the ScheduleAutoShutdown task.\r\n{ex.Message}.");
                 }
             }
             else
@@ -104,7 +123,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug($"Unable to delete the ScheduleAutoRestart task.\r\n{ex.Message}.");
+                    Logger.Debug($"Unable to delete the ScheduleAutoShutdown task.\r\n{ex.Message}.");
                 }
             }
 
@@ -147,7 +166,7 @@ namespace ARK_Server_Manager.Lib
                 Version appVersion;
                 Version.TryParse(App.Version, out appVersion);
 
-                taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
+                taskDefinition.Principal.LogonType = TaskLogonType.ServiceAccount;
                 taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
 
                 taskDefinition.RegistrationInfo.Description = $"Ark Server Auto-Start - {profileName}";
@@ -175,7 +194,7 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, "SYSTEM", null, TaskLogonType.InteractiveToken);
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, "SYSTEM", null, TaskLogonType.ServiceAccount);
                     return task != null;
                 }
                 catch (Exception ex)
@@ -268,7 +287,7 @@ namespace ARK_Server_Manager.Lib
                 taskDefinition.Actions.Clear();
                 var action = new ExecAction {
                                  Path = command,
-                                 Arguments = ServerApp.ARGUMENT_AUTOUPDATE
+                                 Arguments = App.ARG_AUTOUPDATE
                              };
                 taskDefinition.Actions.Add(action);
 

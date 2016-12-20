@@ -466,6 +466,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseNoMemoryBiasProperty, value); }
         }
 
+        public static readonly DependencyProperty StasisKeepControllersProperty = DependencyProperty.Register(nameof(StasisKeepControllers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool StasisKeepControllers
+        {
+            get { return (bool)GetValue(StasisKeepControllersProperty); }
+            set { SetValue(StasisKeepControllersProperty, value); }
+        }
+
         public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool NoTransferFromFiltering
         {
@@ -510,32 +517,46 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAutoUpdateProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableServerRestartProperty = DependencyProperty.Register(nameof(EnableAutoRestart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool EnableAutoRestart
+        public static readonly DependencyProperty EnableServerRestart1Property = DependencyProperty.Register(nameof(EnableAutoShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoShutdown1
         {
-            get { return (bool)GetValue(EnableServerRestartProperty); }
-            set { SetValue(EnableServerRestartProperty, value); }
+            get { return (bool)GetValue(EnableServerRestart1Property); }
+            set { SetValue(EnableServerRestart1Property, value); }
         }
 
-        public static readonly DependencyProperty AutoRestartTimeProperty = DependencyProperty.Register(nameof(AutoRestartTime), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
-        public string AutoRestartTime
+        public static readonly DependencyProperty AutoShutdownTime1Property = DependencyProperty.Register(nameof(AutoShutdownTime1), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+        public string AutoShutdownTime1
         {
-            get { return (string)GetValue(AutoRestartTimeProperty); }
-            set { SetValue(AutoRestartTimeProperty, value); }
+            get { return (string)GetValue(AutoShutdownTime1Property); }
+            set { SetValue(AutoShutdownTime1Property, value); }
         }
 
-        public static readonly DependencyProperty EnableServerRestart2Property = DependencyProperty.Register(nameof(EnableAutoRestart2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool EnableAutoRestart2
+        public static readonly DependencyProperty RestartAfterShutdown1Property = DependencyProperty.Register(nameof(RestartAfterShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public bool RestartAfterShutdown1
         {
-            get { return (bool)GetValue(EnableServerRestart2Property); }
-            set { SetValue(EnableServerRestart2Property, value); }
+            get { return (bool)GetValue(RestartAfterShutdown1Property); }
+            set { SetValue(RestartAfterShutdown1Property, value); }
         }
 
-        public static readonly DependencyProperty AutoRestartTime2Property = DependencyProperty.Register(nameof(AutoRestartTime2), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
-        public string AutoRestartTime2
+        public static readonly DependencyProperty EnableAutoShutdown2Property = DependencyProperty.Register(nameof(EnableAutoShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoShutdown2
         {
-            get { return (string)GetValue(AutoRestartTime2Property); }
-            set { SetValue(AutoRestartTime2Property, value); }
+            get { return (bool)GetValue(EnableAutoShutdown2Property); }
+            set { SetValue(EnableAutoShutdown2Property, value); }
+        }
+
+        public static readonly DependencyProperty AutoShutdownTime2Property = DependencyProperty.Register(nameof(AutoShutdownTime2), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
+        public string AutoShutdownTime2
+        {
+            get { return (string)GetValue(AutoShutdownTime2Property); }
+            set { SetValue(AutoShutdownTime2Property, value); }
+        }
+
+        public static readonly DependencyProperty RestartAfterShutdown2Property = DependencyProperty.Register(nameof(RestartAfterShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public bool RestartAfterShutdown2
+        {
+            get { return (bool)GetValue(RestartAfterShutdown2Property); }
+            set { SetValue(RestartAfterShutdown2Property, value); }
         }
 
         public static readonly DependencyProperty AutoRestartIfShutdownProperty = DependencyProperty.Register(nameof(AutoRestartIfShutdown), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1239,6 +1260,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(PvEDinoDecayPeriodMultiplierProperty); }
             set { SetValue(PvEDinoDecayPeriodMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForceFlyerExplosivesProperty = DependencyProperty.Register(nameof(ForceFlyerExplosives), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ForceFlyerExplosives
+        {
+            get { return (bool)GetValue(ForceFlyerExplosivesProperty); }
+            set { SetValue(ForceFlyerExplosivesProperty, value); }
         }
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
@@ -2164,6 +2192,11 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?bRawSockets");
             }
 
+            if (this.ForceFlyerExplosives)
+            {
+                serverArgs.Append("?ForceFlyerExplosives=true");
+            }
+
             if (!string.IsNullOrWhiteSpace(this.AltSaveDirectoryName))
             {
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
@@ -2270,6 +2303,11 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -UseBattlEye");
             }
 
+            if (!this.UseBattlEye)
+            {
+                serverArgs.Append(" -NoBattlEye");
+            }
+
             if (this.DisableValveAntiCheatSystem)
             {
                 serverArgs.Append(" -insecure");
@@ -2337,6 +2375,11 @@ namespace ARK_Server_Manager.Lib
             if (this.UseNoMemoryBias)
             {
                 serverArgs.Append(" -nomemorybias");
+            }
+
+            if (this.StasisKeepControllers)
+            {
+                serverArgs.Append(" -StasisKeepControllers");
             }
 
             if (this.EnableExclusiveJoin)
@@ -2476,8 +2519,10 @@ namespace ARK_Server_Manager.Lib
             if (SOTF_Enabled)
             {
                 // ensure that the auto settings are switched off for SotF servers
-                EnableAutoRestart = false;
-                EnableAutoRestart2 = false;
+                EnableAutoShutdown1 = false;
+                RestartAfterShutdown1 = true;
+                EnableAutoShutdown2 = false;
+                RestartAfterShutdown2 = true;
                 EnableAutoUpdate = false;
                 AutoRestartIfShutdown = false;
 
@@ -2675,14 +2720,14 @@ namespace ARK_Server_Manager.Lib
                 return false;
             }
 
-            TimeSpan restartTime;
+            TimeSpan shutdownTime;
             var command = Assembly.GetEntryAssembly().Location;
-            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, null, command, this.EnableAutoRestart ? (TimeSpan.TryParseExact(this.AutoRestartTime, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null, ProfileName))
+            if (!TaskSchedulerUtils.ScheduleAutoShutdown(taskKey, "#1", command, this.EnableAutoShutdown1 ? (TimeSpan.TryParseExact(this.AutoShutdownTime1, "g", null, out shutdownTime) ? shutdownTime : (TimeSpan?)null) : null, ProfileName, TaskSchedulerUtils.ShutdownType.Shutdown1))
             {
                 return false;
             }
 
-            if (!TaskSchedulerUtils.ScheduleAutoRestart(taskKey, "#2", command, this.EnableAutoRestart2 ? (TimeSpan.TryParseExact(this.AutoRestartTime2, "g", null, out restartTime) ? restartTime : (TimeSpan?)null) : null, ProfileName))
+            if (!TaskSchedulerUtils.ScheduleAutoShutdown(taskKey, "#2", command, this.EnableAutoShutdown2 ? (TimeSpan.TryParseExact(this.AutoShutdownTime2, "g", null, out shutdownTime) ? shutdownTime : (TimeSpan?)null) : null, ProfileName, TaskSchedulerUtils.ShutdownType.Shutdown2))
             {
                 return false;
             }
@@ -3174,6 +3219,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
+            this.ClearValue(ForceFlyerExplosivesProperty);
 
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0]);

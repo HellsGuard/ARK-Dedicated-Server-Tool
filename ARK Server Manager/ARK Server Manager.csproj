@@ -31,8 +31,8 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>4</ApplicationRevision>
-    <ApplicationVersion>1.0.261.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.263.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -60,11 +60,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9A909D50EDAB0CDF82C87B7A79C421C838A91180</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CD0A463F0E9D39F5BC15F2B7A5828245A7F76263</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>ARK Server Manager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -316,6 +315,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <None Include="ARK Server Manager_TemporaryKey.pfx" />
     <None Include="DeployBetaToAWS.cmd" />
     <None Include="Lib\ServerUpdater\mcrcon.exe" />
     <Resource Include="Art\SteamCMD.png" />
@@ -529,7 +529,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="ARK Server Manager_TemporaryKey.pfx" />
     <None Include="Config.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
@@ -583,7 +582,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforePublish">
-    <Exec Command="&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\bin\signtool.exe&quot; sign /f &quot;$(ProjectDir)Ark Server Manager_TemporaryKey.pfx&quot; /p &quot;b@}l@;jDVT4S&quot; /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
+    <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\8.1\bin\x86\signtool.exe&quot; sign /f &quot;$(ProjectDir)Ark Server Manager_TemporaryKey.pfx&quot; /p &quot;b@}l@;jDVT4S&quot; /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
   </Target>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
