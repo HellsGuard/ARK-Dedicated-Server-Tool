@@ -466,6 +466,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseNoMemoryBiasProperty, value); }
         }
 
+        public static readonly DependencyProperty StasisKeepControllersProperty = DependencyProperty.Register(nameof(StasisKeepControllers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool StasisKeepControllers
+        {
+            get { return (bool)GetValue(StasisKeepControllersProperty); }
+            set { SetValue(StasisKeepControllersProperty, value); }
+        }
+
         public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool NoTransferFromFiltering
         {
@@ -2368,6 +2375,11 @@ namespace ARK_Server_Manager.Lib
             if (this.UseNoMemoryBias)
             {
                 serverArgs.Append(" -nomemorybias");
+            }
+
+            if (this.StasisKeepControllers)
+            {
+                serverArgs.Append(" -StasisKeepControllers");
             }
 
             if (this.EnableExclusiveJoin)

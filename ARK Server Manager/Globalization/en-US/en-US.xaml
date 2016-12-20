@@ -551,6 +551,8 @@
     <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">If enabled, servers can now get web notifications posted somewhere when important things happen to a tribe.</sys:String>
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasLabel">Use No Memory Bias</sys:String>
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">If enabled, will use the old method, more RAM usage but no potential performance loss.</sys:String>
+    <sys:String x:Key="ServerSettings_StasisKeepControllersLabel">Stasis Keep Controllers</sys:String>
+    <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">If enabled, the server can gain performance by keeping the AI's in memory of statised creatures. NOTE: your server must have a lot of RAM otherwise your server will suffer with a large memory overhead.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -2997,7 +2999,7 @@
     <sys:String x:Key="DinoSpawnEntries_DeepWater_C">(TheIsland) DinoSpawnEntries_DeepWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_InlandWater_C">(TheIsland) DinoSpawnEntries_InlandWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_Ocean_C">(TheIsland) DinoSpawnEntries_Ocean_C</sys:String>
-    <sys:String x:Key="DinoSpawnEntriesTheRedwoods_C">(TheIsland) DinoSpawnEntriesTheRedwoods_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesRedwoods_C">(TheIsland) DinoSpawnEntriesRedwoods_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_RedwoodWater_C">(TheIsland) DinoSpawnEntries_RedwoodWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_ShallowWater_C">(TheIsland) DinoSpawnEntries_ShallowWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_SwampWater_C">(TheIsland) DinoSpawnEntries_SwampWater_C</sys:String>
@@ -3079,7 +3081,7 @@
     <sys:String x:Key="DinoSpawnEntriesSnowMountain_PGM_C">(PGM) DinoSpawnEntriesSnowMountain_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSnowShoreline_PGM_C">(PGM) DinoSpawnEntriesSnowShoreline_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSwamp_PGM_C">(PGM) DinoSpawnEntriesSwamp_PGM_C</sys:String>
-    <sys:String x:Key="DinoSpawnEntriesTheRedwoods_PGM_C">(PGM) DinoSpawnEntriesTheRedwoods_PGM_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesRedwoodsPGM_C">(PGM) DinoSpawnEntriesRedwoodsPGM_C</sys:String>
 
     <!-- Supply Crate Class Names -->
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_C">(TheIsland) Cave Beacon 1</sys:String>
