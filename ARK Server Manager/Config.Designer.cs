@@ -906,7 +906,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WorkshopCache.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("workshopcache_346110.json")]
         public string WorkshopCacheFile {
             get {
                 return ((string)(this["WorkshopCacheFile"]));
@@ -1170,7 +1170,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WorkshopCacheSotF.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("workshopcache_407530.json")]
         public string WorkshopCacheFile_SotF {
             get {
                 return ((string)(this["WorkshopCacheFile_SotF"]));

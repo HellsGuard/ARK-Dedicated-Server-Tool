@@ -255,7 +255,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="WorkshopCacheFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">WorkshopCache.xml</Value>
+      <Value Profile="(Default)">workshopcache_346110.json</Value>
     </Setting>
     <Setting Name="Email_Host" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -327,7 +327,7 @@
       <Value Profile="(Default)">steamapps\workshop\content\407530\</Value>
     </Setting>
     <Setting Name="WorkshopCacheFile_SotF" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">WorkshopCacheSotF.xml</Value>
+      <Value Profile="(Default)">workshopcache_407530.json</Value>
     </Setting>
     <Setting Name="AppId" Type="System.String" Scope="Application">
       <Value Profile="(Default)">346110</Value>
