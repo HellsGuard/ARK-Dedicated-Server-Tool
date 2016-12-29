@@ -1612,6 +1612,7 @@
     <sys:String x:Key="BoaFrill_Character_BP_C">Titanoboa</sys:String>
     <sys:String x:Key="Carno_Character_BP_C">Carnotaurus</sys:String>
     <sys:String x:Key="Chalico_Character_BP_C">Chalicotherium</sys:String>
+    <sys:String x:Key="Cnidaria_Character_BP_C">Cnidaria</sys:String>
     <sys:String x:Key="Coel_Character_BP_C">Coel</sys:String>
     <sys:String x:Key="Compy_Character_BP_C">Compy</sys:String>
     <sys:String x:Key="Dilo_Character_BP_C">Dilophosaurus</sys:String>
@@ -1650,6 +1651,7 @@
     <sys:String x:Key="Pachyrhino_Character_BP_C">Pachyrhinosaurus</sys:String>
     <sys:String x:Key="Para_Character_BP_C">Parasaur</sys:String>
     <sys:String x:Key="Paracer_Character_BP_C">Paracer</sys:String>
+    <sys:String x:Key="Pegomastax_Character_BP_C">Pegomastax</sys:String>
     <sys:String x:Key="Pela_Character_BP_C">Pelagornis</sys:String>
     <sys:String x:Key="Phiomia_Character_BP_C">Phiomia</sys:String>
     <sys:String x:Key="Piranha_Character_BP_C">Megapiranha</sys:String>
@@ -1672,11 +1674,14 @@
     <sys:String x:Key="Stego_Character_BP_C">Stego</sys:String>
     <sys:String x:Key="Tapejara_Character_BP_C">Tapejara</sys:String>
     <sys:String x:Key="TerrorBird_Character_BP_C">Terror Bird</sys:String>
+    <sys:String x:Key="Therizino_Character_BP_C">Therizinosaurus</sys:String>
     <sys:String x:Key="Titanosaur_Character_BP_C">Titanosaur</sys:String>
     <sys:String x:Key="Toad_Character_BP_C">Beelzebufo</sys:String>
     <sys:String x:Key="Trike_Character_BP_C">Trike</sys:String>
     <sys:String x:Key="Trilobite_Character_C">Trilobite</sys:String>
+    <sys:String x:Key="Troodon_Character_BP_C">Troodon</sys:String>
     <sys:String x:Key="Turtle_Character_BP_C">Carbonemys</sys:String>
+    <sys:String x:Key="Tusoteuthis_Character_BP_C">Tusoteuthis</sys:String>
 
     <sys:String x:Key="FlyingAnt_Character_BP_C">Titanomyrma Soldier</sys:String>
     <sys:String x:Key="Leech_Character_Diseased_C">Diseased Leech</sys:String>
@@ -1722,6 +1727,7 @@
     <sys:String x:Key="EngramEntry_Bow_C">Bow</sys:String>
     <sys:String x:Key="EngramEntry_BugRepel_C">Bug Repelant</sys:String>
     <sys:String x:Key="EngramEntry_C4Ammo_C">C4 Charge</sys:String>
+    <sys:String x:Key="EngramEntry_Camera_C">Camera</sys:String>
     <sys:String x:Key="EngramEntry_Campfire_C">Campfire</sys:String>
     <sys:String x:Key="EngramEntry_Cannon_C">Cannon</sys:String>
     <sys:String x:Key="EngramEntry_CannonBall_C">Cannon Ball</sys:String>
@@ -1940,10 +1946,12 @@
     <sys:String x:Key="EngramEntry_Saddle_Stego_C">Saddle - Stego</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Tapejara_C">Saddle - Tapejara</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_TerrorBird_C">Saddle - Terror Bird</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Therizino_C">Saddle - Therizinosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Titano_Platform_C">Saddle - Titanosaur Platform</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Toad_C">Saddle - Beelzebufo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Trike_C">Saddle - Trike</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Turtle_C">Saddle - Carbonemys</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Tuso_C">Saddle - Tusoteuthis</sys:String>
     <sys:String x:Key="EngramEntry_Scope_C">Scope Attachment</sys:String>
     <sys:String x:Key="EngramEntry_ScubaBoots_Flippers_C">SCUBA Flippers</sys:String>
     <sys:String x:Key="EngramEntry_ScubaHelmet_Goggles_C">SCUBA Mask</sys:String>
@@ -2255,6 +2263,7 @@
 
     <!-- Item Class Names -->
     <sys:String x:Key="PrimalItem_BloodExtractor_C">Blood Extraction Syringe</sys:String>
+    <sys:String x:Key="PrimalItem_Camera_C">Camera</sys:String>
     <sys:String x:Key="PrimalItem_GasGrenade_C">Smoke Grenade</sys:String>
     <sys:String x:Key="PrimalItem_Note_C">Note</sys:String>
     <sys:String x:Key="PrimalItem_PoisonGrenade_C">Poison Grenade</sys:String>
@@ -2423,11 +2432,13 @@
     <sys:String x:Key="PrimalItemArmor_StegoSaddle_C">Stego Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TapejaraSaddle_C">Tapejara Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TerrorBirdSaddle_C">Terror Bird Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TherizinosaurusSaddle_C">Therizinosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TitanSaddle_Platform_C">Titanosaur Platform Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ToadSaddle_C">Beelzebufo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TransparentRiotShield_C">Riot Shield</sys:String>
     <sys:String x:Key="PrimalItemArmor_TrikeSaddle_C">Trike Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TurtleSaddle_C">Carbonemys Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TusoSaddle_C">Tusoteuthis Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_WoodShield_C">Wooden Shield</sys:String>
     <sys:String x:Key="PrimalItemArtifact_01_C">Artifact of the Hunter</sys:String>
     <sys:String x:Key="PrimalItemArtifact_02_C">Artifact of the Pack</sys:String>
@@ -2437,6 +2448,9 @@
     <sys:String x:Key="PrimalItemArtifact_07_C">Artifact of the Devourer</sys:String>
     <sys:String x:Key="PrimalItemArtifact_08_C">Artifact of the Immune</sys:String>
     <sys:String x:Key="PrimalItemArtifact_09_C">Artifact of the Strong</sys:String>
+    <sys:String x:Key="PrimalItemArtifact_10_C">Artifact of the Flamekeeper</sys:String>
+    <sys:String x:Key="PrimalItemArtifact_11_C">Artifact of the Cunning</sys:String>
+    <sys:String x:Key="PrimalItemArtifact_12_C">Artifact of the Brute</sys:String>
     <sys:String x:Key="PrimalItemArtifactSE_01_C">Artifact of the Gatekeeper</sys:String>
     <sys:String x:Key="PrimalItemArtifactSE_02_C">Artifact of the Crag</sys:String>
     <sys:String x:Key="PrimalItemArtifactSE_03_C">Artifact of the Destroyer</sys:String>
@@ -2487,6 +2501,7 @@
     <sys:String x:Key="PrimalItemConsumable_Egg_Pachy_C">Pachycephalosaurus Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Pachyrhino_C">Pachyrhinosaurus Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Para_C">Parasaur Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Pegomastax_C">Pegomastax Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Pela_C">Pelagornis Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Ptero_C">Pteranodon Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Quetz_C">Quetzal Egg</sys:String>
@@ -2499,7 +2514,9 @@
     <sys:String x:Key="PrimalItemConsumable_Egg_Stego_C">Stego Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Tapejara_C">Tapejara Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Terrorbird_C">Terror Bird Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Therizino_C">Therizino Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Trike_C">Trike Egg</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Egg_Troodon_C">Troodon Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Egg_Turtle_C">Turtle Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Fertilizer_Compost_C">Fertilizer</sys:String>
     <sys:String x:Key="PrimalItemConsumable_HealSoup_C">Medical Brew</sys:String>
@@ -2508,6 +2525,7 @@
     <sys:String x:Key="PrimalItemConsumable_IcedCanteenRefill_C">Iced Canteen (Full)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_IcedWaterJar_C">Iced Water Jar (Empty)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_IcedWaterJarRefill_C">Iced Water Jar (Full)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_JellyVenom_C">Bio Toxin</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_Allo_C">Kibble (Allosaurus Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_AnkyloEgg_C">Kibble (Ankylo Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_ArchaEgg_C">Kibble (Archaeopteryx Egg)</sys:String>
@@ -2628,6 +2646,7 @@
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Rex_C">Tyrannosaurus Arm</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Sauro_C">Sauropod Vertebra</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Tuso_C">Tusoteuthis Tentacle</sys:String>
     <sys:String x:Key="PrimalItemResource_Beer_C">Beer Liquid</sys:String>
     <sys:String x:Key="PrimalItemResource_BlackPearl_C">Black Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Charcoal_C">Charcoal</sys:String>
@@ -3088,13 +3107,16 @@
     <sys:String x:Key="SupplyCrate_Cave_QualityTier2_C">(TheIsland) Cave Beacon 2</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier3_C">(TheIsland) Cave Beacon 3</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier4_C">(TheIsland) Cave Beacon 4</sys:String>
-    <sys:String x:Key="SupplyCrate_SwampCaveTier1_C">(TheIsland) Swamp Cave Loot Crate blue</sys:String>
-    <sys:String x:Key="SupplyCrate_SwampCaveTier2_C">(TheIsland) Swamp Cave Loot Crate yellow</sys:String>
-    <sys:String x:Key="SupplyCrate_SwampCaveTier3_C">(TheIsland) Swamp Cave Loot Crate red</sys:String>
-    <sys:String x:Key="SupplyCrate_IceCaveTier1_C">(TheIsland) Ice Cave Loot Crate blue</sys:String>
-    <sys:String x:Key="SupplyCrate_IceCaveTier2_C">(TheIsland) Ice Cave Loot Crate yellow</sys:String>
-    <sys:String x:Key="SupplyCrate_IceCaveTier3_C">(TheIsland) Ice Cave Loot Crate red</sys:String>
+    <sys:String x:Key="SupplyCrate_IceCaveTier1_C">(TheIsland) Ice Cave Loot Crate (Blue)</sys:String>
+    <sys:String x:Key="SupplyCrate_IceCaveTier2_C">(TheIsland) Ice Cave Loot Crate (Yellow)</sys:String>
+    <sys:String x:Key="SupplyCrate_IceCaveTier3_C">(TheIsland) Ice Cave Loot Crate (Red)</sys:String>
     <sys:String x:Key="SupplyCrate_OceanInstant_C">(TheIsland) Deep Sea Loot Crate</sys:String>
+    <sys:String x:Key="SupplyCrate_SwampCaveTier1_C">(TheIsland) Swamp Cave Loot Crate (Blue)</sys:String>
+    <sys:String x:Key="SupplyCrate_SwampCaveTier2_C">(TheIsland) Swamp Cave Loot Crate (Yellow)</sys:String>
+    <sys:String x:Key="SupplyCrate_SwampCaveTier3_C">(TheIsland) Swamp Cave Loot Crate (Red)</sys:String>
+    <sys:String x:Key="SupplyCrate_UnderwaterCaveTier1_C">(TheIsland) Underwater Cave Loot Crate (Blue)</sys:String>
+    <sys:String x:Key="SupplyCrate_UnderwaterCaveTier2_C">(TheIsland) Underwater Cave Loot Crate (Yellow)</sys:String>
+    <sys:String x:Key="SupplyCrate_UnderwaterCaveTier3_C">(TheIsland) Underwater Cave Loot Crate (Red)</sys:String>
     <sys:String x:Key="SupplyCrate_Level03_C">(TheIsland) White Beacon</sys:String>
     <sys:String x:Key="SupplyCrate_Level03_Double_C">(TheIsland) White Beacon (Double items)</sys:String>
     <sys:String x:Key="SupplyCrate_Level15_C">(TheIsland) Green Beacon</sys:String>
@@ -3116,11 +3138,12 @@
     <sys:String x:Key="ArtifactCrate_7_C">(TheIsland) Artifact Container Devourer</sys:String>
     <sys:String x:Key="ArtifactCrate_8_C">(TheIsland) Artifact Container Immune</sys:String>
     <sys:String x:Key="ArtifactCrate_9_C">(TheIsland) Artifact Container Strong</sys:String>
+    <sys:String x:Key="ArtifactCrate_10_C">(TheIsland) Artifact Container Flamekeeper</sys:String>
+    <sys:String x:Key="ArtifactCrate_11_C">(TheIsland) Artifact Container Cunning</sys:String>
 
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_ScorchedEarth_C">(ScorchedEarth) Cave Beacon 1</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier2_ScorchedEarth_C">(ScorchedEarth) Cave Beacon 2</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier3_ScorchedEarth_C">(ScorchedEarth) Cave Beacon 3</sys:String>
-    <sys:String x:Key="SupplyCrate_Cave_QualityTier4_ScorchedEarth_C">(ScorchedEarth) Cave Beacon 4</sys:String>
     <sys:String x:Key="SupplyCrate_Level03_ScorchedEarth_C">(ScorchedEarth) White Beacon</sys:String>
     <sys:String x:Key="SupplyCrate_Level03_Double_ScorchedEarth_C">(ScorchedEarth) White Beacon (Double items)</sys:String>
     <sys:String x:Key="SupplyCrate_Level15_ScorchedEarth_C">(ScorchedEarth) Green Beacon</sys:String>
