@@ -3106,8 +3106,10 @@
     <sys:String x:Key="SE_DinoSpawnEntriesWater_C">(ScorchedEarth) SE_DinoSpawnEntriesWater_C</sys:String>
     <sys:String x:Key="SE_DinoSpawnEntriesWyvern_C">(ScorchedEarth) SE_DinoSpawnEntriesWyvern_C</sys:String>
     <sys:String x:Key="SE_DinoSpawnEntriesWyvernTrench_C">(ScorchedEarth) SE_DinoSpawnEntriesWyvernTrench_C</sys:String>
-    
+
+    <sys:String x:Key="DinoSpawnEntries_Deepwater_PGM_C">(PGM) DinoSpawnEntries_Deepwater_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_InlandWater_PGM_C">(PGM) DinoSpawnEntries_InlandWater_PGM_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ocean_PGM_C">(PGM) DinoSpawnEntries_Ocean_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_TheDeepwater_PGM_C">(PGM) DinoSpawnEntries_TheDeepwater_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_TheOcean_PGM_C">(PGM) DinoSpawnEntries_TheOcean_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesBeach_PGM_C">(PGM) DinoSpawnEntriesBeach_PGM_C</sys:String>
