@@ -1579,6 +1579,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Megalodon_C",                 Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Rex_C",                       Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Sauro_C",                     Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Tuso_C",                      Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_Beer_C",                               Category="Consumables" },
             new PrimalItem { ClassName="PrimalItemResource_BlackPearl_C",                         Category="Resources" },
             new PrimalItem { ClassName="PrimalItemResource_Charcoal_C",                           Category="Resources" },
