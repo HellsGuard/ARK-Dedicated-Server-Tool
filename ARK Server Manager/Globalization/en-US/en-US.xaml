@@ -1888,6 +1888,7 @@
     <sys:String x:Key="EngramEntry_PreservingBin_C">Preserving Bin</sys:String>
     <sys:String x:Key="EngramEntry_Radio_C">Radio</sys:String>
     <sys:String x:Key="EngramEntry_Raft_C">Raft</sys:String>
+    <sys:String x:Key="EngramEntry_RefinedTranqDart_C">Shocking Tranquilizer Dart</sys:String>
     <sys:String x:Key="EngramEntry_RiotBoots_C">Riot Boots</sys:String>
     <sys:String x:Key="EngramEntry_RiotGloves_C">Riot Gauntlets</sys:String>
     <sys:String x:Key="EngramEntry_RiotHelmet_C">Riot Helmet</sys:String>
@@ -2675,6 +2676,7 @@
     <sys:String x:Key="PrimalItemResource_Sap_C">Sap</sys:String>
     <sys:String x:Key="PrimalItemResource_Silicon_C">Silica Pearls</sys:String>
     <sys:String x:Key="PrimalItemResource_Sparkpowder_C">Sparkpowder</sys:String>
+    <sys:String x:Key="PrimalItemResource_SquidOil_C">Oil (Tusoteuthis)</sys:String>
     <sys:String x:Key="PrimalItemResource_Stone_C">Stone</sys:String>
     <sys:String x:Key="PrimalItemResource_SubstrateAbsorbent_C">Absorbent Substrate</sys:String>
     <sys:String x:Key="PrimalItemResource_Thatch_C">Thatch</sys:String>
