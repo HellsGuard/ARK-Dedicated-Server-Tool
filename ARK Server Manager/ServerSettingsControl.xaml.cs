@@ -286,9 +286,8 @@ namespace ARK_Server_Manager
                         ssc.Settings = server.Profile;
                         ssc.Runtime = server.Runtime;
                         ssc.ReinitializeNetworkAdapters();
-                        ssc.RefreshBaseDinoSettingsDinoList();
+                        ssc.RefreshBaseDinoList();
                         ssc.RefreshBaseMapSpawnerList();
-                        ssc.RefreshBaseMapSpawnerDinoList();
                         ssc.RefreshBasePrimalItemList();
                         ssc.RefreshBaseSupplyCrateList();
                         ssc.LoadServerFiles();
@@ -302,9 +301,8 @@ namespace ARK_Server_Manager
             this.Settings.NPCSpawnSettings.UpdateForLocalization();
             this.Settings.ConfigOverrideSupplyCrateItems.UpdateForLocalization();
 
-            this.RefreshBaseDinoSettingsDinoList();
+            this.RefreshBaseDinoList();
             this.RefreshBaseMapSpawnerList();
-            this.RefreshBaseMapSpawnerDinoList();
             this.RefreshBasePrimalItemList();
             this.RefreshBaseSupplyCrateList();
 
@@ -873,7 +871,7 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.DinoSettings.Reset();
-            RefreshBaseDinoSettingsDinoList();
+            RefreshBaseDinoList();
         }
 
         private void DinoArkApplications_OnFilter(object sender, FilterEventArgs e)
@@ -948,7 +946,7 @@ namespace ARK_Server_Manager
             Server.Profile.DinoSettings = new DinoSettingsList(Server.Profile.DinoSpawnWeightMultipliers, Server.Profile.PreventDinoTameClassNames, Server.Profile.NPCReplacements, Server.Profile.TamedDinoClassDamageMultipliers, Server.Profile.TamedDinoClassResistanceMultipliers, Server.Profile.DinoClassDamageMultipliers, Server.Profile.DinoClassResistanceMultipliers);
             Server.Profile.DinoSettings.RenderToView();
 
-            RefreshBaseDinoSettingsDinoList();
+            RefreshBaseDinoList();
         }
 
         private void RemoveDinoSetting_Click(object sender, RoutedEventArgs e)
@@ -960,7 +958,7 @@ namespace ARK_Server_Manager
             if (!dino.KnownDino)
             {
                 this.Settings.DinoSettings.Remove(dino);
-                RefreshBaseDinoSettingsDinoList();
+                RefreshBaseDinoList();
             }
         }
 
@@ -1773,7 +1771,7 @@ namespace ARK_Server_Manager
             Server.Profile.NPCSpawnSettings.RenderToView();
 
             RefreshBaseMapSpawnerList();
-            RefreshBaseMapSpawnerDinoList();
+            RefreshBaseDinoList();
         }
 
         private void RemoveNPCSpawn_Click(object sender, RoutedEventArgs e)
@@ -2099,7 +2097,7 @@ namespace ARK_Server_Manager
             }
         }
 
-        public void RefreshBaseDinoSettingsDinoList()
+        public void RefreshBaseDinoList()
         {
             var newList = new ComboBoxItemList();
 
@@ -2122,15 +2120,33 @@ namespace ARK_Server_Manager
                 }
             }
 
+            foreach (var spawnSetting in this.Settings.NPCSpawnSettings)
+            {
+                foreach (var spawnEntry in spawnSetting.NPCSpawnEntrySettings)
+                {
+                    if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        newList.Add(new Lib.ViewModel.ComboBoxItem
+                        {
+                            DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
+                            ValueMember = spawnEntry.NPCClassString,
+                        });
+                    }
+                }
+            }
+
             try
             {
                 this.DinoSettingsGrid.BeginInit();
+                this.NPCSpawnEntrySettingsGrid.BeginInit();
 
                 this.BaseDinoSettingsDinoList = newList;
+                this.BaseMapSpawnerDinoList = newList;
             }
             finally
             {
                 this.DinoSettingsGrid.EndInit();
+                this.NPCSpawnEntrySettingsGrid.EndInit();
             }
         }
 
@@ -2166,44 +2182,6 @@ namespace ARK_Server_Manager
             finally
             {
                 this.NPCSpawnSettingsGrid.EndInit();
-            }
-        }
-
-        public void RefreshBaseMapSpawnerDinoList()
-        {
-            var newList = new ComboBoxItemList();
-
-            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
-            {
-                newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
-                                ValueMember = dino.ClassName,
-                            });
-            }
-
-            foreach (var spawnSetting in this.Settings.NPCSpawnSettings)
-            {
-                foreach (var spawnEntry in spawnSetting.NPCSpawnEntrySettings)
-                {
-                    if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                        DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
-                                        ValueMember = spawnEntry.NPCClassString,
-                                    });
-                    }
-                }
-            }
-
-            try
-            {
-                this.NPCSpawnEntrySettingsGrid.BeginInit();
-                
-                this.BaseMapSpawnerDinoList = newList;
-            }
-            finally
-            {
-                this.NPCSpawnEntrySettingsGrid.EndInit();
             }
         }
 
@@ -2385,7 +2363,7 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.DinoSettingsSection:
                                 this.Settings.ResetDinoSettingsSection();
-                                RefreshBaseDinoSettingsDinoList();
+                                RefreshBaseDinoList();
                                 break;
 
                             case ServerSettingsResetAction.EngramsSection:
@@ -2403,7 +2381,7 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.MapSpawnerOverridesSection:
                                 this.Settings.ResetNPCSpawnOverridesSection();
                                 RefreshBaseMapSpawnerList();
-                                RefreshBaseMapSpawnerDinoList();
+                                RefreshBaseDinoList();
                                 break;
 
                             case ServerSettingsResetAction.PGMSection:
@@ -2555,9 +2533,8 @@ namespace ARK_Server_Manager
 
                             settings.Profile.Save(false, false, (p, m, n) => { OverlayMessage.Content = m; });
 
-                            RefreshBaseDinoSettingsDinoList();
+                            RefreshBaseDinoList();
                             RefreshBaseMapSpawnerList();
-                            RefreshBaseMapSpawnerDinoList();
                             RefreshBasePrimalItemList();
                             RefreshBaseSupplyCrateList();
 

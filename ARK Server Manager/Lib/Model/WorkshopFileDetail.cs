@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib.Model
 {
@@ -27,15 +26,7 @@ namespace ARK_Server_Manager.Lib.Model
             if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
                 return null;
 
-            WorkshopFileDetailResponse result = null;
-
-            using (var reader = File.OpenRead(file))
-            {
-                var serializer = new XmlSerializer(typeof(WorkshopFileDetailResponse));
-                result = (WorkshopFileDetailResponse)serializer.Deserialize(reader);
-            }
-
-            return result;
+            return JsonUtils.DeserializeFromFile<WorkshopFileDetailResponse>(file);
         }
 
         public bool Save(string file)
@@ -43,12 +34,7 @@ namespace ARK_Server_Manager.Lib.Model
             if (string.IsNullOrWhiteSpace(file))
                 return false;
 
-            using (var stream = File.Open(file, FileMode.Create))
-            {
-                var serializer = new XmlSerializer(this.GetType());
-                serializer.Serialize(stream, this);
-            }
-            return true;
+            return JsonUtils.Serialize(this, file);
         }
     }
 
