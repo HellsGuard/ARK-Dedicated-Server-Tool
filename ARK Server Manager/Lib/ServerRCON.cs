@@ -351,7 +351,7 @@ namespace ARK_Server_Manager.Lib
             {
                 var savedArksPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
                 var arkData = await ArkData.ArkDataContainer.CreateAsync(savedArksPath);
-                await arkData.LoadSteamAsync(Config.Default.SteamAPIKey);
+                await arkData.LoadSteamAsync(SteamUtils.SteamWebApiKey);
                 TaskUtils.RunOnUIThreadAsync(() =>
                 {
                     foreach (var playerData in arkData.Players)

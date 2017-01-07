@@ -181,32 +181,40 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
                 await Task.Delay(500);
 
-                WorkshopFileDetailResponse cache = null;
+                WorkshopFileDetailResponse localCache = null;
+                WorkshopFileDetailResponse steamCache = null;
 
                 await Task.Run( () => {
                     var file = Path.Combine(Config.Default.DataDir, _isSotF ? Config.Default.WorkshopCacheFile_SotF : Config.Default.WorkshopCacheFile);
 
+                    // try to load the cache file.
+                    localCache = WorkshopFileDetailResponse.Load(file);
+
                     if (loadFromCacheFile)
                     {
-                        // try to load the cache file.
-                        cache = WorkshopFileDetailResponse.Load(file);
+                        steamCache = localCache;
 
                         // check if the cache is old
-                        if (cache != null && cache.cached.AddHours(Config.Default.WorkshopCache_ExpiredHours) < DateTime.UtcNow)
+                        if (localCache != null && localCache.cached.AddHours(Config.Default.WorkshopCache_ExpiredHours) < DateTime.UtcNow)
                             // cache is considered old, clear cache variable so it will reload from internet
-                            cache = null;
+                            steamCache = null;
                     }
 
                     // check if the cache exists
-                    if (cache == null)
+                    if (steamCache == null)
                     {
-                        cache = SteamUtils.GetSteamModDetails(_isSotF ? Config.Default.AppId_SotF : Config.Default.AppId);
-                        if (cache != null)
-                            cache.Save(file);
+                        steamCache = SteamUtils.GetSteamModDetails(_isSotF ? Config.Default.AppId_SotF : Config.Default.AppId);
+                        if (steamCache != null)
+                            steamCache.Save(file);
+                        else
+                        {
+                            MessageBox.Show(_globalizer.GetResourceString("WorkshopFiles_Refresh_FailedLabel"), _globalizer.GetResourceString("WorkshopFiles_Refresh_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                            steamCache = localCache;
+                        }
                     }
                 });
 
-                WorkshopFiles = WorkshopFileList.GetList(cache);
+                WorkshopFiles = WorkshopFileList.GetList(steamCache);
             }
             finally
             {

@@ -140,6 +140,16 @@ namespace ARK_Server_Manager.Lib.Model
             set;
         }
 
+        public string CachedTimeFormatted
+        {
+            get
+            {
+                if (CachedTime == DateTime.MinValue)
+                    return "";
+                return CachedTime.ToString("G");
+            }
+        }
+
         public new void Add(WorkshopFileItem item)
         {
             if (item == null || this.Any(m => m.WorkshopId.Equals(item.WorkshopId)))
@@ -151,12 +161,15 @@ namespace ARK_Server_Manager.Lib.Model
         public static WorkshopFileList GetList(WorkshopFileDetailResponse response)
         {
             var result = new WorkshopFileList();
-            result.CachedTime = response.cached.ToLocalTime();
-            if (response.publishedfiledetails != null)
+            if (response != null)
             {
-                foreach (var detail in response.publishedfiledetails)
+                result.CachedTime = response.cached.ToLocalTime();
+                if (response.publishedfiledetails != null)
                 {
-                    result.Add(WorkshopFileItem.GetItem(detail));
+                    foreach (var detail in response.publishedfiledetails)
+                    {
+                        result.Add(WorkshopFileItem.GetItem(detail));
+                    }
                 }
             }
             return result;
