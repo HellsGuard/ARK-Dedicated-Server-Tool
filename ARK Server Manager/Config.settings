@@ -96,7 +96,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="ASMSteamAPIKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">97D490F696FA0B36EB7141B458040113</Value>
+      <Value Profile="(Default)">989082D6C4449523504C06E1BC118627</Value>
     </Setting>
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>

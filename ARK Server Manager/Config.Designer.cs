@@ -316,7 +316,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("97D490F696FA0B36EB7141B458040113")]
+        [global::System.Configuration.DefaultSettingValueAttribute("989082D6C4449523504C06E1BC118627")]
         public string ASMSteamAPIKey {
             get {
                 return ((string)(this["ASMSteamAPIKey"]));
