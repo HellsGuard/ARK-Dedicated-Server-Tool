@@ -20,45 +20,6 @@ namespace ARK_Server_Manager.Lib
 {
     public class ServerRCON : DependencyObject, IAsyncDisposable
     {        
-        public static readonly DependencyProperty StatusProperty =
-            DependencyProperty.Register(nameof(Status), typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
-        public static readonly DependencyProperty PlayersProperty =
-            DependencyProperty.Register(nameof(Players), typeof(SortableObservableCollection<PlayerInfo>), typeof(ServerRCON), new PropertyMetadata(null));
-
-        public ConsoleStatus Status
-        {
-            get { return (ConsoleStatus)GetValue(StatusProperty); }
-            set { SetValue(StatusProperty, value); }
-        }
-
-        public SortableObservableCollection<PlayerInfo> Players
-        {
-            get { return (SortableObservableCollection<PlayerInfo>)GetValue(PlayersProperty); }
-            set { SetValue(PlayersProperty, value); }
-        }
-
-
-
-        public int CountPlayers
-        {
-            get { return (int)GetValue(CountPlayersProperty); }
-            set { SetValue(CountPlayersProperty, value); }
-        }
-
-        public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerRCON), new PropertyMetadata(0));
-
-
-        public enum ConsoleStatus
-        {
-            Disconnected,
-            Connected,
-        };
-
-        private Logger chatLogger;
-        private Logger allLogger;
-        private Logger eventLogger;
-        private Logger _logger;
-
         public class ConsoleCommand
         {
             public ConsoleStatus status;
@@ -72,31 +33,58 @@ namespace ARK_Server_Manager.Lib
             public IEnumerable<string> lines = new string[0];
         };
 
+        private class CommandListener : IDisposable
+        {
+            public Action<ConsoleCommand> Callback { get; set; }
+            public Action<CommandListener> DisposeAction { get; set; }
+
+            public void Dispose()
+            {
+                DisposeAction(this);
+            }
+        }
+
         private const int ListPlayersPeriod = 5000;
         private const int GetChatPeriod = 1000;
+        private const int MaxCommandRetries = 10;
+        private const int RetryDelay = 100;
+        private const string NoResponseMatch = "Server received, But no response!!";
+        public const string NoResponseOutput = "NO_RESPONSE";
+
+        public enum ConsoleStatus
+        {
+            Disconnected,
+            Connected,
+        };
+
+        private enum LogEventType
+        {
+            All,
+            Chat,
+            Event
+        }
+
+        private static readonly char[] lineSplitChars = new char[] { '\n' };
+        private static readonly char[] argsSplitChars = new char[] { ' ' };
+
         private readonly ActionQueue commandProcessor;
         private readonly ActionQueue outputProcessor;
+
+        private Logger _logger;
+        private Logger allLogger;
+        private Logger chatLogger;
+        private Logger eventLogger;
         private RCONParameters rconParams;
-        //private readonly PropertyChangeNotifier runtimeChangedNotifier;
         private QueryMaster.Rcon console;
+        private List<CommandListener> commandListeners = new List<CommandListener>();
+        private bool updatingPlayerDetails = false;
+
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(nameof(Status), typeof(ConsoleStatus), typeof(ServerRCON), new PropertyMetadata(ConsoleStatus.Disconnected));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(SortableObservableCollection<PlayerInfo>), typeof(ServerRCON), new PropertyMetadata(null));
+        public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerRCON), new PropertyMetadata(0));
 
         public ServerRCON(RCONParameters parameters)
         {
-            //this.runtimeChangedNotifier = new PropertyChangeNotifier(server.Runtime, ServerRuntime.ProfileSnapshotProperty, (s, d) =>
-            //{
-            //    var oldSnapshot = this.rconParams;
-            //    if (d == null || d.NewValue == null) return;
-
-            //    var newSnapshot = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
-            //    this.rconParams = (ServerRuntime.RuntimeProfileSnapshot)d.NewValue;
-
-            //    bool reinitLoggers = !String.Equals(this.rconParams.ProfileName, newSnapshot.ProfileName);
-            //    if (reinitLoggers)
-            //    {
-            //        ReinitializeLoggers();
-            //    }
-            //});
-
             this.commandProcessor = new ActionQueue(TaskScheduler.Default);
 
             // This is on the UI thread so we can do things like update dependency properties and whatnot.
@@ -110,19 +98,30 @@ namespace ARK_Server_Manager.Lib
             commandProcessor.PostAction(AutoGetChat);
         }
 
+        public ConsoleStatus Status
+        {
+            get { return (ConsoleStatus)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
+
+        public SortableObservableCollection<PlayerInfo> Players
+        {
+            get { return (SortableObservableCollection<PlayerInfo>)GetValue(PlayersProperty); }
+            set { SetValue(PlayersProperty, value); }
+        }
+
+        public int CountPlayers
+        {
+            get { return (int)GetValue(CountPlayersProperty); }
+            set { SetValue(CountPlayersProperty, value); }
+        }
+
         private void ReinitializeLoggers()
         {
             this.allLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_All");
             this.chatLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Chat");
             this.eventLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Event");
             this._logger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Debug");
-        }
-
-        private enum LogEventType
-        {
-            All,
-            Chat,
-            Event
         }
 
         private void LogEvent(LogEventType eventType, string message)
@@ -172,19 +171,6 @@ namespace ARK_Server_Manager.Lib
             await this.outputProcessor.DisposeAsync();
             // this.runtimeChangedNotifier.Dispose();
         }
-
-        private class CommandListener : IDisposable
-        {
-            public Action<ConsoleCommand> Callback { get; set; }
-            public Action<CommandListener> DisposeAction { get; set; }
-
-            public void Dispose()
-            {
-                DisposeAction(this);
-            }
-        }
-
-        List<CommandListener> commandListeners = new List<CommandListener>();
 
         public IDisposable RegisterCommandListener(Action<ConsoleCommand> callback)
         {
@@ -349,6 +335,10 @@ namespace ARK_Server_Manager.Lib
 
         private async Task<string> UpdatePlayerDetails()
         {
+            if (updatingPlayerDetails)
+                return string.Empty;
+            updatingPlayerDetails = true;
+
             var returnMessage = string.Empty;
 
             if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
@@ -372,19 +362,30 @@ namespace ARK_Server_Manager.Lib
 
                 TaskUtils.RunOnUIThreadAsync(() =>
                 {
-                    foreach (var playerData in arkData.Players)
+                    try
                     {
-                        var playerToUpdate = this.Players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
-                        if (playerToUpdate != null)
+                        foreach (var playerData in arkData.Players)
                         {
-                            playerToUpdate.UpdateArkDataAsync(playerData).DoNotWait();
+                            var playerToUpdate = this.Players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
+                            if (playerToUpdate == null)
+                            {
+                                playerToUpdate = new PlayerInfo()
+                                {
+                                    SteamId = Int64.Parse(playerData.SteamId),
+                                    SteamName = playerData.SteamName
+                                };
+                                this.Players.Add(playerToUpdate);
+                            }
+
+                            if (playerToUpdate != null)
+                            {
+                                playerToUpdate.UpdateArkDataAsync(playerData).DoNotWait();
+                            }
                         }
-                        else
-                        {
-                            var newPlayer = new PlayerInfo() { SteamId = Int64.Parse(playerData.SteamId), SteamName = playerData.SteamName };
-                            newPlayer.UpdateArkDataAsync(playerData).DoNotWait();
-                            this.Players.Add(newPlayer);
-                        }
+                    }
+                    finally
+                    {
+                        updatingPlayerDetails = false;
                     }
                 }).DoNotWait();
             }
@@ -392,11 +393,6 @@ namespace ARK_Server_Manager.Lib
             return returnMessage;
         }
 
-        private static readonly char[] lineSplitChars = new char[] { '\n' };
-        private static readonly char[] argsSplitChars = new char[] { ' ' };
-        private const string NoResponseMatch = "Server received, But no response!!";
-        public const string NoResponseOutput = "NO_RESPONSE";
-        
         private bool ProcessInput(ConsoleCommand command)
         {
             try
@@ -447,8 +443,6 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
-        const int MaxCommandRetries = 10;
-        const int RetryDelay = 100;
         private string SendCommand(string command)
         {
             int retries = 0;
