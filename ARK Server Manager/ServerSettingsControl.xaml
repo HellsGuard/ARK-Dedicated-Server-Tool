@@ -1550,14 +1550,15 @@
                                         </Grid.ColumnDefinitions>
 
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableHardcore}" Content="{DynamicResource ServerSettings_EnableHardcoreLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableHardcoreTooltip}"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
-                                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableExtraStructurePreventionVolumes}" Content="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesTooltip}"/>
-                                    
                                         <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnablePVP}" Content="{DynamicResource ServerSettings_EnablePvPLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvPTooltip}"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
-                                    
                                         <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding AllowCaveBuildingPvE}" Content="{DynamicResource ServerSettings_EnablePvECaveBuildingLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePvECaveBuildingTooltip}"/>
+
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableExtraStructurePreventionVolumes}" Content="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableExtraStructurePreventionVolumesTooltip}"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvP}" Content="{DynamicResource ServerSettings_DisablePvPFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvPFriendlyFireTooltip}" />
                                         <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding DisableFriendlyFirePvE}" Content="{DynamicResource ServerSettings_DisablePvEFriendlyFireLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePvEFriendlyFireTooltip}" />
+
+                                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisableLootCrates}" Content="{DynamicResource ServerSettings_DisableLootCratesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableLootCratesTooltip}" />
+                                        <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AllowCrateSpawnsOnTopOfStructures}" Content="{DynamicResource ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip}" />
                                     </Grid>
 
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeLabel}" Value="{Binding MaxNumberOfPlayersInTribe}" Suffix="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeUnits}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="5" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_MaxNumberOfPlayersInTribeTooltip}" />

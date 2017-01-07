@@ -38,7 +38,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
             <TextBlock Margin="30,5,5,0" Text="{DynamicResource WorkshopFiles_LastRefreshedLabel}" VerticalAlignment="Center" />
-            <TextBlock Margin="5,5,5,0" Text="{Binding WorkshopFiles.CachedTime}" VerticalAlignment="Center" />
+            <TextBlock Margin="5,5,5,0" Text="{Binding WorkshopFiles.CachedTimeFormatted}" VerticalAlignment="Center" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">

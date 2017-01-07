@@ -52,17 +52,35 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
-        public static SteamUserList GetList(SteamUserDetailResponse response)
+        public static SteamUserList GetList(SteamUserDetailResponse response, string[] steamIds)
         {
-            if (response == null)
-                return new SteamUserList();
-
             var result = new SteamUserList();
-            if (response.players != null)
+            if (steamIds != null)
+            {
+                foreach (var steamId in steamIds)
+                {
+                    result.Add(new SteamUserItem()
+                    {
+                        SteamId = steamId,
+                        SteamName = "<not available>",
+                        ProfileUrl = string.Empty,
+                });
+                }
+            }
+
+            if (response?.players != null)
             {
                 foreach (var detail in response.players)
                 {
-                    result.Add(SteamUserItem.GetItem(detail));
+                    var item = result.FirstOrDefault(i => i.SteamId == detail.steamid);
+                    if (item == null)
+                        result.Add(SteamUserItem.GetItem(detail));
+                    else
+                    {
+                        item.SteamId = detail.steamid;
+                        item.SteamName = detail.personaname ?? string.Empty;
+                        item.ProfileUrl = detail.profileurl ?? string.Empty;
+                    }
                 }
             }
             return result;
@@ -103,15 +121,15 @@ namespace ARK_Server_Manager.Lib.Model
             set { SetValue(ProfileUrlProperty, value); }
         }
 
-        public static SteamUserItem GetItem(SteamUserDetail item)
+        public static SteamUserItem GetItem(SteamUserDetail detail)
         {
-            if (string.IsNullOrWhiteSpace(item.steamid))
+            if (string.IsNullOrWhiteSpace(detail.steamid))
                 return null;
 
             var result = new SteamUserItem();
-            result.SteamId = item.steamid;
-            result.SteamName = item.personaname ?? string.Empty;
-            result.ProfileUrl = item.profileurl ?? string.Empty;
+            result.SteamId = detail.steamid;
+            result.SteamName = detail.personaname ?? string.Empty;
+            result.ProfileUrl = detail.profileurl ?? string.Empty;
 
             return result;
         }

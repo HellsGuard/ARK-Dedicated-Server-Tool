@@ -275,6 +275,7 @@ namespace ARK_Server_Manager.Lib.Model
                     case ModUtils.MODTYPENAME_MAPEXT:
                     case ModUtils.MODTYPENAME_MOD:
                     case ModUtils.MODTYPENAME_UNKNOWN:
+                    case ModUtils.MODTYPENAME_NOTDOWNLOADED:
                         modIdString += $"{delimiter}{mod.ModId}";
                         delimiter = ",";
                         break;
@@ -284,18 +285,43 @@ namespace ARK_Server_Manager.Lib.Model
             return true;
         }
 
-        public static ModDetailList GetModDetails(PublishedFileDetailsResponse response, string modsRootFolder)
+        public static ModDetailList GetModDetails(PublishedFileDetailsResponse response, string modsRootFolder, List<string> modIdList)
         {
             var result = new ModDetailList();
+
+            if (modIdList != null)
+            {
+                foreach (var modId in modIdList)
+                {
+                    result.Add(new ModDetail()
+                    {
+                        AppId = "",
+                        ModId = modId,
+                        TimeUpdated = 0,
+                        Title = "Mod details not available",
+                    });
+                }
+            }
+
             if (response != null && response.publishedfiledetails != null)
             {
                 foreach (var detail in response.publishedfiledetails)
                 {
-                    result.Add(ModDetail.GetModDetail(detail));
+                    var temp = result.FirstOrDefault(d => d.ModId == detail.publishedfileid);
+                    if (temp == null)
+                        result.Add(ModDetail.GetModDetail(detail));
+                    else
+                    {
+                        temp.AppId = detail.creator_app_id;
+                        temp.ModId = detail.publishedfileid;
+                        temp.TimeUpdated = detail.time_updated;
+                        temp.Title = detail.title;
+                    }
                 }
-                result.SetPublishedFileIndex();
-                result.PopulateExtended(modsRootFolder);
             }
+
+            result.SetPublishedFileIndex();
+            result.PopulateExtended(modsRootFolder);
             return result;
         }
 
@@ -397,7 +423,7 @@ namespace ARK_Server_Manager.Lib.Model
         }
 
 
-        public bool IsValidModType => !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN);
+        public bool IsValidModType => !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN) && !ModTypeString.Equals(ModUtils.MODTYPENAME_NOTDOWNLOADED);
 
         public string LastWriteTimeString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();
 
@@ -455,7 +481,10 @@ namespace ARK_Server_Manager.Lib.Model
                     ModTypeString = ModUtils.MODTYPENAME_MAPEXT;
                     break;
                 default:
-                    ModTypeString = ModUtils.MODTYPENAME_UNKNOWN;
+                    if (string.IsNullOrWhiteSpace(AppId))
+                        ModTypeString = ModUtils.MODTYPENAME_UNKNOWN;
+                    else
+                        ModTypeString = ModUtils.MODTYPENAME_NOTDOWNLOADED;
                     break;
             }
         }

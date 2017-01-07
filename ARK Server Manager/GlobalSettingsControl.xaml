@@ -27,6 +27,11 @@
                     <Label Content="{DynamicResource GlobalSettings_SetLocationButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
                 </StackPanel>
             </ContentControl>
+            <ContentControl x:Key="SteamAPIKeyButtonContent">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{DynamicResource GlobalSettings_SteamAPIKeyButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
+                </StackPanel>
+            </ContentControl>
             <ContentControl x:Key="CacheDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Art/Open_6529.png" Width="16" Height="16" Margin="5,0,5,0"/>
@@ -42,6 +47,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -78,7 +84,11 @@
                 <TextBox  Grid.Row="4" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.DataDir, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" />
                 <Button   Grid.Row="4" Grid.Column="2" Margin="5,1,0,1" Content="{DynamicResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
 
-                <GroupBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <Label    Grid.Row="5" Grid.Column="0" Margin="1" Content="{DynamicResource GlobalSettings_SteamAPIKeyLabel}" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.SteamAPIKey, Mode=TwoWay}" VerticalContentAlignment="Center" />
+                <Button   Grid.Row="5" Grid.Column="2" Margin="5,1,0,1" Content="{DynamicResource SteamAPIKeyButtonContent}" VerticalAlignment="Center" Click="ApplySteamAPIKey_Click"/>
+
+                <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_LanguageSelectionLabel}"/>
                     </GroupBox.Header>
@@ -98,7 +108,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}"/>
                     </GroupBox.Header>
@@ -118,7 +128,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_ServerStartupLabel}"/>
                     </GroupBox.Header>
@@ -139,13 +149,14 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_UpdateModSettingsLabel}"/>
                     </GroupBox.Header>
             
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -167,7 +178,9 @@
                         <CheckBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceUpdateMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceUpdateModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceUpdateModsTooltip}" HorizontalAlignment="Left"/>
                         <CheckBox Grid.Row="0" Grid.Column="6" Margin="0,0,0,5" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceCopyMods, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceCopyModsLabel}" ToolTip="{DynamicResource GlobalSettings_ForceCopyModsTooltip}" HorizontalAlignment="Left"/>
 
-                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Content="{DynamicResource GlobalSettings_SteamCmdCredentialsLabel}" VerticalAlignment="Bottom" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdCredentialsTooltip}" HorizontalAlignment="Left">
+                        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,0,0,0" IsChecked="{Binding CurrentConfig.ServerUpdate_ForceUpdateModsIfNoSteamInfo, Mode=TwoWay}" Content="{DynamicResource GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel}" ToolTip="{DynamicResource GlobalSettings_ForceUpdateModsIfNoSteamInfoTooltip}" HorizontalAlignment="Left"/>
+
+                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,0,0,5" IsChecked="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Content="{DynamicResource GlobalSettings_SteamCmdCredentialsLabel}" VerticalAlignment="Bottom" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdCredentialsTooltip}" HorizontalAlignment="Left">
                             <CheckBox.Style>
                                 <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                     <Style.Triggers>
@@ -178,8 +191,8 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <Label Grid.Row="1" Grid.Column="2" Content="{DynamicResource GlobalSettings_SteamCmdUsernameLabel}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="3" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Username}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdUsernameTooltip}">
+                        <Label Grid.Row="2" Grid.Column="2" Content="{DynamicResource GlobalSettings_SteamCmdUsernameLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="3" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Username}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdUsernameTooltip}">
                             <TextBox.Style>
                                 <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
                                     <Style.Triggers>
@@ -193,8 +206,8 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        <Label Grid.Row="1" Grid.Column="5" Content="{DynamicResource GlobalSettings_SteamCmdPasswordLabel}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="6" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
+                        <Label Grid.Row="2" Grid.Column="5" Content="{DynamicResource GlobalSettings_SteamCmdPasswordLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="6" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
                             <TextBox.Style>
                                 <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
                                     <Style.Triggers>
@@ -208,7 +221,7 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        <Button Grid.Row="1" Grid.Column="8" Margin="1" Content="{DynamicResource GlobalSettings_SteamCMDAuthenticateButtonLabel}" Click="SteamCMDAuthenticate_Click">
+                        <Button Grid.Row="2" Grid.Column="8" Margin="1" Content="{DynamicResource GlobalSettings_SteamCMDAuthenticateButtonLabel}" Click="SteamCMDAuthenticate_Click">
                             <Button.Style>
                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                                     <Style.Triggers>
@@ -223,7 +236,7 @@
                             </Button.Style>
                         </Button>
 
-                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Content="{DynamicResource GlobalSettings_SteamCMDAuthentication_DisabledTooltip}" VerticalAlignment="Center">
+                        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7" Content="{DynamicResource GlobalSettings_SteamCMDAuthentication_DisabledTooltip}" VerticalAlignment="Center">
                             <Label.Style>
                                 <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
                                     <Style.Triggers>
@@ -235,11 +248,11 @@
                             </Label.Style>
                         </Label>
 
-                        <local:AnnotatedSlider Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,5,0" Label="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursLabel}" Value="{Binding CurrentConfig.WorkshopCache_ExpiredHours}" Minimum="1" Maximum="1000" SmallChange="1" LargeChange="12" TickFrequency="24" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Hours}" ToolTip="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursTooltip}"/>
+                        <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,5,0" Label="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursLabel}" Value="{Binding CurrentConfig.WorkshopCache_ExpiredHours}" Minimum="1" Maximum="1000" SmallChange="1" LargeChange="12" TickFrequency="24" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Hours}" ToolTip="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursTooltip}"/>
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}" IsEnabled="{Binding IsAdministrator}">
+                <GroupBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}" IsEnabled="{Binding IsAdministrator}">
                     <GroupBox.Header>
                         <CheckBox IsChecked="{Binding CurrentConfig.AutoUpdate_EnableUpdate}" Content="{DynamicResource GlobalSettings_AutoUpdateLabel}" VerticalAlignment="Center"/>
                     </GroupBox.Header>
@@ -284,7 +297,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_ShutdownLabel}"/>
                     </GroupBox.Header>
@@ -320,7 +333,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_EmailSettingsLabel}"/>
                     </GroupBox.Header>
@@ -362,7 +375,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_EmailNotifySettingsLabel}"/>
                     </GroupBox.Header>

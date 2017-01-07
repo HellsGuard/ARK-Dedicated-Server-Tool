@@ -84,7 +84,7 @@
     <sys:String x:Key="ModDetails_ModIdColumnLabel">Mod ID</sys:String>
     <sys:String x:Key="ModDetails_TitleColumnLabel">Name</sys:String>
     <sys:String x:Key="ModDetails_TypeColumnLabel">Mod Type</sys:String>
-    <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Updated</sys:String>
+    <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Downloaded</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Add mods to the list.</sys:String>
     <sys:String x:Key="ModDetails_LoadModsTooltip">Load mod list from server mods folder.</sys:String>
@@ -102,6 +102,7 @@
     <sys:String x:Key="WorkshopFiles_ProfileTitle">Workshop Details - {0}</sys:String>
     <sys:String x:Key="WorkshopFiles_Load_FailedTitle">Load Workshop Items Error</sys:String>
     <sys:String x:Key="WorkshopFiles_Refresh_FailedTitle">Refresh Workshop Items Error</sys:String>
+    <sys:String x:Key="WorkshopFiles_Refresh_FailedLabel">Loading workshop information from Steam failed, populating with the local cache instead.</sys:String>
 
     <sys:String x:Key="WorkshopFiles_TotalCountLabel">Total Count:</sys:String>
     <sys:String x:Key="WorkshopFiles_SelectedCountLabel">Selected Count:</sys:String>
@@ -170,7 +171,9 @@
     <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Enable Run as Administrator Prompt on Startup</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamAPIKeyLabel">Steam WebApi Key:</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Get WebApi Key...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Server Startup Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
@@ -190,6 +193,8 @@
     <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">If enabled, the mods will be downloaded from steam even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Force mod file copying</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">If enabled, the mod files will be copied to the server folder even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel">Force mod file downloads when no steam information available</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoTooltip">If enabled, the mods will be downloaded from steam even when no steam information is available.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdCredentialsLabel">Use Anonymous Credentials</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Controls whether the anonymous user is used to download from SteamCMD.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Username:</sys:String>
@@ -595,6 +600,8 @@
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Disable Loot Crates</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Allow Crate Spawns on top of Structures</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">If enabled, will allow from-the-air Supply Crates to appear on top of Structures, rather than being prevented by Structures.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Prevent Building in Resource Rich Areas</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>

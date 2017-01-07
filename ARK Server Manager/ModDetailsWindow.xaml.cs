@@ -362,7 +362,7 @@ namespace ARK_Server_Manager
             var modIdList = ModDetails.Select(m => m.ModId).ToList();
 
             var response = await GetModDetails(modIdList);
-            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);
             UpdateModDetailsList(modDetails);
 
             ModDetailsChanged = true;
@@ -383,7 +383,7 @@ namespace ARK_Server_Manager
             modIdList.AddRange(ModUtils.GetModIdList(_profile.ServerModIds));
 
             var response = await GetModDetails(modIdList);
-            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);
             UpdateModDetailsList(modDetails);
 
             ModDetailsChanged = false;
@@ -405,7 +405,7 @@ namespace ARK_Server_Manager
             }
 
             var response = await GetModDetails(modIdList);
-            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);
             UpdateModDetailsList(modDetails);
 
             ModDetailsChanged = true;
@@ -458,7 +458,6 @@ namespace ARK_Server_Manager
 
             ModDetailsView?.Refresh();
         }
-
 
         #region Drag and Drop
 

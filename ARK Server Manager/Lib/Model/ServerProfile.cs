@@ -616,6 +616,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableLootCratesProperty, value); }
         }
 
+        public static readonly DependencyProperty AllowCrateSpawnsOnTopOfStructuresProperty = DependencyProperty.Register(nameof(AllowCrateSpawnsOnTopOfStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public bool AllowCrateSpawnsOnTopOfStructures
+        {
+            get { return (bool)GetValue(AllowCrateSpawnsOnTopOfStructuresProperty); }
+            set { SetValue(AllowCrateSpawnsOnTopOfStructuresProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableExtraStructurePreventionVolumesProperty = DependencyProperty.Register(nameof(EnableExtraStructurePreventionVolumes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool EnableExtraStructurePreventionVolumes
@@ -2202,6 +2209,8 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
 
+            serverArgs.Append($"?AllowCrateSpawnsOnTopOfStructures={this.AllowCrateSpawnsOnTopOfStructures.ToString()}");
+
             if (this.SOTF_Enabled)
             {
                 serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
@@ -2849,6 +2858,8 @@ namespace ARK_Server_Manager.Lib
                                                 result.AppendLine("The map mod is outdated.");
                                         }
                                     }
+                                    else
+                                        result.AppendLine("The map mod details could not be retrieved from steam.");
                                 }
                             }
                         }
@@ -2894,6 +2905,8 @@ namespace ARK_Server_Manager.Lib
                                                 result.AppendLine("The total conversion mod is outdated.");
                                         }
                                     }
+                                    else
+                                        result.AppendLine("The total conversion mod details could not be retrieved from steam.");
                                 }
                             }
                         }
@@ -2922,6 +2935,8 @@ namespace ARK_Server_Manager.Lib
                                     result.AppendLine($"Mod {modId} is outdated.");
                             }
                         }
+                        else
+                            result.AppendLine($"Mod {modId} details could not be retrieved from steam.");
                     }
                 }
             }

@@ -316,10 +316,10 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("97D490F696FA0B36EB7141B458040113")]
-        public string SteamAPIKey {
+        [global::System.Configuration.DefaultSettingValueAttribute("989082D6C4449523504C06E1BC118627")]
+        public string ASMSteamAPIKey {
             get {
-                return ((string)(this["SteamAPIKey"]));
+                return ((string)(this["ASMSteamAPIKey"]));
             }
         }
         
@@ -1344,7 +1344,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        [global::System.Configuration.DefaultSettingValueAttribute("168")]
         public int WorkshopCache_ExpiredHours {
             get {
                 return ((int)(this["WorkshopCache_ExpiredHours"]));
@@ -1486,6 +1486,39 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["ServerCallUrlFormat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamAPIKey {
+            get {
+                return ((string)(this["SteamAPIKey"]));
+            }
+            set {
+                this["SteamAPIKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://steamcommunity.com/dev/apikey")]
+        public string SteamAPIKeyUrl {
+            get {
+                return ((string)(this["SteamAPIKeyUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ServerUpdate_ForceUpdateModsIfNoSteamInfo {
+            get {
+                return ((bool)(this["ServerUpdate_ForceUpdateModsIfNoSteamInfo"]));
+            }
+            set {
+                this["ServerUpdate_ForceUpdateModsIfNoSteamInfo"] = value;
             }
         }
     }

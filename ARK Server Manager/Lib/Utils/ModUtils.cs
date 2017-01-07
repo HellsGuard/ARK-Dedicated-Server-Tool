@@ -15,7 +15,8 @@ namespace ARK_Server_Manager.Lib
         public const string MODTYPE_MOD = "1";
         public const string MODTYPE_TOTCONV = "3";
 
-        public const string MODTYPENAME_UNKNOWN = "<not downloaded>";
+        public const string MODTYPENAME_UNKNOWN = "<unknown>";
+        public const string MODTYPENAME_NOTDOWNLOADED = "<not downloaded>";
         public const string MODTYPENAME_MAP = "Map";
         public const string MODTYPENAME_MAPEXT = "Map Extension";
         public const string MODTYPENAME_MOD = "Mod";

@@ -180,20 +180,6 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static async Task<bool> CheckServerStatusViaSteam(IPEndPoint endpoint)
-        {
-            try
-            {
-                var details = await SteamUtils.GetSteamServerDetails(endpoint);
-                return (details?.servers?.Count > 0);
-            }
-            catch (Exception ex)
-            {
-                Logger.Debug($"Exception checking status via steam for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
-                return false;
-            }
-        }
-
         public static async Task PerformServerCallToAPI(IPEndPoint endpoint)
         {
             try

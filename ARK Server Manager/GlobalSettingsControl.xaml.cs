@@ -10,6 +10,7 @@ using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace ARK_Server_Manager
 {
@@ -66,6 +67,11 @@ namespace ARK_Server_Manager
             XmlNode node = xmlDoc.SelectSingleNode(xPath, ns);
             string version = node.Value;
             return version;
+        }
+
+        private void ApplySteamAPIKey_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Config.Default.SteamAPIKeyUrl);
         }
 
         private async void SendTestEmail_Click(object sender, RoutedEventArgs e)

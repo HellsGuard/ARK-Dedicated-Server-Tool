@@ -690,8 +690,10 @@ namespace ARK_Server_Manager.Lib
 
                         var modId = updateModIds[index];
                         var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
-
-                        UpdateReason += $"{delimiter}{modName}";
+                        if (string.IsNullOrWhiteSpace(modName))
+                            UpdateReason += $"{delimiter}{modId}";
+                        else
+                            UpdateReason += $"{delimiter}{modName}";
                         delimiter = ", ";
                     }
                 }
@@ -956,9 +958,13 @@ namespace ARK_Server_Manager.Lib
             var modDetails = SteamUtils.GetSteamModDetails(modIdList);
             if (modDetails == null)
             {
-                LogError("Mods cannot be updated, unable to download steam information.");
-                ExitCode = EXITCODE_CACHEMODDETAILSDOWNLOADFAILED;
-                return;
+                if (!Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
+                {
+                    LogError("Mods cannot be updated, unable to download steam information.");
+                    LogMessage($"If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.");
+                    ExitCode = EXITCODE_CACHEMODDETAILSDOWNLOADFAILED;
+                    return;
+                }
             }
 
             LogMessage($"Downloaded mod information for {modIdList.Count} mods from steam.");
@@ -966,49 +972,62 @@ namespace ARK_Server_Manager.Lib
 
             // cycle through each mod finding which needs to be updated.
             var updateModIds = new List<string>();
-            if (Config.Default.ServerUpdate_ForceUpdateMods)
+            if (modDetails == null)
             {
-                LogMessage("All mods will be updated - force mod update is TRUE.");
-                updateModIds.AddRange(modIdList);
+                if (Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
+                {
+                    LogMessage("All mods will be updated - unable to download steam information and force mod update is TRUE.");
+
+                    updateModIds.AddRange(modIdList);
+                    modDetails = new Model.PublishedFileDetailsResponse();
+                }
             }
             else
             {
-                LogMessage("Mods will be selectively updated - force mod update is FALSE.");
-
-                foreach (var modId in modIdList)
+                if (Config.Default.ServerUpdate_ForceUpdateMods)
                 {
-                    var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
-                    if (modDetail == null)
-                    {
-                        LogMessage($"Mod {modId} will not be updated - unable to download steam information.");
-                        continue;
-                    }
+                    LogMessage("All mods will be updated - force mod update is TRUE.");
+                    updateModIds.AddRange(modIdList);
+                }
+                else
+                {
+                    LogMessage("Mods will be selectively updated - force mod update is FALSE.");
 
-                    if (modDetail.time_updated == 0)
+                    foreach (var modId in modIdList)
                     {
-                        LogMessage($"Mod {modId} will be updated - mod is private.");
-                        updateModIds.Add(modId);
-                    }
-                    else
-                    {
-                        var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, false);
-
-                        // check if the mod needs to be updated
-                        var steamLastUpdated = modDetail.time_updated;
-                        var modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
-                        if (steamLastUpdated > modCacheLastUpdated)
+                        var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
+                        if (modDetail == null)
                         {
-                            LogMessage($"Mod {modId} will be updated - new version found.");
-                            updateModIds.Add(modId);
+                            LogMessage($"Mod {modId} will not be updated - unable to download steam information.");
+                            continue;
                         }
-                        else if (modCacheLastUpdated == 0)
+
+                        if (modDetail.time_updated == 0)
                         {
-                            LogMessage($"Mod {modId} will be updated - cache not versioned.");
+                            LogMessage($"Mod {modId} will be updated - mod is private.");
                             updateModIds.Add(modId);
                         }
                         else
                         {
-                            LogMessage($"Mod {modId} update skipped - cache contains the latest version.");
+                            var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, false);
+
+                            // check if the mod needs to be updated
+                            var steamLastUpdated = modDetail.time_updated;
+                            var modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                            if (steamLastUpdated > modCacheLastUpdated)
+                            {
+                                LogMessage($"Mod {modId} will be updated - new version found.");
+                                updateModIds.Add(modId);
+                            }
+                            else if (modCacheLastUpdated == 0)
+                            {
+                                LogMessage($"Mod {modId} will be updated - cache not versioned.");
+                                updateModIds.Add(modId);
+                            }
+                            else
+                            {
+                                LogMessage($"Mod {modId} update skipped - cache contains the latest version.");
+                            }
                         }
                     }
                 }
@@ -1049,7 +1068,7 @@ namespace ARK_Server_Manager.Lib
 
                 LogMessage("");
                 LogMessage($"Started mod cache update {index + 1} of {updateModIds.Count}");
-                LogMessage($"{modId} - {modDetail?.title}");
+                LogMessage($"{modId} - {modDetail?.title ?? "<unknown>"}");
 
                 // update the mod cache
                 var steamCmdArgs = string.Empty;
@@ -1827,8 +1846,8 @@ namespace ARK_Server_Manager.Lib
                     LoadProfiles();
 
                     ServerApp app = new ServerApp();
-                    app.UpdateServerCache();
                     app.ServerProcess = ServerProcessType.AutoUpdate;
+                    app.UpdateServerCache();
                     exitCode = app.ExitCode;
 
                     if (exitCode == EXITCODE_NORMALEXIT)

@@ -26,7 +26,7 @@ namespace ARK_Server_Manager.Lib
             {
                 do
                 {
-                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={Config.Default.SteamAPIKey}&format=json&query_type=1&page={requestIndex}&numperpage={MAX_IDS}&appid={appId}&match_all_tags=0&include_recent_votes_only=0&totalonly=0&return_vote_data=0&return_tags=0&return_kv_tags=0&return_previews=0&return_children=0&return_short_description=0&return_for_sale_data=0&return_metadata=1");
+                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={SteamWebApiKey}&format=json&query_type=1&page={requestIndex}&numperpage={MAX_IDS}&appid={appId}&match_all_tags=0&include_recent_votes_only=0&totalonly=0&return_vote_data=0&return_tags=0&return_kv_tags=0&return_previews=0&return_children=0&return_short_description=0&return_for_sale_data=0&return_metadata=1");
                     httpRequest.Timeout = 30000;
                     var httpResponse = httpRequest.GetResponse();
                     var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
@@ -95,7 +95,7 @@ namespace ARK_Server_Manager.Lib
                         count++;
                     }
 
-                    postData = $"key={Config.Default.SteamAPIKey}&format=json&itemcount={count}{postData}";
+                    postData = $"key={SteamWebApiKey}&format=json&itemcount={count}{postData}";
 
                     var data = Encoding.ASCII.GetBytes(postData);
 
@@ -126,8 +126,7 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     requestIndex++;
-                }
-                ;
+                };
 
                 return response ?? new PublishedFileDetailsResponse();
             }
@@ -169,7 +168,7 @@ namespace ARK_Server_Manager.Lib
                         count++;
                     }
 
-                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={Config.Default.SteamAPIKey}&format=json&steamids={postData}");
+                    var httpRequest = WebRequest.Create($"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamWebApiKey}&format=json&steamids={postData}");
                     httpRequest.Timeout = 30000;
                     var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
                     var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
@@ -208,25 +207,13 @@ namespace ARK_Server_Manager.Lib
             return SteamCmdWorkshopDetailsResult.Deserialize(vdf);
         }
 
-        public async static Task<SteamServerDetailResponse> GetSteamServerDetails(IPEndPoint endpoint)
+        public static string SteamWebApiKey
         {
-            try
+            get
             {
-                var httpRequest = WebRequest.Create($"https://api.steampowered.com/ISteamApps/GetServersAtAddress/v1/?key={Config.Default.SteamAPIKey}&format=json&addr={endpoint.Address}:{endpoint.Port}");
-                httpRequest.Timeout = 30000;
-                var httpResponse = await httpRequest.GetResponseAsync();
-                var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-
-                var result = JsonUtils.Deserialize<SteamServerDetailResult>(responseString);
-                if (result?.response == null || !result.response.success.Equals("true"))
-                    return null;
-
-                return result.response;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"ERROR: {nameof(GetSteamServerDetails)}\r\n{ex.Message}");
-                return null;
+                if (!string.IsNullOrWhiteSpace(Config.Default.SteamAPIKey))
+                    return Config.Default.SteamAPIKey;
+                return Config.Default.ASMSteamAPIKey;
             }
         }
     }
