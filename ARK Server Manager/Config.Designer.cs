@@ -1509,5 +1509,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["SteamAPIKeyUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ServerUpdate_ForceUpdateModsIfNoSteamInfo {
+            get {
+                return ((bool)(this["ServerUpdate_ForceUpdateModsIfNoSteamInfo"]));
+            }
+            set {
+                this["ServerUpdate_ForceUpdateModsIfNoSteamInfo"] = value;
+            }
+        }
     }
 }

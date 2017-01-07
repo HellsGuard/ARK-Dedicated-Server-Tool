@@ -193,6 +193,8 @@
     <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">If enabled, the mods will be downloaded from steam even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Force mod file copying</sys:String>
     <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">If enabled, the mod files will be copied to the server folder even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel">Force mod file downloads when no steam information available</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoTooltip">If enabled, the mods will be downloaded from steam even when no steam information is available.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdCredentialsLabel">Use Anonymous Credentials</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Controls whether the anonymous user is used to download from SteamCMD.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Username:</sys:String>

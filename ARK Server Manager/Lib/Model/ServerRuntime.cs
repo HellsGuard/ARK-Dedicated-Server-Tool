@@ -566,6 +566,13 @@ namespace ARK_Server_Manager.Lib
 
                         // get the details of the mods to be processed.
                         var modDetails = SteamUtils.GetSteamModDetails(modIdList);
+
+                        // check if the mod details were retrieved
+                        if (modDetails == null && Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
+                        {
+                            modDetails = new Model.PublishedFileDetailsResponse();
+                        }
+
                         if (modDetails != null)
                         {
                             // create a new list for any failed mod updates
@@ -584,199 +591,212 @@ namespace ARK_Server_Manager.Lib
 
                                 // check if the steam information was downloaded
                                 var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
+                                modTitle = $"{modId} - {modDetail?.title ?? "<unknown>"}";
+
                                 if (modDetail != null)
+                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title}.\r\n");
+
+                                var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
+                                var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFServer);
+                                var modPath = ModUtils.GetModPath(this.ProfileSnapshot.InstallDirectory, modId);
+                                var modTimeFile = ModUtils.GetLatestModTimeFile(this.ProfileSnapshot.InstallDirectory, modId);
+
+                                var modCacheLastUpdated = 0;
+                                var downloadMod = true;
+                                var copyMod = true;
+                                var updateError = false;
+
+                                if (downloadMod)
                                 {
-                                    modTitle = $"{modDetail.title} ({modId})";
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title ?? string.Empty}.\r\n");
+                                    // check if the mod needs to be downloaded, or force the download.
+                                    if (Config.Default.ServerUpdate_ForceUpdateMods)
+                                    {
+                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
+                                    }
+                                    else if (modDetail == null)
+                                    {
+                                        if (Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
+                                        {
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - Mod details not available and ASM setting is TRUE.");
+                                        }
+                                        else
+                                        {
+                                            // no steam information downloaded, display an error, mod might no longer be available
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cannot be updated, unable to download steam information.");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
 
-                                    var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
-                                    var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFServer);
-                                    var modPath = ModUtils.GetModPath(this.ProfileSnapshot.InstallDirectory, modId);
-                                    var modTimeFile = ModUtils.GetLatestModTimeFile(this.ProfileSnapshot.InstallDirectory, modId);
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
 
-                                    var modCacheLastUpdated = 0;
-                                    var downloadMod = true;
-                                    var copyMod = true;
+                                            downloadMod = false;
+                                            copyMod = false;
+                                            updateError = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // check if the mod detail record is valid (private mod).
+                                        if (modDetail.time_updated <= 0)
+                                        {
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod is private.");
+                                        }
+                                        else
+                                        {
+                                            modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                                            if (modCacheLastUpdated <= 0)
+                                            {
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
+                                            }
+                                            else
+                                            {
+                                                var steamLastUpdated = modDetail.time_updated;
+                                                if (steamLastUpdated <= modCacheLastUpdated)
+                                                {
+                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
+                                                    downloadMod = false;
+                                                }
+                                            }
+                                        }
+                                    }
 
                                     if (downloadMod)
                                     {
-                                        // check if the mod needs to be downloaded, or force the download.
-                                        if (Config.Default.ServerUpdate_ForceUpdateMods)
+                                        // mod will be downloaded
+                                        downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
+                                        DataReceivedEventHandler modOutputHandler = (s, e) =>
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
+                                            var dataValue = e.Data ?? string.Empty;
+                                            progressCallback?.Invoke(0, dataValue);
+                                            if (dataValue.StartsWith("Success."))
+                                            {
+                                                downloadSuccessful = true;
+                                            }
+                                        };
+
+                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting mod download.\r\n");
+
+                                        var steamCmdArgs = string.Empty;
+                                        if (this.ProfileSnapshot.SotFServer)
+                                        {
+                                            if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_AnonymousUsername, modId);
+                                            else
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_Username, modId);
                                         }
                                         else
                                         {
-                                            // check if the mod detail record is valid (private mod).
-                                            if (modDetail.time_updated <= 0)
-                                            {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod is private.");
-                                            }
+                                            if (Config.Default.SteamCmd_UseAnonymousCredentials)
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
                                             else
-                                            {
-                                                modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
-                                                if (modCacheLastUpdated <= 0)
-                                                {
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
-                                                }
-                                                else
-                                                {
-                                                    var steamLastUpdated = modDetail.time_updated;
-                                                    if (steamLastUpdated <= modCacheLastUpdated)
-                                                    {
-                                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
-                                                        downloadMod = false;
-                                                    }
-                                                }
-                                            }
+                                                steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
                                         }
 
-                                        if (downloadMod)
+                                        modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
+                                        if (modSuccess && downloadSuccessful)
                                         {
-                                            // mod will be downloaded
-                                            downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
-                                            DataReceivedEventHandler modOutputHandler = (s, e) =>
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");
+                                            copyMod = true;
+
+                                            if (Directory.Exists(modCachePath))
                                             {
-                                                var dataValue = e.Data ?? string.Empty;
-                                                progressCallback?.Invoke(0, dataValue);
-                                                if (dataValue.StartsWith("Success."))
+                                                // check if any of the mod files have changed.
+                                                gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= startTime);
+
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
+
+                                                var steamLastUpdated = modDetail?.time_updated.ToString() ?? string.Empty;
+                                                if (modDetail == null || modDetail.time_updated <= 0)
                                                 {
-                                                    downloadSuccessful = true;
+                                                    // get the version number from the steamcmd workshop file.
+                                                    steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(this.ProfileSnapshot.SotFServer), modId).ToString();
                                                 }
-                                            };
 
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting mod download.\r\n");
+                                                // update the last updated file with the steam updated time.
+                                                File.WriteAllText(cacheTimeFile, steamLastUpdated);
 
-                                            var steamCmdArgs = string.Empty;
-                                            if (this.ProfileSnapshot.SotFServer)
-                                            {
-                                                if (Config.Default.SteamCmd_UseAnonymousCredentials)
-                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_AnonymousUsername, modId);
-                                                else
-                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_Username, modId);
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod Cache version: {steamLastUpdated}\r\n");
                                             }
-                                            else
+                                        }
+                                        else
+                                        {
+                                            modSuccess = false;
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod download failed.");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************\r\n");
+
+                                            if (Config.Default.SteamCmdRedirectOutput)
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                                            copyMod = false;
+                                        }
+                                    }
+                                    else
+                                        modSuccess = !updateError;
+                                }
+                                else
+                                    modSuccess = !updateError;
+
+                                if (copyMod)
+                                {
+                                    // check if the mod needs to be copied, or force the copy.
+                                    if (Config.Default.ServerUpdate_ForceCopyMods)
+                                    {
+                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
+                                    }
+                                    else
+                                    {
+                                        // check the mod version against the cache version.
+                                        var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
+                                        if (modLastUpdated <= 0)
+                                        {
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - mod is not versioned.");
+                                        }
+                                        else
+                                        {
+                                            modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
+                                            if (modCacheLastUpdated <= modLastUpdated)
                                             {
-                                                if (Config.Default.SteamCmd_UseAnonymousCredentials)
-                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
-                                                else
-                                                    steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
-                                            }
-
-                                            modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
-                                            if (modSuccess && downloadSuccessful)
-                                            {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");
-                                                copyMod = true;
-
-                                                if (Directory.Exists(modCachePath))
-                                                {
-                                                    // check if any of the mod files have changed.
-                                                    gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= startTime);
-
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
-
-                                                    var steamLastUpdated = modDetail.time_updated.ToString();
-                                                    if (modDetail.time_updated <= 0)
-                                                    {
-                                                        // get the version number from the steamcmd workshop file.
-                                                        steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(this.ProfileSnapshot.SotFServer), modId).ToString();
-                                                    }
-
-                                                    // update the last updated file with the steam updated time.
-                                                    File.WriteAllText(cacheTimeFile, steamLastUpdated);
-
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod Cache version: {steamLastUpdated}\r\n");
-                                                }
-                                            }
-                                            else
-                                            {
-                                                modSuccess = false;
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod download failed.");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************\r\n");
-
-                                                if (Config.Default.SteamCmdRedirectOutput)
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                                 copyMod = false;
                                             }
                                         }
-                                        else
-                                            modSuccess = true;
                                     }
-                                    else
-                                        modSuccess = true;
 
                                     if (copyMod)
                                     {
-                                        // check if the mod needs to be copied, or force the copy.
-                                        if (Config.Default.ServerUpdate_ForceCopyMods)
+                                        try
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
-                                        }
-                                        else
-                                        {
-                                            // check the mod version against the cache version.
-                                            var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
-                                            if (modLastUpdated <= 0)
+                                            if (Directory.Exists(modCachePath))
                                             {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - mod is not versioned.");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
+                                                int count = 0;
+                                                await Task.Run(() => ModUtils.CopyMod(modCachePath, modPath, modId, (p, m, n) =>
+                                                                                                                    {
+                                                                                                                        count++;
+                                                                                                                        progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
+                                                                                                                    }), cancellationToken);
+                                                progressCallback?.Invoke(0, "\r\n");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
+
+                                                var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                             }
                                             else
                                             {
-                                                modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
-                                                if (modCacheLastUpdated <= modLastUpdated)
-                                                {
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
-                                                    copyMod = false;
-                                                }
+                                                modSuccess = false;
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
+                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
                                             }
                                         }
-
-                                        if (copyMod)
+                                        catch (Exception ex)
                                         {
-                                            try
-                                            {
-                                                if (Directory.Exists(modCachePath))
-                                                {
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
-                                                    int count = 0;
-                                                    await Task.Run(() => ModUtils.CopyMod(modCachePath, modPath, modId, (p, m, n) =>
-                                                                                                                        {
-                                                                                                                            count++;
-                                                                                                                            progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
-                                                                                                                        }), cancellationToken);
-                                                    progressCallback?.Invoke(0, "\r\n");
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
-
-                                                    var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
-                                                }
-                                                else
-                                                {
-                                                    modSuccess = false;
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                modSuccess = false;
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
-                                            }
+                                            modSuccess = false;
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
+                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    // no steam information downloaded, display an error, mod might no longer be available
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cannot be updated, unable to download steam information.");
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
                                 }
 
                                 if (!modSuccess)
@@ -804,6 +824,9 @@ namespace ARK_Server_Manager.Lib
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************");
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods cannot be updated, unable to download steam information.");
                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************\r\n");
+
+                            if (!Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
+                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
                         }
                     }
                 }
