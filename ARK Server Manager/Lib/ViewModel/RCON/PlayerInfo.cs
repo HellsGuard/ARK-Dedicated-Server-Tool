@@ -143,26 +143,31 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             this.CharacterName = arkData.CharacterName;
             this.HasBan = arkData.CommunityBanned || arkData.VACBanned;
 
+            var localImageFile = Path.Combine(Path.GetTempPath(), $"ASM.{this.SteamId}.tmp");
+
             BitmapImage avatarImage;
             if (!PlayerInfo.avatarImages.TryGetValue(this.SteamId, out avatarImage))
             {
                 // check for a valid URL.
                 if (!String.IsNullOrWhiteSpace(arkData.AvatarUrl))
                 {
-                    var localFile = Path.Combine(Path.GetTempPath(), $"ASM.{this.SteamId}.tmp");
                     try
                     {
                         using (var client = new WebClient())
                         {
-                            await client.DownloadFileTaskAsync(arkData.AvatarUrl, localFile);
-                            avatarImage = new BitmapImage(new Uri(localFile, UriKind.Absolute));
-                            PlayerInfo.avatarImages[this.SteamId] = avatarImage;
+                            await client.DownloadFileTaskAsync(arkData.AvatarUrl, localImageFile);
                         }
                     }
                     catch (Exception ex)
                     {
                         DebugUtils.WriteFormatThreadSafeAsync($"Failed to get avatar image from {arkData.AvatarUrl}: {ex.Message}: {ex.StackTrace}").DoNotWait();
                     }
+                }
+
+                if (File.Exists(localImageFile))
+                {
+                    avatarImage = new BitmapImage(new Uri(localImageFile, UriKind.Absolute));
+                    PlayerInfo.avatarImages[this.SteamId] = avatarImage;
                 }
             }
 

@@ -308,7 +308,9 @@ namespace ARK_Server_Manager.Lib
 
                 if (this.Players.Count == 0 || newPlayerList.Count > 0)
                 {
-                    commandProcessor.PostAction(UpdatePlayerDetails);
+                    var result = commandProcessor.PostAction(UpdatePlayerDetails).Result;
+                    if (!string.IsNullOrWhiteSpace(result.Result))
+                        output.Add(result.Result);
                 }
 
                 command.suppressOutput = false;
@@ -345,13 +347,29 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private async Task UpdatePlayerDetails()
+        private async Task<string> UpdatePlayerDetails()
         {
+            var returnMessage = string.Empty;
+
             if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
             {
                 var savedArksPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
                 var arkData = await ArkData.ArkDataContainer.CreateAsync(savedArksPath);
-                await arkData.LoadSteamAsync(SteamUtils.SteamWebApiKey);
+
+                try
+                {
+                    // try to get the steam information for the ark data
+                    await arkData.LoadSteamAsync(SteamUtils.SteamWebApiKey);
+
+                    returnMessage = "Player and tribe information updated.";
+                    LogEvent(LogEventType.Event, returnMessage);
+                }
+                catch
+                {
+                    returnMessage = "***** ERROR: Player and tribe information update failed. Steam data not available and only basic player and tribe information will be shown. *****";
+                    LogEvent(LogEventType.Event, returnMessage);
+                }
+
                 TaskUtils.RunOnUIThreadAsync(() =>
                 {
                     foreach (var playerData in arkData.Players)
@@ -370,6 +388,8 @@ namespace ARK_Server_Manager.Lib
                     }
                 }).DoNotWait();
             }
+
+            return returnMessage;
         }
 
         private static readonly char[] lineSplitChars = new char[] { '\n' };
