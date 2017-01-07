@@ -160,6 +160,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -247,7 +248,7 @@
                             </Label.Style>
                         </Label>
 
-                        <local:AnnotatedSlider Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,5,0" Label="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursLabel}" Value="{Binding CurrentConfig.WorkshopCache_ExpiredHours}" Minimum="1" Maximum="1000" SmallChange="1" LargeChange="12" TickFrequency="24" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Hours}" ToolTip="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursTooltip}"/>
+                        <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,5,0" Label="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursLabel}" Value="{Binding CurrentConfig.WorkshopCache_ExpiredHours}" Minimum="1" Maximum="1000" SmallChange="1" LargeChange="12" TickFrequency="24" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Hours}" ToolTip="{DynamicResource GlobalSettings_WorkshopCacheExpiredHoursTooltip}"/>
                     </Grid>
                 </GroupBox>
 

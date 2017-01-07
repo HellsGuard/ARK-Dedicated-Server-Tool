@@ -2849,6 +2849,8 @@ namespace ARK_Server_Manager.Lib
                                                 result.AppendLine("The map mod is outdated.");
                                         }
                                     }
+                                    else
+                                        result.AppendLine("The map mod details could not be retrieved from steam.");
                                 }
                             }
                         }
@@ -2894,6 +2896,8 @@ namespace ARK_Server_Manager.Lib
                                                 result.AppendLine("The total conversion mod is outdated.");
                                         }
                                     }
+                                    else
+                                        result.AppendLine("The total conversion mod details could not be retrieved from steam.");
                                 }
                             }
                         }
@@ -2922,6 +2926,8 @@ namespace ARK_Server_Manager.Lib
                                     result.AppendLine($"Mod {modId} is outdated.");
                             }
                         }
+                        else
+                            result.AppendLine($"Mod {modId} details could not be retrieved from steam.");
                     }
                 }
             }

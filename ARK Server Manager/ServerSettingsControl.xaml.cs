@@ -1472,7 +1472,7 @@ namespace ARK_Server_Manager
                     var steamIdsString = window.SteamUsers;
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-                    var steamUserList = SteamUserList.GetList(steamUsers);
+                    var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
                     this.ServerFilesAdmins.AddRange(steamUserList);
 
                     SaveServerFileAdministrators();
@@ -1498,7 +1498,7 @@ namespace ARK_Server_Manager
                     var steamIdsString = window.SteamUsers;
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-                    var steamUserList = SteamUserList.GetList(steamUsers);
+                    var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
                     this.ServerFilesExclusive.AddRange(steamUserList);
 
                     SaveServerFileExclusive();
@@ -1524,7 +1524,7 @@ namespace ARK_Server_Manager
                     var steamIdsString = window.SteamUsers;
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-                    var steamUserList = SteamUserList.GetList(steamUsers);
+                    var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
                     this.ServerFilesWhitelisted.AddRange(steamUserList);
 
                     SaveServerFileWhitelisted();
@@ -2662,7 +2662,7 @@ namespace ARK_Server_Manager
                 var steamIds = File.ReadAllLines(file);
                 var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
 
-                this.ServerFilesAdmins = SteamUserList.GetList(steamUsers);
+                this.ServerFilesAdmins = SteamUserList.GetList(steamUsers, steamIds);
             }
             catch (Exception ex)
             {
@@ -2684,7 +2684,7 @@ namespace ARK_Server_Manager
                 var steamIds = File.ReadAllLines(file);
                 var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
 
-                this.ServerFilesExclusive = SteamUserList.GetList(steamUsers);
+                this.ServerFilesExclusive = SteamUserList.GetList(steamUsers, steamIds);
             }
             catch (Exception ex)
             {
@@ -2706,7 +2706,7 @@ namespace ARK_Server_Manager
                 var steamIds = File.ReadAllLines(file);
                 var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
 
-                this.ServerFilesWhitelisted = SteamUserList.GetList(steamUsers);
+                this.ServerFilesWhitelisted = SteamUserList.GetList(steamUsers, steamIds);
             }
             catch (Exception ex)
             {

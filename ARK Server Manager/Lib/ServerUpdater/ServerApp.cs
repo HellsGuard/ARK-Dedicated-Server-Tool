@@ -690,8 +690,10 @@ namespace ARK_Server_Manager.Lib
 
                         var modId = updateModIds[index];
                         var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
-
-                        UpdateReason += $"{delimiter}{modName}";
+                        if (string.IsNullOrWhiteSpace(modName))
+                            UpdateReason += $"{delimiter}{modId}";
+                        else
+                            UpdateReason += $"{delimiter}{modName}";
                         delimiter = ", ";
                     }
                 }
