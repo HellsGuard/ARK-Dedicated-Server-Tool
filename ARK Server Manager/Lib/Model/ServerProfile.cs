@@ -616,6 +616,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableLootCratesProperty, value); }
         }
 
+        public static readonly DependencyProperty AllowCrateSpawnsOnTopOfStructuresProperty = DependencyProperty.Register(nameof(AllowCrateSpawnsOnTopOfStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        public bool AllowCrateSpawnsOnTopOfStructures
+        {
+            get { return (bool)GetValue(AllowCrateSpawnsOnTopOfStructuresProperty); }
+            set { SetValue(AllowCrateSpawnsOnTopOfStructuresProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableExtraStructurePreventionVolumesProperty = DependencyProperty.Register(nameof(EnableExtraStructurePreventionVolumes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool EnableExtraStructurePreventionVolumes
@@ -2201,6 +2208,8 @@ namespace ARK_Server_Manager.Lib
             {
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
+
+            serverArgs.Append($"?AllowCrateSpawnsOnTopOfStructures={this.AllowCrateSpawnsOnTopOfStructures.ToString()}");
 
             if (this.SOTF_Enabled)
             {

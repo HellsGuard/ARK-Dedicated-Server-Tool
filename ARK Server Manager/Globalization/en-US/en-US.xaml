@@ -600,6 +600,8 @@
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvE mode is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Disable Loot Crates</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Allow Crate Spawns on top of Structures</sys:String>
+    <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">If enabled, will allow from-the-air Supply Crates to appear on top of Structures, rather than being prevented by Structures.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Prevent Building in Resource Rich Areas</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
