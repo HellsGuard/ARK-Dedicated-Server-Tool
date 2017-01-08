@@ -351,12 +351,16 @@ namespace ARK_Server_Manager.Lib
                     // try to get the steam information for the ark data
                     await arkData.LoadSteamAsync(SteamUtils.SteamWebApiKey);
 
+#if DEBUG
                     returnMessage = "Player and tribe information updated.";
+#endif
                     LogEvent(LogEventType.Event, returnMessage);
                 }
                 catch
                 {
+#if DEBUG
                     returnMessage = "***** ERROR: Player and tribe information update failed. Steam data not available and only basic player and tribe information will be shown. *****";
+#endif
                     LogEvent(LogEventType.Event, returnMessage);
                 }
 
