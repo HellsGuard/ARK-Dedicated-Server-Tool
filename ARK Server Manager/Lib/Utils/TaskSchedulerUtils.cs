@@ -20,6 +20,106 @@ namespace ARK_Server_Manager.Lib
             Shutdown2,
         }
 
+        public static bool ScheduleAutoBackup(string taskKey, string taskSuffix, string command, int autoBackupPeriod)
+        {
+            var taskName = $"AutoBackup_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
+
+            if (autoBackupPeriod > 0)
+            {
+                // create the task folder
+                if (taskFolder == null)
+                {
+                    try
+                    {
+                        taskFolder = TaskService.Instance.RootFolder.CreateFolder(TASK_FOLDER, null, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug($"Unable to create the ASM task folder.\r\n{ex.Message}.");
+                        return false;
+                    }
+                }
+
+                if (taskFolder == null)
+                    return false;
+
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                var taskDefinition = task?.Definition ?? TaskService.Instance.NewTask();
+
+                if (taskDefinition == null)
+                    return false;
+
+                Version appVersion;
+                Version.TryParse(App.Version, out appVersion);
+
+                taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
+                taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
+
+                taskDefinition.RegistrationInfo.Description = "Ark Server Auto-Backup";
+                taskDefinition.RegistrationInfo.Source = "Ark Server Manager";
+                taskDefinition.RegistrationInfo.Version = appVersion;
+
+                taskDefinition.Settings.ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT);
+                taskDefinition.Settings.Priority = ProcessPriorityClass.Normal;
+
+                // Add a trigger that will fire every x minutes
+                taskDefinition.Triggers.Clear();
+                var trigger = new TimeTrigger
+                {
+                    StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),
+                    ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT),
+                    Repetition = { Interval = TimeSpan.FromMinutes(autoBackupPeriod) },
+                };
+                taskDefinition.Triggers.Add(trigger);
+
+                // Create an action that will launch whenever the trigger fires
+                taskDefinition.Actions.Clear();
+                var action = new ExecAction
+                {
+                    Path = command,
+                    Arguments = App.ARG_AUTOBACKUP
+                };
+                taskDefinition.Actions.Add(action);
+
+                try
+                {
+                    task = taskFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate, null, null, TaskLogonType.InteractiveToken);
+                    return task != null;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug($"Unable to create the ScheduleAutoBackup task.\r\n{ex.Message}.");
+                }
+            }
+            else
+            {
+                if (taskFolder == null)
+                    return true;
+
+                // Retrieve the task to be deleted
+                var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+                if (task == null)
+                    return true;
+
+                try
+                {
+                    // Delete the task
+                    taskFolder.DeleteTask(taskName, false);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug($"Unable to delete the ScheduleAutoBackup task.\r\n{ex.Message}.");
+                }
+            }
+
+            return false;
+        }
+
         public static bool ScheduleAutoShutdown(string taskKey, string taskSuffix, string command, TimeSpan? restartTime, string profileName, ShutdownType type)
         {
             var taskName = $"AutoShutdown_{taskKey}";

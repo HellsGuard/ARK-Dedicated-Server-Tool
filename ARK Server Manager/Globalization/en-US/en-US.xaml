@@ -204,6 +204,14 @@
     <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate</sys:String>
     <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursLabel">Workshop Cache Expiry</sys:String>
     <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursTooltip">The number of hours since the last refresh the workshop cache will be considered old and will auto refresh.</sys:String>
+    <sys:String x:Key="GlobalSettings_AutoBackupLabel">Enable Auto Backup</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupIntervalLabel">Backup Interval:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupIntervalTooltip">How often to perform the server backup, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteOldFilesLabel">Delete Old Backup Files</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteIntervalLabel">Older Than:</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteIntervalTooltip">How old the backup file must be to be deleted in days.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupWorldSaveLabel">WorldSave Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupWorldSaveTooltip">This message will be displayed upon backup when the world is about to be saved.</sys:String>
     <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Cache Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
@@ -243,10 +251,12 @@
     <sys:String x:Key="GlobalSettings_EmailToTooltip">The address collection that contains the recipients of the e-mail message. Separate multiple email addresses with a comma (,).</sys:String>
     <sys:String x:Key="GlobalSettings_EmailTestButtonLabel">Send Test Email</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotifySettingsLabel">Email Notify Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupLabel">Auto-Backup</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupTooltip">If enabled, an email will be sent if the server is backed up during the auto-backup process.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateLabel">Auto-Update</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateTooltip">If enabled, an email will be sent if the server is updated during the auto-update process.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartLabel">Auto-Restart</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is restarted during the auto-restart process.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartLabel">Auto-Shutdown</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is shutdown/restarted during the auto-shutdown process.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Shutdown/Restart</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">If enabled, an email will be sent when the server is shutdown or restarted.</sys:String>
 
@@ -264,6 +274,12 @@
     <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledLabel">Server cache will update every {0} minutes.</sys:String>
     <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledTitle">Updates disabled</sys:String>
     <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledLabel">Server cache updating disabled.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorTitle">Update task failed</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorLabel">Failed to update the server backup task. Ensure you have administrative rights and try again.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledTitle">Backups enabled</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledLabel">Server backups will run every {0} minutes.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledTitle">Backups disabled</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledLabel">Server backups are disabled.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTitle">SteamCmd Authentication Disabled</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledLabel">You have chosen to redirect the steamcmd output to the progress window. You are not able to use your steam credentials, you must use anonymous credentials.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTooltip">To use your steam credentials you must turn off the Output SteamCMD to the progress window option.</sys:String>
@@ -395,6 +411,8 @@
     <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?\r\n\r\nClick Yes to shutdown with a timer.\r\nClick No to shutdown now.\r\nClick Cancel to cancel shutdown.</sys:String>
     <sys:String x:Key="ServerSettings_StartServer_FailedTitle">Starting Server Error</sys:String>
     <sys:String x:Key="ServerSettings_StartServer_MutexFailedLabel">Could not lock the server, another process is using the server. Server start was cancelled.</sys:String>
+    <sys:String x:Key="ServerSettings_BackupServer_Title">Backup Server</sys:String>
+    <sys:String x:Key="ServerSettings_BackupServer_FailedTitle">Backup Server Error</sys:String>
     <sys:String x:Key="ServerSettings_ShutdownServer_FailedTitle">Shutdown Server Error</sys:String>
     <sys:String x:Key="ServerSettings_ShutdownServer_CancelledTitle">Shutdown Server Cancelled</sys:String>
     <sys:String x:Key="ServerSettings_ShutdownServer_AlreadyOpenLabel">The shutdown window is already open for this server.</sys:String>
@@ -514,7 +532,9 @@
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Auto Save Period:</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodTooltip">The time between server auto-saves.</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodUnits">minutes</sys:String>
-    <sys:String x:Key="ServerSettings_SaveRestoreButtonLabel">Restore</sys:String>
+    <sys:String x:Key="ServerSettings_SaveBackupButtonLabel">Backup Now</sys:String>
+    <sys:String x:Key="ServerSettings_SaveBackupButtonTooltip">Perform a manual world save.</sys:String>
+    <sys:String x:Key="ServerSettings_SaveRestoreButtonLabel">Restore...</sys:String>
     <sys:String x:Key="ServerSettings_SaveRestoreButtonTooltip">Restore a previous world save.</sys:String>
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Message of the Day</sys:String>
@@ -580,6 +600,8 @@
     <sys:String x:Key="ServerSettings_EnableAutoShutdownTooltip">The hour and minute of the day to force a server shutdown.</sys:String>
     <sys:String x:Key="ServerSettings_RestartAfterShutdownLabel">then restart</sys:String>
     <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">If enabled, will restart server immediately after the shutdown</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicBackupsLabel">Include server in the Auto-Backup cycle</sys:String>
+    <sys:String x:Key="ServerSettings_PeriodicBackupsTooltip">If enabled, the server will be periodically backed up during the Auto-Backup cycle. See the settings for Auto-Backup options.</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Include server in the Auto-Update cycle</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">If enabled, the server will be periodically updated during the Auto-Update cycle. See the settings for Auto-Update options.</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Restart server if shutdown</sys:String>

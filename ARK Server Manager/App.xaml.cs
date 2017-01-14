@@ -21,8 +21,10 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class App : GlobalizedApplication
     {
+        public const string ARG_AUTOBACKUP = "-ab";
         public const string ARG_AUTOSHUTDOWN1 = "-as1";
         public const string ARG_AUTOSHUTDOWN2 = "-as2";
+        public const string ARG_AUTORESTART = "-ar";
         public const string ARG_AUTOUPDATE = "-au";
         public const string ARG_BETA = "-beta";
         public const string ARG_RCON = "-rcon";
@@ -204,6 +206,13 @@ namespace ARK_Server_Manager
                 BetaVersion = true;
             }
 
+            // check if we are starting ASM for the old server restart - no longer supported
+            if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))
+            {
+                // just exit
+                Environment.Exit(0);
+            }
+
             // check if we are starting ASM for server shutdown
             if (e.Args.Any(a => a.StartsWith(ARG_AUTOSHUTDOWN1)))
             {
@@ -228,6 +237,15 @@ namespace ARK_Server_Manager
             if (e.Args.Any(a => a.Equals(ARG_AUTOUPDATE)))
             {
                 var exitCode = ServerApp.PerformAutoUpdate();
+
+                // once we are finished, just exit
+                Environment.Exit(exitCode);
+            }
+
+            // check if we are starting ASM for server backups
+            if (e.Args.Any(a => a.Equals(ARG_AUTOBACKUP)))
+            {
+                var exitCode = ServerApp.PerformAutoBackup();
 
                 // once we are finished, just exit
                 Environment.Exit(exitCode);

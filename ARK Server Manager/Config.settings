@@ -431,5 +431,23 @@
     <Setting Name="ServerUpdate_ForceUpdateModsIfNoSteamInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="AutoBackup_EnableBackup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AutoBackup_BackupPeriod" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="EmailNotify_AutoBackup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AutoBackup_DeleteOldFiles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutoBackup_DeleteInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="ServerBackup_WorldSaveMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A world save is about to be performed, you may experience some lag during this process. Please be patient.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

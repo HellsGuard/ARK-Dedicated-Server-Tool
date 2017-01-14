@@ -503,6 +503,13 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Automatic Management
+        public static readonly DependencyProperty EnableAutoBackupProperty = DependencyProperty.Register(nameof(EnableAutoBackup), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoBackup
+        {
+            get { return (bool)GetValue(EnableAutoBackupProperty); }
+            set { SetValue(EnableAutoBackupProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableAutoStartProperty = DependencyProperty.Register(nameof(EnableAutoStart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoStart
         {
@@ -2528,6 +2535,7 @@ namespace ARK_Server_Manager.Lib
             if (SOTF_Enabled)
             {
                 // ensure that the auto settings are switched off for SotF servers
+                EnableAutoBackup = false;
                 EnableAutoShutdown1 = false;
                 RestartAfterShutdown1 = true;
                 EnableAutoShutdown2 = false;

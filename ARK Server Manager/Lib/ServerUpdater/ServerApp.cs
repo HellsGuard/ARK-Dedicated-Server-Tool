@@ -42,13 +42,14 @@ namespace ARK_Server_Manager.Lib
             public int MotDDuration;
 
             public string SchedulerKey;
+            public bool EnableAutoBackup;
+            public bool EnableAutoUpdate;
             public bool EnableAutoShutdown1;
             public bool RestartAfterShutdown1;
             public bool EnableAutoShutdown2;
             public bool RestartAfterShutdown2;
             public bool AutoRestartIfShutdown;
 
-            public bool EnableAutoUpdate;
             public bool SotFEnabled;
 
             public bool ServerUpdated;
@@ -75,6 +76,7 @@ namespace ARK_Server_Manager.Lib
                     MotDDuration = Math.Max(profile.MOTDDuration, 10),
 
                     SchedulerKey = profile.GetProfileKey(),
+                    EnableAutoBackup = profile.EnableAutoBackup,
                     EnableAutoUpdate = profile.EnableAutoUpdate,
                     EnableAutoShutdown1 = profile.EnableAutoShutdown1,
                     RestartAfterShutdown1 = profile.RestartAfterShutdown1,
@@ -92,9 +94,11 @@ namespace ARK_Server_Manager.Lib
         public enum ServerProcessType
         {
             Unknown = 0,
+            AutoBackup,
             AutoUpdate,
             AutoShutdown1,
             AutoShutdown2,
+            Backup,
             Shutdown,
             Restart,
         }
@@ -117,6 +121,7 @@ namespace ARK_Server_Manager.Lib
 
         private const int EXITCODE_AUTOUPDATENOTENABLED = 1001;
         private const int EXITCODE_AUTOSHUTDOWNNOTENABLED = 1002;
+        private const int EXITCODE_AUTOBACKUPNOTENABLED = 1003;
 
         private const int EXITCODE_PROCESSALREADYRUNNING = 1011;
         private const int EXITCODE_INVALIDDATADIRECTORY = 1012;
@@ -140,6 +145,7 @@ namespace ARK_Server_Manager.Lib
         private const int EXITCODE_RESTART_FAILED = 5001;
         private const int EXITCODE_RESTART_BADLAUNCHER = 5002;
 
+        public const string LOGPREFIX_AUTOBACKUP = "#AutoBackupLogs";
         public const string LOGPREFIX_AUTOSHUTDOWN = "#AutoShutdownLogs";
         public const string LOGPREFIX_AUTOUPDATE = "#AutoUpdateLogs";
 
@@ -161,6 +167,162 @@ namespace ARK_Server_Manager.Lib
         public ServerProcessType ServerProcess = ServerProcessType.Unknown;
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
+
+        private void BackupServer()
+        {
+            if (_profile == null || _profile.SotFEnabled)
+            {
+                ExitCode = EXITCODE_BADPROFILE;
+                return;
+            }
+
+            var emailMessage = new StringBuilder();
+
+            LogProfileMessage("------------------------");
+            LogProfileMessage("Started server backup...");
+            LogProfileMessage("------------------------");
+
+            emailMessage.AppendLine("ASM Backup Summary:");
+            emailMessage.AppendLine();
+            emailMessage.AppendLine($"ASM Version: {App.Version}");
+
+            emailMessage.AppendLine();
+            emailMessage.AppendLine("Backup:");
+
+            // Find the server process.
+            Process process = GetServerProcess();
+            if (process != null)
+            {
+                _serverRunning = true;
+                LogProfileMessage($"Server process found PID {process.Id}.");
+            }
+
+            if (_serverRunning)
+            {
+                // check if RCON is enabled
+                if (_profile.RCONEnabled)
+                {
+                    QueryMaster.Server gameServer = null;
+
+                    try
+                    {
+                        // create a connection to the server
+                        var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
+                        gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
+
+                        try
+                        {
+                            // perform a world save
+                            SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
+                            emailMessage.AppendLine("sent worldsave message.");
+
+                            Task.Delay(5000).Wait();
+
+                            SendCommand("saveworld", false);
+                            emailMessage.AppendLine("sent saveworld command.");
+
+                            Task.Delay(10000).Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"RCON> saveworld command.\r\n{ex.Message}");
+                        }
+                    }
+                    finally
+                    {
+                        if (gameServer != null)
+                        {
+                            gameServer.Dispose();
+                            gameServer = null;
+                        }
+
+                        CloseRconConsole();
+                    }
+                }
+                else
+                {
+                    LogProfileMessage("RCON not enabled.");
+                }
+            }
+
+            if (ExitCode != EXITCODE_NORMALEXIT)
+                return;
+
+            // make a backup of the current world file.
+            var worldFile = GetServerWorldFile();
+            if (File.Exists(worldFile))
+            {
+                emailMessage.AppendLine();
+
+                try
+                {
+                    LogProfileMessage("Backing up world file...");
+
+                    var backupFile = GetServerWorldBackupFile();
+                    File.Copy(worldFile, backupFile, true);
+
+                    LogProfileMessage($"Backed up world file '{worldFile}'.");
+
+                    emailMessage.AppendLine("Backed up world file.");
+                    emailMessage.AppendLine(worldFile);
+                }
+                catch (Exception ex)
+                {
+                    LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
+
+                    emailMessage.AppendLine("Unable to back up world file.");
+                    emailMessage.AppendLine(worldFile);
+                    emailMessage.AppendLine(ex.Message);
+                }
+            }
+            else
+            {
+                LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
+
+                emailMessage.AppendLine("Unable to back up world file.");
+                emailMessage.AppendLine(worldFile);
+                emailMessage.AppendLine("File could not be found.");
+            }
+
+            if (ExitCode != EXITCODE_NORMALEXIT)
+                return;
+
+            // delete the old backup files
+            if (Config.Default.AutoBackup_DeleteOldFiles)
+            {
+                var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
+                var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
+                var backupFileFilter = $"{mapName}_ASMBackup_*.ark";
+                var backupDateFiler = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
+
+                var backupFiles = new DirectoryInfo(profileSaveFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFiler);
+                foreach (var backupFile in backupFiles)
+                {
+                    try
+                    {
+                        LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.LastWriteTime.ToString()}.");
+                        backupFile.Delete();
+                    }
+                    catch
+                    {
+                        // if unable to delete, do not bother
+                    }
+                }
+            }
+
+            if (Config.Default.EmailNotify_AutoBackup)
+            {
+                emailMessage.AppendLine();
+                emailMessage.AppendLine("See attached log file more details.");
+                SendEmail($"{_profile.ProfileName} auto backup finished", emailMessage.ToString(), true);
+            }
+
+            LogProfileMessage("-----------------------");
+            LogProfileMessage("Finished server backup.");
+            LogProfileMessage("-----------------------");
+
+            ExitCode = EXITCODE_NORMALEXIT;
+        }
 
         private void ShutdownServer(bool restartServer, CancellationToken cancellationToken)
         {
@@ -1636,6 +1798,73 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public int PerformProfileBackup(ProfileSnapshot profile)
+        {
+            _profile = profile;
+
+            if (_profile == null)
+                return EXITCODE_NORMALEXIT;
+
+            if (_profile.SotFEnabled)
+                return EXITCODE_NORMALEXIT;
+
+            ExitCode = EXITCODE_NORMALEXIT;
+
+            Mutex mutex = null;
+            var createdNew = false;
+
+            try
+            {
+                // try to establish a mutex for the profile.
+                mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
+                if (!createdNew)
+                    createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
+
+                // check if the mutex was established
+                if (createdNew)
+                {
+                    BackupServer();
+
+                    if (ExitCode != EXITCODE_NORMALEXIT)
+                    {
+                        if (Config.Default.EmailNotify_AutoBackup)
+                            SendEmail($"{_profile.ProfileName} server backup", $"The server backup process was performed but an error occurred.", true);
+                    }
+                }
+                else
+                {
+                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                    LogProfileMessage("Cancelled server backup process, could not lock server.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogProfileError(ex.Message);
+                if (ex.InnerException != null)
+                    LogProfileMessage($"InnerException - {ex.InnerException.Message}");
+                LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
+
+                if (Config.Default.EmailNotify_AutoBackup)
+                    SendEmail($"{_profile.ProfileName} server update", $"The server backup process was performed but an error occurred.", true);
+                ExitCode = EXITCODE_UNKNOWNTHREADERROR;
+            }
+            finally
+            {
+                if (mutex != null)
+                {
+                    if (createdNew)
+                    {
+                        mutex.ReleaseMutex();
+                        mutex.Dispose();
+                    }
+                    mutex = null;
+                }
+            }
+
+            LogProfileMessage($"Exitcode = {ExitCode}");
+            return ExitCode;
+        }
+
         public int PerformProfileShutdown(ProfileSnapshot profile, bool performRestart, CancellationToken cancellationToken)
         {
             _profile = profile;
@@ -1784,6 +2013,41 @@ namespace ARK_Server_Manager.Lib
             return ExitCode;
         }
 
+        public static int PerformAutoBackup()
+        {
+            _logPrefix = LOGPREFIX_AUTOBACKUP;
+
+            int exitCode = EXITCODE_NORMALEXIT;
+
+            try
+            {
+                // check if the server backup has been enabled.
+                if (!Config.Default.AutoBackup_EnableBackup)
+                    return EXITCODE_AUTOBACKUPNOTENABLED;
+
+                // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
+                LoadProfiles();
+
+                var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
+
+                Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoBackup), profile => {
+                    var app = new ServerApp();
+                    app.SendEmails = true;
+                    app.ServerProcess = ServerProcessType.AutoBackup;
+                    exitCodes.TryAdd(profile, app.PerformProfileBackup(profile));
+                });
+
+                if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
+                    exitCode = EXITCODE_EXITWITHERRORS;
+            }
+            catch (Exception)
+            {
+                exitCode = EXITCODE_UNKNOWNERROR;
+            }
+
+            return exitCode;
+        }
+
         public static int PerformAutoShutdown(string argument, ServerProcessType type)
         {
             _logPrefix = LOGPREFIX_AUTOSHUTDOWN;
@@ -1795,7 +2059,7 @@ namespace ARK_Server_Manager.Lib
                 if (string.IsNullOrWhiteSpace(argument) || (!argument.StartsWith(App.ARG_AUTOSHUTDOWN1) && !argument.StartsWith(App.ARG_AUTOSHUTDOWN2)))
                     return EXITCODE_BADARGUMENT;
 
-                // load all the profiles, do this at the very start incase the user changes one or more while the process is running.
+                // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                 LoadProfiles();
 
                 var profileKey = string.Empty;
@@ -1878,7 +2142,7 @@ namespace ARK_Server_Manager.Lib
                 // check if the mutex was established.
                 if (createdNew)
                 {
-                    // load all the profiles, do this at the very start incase the user changes one or more while the process is running.
+                    // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                     LoadProfiles();
 
                     ServerApp app = new ServerApp();

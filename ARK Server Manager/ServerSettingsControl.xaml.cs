@@ -19,6 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using ARK_Server_Manager.Lib.Model;
+using static ARK_Server_Manager.Lib.ServerApp;
 
 namespace ARK_Server_Manager
 {
@@ -773,6 +774,37 @@ namespace ARK_Server_Manager
         private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private async void SaveBackup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+
+                var app = new ServerApp()
+                {
+                    SendEmails = false,
+                    OutputLogs = false,
+                    ServerProcess = ServerProcessType.Backup,
+                };
+
+                var profile = ProfileSnapshot.Create(Server.Profile);
+
+                var exitCode = await Task.Run(() => app.PerformProfileBackup(profile));
+                if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
+                    throw new ApplicationException($"An error occured during the backup process - ExitCode: {exitCode}");
+
+                MessageBox.Show("The backup was successful.", _globalizer.GetResourceString("ServerSettings_BackupServer_Title"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_BackupServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = null);
+            }
         }
 
         private void SaveRestore_Click(object sender, RoutedEventArgs e)
