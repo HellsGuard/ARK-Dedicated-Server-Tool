@@ -2846,14 +2846,14 @@ namespace ARK_Server_Manager.Lib
                                     result.AppendLine("The map name does not match the map mod's map name.");
                                 else
                                 {
-                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(serverMapModId));
                                     if (modDetail != null)
                                     {
                                         if (!modDetail.consumer_app_id.Equals(appId))
                                             result.AppendLine("The map mod is for a different Ark application.");
                                         else
                                         {
-                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, serverMapModId));
                                             if (!modVersion.Equals(modDetail.time_updated))
                                                 result.AppendLine("The map mod is outdated.");
                                         }
