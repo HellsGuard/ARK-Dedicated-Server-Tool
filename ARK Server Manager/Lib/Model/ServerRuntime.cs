@@ -430,7 +430,13 @@ namespace ARK_Server_Manager.Lib
             }            
         }
 
+
         public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, ProgressDelegate progressCallback)
+        {
+            return await UpgradeAsync(cancellationToken, updateServer, validate, updateMods, null, progressCallback);
+        }
+
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, string[] updateModIds, ProgressDelegate progressCallback)
         {
             if (updateServer && !Environment.Is64BitOperatingSystem)
             {
@@ -556,11 +562,18 @@ namespace ARK_Server_Manager.Lib
 
                         // build a list of mods to be processed
                         var modIdList = new List<string>();
-                        if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerMapModId))
-                            modIdList.Add(this.ProfileSnapshot.ServerMapModId);
-                        if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.TotalConversionModId))
-                            modIdList.Add(this.ProfileSnapshot.TotalConversionModId);
-                        modIdList.AddRange(this.ProfileSnapshot.ServerModIds);
+                        if (updateModIds == null || updateModIds.Length == 0)
+                        {
+                            if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerMapModId))
+                                modIdList.Add(this.ProfileSnapshot.ServerMapModId);
+                            if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.TotalConversionModId))
+                                modIdList.Add(this.ProfileSnapshot.TotalConversionModId);
+                            modIdList.AddRange(this.ProfileSnapshot.ServerModIds);
+                        }
+                        else
+                        {
+                            modIdList.AddRange(updateModIds);
+                        }
 
                         modIdList = ModUtils.ValidateModList(modIdList);
 

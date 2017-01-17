@@ -2135,6 +2135,9 @@ namespace ARK_Server_Manager
 
             foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
             {
+                if (string.IsNullOrWhiteSpace(dino.ClassName))
+                    continue;
+
                 newList.Add(new Lib.ViewModel.ComboBoxItem {
                                 DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
                                 ValueMember = dino.ClassName,
@@ -2145,6 +2148,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(dinoSetting.ReplacementClass, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(dinoSetting.ReplacementClass))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
                                     ValueMember = dinoSetting.ReplacementClass,
@@ -2158,6 +2164,9 @@ namespace ARK_Server_Manager
                 {
                     if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
                     {
+                        if (string.IsNullOrWhiteSpace(spawnEntry.NPCClassString))
+                            continue;
+
                         newList.Add(new Lib.ViewModel.ComboBoxItem
                         {
                             DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
@@ -2198,6 +2207,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(spawnSetting.NPCSpawnEntriesContainerClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(spawnSetting.NPCSpawnEntriesContainerClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
                                     ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
@@ -2233,6 +2245,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(craftingItem.ItemClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(craftingItem.ItemClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = craftingItem.ItemClassString,
                                     ValueMember = craftingItem.ItemClassString,
@@ -2243,6 +2258,9 @@ namespace ARK_Server_Manager
                 {
                     if (!newList.Any(s => s.ValueMember.Equals(craftingResource.ResourceItemTypeString, StringComparison.OrdinalIgnoreCase)))
                     {
+                        if (string.IsNullOrWhiteSpace(craftingResource.ResourceItemTypeString))
+                            continue;
+
                         newList.Add(new Lib.ViewModel.ComboBoxItem {
                                         DisplayMember = craftingResource.ResourceItemTypeString,
                                         ValueMember = craftingResource.ResourceItemTypeString,
@@ -2304,6 +2322,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(supplyCrate.SupplyCrateClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(supplyCrate.SupplyCrateClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = supplyCrate.SupplyCrateClassString,
                                     ValueMember = supplyCrate.SupplyCrateClassString,
