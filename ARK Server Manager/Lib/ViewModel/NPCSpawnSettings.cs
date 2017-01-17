@@ -231,7 +231,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
         public string DisplayName => GameData.FriendlyNameForClass(NPCSpawnEntriesContainerClassString);
 
-        public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString) && NPCSpawnEntrySettings.Count > 0;
+        public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString);
 
         public static readonly DependencyProperty ShowEntryNameColumnProperty = DependencyProperty.Register(nameof(ShowEntryNameColumn), typeof(bool), typeof(NPCSpawnSettings), new PropertyMetadata(true));
         public bool ShowEntryNameColumn
