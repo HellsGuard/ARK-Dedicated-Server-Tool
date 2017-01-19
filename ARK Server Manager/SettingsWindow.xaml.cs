@@ -62,6 +62,22 @@ namespace ARK_Server_Manager
                         MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledLabel"), _globalizer.GetResourceString("GlobalSettings_CacheUpdate_DisabledTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
+
+                if (!TaskSchedulerUtils.ScheduleAutoBackup(taskKey, null, command, Config.Default.AutoBackup_EnableBackup ? Config.Default.AutoBackup_BackupPeriod : 0))
+                {
+                    MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_ErrorLabel"), _globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    if (Config.Default.AutoBackup_EnableBackup && Config.Default.AutoBackup_BackupPeriod > 0)
+                    {
+                        MessageBox.Show(String.Format(_globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_EnabledLabel"), Config.Default.AutoBackup_BackupPeriod), _globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_EnabledTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_DisabledLabel"), _globalizer.GetResourceString("GlobalSettings_BackupTaskUpdate_DisabledTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
             }
 
             if (Config.Default.SteamCmdRedirectOutput && !Config.Default.SteamCmd_UseAnonymousCredentials)

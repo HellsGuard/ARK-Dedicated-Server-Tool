@@ -503,6 +503,13 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Automatic Management
+        public static readonly DependencyProperty EnableAutoBackupProperty = DependencyProperty.Register(nameof(EnableAutoBackup), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableAutoBackup
+        {
+            get { return (bool)GetValue(EnableAutoBackupProperty); }
+            set { SetValue(EnableAutoBackupProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableAutoStartProperty = DependencyProperty.Register(nameof(EnableAutoStart), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoStart
         {
@@ -2528,6 +2535,7 @@ namespace ARK_Server_Manager.Lib
             if (SOTF_Enabled)
             {
                 // ensure that the auto settings are switched off for SotF servers
+                EnableAutoBackup = false;
                 EnableAutoShutdown1 = false;
                 RestartAfterShutdown1 = true;
                 EnableAutoShutdown2 = false;
@@ -2846,14 +2854,14 @@ namespace ARK_Server_Manager.Lib
                                     result.AppendLine("The map name does not match the map mod's map name.");
                                 else
                                 {
-                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(TotalConversionModId));
+                                    var modDetail = modDetails?.publishedfiledetails?.FirstOrDefault(d => d.publishedfileid.Equals(serverMapModId));
                                     if (modDetail != null)
                                     {
                                         if (!modDetail.consumer_app_id.Equals(appId))
                                             result.AppendLine("The map mod is for a different Ark application.");
                                         else
                                         {
-                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, TotalConversionModId));
+                                            var modVersion = ModUtils.GetModLatestTime(ModUtils.GetLatestModTimeFile(InstallDirectory, serverMapModId));
                                             if (!modVersion.Equals(modDetail.time_updated))
                                                 result.AppendLine("The map mod is outdated.");
                                         }

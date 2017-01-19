@@ -19,6 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using ARK_Server_Manager.Lib.Model;
+using static ARK_Server_Manager.Lib.ServerApp;
 
 namespace ARK_Server_Manager
 {
@@ -773,6 +774,37 @@ namespace ARK_Server_Manager
         private void ArkAutoSettings_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_ArkAutoSettings_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private async void SaveBackup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+
+                var app = new ServerApp()
+                {
+                    SendEmails = false,
+                    OutputLogs = false,
+                    ServerProcess = ServerProcessType.Backup,
+                };
+
+                var profile = ProfileSnapshot.Create(Server.Profile);
+
+                var exitCode = await Task.Run(() => app.PerformProfileBackup(profile));
+                if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
+                    throw new ApplicationException($"An error occured during the backup process - ExitCode: {exitCode}");
+
+                MessageBox.Show("The backup was successful.", _globalizer.GetResourceString("ServerSettings_BackupServer_Title"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ServerSettings_BackupServer_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = null);
+            }
         }
 
         private void SaveRestore_Click(object sender, RoutedEventArgs e)
@@ -2103,6 +2135,9 @@ namespace ARK_Server_Manager
 
             foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
             {
+                if (string.IsNullOrWhiteSpace(dino.ClassName))
+                    continue;
+
                 newList.Add(new Lib.ViewModel.ComboBoxItem {
                                 DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
                                 ValueMember = dino.ClassName,
@@ -2113,6 +2148,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(dinoSetting.ReplacementClass, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(dinoSetting.ReplacementClass))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
                                     ValueMember = dinoSetting.ReplacementClass,
@@ -2126,6 +2164,9 @@ namespace ARK_Server_Manager
                 {
                     if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
                     {
+                        if (string.IsNullOrWhiteSpace(spawnEntry.NPCClassString))
+                            continue;
+
                         newList.Add(new Lib.ViewModel.ComboBoxItem
                         {
                             DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
@@ -2166,6 +2207,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(spawnSetting.NPCSpawnEntriesContainerClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(spawnSetting.NPCSpawnEntriesContainerClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
                                     ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
@@ -2201,6 +2245,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(craftingItem.ItemClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(craftingItem.ItemClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = craftingItem.ItemClassString,
                                     ValueMember = craftingItem.ItemClassString,
@@ -2211,6 +2258,9 @@ namespace ARK_Server_Manager
                 {
                     if (!newList.Any(s => s.ValueMember.Equals(craftingResource.ResourceItemTypeString, StringComparison.OrdinalIgnoreCase)))
                     {
+                        if (string.IsNullOrWhiteSpace(craftingResource.ResourceItemTypeString))
+                            continue;
+
                         newList.Add(new Lib.ViewModel.ComboBoxItem {
                                         DisplayMember = craftingResource.ResourceItemTypeString,
                                         ValueMember = craftingResource.ResourceItemTypeString,
@@ -2272,6 +2322,9 @@ namespace ARK_Server_Manager
             {
                 if (!newList.Any(s => s.ValueMember.Equals(supplyCrate.SupplyCrateClassString, StringComparison.OrdinalIgnoreCase)))
                 {
+                    if (string.IsNullOrWhiteSpace(supplyCrate.SupplyCrateClassString))
+                        continue;
+
                     newList.Add(new Lib.ViewModel.ComboBoxItem {
                                     DisplayMember = supplyCrate.SupplyCrateClassString,
                                     ValueMember = supplyCrate.SupplyCrateClassString,

@@ -33,6 +33,13 @@ namespace ARK_Server_Manager.Lib
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 900000;
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1798540;
 
+        public static string FriendlyNameForClass(string className)
+        {
+            if (string.IsNullOrWhiteSpace(className))
+                return string.Empty;
+            return GlobalizedApplication.Instance.GetResourceString(className) ?? className;
+        }
+
         private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
         {
             new DinoSpawn { ClassName="Achatina_Character_BP_C",            DinoNameTag="Achatina" },
@@ -217,11 +224,6 @@ namespace ARK_Server_Manager.Lib
                     var dinoSpawn = dinoSpawns.FirstOrDefault(d => d.ClassName == className);
                     return dinoSpawn?.DinoNameTag ?? className;
             }
-        }
-
-        public static string FriendlyNameForClass(string className)
-        {
-            return GlobalizedApplication.Instance.GetResourceString(className) ?? className;
         }
 
         private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]

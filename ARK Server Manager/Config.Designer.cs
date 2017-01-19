@@ -1521,5 +1521,78 @@ namespace ARK_Server_Manager {
                 this["ServerUpdate_ForceUpdateModsIfNoSteamInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoBackup_EnableBackup {
+            get {
+                return ((bool)(this["AutoBackup_EnableBackup"]));
+            }
+            set {
+                this["AutoBackup_EnableBackup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int AutoBackup_BackupPeriod {
+            get {
+                return ((int)(this["AutoBackup_BackupPeriod"]));
+            }
+            set {
+                this["AutoBackup_BackupPeriod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmailNotify_AutoBackup {
+            get {
+                return ((bool)(this["EmailNotify_AutoBackup"]));
+            }
+            set {
+                this["EmailNotify_AutoBackup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoBackup_DeleteOldFiles {
+            get {
+                return ((bool)(this["AutoBackup_DeleteOldFiles"]));
+            }
+            set {
+                this["AutoBackup_DeleteOldFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int AutoBackup_DeleteInterval {
+            get {
+                return ((int)(this["AutoBackup_DeleteInterval"]));
+            }
+            set {
+                this["AutoBackup_DeleteInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A world save is about to be performed, you may experience some lag during this pr" +
+            "ocess. Please be patient.")]
+        public string ServerBackup_WorldSaveMessage {
+            get {
+                return ((string)(this["ServerBackup_WorldSaveMessage"]));
+            }
+            set {
+                this["ServerBackup_WorldSaveMessage"] = value;
+            }
+        }
     }
 }
