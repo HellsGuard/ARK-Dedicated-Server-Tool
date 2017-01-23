@@ -214,10 +214,13 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
-                            emailMessage.AppendLine("sent worldsave message.");
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerBackup_WorldSaveMessage))
+                            {
+                                SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
+                                emailMessage.AppendLine("sent worldsave message.");
 
-                            Task.Delay(5000).Wait();
+                                Task.Delay(2000).Wait();
+                            }
 
                             SendCommand("saveworld", false);
                             emailMessage.AppendLine("sent saveworld command.");
@@ -553,7 +556,8 @@ namespace ARK_Server_Manager.Lib
                         {
                             LogProfileMessage("Cancelling shutdown...");
 
-                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                                SendMessage(Config.Default.ServerShutdown_CancelMessage);
 
                             ExitCode = EXITCODE_CANCELLED;
                             return;
@@ -634,7 +638,12 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_WorldSaveMessage))
+                            {
+                                SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
+
+                                Task.Delay(2000).Wait();
+                            }
 
                             SendCommand("saveworld", false);
 
@@ -650,15 +659,16 @@ namespace ARK_Server_Manager.Lib
                     {
                         LogProfileMessage("Cancelling shutdown...");
 
-                        SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                        if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
 
                         ExitCode = EXITCODE_CANCELLED;
                         return;
                     }
 
                     // send the final shutdown message
-                    var message3 = Config.Default.ServerShutdown_GraceMessage3;
-                    SendMessage(message3);
+                    if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
+                        SendMessage(Config.Default.ServerShutdown_GraceMessage3);
                 }
                 finally
                 {
@@ -1683,6 +1693,9 @@ namespace ARK_Server_Manager.Lib
 
         private void SendCommand(string command, bool retryIfFailed)
         {
+            if (string.IsNullOrWhiteSpace(command))
+                return;
+
             int retries = 0;
             int rconRetries = 0;
             int maxRetries = retryIfFailed ? RCON_MAXRETRIES : 1;
