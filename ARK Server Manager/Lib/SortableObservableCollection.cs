@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -13,6 +11,18 @@ namespace ARK_Server_Manager.Lib
     /// <typeparam name="T">The type of elements in the collection.</typeparam>
     public class SortableObservableCollection<T> : ObservableCollection<T>
     {
+        public SortableObservableCollection()
+        {
+        }
+        public SortableObservableCollection(List<T> list)
+            : base(list)
+        {
+        }
+        public SortableObservableCollection(IEnumerable<T> collection)
+            : base(collection)
+        {
+        }
+
         /// <summary>
         /// Sorts the items of the collection in ascending order according to a key.
         /// </summary>

@@ -147,6 +147,7 @@ namespace ARK_Server_Manager
             this.ServerRCON = new ServerRCON(parameters);
             this.ServerRCON.RegisterCommandListener(RenderRCONCommandOutput);
             this.ServerRCON.Players.CollectionChanged += Players_CollectionChanged;
+            this.ServerRCON.PlayersCollectionUpdated += Players_CollectionUpdated;
 
             this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
             this.PlayersView.Filter = new Predicate<object>(PlayerFilter);
@@ -255,6 +256,7 @@ namespace ARK_Server_Manager
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
             this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
             this.ServerRCON.DisposeAsync().DoNotWait();
             base.OnClosing(e);
@@ -980,6 +982,15 @@ namespace ARK_Server_Manager
                     this.PlayersView.SortDescriptions.Add(new SortDescription(nameof(PlayerInfo.SteamName), ListSortDirection.Ascending));
                     break;
             }
+        }
+
+        private void Players_CollectionUpdated(object sender, EventArgs e)
+        {
+            this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
+            this.PlayersView.Filter = new Predicate<object>(PlayerFilter);
+
+            SortPlayers();
+            PlayersView?.Refresh();
         }
     }
 }

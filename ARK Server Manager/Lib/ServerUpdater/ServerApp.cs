@@ -181,10 +181,11 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server backup...");
             LogProfileMessage("------------------------");
+            LogProfileMessage($"ASM version: {App.Version}");
 
             emailMessage.AppendLine("ASM Backup Summary:");
             emailMessage.AppendLine();
-            emailMessage.AppendLine($"ASM Version: {App.Version}");
+            emailMessage.AppendLine($"ASM version: {App.Version}");
 
             emailMessage.AppendLine();
             emailMessage.AppendLine("Backup:");
@@ -213,10 +214,13 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
-                            emailMessage.AppendLine("sent worldsave message.");
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerBackup_WorldSaveMessage))
+                            {
+                                SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
+                                emailMessage.AppendLine("sent worldsave message.");
 
-                            Task.Delay(5000).Wait();
+                                Task.Delay(2000).Wait();
+                            }
 
                             SendCommand("saveworld", false);
                             emailMessage.AppendLine("sent saveworld command.");
@@ -344,6 +348,7 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("Started server shutdown...");
                 LogProfileMessage("--------------------------");
             }
+            LogProfileMessage($"ASM version: {App.Version}");
 
             // stop the server
             StopServer(cancellationToken);
@@ -551,7 +556,8 @@ namespace ARK_Server_Manager.Lib
                         {
                             LogProfileMessage("Cancelling shutdown...");
 
-                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                                SendMessage(Config.Default.ServerShutdown_CancelMessage);
 
                             ExitCode = EXITCODE_CANCELLED;
                             return;
@@ -632,7 +638,12 @@ namespace ARK_Server_Manager.Lib
                         try
                         {
                             // perform a world save
-                            SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
+                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_WorldSaveMessage))
+                            {
+                                SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
+
+                                Task.Delay(2000).Wait();
+                            }
 
                             SendCommand("saveworld", false);
 
@@ -648,15 +659,16 @@ namespace ARK_Server_Manager.Lib
                     {
                         LogProfileMessage("Cancelling shutdown...");
 
-                        SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                        if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
 
                         ExitCode = EXITCODE_CANCELLED;
                         return;
                     }
 
                     // send the final shutdown message
-                    var message3 = Config.Default.ServerShutdown_GraceMessage3;
-                    SendMessage(message3);
+                    if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
+                        SendMessage(Config.Default.ServerShutdown_GraceMessage3);
                 }
                 finally
                 {
@@ -803,6 +815,7 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server update...");
             LogProfileMessage("------------------------");
+            LogProfileMessage($"ASM version: {App.Version}");
 
             // check if the server needs to be updated
             var serverCacheLastUpdated = GetServerLatestTime(GetServerCacheTimeFile());
@@ -869,7 +882,7 @@ namespace ARK_Server_Manager.Lib
 
                 emailMessage.AppendLine("ASM Update Summary:");
                 emailMessage.AppendLine();
-                emailMessage.AppendLine($"ASM Version: {App.Version}");
+                emailMessage.AppendLine($"ASM version: {App.Version}");
 
                 if (BackupWorldFile)
                 {
@@ -1114,6 +1127,7 @@ namespace ARK_Server_Manager.Lib
             LogMessage("----------------------------");
             LogMessage("Starting mod cache update...");
             LogMessage("----------------------------");
+            LogMessage($"ASM version: {App.Version}");
 
             LogMessage($"Downloading mod information for {modIdList.Count} mods from steam.");
 
@@ -1218,7 +1232,6 @@ namespace ARK_Server_Manager.Lib
 
                 var downloadSuccessful = false;
 
-                downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
                 DataReceivedEventHandler modOutputHandler = (s, e) =>
                 {
                     var dataValue = e.Data ?? string.Empty;
@@ -1234,10 +1247,10 @@ namespace ARK_Server_Manager.Lib
                 LogMessage($"{modId} - {modDetail?.title ?? "<unknown>"}");
 
                 var attempt = 0;
-                while (attempt < STEAM_MAXRETRIES)
+                while (true)
                 {
                     attempt++;
-                    downloadSuccessful = false;
+                    downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
 
                     // update the mod cache
                     var steamCmdArgs = string.Empty;
@@ -1246,16 +1259,18 @@ namespace ARK_Server_Manager.Lib
                     else
                         steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
                     var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
-
-                    // check if the download was successful.
                     if (success && downloadSuccessful)
                         // download was successful, exit loop and continue.
                         break;
 
                     // download was not successful, log a failed attempt.
-                    LogError($"Mod {modId} cache update failed - attempt {attempt}.");
+                    var logError = $"Mod {modId} cache update failed";
+                    if (Config.Default.AutoUpdate_RetryOnFail)
+                        logError += $" - attempt {attempt}.";
+                    LogError(logError);
+
                     // check if we have reached the max failed attempt limit.
-                    if (attempt == STEAM_MAXRETRIES)
+                    if (!Config.Default.AutoUpdate_RetryOnFail || attempt >= STEAM_MAXRETRIES)
                     {
                         // failed max limit reached
                         if (Config.Default.SteamCmdRedirectOutput)
@@ -1264,6 +1279,8 @@ namespace ARK_Server_Manager.Lib
                         ExitCode = EXITCODE_CACHEMODUPDATEFAILED;
                         return;
                     }
+
+                    Task.Delay(5000).Wait();
                 }
 
                 // check if any of the mod files have changed.
@@ -1304,6 +1321,7 @@ namespace ARK_Server_Manager.Lib
             LogMessage("-------------------------------");
             LogMessage("Starting server cache update...");
             LogMessage("-------------------------------");
+            LogMessage($"ASM version: {App.Version}");
 
             var gotNewVersion = false;
             var downloadSuccessful = false;
@@ -1316,7 +1334,6 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
-            downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
             DataReceivedEventHandler serverOutputHandler = (s, e) =>
             {
                 var dataValue = e.Data ?? string.Empty;
@@ -1334,24 +1351,27 @@ namespace ARK_Server_Manager.Lib
             LogMessage("Server update started.");
 
             var attempt = 0;
-            while (attempt < STEAM_MAXRETRIES)
+            while (true)
             {
                 attempt++;
-                downloadSuccessful = false;
+                downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
+                gotNewVersion = false;
 
                 // update the server cache
                 var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, "validate");
                 var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
-
-                // check if the download was successful.
                 if (success && downloadSuccessful)
                     // download was successful, exit loop and continue.
                     break;
 
                 // download was not successful, log a failed attempt.
-                LogError($"Server cache update failed - attempt {attempt}.");
+                var logError = "Server cache update failed";
+                if (Config.Default.AutoUpdate_RetryOnFail)
+                    logError += $" - attempt {attempt}.";
+                LogError(logError);
+
                 // check if we have reached the max failed attempt limit.
-                if (attempt == STEAM_MAXRETRIES)
+                if (!Config.Default.AutoUpdate_RetryOnFail || attempt >= STEAM_MAXRETRIES)
                 {
                     // failed max limit reached
                     if (Config.Default.SteamCmdRedirectOutput)
@@ -1360,6 +1380,8 @@ namespace ARK_Server_Manager.Lib
                     ExitCode = EXITCODE_CACHESERVERUPDATEFAILED;
                     return;
                 }
+
+                Task.Delay(5000).Wait();
             }
 
             if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))
@@ -1670,6 +1692,9 @@ namespace ARK_Server_Manager.Lib
 
         private void SendCommand(string command, bool retryIfFailed)
         {
+            if (string.IsNullOrWhiteSpace(command))
+                return;
+
             int retries = 0;
             int rconRetries = 0;
             int maxRetries = retryIfFailed ? RCON_MAXRETRIES : 1;
