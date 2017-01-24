@@ -1232,7 +1232,6 @@ namespace ARK_Server_Manager.Lib
 
                 var downloadSuccessful = false;
 
-                downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
                 DataReceivedEventHandler modOutputHandler = (s, e) =>
                 {
                     var dataValue = e.Data ?? string.Empty;
@@ -1251,7 +1250,7 @@ namespace ARK_Server_Manager.Lib
                 while (true)
                 {
                     attempt++;
-                    downloadSuccessful = false;
+                    downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
 
                     // update the mod cache
                     var steamCmdArgs = string.Empty;
@@ -1260,27 +1259,28 @@ namespace ARK_Server_Manager.Lib
                     else
                         steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
                     var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
-                    if (!success || !downloadSuccessful)
+                    if (success && downloadSuccessful)
+                        // download was successful, exit loop and continue.
+                        break;
+
+                    // download was not successful, log a failed attempt.
+                    var logError = $"Mod {modId} cache update failed";
+                    if (Config.Default.AutoUpdate_RetryOnFail)
+                        logError += $" - attempt {attempt}.";
+                    LogError(logError);
+
+                    // check if we have reached the max failed attempt limit.
+                    if (!Config.Default.AutoUpdate_RetryOnFail || attempt >= STEAM_MAXRETRIES)
                     {
-                        // download was not successful, log a failed attempt.
-                        LogError($"Mod {modId} cache update failed - attempt {attempt}.");
-                        // check if we have reached the max failed attempt limit.
-                        if (attempt >= STEAM_MAXRETRIES)
-                        {
-                            // failed max limit reached
-                            if (Config.Default.SteamCmdRedirectOutput)
-                                LogMessage($"If the mod cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
+                        // failed max limit reached
+                        if (Config.Default.SteamCmdRedirectOutput)
+                            LogMessage($"If the mod cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
 
-                            ExitCode = EXITCODE_CACHEMODUPDATEFAILED;
-                            return;
-                        }
-
-                        Task.Delay(5000).Wait();
-                        continue;
+                        ExitCode = EXITCODE_CACHEMODUPDATEFAILED;
+                        return;
                     }
 
-                    // download was successful, exit loop and continue.
-                    break;
+                    Task.Delay(5000).Wait();
                 }
 
                 // check if any of the mod files have changed.
@@ -1334,7 +1334,6 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
-            downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
             DataReceivedEventHandler serverOutputHandler = (s, e) =>
             {
                 var dataValue = e.Data ?? string.Empty;
@@ -1355,34 +1354,34 @@ namespace ARK_Server_Manager.Lib
             while (true)
             {
                 attempt++;
-                downloadSuccessful = false;
+                downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
                 gotNewVersion = false;
 
                 // update the server cache
                 var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, "validate");
                 var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
-                if (!success || !downloadSuccessful)
+                if (success && downloadSuccessful)
+                    // download was successful, exit loop and continue.
+                    break;
+
+                // download was not successful, log a failed attempt.
+                var logError = "Server cache update failed";
+                if (Config.Default.AutoUpdate_RetryOnFail)
+                    logError += $" - attempt {attempt}.";
+                LogError(logError);
+
+                // check if we have reached the max failed attempt limit.
+                if (!Config.Default.AutoUpdate_RetryOnFail || attempt >= STEAM_MAXRETRIES)
                 {
-                    // download was not successful, log a failed attempt.
-                    LogError($"Server cache update failed - attempt {attempt}.");
+                    // failed max limit reached
+                    if (Config.Default.SteamCmdRedirectOutput)
+                        LogMessage($"If the server cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
 
-                    // check if we have reached the max failed attempt limit.
-                    if (attempt >= STEAM_MAXRETRIES)
-                    {
-                        // failed max limit reached
-                        if (Config.Default.SteamCmdRedirectOutput)
-                            LogMessage($"If the server cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
-
-                        ExitCode = EXITCODE_CACHESERVERUPDATEFAILED;
-                        return;
-                    }
-
-                    Task.Delay(5000).Wait();
-                    continue;
+                    ExitCode = EXITCODE_CACHESERVERUPDATEFAILED;
+                    return;
                 }
 
-                // download was successful, exit loop and continue.
-                break;
+                Task.Delay(5000).Wait();
             }
 
             if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))

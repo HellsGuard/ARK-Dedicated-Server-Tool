@@ -449,5 +449,8 @@
     <Setting Name="ServerBackup_WorldSaveMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)">A world save is about to be performed, you may experience some lag during this process. Please be patient.</Value>
     </Setting>
+    <Setting Name="AutoUpdate_RetryOnFail" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

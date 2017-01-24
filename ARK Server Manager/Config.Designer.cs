@@ -1594,5 +1594,17 @@ namespace ARK_Server_Manager {
                 this["ServerBackup_WorldSaveMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoUpdate_RetryOnFail {
+            get {
+                return ((bool)(this["AutoUpdate_RetryOnFail"]));
+            }
+            set {
+                this["AutoUpdate_RetryOnFail"] = value;
+            }
+        }
     }
 }
