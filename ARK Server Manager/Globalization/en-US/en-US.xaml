@@ -490,12 +490,8 @@
     <sys:String x:Key="ServerSettings_RCONResetTooltip">Resets the RCON Window settings back to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Log Admin to Chat</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">If enabled, admin commands will be echoed to chat</sys:String>
-    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>
-    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferLabel">RCON Server Log Buffer:</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Maximum Tribe Logs:</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force Respawn Dinos on Startup (Causes lag after 'Ready' while repopulating)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">If enabled, when the server is started ALL wild creatures will be wiped and respawned (this will only destroy wild creatures that are NOT currently being tamed).</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Alternate Save Directory Name:</sys:String>
@@ -564,8 +560,6 @@
     <sys:String x:Key="ServerSettings_UseCacheTooltip">If enabled, ~70% faster loading speed option. The first and second times that you start the game will be still be slow, but the third time onwards will be fast.</sys:String>
     <sys:String x:Key="ServerSettings_UseOldSaveFormatLabel">Use Old Save Format</sys:String>
     <sys:String x:Key="ServerSettings_UseOldSaveFormatTooltip">If enabled, will use the old save formatt. New saves are not backwards compatible.</sys:String>
-    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
-    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Label">Force DirectX 10</sys:String>
     <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">If enabled, the game is forced to use DirectX 10 instead of DirectX 11.</sys:String>
     <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Force Shader Model 4</sys:String>
@@ -585,6 +579,21 @@
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlTooltip">Specifies the URL where your listening script is stored, waiting and ready to receive the post information by your game server.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmNote">NOTE: ASM does not provide the Web Alarms functionaility. ASM just allows you to enable/disable the Web Alarms and create the necessary AlarmPostCredentials file.</sys:String>
+
+    <sys:String x:Key="ServerSettings_ServerLogOptionsLabel">Server Log Options</sys:String>
+    <sys:String x:Key="ServerSettings_ResetServerLogOptionsTooltip">Reset all server log options to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Enable Server Admin Logs</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">If enabled, the Server Admin Logs (including RCON support) will be turned on.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Maximum Tribe Logs:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Sets the maximum number of Tribe log entries that are kept per Tribe (default 100).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsLabel">Server Admin Logs Include Tribe Logs</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Server RCON Output Tribe Logs</sys:String>
+    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatLabel">Notify Admin Commands in Chat</sys:String>
+    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">.</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>
@@ -762,6 +771,8 @@
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierLabel">Hair Growth Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierTooltip">Specifies the scaling factor for the hair growth speed. Higher values increase growth speed. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
     <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
 
@@ -1637,6 +1648,8 @@
     <sys:String x:Key="Archa_Character_BP_C">Archaeopteryx</sys:String>
     <sys:String x:Key="Argent_Character_BP_C">Argentavis</sys:String>
     <sys:String x:Key="Arthro_Character_BP_C">Arthropluera</sys:String>
+    <sys:String x:Key="Baryonyx_Character_BP_C">Baryonyx</sys:String>
+    <sys:String x:Key="Basilosaurus_Character_BP_C">Basilosaurus</sys:String>
     <sys:String x:Key="Bat_Character_BP_C">Onyc</sys:String>
     <sys:String x:Key="Beaver_Character_BP_C">Castoroides</sys:String>
     <sys:String x:Key="BigFoot_Character_BP_C">Gigantopithecus</sys:String>
@@ -1689,6 +1702,7 @@
     <sys:String x:Key="Plesiosaur_Character_BP_C">Plesiosaur</sys:String>
     <sys:String x:Key="Procoptodon_Character_BP_C">Procoptodon</sys:String>
     <sys:String x:Key="Ptero_Character_BP_C">Pteranodon</sys:String>
+    <sys:String x:Key="Purlovia_Character_BP_C">Purlovia</sys:String>
     <sys:String x:Key="Quetz_Character_BP_C">Quetzal</sys:String>
     <sys:String x:Key="Raptor_Character_BP_C">Raptor</sys:String>
     <sys:String x:Key="Rex_Character_BP_C">Rex</sys:String>
@@ -1698,6 +1712,7 @@
     <sys:String x:Key="Sarco_Character_BP_C">Sarco</sys:String>
     <sys:String x:Key="Sauropod_Character_BP_C">Bronto</sys:String>
     <sys:String x:Key="Scorpion_Character_BP_C">Pulmonoscorpius</sys:String>
+    <sys:String x:Key="Sheep_Character_BP_C">Ovis (Sheep)</sys:String>
     <sys:String x:Key="SpiderL_Character_BP_C">Broodmother Lysrix</sys:String>
     <sys:String x:Key="SpiderS_Character_BP_C">Araneo</sys:String>
     <sys:String x:Key="Spino_Character_BP_C">Spinosaurus</sys:String>
@@ -1844,6 +1859,7 @@
     <sys:String x:Key="EngramEntry_Keypad_C">Remote Keypad</sys:String>
     <sys:String x:Key="EngramEntry_Lamppost_C">Lamppost</sys:String>
     <sys:String x:Key="EngramEntry_LamppostOmni_C">Omnidirectional Lamppost</sys:String>
+    <sys:String x:Key="EngramEntry_Lance_C">Lance</sys:String>
     <sys:String x:Key="EngramEntry_Laser_C">Laser Attachment</sys:String>
     <sys:String x:Key="EngramEntry_MachinedPistol_C">Fabricated Pistol</sys:String>
     <sys:String x:Key="EngramEntry_MachinedRifle_C">Assault Rifle</sys:String>
@@ -1934,6 +1950,8 @@
     <sys:String x:Key="EngramEntry_Saddle_Ankylo_C">Saddle - Ankylo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Argentavis_C">Saddle - Argentavis</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Arthro_C">Saddle - Arthropluera</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Baryonyx_C">Saddle - Baryonyx</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Basilosaurus_C">Saddle - Basilosaurus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Beaver_C">Saddle - Castoroides</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Carno_C">Saddle - Carno</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Chalico_C">Saddle - Chalicotherium</sys:String>
@@ -1984,6 +2002,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Trike_C">Saddle - Trike</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Turtle_C">Saddle - Carbonemys</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Tuso_C">Saddle - Tusoteuthis</sys:String>
+    <sys:String x:Key="EngramEntry_Scissors_C">Scissors</sys:String>
     <sys:String x:Key="EngramEntry_Scope_C">Scope Attachment</sys:String>
     <sys:String x:Key="EngramEntry_ScubaBoots_Flippers_C">SCUBA Flippers</sys:String>
     <sys:String x:Key="EngramEntry_ScubaHelmet_Goggles_C">SCUBA Mask</sys:String>
@@ -2040,6 +2059,15 @@
     <sys:String x:Key="EngramEntry_StorageBox_Small_C">Storage Box</sys:String>
     <sys:String x:Key="EngramEntry_SubstrateAbsorbent_C">Absorbent Substrate</sys:String>
     <sys:String x:Key="EngramEntry_Sword_C">Sword</sys:String>
+    <sys:String x:Key="EngramEntry_TekBoots_C">Tek Boots</sys:String>
+    <sys:String x:Key="EngramEntry_TekGloves_C">Tek Gauntlets</sys:String>
+    <sys:String x:Key="EngramEntry_TekHelmet_C">Tek Helmet</sys:String>
+    <sys:String x:Key="EngramEntry_TekPants_C">Tek Leggings</sys:String>
+    <sys:String x:Key="EngramEntry_TekReplicator_C">Tek Replicator</sys:String>
+    <sys:String x:Key="EngramEntry_TekRexSaddle_C">Rex Tek Saddle</sys:String>
+    <sys:String x:Key="EngramEntry_TekRifle_C">Tek Rifle</sys:String>
+    <sys:String x:Key="EngramEntry_TekShirt_C">Tek Chestpiece</sys:String>
+    <sys:String x:Key="EngramEntry_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="EngramEntry_ThatchCeiling_C">Thatch Roof</sys:String>
     <sys:String x:Key="EngramEntry_ThatchDoor_C">Thatch Door</sys:String>
     <sys:String x:Key="EngramEntry_ThatchFloor_C">Thatch Foundation</sys:String>
@@ -2323,6 +2351,7 @@
     <sys:String x:Key="PrimalItem_RecipeNote_ShadowSteak_C">Rockwell Recipes: Shadow Steak Saute</sys:String>
     <sys:String x:Key="PrimalItem_RecipeNote_StaminaSoup_C">Rockwell Recipes: Energy Brew</sys:String>
     <sys:String x:Key="PrimalItem_StartingNote_C">Specimen Implant</sys:String>
+    <sys:String x:Key="PrimalItem_TekRifle_C">Tek Rifle</sys:String>
     <sys:String x:Key="PrimalItem_WeaponAlarmTrap_C">Tripwire Alarm Trap</sys:String>
     <sys:String x:Key="PrimalItem_WeaponBola_C">Bola</sys:String>
     <sys:String x:Key="PrimalItem_WeaponBow_C">Bow</sys:String>
@@ -2336,6 +2365,7 @@
     <sys:String x:Key="PrimalItem_WeaponGrenade_C">Grenade</sys:String>
     <sys:String x:Key="PrimalItem_WeaponGun_C">Simple Pistol</sys:String>
     <sys:String x:Key="PrimalItem_WeaponHandcuffs_C">Handcuffs</sys:String>
+    <sys:String x:Key="PrimalItem_WeaponLance_C">Lance</sys:String>
     <sys:String x:Key="PrimalItem_WeaponMachinedPistol_C">Fabricated Pistol</sys:String>
     <sys:String x:Key="PrimalItem_WeaponMachinedShotgun_C">Pump-Action Shotgun</sys:String>
     <sys:String x:Key="PrimalItem_WeaponMachinedSniper_C">Fabricated Sniper Rifle</sys:String>
@@ -2349,6 +2379,7 @@
     <sys:String x:Key="PrimalItem_WeaponProd_C">Electric Prod</sys:String>
     <sys:String x:Key="PrimalItem_WeaponRifle_C">Assault Rifle</sys:String>
     <sys:String x:Key="PrimalItem_WeaponRocketLauncher_C">Rocket Launcher</sys:String>
+    <sys:String x:Key="PrimalItem_WeaponScissors_C">Scissors</sys:String>
     <sys:String x:Key="PrimalItem_WeaponShotgun_C">Shotgun</sys:String>
     <sys:String x:Key="PrimalItem_WeaponSickle_C">Metal Sickle</sys:String>
     <sys:String x:Key="PrimalItem_WeaponSlingshot_C">Slingshot</sys:String>
@@ -2383,6 +2414,8 @@
     <sys:String x:Key="PrimalItemArmor_AnkyloSaddle_C">Ankylo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ArgentavisSaddle_C">Argentavis Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ArthroSaddle_C">Arthropluera Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_BaryonyxSaddle_C">Baryonyx Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_BasiloSaddle_C">Basilosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_BeaverSaddle_C">Castoroides Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_CarnoSaddle_C">Carno Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ChalicoSaddle_C">Chalicotherium Saddle</sys:String>
@@ -2452,6 +2485,7 @@
     <sys:String x:Key="PrimalItemArmor_RaptorSaddle_C">Raptor Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_RexSaddle_C">Rex Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_RexSaddle_StompedGlasses_C">Rex Stomped Glasses Saddle Skin</sys:String>
+    <sys:String x:Key="PrimalItemArmor_RexSaddle_Tek_C">Rex Tek Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_RhinoSaddle_C">Woolly Rhino Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_RiotBoots_C">Riot Boots</sys:String>
     <sys:String x:Key="PrimalItemArmor_RiotGloves_C">Riot Gauntlets</sys:String>
@@ -2472,6 +2506,11 @@
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Megaloceros Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_StegoSaddle_C">Stego Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TapejaraSaddle_C">Tapejara Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TekBoots_C">Tek Boots</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TekGloves_C">Tek Gauntlets</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TekHelmet_C">Tek Helmet</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TekPants_C">Tek Leggings</sys:String>
+    <sys:String x:Key="PrimalItemArmor_TekShirt_C">Tek Chestpiece</sys:String>
     <sys:String x:Key="PrimalItemArmor_TerrorBirdSaddle_C">Terror Bird Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TherizinosaurusSaddle_C">Therizinosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TitanSaddle_Platform_C">Titanosaur Platform Saddle</sys:String>
@@ -2484,6 +2523,7 @@
     <sys:String x:Key="PrimalItemArtifact_01_C">Artifact of the Hunter</sys:String>
     <sys:String x:Key="PrimalItemArtifact_02_C">Artifact of the Pack</sys:String>
     <sys:String x:Key="PrimalItemArtifact_03_C">Artifact of the Massive</sys:String>
+    <sys:String x:Key="PrimalItemArtifact_04_C">Artifact Of The Devious</sys:String>
     <sys:String x:Key="PrimalItemArtifact_05_C">Artifact of the Clever</sys:String>
     <sys:String x:Key="PrimalItemArtifact_06_C">Artifact of the Skylord</sys:String>
     <sys:String x:Key="PrimalItemArtifact_07_C">Artifact of the Devourer</sys:String>
@@ -2509,6 +2549,7 @@
     <sys:String x:Key="PrimalItemConsumable_CactusBuffSoup_C">Cactus Broth</sys:String>
     <sys:String x:Key="PrimalItemConsumable_CanteenCraftable_C">Canteen (Empty)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_CanteenRefill_C">Canteen (Full)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_CookedLambChop_C">Cooked Lamb Chop</sys:String>
     <sys:String x:Key="PrimalItemConsumable_CookedMeat_C">Cooked Meat</sys:String>
     <sys:String x:Key="PrimalItemConsumable_CookedMeat_Fish_C">Cooked Fish Meat</sys:String>
     <sys:String x:Key="PrimalItemConsumable_CookedMeat_Jerky_C">Cooked Meat Jerky</sys:String>
@@ -2583,8 +2624,10 @@
     <sys:String x:Key="PrimalItemConsumable_Kibble_KairukuEgg_C">Kibble (Kairuku Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_KaproEgg_C">Kibble (Kaprosuchus Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_LystroEgg_C">Kibble (Lystrosaurus Egg)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Kibble_MoschopsEgg_C">Kibble (Moschops Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_OviraptorEgg_C">Kibble (Oviraptor Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_PachyEgg_C">Kibble (Pachy Egg)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Kibble_PachyRhinoEgg_C">Kibble (Pachyrhino Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_ParaEgg_C">Kibble (Parasaur Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_Pela_C">Kibble (Pelagornis Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_PteroEgg_C">Kibble (Pteranodon Egg)</sys:String>
@@ -2599,11 +2642,13 @@
     <sys:String x:Key="PrimalItemConsumable_Kibble_StegoEgg_C">Kibble (Stego Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_TapejaraEgg_C">Kibble (Tapejara Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_TerrorbirdEgg_C">Kibble (Terror Bird Egg)</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Kibble_TherizinoEgg_C">Kibble (Therizinosaurus Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_TrikeEgg_C">Kibble (Trike Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Kibble_TurtleEgg_C">Kibble (Carbonemys Egg)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Narcotic_C">Narcotic</sys:String>
     <sys:String x:Key="PrimalItemConsumable_RawMeat_C">Raw Meat</sys:String>
     <sys:String x:Key="PrimalItemConsumable_RawMeat_Fish_C">Raw Fish Meat</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_RawMutton_C">Raw Mutton</sys:String>
     <sys:String x:Key="PrimalItemConsumable_RawPrimeMeat_C">Raw Prime Meat</sys:String>
     <sys:String x:Key="PrimalItemConsumable_RawPrimeMeat_Fish_C">Raw Prime Fish Meat</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Seed_Amarberry_C">Amarberry Seed</sys:String>
@@ -2696,10 +2741,12 @@
     <sys:String x:Key="PrimalItemResource_ChitinPaste_C">Cementing Paste</sys:String>
     <sys:String x:Key="PrimalItemResource_Crystal_C">Crystal</sys:String>
     <sys:String x:Key="PrimalItemResource_Electronics_C">Electronics</sys:String>
+    <sys:String x:Key="PrimalItemResource_Element_C">Element</sys:String>
     <sys:String x:Key="PrimalItemResource_Fibers_C">Fiber</sys:String>
     <sys:String x:Key="PrimalItemResource_Flint_C">Flint</sys:String>
     <sys:String x:Key="PrimalItemResource_Gasoline_C">Gasoline</sys:String>
     <sys:String x:Key="PrimalItemResource_Gunpowder_C">Gunpowder</sys:String>
+    <sys:String x:Key="PrimalItemResource_Hair_C">Human Hair</sys:String>
     <sys:String x:Key="PrimalItemResource_Hide_C">Hide</sys:String>
     <sys:String x:Key="PrimalItemResource_Horn_C">Woolly Rhino Horn</sys:String>
     <sys:String x:Key="PrimalItemResource_Keratin_C">Keratin</sys:String>
@@ -2709,6 +2756,7 @@
     <sys:String x:Key="PrimalItemResource_Obsidian_C">Obsidian</sys:String>
     <sys:String x:Key="PrimalItemResource_Oil_C">Oil</sys:String>
     <sys:String x:Key="PrimalItemResource_Pelt_C">Pelt</sys:String>
+    <sys:String x:Key="PrimalItemResource_PeltOrHair_C">Pelt or Hair</sys:String>
     <sys:String x:Key="PrimalItemResource_Polymer_C">Polymer</sys:String>
     <sys:String x:Key="PrimalItemResource_Polymer_Organic_C">Organic Polymer</sys:String>
     <sys:String x:Key="PrimalItemResource_RareFlower_C">Rare Flower</sys:String>
@@ -2721,6 +2769,7 @@
     <sys:String x:Key="PrimalItemResource_SubstrateAbsorbent_C">Absorbent Substrate</sys:String>
     <sys:String x:Key="PrimalItemResource_Thatch_C">Thatch</sys:String>
     <sys:String x:Key="PrimalItemResource_Wood_C">Wood</sys:String>
+    <sys:String x:Key="PrimalItemResource_Wool_C">Wool</sys:String>
     <sys:String x:Key="PrimalItemResourceGeneric_Curing_C">Leech Blood or Horns</sys:String>
     <sys:String x:Key="PrimalItemSkin_BirthdayPants_C">Birthday Suit Pants Skin</sys:String>
     <sys:String x:Key="PrimalItemSkin_BirthdayShirt_C">Birthday Suit Shirt Skin</sys:String>
@@ -2894,6 +2943,8 @@
     <sys:String x:Key="PrimalItemStructure_StorageBox_Huge_C">Vault</sys:String>
     <sys:String x:Key="PrimalItemStructure_StorageBox_Large_C">Large Storage Box</sys:String>
     <sys:String x:Key="PrimalItemStructure_StorageBox_Small_C">Storage Box</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekReplicator_C">Tek Replicator</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchCeiling_C">Thatch Roof</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchDoor_C">Thatch Door</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchFloor_C">Thatch Foundation</sys:String>

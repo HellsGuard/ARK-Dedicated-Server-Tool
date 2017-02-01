@@ -359,6 +359,27 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableServerAdminLogsProperty, value); }
         }
 
+        public static readonly DependencyProperty ServerAdminLogsIncludeTribeLogsProperty = DependencyProperty.Register(nameof(ServerAdminLogsIncludeTribeLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ServerAdminLogsIncludeTribeLogs
+        {
+            get { return (bool)GetValue(ServerAdminLogsIncludeTribeLogsProperty); }
+            set { SetValue(ServerAdminLogsIncludeTribeLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerRCONOutputTribeLogsProperty = DependencyProperty.Register(nameof(ServerRCONOutputTribeLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ServerRCONOutputTribeLogs
+        {
+            get { return (bool)GetValue(ServerRCONOutputTribeLogsProperty); }
+            set { SetValue(ServerRCONOutputTribeLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty NotifyAdminCommandsInChatProperty = DependencyProperty.Register(nameof(NotifyAdminCommandsInChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NotifyAdminCommandsInChat
+        {
+            get { return (bool)GetValue(NotifyAdminCommandsInChatProperty); }
+            set { SetValue(NotifyAdminCommandsInChatProperty, value); }
+        }
+
         public static readonly DependencyProperty MaxTribeLogsProperty = DependencyProperty.Register(nameof(MaxTribeLogs), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int MaxTribeLogs
@@ -1113,6 +1134,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(HarvestingDamageMultiplierPlayerProperty); }
             set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
+        }
+
+        public static readonly DependencyProperty HairGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(HairGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HairGrowthSpeedMultiplier
+        {
+            get { return (float)GetValue(HairGrowthSpeedMultiplierProperty); }
+            set { SetValue(HairGrowthSpeedMultiplierProperty, value); }
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
@@ -2353,6 +2382,21 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -servergamelog");
             }
 
+            if (this.ServerAdminLogsIncludeTribeLogs)
+            {
+                serverArgs.Append(" -servergamelogincludetribelogs");
+            }
+
+            if (this.ServerRCONOutputTribeLogs)
+            {
+                serverArgs.Append(" -ServerRCONOutputTribeLogs");
+            }
+
+            if (this.NotifyAdminCommandsInChat)
+            {
+                serverArgs.Append(" -NotifyAdminCommandsInChat");
+            }
+
             if (this.ForceDirectX10)
             {
                 serverArgs.Append(" -d3d10");
@@ -3136,7 +3180,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceRespawnDinosProperty);
             this.ClearValue(EnableServerAdminLogsProperty);
             this.ClearValue(MaxTribeLogsProperty);
-            this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
             this.ClearValue(ForceDirectX10Property);
             this.ClearValue(ForceShaderModel4Property);
             this.ClearValue(ForceLowMemoryProperty);
@@ -3146,6 +3189,17 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AltSaveDirectoryNameProperty);
             this.ClearValue(CrossArkClusterIdProperty);
             this.ClearValue(ClusterDirOverrideProperty);
+        }
+
+        public void ResetServerLogOptions()
+        {
+            this.ClearValue(EnableServerAdminLogsProperty);
+            this.ClearValue(MaxTribeLogsProperty);
+            this.ClearValue(ServerAdminLogsIncludeTribeLogsProperty);
+            this.ClearValue(ServerRCONOutputTribeLogsProperty);
+            this.ClearValue(NotifyAdminCommandsInChatProperty);
+            this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
+            this.ClearValue(AdminLoggingProperty);
         }
 
         // section reset methods
@@ -3170,7 +3224,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(RCONEnabledProperty);
             this.ClearValue(RCONPortProperty);
             this.ClearValue(RCONServerGameLogBufferProperty);
-            this.ClearValue(AdminLoggingProperty);
 
             this.ClearValue(ServerMapProperty);
             this.ClearValue(TotalConversionModIdProperty);
@@ -3187,6 +3240,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MOTDDurationProperty);
 
             ResetServerOptions();
+            ResetServerLogOptions();
 
             this.ClearValue(EnableWebAlarmProperty);
             this.ClearValue(WebAlarmKeyProperty);
