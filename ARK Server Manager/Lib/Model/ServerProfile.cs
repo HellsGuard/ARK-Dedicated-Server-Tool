@@ -746,8 +746,50 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PreventUploadDinosProperty, value); }
         }
 
+        public static readonly DependencyProperty OverrideTributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeCharacterExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeCharacterExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeCharacterExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeCharacterExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideTributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeItemExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeItemExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeItemExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeItemExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideTributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeDinoExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeDinoExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeDinoExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeDinoExpirationSecondsProperty, value); }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeCharacterExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeCharacterExpirationSeconds; }
+            set { value = value; }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeItemExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeItemExpirationSeconds; }
+            set { value = value; }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeDinoExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeDinoExpirationSeconds; }
+            set { value = value; }
+        }
+
         public static readonly DependencyProperty TributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeCharacterExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeCharacterExpirationSeconds))]
         public int TributeCharacterExpirationSeconds
         {
             get { return (int)GetValue(TributeCharacterExpirationSecondsProperty); }
@@ -755,7 +797,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeItemExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeItemExpirationSeconds))]
         public int TributeItemExpirationSeconds
         {
             get { return (int)GetValue(TributeItemExpirationSecondsProperty); }
@@ -763,7 +805,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeDinoExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeDinoExpirationSeconds))]
         public int TributeDinoExpirationSeconds
         {
             get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
