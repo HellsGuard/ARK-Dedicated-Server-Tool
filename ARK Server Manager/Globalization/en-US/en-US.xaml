@@ -777,8 +777,6 @@
     <sys:String x:Key="ServerSettings_HealthRecoveryTooltip">Specifies the scaling factor for health recovery. Higher values increase the recovery rate (heal faster).</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageLabel">Harvesting Damage:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestingDamageTooltip">Specifies the scaling factor for the harvest damage rate. Higher values increase damage rate. Lower values decrease it.</sys:String>
-    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierLabel">Hair Growth Speed:</sys:String>
-    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierTooltip">Specifies the scaling factor for the hair growth speed. Higher values increase growth speed. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
     <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
 
@@ -840,6 +838,10 @@
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">If enabled, will disable the dino imprinting-player stat bonus, where normally whomever specifically imprinted on the dino and raised it to have an imprinting quality, gets extra damage/resistance buff.</sys:String>
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Allow Baby Dino Imprint Cuddle by Anyone</sys:String>
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">If enabled, ANYONE will to be able to take care of a Baby Dino (cuddle etc), not just whomever imprinted on it.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoRidingLabel">Disable Dino Riding</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoRidingTooltip">If enabled, all tamed dinos will be unable to be ridden.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Disable Dino Taming</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoTamingTooltip">If enabled, all wild dinos will be unable to be tamed.</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Dino Customization</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Spawn Multipliers</sys:String>
@@ -959,6 +961,8 @@
     <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Scales the egg laying interval of dinos. Lower values cause dinos to lay eggs more frequently.</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalLabel">Poop Interval:</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Scales the defecation interval of players and dinos. Lower values cause players and dinos to defecation more frequently.</sys:String>
+    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierLabel">Hair Growth Speed:</sys:String>
+    <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierTooltip">Specifies the scaling factor for the hair growth speed. Higher values increase growth speed. Lower values decrease it.</sys:String>
 
     <sys:String x:Key="ServerSettings_EarnedXPMultipliersLabel">Earned XP Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_EarnedXPMultipliers_GenericLabel">Generic (over time)</sys:String>
@@ -3278,5 +3282,22 @@
     <sys:String x:Key="ArtifactCrate_SE_C">(ScorchedEarth) Artifact Container Destroyer</sys:String>
     <sys:String x:Key="ArtifactCrate_2_SE_C">(ScorchedEarth) Artifact Container Gatekeeper</sys:String>
     <sys:String x:Key="ArtifactCrate_3_SE_C">(ScorchedEarth) Artifact Container Crag</sys:String>
+
+    <sys:String x:Key="DinoDropInventoryComponent_BossSpider_Easy_C">Boss Inventory - Broodmother (Easy)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossSpider_Medium_C">Boss Inventory - Broodmother (Medium)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossSpider_Hard_C">Boss Inventory - Broodmother (Hard)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossGorilla_Easy_C">Boss Inventory - Megapithecus (Easy)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossGorilla_Medium_C">Boss Inventory - Megapithecus (Medium)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossGorilla_Hard_C">Boss Inventory - Megapithecus (Hard)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Easy_C">Boss Inventory - Dragon (Easy)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Medium_C">Boss Inventory - Dragon (Medium)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Hard_C">Boss Inventory - Dragon (Hard)</sys:String>
+
+    <sys:String x:Key="DinoDropInventoryComponent_BossManticore_Easy_C">Boss Inventory - Manticore (Easy)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossManticore_Medium_C">Boss Inventory - Manticore (Medium)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossManticore_Hard_C">Boss Inventory - Manticore (Hard)</sys:String>
+
+    <sys:String x:Key="DinoDropInventoryComponent_BossSpider_TheCenter_C">Boss Inventory - Broodmother (TheCenter)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_BossGorilla_TheCenter_C">Boss Inventory - Megapithecus (TheCenter)</sys:String>
 
 </Globalization:GlobalizationResourceDictionary>

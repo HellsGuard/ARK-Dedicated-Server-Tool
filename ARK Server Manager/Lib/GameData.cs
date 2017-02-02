@@ -2228,6 +2228,26 @@ namespace ARK_Server_Manager.Lib
             new SupplyCrate { ClassName="ArtifactCrate_SE_C" },
             new SupplyCrate { ClassName="ArtifactCrate_2_SE_C" },
             new SupplyCrate { ClassName="ArtifactCrate_3_SE_C" },
+
+            // Bosses
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossSpider_Easy_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossSpider_Medium_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossSpider_Hard_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossGorilla_Easy_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossGorilla_Medium_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossGorilla_Hard_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Easy_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Medium_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Hard_C" },
+
+            // Bosses - Scorched Earth
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossManticore_Easy_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossManticore_Medium_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossManticore_Hard_C" },
+
+            // Bosses - TheCenter
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossSpider_TheCenter_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_BossGorilla_TheCenter_C" },
         };
 
         public static IEnumerable<SupplyCrate> GetStandardSupplyCrates() => supplyCrates.Select(d => d.Duplicate());

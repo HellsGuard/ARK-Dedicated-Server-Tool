@@ -955,46 +955,6 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(NonPermanentDiseasesProperty); }
             set { SetValue(NonPermanentDiseasesProperty, value); }
         }
-
-        public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float CraftXPMultiplier
-        {
-            get { return (float)GetValue(CraftXPMultiplierProperty); }
-            set { SetValue(CraftXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float GenericXPMultiplier
-        {
-            get { return (float)GetValue(GenericXPMultiplierProperty); }
-            set { SetValue(GenericXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float HarvestXPMultiplier
-        {
-            get { return (float)GetValue(HarvestXPMultiplierProperty); }
-            set { SetValue(HarvestXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float KillXPMultiplier
-        {
-            get { return (float)GetValue(KillXPMultiplierProperty); }
-            set { SetValue(KillXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float SpecialXPMultiplier
-        {
-            get { return (float)GetValue(SpecialXPMultiplierProperty); }
-            set { SetValue(SpecialXPMultiplierProperty, value); }
-        }
         #endregion
 
         #region Chat and Notifications
@@ -1178,14 +1138,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
         }
 
-        public static readonly DependencyProperty HairGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(HairGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float HairGrowthSpeedMultiplier
-        {
-            get { return (float)GetValue(HairGrowthSpeedMultiplierProperty); }
-            set { SetValue(HairGrowthSpeedMultiplierProperty, value); }
-        }
-
         public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -1352,6 +1304,22 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(ForceFlyerExplosivesProperty); }
             set { SetValue(ForceFlyerExplosivesProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableDinoRidingProperty = DependencyProperty.Register(nameof(DisableDinoRiding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoRiding", ConditionedOn = nameof(DisableDinoRiding))]
+        public bool DisableDinoRiding
+        {
+            get { return (bool)GetValue(DisableDinoRidingProperty); }
+            set { SetValue(DisableDinoRidingProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableDinoTamingProperty = DependencyProperty.Register(nameof(DisableDinoTaming), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoTaming", ConditionedOn = nameof(DisableDinoTaming))]
+        public bool DisableDinoTaming
+        {
+            get { return (bool)GetValue(DisableDinoTamingProperty); }
+            set { SetValue(DisableDinoTamingProperty, value); }
         }
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
@@ -1688,6 +1656,54 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(PoopIntervalMultiplierProperty); }
             set { SetValue(PoopIntervalMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty HairGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(HairGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HairGrowthSpeedMultiplier
+        {
+            get { return (float)GetValue(HairGrowthSpeedMultiplierProperty); }
+            set { SetValue(HairGrowthSpeedMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CraftXPMultiplier
+        {
+            get { return (float)GetValue(CraftXPMultiplierProperty); }
+            set { SetValue(CraftXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GenericXPMultiplier
+        {
+            get { return (float)GetValue(GenericXPMultiplierProperty); }
+            set { SetValue(GenericXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HarvestXPMultiplier
+        {
+            get { return (float)GetValue(HarvestXPMultiplierProperty); }
+            set { SetValue(HarvestXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float KillXPMultiplier
+        {
+            get { return (float)GetValue(KillXPMultiplierProperty); }
+            set { SetValue(KillXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float SpecialXPMultiplier
+        {
+            get { return (float)GetValue(SpecialXPMultiplierProperty); }
+            set { SetValue(SpecialXPMultiplierProperty, value); }
         }
         #endregion
 
@@ -3397,6 +3413,13 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(CropGrowthSpeedMultiplierProperty);
             this.ClearValue(LayEggIntervalMultiplierProperty);
             this.ClearValue(PoopIntervalMultiplierProperty);
+            this.ClearValue(HairGrowthSpeedMultiplierProperty);
+
+            this.ClearValue(CraftXPMultiplierProperty);
+            this.ClearValue(GenericXPMultiplierProperty);
+            this.ClearValue(HarvestXPMultiplierProperty);
+            this.ClearValue(KillXPMultiplierProperty);
+            this.ClearValue(SpecialXPMultiplierProperty);
         }
 
         public void ResetHUDAndVisualsSection()
@@ -3491,12 +3514,6 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(EnableDiseasesProperty);
             this.ClearValue(NonPermanentDiseasesProperty);
-
-            this.ClearValue(CraftXPMultiplierProperty);
-            this.ClearValue(GenericXPMultiplierProperty);
-            this.ClearValue(HarvestXPMultiplierProperty);
-            this.ClearValue(KillXPMultiplierProperty);
-            this.ClearValue(SpecialXPMultiplierProperty);
         }
 
         public void ResetSOTFSection()
