@@ -2236,8 +2236,10 @@ namespace ARK_Server_Manager
 
             foreach (var primalItem in GameData.GetStandardPrimalItems().OrderBy(i => i.DisplayName))
             {
+                var categoryName = primalItem.ArkApplication == ArkApplication.SurvivalEvolved ? string.Empty : $" ({primalItem.ArkApplication.ToString()})";
+
                 newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = primalItem.DisplayName,
+                                DisplayMember = $"{primalItem.DisplayName}{categoryName}",
                                 ValueMember = primalItem.ClassName,
                             });
             }
