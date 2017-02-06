@@ -68,6 +68,7 @@ namespace ARK_Server_Manager
         DinoTamedAffinityPerLevelStatMultipliers,
         RCONWindowExtents,
         ServerOptions,
+        ServerLogOptions,
     }
 
     /// <summary>
@@ -2536,6 +2537,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.ServerOptions:
                                 this.Settings.ResetServerOptions();
+                                break;
+
+                            case ServerSettingsResetAction.ServerLogOptions:
+                                this.Settings.ResetServerLogOptions();
                                 break;
                         }
                     },

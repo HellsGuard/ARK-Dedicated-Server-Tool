@@ -359,6 +359,27 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableServerAdminLogsProperty, value); }
         }
 
+        public static readonly DependencyProperty ServerAdminLogsIncludeTribeLogsProperty = DependencyProperty.Register(nameof(ServerAdminLogsIncludeTribeLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ServerAdminLogsIncludeTribeLogs
+        {
+            get { return (bool)GetValue(ServerAdminLogsIncludeTribeLogsProperty); }
+            set { SetValue(ServerAdminLogsIncludeTribeLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerRCONOutputTribeLogsProperty = DependencyProperty.Register(nameof(ServerRCONOutputTribeLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool ServerRCONOutputTribeLogs
+        {
+            get { return (bool)GetValue(ServerRCONOutputTribeLogsProperty); }
+            set { SetValue(ServerRCONOutputTribeLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty NotifyAdminCommandsInChatProperty = DependencyProperty.Register(nameof(NotifyAdminCommandsInChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NotifyAdminCommandsInChat
+        {
+            get { return (bool)GetValue(NotifyAdminCommandsInChatProperty); }
+            set { SetValue(NotifyAdminCommandsInChatProperty, value); }
+        }
+
         public static readonly DependencyProperty MaxTribeLogsProperty = DependencyProperty.Register(nameof(MaxTribeLogs), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int MaxTribeLogs
@@ -725,8 +746,50 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PreventUploadDinosProperty, value); }
         }
 
+        public static readonly DependencyProperty OverrideTributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeCharacterExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeCharacterExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeCharacterExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeCharacterExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideTributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeItemExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeItemExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeItemExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeItemExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty OverrideTributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeDinoExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideTributeDinoExpirationSeconds
+        {
+            get { return (bool)GetValue(OverrideTributeDinoExpirationSecondsProperty); }
+            set { SetValue(OverrideTributeDinoExpirationSecondsProperty, value); }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeCharacterExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeCharacterExpirationSeconds; }
+            set { value = value; }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeItemExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeItemExpirationSeconds; }
+            set { value = value; }
+        }
+
+        [XmlIgnore]
+        public bool SaveTributeDinoExpirationSeconds
+        {
+            get { return EnableTributeDownloads && OverrideTributeDinoExpirationSeconds; }
+            set { value = value; }
+        }
+
         public static readonly DependencyProperty TributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeCharacterExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeCharacterExpirationSeconds))]
         public int TributeCharacterExpirationSeconds
         {
             get { return (int)GetValue(TributeCharacterExpirationSecondsProperty); }
@@ -734,7 +797,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeItemExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeItemExpirationSeconds))]
         public int TributeItemExpirationSeconds
         {
             get { return (int)GetValue(TributeItemExpirationSecondsProperty); }
@@ -742,7 +805,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeDinoExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeDinoExpirationSeconds))]
         public int TributeDinoExpirationSeconds
         {
             get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
@@ -893,44 +956,28 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NonPermanentDiseasesProperty, value); }
         }
 
-        public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float CraftXPMultiplier
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountStartProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountStart), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int NPCNetworkStasisRangeScalePlayerCountStart
         {
-            get { return (float)GetValue(CraftXPMultiplierProperty); }
-            set { SetValue(CraftXPMultiplierProperty, value); }
+            get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty, value); }
         }
 
-        public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float GenericXPMultiplier
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountEnd), typeof(int), typeof(ServerProfile), new PropertyMetadata(120));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int NPCNetworkStasisRangeScalePlayerCountEnd
         {
-            get { return (float)GetValue(GenericXPMultiplierProperty); }
-            set { SetValue(GenericXPMultiplierProperty, value); }
+            get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float HarvestXPMultiplier
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePercentEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePercentEnd), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.5f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float NPCNetworkStasisRangeScalePercentEnd
         {
-            get { return (float)GetValue(HarvestXPMultiplierProperty); }
-            set { SetValue(HarvestXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float KillXPMultiplier
-        {
-            get { return (float)GetValue(KillXPMultiplierProperty); }
-            set { SetValue(KillXPMultiplierProperty, value); }
-        }
-
-        public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public float SpecialXPMultiplier
-        {
-            get { return (float)GetValue(SpecialXPMultiplierProperty); }
-            set { SetValue(SpecialXPMultiplierProperty, value); }
+            get { return (float)GetValue(NPCNetworkStasisRangeScalePercentEndProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePercentEndProperty, value); }
         }
         #endregion
 
@@ -1283,6 +1330,22 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ForceFlyerExplosivesProperty, value); }
         }
 
+        public static readonly DependencyProperty DisableDinoRidingProperty = DependencyProperty.Register(nameof(DisableDinoRiding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoRiding", ConditionedOn = nameof(DisableDinoRiding))]
+        public bool DisableDinoRiding
+        {
+            get { return (bool)GetValue(DisableDinoRidingProperty); }
+            set { SetValue(DisableDinoRidingProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableDinoTamingProperty = DependencyProperty.Register(nameof(DisableDinoTaming), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoTaming", ConditionedOn = nameof(DisableDinoTaming))]
+        public bool DisableDinoTaming
+        {
+            get { return (bool)GetValue(DisableDinoTamingProperty); }
+            set { SetValue(DisableDinoTamingProperty, value); }
+        }
+
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         public DinoSettingsList DinoSettings
@@ -1617,6 +1680,54 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(PoopIntervalMultiplierProperty); }
             set { SetValue(PoopIntervalMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty HairGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(HairGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HairGrowthSpeedMultiplier
+        {
+            get { return (float)GetValue(HairGrowthSpeedMultiplierProperty); }
+            set { SetValue(HairGrowthSpeedMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CraftXPMultiplier
+        {
+            get { return (float)GetValue(CraftXPMultiplierProperty); }
+            set { SetValue(CraftXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GenericXPMultiplier
+        {
+            get { return (float)GetValue(GenericXPMultiplierProperty); }
+            set { SetValue(GenericXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float HarvestXPMultiplier
+        {
+            get { return (float)GetValue(HarvestXPMultiplierProperty); }
+            set { SetValue(HarvestXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float KillXPMultiplier
+        {
+            get { return (float)GetValue(KillXPMultiplierProperty); }
+            set { SetValue(KillXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float SpecialXPMultiplier
+        {
+            get { return (float)GetValue(SpecialXPMultiplierProperty); }
+            set { SetValue(SpecialXPMultiplierProperty, value); }
         }
         #endregion
 
@@ -2351,6 +2462,21 @@ namespace ARK_Server_Manager.Lib
             if (this.EnableServerAdminLogs)
             {
                 serverArgs.Append(" -servergamelog");
+            }
+
+            if (this.ServerAdminLogsIncludeTribeLogs)
+            {
+                serverArgs.Append(" -servergamelogincludetribelogs");
+            }
+
+            if (this.ServerRCONOutputTribeLogs)
+            {
+                serverArgs.Append(" -ServerRCONOutputTribeLogs");
+            }
+
+            if (this.NotifyAdminCommandsInChat)
+            {
+                serverArgs.Append(" -NotifyAdminCommandsInChat");
             }
 
             if (this.ForceDirectX10)
@@ -3136,7 +3262,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceRespawnDinosProperty);
             this.ClearValue(EnableServerAdminLogsProperty);
             this.ClearValue(MaxTribeLogsProperty);
-            this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
             this.ClearValue(ForceDirectX10Property);
             this.ClearValue(ForceShaderModel4Property);
             this.ClearValue(ForceLowMemoryProperty);
@@ -3146,6 +3271,17 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AltSaveDirectoryNameProperty);
             this.ClearValue(CrossArkClusterIdProperty);
             this.ClearValue(ClusterDirOverrideProperty);
+        }
+
+        public void ResetServerLogOptions()
+        {
+            this.ClearValue(EnableServerAdminLogsProperty);
+            this.ClearValue(MaxTribeLogsProperty);
+            this.ClearValue(ServerAdminLogsIncludeTribeLogsProperty);
+            this.ClearValue(ServerRCONOutputTribeLogsProperty);
+            this.ClearValue(NotifyAdminCommandsInChatProperty);
+            this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
+            this.ClearValue(AdminLoggingProperty);
         }
 
         // section reset methods
@@ -3170,7 +3306,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(RCONEnabledProperty);
             this.ClearValue(RCONPortProperty);
             this.ClearValue(RCONServerGameLogBufferProperty);
-            this.ClearValue(AdminLoggingProperty);
 
             this.ClearValue(ServerMapProperty);
             this.ClearValue(TotalConversionModIdProperty);
@@ -3187,6 +3322,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(MOTDDurationProperty);
 
             ResetServerOptions();
+            ResetServerLogOptions();
 
             this.ClearValue(EnableWebAlarmProperty);
             this.ClearValue(WebAlarmKeyProperty);
@@ -3301,6 +3437,13 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(CropGrowthSpeedMultiplierProperty);
             this.ClearValue(LayEggIntervalMultiplierProperty);
             this.ClearValue(PoopIntervalMultiplierProperty);
+            this.ClearValue(HairGrowthSpeedMultiplierProperty);
+
+            this.ClearValue(CraftXPMultiplierProperty);
+            this.ClearValue(GenericXPMultiplierProperty);
+            this.ClearValue(HarvestXPMultiplierProperty);
+            this.ClearValue(KillXPMultiplierProperty);
+            this.ClearValue(SpecialXPMultiplierProperty);
         }
 
         public void ResetHUDAndVisualsSection()
@@ -3395,12 +3538,6 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(EnableDiseasesProperty);
             this.ClearValue(NonPermanentDiseasesProperty);
-
-            this.ClearValue(CraftXPMultiplierProperty);
-            this.ClearValue(GenericXPMultiplierProperty);
-            this.ClearValue(HarvestXPMultiplierProperty);
-            this.ClearValue(KillXPMultiplierProperty);
-            this.ClearValue(SpecialXPMultiplierProperty);
         }
 
         public void ResetSOTFSection()
