@@ -1766,6 +1766,20 @@
                                             <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding NonPermanentDiseases}" Content="{DynamicResource ServerSettings_NonPermanentDiseasesLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NonPermanentDiseasesTooltip}"/>
                                         </Grid>
                                     </GroupBox>
+
+                                    <GroupBox Header="{DynamicResource ServerSettings_NPCNetworkStasisRangeScaleLabel}" Style="{StaticResource GroupBoxStyle}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <local:AnnotatedSlider Grid.Row="0" Margin="1" Label="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartLabel}" Value="{Binding NPCNetworkStasisRangeScalePlayerCountStart}" Suffix="{DynamicResource SliderUnits_Players}" VerticalAlignment="Center" Minimum="1" Maximum="200" LargeChange="10" SmallChange="5" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="1" Margin="1" Label="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndLabel}" Value="{Binding NPCNetworkStasisRangeScalePlayerCountEnd}" Suffix="{DynamicResource SliderUnits_Players}" VerticalAlignment="Center" Minimum="1" Maximum="200" LargeChange="10" SmallChange="5" TickFrequency="10" ToolTip="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="2" Margin="1" Label="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel}" Value="{Binding NPCNetworkStasisRangeScalePercentEnd}" Suffix="{DynamicResource SliderUnits_Percentage}" VerticalAlignment="Center" Minimum="0.1" Maximum="1.0" LargeChange="0.1" SmallChange="0.1" TickFrequency="0.1" ToolTip="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip}"/>
+                                        </Grid>
+                                    </GroupBox>
                                 </StackPanel>
                             </Grid>
                         </Expander>

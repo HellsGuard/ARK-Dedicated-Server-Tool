@@ -955,6 +955,30 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(NonPermanentDiseasesProperty); }
             set { SetValue(NonPermanentDiseasesProperty, value); }
         }
+
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountStartProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountStart), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int NPCNetworkStasisRangeScalePlayerCountStart
+        {
+            get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty, value); }
+        }
+
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountEnd), typeof(int), typeof(ServerProfile), new PropertyMetadata(120));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int NPCNetworkStasisRangeScalePlayerCountEnd
+        {
+            get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty, value); }
+        }
+
+        public static readonly DependencyProperty NPCNetworkStasisRangeScalePercentEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePercentEnd), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.5f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float NPCNetworkStasisRangeScalePercentEnd
+        {
+            get { return (float)GetValue(NPCNetworkStasisRangeScalePercentEndProperty); }
+            set { SetValue(NPCNetworkStasisRangeScalePercentEndProperty, value); }
+        }
         #endregion
 
         #region Chat and Notifications
