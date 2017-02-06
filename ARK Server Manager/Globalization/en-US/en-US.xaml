@@ -723,7 +723,8 @@
     <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">Non Permanent Diseases</sys:String>
     <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">If enabled, will make diseases not permanent (you will then lose them if you respawn).</sys:String>
 
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleLabel">NPC Network Stasis Range Scale</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleLabel">Override NPC Network Stasis Range Scale</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleTooltip">If enabled, you can override the NPC network statis range scale settings.</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartLabel">Online Player Count Start</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartTooltip">The minimum number of online players when the statis scale is enabled.</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndLabel">Online Player Count End</sys:String>

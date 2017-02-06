@@ -1767,8 +1767,12 @@
                                         </Grid>
                                     </GroupBox>
 
-                                    <GroupBox Header="{DynamicResource ServerSettings_NPCNetworkStasisRangeScaleLabel}" Style="{StaticResource GroupBoxStyle}">
-                                        <Grid>
+                                    <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                        <GroupBox.Header>
+                                            <CheckBox Name="OverrideNPCNetworkStasisRangeScaleCheckbox" IsChecked="{Binding OverrideNPCNetworkStasisRangeScale}" Content="{DynamicResource ServerSettings_NPCNetworkStasisRangeScaleLabel}" ToolTip="{DynamicResource ServerSettings_NPCNetworkStasisRangeScaleTooltip}" />
+                                        </GroupBox.Header>
+
+                                        <Grid IsEnabled="{Binding ElementName=OverrideNPCNetworkStasisRangeScaleCheckbox, Path=IsChecked}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
