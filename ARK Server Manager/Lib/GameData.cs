@@ -2263,6 +2263,11 @@ namespace ARK_Server_Manager.Lib
             CraftingSpeedMultiplier = 11
         };
 
+        internal static IEnumerable<float> GetBaseStatMultipliers_Default()
+        {
+            return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_Default()
         {
             return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };

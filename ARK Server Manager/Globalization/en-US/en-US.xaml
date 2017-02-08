@@ -789,32 +789,45 @@
     <sys:String x:Key="ServerSettings_TurretDamageLabel">Turret Damage:</sys:String>
     <sys:String x:Key="ServerSettings_TurretDamageTooltip">Specifies the scaling factor for damage by turret (bullet and projectile turrets). Higher values increase turret damage. Lower values decrease it.</sys:String>
 
+    <sys:String x:Key="ServerSettings_PlayerBaseStatMultipliersLabel">Base Stat Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Per-Level Stat Multipliers</sys:String>
     
     <sys:String x:Key="ServerSettings_StatHealthLabel">Health:</sys:String>
     <sys:String x:Key="ServerSettings_StatHealthTooltip">Specifies the multiplier for health gain per level. Higher values increase health faster; lower values increase health more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatHealthTooltip">Specifies the multiplier for base health. Higher values increase base health; lower values decrease base health.</sys:String>
     <sys:String x:Key="ServerSettings_StatStaminaLabel">Stamina:</sys:String>
     <sys:String x:Key="ServerSettings_StatStaminaTooltip">Specifies the multiplier for stamina gain per level. Higher values increase stamina faster; lower values increase stamina more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatStaminaTooltip">Specifies the multiplier for base stamina. Higher values increase base stamina; lower values decrease base stamina.</sys:String>
     <sys:String x:Key="ServerSettings_StatTorpidityLabel">Torpidity:</sys:String>
     <sys:String x:Key="ServerSettings_StatTorpidityTooltip">Specifies the multiplier for torpidity gain per level. Higher values increase the torpidity faster; lower values increase the torpidity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatTorpidityTooltip">Specifies the multiplier for base torpidity. Higher values increase base torpidity; lower values decrease base torpidity.</sys:String>
     <sys:String x:Key="ServerSettings_StatOxygenLabel">Oxygen:</sys:String>
     <sys:String x:Key="ServerSettings_StatOxygenTooltip">Specifies the multiplier for oxygen efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatOxygenTooltip">Specifies the multiplier for base oxygen. Higher values increase base oxygen; lower values decrease base oxygen.</sys:String>
     <sys:String x:Key="ServerSettings_StatFoodLabel">Food:</sys:String>
     <sys:String x:Key="ServerSettings_StatFoodTooltip">Specifies the multiplier for food efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatFoodTooltip">Specifies the multiplier for base food. Higher values increase base food; lower values decrease base food.</sys:String>
     <sys:String x:Key="ServerSettings_StatWaterLabel">Water:</sys:String>
     <sys:String x:Key="ServerSettings_StatWaterTooltip">Specifies the multiplier for water efficiency gain per level. Higher values increase efficiency faster; lower values increase efficiency more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatWaterTooltip">Specifies the multiplier for base water. Higher values increase base water; lower values decrease base water.</sys:String>
     <sys:String x:Key="ServerSettings_StatTempLabel">Temperature:</sys:String>
     <sys:String x:Key="ServerSettings_StatTempTooltip">Specifies the multiplier for temperature tolerance gain per level. Higher values increase tolerance faster; lower values increase tolerance more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatTempTooltip">Specifies the multiplier for base temperature. Higher values increase base temperature; lower values decrease base temperature.</sys:String>
     <sys:String x:Key="ServerSettings_StatWeightLabel">Weight:</sys:String>
     <sys:String x:Key="ServerSettings_StatWeightTooltip">Specifies the multiplier for carrying capacity gain per level. Higher values increase carrying capacity faster; lower values increase carrying capacity more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatWeightTooltip">Specifies the multiplier for base carrying capacity. Higher values increase base carrying capacity; lower values decrease base carrying capacity.</sys:String>
     <sys:String x:Key="ServerSettings_StatDamageLabel">Damage:</sys:String>
     <sys:String x:Key="ServerSettings_StatDamageTooltip">Specifies the multiplier for damage gain per level. Higher values increase damage dealt faster; lower values increase damage dealt more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatDamageTooltip">Specifies the multiplier for base damage. Higher values increase base damage; lower values decrease base damage.</sys:String>
     <sys:String x:Key="ServerSettings_StatSpeedLabel">Speed:</sys:String>
     <sys:String x:Key="ServerSettings_StatSpeedTooltip">Specifies the multiplier for speed gain per level. Higher values increase speed faster; lower values increase speed more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatSpeedTooltip">Specifies the multiplier for base speed. Higher values increase base speed; lower values decrease base speed.</sys:String>
     <sys:String x:Key="ServerSettings_StatFortitudeLabel">Fortitude:</sys:String>
     <sys:String x:Key="ServerSettings_StatFortitudeTooltip">Specifies the multiplier for fortitude gain per level. Higher values increase fortitude faster; lower values increase the fortitude more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatFortitudeTooltip">Specifies the multiplier for base fortitude. Higher values increase base fortitude; lower values decrease base fortitude.</sys:String>
     <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
     <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatCraftingTooltip">Specifies the multiplier for base crafting. Higher values increase base crafting; lower values decrease base crafting.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
@@ -890,11 +903,13 @@
     <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Per-Level Stat Multipliers (Tamed) - Affinity</sys:String>
     <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Per-Level Stat Multipliers (Wild)</sys:String>
     <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Dino Breeding Multipliers</sys:String>
+    <sys:String x:Key="ServerSettings_BaseStatMultipliersTooltip">If enabled, allows scale factors to be applied to each base stat.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">If enabled, allows scale factors to be applied to each stat.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatTamedAddMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Addition for each stat.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip">If enabled, allows scale factors to be applied to the Taming Multiplier for each stat.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">If enabled, allows scale factors to be applied to the Tamed Stat Increase for each stat.</sys:String>
     <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">Reset all multipliers back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetBaseStatMultipliersTooltip">Reset all multipliers back to defaults.</sys:String>
 
     <sys:String x:Key="ServerSettings_MatingIntervalLabel">Mating Interval:</sys:String>
     <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Specifies the multiplier for time between tamed dino mating. Lower values decrease the time between mating.</sys:String>

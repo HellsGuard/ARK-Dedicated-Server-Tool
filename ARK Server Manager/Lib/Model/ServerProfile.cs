@@ -52,6 +52,7 @@ namespace ARK_Server_Manager.Lib
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
+            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
             this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
             this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
@@ -1169,6 +1170,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
         }
 
+        public static readonly DependencyProperty PlayerBaseStatMultipliersProperty = DependencyProperty.Register(nameof(PlayerBaseStatMultipliers), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PlayerBaseStatMultipliers
+        {
+            get { return (FloatIniValueArray)GetValue(PlayerBaseStatMultipliersProperty); }
+            set { SetValue(PlayerBaseStatMultipliersProperty, value); }
+        }
+
         public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
@@ -2213,6 +2223,7 @@ namespace ARK_Server_Manager.Lib
             settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
             settings.PerLevelStatsMultiplier_DinoWild.Reset();
             settings.PerLevelStatsMultiplier_Player.Reset();
+            settings.PlayerBaseStatMultipliers.Reset();
             return settings;
         }
 
@@ -3496,6 +3507,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PlayerCharacterHealthRecoveryMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
 
+            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
         }
 

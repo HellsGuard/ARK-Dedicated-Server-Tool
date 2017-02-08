@@ -61,6 +61,7 @@ namespace ARK_Server_Manager
 
         PlayerMaxXpProperty,
         DinoMaxXpProperty,
+        PlayerBaseStatMultipliers,
         PlayerPerLevelStatMultipliers,
         DinoWildPerLevelStatMultipliers,
         DinoTamedPerLevelStatMultipliers,
@@ -2511,6 +2512,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.DinoMaxXpProperty:
                                 this.Settings.ResetOverrideMaxExperiencePointsDino();
+                                break;
+
+                            case ServerSettingsResetAction.PlayerBaseStatMultipliers:
+                                this.Settings.PlayerBaseStatMultipliers.Reset();
                                 break;
 
                             case ServerSettingsResetAction.PlayerPerLevelStatMultipliers:
