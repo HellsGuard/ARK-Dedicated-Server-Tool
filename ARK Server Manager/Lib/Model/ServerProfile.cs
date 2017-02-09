@@ -52,6 +52,7 @@ namespace ARK_Server_Manager.Lib
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
+            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
             this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
             this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
@@ -956,8 +957,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NonPermanentDiseasesProperty, value); }
         }
 
+        public static readonly DependencyProperty OverrideNPCNetworkStasisRangeScaleProperty = DependencyProperty.Register(nameof(OverrideNPCNetworkStasisRangeScale), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideNPCNetworkStasisRangeScale
+        {
+            get { return (bool)GetValue(OverrideNPCNetworkStasisRangeScaleProperty); }
+            set { SetValue(OverrideNPCNetworkStasisRangeScaleProperty, value); }
+        }
+
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountStartProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountStart), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public int NPCNetworkStasisRangeScalePlayerCountStart
         {
             get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty); }
@@ -965,7 +973,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountEnd), typeof(int), typeof(ServerProfile), new PropertyMetadata(120));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public int NPCNetworkStasisRangeScalePlayerCountEnd
         {
             get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty); }
@@ -973,7 +981,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePercentEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePercentEnd), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.5f));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public float NPCNetworkStasisRangeScalePercentEnd
         {
             get { return (float)GetValue(NPCNetworkStasisRangeScalePercentEndProperty); }
@@ -1160,6 +1168,15 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(HarvestingDamageMultiplierPlayerProperty); }
             set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
+        }
+
+        public static readonly DependencyProperty PlayerBaseStatMultipliersProperty = DependencyProperty.Register(nameof(PlayerBaseStatMultipliers), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        [XmlIgnore]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public FloatIniValueArray PlayerBaseStatMultipliers
+        {
+            get { return (FloatIniValueArray)GetValue(PlayerBaseStatMultipliersProperty); }
+            set { SetValue(PlayerBaseStatMultipliersProperty, value); }
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
@@ -2206,6 +2223,7 @@ namespace ARK_Server_Manager.Lib
             settings.PerLevelStatsMultiplier_DinoTamed_Affinity.Reset();
             settings.PerLevelStatsMultiplier_DinoWild.Reset();
             settings.PerLevelStatsMultiplier_Player.Reset();
+            settings.PlayerBaseStatMultipliers.Reset();
             return settings;
         }
 
@@ -3489,6 +3507,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PlayerCharacterHealthRecoveryMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
 
+            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
         }
 
@@ -3538,6 +3557,11 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(EnableDiseasesProperty);
             this.ClearValue(NonPermanentDiseasesProperty);
+
+            this.ClearValue(OverrideNPCNetworkStasisRangeScaleProperty);
+            this.ClearValue(NPCNetworkStasisRangeScalePlayerCountStartProperty);
+            this.ClearValue(NPCNetworkStasisRangeScalePlayerCountEndProperty);
+            this.ClearValue(NPCNetworkStasisRangeScalePercentEndProperty);
         }
 
         public void ResetSOTFSection()
