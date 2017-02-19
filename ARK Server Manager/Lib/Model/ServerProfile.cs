@@ -1602,12 +1602,28 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(HarvestHealthMultiplierProperty, value); }
         }
 
+        public static readonly DependencyProperty UseOptimizedHarvestingHealthProperty = DependencyProperty.Register(nameof(UseOptimizedHarvestingHealth), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(UseOptimizedHarvestingHealth))]
+        public bool UseOptimizedHarvestingHealth
+        {
+            get { return (bool)GetValue(UseOptimizedHarvestingHealthProperty); }
+            set { SetValue(UseOptimizedHarvestingHealthProperty, value); }
+        }
+
         public static readonly DependencyProperty ClampResourceHarvestDamageProperty = DependencyProperty.Register(nameof(ClampResourceHarvestDamage), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(ClampResourceHarvestDamage))]
         public bool ClampResourceHarvestDamage
         {
             get { return (bool)GetValue(ClampResourceHarvestDamageProperty); }
             set { SetValue(ClampResourceHarvestDamageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClampItemSpoilingTimesProperty = DependencyProperty.Register(nameof(ClampItemSpoilingTimes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(ClampItemSpoilingTimes))]
+        public bool ClampItemSpoilingTimes
+        {
+            get { return (bool)GetValue(ClampItemSpoilingTimesProperty); }
+            set { SetValue(ClampItemSpoilingTimesProperty, value); }
         }
 
         public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ResourceClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
