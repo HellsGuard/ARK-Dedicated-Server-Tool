@@ -1332,6 +1332,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableDinoDecayPvEProperty, value); }
         }
 
+        public static readonly DependencyProperty AutoDestroyDecayedDinosProperty = DependencyProperty.Register(nameof(AutoDestroyDecayedDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AutoDestroyDecayedDinos
+        {
+            get { return (bool)GetValue(AutoDestroyDecayedDinosProperty); }
+            set { SetValue(AutoDestroyDecayedDinosProperty, value); }
+        }
+
         public static readonly DependencyProperty PvEDinoDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEDinoDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float PvEDinoDecayPeriodMultiplier
@@ -1361,6 +1369,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(DisableDinoTamingProperty); }
             set { SetValue(DisableDinoTamingProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxPersonalTamedDinosProperty = DependencyProperty.Register(nameof(MaxPersonalTamedDinos), typeof(float), typeof(ServerProfile), new PropertyMetadata(500.0f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float MaxPersonalTamedDinos
+        {
+            get { return (float)GetValue(MaxPersonalTamedDinosProperty); }
+            set { SetValue(MaxPersonalTamedDinosProperty, value); }
         }
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
@@ -3398,6 +3414,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DinoResistanceMultiplierProperty);
             this.ClearValue(TamedDinoResistanceMultiplierProperty);
             this.ClearValue(MaxTamedDinosProperty);
+            this.ClearValue(MaxPersonalTamedDinosProperty);
             this.ClearValue(DinoCharacterFoodDrainMultiplierProperty);
             this.ClearValue(DinoCharacterStaminaDrainMultiplierProperty);
             this.ClearValue(DinoCharacterHealthRecoveryMultiplierProperty);
@@ -3411,6 +3428,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableAllowCaveFlyersProperty);
             this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
+            this.ClearValue(AutoDestroyDecayedDinosProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
             this.ClearValue(ForceFlyerExplosivesProperty);
 

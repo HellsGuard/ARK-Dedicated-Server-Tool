@@ -452,5 +452,8 @@
     <Setting Name="AutoUpdate_RetryOnFail" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="SteamWebAPIKeyHelpUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3024/get-own-steam-web-api</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
