@@ -1615,5 +1615,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["SteamWebAPIKeyHelpUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoUpdate_ShowUpdateReason {
+            get {
+                return ((bool)(this["AutoUpdate_ShowUpdateReason"]));
+            }
+            set {
+                this["AutoUpdate_ShowUpdateReason"] = value;
+            }
+        }
     }
 }

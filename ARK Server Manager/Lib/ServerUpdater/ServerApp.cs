@@ -843,34 +843,37 @@ namespace ARK_Server_Manager.Lib
             {
                 var modDetails = SteamUtils.GetSteamModDetails(updateModIds);
 
-                // create the update message to broadcast 
                 UpdateReason = string.Empty;
-                var delimiter = string.Empty;
-                if (updateServer)
+                if (Config.Default.AutoUpdate_ShowUpdateReason)
                 {
-                    UpdateReason += $"{delimiter}Ark Server";
-                    delimiter = ", ";
-                }
-                if (updateModIds.Count > 0)
-                {
-                    for (var index = 0; index < updateModIds.Count; index++)
+                    // create the update message to broadcast 
+                    var delimiter = string.Empty;
+                    if (updateServer)
                     {
-                        if (index == 5)
-                        {
-                            if (updateModIds.Count - index == 1)
-                                UpdateReason += $" and 1 other mod...";
-                            else
-                                UpdateReason += $" and {updateModIds.Count - index} other mods...";
-                            break;
-                        }
-
-                        var modId = updateModIds[index];
-                        var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
-                        if (string.IsNullOrWhiteSpace(modName))
-                            UpdateReason += $"{delimiter}{modId}";
-                        else
-                            UpdateReason += $"{delimiter}{modName}";
+                        UpdateReason += $"{delimiter}Ark Server";
                         delimiter = ", ";
+                    }
+                    if (updateModIds.Count > 0)
+                    {
+                        for (var index = 0; index < updateModIds.Count; index++)
+                        {
+                            if (index == 5)
+                            {
+                                if (updateModIds.Count - index == 1)
+                                    UpdateReason += $" and 1 other mod...";
+                                else
+                                    UpdateReason += $" and {updateModIds.Count - index} other mods...";
+                                break;
+                            }
+
+                            var modId = updateModIds[index];
+                            var modName = modDetails?.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid == modId)?.title ?? string.Empty;
+                            if (string.IsNullOrWhiteSpace(modName))
+                                UpdateReason += $"{delimiter}{modId}";
+                            else
+                                UpdateReason += $"{delimiter}{modName}";
+                            delimiter = ", ";
+                        }
                     }
                 }
 
