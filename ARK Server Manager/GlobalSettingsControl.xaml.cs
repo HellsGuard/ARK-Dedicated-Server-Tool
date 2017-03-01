@@ -197,6 +197,11 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void SteamAPIKeyHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Config.Default.SteamWebAPIKeyHelpUrl);
+        }
+
         private async void SteamCMDAuthenticate_Click(object sender, RoutedEventArgs e)
         {
             var cursor = this.Cursor;

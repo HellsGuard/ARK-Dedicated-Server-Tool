@@ -1606,5 +1606,26 @@ namespace ARK_Server_Manager {
                 this["AutoUpdate_RetryOnFail"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3024/get-own-steam-web-api")]
+        public string SteamWebAPIKeyHelpUrl {
+            get {
+                return ((string)(this["SteamWebAPIKeyHelpUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoUpdate_ShowUpdateReason {
+            get {
+                return ((bool)(this["AutoUpdate_ShowUpdateReason"]));
+            }
+            set {
+                this["AutoUpdate_ShowUpdateReason"] = value;
+            }
+        }
     }
 }

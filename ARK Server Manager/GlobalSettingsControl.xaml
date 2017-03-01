@@ -32,6 +32,11 @@
                     <Label Content="{DynamicResource GlobalSettings_SteamAPIKeyButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
                 </StackPanel>
             </ContentControl>
+            <ContentControl x:Key="SteamAPIKeyHelpButtonContent">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{DynamicResource GlobalSettings_SteamAPIKeyHelpButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
+                </StackPanel>
+            </ContentControl>
             <ContentControl x:Key="CacheDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Art/Open_6529.png" Width="16" Height="16" Margin="5,0,5,0"/>
@@ -87,8 +92,12 @@
 
                 <Label    Grid.Row="5" Grid.Column="0" Margin="1" Content="{DynamicResource GlobalSettings_SteamAPIKeyLabel}" VerticalAlignment="Center"/>
                 <TextBox  Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.SteamAPIKey, Mode=TwoWay}" VerticalContentAlignment="Center" />
-                <Button   Grid.Row="5" Grid.Column="2" Margin="5,1,0,1" Content="{DynamicResource SteamAPIKeyButtonContent}" VerticalAlignment="Center" Click="ApplySteamAPIKey_Click"/>
 
+                <StackPanel Grid.Row="5" Grid.Column="2" Margin="5,1,0,1" Orientation="Horizontal">
+                    <Button  Content="{DynamicResource SteamAPIKeyButtonContent}" VerticalAlignment="Center" Click="ApplySteamAPIKey_Click"/>
+                    <Button  Content="{DynamicResource SteamAPIKeyHelpButtonContent}" VerticalAlignment="Center" Click="SteamAPIKeyHelp_Click"/>
+                </StackPanel>
+                
                 <GroupBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_LanguageSelectionLabel}"/>
@@ -310,6 +319,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -346,6 +356,8 @@
                         <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,0,0,0" Content="{DynamicResource GlobalSettings_UseSmartCopyLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_UseSmartCopy, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_UseSmartCopyTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                         <CheckBox Grid.Row="1" Grid.Column="3" Margin="5,0,0,0" Content="{DynamicResource GlobalSettings_RetryOnFailLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_RetryOnFail, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_RetryOnFailTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                        <CheckBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_ShowUpdateReasonLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_ShowUpdateReason, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ShowUpdateReasonTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </Grid>
                 </GroupBox>
 

@@ -174,6 +174,7 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyLabel">Steam WebApi Key:</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Get WebApi Key...</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Help...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Server Startup Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
@@ -221,6 +222,8 @@
     <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Attempt retry on fail</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">If enabled, when the server or mod fails to download a retry attempt will be made.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Show Update Reason in Shutdown Messages</sys:String>
+    <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">If enabled, when the auto-update is performed the broadcast message will include what (server or mods) is being updated.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
@@ -836,8 +839,10 @@
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
     <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Tamed Dinos:</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Tamed Dinos (server):</sys:String>
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Max Tamed Dinos (tribe):</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Set the maximum number of tamed dinos per tribe.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Allow Raid Dino Feeding</sys:String>
@@ -860,6 +865,8 @@
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">If enabled, will disable the dino imprinting-player stat bonus, where normally whomever specifically imprinted on the dino and raised it to have an imprinting quality, gets extra damage/resistance buff.</sys:String>
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Allow Baby Dino Imprint Cuddle by Anyone</sys:String>
     <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">If enabled, ANYONE will to be able to take care of a Baby Dino (cuddle etc), not just whomever imprinted on it.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosLabel">Auto Destroy Decayed Dinos</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosTooltip">If enabled, all claimable decayed dinos will auto-destroy on load, rather than have them remain around as Claimable.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoRidingLabel">Disable Dino Riding</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoRidingTooltip">If enabled, all tamed dinos will be unable to be ridden.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Disable Dino Taming</sys:String>
@@ -951,6 +958,8 @@
     <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">If enabled, clamps how much harvesting damage you can do to a resource to the remaining health of the resource.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestHealthLabel">Harvest Health:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestHealthTooltip">Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc). Higher values increase the amount of damage (e.g. number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields.</sys:String>
+    <sys:String x:Key="ServerSettings_UseOptimizedHarvestingHealthLabel">Use Optimized Harvesting Health</sys:String>
+    <sys:String x:Key="ServerSettings_UseOptimizedHarvestingHealthTooltip">If enabled, you will get a more optimized server with a higher HarvestAmountMultiplier value, but with less rare items.</sys:String>
 
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersLabel">Custom Harvest Amount Multipliers</sys:String>
     <sys:String x:Key="ServerSettings_CustomHarvestMultipliersTooltip">If enabled, allows per-resource scale factors to be applied to each resource.</sys:String>
@@ -973,6 +982,8 @@
     <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during night time. This value determines the length of each night, relative to the length of each day. Lowering this value increases the length of each night.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Global Spoiling Time:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Scales the spoiling time of perishables globally. Higher values prolong the time.</sys:String>
+    <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesLabel">Clamp Item Spoiling Times</sys:String>
+    <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesTooltip">If enabled, clamps all spoiling times to the items' maximum spoiling times. Useful if any infinite-spoiling exploits were used on the server and you wish to clean them up. Could potentially cause issues with Mods that alter spoiling time.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">Global Item Decomp Time:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">Scales the decomposition time of dropped items, loot bags etc globally. Higher values prolong the time.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalCorpseDecompTimeLabel">Global Corpse Decomp Time:</sys:String>
@@ -1676,6 +1687,7 @@
     <!-- Dino/Creature Class Names -->
     <sys:String x:Key="Achatina_Character_BP_C">Achatina</sys:String>
     <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>
+    <sys:String x:Key="Ammonite_Character_C">Ammonite</sys:String>
     <sys:String x:Key="Angler_Character_BP_C">Angler</sys:String>
     <sys:String x:Key="Ankylo_Character_BP_C">Ankylo</sys:String>
     <sys:String x:Key="Ant_Character_BP_C">Titanomyrma Drone</sys:String>
@@ -1706,6 +1718,7 @@
     <sys:String x:Key="Dragonfly_Character_BP_C">Meganeura</sys:String>
     <sys:String x:Key="DungBeetle_Character_BP_C">Dung Beetle</sys:String>
     <sys:String x:Key="Dunkle_Character_BP_C">Dunkleosteus</sys:String>
+    <sys:String x:Key="Eel_Character_BP_C">Electrophorus</sys:String>
     <sys:String x:Key="Euryp_Character_C">Eurypterid</sys:String>
     <sys:String x:Key="Galli_Character_BP_C">Gallimimus</sys:String>
     <sys:String x:Key="Gigant_Character_BP_C">Giganotosaurus</sys:String>
@@ -1720,6 +1733,7 @@
     <sys:String x:Key="Megalosaurus_Character_BP_C">Megalosaurus</sys:String>
     <sys:String x:Key="MegaRaptor_Character_BP_C">Alpha Raptor</sys:String>
     <sys:String x:Key="MegaRex_Character_BP_C">Alpha T-Rex</sys:String>
+    <sys:String x:Key="Microraptor_Character_BP_C">Microraptor</sys:String>
     <sys:String x:Key="Monkey_Character_BP_C">Mesopithecus</sys:String>
     <sys:String x:Key="Mosa_Character_BP_C">Mosasaurus</sys:String>
     <sys:String x:Key="Mosa_Character_BP_Mega_C">Alpha Mosasaurus</sys:String>
@@ -1755,6 +1769,7 @@
     <sys:String x:Key="Tapejara_Character_BP_C">Tapejara</sys:String>
     <sys:String x:Key="TerrorBird_Character_BP_C">Terror Bird</sys:String>
     <sys:String x:Key="Therizino_Character_BP_C">Therizinosaurus</sys:String>
+    <sys:String x:Key="Thylacoleo_Character_BP_C">Thylacoleo</sys:String>
     <sys:String x:Key="Titanosaur_Character_BP_C">Titanosaur</sys:String>
     <sys:String x:Key="Toad_Character_BP_C">Beelzebufo</sys:String>
     <sys:String x:Key="Trike_Character_BP_C">Trike</sys:String>
@@ -1791,6 +1806,7 @@
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Advanced Bullet</sys:String>
     <sys:String x:Key="EngramEntry_AdvancedRifleBullet_C">Advanced Rifle Bullet</sys:String>
     <sys:String x:Key="EngramEntry_AdvancedSniperBullet_C">Advanced Sniper Bullet</sys:String>
+    <sys:String x:Key="EngramEntry_AggroTranqDart_C">Pheromone Dart</sys:String>
     <sys:String x:Key="EngramEntry_AirConditioner_C">Air Conditioner</sys:String>
     <sys:String x:Key="EngramEntry_AlarmTrap_C">Tripwire Alarm Trap</sys:String>
     <sys:String x:Key="EngramEntry_AnvilBench_C">Smithy</sys:String>
@@ -2031,6 +2047,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Tapejara_C">Saddle - Tapejara</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_TerrorBird_C">Saddle - Terror Bird</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Therizino_C">Saddle - Therizinosaurus</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Thylaco_C">Saddle - Thylacoleo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Titano_Platform_C">Saddle - Titanosaur Platform</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Toad_C">Saddle - Beelzebufo</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Trike_C">Saddle - Trike</sys:String>
@@ -2430,6 +2447,7 @@
     <sys:String x:Key="PrimalItemAmmo_AdvancedBullet_C">Advanced Bullet</sys:String>
     <sys:String x:Key="PrimalItemAmmo_AdvancedRifleBullet_C">Advanced Rifle Bullet</sys:String>
     <sys:String x:Key="PrimalItemAmmo_AdvancedSniperBullet_C">Advanced Sniper Bullet</sys:String>
+    <sys:String x:Key="PrimalItemAmmo_AggroTranqDart_C">Pheromone Dart</sys:String>
     <sys:String x:Key="PrimalItemAmmo_ArrowFlame_C">Flame Arrow</sys:String>
     <sys:String x:Key="PrimalItemAmmo_ArrowStone_C">Stone Arrow</sys:String>
     <sys:String x:Key="PrimalItemAmmo_ArrowTranq_C">Tranquilizer Arrow</sys:String>
@@ -2547,6 +2565,7 @@
     <sys:String x:Key="PrimalItemArmor_TekShirt_C">Tek Chestpiece</sys:String>
     <sys:String x:Key="PrimalItemArmor_TerrorBirdSaddle_C">Terror Bird Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TherizinosaurusSaddle_C">Therizinosaurus Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_ThylacoSaddle_C">Thylacoleo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TitanSaddle_Platform_C">Titanosaur Platform Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_ToadSaddle_C">Beelzebufo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TransparentRiotShield_C">Riot Shield</sys:String>
@@ -2563,7 +2582,6 @@
     <sys:String x:Key="PrimalItemArtifact_07_C">Artifact of the Devourer</sys:String>
     <sys:String x:Key="PrimalItemArtifact_08_C">Artifact of the Immune</sys:String>
     <sys:String x:Key="PrimalItemArtifact_09_C">Artifact of the Strong</sys:String>
-    <sys:String x:Key="PrimalItemArtifact_10_C">Artifact of the Flamekeeper</sys:String>
     <sys:String x:Key="PrimalItemArtifact_11_C">Artifact of the Cunning</sys:String>
     <sys:String x:Key="PrimalItemArtifact_12_C">Artifact of the Brute</sys:String>
     <sys:String x:Key="PrimalItemArtifactSE_01_C">Artifact of the Gatekeeper</sys:String>
@@ -2761,6 +2779,7 @@
     <sys:String x:Key="PrimalItemDye_Yellow_C">Yellow Coloring</sys:String>
     <sys:String x:Key="PrimalItemRadio_C">Radio</sys:String>
     <sys:String x:Key="PrimalItemRaft_C">Wooden Raft</sys:String>
+    <sys:String x:Key="PrimalItemResource_AmmoniteBlood_C">Ammonite Bile</sys:String>
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">Angler Gel</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
@@ -2977,8 +2996,32 @@
     <sys:String x:Key="PrimalItemStructure_StorageBox_Huge_C">Vault</sys:String>
     <sys:String x:Key="PrimalItemStructure_StorageBox_Large_C">Large Storage Box</sys:String>
     <sys:String x:Key="PrimalItemStructure_StorageBox_Small_C">Storage Box</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekCatwalk_C">Tek Catwalk</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekCeiling_C">Tek Ceiling</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekCeilingWithTrapdoor_C">Tek Hatchframe</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekDoor_C">Tek Door</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekFenceFoundation_C">Tek Fence Foundation</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekFloor_C">Tek Foundation</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekGate_C">Tek Dinosaur Gate</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekGate_Large_C">Behemoth Tek Gate</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekGateframe_C">Behemoth Dinosaur Gateway</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekGateframe_Large_C">Behemoth Tek Gateway</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekLadder_C">Tek Ladder</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekPillar_C">Tek Pillar</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekRailing_C">Tek Railing</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekRamp_C">Tek Ramp</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekReplicator_C">Tek Replicator</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekRoof_C">Sloped Tek Roof</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekShield_C">Tek Forcefield</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekStairs_C">Tek Staircase</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTransmitter_C">Tek Transmitter</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekTrapdoor_C">Tek Trapdoor</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWall_C">Tek Wall</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Left_C">Sloped Tek Wall Left</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Right_C">Sloped Tek Wall Right</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWallWithDoor_C">Tek Doorframe</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWallWithWindow_C">Tek Windowframe</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekWindow_C">Tek Window</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchCeiling_C">Thatch Roof</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchDoor_C">Thatch Door</sys:String>
     <sys:String x:Key="PrimalItemStructure_ThatchFloor_C">Thatch Foundation</sys:String>
@@ -3410,6 +3453,7 @@
     <sys:String x:Key="DinoSpawnEntriesSwamp_C">(TheIsland) DinoSpawnEntriesSwamp_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSwampCave_C">(TheIsland) DinoSpawnEntriesSwampCave_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSwampCaveWater_C">(TheIsland) DinoSpawnEntriesSwampCaveWater_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesThy_C">(TheIsland) DinoSpawnEntriesThy_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesTinyCave_C">(TheIsland) DinoSpawnEntriesTinyCave_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesTitano_C">(TheIsland) DinoSpawnEntriesTitano_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesWater_C">(TheIsland) DinoSpawnEntriesWater_C</sys:String>
