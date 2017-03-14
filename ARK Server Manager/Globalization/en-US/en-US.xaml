@@ -444,6 +444,10 @@
     <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Load Ini File.</sys:String>
     <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">The ini file was successfully loaded.</sys:String>
     <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ini File Load Error</sys:String>
+    <sys:String x:Key="ServerSettings_ClearTitle">Confirm Clear Action</sys:String>
+    <sys:String x:Key="ServerSettings_ClearLabel">Click 'Yes' to confirm you want to clear all.</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteTitle">Confirm Delete Action</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
