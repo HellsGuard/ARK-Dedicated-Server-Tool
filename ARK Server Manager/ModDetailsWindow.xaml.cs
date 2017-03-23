@@ -394,10 +394,14 @@ namespace ARK_Server_Manager
             // build a list of mods to be processed
             var modIdList = new List<string>();
 
-            var directoryNames = Directory.GetDirectories(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
-            foreach (var directoryName in directoryNames)
+            var modDirectory = new DirectoryInfo(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+            foreach (var directory in modDirectory.GetDirectories())
             {
-                var modFile = $"{directoryName}.mod";
+                var modId = directory.Name;
+                if (ModUtils.IsOfficialMod(modId))
+                    continue;
+
+                var modFile = $"{directory.FullName}.mod";
                 if (File.Exists(modFile))
                 {
                     modIdList.Add(Path.GetFileNameWithoutExtension(modFile));

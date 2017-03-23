@@ -1191,12 +1191,18 @@ namespace ARK_Server_Manager
 
         private void ClearCraftingOverrides_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedCraftingOverride = null;
             Settings.ConfigOverrideItemCraftingCosts.Clear();
         }
 
         private void ClearCraftingOverrideResources_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedCraftingOverride?.BaseCraftingResourceRequirements.Clear();
         }
 
@@ -1227,6 +1233,9 @@ namespace ARK_Server_Manager
 
         private void RemoveCraftingOverrideItem_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var item = ((CraftingOverride)((Button)e.Source).DataContext);
             Settings.ConfigOverrideItemCraftingCosts.Remove(item);
         }
@@ -1234,6 +1243,9 @@ namespace ARK_Server_Manager
         private void RemoveCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCraftingOverride == null)
+                return;
+
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             var item = ((CraftingResourceRequirement)((Button)e.Source).DataContext);
@@ -1284,11 +1296,17 @@ namespace ARK_Server_Manager
 
         private void ClearCustomItems_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedCustomSection?.Clear();
         }
 
         private void ClearCustomSections_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedCustomSection = null;
             Settings.CustomGameUserSettingsSections.Clear();
         }
@@ -1377,6 +1395,9 @@ namespace ARK_Server_Manager
 
         private void RemoveCustomItem_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             if (SelectedCustomSection == null)
                 return;
 
@@ -1386,6 +1407,9 @@ namespace ARK_Server_Manager
 
         private void RemoveCustomSection_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var section = ((CustomSection)((Button)e.Source).DataContext);
             Settings.CustomGameUserSettingsSections.Remove(section);
         }
@@ -1572,6 +1596,9 @@ namespace ARK_Server_Manager
 
         private void ClearAdminPlayers_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             ServerFilesAdmins.Clear();
 
             SaveServerFileAdministrators();
@@ -1579,6 +1606,9 @@ namespace ARK_Server_Manager
 
         private void ClearExclusivePlayers_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             ServerFilesExclusive.Clear();
 
             SaveServerFileExclusive();
@@ -1586,6 +1616,9 @@ namespace ARK_Server_Manager
 
         private void ClearWhitelistPlayers_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             ServerFilesWhitelisted.Clear();
 
             SaveServerFileWhitelisted();
@@ -1656,6 +1689,9 @@ namespace ARK_Server_Manager
 
         private void RemoveAdminPlayer_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
             ServerFilesAdmins.Remove(mod);
 
@@ -1664,6 +1700,9 @@ namespace ARK_Server_Manager
 
         private void RemoveExclusivePlayer_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
             ServerFilesExclusive.Remove(mod);
 
@@ -1672,6 +1711,9 @@ namespace ARK_Server_Manager
 
         private void RemoveWhitelistPlayer_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
             ServerFilesWhitelisted.Remove(mod);
 
@@ -1758,12 +1800,18 @@ namespace ARK_Server_Manager
 
         private void ClearNPCSpawn_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedNPCSpawnSetting = null;
             Settings.NPCSpawnSettings.Clear();
         }
 
         private void ClearNPCSpawnEntry_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedNPCSpawnSetting?.NPCSpawnEntrySettings.Clear();
         }
 
@@ -1810,6 +1858,9 @@ namespace ARK_Server_Manager
 
         private void RemoveNPCSpawn_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var item = ((NPCSpawnSettings)((Button)e.Source).DataContext);
             Settings.NPCSpawnSettings.Remove(item);
         }
@@ -1817,6 +1868,9 @@ namespace ARK_Server_Manager
         private void RemoveNPCSpawnEntry_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedNPCSpawnSetting == null)
+                return;
+
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             var item = ((NPCSpawnEntrySettings)((Button)e.Source).DataContext);
@@ -1903,6 +1957,9 @@ namespace ARK_Server_Manager
 
         private void ClearSupplyCrates_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedSupplyCrateItemSetEntry = null;
             SelectedSupplyCrateItemSet = null;
             SelectedSupplyCrateOverride = null;
@@ -1911,6 +1968,9 @@ namespace ARK_Server_Manager
 
         private void ClearSupplyCrateItemSets_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedSupplyCrateItemSetEntry = null;
             SelectedSupplyCrateItemSet = null;
             SelectedSupplyCrateOverride?.ItemSets.Clear();
@@ -1918,12 +1978,18 @@ namespace ARK_Server_Manager
 
         private void ClearSupplyCrateItemSetEntries_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedSupplyCrateItemSetEntry = null;
             SelectedSupplyCrateItemSet?.ItemEntries.Clear();
         }
 
         private void ClearSupplyCrateItems_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             SelectedSupplyCrateItemSetEntry?.Items.Clear();
         }
 
@@ -1971,6 +2037,9 @@ namespace ARK_Server_Manager
 
         private void RemoveSupplyCrate_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var item = ((SupplyCrateOverride)((Button)e.Source).DataContext);
             Settings.ConfigOverrideSupplyCrateItems.Remove(item);
         }
@@ -1978,6 +2047,9 @@ namespace ARK_Server_Manager
         private void RemoveSupplyCrateItemSet_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedSupplyCrateOverride == null)
+                return;
+
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             var item = ((SupplyCrateItemSet)((Button)e.Source).DataContext);
@@ -1989,6 +2061,9 @@ namespace ARK_Server_Manager
             if (SelectedSupplyCrateItemSet == null)
                 return;
 
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var item = ((SupplyCrateItemSetEntry)((Button)e.Source).DataContext);
             SelectedSupplyCrateItemSet.ItemEntries.Remove(item);
         }
@@ -1996,6 +2071,9 @@ namespace ARK_Server_Manager
         private void RemoveSupplyCrateItem_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedSupplyCrateItemSetEntry == null)
+                return;
+
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DeleteLabel"), _globalizer.GetResourceString("ServerSettings_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             var item = ((SupplyCrateItemEntrySettings)((Button)e.Source).DataContext);

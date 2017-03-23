@@ -1332,6 +1332,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableDinoDecayPvEProperty, value); }
         }
 
+        public static readonly DependencyProperty DisableDinoDecayPvPProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PvPDinoDecay", InvertBoolean=true)]
+        public bool DisableDinoDecayPvP
+        {
+            get { return (bool)GetValue(DisableDinoDecayPvPProperty); }
+            set { SetValue(DisableDinoDecayPvPProperty, value); }
+        }
+
         public static readonly DependencyProperty AutoDestroyDecayedDinosProperty = DependencyProperty.Register(nameof(AutoDestroyDecayedDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool AutoDestroyDecayedDinos
@@ -3428,6 +3436,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableAllowCaveFlyersProperty);
             this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
+            this.ClearValue(DisableDinoDecayPvPProperty);
             this.ClearValue(AutoDestroyDecayedDinosProperty);
             this.ClearValue(PvEDinoDecayPeriodMultiplierProperty);
             this.ClearValue(ForceFlyerExplosivesProperty);

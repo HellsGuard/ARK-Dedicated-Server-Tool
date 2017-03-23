@@ -444,6 +444,10 @@
     <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Load Ini File.</sys:String>
     <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">The ini file was successfully loaded.</sys:String>
     <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ini File Load Error</sys:String>
+    <sys:String x:Key="ServerSettings_ClearTitle">Confirm Clear Action</sys:String>
+    <sys:String x:Key="ServerSettings_ClearLabel">Click 'Yes' to confirm you want to clear all.</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteTitle">Confirm Delete Action</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Administration</sys:String>
@@ -856,9 +860,11 @@
     <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Disable Force Ground Flyer with Explosives</sys:String>
     <sys:String x:Key="ServerSettings_ForceFlyerExplosivesTooltip">If enabled, will disable the grounding of the flyer when explosives are put on them.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Disable Dino Decay PvE</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Disable Dino Decay PvP</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">If enabled, disables the gradual decay of dino ownership in PvP; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Disable Baby Dino Imprint Buff</sys:String>
@@ -1037,7 +1043,7 @@
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Allow Unaligned Dinos on Flyer Platform</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">If enabled, non-allied dinos are able to stand on the Quetal platforms.</sys:String>
     <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsLabel">Allow Structures at Supply Drops PvE</sys:String>
-    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">If enabled, will prevent placing structures at supply drop locations.</sys:String>
+    <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">If enabled, will allow placing structures at supply drop locations.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvELabel">Enable Structure Decay PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnableStructureDecayPvETooltip">If enabled, enables decay of player structures in PvE.</sys:String>
