@@ -143,8 +143,8 @@
                         <Label Content="{Binding ServerRCON.Status}" Style="{DynamicResource ServerStatus}"/>
                         <Label Content="{DynamicResource RCON_PlayersLabel}" Margin="5,0,0,0"/>
                         <Label Content="{Binding ServerRCON.CountPlayers}"/>
-                        <Label Content="{DynamicResource RCON_PlayersSeparatorLabel}"/>
-                        <Label Content="{Binding RCONParameters.MaxPlayers}"/>
+                        <Label Content="{DynamicResource RCON_PlayersSeparatorLabel}" Name="PlayerCountSeparator"/>
+                        <Label Content="{Binding RCONParameters.MaxPlayers}" Name="MaxPlayerLabel"/>
                     </StackPanel>
                 </DockPanel>
             </Border>

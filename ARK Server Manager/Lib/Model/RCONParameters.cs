@@ -3,9 +3,16 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class RCONParameters
+    public class RCONParameters : DependencyObject
     {
-        public string ProfileName { get; set; }
+        public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(RCONParameters), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(RCONParameters), new PropertyMetadata(0));
+
+        public string ProfileName
+        {
+            get { return (string)GetValue(ProfileNameProperty); }
+            set { SetValue(ProfileNameProperty, value); }
+        }
 
         public string RCONHost { get; set; }
 
@@ -23,7 +30,11 @@ namespace ARK_Server_Manager.Lib
 
         public Rect RCONWindowExtents { get; set; }
 
-        public int MaxPlayers { get; set; }
+        public int MaxPlayers
+        {
+            get { return (int)GetValue(MaxPlayersProperty); }
+            set { SetValue(MaxPlayersProperty, value); }
+        }
 
         public Server Server { get; set; }
 
