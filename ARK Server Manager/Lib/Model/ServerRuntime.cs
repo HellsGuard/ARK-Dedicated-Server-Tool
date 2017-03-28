@@ -41,6 +41,7 @@ namespace ARK_Server_Manager.Lib
             public string TotalConversionModId;
             public List<string> ServerModIds;
             public string LastInstalledVersion;
+            public int MaxPlayerCount;
         };
 
         public enum ServerStatus
@@ -150,6 +151,7 @@ namespace ARK_Server_Manager.Lib
                 TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
                 ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                 LastInstalledVersion =  string.IsNullOrWhiteSpace(profile.LastInstalledVersion) ? new Version(0, 0).ToString() : profile.LastInstalledVersion,
+                MaxPlayerCount = profile.MaxPlayers,
             };
 
             Version lastInstalled;
@@ -171,17 +173,18 @@ namespace ARK_Server_Manager.Lib
             profileNotifiers.Clear();
             profileNotifiers.AddRange(PropertyChangeNotifier.GetNotifiers(
                 profile,
-                new[] { 
+                new[] {
+                    ServerProfile.ProfileNameProperty,
                     ServerProfile.InstallDirectoryProperty,
                     ServerProfile.ServerPortProperty,
                     ServerProfile.ServerConnectionPortProperty,
-                    ServerProfile.ServerIPProperty
+                    ServerProfile.ServerIPProperty,
+                    ServerProfile.MaxPlayersProperty,
                 },
                 (s, p) =>
                 {
                     if (Status == ServerStatus.Stopped || Status == ServerStatus.Uninstalled || Status == ServerStatus.Unknown) { AttachToProfileCore(profile); }
                 }));
-
         }
 
         private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
@@ -285,6 +288,9 @@ namespace ARK_Server_Manager.Lib
                         this.Steam = SteamStatus.Available;
                         break;
                 }
+
+                this.Players = 0;
+                this.MaxPlayers = this.ProfileSnapshot.MaxPlayerCount;
 
                 if (update.ServerInfo != null)
                 {

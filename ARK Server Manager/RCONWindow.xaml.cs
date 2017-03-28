@@ -133,7 +133,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty PlayersViewProperty = DependencyProperty.Register(nameof(PlayersView), typeof(ICollectionView), typeof(RCONWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty RCONParametersProperty = DependencyProperty.Register(nameof(RCONParameters), typeof(RCONParameters), typeof(RCONWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty ScrollOnNewInputProperty = DependencyProperty.Register(nameof(ScrollOnNewInput), typeof(bool), typeof(RCONWindow), new PropertyMetadata(true));
-        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));    
+        public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));
 
         public RCONWindow(RCONParameters parameters)
         {
@@ -156,6 +156,17 @@ namespace ARK_Server_Manager
             {
                 this.RenderConnectionStateChange(a);
             });
+
+            if (this.RCONParameters != null && this.RCONParameters.Server != null && this.RCONParameters.Server.Runtime != null)
+            {
+                this.RCONParameters.Server.Runtime.StatusUpdate += Runtime_StatusUpdate;
+            }
+
+            if (this.RCONParameters == null || this.RCONParameters.Server == null)
+            {
+                this.PlayerCountSeparator.Visibility = Visibility.Collapsed;
+                this.MaxPlayerLabel.Visibility = Visibility.Collapsed;
+            }
 
             this.DataContext = this;
 
@@ -991,6 +1002,22 @@ namespace ARK_Server_Manager
 
             SortPlayers();
             PlayersView?.Refresh();
+        }
+
+        private void Runtime_StatusUpdate(object sender, EventArgs eventArgs)
+        {
+            this.RCONParameters.ProfileName = this.RCONParameters?.Server?.Runtime?.ProfileSnapshot.ProfileName ?? "<unknown>";
+            this.RCONParameters.MaxPlayers = this.RCONParameters?.Server?.Runtime?.MaxPlayers ?? 0;
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (this.RCONParameters != null && this.RCONParameters.Server != null && this.RCONParameters.Server.Runtime != null)
+            {
+                this.RCONParameters.Server.Runtime.StatusUpdate -= Runtime_StatusUpdate;
+            }
+
+            base.OnClosed(e);
         }
     }
 }

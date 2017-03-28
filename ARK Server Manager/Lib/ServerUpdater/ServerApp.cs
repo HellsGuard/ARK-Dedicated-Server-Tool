@@ -297,9 +297,9 @@ namespace ARK_Server_Manager.Lib
                 var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
                 var backupFileFilter = $"{mapName}_ASMBackup_*.ark";
-                var backupDateFiler = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
+                var backupDateFilter = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
 
-                var backupFiles = new DirectoryInfo(profileSaveFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFiler);
+                var backupFiles = new DirectoryInfo(profileSaveFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
                 foreach (var backupFile in backupFiles)
                 {
                     try
