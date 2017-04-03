@@ -35,6 +35,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
         private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
         {
             var nameTag = GameData.NameTagForClass(className);
+            var isSpawnable = GameData.IsSpawnableForClass(className);
             var isTameable = GameData.IsTameableForClass(className);
 
             return new DinoSettings()
@@ -59,6 +60,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 KnownDino = knownDino,
                 HasClassName = hasClassName,
                 HasNameTag = hasNameTag,
+                IsSpawnable = isSpawnable,
                 IsTameable = isTameable,
             };
         }
