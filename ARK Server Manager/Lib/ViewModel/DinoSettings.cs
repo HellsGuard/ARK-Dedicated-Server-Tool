@@ -98,6 +98,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public bool KnownDino { get; internal set; }
         public bool HasNameTag { get; internal set; }
         public bool HasClassName { get; internal set; }
+        public bool IsSpawnable { get; internal set; }
         public DinoTamable IsTameable { get; internal set; }
 
         public DinoSettings Clone()
@@ -124,6 +125,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 KnownDino = KnownDino,
                 HasNameTag = HasNameTag,
                 HasClassName = HasClassName,
+                IsSpawnable = IsSpawnable,
                 IsTameable = IsTameable,
             };
         }

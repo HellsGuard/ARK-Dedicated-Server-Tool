@@ -2065,6 +2065,7 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
+                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -2073,14 +2074,17 @@
                                         </Grid.ColumnDefinitions>
 
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_EnableAllowCaveFlyersLabel}" IsChecked="{Binding EnableAllowCaveFlyers}" ToolTip="{DynamicResource ServerSettings_EnableAllowCaveFlyersTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_PreventMateBoostLabel}" IsChecked="{Binding PreventMateBoost}" ToolTip="{DynamicResource ServerSettings_PreventMateBoostTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="5" Content="{DynamicResource ServerSettings_ForceFlyerExplosivesLabel}" IsChecked="{Binding ForceFlyerExplosives}" ToolTip="{DynamicResource ServerSettings_ForceFlyerExplosivesTooltip}" HorizontalAlignment="Left"/>
-                                        
-                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
-                                        
-                                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="2" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_DisableDinoDecayPvPLabel}" IsChecked="{Binding DisableDinoDecayPvP}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayPvPTooltip}" HorizontalAlignment="Left"/>
-                                        <CheckBox Grid.Row="2" Grid.Column="2" Margin="5" Content="{DynamicResource ServerSettings_AutoDestroyDecayedDinosLabel}" IsChecked="{Binding AutoDestroyDecayedDinos}" ToolTip="{DynamicResource ServerSettings_AutoDestroyDecayedDinosTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_AllowFlyingStaminaRecoveryLabel}" IsChecked="{Binding AllowFlyingStaminaRecovery}" ToolTip="{DynamicResource ServerSettings_AllowFlyingStaminaRecoveryTooltip}" HorizontalAlignment="Left"/>
+
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_PreventMateBoostLabel}" IsChecked="{Binding PreventMateBoost}" ToolTip="{DynamicResource ServerSettings_PreventMateBoostTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" IsChecked="{Binding EnableNoFishLoot}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
+
+                                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_ForceFlyerExplosivesLabel}" IsChecked="{Binding ForceFlyerExplosives}" ToolTip="{DynamicResource ServerSettings_ForceFlyerExplosivesTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="2" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_AllowMultipleAttachedC4Label}" IsChecked="{Binding AllowMultipleAttachedC4}" ToolTip="{DynamicResource ServerSettings_AllowMultipleAttachedC4Tooltip}" HorizontalAlignment="Left"/>
+
+                                        <CheckBox Grid.Row="3" Grid.Column="0" Margin="5" Content="{DynamicResource ServerSettings_DisableDinoDecayLabel}" IsChecked="{Binding DisableDinoDecayPvE}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="3" Grid.Column="1" Margin="5" Content="{DynamicResource ServerSettings_DisableDinoDecayPvPLabel}" IsChecked="{Binding DisableDinoDecayPvP}" ToolTip="{DynamicResource ServerSettings_DisableDinoDecayPvPTooltip}" HorizontalAlignment="Left"/>
+                                        <CheckBox Grid.Row="3" Grid.Column="2" Margin="5" Content="{DynamicResource ServerSettings_AutoDestroyDecayedDinosLabel}" IsChecked="{Binding AutoDestroyDecayedDinos}" ToolTip="{DynamicResource ServerSettings_AutoDestroyDecayedDinosTooltip}" HorizontalAlignment="Left"/>
                                     </Grid>
 
                                     <local:AnnotatedSlider Margin="0,1,22,1" Label="{DynamicResource ServerSettings_DinoDecayPeriodLabel}" Value="{Binding PvEDinoDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoDecayPeriodTooltip}"/>
@@ -2149,6 +2153,9 @@
                                                             <Style TargetType="{x:Type DataGridCell}">
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding HasClassName}" Value="False">
+                                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsSpawnable}" Value="False">
                                                                         <Setter Property="Visibility" Value="Hidden" />
                                                                     </DataTrigger>
                                                                 </Style.Triggers>

@@ -1309,6 +1309,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAllowCaveFlyersProperty, value); }
         }
 
+        public static readonly DependencyProperty AllowFlyingStaminaRecoveryProperty = DependencyProperty.Register(nameof(AllowFlyingStaminaRecovery), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(AllowFlyingStaminaRecovery))]
+        public bool AllowFlyingStaminaRecovery
+        {
+            get { return (bool)GetValue(AllowFlyingStaminaRecoveryProperty); }
+            set { SetValue(AllowFlyingStaminaRecoveryProperty, value); }
+        }
+
         public static readonly DependencyProperty PreventMateBoostProperty = DependencyProperty.Register(nameof(PreventMateBoost), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(PreventMateBoost))]
         public bool PreventMateBoost
@@ -1361,6 +1369,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(ForceFlyerExplosivesProperty); }
             set { SetValue(ForceFlyerExplosivesProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowMultipleAttachedC4Property = DependencyProperty.Register(nameof(AllowMultipleAttachedC4), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(AllowMultipleAttachedC4))]
+        public bool AllowMultipleAttachedC4
+        {
+            get { return (bool)GetValue(AllowMultipleAttachedC4Property); }
+            set { SetValue(AllowMultipleAttachedC4Property, value); }
         }
 
         public static readonly DependencyProperty DisableDinoRidingProperty = DependencyProperty.Register(nameof(DisableDinoRiding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
