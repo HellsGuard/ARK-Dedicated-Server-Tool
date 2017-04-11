@@ -987,6 +987,14 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(NPCNetworkStasisRangeScalePercentEndProperty); }
             set { SetValue(NPCNetworkStasisRangeScalePercentEndProperty, value); }
         }
+
+        public static readonly DependencyProperty OxygenSwimSpeedStatMultiplierProperty = DependencyProperty.Register(nameof(OxygenSwimSpeedStatMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public float OxygenSwimSpeedStatMultiplier
+        {
+            get { return (float)GetValue(OxygenSwimSpeedStatMultiplierProperty); }
+            set { SetValue(OxygenSwimSpeedStatMultiplierProperty, value); }
+        }
         #endregion
 
         #region Chat and Notifications

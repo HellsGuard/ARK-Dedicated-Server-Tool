@@ -1784,6 +1784,8 @@
                                             <local:AnnotatedSlider Grid.Row="2" Margin="1" Label="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel}" Value="{Binding NPCNetworkStasisRangeScalePercentEnd}" Suffix="{DynamicResource SliderUnits_Percentage}" VerticalAlignment="Center" Minimum="0.1" Maximum="1.0" LargeChange="0.1" SmallChange="0.1" TickFrequency="0.1" ToolTip="{DynamicResource ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip}"/>
                                         </Grid>
                                     </GroupBox>
+
+                                    <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OxygenSwimSpeedStatMultiplierLabel}" Value="{Binding OxygenSwimSpeedStatMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_OxygenSwimSpeedStatMultiplierTooltip}" />
                                 </StackPanel>
                             </Grid>
                         </Expander>
