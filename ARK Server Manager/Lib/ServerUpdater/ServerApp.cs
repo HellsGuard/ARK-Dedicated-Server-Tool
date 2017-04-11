@@ -159,6 +159,7 @@ namespace ARK_Server_Manager.Lib
         private bool _serverRunning = false;
 
         public bool BackupWorldFile = true;
+        public bool DeleteOldBackupWorldFiles = false;
         public int ExitCode = EXITCODE_NORMALEXIT;
         public bool OutputLogs = true;
         public bool SendEmails = false;
@@ -265,6 +266,10 @@ namespace ARK_Server_Manager.Lib
                     var backupFile = GetServerWorldBackupFile();
                     File.Copy(worldFile, backupFile, true);
 
+                    File.SetCreationTime(backupFile, _startTime);
+                    File.SetLastWriteTime(backupFile, _startTime);
+                    File.SetLastAccessTime(backupFile, _startTime);
+
                     LogProfileMessage($"Backed up world file '{worldFile}'.");
 
                     emailMessage.AppendLine("Backed up world file.");
@@ -292,7 +297,7 @@ namespace ARK_Server_Manager.Lib
                 return;
 
             // delete the old backup files
-            if (Config.Default.AutoBackup_DeleteOldFiles)
+            if (DeleteOldBackupWorldFiles)
             {
                 var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
@@ -304,7 +309,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.LastWriteTime.ToString()}.");
+                        LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.CreationTime.ToString()}.");
                         backupFile.Delete();
                     }
                     catch
@@ -2060,6 +2065,7 @@ namespace ARK_Server_Manager.Lib
 
                 Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoBackup), profile => {
                     var app = new ServerApp();
+                    app.DeleteOldBackupWorldFiles = Config.Default.AutoBackup_DeleteOldFiles;
                     app.SendEmails = true;
                     app.ServerProcess = ServerProcessType.AutoBackup;
                     exitCodes.TryAdd(profile, app.PerformProfileBackup(profile));
