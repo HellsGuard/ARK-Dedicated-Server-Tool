@@ -739,6 +739,9 @@
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel">Scale Maximum</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip">The maximum scale percentage used by the server, when the online player count end value is reached.</sys:String>
 
+    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Oxygen Swim Speed Stat Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Specifies the multiplier for how swim speed is multiplied by level spent in oxygen.</sys:String>
+
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
     <sys:String x:Key="ServerSettings_EnableGlobalVoiceChatLabel">Enable Global Voice Chat</sys:String>

@@ -786,6 +786,7 @@ namespace ARK_Server_Manager
 
                 var app = new ServerApp()
                 {
+                    DeleteOldBackupWorldFiles = false,
                     SendEmails = false,
                     OutputLogs = false,
                     ServerProcess = ServerProcessType.Backup,
