@@ -431,13 +431,7 @@ namespace ARK_Server_Manager.Lib.Model
 
         public string MapName { get; set; }
 
-        public string ModUrl
-        {
-            get
-            {
-                return $"http://steamcommunity.com/sharedfiles/filedetails/?id={ModId}";
-            }
-        }
+        public string ModUrl => $"http://steamcommunity.com/sharedfiles/filedetails/?id={ModId}";
 
         public string TimeUpdatedString => TimeUpdated <= 0 ? string.Empty : ModUtils.UnixTimeStampToDateTime(TimeUpdated).ToString();
 
@@ -451,12 +445,15 @@ namespace ARK_Server_Manager.Lib.Model
 
         public bool UpToDate => LastTimeUpdated > 0 && LastTimeUpdated == TimeUpdated;
 
+        public long FolderSize { get; set; }
+
         public void PopulateExtended(ModDetailExtended extended)
         {
             LastTimeUpdated = extended.LastTimeUpdated;
             LastWriteTime = extended.LastWriteTime;
             MapName = extended.MapName;
             ModType = extended.ModType;
+            FolderSize = extended.FolderSize;
         }
 
         public void SetModTypeString()
@@ -541,6 +538,8 @@ namespace ARK_Server_Manager.Lib.Model
 
         public int LastTimeUpdated { get; set; }
 
+        public long FolderSize { get; set; }
+
         public void PopulateExtended(string modsRootFolder)
         {
             var modFolder = Path.Combine(modsRootFolder, ModId);
@@ -566,6 +565,12 @@ namespace ARK_Server_Manager.Lib.Model
 
             ModType = metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : ModUtils.MODTYPE_UNKNOWN;
             MapName = mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
+
+            FolderSize = 0;
+            foreach (var file in new DirectoryInfo(modFolder).GetFiles("*.*", SearchOption.AllDirectories))
+            {
+                FolderSize += file.Length;
+            }
         }
     }
 }
