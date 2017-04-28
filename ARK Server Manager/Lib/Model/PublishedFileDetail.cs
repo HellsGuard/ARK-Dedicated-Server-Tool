@@ -427,13 +427,7 @@ namespace ARK_Server_Manager.Lib.Model
 
         public string LastWriteTimeString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();
 
-        public string LastWriteTimeSortString
-        {
-            get
-            {
-                return LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString("yyyyMMdd_HHmmss");
-            }
-        }
+        public string LastWriteTimeSortString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString("yyyyMMdd_HHmmss");
 
         public string MapName { get; set; }
 
@@ -444,6 +438,10 @@ namespace ARK_Server_Manager.Lib.Model
                 return $"http://steamcommunity.com/sharedfiles/filedetails/?id={ModId}";
             }
         }
+
+        public string TimeUpdatedString => TimeUpdated <= 0 ? string.Empty : ModUtils.UnixTimeStampToDateTime(TimeUpdated).ToString();
+
+        public string TimeUpdatedSortString => TimeUpdated <= 0 ? string.Empty : ModUtils.UnixTimeStampToDateTime(TimeUpdated).ToString("yyyyMMdd_HHmmss");
 
         public string TitleFilterString
         {

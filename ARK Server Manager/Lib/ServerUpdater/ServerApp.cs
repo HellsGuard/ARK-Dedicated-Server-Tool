@@ -301,7 +301,7 @@ namespace ARK_Server_Manager.Lib
             {
                 var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-                var backupFileFilter = $"{mapName}_ASMBackup_*.ark";
+                var backupFileFilter = $"{mapName}_ASMBackup_*{Config.Default.BackupExtension}";
                 var backupDateFilter = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
 
                 var backupFiles = new DirectoryInfo(profileSaveFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
@@ -1592,7 +1592,7 @@ namespace ARK_Server_Manager.Lib
         {
             var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
             var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}.ark"));
+            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}"));
         }
 
         public static bool HasNewServerVersion(string directory, DateTime checkTime)

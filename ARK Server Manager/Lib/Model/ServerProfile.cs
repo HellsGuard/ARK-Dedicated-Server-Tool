@@ -296,7 +296,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MOTDProperty = DependencyProperty.Register(nameof(MOTD), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection = true, Multiline = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection = true, Multiline = true, QuotedString = true)]
         public string MOTD
         {
             get { return (string)GetValue(MOTDProperty); }
@@ -3187,13 +3187,22 @@ namespace ARK_Server_Manager.Lib
             var profileSaveFolder = GetProfileSavePath(this);
             var mapName = GetProfileMapFileName(this);
             var mapFile = Path.Combine(profileSaveFolder, $"{mapName}.ark");
-            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.ark");
+            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}");
+
+            FileInfo mapFileInfo = new FileInfo(mapFile);
+            FileInfo restoreFileInfo = new FileInfo(restoreFile);
 
             // rename the existing save file
             File.Move(mapFile, mapFileBackup);
+            File.SetCreationTime(mapFileBackup, mapFileInfo.CreationTime);
+            File.SetLastWriteTime(mapFileBackup, mapFileInfo.LastWriteTime);
+            File.SetLastAccessTime(mapFileBackup, mapFileInfo.LastAccessTime);
 
             // copy the selected file
             File.Copy(restoreFile, mapFile, true);
+            File.SetCreationTime(mapFile, restoreFileInfo.CreationTime);
+            File.SetLastWriteTime(mapFile, restoreFileInfo.LastWriteTime);
+            File.SetLastAccessTime(mapFile, restoreFileInfo.LastAccessTime);
         }
 
         #region Export Methods
