@@ -86,7 +86,7 @@
     <sys:String x:Key="ModDetails_TypeColumnLabel">Mod Type</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Downloaded</sys:String>
     <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Last Updated (Author)</sys:String>
-    <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Folder Size (b)</sys:String>
+    <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Folder Size</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Add mods to the list.</sys:String>
     <sys:String x:Key="ModDetails_LoadModsTooltip">Load mod list from server mods folder.</sys:String>

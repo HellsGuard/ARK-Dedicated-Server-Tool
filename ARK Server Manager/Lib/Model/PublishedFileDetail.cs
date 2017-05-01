@@ -447,6 +447,29 @@ namespace ARK_Server_Manager.Lib.Model
 
         public long FolderSize { get; set; }
 
+        public string FolderSizeString
+        {
+            get
+            {
+                // GB
+                var divisor = Math.Pow(1024, 3);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} GB";
+
+                // MB
+                divisor = Math.Pow(1024, 2);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} MB";
+
+                // KB
+                divisor = Math.Pow(1024, 1);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} KB";
+
+                return $"{FolderSize} B";
+            }
+        }
+
         public void PopulateExtended(ModDetailExtended extended)
         {
             LastTimeUpdated = extended.LastTimeUpdated;

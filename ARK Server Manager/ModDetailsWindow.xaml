@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         Title="{DynamicResource ModDetails_Title}" Name="ModDetailsUI"
-        Width="800" Height="480" MinWidth="600" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" 
+        Width="900" Height="480" MinWidth="600" MinHeight="480" ResizeMode="CanResize" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" 
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
@@ -151,7 +151,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn     Width="85" Binding="{Binding FolderSize, Mode=OneWay}" Header="{DynamicResource ModDetails_FolderSizeColumnLabel}">
+                <DataGridTextColumn     Width="85" Binding="{Binding FolderSizeString, Mode=OneWay}" Header="{DynamicResource ModDetails_FolderSizeColumnLabel}" SortMemberPath="FolderSize">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Right"/>
