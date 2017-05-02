@@ -1627,5 +1627,14 @@ namespace ARK_Server_Manager {
                 this["AutoUpdate_ShowUpdateReason"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".asmbak")]
+        public string BackupExtension {
+            get {
+                return ((string)(this["BackupExtension"]));
+            }
+        }
     }
 }

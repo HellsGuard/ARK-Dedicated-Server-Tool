@@ -183,6 +183,13 @@ namespace ARK_Server_Manager.Lib
                             else if (fieldType == typeof(string))
                             {
                                 var stringValue = iniValue;
+                                if (attr.QuotedString)
+                                {
+                                    if (stringValue.StartsWith("\""))
+                                        stringValue = stringValue.Substring(1);
+                                    if (stringValue.EndsWith("\""))
+                                        stringValue = stringValue.Substring(0, stringValue.Length - 1);
+                                }
                                 if (attr.Multiline)
                                 {
                                     stringValue = stringValue.Replace(@"\n", Environment.NewLine);

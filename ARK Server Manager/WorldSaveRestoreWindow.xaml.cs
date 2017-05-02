@@ -234,6 +234,12 @@ namespace ARK_Server_Manager
                     WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
                 }
 
+                searchPattern = $"{mapName}*{Config.Default.BackupExtension}";
+                foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
+                {
+                    WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
+                }
+
                 WorldSaveFiles.Sort(f => f, new WorldSaveFileComparer());
             }
             finally

@@ -427,23 +427,15 @@ namespace ARK_Server_Manager.Lib.Model
 
         public string LastWriteTimeString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();
 
-        public string LastWriteTimeSortString
-        {
-            get
-            {
-                return LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString("yyyyMMdd_HHmmss");
-            }
-        }
+        public string LastWriteTimeSortString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString("yyyyMMdd_HHmmss");
 
         public string MapName { get; set; }
 
-        public string ModUrl
-        {
-            get
-            {
-                return $"http://steamcommunity.com/sharedfiles/filedetails/?id={ModId}";
-            }
-        }
+        public string ModUrl => $"http://steamcommunity.com/sharedfiles/filedetails/?id={ModId}";
+
+        public string TimeUpdatedString => TimeUpdated <= 0 ? string.Empty : ModUtils.UnixTimeStampToDateTime(TimeUpdated).ToString();
+
+        public string TimeUpdatedSortString => TimeUpdated <= 0 ? string.Empty : ModUtils.UnixTimeStampToDateTime(TimeUpdated).ToString("yyyyMMdd_HHmmss");
 
         public string TitleFilterString
         {
@@ -453,12 +445,38 @@ namespace ARK_Server_Manager.Lib.Model
 
         public bool UpToDate => LastTimeUpdated > 0 && LastTimeUpdated == TimeUpdated;
 
+        public long FolderSize { get; set; }
+
+        public string FolderSizeString
+        {
+            get
+            {
+                // GB
+                var divisor = Math.Pow(1024, 3);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} GB";
+
+                // MB
+                divisor = Math.Pow(1024, 2);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} MB";
+
+                // KB
+                divisor = Math.Pow(1024, 1);
+                if (FolderSize > divisor)
+                    return $"{FolderSize / divisor:N2} KB";
+
+                return $"{FolderSize} B";
+            }
+        }
+
         public void PopulateExtended(ModDetailExtended extended)
         {
             LastTimeUpdated = extended.LastTimeUpdated;
             LastWriteTime = extended.LastWriteTime;
             MapName = extended.MapName;
             ModType = extended.ModType;
+            FolderSize = extended.FolderSize;
         }
 
         public void SetModTypeString()
@@ -543,6 +561,8 @@ namespace ARK_Server_Manager.Lib.Model
 
         public int LastTimeUpdated { get; set; }
 
+        public long FolderSize { get; set; }
+
         public void PopulateExtended(string modsRootFolder)
         {
             var modFolder = Path.Combine(modsRootFolder, ModId);
@@ -568,6 +588,12 @@ namespace ARK_Server_Manager.Lib.Model
 
             ModType = metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : ModUtils.MODTYPE_UNKNOWN;
             MapName = mapNames != null && mapNames.Count > 0 ? mapNames[0] : string.Empty;
+
+            FolderSize = 0;
+            foreach (var file in new DirectoryInfo(modFolder).GetFiles("*.*", SearchOption.AllDirectories))
+            {
+                FolderSize += file.Length;
+            }
         }
     }
 }
