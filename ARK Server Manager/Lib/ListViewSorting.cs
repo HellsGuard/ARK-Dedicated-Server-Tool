@@ -17,25 +17,25 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
         [AttachedPropertyBrowsableForType(typeof(ListView))]
 		public static bool GetCanUserSortColumns(ListView element)
 		{
-			return (bool)element.GetValue(CanUserSortColumnsProperty);
+			return (bool)(element?.GetValue(CanUserSortColumnsProperty) ?? false);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(ListView))]
 		public static void SetCanUserSortColumns(ListView element, bool value)
 		{
-			element.SetValue(CanUserSortColumnsProperty, value);
+			element?.SetValue(CanUserSortColumnsProperty, value);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
 		public static bool GetCanUseSort(GridViewColumn element)
 		{
-			return (bool)element.GetValue(CanUseSortProperty);
+			return (bool)(element?.GetValue(CanUseSortProperty) ?? false);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
 		public static void SetCanUseSort(GridViewColumn element, bool value)
 		{
-			element.SetValue(CanUseSortProperty, value);
+			element?.SetValue(CanUseSortProperty, value);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
@@ -47,31 +47,31 @@ namespace ARK_Server_Manager.Lib.ListViewSorting
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
 		public static void SetSortDirection(GridViewColumn element, ListSortDirection? value)
 		{
-			element.SetValue(SortDirectionProperty, value);
+			element?.SetValue(SortDirectionProperty, value);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
 		public static string GetSortExpression(GridViewColumn element)
 		{
-			return (string)element.GetValue(SortExpressionProperty);
+			return (string)element?.GetValue(SortExpressionProperty);
 		}
 
 		[AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
 		public static void SetSortExpression(GridViewColumn element, string value)
 		{
-			element.SetValue(SortExpressionProperty, value);
+			element?.SetValue(SortExpressionProperty, value);
 		}
 
         [AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
         public static bool GetIsDefaultSort(GridViewColumn element)
         {
-            return (bool)element.GetValue(IsDefaultSortProperty);
+            return (bool)(element?.GetValue(IsDefaultSortProperty) ?? false);
         }
 
         [AttachedPropertyBrowsableForType(typeof(GridViewColumn))]
         public static void SetIsDefaultSort(GridViewColumn element, bool value)
         {
-            element.SetValue(IsDefaultSortProperty, value);
+            element?.SetValue(IsDefaultSortProperty, value);
         }
 
         private static void OnCanUserSortColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

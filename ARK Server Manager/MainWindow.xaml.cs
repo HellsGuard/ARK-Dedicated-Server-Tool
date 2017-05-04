@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WPFSharp.Globalizer;
 using System.Threading;
+using NLog;
 
 namespace ARK_Server_Manager
 {
@@ -15,6 +16,8 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static MainWindow Instance
         {
             get;
@@ -274,6 +277,8 @@ namespace ARK_Server_Manager
 
                     this.LatestASMVersion = newVersion;
                     this.NewASMAvailable = appVersion < newVersion;
+
+                    Logger.Debug("CheckForUpdates performed");
                 }
                 catch (Exception)
                 {
