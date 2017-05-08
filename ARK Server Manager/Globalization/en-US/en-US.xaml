@@ -1713,6 +1713,7 @@
     <sys:String x:Key="Basilosaurus_Character_BP_C">Basilosaurus</sys:String>
     <sys:String x:Key="Bat_Character_BP_C">Onyc</sys:String>
     <sys:String x:Key="Beaver_Character_BP_C">Castoroides</sys:String>
+    <sys:String x:Key="Bee_Character_BP_C">Giant Bee</sys:String>
     <sys:String x:Key="BigFoot_Character_BP_C">Gigantopithecus</sys:String>
     <sys:String x:Key="BoaFrill_Character_BP_C">Titanoboa</sys:String>
     <sys:String x:Key="Carno_Character_BP_C">Carnotaurus</sys:String>
@@ -1720,6 +1721,7 @@
     <sys:String x:Key="Cnidaria_Character_BP_C">Cnidaria</sys:String>
     <sys:String x:Key="Coel_Character_BP_C">Coel</sys:String>
     <sys:String x:Key="Compy_Character_BP_C">Compy</sys:String>
+    <sys:String x:Key="Daeodon_Character_BP_C">Daeodon</sys:String>
     <sys:String x:Key="Dilo_Character_BP_C">Dilophosaurus</sys:String>
     <sys:String x:Key="Dimetro_Character_BP_C">Dimetrodon</sys:String>
     <sys:String x:Key="Dimorph_Character_BP_C">Dimorphodon</sys:String>
@@ -1742,8 +1744,10 @@
     <sys:String x:Key="Iguanodon_Character_BP_C">Iguanodon</sys:String>
     <sys:String x:Key="Kairuku_Character_BP_C">Kairuku</sys:String>
     <sys:String x:Key="Kaprosuchus_Character_BP_C">Kaprosuchus</sys:String>
+    <sys:String x:Key="Kentro_Character_BP_C">Kentrosaurus</sys:String>
     <sys:String x:Key="Leech_Character_C">Leech</sys:String>
     <sys:String x:Key="Leedsichthys_Character_BP_C">Leedsichthys</sys:String>
+    <sys:String x:Key="Liopleurodon_Character_BP_C">Liopleurodon</sys:String>
     <sys:String x:Key="Lystro_Character_BP_C">Lystrosaurus</sys:String>
     <sys:String x:Key="Mammoth_Character_BP_C">Mammoth</sys:String>
     <sys:String x:Key="Manta_Character_BP_C">Manta</sys:String>
@@ -1795,9 +1799,13 @@
     <sys:String x:Key="Turtle_Character_BP_C">Carbonemys</sys:String>
     <sys:String x:Key="Tusoteuthis_Character_BP_C">Tusoteuthis</sys:String>
 
+    <sys:String x:Key="Alpha_Leedsichthys_Character_BP_C">Alpha Leedsichthys</sys:String>
+    <sys:String x:Key="Bee_Queen_Character_BP_C">Queen Bee</sys:String>
     <sys:String x:Key="Equus_Character_BP_Unicorn_C">Unicorn</sys:String>
     <sys:String x:Key="FlyingAnt_Character_BP_C">Titanomyrma Soldier</sys:String>
     <sys:String x:Key="Leech_Character_Diseased_C">Diseased Leech</sys:String>
+    <sys:String x:Key="Mega_Tusoteuthis_Character_BP_C">Alpha Tusoteuthis</sys:String>
+    <sys:String x:Key="MEgaMegalodon_Character_BP_C">Alpha Megalodon</sys:String>
     <sys:String x:Key="Mosa_Character_BP_Mega_C">Alpha Mosasaurus</sys:String>
     <sys:String x:Key="Yeti_Character_BP_C">Yeti</sys:String>
 
@@ -1807,12 +1815,16 @@
     <sys:String x:Key="SpiderL_Character_BP_Medium_C">Broodmother Lysrix (Medium Variant)</sys:String>
     <sys:String x:Key="SpiderL_Character_BP_Hard_C">Broodmother Lysrix (Hard Variant)</sys:String>
     <sys:String x:Key="SpiderL_Character_BP_TheCenter_C">Broodmother Lysrix (The Center)</sys:String>
+    <sys:String x:Key="SpiderL_Character_BP_TheCenter_Medium_C">Broodmother Lysrix (The Center Medium Variant)</sys:String>
+    <sys:String x:Key="SpiderL_Character_BP_TheCenter_Hard_C">Broodmother Lysrix (The Center Hard Variant)</sys:String>
 
     <sys:String x:Key="Gorilla_Character_BP_C">Megapithecus</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Easy_C">Megapithecus (Easy Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Medium_C">Megapithecus (Medium Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Hard_C">Megapithecus (Hard Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_TheCenter_C">Megapithecus (The Center)</sys:String>
+    <sys:String x:Key="Gorilla_Character_BP_TheCenter_Medium_C">Megapithecus (The Center Medium Variant)</sys:String>
+    <sys:String x:Key="Gorilla_Character_BP_TheCenter_Hard_C">Megapithecus (The Center Hard Variant)</sys:String>
 
     <sys:String x:Key="Dragon_Character_BP_C">Dragon</sys:String>
     <sys:String x:Key="Dragon_Character_BP_Easy_C">Dragon (Easy Variant)</sys:String>
@@ -2047,6 +2059,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Beaver_C">Saddle - Castoroides</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Carno_C">Saddle - Carno</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Chalico_C">Saddle - Chalicotherium</sys:String>
+    <sys:String x:Key="EngramEntry_Saddle_Daeodon_C">Saddle - Daeodon</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Diplodocus_C">Saddle - Diplodocus</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Direbear_C">Saddle - Dire Bear</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_Doed_C">Saddle - Doedicurus</sys:String>
@@ -2446,6 +2459,7 @@
     <sys:String x:Key="PrimalItem_RecipeNote_ShadowSteak_C">Rockwell Recipes: Shadow Steak Saute</sys:String>
     <sys:String x:Key="PrimalItem_RecipeNote_StaminaSoup_C">Rockwell Recipes: Energy Brew</sys:String>
     <sys:String x:Key="PrimalItem_StartingNote_C">Specimen Implant</sys:String>
+    <sys:String x:Key="PrimalItem_TekGrenade_C">Tek Grenade</sys:String>
     <sys:String x:Key="PrimalItem_TekRifle_C">Tek Rifle</sys:String>
     <sys:String x:Key="PrimalItem_WeaponAlarmTrap_C">Tripwire Alarm Trap</sys:String>
     <sys:String x:Key="PrimalItem_WeaponBola_C">Bola</sys:String>
@@ -2526,6 +2540,7 @@
     <sys:String x:Key="PrimalItemArmor_ClothHelmet_C">Cloth Hat</sys:String>
     <sys:String x:Key="PrimalItemArmor_ClothPants_C">Cloth Pants</sys:String>
     <sys:String x:Key="PrimalItemArmor_ClothShirt_C">Cloth Shirt</sys:String>
+    <sys:String x:Key="PrimalItemArmor_DaeodonSaddle_C">Daeodon Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_DiplodocusSaddle_C">Diplodocus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_DireBearSaddle_C">Direbear Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_DoedSaddle_C">Doedicurus Saddle</sys:String>
@@ -2556,6 +2571,7 @@
     <sys:String x:Key="PrimalItemArmor_MammothSaddle_C">Mammoth Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MantaSaddle_C">Manta Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MegalodonSaddle_C">Megalodon Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_MegalodonSaddle_Tek_C">Megalodon Tek Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MegalosaurusSaddle_C">Megalosaurus Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_MetalBoots_C">Flak Boots</sys:String>
     <sys:String x:Key="PrimalItemArmor_MetalGloves_C">Flak Gauntlets</sys:String>
@@ -2708,6 +2724,7 @@
     <sys:String x:Key="PrimalItemConsumable_Egg_Turtle_C">Turtle Egg</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Fertilizer_Compost_C">Fertilizer</sys:String>
     <sys:String x:Key="PrimalItemConsumable_HealSoup_C">Medical Brew</sys:String>
+    <sys:String x:Key="PrimalItemConsumable_Honey_C">Honey</sys:String>
     <sys:String x:Key="PrimalItemConsumable_HumanPoop_C">Human Feces</sys:String>
     <sys:String x:Key="PrimalItemConsumable_IcedCanteen_C">Iced Canteen (Empty)</sys:String>
     <sys:String x:Key="PrimalItemConsumable_IcedCanteenRefill_C">Iced Canteen (Full)</sys:String>
@@ -2839,6 +2856,13 @@
     <sys:String x:Key="PrimalItemRaft_C">Wooden Raft</sys:String>
     <sys:String x:Key="PrimalItemResource_AmmoniteBlood_C">Ammonite Bile</sys:String>
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">Angler Gel</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaCarno_C">Alpha Carnotaurus Arm</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaLeeds_C">Alpha Leedsichthys Blubber</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaMegalodon_C">Alpha Megalodon Fin</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaMosasaur_C">Alpha Mosasaur Tooth</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaRaptor_C">Alpha Raptor Claw</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaRex_C">Alpha Tyrannosaur Tooth</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaTuso_C">Alpha Tusoteuthis Eye</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Rex_C">Tyrannosaurus Arm</sys:String>
@@ -2926,6 +2950,7 @@
     <sys:String x:Key="PrimalItemStructure_BearTrap_Large_C">Large Bear Trap</sys:String>
     <sys:String x:Key="PrimalItemStructure_Bed_Modern_C">Bunk Bed</sys:String>
     <sys:String x:Key="PrimalItemStructure_Bed_Simple_C">Simple Bed</sys:String>
+    <sys:String x:Key="PrimalItemStructure_BeeHive_C">Bee Hive</sys:String>
     <sys:String x:Key="PrimalItemStructure_BeerBarrel_C">Beer Barrel</sys:String>
     <sys:String x:Key="PrimalItemStructure_BirthdayCake_C">Birthday Cake</sys:String>
     <sys:String x:Key="PrimalItemStructure_Bookshelf_C">Bookshelf</sys:String>
@@ -3059,6 +3084,7 @@
     <sys:String x:Key="PrimalItemStructure_TekCatwalk_C">Tek Catwalk</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekCeiling_C">Tek Ceiling</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekCeilingWithTrapdoor_C">Tek Hatchframe</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekCloningChamber_C">Tek Cloning Chamber</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekDoor_C">Tek Door</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekFenceFoundation_C">Tek Fence Foundation</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekFloor_C">Tek Foundation</sys:String>
@@ -3103,6 +3129,7 @@
     <sys:String x:Key="PrimalItemStructure_TurretCatapult_C">Catapult Turret</sys:String>
     <sys:String x:Key="PrimalItemStructure_TurretMinigun_C">Minigun Turret</sys:String>
     <sys:String x:Key="PrimalItemStructure_TurretRocket_C">Rocket Turret</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TurretTek_C">Tek Turret</sys:String>
     <sys:String x:Key="PrimalItemStructure_UnderwaterBase_C">Vacuum Compartment</sys:String>
     <sys:String x:Key="PrimalItemStructure_UnderwaterBase_Moonpool_C">Vacuum Compartment Moonpool</sys:String>
     <sys:String x:Key="PrimalItemStructure_WallTorch_C">Wall Torch</sys:String>
@@ -3141,8 +3168,17 @@
     <sys:String x:Key="PrimalItemTransGPSAmmo_C">Transponder Node</sys:String>
     <sys:String x:Key="PrimalItemTrophy_AlphaRex_C">Alpha Rex Trophy</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Broodmother_C">Broodmother Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Alpha_C">Alpha Broodmother Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Beta_C">Beta Broodmother Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Gamma_C">Gamma Broodmother Trophy</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Dragon_C">Dragon Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Alpha_C">Alpha Dragon Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Beta_C">Beta Dragon Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Gamma_C">Gamma Dragon Trophy</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Gorilla_C">Megapithecus Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Alpha_C">Alpha Megapithecus Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Beta_C">Beta Megapithecus Trophy</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Gamma_C">Gamma Megapithecus Trophy</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_Flashlight_C">Flashlight Attachment</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_HoloScope_C">Holo-Scope Attachment</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_Laser_C">Laser Attachment</sys:String>
@@ -3253,7 +3289,6 @@
     <sys:String x:Key="PrimalItemConsumable_FreshFillet_C">Fresh Fish Fillet</sys:String>
     <sys:String x:Key="PrimalItemConsumable_FreshPoultry_C">Fresh Poultry</sys:String>
     <sys:String x:Key="PrimalItemConsumable_FreshRibs_C">Fresh Spare Ribs</sys:String>
-    <sys:String x:Key="PrimalItemConsumable_Honey_C">Honey</sys:String>
     <sys:String x:Key="PrimalItemConsumable_HoneyLoaf_C">Baked Honey Loaf</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Meal_ChickenRice_C">Chicken and Rice</sys:String>
     <sys:String x:Key="PrimalItemConsumable_Meal_FilletBread_C">Fillet and Bread</sys:String>
@@ -3475,6 +3510,7 @@
     <!-- Map Spawner Class Names -->
     <sys:String x:Key="DinoSpawnEntries_Beavers_C">(TheIsland) DinoSpawnEntries_Beavers_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_DarkWater_C">(TheIsland) DinoSpawnEntries_DarkWater_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_DarkWater_Lio_C">(TheIsland) DinoSpawnEntries_DarkWater_Lio_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_DarkWater_Mosa_C">(TheIsland) DinoSpawnEntries_DarkWater_Mosa_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_DarkWater_Mosa_Caves_C">(TheIsland) DinoSpawnEntries_DarkWater_Mosa_Caves_C</sys:String>
     <sys:String x:Key="DinoSpawnEntries_DarkWater_Plesia_C">(TheIsland) DinoSpawnEntries_DarkWater_Plesia_C</sys:String>
@@ -3488,6 +3524,7 @@
     <sys:String x:Key="DinoSpawnEntries_SwampWater_C">(TheIsland) DinoSpawnEntries_SwampWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesArcha_C">(TheIsland) DinoSpawnEntriesArcha_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesBeach_C">(TheIsland) DinoSpawnEntriesBeach_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesBee_C">(TheIsland) DinoSpawnEntriesBee_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCave1_C">(TheIsland) DinoSpawnEntriesCave1_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCave2_C">(TheIsland) DinoSpawnEntriesCave2_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCave2-LowSpiderScorp_C">(TheIsland) DinoSpawnEntriesCave2-LowSpiderScorp_C</sys:String>
@@ -3498,6 +3535,28 @@
     <sys:String x:Key="DinoSpawnEntriesCaveIceWater_C">(TheIsland) DinoSpawnEntriesCaveIceWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCaveLava_C">(TheIsland) DinoSpawnEntriesCaveLava_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCaveMegalo_C">(TheIsland) DinoSpawnEntriesCaveMegalo_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_C">(TheIsland) DinoSpawnEntriesCaveTek_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_11_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_11_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_12_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_12_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_13_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_13_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_14_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_14_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_15_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_15_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Easy_16_C">(TheIsland) DinoSpawnEntriesCaveTek_Easy_16_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_11_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_11_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_12_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_12_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_13_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_13_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_14_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_14_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_15_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_15_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Hard_16_C">(TheIsland) DinoSpawnEntriesCaveTek_Hard_16_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_11_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_11_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_12_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_12_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_13_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_13_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_14_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_14_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_15_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_15_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesCaveTek_Medium_16_C">(TheIsland) DinoSpawnEntriesCaveTek_Medium_16_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesCaveWater_C">(TheIsland) DinoSpawnEntriesCaveWater_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesDamiensAtoll_C">(TheIsland) DinoSpawnEntriesDamiensAtoll_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesDodoRex_C">(TheIsland) DinoSpawnEntriesDodoRex_C</sys:String>

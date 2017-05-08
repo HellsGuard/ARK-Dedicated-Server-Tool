@@ -3204,6 +3204,19 @@
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramTotalColumnLabel}" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
                                             </GridView>
                                         </ListView.View>
+
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListViewItem}" >
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                <Setter Property="Background" Value="White" />
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ShowColored}" Value="True">
+                                                        <Setter Property="Background" Value="Beige" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
                                     </ListView>
                                 </GroupBox>
 

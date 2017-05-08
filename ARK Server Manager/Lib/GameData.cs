@@ -31,7 +31,7 @@ namespace ARK_Server_Manager.Lib
     public static class GameData
     {
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 2525010;
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 4098540;
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1798540;
 
         public static string FriendlyNameForClass(string className)
         {
@@ -55,6 +55,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Basilosaurus_Character_BP_C",        DinoNameTag="Basilosaurus" },
             new DinoSpawn { ClassName="Bat_Character_BP_C",                 DinoNameTag="Bat" },
             new DinoSpawn { ClassName="Beaver_Character_BP_C",              DinoNameTag="Beaver" },
+            new DinoSpawn { ClassName="Bee_Character_BP_C",                 DinoNameTag="Bee" },
             new DinoSpawn { ClassName="BigFoot_Character_BP_C",             DinoNameTag="Bigfoot" },
             new DinoSpawn { ClassName="BoaFrill_Character_BP_C",            DinoNameTag="Titanboa" },
             new DinoSpawn { ClassName="Carno_Character_BP_C",               DinoNameTag="Carno" },
@@ -62,6 +63,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Cnidaria_Character_BP_C",            DinoNameTag="Cnidaria" },
             new DinoSpawn { ClassName="Coel_Character_BP_C",                DinoNameTag="Coel" },
             new DinoSpawn { ClassName="Compy_Character_BP_C",               DinoNameTag="Compy" },
+            new DinoSpawn { ClassName="Daeodon_Character_BP_C",             DinoNameTag="Daeodon" },
             new DinoSpawn { ClassName="Dilo_Character_BP_C",                DinoNameTag="Dilo" },
             new DinoSpawn { ClassName="Dimetro_Character_BP_C",             DinoNameTag="Dimetro" },
             new DinoSpawn { ClassName="Dimorph_Character_BP_C",             DinoNameTag="Dimorph" },
@@ -84,8 +86,10 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Iguanodon_Character_BP_C",           DinoNameTag="Iguanodon" },
             new DinoSpawn { ClassName="Kairuku_Character_BP_C",             DinoNameTag="Kairu" },
             new DinoSpawn { ClassName="Kaprosuchus_Character_BP_C",         DinoNameTag="Kaprosuchus" },
+            new DinoSpawn { ClassName="Kentro_Character_BP_C",              DinoNameTag="Kentro" },
             new DinoSpawn { ClassName="Leech_Character_C",                  DinoNameTag="Leech" },
             new DinoSpawn { ClassName="Leedsichthys_Character_BP_C",        DinoNameTag="Leedsichthys" },
+            new DinoSpawn { ClassName="Liopleurodon_Character_BP_C",        DinoNameTag="Liopleurodon" },
             new DinoSpawn { ClassName="Lystro_Character_BP_C",              DinoNameTag="Lystro" },
             new DinoSpawn { ClassName="Mammoth_Character_BP_C",             DinoNameTag="Mammoth" },
             new DinoSpawn { ClassName="Manta_Character_BP_C",               DinoNameTag="Manta" },
@@ -137,9 +141,13 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Turtle_Character_BP_C",              DinoNameTag="Turtle" },
             new DinoSpawn { ClassName="Tusoteuthis_Character_BP_C",         DinoNameTag="Tusoteuthis" },
 
+            new DinoSpawn { ClassName="Alpha_Leedsichthys_Character_BP_C",  DinoNameTag=null },
+            new DinoSpawn { ClassName="Bee_Queen_Character_BP_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Equus_Character_BP_Unicorn_C",       DinoNameTag=null },
             new DinoSpawn { ClassName="FlyingAnt_Character_BP_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Leech_Character_Diseased_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="Mega_Tusoteuthis_Character_BP_C",    DinoNameTag=null },
+            new DinoSpawn { ClassName="MEgaMegalodon_Character_BP_C",       DinoNameTag=null },
             new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Yeti_Character_BP_C",                DinoNameTag=null },
 
@@ -149,12 +157,16 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="SpiderL_Character_BP_Medium_C",      DinoNameTag=null },
             new DinoSpawn { ClassName="SpiderL_Character_BP_Hard_C",        DinoNameTag=null },
             new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenter_C",   DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenterMedium_C",     DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenterHard_C",       DinoNameTag=null },
 
             new DinoSpawn { ClassName="Gorilla_Character_BP_C",             DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_Easy_C",        DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_Medium_C",      DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_Hard_C",        DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_C",   DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Medium_C",    DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Hard_C",      DinoNameTag=null },
 
             new DinoSpawn { ClassName="Dragon_Character_BP_C",              DinoNameTag=null },
             new DinoSpawn { ClassName="Dragon_Character_BP_Easy_C",         DinoNameTag=null },
@@ -204,12 +216,16 @@ namespace ARK_Server_Manager.Lib
                 case "SpiderL_Character_BP_Medium_C":
                 case "SpiderL_Character_BP_Hard_C":
                 case "SpiderL_Character_BP_TheCenter_C":
+                case "SpiderL_Character_BP_TheCenter_Medium_C":
+                case "SpiderL_Character_BP_TheCenter_Hard_C":
 
                 case "Gorilla_Character_BP_C":
                 case "Gorilla_Character_BP_Easy_C":
                 case "Gorilla_Character_BP_Medium_C":
                 case "Gorilla_Character_BP_Hard_C":
                 case "Gorilla_Character_BP_TheCenter_C":
+                case "Gorilla_Character_BP_TheCenter_Medium_C":
+                case "Gorilla_Character_BP_TheCenter_Hard_C":
 
                 case "Dragon_Character_BP_C":
                 case "Dragon_Character_BP_Easy_C":
@@ -217,6 +233,7 @@ namespace ARK_Server_Manager.Lib
                 case "Dragon_Character_BP_Hard_C":
                     return false;
 
+                // Scorched Earth
                 case "Manticore_Character_BP_C":
                 case "Manticore_Character_BP_Easy_C":
                 case "Manticore_Character_BP_Medium_C":
@@ -251,8 +268,11 @@ namespace ARK_Server_Manager.Lib
                 case "Trilobite_Character_C":
                     return DinoTamable.False;
 
+                case "Alpha_Leedsichthys_Character_BP_C":
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
+                case "Mega_Tusoteuthis_Character_BP_C":
+                case "MEgaMegalodon_Character_BP_C":
                 case "Mosa_Character_BP_Mega_C":
                 case "Yeti_Character_BP_C":
                     return DinoTamable.False;
@@ -262,12 +282,16 @@ namespace ARK_Server_Manager.Lib
                 case "SpiderL_Character_BP_Medium_C":
                 case "SpiderL_Character_BP_Hard_C":
                 case "SpiderL_Character_BP_TheCenter_C":
+                case "SpiderL_Character_BP_TheCenter_Medium_C":
+                case "SpiderL_Character_BP_TheCenter_Hard_C":
 
                 case "Gorilla_Character_BP_C":
                 case "Gorilla_Character_BP_Easy_C":
                 case "Gorilla_Character_BP_Medium_C":
                 case "Gorilla_Character_BP_Hard_C":
                 case "Gorilla_Character_BP_TheCenter_C":
+                case "Gorilla_Character_BP_TheCenter_Medium_C":
+                case "Gorilla_Character_BP_TheCenter_Hard_C":
 
                 case "Dragon_Character_BP_C":
                 case "Dragon_Character_BP_Easy_C":
@@ -306,8 +330,13 @@ namespace ARK_Server_Manager.Lib
         {
             switch (className)
             {
+                case "Alpha_Leedsichthys_Character_BP_C":
+                case "Bee_Queen_Character_BP_C":
+                case "Equus_Character_BP_Unicorn_C":
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
+                case "Mega_Tusoteuthis_Character_BP_C":
+                case "MEgaMegalodon_Character_BP_C":
                 case "Mosa_Character_BP_Mega_C":
                 case "Yeti_Character_BP_C":
                     return null;
@@ -342,6 +371,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Basilosaurus_Character_BP_C" },
             new ClassMultiplier { ClassName="Bat_Character_BP_C" },
             new ClassMultiplier { ClassName="Beaver_Character_BP_C" },
+            new ClassMultiplier { ClassName="Bee_Character_BP_C" },
             new ClassMultiplier { ClassName="BigFoot_Character_BP_C" },
             new ClassMultiplier { ClassName="BoaFrill_Character_BP_C" },
             new ClassMultiplier { ClassName="Carno_Character_BP_C" },
@@ -349,6 +379,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Cnidaria_Character_BP_C" },
             new ClassMultiplier { ClassName="Coel_Character_BP_C" },
             new ClassMultiplier { ClassName="Compy_Character_BP_C" },
+            new ClassMultiplier { ClassName="Daeodon_Character_BP_C" },
             new ClassMultiplier { ClassName="Dilo_Character_BP_C" },
             new ClassMultiplier { ClassName="Dimetro_Character_BP_C" },
             new ClassMultiplier { ClassName="Dimorph_Character_BP_C" },
@@ -371,8 +402,10 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Iguanodon_Character_BP_C" },
             new ClassMultiplier { ClassName="Kairuku_Character_BP_C" },
             new ClassMultiplier { ClassName="Kaprosuchus_Character_BP_C" },
+            new ClassMultiplier { ClassName="Kentro_Character_BP_C" },
             new ClassMultiplier { ClassName="Leech_Character_C" },
             new ClassMultiplier { ClassName="Leedsichthys_Character_BP_C" },
+            new ClassMultiplier { ClassName="Liopleurodon_Character_BP_C" },
             new ClassMultiplier { ClassName="Lystro_Character_BP_C" },
             new ClassMultiplier { ClassName="Mammoth_Character_BP_C" },
             new ClassMultiplier { ClassName="Manta_Character_BP_C" },
@@ -424,9 +457,12 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Turtle_Character_BP_C" },
             new ClassMultiplier { ClassName="Tusoteuthis_Character_BP_C" },
 
+            new ClassMultiplier { ClassName="Alpha_Leedsichthys_Character_BP_C" },
+            new ClassMultiplier { ClassName="Bee_Queen_Character_BP_C" },
             new ClassMultiplier { ClassName="Equus_Character_BP_Unicorn_C" },
             new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C" },
             new ClassMultiplier { ClassName="Leech_Character_Diseased_C" },
+            new ClassMultiplier { ClassName="MEgaMegalodon_Character_BP_C" },
             new ClassMultiplier { ClassName="Mosa_Character_BP_Mega_C" },
             new ClassMultiplier { ClassName="Yeti_Character_BP_C" },
 
@@ -480,6 +516,7 @@ namespace ARK_Server_Manager.Lib
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Rockarrot_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Seed_Savoroot_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemConsumable_JellyVenom_C" },
+            new ResourceClassMultiplier { ClassName="PrimalItemConsumable_Honey_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemResource_AmmoniteBlood_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemResource_AnglerGel_C" },
             new ResourceClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C" },
@@ -773,6 +810,7 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Beaver_C",                 EngramLevelRequirement=55, EngramPointsCost=50 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Carno_C",                  EngramLevelRequirement=50, EngramPointsCost=21 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Chalico_C",                EngramLevelRequirement=50, EngramPointsCost=30 },
+            new EngramEntry { EngramClassName="EngramEntry_Saddle_Daeodon_C",                EngramLevelRequirement=59, EngramPointsCost=24 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Diplodocus_C",             EngramLevelRequirement=35, EngramPointsCost=30 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Direbear_C",               EngramLevelRequirement=35, EngramPointsCost=24 },
             new EngramEntry { EngramClassName="EngramEntry_Saddle_Doed_C",                   EngramLevelRequirement=30, EngramPointsCost=20 },
@@ -1177,6 +1215,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItem_RecipeNote_ShadowSteak_C",                     Category="Recipes" },
             new PrimalItem { ClassName="PrimalItem_RecipeNote_StaminaSoup_C",                     Category="Recipes" },
             new PrimalItem { ClassName="PrimalItem_StartingNote_C",                               Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItem_TekGrenade_C",                                 Category="Weapons" },
             new PrimalItem { ClassName="PrimalItem_TekRifle_C",                                   Category="Weapons" },
             new PrimalItem { ClassName="PrimalItem_WeaponAlarmTrap_C",                            Category="Weapons" },
             new PrimalItem { ClassName="PrimalItem_WeaponBola_C",                                 Category="Weapons" },
@@ -1257,6 +1296,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemArmor_ClothHelmet_C",                           Category="Armor" },
             new PrimalItem { ClassName="PrimalItemArmor_ClothPants_C",                            Category="Armor" },
             new PrimalItem { ClassName="PrimalItemArmor_ClothShirt_C",                            Category="Armor" },
+            new PrimalItem { ClassName="PrimalItemArmor_DaeodonSaddle_C",                         Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_DiplodocusSaddle_C",                      Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_DireBearSaddle_C",                        Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_DoedSaddle_C",                            Category="Saddles" },
@@ -1287,6 +1327,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemArmor_MammothSaddle_C",                         Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_MantaSaddle_C",                           Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_MegalodonSaddle_C",                       Category="Saddles" },
+            new PrimalItem { ClassName="PrimalItemArmor_MegalodonSaddle_Tek_C",                   Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_MegalosaurusSaddle_C",                    Category="Saddles" },
             new PrimalItem { ClassName="PrimalItemArmor_MetalBoots_C",                            Category="Armor" },
             new PrimalItem { ClassName="PrimalItemArmor_MetalGloves_C",                           Category="Armor" },
@@ -1440,6 +1481,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemConsumable_Egg_Turtle_C",                       Category="Eggs" },
             new PrimalItem { ClassName="PrimalItemConsumable_Fertilizer_Compost_C",               Category="Resources" },
             new PrimalItem { ClassName="PrimalItemConsumable_HealSoup_C",                         Category="Consumables" },
+            new PrimalItem { ClassName="PrimalItemConsumable_Honey_C",                            Category="Consumables" },
             new PrimalItem { ClassName="PrimalItemConsumable_HumanPoop_C",                        Category="Farming" },
             new PrimalItem { ClassName="PrimalItemConsumable_IcedCanteen_C",                      Category="Consumables" },
             new PrimalItem { ClassName="PrimalItemConsumable_IcedCanteenRefill_C",                Category="Consumables" },
@@ -1571,6 +1613,13 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemRaft_C",                                        Category="Structures" },
             new PrimalItem { ClassName="PrimalItemResource_AmmoniteBlood_C",                      Category="Resources" },
             new PrimalItem { ClassName="PrimalItemResource_AnglerGel_C",                          Category="Resources" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaCarno_C",                Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaLeeds_C",                Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaMegalodon_C",            Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaMosasaur_C",             Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaRaptor_C",               Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaRex_C",                  Category="Artifacts" },
+            new PrimalItem { ClassName="PrimalItemResource_ApexDrop_AlphaTuso_C",                 Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Argentavis_C",                Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Megalodon_C",                 Category="Artifacts" },
             new PrimalItem { ClassName="PrimalItemResource_ApexDrop_Rex_C",                       Category="Artifacts" },
@@ -1658,6 +1707,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_BearTrap_Large_C",                    Category="Weapons" },
             new PrimalItem { ClassName="PrimalItemStructure_Bed_Modern_C",                        Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_Bed_Simple_C",                        Category="Structures" },
+            new PrimalItem { ClassName="PrimalItemStructure_BeeHive_C",                           Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_BeerBarrel_C",                        Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_BirthdayCake_C",                      Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_Bookshelf_C",                         Category="Structures" },
@@ -1791,6 +1841,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_TekCatwalk_C",                        Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TekCeiling_C",                        Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TekCeilingWithTrapdoor_C",            Category="Structures" },
+            new PrimalItem { ClassName="PrimalItemStructure_TekCloningChamber_C",                 Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TekDoor_C",                           Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TekFenceFoundation_C",                Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TekFloor_C",                          Category="Structures" },
@@ -1835,6 +1886,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemStructure_TurretCatapult_C",                    Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TurretMinigun_C",                     Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_TurretRocket_C",                      Category="Structures" },
+            new PrimalItem { ClassName="PrimalItemStructure_TurretTek_C",                         Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_UnderwaterBase_C",                    Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_UnderwaterBase_Moonpool_C",           Category="Structures" },
             new PrimalItem { ClassName="PrimalItemStructure_WallTorch_C",                         Category="Structures" },
@@ -1873,8 +1925,17 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemTransGPSAmmo_C",                                Category="Ammunition" },
             new PrimalItem { ClassName="PrimalItemTrophy_AlphaRex_C",                             Category="Trophy" },
             new PrimalItem { ClassName="PrimalItemTrophy_Broodmother_C",                          Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Broodmother_Alpha_C",                    Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Broodmother_Beta_C",                     Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Broodmother_Gamma_C",                    Category="Trophy" },
             new PrimalItem { ClassName="PrimalItemTrophy_Dragon_C",                               Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Dragon_Alpha_C",                         Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Dragon_Beta_C",                          Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Dragon_Gamma_C",                         Category="Trophy" },
             new PrimalItem { ClassName="PrimalItemTrophy_Gorilla_C",                              Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Gorilla_Alpha_C",                        Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Gorilla_Beta_C",                         Category="Trophy" },
+            new PrimalItem { ClassName="PrimalItemTrophy_Gorilla_Gamma_C",                        Category="Trophy" },
             new PrimalItem { ClassName="PrimalItemWeaponAttachment_Flashlight_C",                 Category="Attachments" },
             new PrimalItem { ClassName="PrimalItemWeaponAttachment_HoloScope_C",                  Category="Attachments" },
             new PrimalItem { ClassName="PrimalItemWeaponAttachment_Laser_C",                      Category="Attachments" },
@@ -2262,6 +2323,7 @@ namespace ARK_Server_Manager.Lib
         {
             new MapSpawner { ClassName="DinoSpawnEntries_Beavers_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_Lio_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_Mosa_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_Mosa_Caves_C" },
             new MapSpawner { ClassName="DinoSpawnEntries_DarkWater_Plesia_C" },
@@ -2275,6 +2337,7 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntries_SwampWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesArcha_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesBeach_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesBee_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCave1_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCave2_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCave2-LowSpiderScorp_C" },
@@ -2285,6 +2348,28 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntriesCaveIceWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCaveLava_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCaveMegalo_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_11_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_12_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_13_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_14_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_15_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Easy_16_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_11_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_12_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_13_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_14_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_15_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Hard_16_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_11_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_12_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_13_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_14_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_15_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesCaveTek_Medium_16_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesCaveWater_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesDamiensAtoll_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesDodoRex_C" },
@@ -2647,11 +2732,6 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=1368538,       EngramPoints=60 },
                 new Level { XPRequired=1558538,       EngramPoints=90 },
                 new Level { XPRequired=1798538,       EngramPoints=90 },
-                new Level { XPRequired=2098538,       EngramPoints=90 },
-                new Level { XPRequired=2468538,       EngramPoints=90 },
-                new Level { XPRequired=2918538,       EngramPoints=90 },
-                new Level { XPRequired=3458538,       EngramPoints=90 },
-                new Level { XPRequired=4098538,       EngramPoints=90 },
             };
 
 
