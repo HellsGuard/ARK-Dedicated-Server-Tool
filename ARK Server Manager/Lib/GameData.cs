@@ -31,7 +31,7 @@ namespace ARK_Server_Manager.Lib
     public static class GameData
     {
         public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 2525010;
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1798540;
+        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 6473540;
 
         public static string FriendlyNameForClass(string className) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? className;
 
@@ -2692,11 +2692,27 @@ namespace ARK_Server_Manager.Lib
                 new Level { XPRequired=785441,       EngramPoints=60 },
                 new Level { XPRequired=873538,       EngramPoints=60 },
                 new Level { XPRequired=971538,       EngramPoints=60 },
-                new Level { XPRequired=1083538,       EngramPoints=60 },
-                new Level { XPRequired=1213538,       EngramPoints=60 },
-                new Level { XPRequired=1368538,       EngramPoints=60 },
-                new Level { XPRequired=1558538,       EngramPoints=90 },
-                new Level { XPRequired=1798538,       EngramPoints=90 },
+                new Level { XPRequired=1083538,      EngramPoints=60 },
+                new Level { XPRequired=1213538,      EngramPoints=60 },
+                new Level { XPRequired=1368538,      EngramPoints=60 },
+                new Level { XPRequired=1558538,      EngramPoints=90 },
+                new Level { XPRequired=1798538,      EngramPoints=90 },
+                // ascension levels
+                new Level { XPRequired=2098538,      EngramPoints=70 },
+                new Level { XPRequired=2468538,      EngramPoints=70 },
+                new Level { XPRequired=2918538,      EngramPoints=70 },
+                new Level { XPRequired=3458538,      EngramPoints=70 },
+                new Level { XPRequired=4098538,      EngramPoints=70 },
+                new Level { XPRequired=4208538,      EngramPoints=70 },
+                new Level { XPRequired=4333538,      EngramPoints=70 },
+                new Level { XPRequired=4478538,      EngramPoints=70 },
+                new Level { XPRequired=4648538,      EngramPoints=70 },
+                new Level { XPRequired=4848538,      EngramPoints=70 },
+                new Level { XPRequired=5083538,      EngramPoints=70 },
+                new Level { XPRequired=5358538,      EngramPoints=70 },
+                new Level { XPRequired=5678538,      EngramPoints=70 },
+                new Level { XPRequired=6048538,      EngramPoints=70 },
+                new Level { XPRequired=6473538,      EngramPoints=70 },
             };
 
         public static IEnumerable<Level> LevelProgressionDinoOfficial => levelProgressionDinoOfficial.Select(l => l.Duplicate());
