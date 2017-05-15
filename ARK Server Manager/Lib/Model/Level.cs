@@ -14,6 +14,7 @@ namespace ARK_Server_Manager.Lib
     public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
+        const int ASCENSION_LEVELS = 15;
 
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
@@ -66,6 +67,7 @@ namespace ARK_Server_Manager.Lib
                 existingLevel.EngramTotal = engramTotal;
 
                 existingLevel.LevelIndex = index;
+                existingLevel.ShowColored = index >= this.Count - ASCENSION_LEVELS;
                 index++;
             }
 
@@ -161,6 +163,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EngramPointsProperty = DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty XPTotalProperty = DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty EngramTotalProperty = DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty ShowColoredProperty = DependencyProperty.Register(nameof(ShowColored), typeof(bool), typeof(Level), new PropertyMetadata(false));
 
         public int LevelIndex
         {
@@ -207,6 +210,12 @@ namespace ARK_Server_Manager.Lib
         internal Level Duplicate()
         {
             return new Level { XPRequired = this.XPRequired, EngramPoints = this.EngramPoints };
+        }
+
+        public bool ShowColored
+        {
+            get { return (bool)GetValue(ShowColoredProperty); }
+            set { SetValue(ShowColoredProperty, value); }
         }
     }
 

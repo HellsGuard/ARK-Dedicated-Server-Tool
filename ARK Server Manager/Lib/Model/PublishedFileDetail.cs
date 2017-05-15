@@ -192,7 +192,7 @@ namespace ARK_Server_Manager.Lib.Model
                 return;
 
             var index = base.IndexOf(mod);
-            if (index == base.Count - 1)
+            if (index >= base.Count - 1)
                 return;
 
             base.Move(index, index + 1);
@@ -205,7 +205,7 @@ namespace ARK_Server_Manager.Lib.Model
                 return;
 
             var index = base.IndexOf(mod);
-            if (index == 0)
+            if (index <= 0)
                 return;
 
             base.Move(index, index - 1);
