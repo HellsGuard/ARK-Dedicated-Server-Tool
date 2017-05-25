@@ -178,7 +178,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("\"http://playark.com/banlist.txt\""));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL), QuotedString = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL), QuotedString = QuotedStringType.True)]
         public string BanListURL
         {
             get { return (string)GetValue(BanListURLProperty); }
@@ -296,7 +296,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MOTDProperty = DependencyProperty.Register(nameof(MOTD), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection = true, Multiline = true, QuotedString = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection = true, Multiline = true, QuotedString = QuotedStringType.Remove)]
         public string MOTD
         {
             get { return (string)GetValue(MOTDProperty); }
