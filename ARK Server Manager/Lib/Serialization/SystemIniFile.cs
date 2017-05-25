@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ARK_Server_Manager.Lib.Model;
 using ARK_Server_Manager.Lib.Utils;
+using System.ComponentModel;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -32,6 +33,14 @@ namespace ARK_Server_Manager.Lib
         Custom,
     }
 
+    [DefaultValue(False)]
+    public enum QuotedStringType
+    {
+        False,
+        True,
+        Remove,
+    }
+
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=true)]
     public class IniFileEntryAttribute : Attribute
     {
@@ -46,6 +55,8 @@ namespace ARK_Server_Manager.Lib
             this.File = file;
             this.Section = section;
             this.Key = key;
+
+            this.QuotedString = QuotedStringType.False;
         }
 
         public IniFiles File;
@@ -76,9 +87,9 @@ namespace ARK_Server_Manager.Lib
         public bool ClearSection;
 
         /// <summary>
-        /// If true, the value will always be written with quotes
+        /// If true, the value will always be written with quotes, if remove, the value will always be written without quotes even if added.
         /// </summary>
-        public bool QuotedString;
+        public QuotedStringType QuotedString;
 
         /// <summary>
         /// Only write the attributed value if the named field is true.
@@ -183,8 +194,17 @@ namespace ARK_Server_Manager.Lib
                             else if (fieldType == typeof(string))
                             {
                                 var stringValue = iniValue;
-                                if (attr.QuotedString)
+                                if (attr.QuotedString == QuotedStringType.True)
                                 {
+                                    // remove the leading and trailing quotes, if any
+                                    if (stringValue.StartsWith("\""))
+                                        stringValue = stringValue.Substring(1);
+                                    if (stringValue.EndsWith("\""))
+                                        stringValue = stringValue.Substring(0, stringValue.Length - 1);
+                                }
+                                else if (attr.QuotedString == QuotedStringType.Remove)
+                                {
+                                    // remove the leading and trailing quotes, if any
                                     if (stringValue.StartsWith("\""))
                                         stringValue = stringValue.Substring(1);
                                     if (stringValue.EndsWith("\""))
@@ -334,7 +354,7 @@ namespace ARK_Server_Manager.Lib
                                     // Remove all the values in the collection with this key name
                                     var section = ReadSection(iniFiles, attr.File, attr.Section);
                                     var filteredSection = collection.IsArray ? section.Where(s => !s.StartsWith(keyName + "["))
-                                                              : section.Where(s => !s.StartsWith(keyName + "="));
+                                                                             : section.Where(s => !s.StartsWith(keyName + "="));
                                     var result = filteredSection.Concat(collection.ToIniValues()).ToArray();
                                     WriteSection(iniFiles, attr.File, attr.Section, result);
                                 }
@@ -342,12 +362,21 @@ namespace ARK_Server_Manager.Lib
                             else
                             {
                                 var strValue = StringUtils.GetPropertyValue(value, field, attr);
-                                if (attr.QuotedString)
+                                if (attr.QuotedString == QuotedStringType.True)
                                 {
+                                    // add the leading and trailing quotes, if not already have them
                                     if (!strValue.StartsWith("\""))
                                         strValue = "\"" + strValue;
                                     if (!strValue.EndsWith("\""))
                                         strValue = strValue + "\"";
+                                }
+                                else if (attr.QuotedString == QuotedStringType.Remove)
+                                {
+                                    // remove the leading and trailing quotes, if any
+                                    if (strValue.StartsWith("\""))
+                                        strValue = strValue.Substring(1);
+                                    if (strValue.EndsWith("\""))
+                                        strValue = strValue.Substring(0, strValue.Length - 1);
                                 }
 
                                 if (attr.Multiline)
