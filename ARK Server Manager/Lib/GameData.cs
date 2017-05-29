@@ -163,10 +163,10 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Medium_C",    DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Hard_C",      DinoNameTag=null },
 
-            new DinoSpawn { ClassName="Dragon_Character_BP_C",              DinoNameTag=null },
-            new DinoSpawn { ClassName="Dragon_Character_BP_Easy_C",         DinoNameTag=null },
-            new DinoSpawn { ClassName="Dragon_Character_BP_Medium_C",       DinoNameTag=null },
-            new DinoSpawn { ClassName="Dragon_Character_BP_Hard_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Easy_C",    DinoNameTag=null },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Medium_C",  DinoNameTag=null },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Hard_C",    DinoNameTag=null },
 
             // Scorched Earth dinos
             new DinoSpawn { ClassName="camelsaurus_Character_BP_C",         DinoNameTag="Camelsaurus",              ArkApplication=ArkApplication.ScorchedEarth },
@@ -211,8 +211,8 @@ namespace ARK_Server_Manager.Lib
                 case "SpiderL_Character_BP_Medium_C":
                 case "SpiderL_Character_BP_Hard_C":
                 case "SpiderL_Character_BP_TheCenter_C":
-                case "SpiderL_Character_BP_TheCenter_Medium_C":
-                case "SpiderL_Character_BP_TheCenter_Hard_C":
+                case "SpiderL_Character_BP_TheCenterMedium_C":
+                case "SpiderL_Character_BP_TheCenterHard_C":
 
                 case "Gorilla_Character_BP_C":
                 case "Gorilla_Character_BP_Easy_C":
@@ -222,10 +222,10 @@ namespace ARK_Server_Manager.Lib
                 case "Gorilla_Character_BP_TheCenter_Medium_C":
                 case "Gorilla_Character_BP_TheCenter_Hard_C":
 
-                case "Dragon_Character_BP_C":
-                case "Dragon_Character_BP_Easy_C":
-                case "Dragon_Character_BP_Medium_C":
-                case "Dragon_Character_BP_Hard_C":
+                case "Dragon_Character_BP_Boss_C":
+                case "Dragon_Character_BP_Boss_Easy_C":
+                case "Dragon_Character_BP_Boss_Medium_C":
+                case "Dragon_Character_BP_Boss_Hard_C":
                     return false;
 
                 // Scorched Earth
@@ -277,8 +277,8 @@ namespace ARK_Server_Manager.Lib
                 case "SpiderL_Character_BP_Medium_C":
                 case "SpiderL_Character_BP_Hard_C":
                 case "SpiderL_Character_BP_TheCenter_C":
-                case "SpiderL_Character_BP_TheCenter_Medium_C":
-                case "SpiderL_Character_BP_TheCenter_Hard_C":
+                case "SpiderL_Character_BP_TheCenterMedium_C":
+                case "SpiderL_Character_BP_TheCenterHard_C":
 
                 case "Gorilla_Character_BP_C":
                 case "Gorilla_Character_BP_Easy_C":
@@ -288,10 +288,10 @@ namespace ARK_Server_Manager.Lib
                 case "Gorilla_Character_BP_TheCenter_Medium_C":
                 case "Gorilla_Character_BP_TheCenter_Hard_C":
 
-                case "Dragon_Character_BP_C":
-                case "Dragon_Character_BP_Easy_C":
-                case "Dragon_Character_BP_Medium_C":
-                case "Dragon_Character_BP_Hard_C":
+                case "Dragon_Character_BP_Boss_C":
+                case "Dragon_Character_BP_Boss_Easy_C":
+                case "Dragon_Character_BP_Boss_Medium_C":
+                case "Dragon_Character_BP_Boss_Hard_C":
                     return DinoTamable.False;
 
                 // Scorched Earth dinos
@@ -1255,6 +1255,7 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemAmmo_ChainBola_C",                              Category="Weapons" },
             new PrimalItem { ClassName="PrimalItemAmmo_CompoundBowArrow_C",                       Category="Ammunition" },
             new PrimalItem { ClassName="PrimalItemAmmo_GrapplingHook_C",                          Category="Ammunition" },
+            new PrimalItem { ClassName="PrimalItemAmmo_RefinedTranqDart_C",                       Category="Ammunition" },
             new PrimalItem { ClassName="PrimalItemAmmo_Rocket_C",                                 Category="Ammunition" },
             new PrimalItem { ClassName="PrimalItemAmmo_SimpleBullet_C",                           Category="Ammunition" },
             new PrimalItem { ClassName="PrimalItemAmmo_SimpleRifleBullet_C",                      Category="Ammunition" },
