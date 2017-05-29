@@ -1183,6 +1183,7 @@ namespace ARK_Server_Manager
         private void AddCraftingOverride_Click(object sender, RoutedEventArgs e)
         {
             Settings.ConfigOverrideItemCraftingCosts.Add(new CraftingOverride());
+            Settings.ConfigOverrideItemCraftingCosts.IsEnabled = true;
         }
 
         private void AddCraftingOverrideResource_Click(object sender, RoutedEventArgs e)
@@ -1197,6 +1198,7 @@ namespace ARK_Server_Manager
 
             SelectedCraftingOverride = null;
             Settings.ConfigOverrideItemCraftingCosts.Clear();
+            Settings.ConfigOverrideItemCraftingCosts.IsEnabled = false;
         }
 
         private void ClearCraftingOverrideResources_Click(object sender, RoutedEventArgs e)
@@ -1239,6 +1241,7 @@ namespace ARK_Server_Manager
 
             var item = ((CraftingOverride)((Button)e.Source).DataContext);
             Settings.ConfigOverrideItemCraftingCosts.Remove(item);
+            Settings.ConfigOverrideItemCraftingCosts.IsEnabled = Settings.ConfigOverrideItemCraftingCosts.Count > 0;
         }
 
         private void RemoveCraftingOverrideResource_Click(object sender, RoutedEventArgs e)

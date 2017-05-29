@@ -1814,22 +1814,22 @@
     <sys:String x:Key="SpiderL_Character_BP_Easy_C">Broodmother Lysrix (Easy Variant)</sys:String>
     <sys:String x:Key="SpiderL_Character_BP_Medium_C">Broodmother Lysrix (Medium Variant)</sys:String>
     <sys:String x:Key="SpiderL_Character_BP_Hard_C">Broodmother Lysrix (Hard Variant)</sys:String>
-    <sys:String x:Key="SpiderL_Character_BP_TheCenter_C">Broodmother Lysrix (The Center)</sys:String>
-    <sys:String x:Key="SpiderL_Character_BP_TheCenter_Medium_C">Broodmother Lysrix (The Center Medium Variant)</sys:String>
-    <sys:String x:Key="SpiderL_Character_BP_TheCenter_Hard_C">Broodmother Lysrix (The Center Hard Variant)</sys:String>
+    <sys:String x:Key="SpiderL_Character_BP_TheCenter_C">Broodmother Lysrix (The Center Easy Variant)</sys:String>
+    <sys:String x:Key="SpiderL_Character_BP_TheCenterMedium_C">Broodmother Lysrix (The Center Medium Variant)</sys:String>
+    <sys:String x:Key="SpiderL_Character_BP_TheCenterHard_C">Broodmother Lysrix (The Center Hard Variant)</sys:String>
 
     <sys:String x:Key="Gorilla_Character_BP_C">Megapithecus</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Easy_C">Megapithecus (Easy Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Medium_C">Megapithecus (Medium Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_Hard_C">Megapithecus (Hard Variant)</sys:String>
-    <sys:String x:Key="Gorilla_Character_BP_TheCenter_C">Megapithecus (The Center)</sys:String>
+    <sys:String x:Key="Gorilla_Character_BP_TheCenter_C">Megapithecus (The Center Easy Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_TheCenter_Medium_C">Megapithecus (The Center Medium Variant)</sys:String>
     <sys:String x:Key="Gorilla_Character_BP_TheCenter_Hard_C">Megapithecus (The Center Hard Variant)</sys:String>
 
-    <sys:String x:Key="Dragon_Character_BP_C">Dragon</sys:String>
-    <sys:String x:Key="Dragon_Character_BP_Easy_C">Dragon (Easy Variant)</sys:String>
-    <sys:String x:Key="Dragon_Character_BP_Medium_C">Dragon (Medium Variant)</sys:String>
-    <sys:String x:Key="Dragon_Character_BP_Hard_C">Dragon (Hard Variant)</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_C">Dragon</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_Easy_C">Dragon (Easy Variant)</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_Medium_C">Dragon (Medium Variant)</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_Hard_C">Dragon (Hard Variant)</sys:String>
 
     <!-- Dino/Creature Class Names - Scorched Earth -->
     <sys:String x:Key="camelsaurus_Character_BP_C">Morellatops</sys:String>
@@ -2516,6 +2516,7 @@
     <sys:String x:Key="PrimalItemAmmo_ChainBola_C">Chain Bola</sys:String>
     <sys:String x:Key="PrimalItemAmmo_CompoundBowArrow_C">Metal Arrow</sys:String>
     <sys:String x:Key="PrimalItemAmmo_GrapplingHook_C">Grappling Hook</sys:String>
+    <sys:String x:Key="PrimalItemAmmo_RefinedTranqDart_C">Shocking Tranquilizer Dart</sys:String>
     <sys:String x:Key="PrimalItemAmmo_Rocket_C">Rocket Propelled Grenade</sys:String>
     <sys:String x:Key="PrimalItemAmmo_SimpleBullet_C">Simple Bullet</sys:String>
     <sys:String x:Key="PrimalItemAmmo_SimpleRifleBullet_C">Simple Rifle Ammo</sys:String>
