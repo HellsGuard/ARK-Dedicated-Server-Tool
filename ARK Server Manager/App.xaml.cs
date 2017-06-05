@@ -283,7 +283,8 @@ namespace ARK_Server_Manager
                         Process.Start(processInfo);
 
                         // Shut down the current process
-                        Application.Current.Shutdown();
+                        //Application.Current.Shutdown();
+                        Environment.Exit(0);
 
                         return;
                     }
@@ -304,7 +305,8 @@ namespace ARK_Server_Manager
                     if (ProcessUtils.SwitchToCurrentInstance())
                     {
                         // Shut down the current process
-                        Application.Current.Shutdown();
+                        //Application.Current.Shutdown();
+                        Environment.Exit(0);
 
                         return;
                     }

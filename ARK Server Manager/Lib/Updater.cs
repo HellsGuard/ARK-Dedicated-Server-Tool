@@ -245,7 +245,7 @@ namespace ARK_Server_Manager.Lib
             var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var backupPath = currentInstallPath + "_bak";
 
-            // Grab the latest bits
+            // Grab the latest version
             using (var client = new WebClient())
             {
                 if (App.Instance.BetaVersion)
@@ -255,8 +255,14 @@ namespace ARK_Server_Manager.Lib
                 Unblock(applicationZip);
             }
 
-            // Extract them
-            try { Directory.Delete(extractPath, true); } catch { }
+            try
+            {
+                // Delete the old extraction directory
+                Directory.Delete(extractPath, true);
+            }
+            catch { }
+
+            // Extract latest version to extraction directory
             ZipFile.ExtractToDirectory(applicationZip, extractPath);
 
             // Replace the current installation
@@ -271,7 +277,8 @@ namespace ARK_Server_Manager.Lib
 
             ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
 
-            Application.Current.Shutdown(0);
+            //Application.Current.Shutdown(0);
+            Environment.Exit(0);
         }
         #endregion
     }
