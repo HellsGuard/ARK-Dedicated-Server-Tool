@@ -1942,6 +1942,7 @@ namespace ARK_Server_Manager
         private void AddSupplyCrate_Click(object sender, RoutedEventArgs e)
         {
             Settings.ConfigOverrideSupplyCrateItems.Add(new SupplyCrateOverride());
+            Settings.ConfigOverrideSupplyCrateItems.IsEnabled = true;
         }
 
         private void AddSupplyCrateItemSet_Click(object sender, RoutedEventArgs e)
@@ -1968,6 +1969,7 @@ namespace ARK_Server_Manager
             SelectedSupplyCrateItemSet = null;
             SelectedSupplyCrateOverride = null;
             Settings.ConfigOverrideSupplyCrateItems.Clear();
+            Settings.ConfigOverrideSupplyCrateItems.IsEnabled = false;
         }
 
         private void ClearSupplyCrateItemSets_Click(object sender, RoutedEventArgs e)
@@ -2046,6 +2048,7 @@ namespace ARK_Server_Manager
 
             var item = ((SupplyCrateOverride)((Button)e.Source).DataContext);
             Settings.ConfigOverrideSupplyCrateItems.Remove(item);
+            Settings.ConfigOverrideSupplyCrateItems.IsEnabled = Settings.ConfigOverrideSupplyCrateItems.Count > 0;
         }
 
         private void RemoveSupplyCrateItemSet_Click(object sender, RoutedEventArgs e)
