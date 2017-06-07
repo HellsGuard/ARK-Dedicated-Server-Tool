@@ -26,6 +26,7 @@ namespace ARK_Server_Manager
 
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private ActionQueue versionChecker;
+        private ActionQueue scheduledTaskChecker;
 
         public static readonly DependencyProperty BetaVersionProperty = DependencyProperty.Register(nameof(BetaVersion), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
         public static readonly DependencyProperty IsIpValidProperty = DependencyProperty.Register(nameof(IsIpValid), typeof(bool), typeof(MainWindow));
@@ -33,6 +34,8 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
         public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+        public static readonly DependencyProperty AutoBackupStateProperty = DependencyProperty.Register(nameof(AutoBackupState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty AutoUpdateStateProperty = DependencyProperty.Register(nameof(AutoUpdateState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
 
         public bool BetaVersion
         {
@@ -70,6 +73,17 @@ namespace ARK_Server_Manager
             set { SetValue(NewASMAvailableProperty, value); }
         }
 
+        public string AutoBackupState
+        {
+            get { return (string)GetValue(AutoBackupStateProperty); }
+            set { SetValue(AutoBackupStateProperty, value); }
+        }
+
+        public string AutoUpdateState
+        {
+            get { return (string)GetValue(AutoUpdateStateProperty); }
+            set { SetValue(AutoUpdateStateProperty, value); }
+        }
 
         public MainWindow()
         {
@@ -84,6 +98,7 @@ namespace ARK_Server_Manager
 
             this.DataContext = this;
             this.versionChecker = new ActionQueue();
+            this.scheduledTaskChecker = new ActionQueue();
 
             if (SecurityUtils.IsAdministrator())
                 this.Title = _globalizer.GetResourceString("MainWindow_TitleWithAdmin");
@@ -113,6 +128,7 @@ namespace ARK_Server_Manager
                 }).DoNotWait();
 
             this.versionChecker.PostAction(CheckForUpdates).DoNotWait();
+            this.scheduledTaskChecker.PostAction(CheckForScheduledTasks).DoNotWait();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -226,18 +242,26 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void Upgrade_Click(object sender, RoutedEventArgs e)
+        private async void Upgrade_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(String.Format(_globalizer.GetResourceString("MainWindow_Upgrade_Label"), this.LatestASMVersion), _globalizer.GetResourceString("MainWindow_Upgrade_Title"), MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
             {
                 try
                 {
-                    Updater.UpdateASM();
+                    OverlayMessage.Content = _globalizer.GetResourceString("MainWindow_OverlayMessage_UpgradeLabel");
+                    OverlayGrid.Visibility = Visibility.Visible;
+
+                    await Task.Delay(500);
+                    await Task.Run(() => Updater.UpdateASM());
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show(String.Format(_globalizer.GetResourceString("MainWindow_Upgrade_FailedLabel"), ex.Message, ex.StackTrace), _globalizer.GetResourceString("MainWindow_Upgrade_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    OverlayGrid.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -265,6 +289,34 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void AutoBackupTask_Click(object sender, RoutedEventArgs e)
+        {
+            var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
+            try
+            {
+                TaskSchedulerUtils.RunAutoBackup(taskKey, null);
+            }
+            catch (Exception)
+            {
+                // Ignore.
+            }
+        }
+
+        private void AutoUpdateTask_Click(object sender, RoutedEventArgs e)
+        {
+            var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
+            try
+            {
+                TaskSchedulerUtils.RunAutoUpdate(taskKey, null);
+            }
+            catch (Exception)
+            {
+                // Ignore.
+            }
+        }
+
         private async Task CheckForUpdates()
         {
             var newVersion = await NetworkUtils.GetLatestASMVersion();
@@ -288,6 +340,32 @@ namespace ARK_Server_Manager
 
             await Task.Delay(Config.Default.UpdateCheckTime * 60 * 1000);
             this.versionChecker.PostAction(CheckForUpdates).DoNotWait();
+        }
+
+        private async Task CheckForScheduledTasks()
+        {
+            var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
+            TaskUtils.RunOnUIThreadAsync(() =>
+            {
+                try
+                {
+                    var backupState = TaskSchedulerUtils.TaskStateAutoBackup(taskKey, null);
+                    var updateState = TaskSchedulerUtils.TaskStateAutoUpdate(taskKey, null);
+
+                    this.AutoBackupState = backupState.ToString();
+                    this.AutoUpdateState = updateState.ToString();
+
+                    Logger.Debug("CheckForScheduledTasks performed");
+                }
+                catch (Exception)
+                {
+                    // Ignore.
+                }
+            }).DoNotWait();
+
+            await Task.Delay(Config.Default.ScheduledTasksCheckTime * 1 * 1000);
+            this.scheduledTaskChecker.PostAction(CheckForScheduledTasks).DoNotWait();
         }
     }
 }

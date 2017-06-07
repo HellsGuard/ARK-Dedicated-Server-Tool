@@ -314,6 +314,11 @@
     <sys:String x:Key="MainWindow_OpenSettingsTooltip">Open Global Settings</sys:String>
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
+    <sys:String x:Key="MainWindow_TaskStatusLabel">Task Status</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupLabel">Auto-Backup:</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Start the auto-backup scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateLabel">Auto-Update:</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Start the auto-update scheduled task</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
@@ -323,6 +328,7 @@
     <sys:String x:Key="MainWindow_Donate_Label">Ark Server Manager is an open-source project, provided completely free of charge. You can still donate if you would like; however you are under no obligation. If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like. Would you like to donate now?</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_Title">Upgrade available</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?</sys:String>
+    <sys:String x:Key="MainWindow_OverlayMessage_UpgradeLabel">Starting Upgrade...</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Upgrade failed!</sys:String>
     <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this.\r\nException: {0}\r\nStacktrace: {1}</sys:String>
     <sys:String x:Key="MainWindow_SteamCmd_Title">Reinstall SteamCMD</sys:String>
