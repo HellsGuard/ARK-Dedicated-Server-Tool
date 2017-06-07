@@ -872,6 +872,18 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void ComboBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            if (comboBox == null)
+                return;
+
+            if (comboBox.IsDropDownOpen)
+                return;
+
+            e.Handled = true;
+        }
+
         private void ComboBoxItemList_LostFocus(object sender, RoutedEventArgs e)
         {
             var comboBox = sender as ComboBox;
