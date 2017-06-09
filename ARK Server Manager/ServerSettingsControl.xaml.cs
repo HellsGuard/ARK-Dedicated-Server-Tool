@@ -911,6 +911,11 @@ namespace ARK_Server_Manager
             expression?.UpdateSource();
         }
 
+        private void OutOfDateModUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            this.Runtime?.ResetModCheckTimer();
+        }
+
         #region Dinos
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
         {

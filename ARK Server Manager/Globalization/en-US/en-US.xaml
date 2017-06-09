@@ -365,6 +365,9 @@
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded (NOTE: will not update until the server is started).</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsLabel">Out of Date Mods:</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsTooltip">The number of mod that are currently out of date.</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsButtonTooltip">Perform a mod check.</sys:String>
     <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
     <sys:String x:Key="ServerSettings_OpenLogFolderTooltip">Open the server's logs folder.</sys:String>
     <sys:String x:Key="ServerSettings_CreateSupportZipTooltip">Create a zip file that contains all the files necessary for use by the ASM support team to diagnose a problem.</sys:String>

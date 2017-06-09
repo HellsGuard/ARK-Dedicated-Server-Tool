@@ -595,7 +595,7 @@
                     <Button Grid.Row="0" Grid.Column="1" Margin="2" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
                     <Button Grid.Row="0" Grid.Column="2" Margin="2" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
 
-                    <Border Grid.Row="1" Grid.Column="0" Margin="2" DataContext="{Binding Profile}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{StaticResource BorderFillLightStyle}">
+                    <Border Grid.Row="1" Grid.Column="0" Margin="2" DataContext="{Binding Profile}" Style="{StaticResource BorderFillLightStyle}">
                         <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -603,22 +603,55 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}"/>
-                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}"/>
+                            <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
+                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
                             <Button Grid.Column="2" Margin="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Help.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="4" Margin="2" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
+
+                            <StackPanel Grid.Column="4" DataContext="{Binding Runtime, ElementName=SettingsControl}" Orientation="Horizontal" VerticalAlignment="Center">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TotalModCount}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                
+                                <Label  FontSize="15" Content="{DynamicResource ServerSettings_OutOfDateModsLabel}" ToolTip="{DynamicResource ServerSettings_OutOfDateModsTooltip}"/>
+                                <Label  FontSize="15" Content="{Binding OutOfDateModCount}">
+                                    <Label.Style>
+                                        <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding OutOfDateModCount}" Value="0">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <Button Grid.Column="2" Margin="2" Click="OutOfDateModUpdate_Click" ToolTip="{DynamicResource ServerSettings_OutOfDateModsButtonTooltip}" Style="{StaticResource ButtonStyle1}">
+                                    <Image Source="Art/Refresh.png" Height="16" Width="16"/>
+                                </Button>
+                            </StackPanel>
+
+                            <Button Grid.Column="6" Margin="2" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Find.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="5" Margin="2" Click="CreateSupportZip_Click" ToolTip="{DynamicResource ServerSettings_CreateSupportZipTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Button Grid.Column="7" Margin="2" Click="CreateSupportZip_Click" ToolTip="{DynamicResource ServerSettings_CreateSupportZipTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Zip.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="6" Margin="2" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Button Grid.Column="8" Margin="2" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/OpenLog.png" Height="16" Width="16"/>
                             </Button>
                         </Grid>
