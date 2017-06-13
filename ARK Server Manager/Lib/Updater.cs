@@ -268,17 +268,19 @@ namespace ARK_Server_Manager.Lib
             // Replace the current installation
             var script = new StringBuilder();
             
-            script.AppendLine("timeout 2");
+            script.AppendLine("timeout 10");
             script.AppendLine($"rmdir /s /q {backupPath.AsQuoted()}");
             script.AppendLine($"rename {currentInstallPath.AsQuoted()} {Path.GetFileName(backupPath).AsQuoted()}");
             script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
             script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()} {App.Instance.Args}");
             script.AppendLine("exit");
 
-            ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
+            TaskUtils.RunOnUIThreadAsync(() =>
+            {
+                ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
 
-            //Application.Current.Shutdown(0);
-            Environment.Exit(0);
+                Application.Current.Shutdown(0);
+            }).DoNotWait();
         }
         #endregion
     }

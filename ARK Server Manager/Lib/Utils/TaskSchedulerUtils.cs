@@ -9,7 +9,7 @@ namespace ARK_Server_Manager.Lib
 {
     public static class TaskSchedulerUtils
     {
-        private const string TASK_FOLDER = "ArkServerManager";
+        public const string TASK_FOLDER = "ArkServerManager";
         private const int EXECUTION_TIME_LIMIT = 3;
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -168,10 +168,11 @@ namespace ARK_Server_Manager.Lib
 
                 // Add a trigger that will fire every day at the specified restart time
                 taskDefinition.Triggers.Clear();
-                var trigger = new DailyTrigger {
-                                  StartBoundary = DateTime.Today.Add(restartTime.Value),
-                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
-                              };
+                var trigger = new DailyTrigger
+                {
+                    StartBoundary = DateTime.Today.Add(restartTime.Value),
+                    ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
+                };
                 taskDefinition.Triggers.Add(trigger);
 
                 // Create an action that will launch whenever the trigger fires
@@ -189,10 +190,11 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 taskDefinition.Actions.Clear();
-                var action = new ExecAction {
-                                 Path = command,                                 
-                                 Arguments = $"{arguments}{taskKey}"
-                             };
+                var action = new ExecAction
+                {
+                    Path = command,
+                    Arguments = $"{arguments}{taskKey}"
+                };
                 taskDefinition.Actions.Add(action);
 
                 try
@@ -278,18 +280,20 @@ namespace ARK_Server_Manager.Lib
 
                 // Add a trigger that will fire after the machine has started
                 taskDefinition.Triggers.Clear();
-                var trigger = new BootTrigger {
-                                  Delay = TimeSpan.FromMinutes(1),
-                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
-                              };
+                var trigger = new BootTrigger
+                {
+                    Delay = TimeSpan.FromMinutes(1),
+                    ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT)
+                };
                 taskDefinition.Triggers.Add(trigger);
 
                 // Create an action that will launch whenever the trigger fires
                 taskDefinition.Actions.Clear();
-                var action = new ExecAction {
-                                 Path = command,
-                                 Arguments = string.Empty
-                             };
+                var action = new ExecAction
+                {
+                    Path = command,
+                    Arguments = string.Empty
+                };
                 taskDefinition.Actions.Add(action);
 
                 try
@@ -337,7 +341,7 @@ namespace ARK_Server_Manager.Lib
 
             if (autoUpdatePeriod > 0)
             {
-                
+
                 // create the task folder
                 if (taskFolder == null)
                 {
@@ -376,19 +380,21 @@ namespace ARK_Server_Manager.Lib
 
                 // Add a trigger that will fire every x minutes
                 taskDefinition.Triggers.Clear();
-                var trigger = new TimeTrigger {
-                                  StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),
-                                  ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT),
-                                  Repetition = {Interval = TimeSpan.FromMinutes(autoUpdatePeriod)},
-                              };
+                var trigger = new TimeTrigger
+                {
+                    StartBoundary = DateTime.Today.AddHours(DateTime.Now.Hour + 1),
+                    ExecutionTimeLimit = TimeSpan.FromHours(EXECUTION_TIME_LIMIT),
+                    Repetition = { Interval = TimeSpan.FromMinutes(autoUpdatePeriod) },
+                };
                 taskDefinition.Triggers.Add(trigger);
 
                 // Create an action that will launch whenever the trigger fires
                 taskDefinition.Actions.Clear();
-                var action = new ExecAction {
-                                 Path = command,
-                                 Arguments = App.ARG_AUTOUPDATE
-                             };
+                var action = new ExecAction
+                {
+                    Path = command,
+                    Arguments = App.ARG_AUTOUPDATE
+                };
                 taskDefinition.Actions.Add(action);
 
                 try
@@ -467,6 +473,74 @@ namespace ARK_Server_Manager.Lib
                 }
                 return sb.ToString();
             }
+        }
+
+        public static TaskState TaskStateAutoBackup(string taskKey, string taskSuffix)
+        {
+            var taskName = $"AutoBackup_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
+            if (taskFolder == null)
+                return TaskState.Unknown;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return TaskState.Unknown;
+
+            return task.State;
+        }
+
+        public static TaskState TaskStateAutoUpdate(string taskKey, string taskSuffix)
+        {
+            var taskName = $"AutoUpdate_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
+            if (taskFolder == null)
+                return TaskState.Unknown;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return TaskState.Unknown;
+
+            return task.State;
+        }
+
+        public static void RunAutoBackup(string taskKey, string taskSuffix)
+        {
+            var taskName = $"AutoBackup_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
+            if (taskFolder == null)
+                return;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return;
+
+            task.Run();
+        }
+
+        public static void RunAutoUpdate(string taskKey, string taskSuffix)
+        {
+            var taskName = $"AutoUpdate_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TASK_FOLDER) ? TaskService.Instance.RootFolder.SubFolders[TASK_FOLDER] : null;
+            if (taskFolder == null)
+                return;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return;
+
+            task.Run();
         }
     }
 }

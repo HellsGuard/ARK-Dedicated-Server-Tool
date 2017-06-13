@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ARK_Server_Manager.Lib.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -16,10 +17,10 @@ namespace ARK_Server_Manager.Lib
     public class ServerRuntime : DependencyObject, IDisposable
     {
         private const int DIRECTORIES_PER_LINE = 200;
+        private const int MOD_STATUS_QUERY_DELAY = 300000; // milliseconds
 
         public event EventHandler StatusUpdate;
 
-        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public struct RuntimeProfileSnapshot
         {
@@ -64,9 +65,11 @@ namespace ARK_Server_Manager.Lib
             Available
         }
 
+        private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private readonly List<PropertyChangeNotifier> profileNotifiers = new List<PropertyChangeNotifier>();
         private Process serverProcess;
         private IAsyncDisposable updateRegistration;
+        private DateTime lastModStatusQuery = DateTime.MinValue;
 
         #region Properties
 
@@ -76,6 +79,8 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty VersionProperty = DependencyProperty.Register(nameof(Version), typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
         public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register(nameof(ProfileSnapshot), typeof(RuntimeProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
+        public static readonly DependencyProperty TotalModCountProperty = DependencyProperty.Register(nameof(TotalModCount), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
+        public static readonly DependencyProperty OutOfDateModCountProperty = DependencyProperty.Register(nameof(OutOfDateModCount), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
 
         public SteamStatus Steam
         {
@@ -111,6 +116,18 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (RuntimeProfileSnapshot)GetValue(ProfileSnapshotProperty); }
             set { SetValue(ProfileSnapshotProperty, value); }
+        }
+
+        public int TotalModCount
+        {
+            get { return (int)GetValue(TotalModCountProperty); }
+            protected set { SetValue(TotalModCountProperty, value); }
+        }
+
+        public int OutOfDateModCount
+        {
+            get { return (int)GetValue(OutOfDateModCountProperty); }
+            protected set { SetValue(OutOfDateModCountProperty, value); }
         }
 
         #endregion
@@ -160,6 +177,8 @@ namespace ARK_Server_Manager.Lib
                 this.Version = lastInstalled;
             }
 
+            this.lastModStatusQuery = DateTime.MinValue;
+
             RegisterForUpdates();
         }
 
@@ -180,10 +199,17 @@ namespace ARK_Server_Manager.Lib
                     ServerProfile.ServerConnectionPortProperty,
                     ServerProfile.ServerIPProperty,
                     ServerProfile.MaxPlayersProperty,
+
+                    ServerProfile.ServerMapProperty,
+                    ServerProfile.ServerModIdsProperty,
+                    ServerProfile.TotalConversionModIdProperty,
                 },
                 (s, p) =>
                 {
-                    if (Status == ServerStatus.Stopped || Status == ServerStatus.Uninstalled || Status == ServerStatus.Unknown) { AttachToProfileCore(profile); }
+                    if (Status == ServerStatus.Stopped || Status == ServerStatus.Uninstalled || Status == ServerStatus.Unknown)
+                    {
+                        AttachToProfileCore(profile);
+                    }
                 }));
         }
 
@@ -310,10 +336,45 @@ namespace ARK_Server_Manager.Lib
                     this.MaxPlayers = update.ServerInfo.MaxPlayers;
                 }
 
+                UpdateModStatus();
+
                 this.serverProcess = update.Process;
 
                 StatusUpdate?.Invoke(this, EventArgs.Empty);
             }).DoNotWait();
+        }
+
+        private async void UpdateModStatus()
+        {
+            if (DateTime.Now < this.lastModStatusQuery.AddMilliseconds(MOD_STATUS_QUERY_DELAY))
+                return;
+
+            var totalModCount = 0;
+            var outOfdateModCount = 0;
+
+            var modIdList = new List<string>();
+            if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerMapModId))
+                modIdList.Add(this.ProfileSnapshot.ServerMapModId);
+            if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.TotalConversionModId))
+                modIdList.Add(this.ProfileSnapshot.TotalConversionModId);
+            modIdList.AddRange(this.ProfileSnapshot.ServerModIds);
+
+            var newModIdList = ModUtils.ValidateModList(modIdList);
+            totalModCount = newModIdList.Count;
+
+            if (totalModCount > 0)
+            {
+                var response = await Task.Run(() => SteamUtils.GetSteamModDetails(newModIdList));
+
+                var modDetails = ModDetailList.GetModDetails(response, Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerModsRelativePath), newModIdList);
+                outOfdateModCount = modDetails.Count(m => !m.UpToDate);
+            }
+
+            this.TotalModCount = totalModCount;
+            this.OutOfDateModCount = outOfdateModCount;
+            this.lastModStatusQuery = DateTime.Now;
+
+            Debug.WriteLine($"UpdateModStatus performed - {this.ProfileSnapshot.ProfileName} - {outOfdateModCount} / {totalModCount}");
         }
 
         private void RegisterForUpdates()
@@ -868,8 +929,14 @@ namespace ARK_Server_Manager.Lib
             }
             finally
             {
+                this.lastModStatusQuery = DateTime.MinValue;
                 this.Status = ServerStatus.Stopped;
             }
+        }
+
+        public void ResetModCheckTimer()
+        {
+            this.lastModStatusQuery = DateTime.MinValue;
         }
     }
 }

@@ -595,7 +595,7 @@
                     <Button Grid.Row="0" Grid.Column="1" Margin="2" Content="{StaticResource ImportButtonContent}" ToolTip="{DynamicResource ServerSettings_ImportButtonTooltip}" Click="Load_Click" />
                     <Button Grid.Row="0" Grid.Column="2" Margin="2" Content="{StaticResource SaveButtonContent}" ToolTip="{DynamicResource ServerSettings_SaveButtonTooltip}" Command="{Binding SaveCommand, ElementName=SettingsControl}" CommandParameter="{Binding}" />
 
-                    <Border Grid.Row="1" Grid.Column="0" Margin="2" DataContext="{Binding Profile}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}" Style="{StaticResource BorderFillLightStyle}">
+                    <Border Grid.Row="1" Grid.Column="0" Margin="2" DataContext="{Binding Profile}" Style="{StaticResource BorderFillLightStyle}">
                         <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -603,22 +603,55 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}"/>
-                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}"/>
+                            <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
+                            <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
                             <Button Grid.Column="2" Margin="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Help.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="4" Margin="2" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
+
+                            <StackPanel Grid.Column="4" DataContext="{Binding Runtime, ElementName=SettingsControl}" Orientation="Horizontal" VerticalAlignment="Center">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TotalModCount}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                
+                                <Label  FontSize="15" Content="{DynamicResource ServerSettings_OutOfDateModsLabel}" ToolTip="{DynamicResource ServerSettings_OutOfDateModsTooltip}"/>
+                                <Label  FontSize="15" Content="{Binding OutOfDateModCount}">
+                                    <Label.Style>
+                                        <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding OutOfDateModCount}" Value="0">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <Button Grid.Column="2" Margin="2" Click="OutOfDateModUpdate_Click" ToolTip="{DynamicResource ServerSettings_OutOfDateModsButtonTooltip}" Style="{StaticResource ButtonStyle1}">
+                                    <Image Source="Art/Refresh.png" Height="16" Width="16"/>
+                                </Button>
+                            </StackPanel>
+
+                            <Button Grid.Column="6" Margin="2" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Find.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="5" Margin="2" Click="CreateSupportZip_Click" ToolTip="{DynamicResource ServerSettings_CreateSupportZipTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Button Grid.Column="7" Margin="2" Click="CreateSupportZip_Click" ToolTip="{DynamicResource ServerSettings_CreateSupportZipTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/Zip.png" Height="16" Width="16"/>
                             </Button>
-                            <Button Grid.Column="6" Margin="2" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Button Grid.Column="8" Margin="2" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
                                 <Image Source="Art/OpenLog.png" Height="16" Width="16"/>
                             </Button>
                         </Grid>
@@ -935,7 +968,7 @@
                                                 <Image Source="Art/Refresh.png" Width="16" Height="16"/>
                                             </Button>
                                         </DockPanel>
-                                        <ComboBox  Grid.Row="0" Grid.Column="5" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" Margin="1">
+                                        <ComboBox  Grid.Row="0" Grid.Column="5" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" Margin="1" PreviewMouseWheel="ComboBox_PreviewMouseWheel">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -2130,7 +2163,7 @@
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="DinoArkApplications_SourceUpdated">
                                                 <Label Content="{DynamicResource ServerSettings_DinoFilterLabel}"/>
-                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationDino, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto"/>
+                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationDino, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                             </StackPanel>
 
                                             <DataGrid Margin="0,5,0,0" Name="DinoSettingsGrid" ItemsSource="{Binding Source={StaticResource DinosViewSource}}" Height="400" FrozenColumnCount="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
@@ -2201,7 +2234,7 @@
                                                         </DataGridTemplateColumn.CellStyle>
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <ComboBox IsEditable="True" ItemsSource="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" SelectedValue="{Binding ReplacementClass, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                                <ComboBox IsEditable="True" ItemsSource="{Binding BaseDinoSettingsDinoList, ElementName=SettingsControl}" SelectedValue="{Binding ReplacementClass, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>
@@ -2587,7 +2620,7 @@
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="ResourceArkApplications_SourceUpdated">
                                                 <Label Content="{DynamicResource ServerSettings_ResourcesFilterLabel}"/>
-                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationResource, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto"/>
+                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationResource, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                             </StackPanel>
 
                                             <ListBox Margin="0,5,0,0" Name="HarvestResourceItemAmountClassMultipliersListBox" ItemsSource="{Binding Source={StaticResource ResourcesViewSource}}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
@@ -2828,7 +2861,7 @@
 
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <Label Content="{DynamicResource ServerSettings_EngramsFilterLabel}"/>
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto"/>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                         </StackPanel>
 
                                         <ListView Margin="0,5,0,0" Name="EngramsOverrideListView" ItemsSource="{Binding Source={StaticResource EngramsViewSource}}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
@@ -3013,7 +3046,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -3076,7 +3109,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ResourceItemTypeString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ResourceItemTypeString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -4021,7 +4054,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsReadOnly="True" IsEditable="True" ItemsSource="{Binding Source={StaticResource NPCSpawnContainerTypes}}" Text="{Binding ContainerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        <ComboBox IsReadOnly="True" IsEditable="True" ItemsSource="{Binding Source={StaticResource NPCSpawnContainerTypes}}" Text="{Binding ContainerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -4031,7 +4064,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerList, ElementName=SettingsControl}" SelectedValue="{Binding NPCSpawnEntriesContainerClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerList, ElementName=SettingsControl}" SelectedValue="{Binding NPCSpawnEntriesContainerClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -4100,7 +4133,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerDinoList, ElementName=SettingsControl}" SelectedValue="{Binding NPCClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseMapSpawnerDinoList, ElementName=SettingsControl}" SelectedValue="{Binding NPCClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -4213,7 +4246,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseSupplyCrateList, ElementName=SettingsControl}" SelectedValue="{Binding SupplyCrateClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BaseSupplyCrateList, ElementName=SettingsControl}" SelectedValue="{Binding SupplyCrateClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -4454,7 +4487,7 @@
                                                 </DataGridTemplateColumn.Header>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus"/>
+                                                        <ComboBox IsEditable="True" ItemsSource="{Binding BasePrimalItemList, ElementName=SettingsControl}" SelectedValue="{Binding ItemClassString, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
