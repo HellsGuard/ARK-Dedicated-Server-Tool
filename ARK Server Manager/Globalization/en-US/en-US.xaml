@@ -221,6 +221,7 @@
     <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
     <sys:String x:Key="GlobalSettings_ValidateServerFilesLabel">Validate Server Files</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesTooltip">If enabled, when the automatic updater runs, it will validate the server files before updating. This will slow down the update process but will ensure that your server files are not corrupted.</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Use smart cache copy</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Attempt retry on fail</sys:String>
