@@ -56,6 +56,7 @@ namespace ARK_Server_Manager
         MapNameIslandProperty,
         MapNameCenterProperty,
         MapNameScorchedEarthProperty,
+        MapNameRagnarokProperty,
         MapNameTotalConversionProperty,
         TotalConversionPrimitivePlusProperty,
 
@@ -2580,6 +2581,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.MapNameScorchedEarthProperty:
                                 this.Settings.ResetMapName(Config.Default.DefaultServerMap_ScorchedEarth);
+                                break;
+
+                            case ServerSettingsResetAction.MapNameRagnarokProperty:
+                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_Ragnarok);
                                 break;
 
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:

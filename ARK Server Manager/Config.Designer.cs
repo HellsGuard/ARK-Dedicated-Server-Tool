@@ -1645,5 +1645,26 @@ namespace ARK_Server_Manager {
                 return ((int)(this["ScheduledTasksCheckTime"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoUpdate_ValidateServerFiles {
+            get {
+                return ((bool)(this["AutoUpdate_ValidateServerFiles"]));
+            }
+            set {
+                this["AutoUpdate_ValidateServerFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ragnarok")]
+        public string DefaultServerMap_Ragnarok {
+            get {
+                return ((string)(this["DefaultServerMap_Ragnarok"]));
+            }
+        }
     }
 }

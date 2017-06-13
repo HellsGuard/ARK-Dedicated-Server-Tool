@@ -43,7 +43,7 @@
             <CollectionViewSource x:Key="DinosViewSource" Source="{Binding Settings.DinoSettings, ElementName=SettingsControl}" Filter="DinoArkApplications_OnFilter" />
             <CollectionViewSource x:Key="EngramsViewSource" Source="{Binding Settings.OverrideNamedEngramEntries, ElementName=SettingsControl}" Filter="EngramArkApplications_OnFilter" />
             <CollectionViewSource x:Key="ResourcesViewSource" Source="{Binding Settings.HarvestResourceItemAmountClassMultipliers, ElementName=SettingsControl}" Filter="ResourceArkApplications_OnFilter" />
-            
+
             <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF5593FF"/>
             <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="#FFF3F9FF"/>
             <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#FF000000"/>
@@ -63,7 +63,7 @@
                 <GradientStop Color="#FFECE1D4" Offset="1"/>
                 <GradientStop Color="#FFEAE8E6"/>
             </LinearGradientBrush>
-            
+
             <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -555,7 +555,7 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid Background="{DynamicResource BeigeGradient}">
         <DockPanel x:Name="dockPanel">
             <Border DockPanel.Dock="Top" Margin="3" Padding="2" Style="{StaticResource BorderDarkStyle}">
@@ -626,7 +626,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </StackPanel.Style>
-                                
+
                                 <Label  FontSize="15" Content="{DynamicResource ServerSettings_OutOfDateModsLabel}" ToolTip="{DynamicResource ServerSettings_OutOfDateModsTooltip}"/>
                                 <Label  FontSize="15" Content="{Binding OutOfDateModCount}">
                                     <Label.Style>
@@ -857,7 +857,7 @@
                 </Border.Background>
                 <ScrollViewer DataContext="{Binding Profile}" VerticalScrollBarVisibility="Visible">
                     <StackPanel CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        
+
                         <Expander Name="SectionAdministration" IsExpanded="{Binding CurrentConfig.SectionAdministrationIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -955,13 +955,13 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerPortLabel}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerConnectionPort}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
 
                                         <Label   Grid.Row="0" Grid.Column="2" Content="{DynamicResource ServerSettings_QueryPortLabel}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding ServerPort}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
-                                    
+
                                         <DockPanel Grid.Row="0" Grid.Column="4">
                                             <Label DockPanel.Dock="Left" Content="{DynamicResource ServerSettings_LocalIPLabel}" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" VerticalAlignment="Center"/>
                                             <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" ToolTip="{DynamicResource ServerSettings_RefreshLocalIPTooltip}" Margin="1">
@@ -997,7 +997,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Name="EnableBanListCheckbox" IsChecked="{Binding EnableBanListURL}" Content="{DynamicResource ServerSettings_UseBanListLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseBanListTooltip}"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding BanListURL}" ToolTip="{DynamicResource ServerSettings_BanListTooltip}" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
                                         <local:AnnotatedSlider Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersLabel}" Value="{Binding MaxPlayers}" ToolTip="{DynamicResource ServerSettings_MaxPlayersTooltip}" VerticalAlignment="Center" Minimum="1" Maximum="127" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0"/>
@@ -1020,11 +1020,11 @@
                                             <ColumnDefinition/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <CheckBox Grid.Row="0" Grid.Column="0" Name="EnableRCONCheckbox" IsChecked="{Binding RCONEnabled}" Content="{DynamicResource ServerSettings_EnableRCONPortLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Width="150" ToolTip="{DynamicResource ServerSettings_EnableRCONPortTooltip}"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding RCONPort}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_RCONPortTooltip}" IsEnabled="{Binding ElementName=EnableRCONCheckbox, Path=IsChecked}" Width="100" HorizontalAlignment="Left"/>
                                         <Button   Grid.Row="0" Grid.Column="2" Margin="1" Content="{StaticResource ResetRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONResetTooltip}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.RCONWindowExtents}"/>
-                                    
+
                                         <Label    Grid.Row="1" Grid.Column="0" Margin="20,0,0,0" Content="{DynamicResource ServerSettings_RCONLogBufferLabel}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}" VerticalAlignment="Center"/>
                                         <TextBox  Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding RCONServerGameLogBuffer}" ToolTip="{DynamicResource ServerSettings_RCONLogBufferTooltip}" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left"/>
                                     </Grid>
@@ -1044,11 +1044,12 @@
                                             <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="100*"/>
                                             <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <Label   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_MapPathLabel}" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Name="MapNameTextbox" Text="{Binding ServerMap}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}">
                                             <TextBox.Style>
@@ -1091,7 +1092,23 @@
                                             </Button.Style>
                                             <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                         </Button>
-                                        <Button  Grid.Row="0" Grid.Column="5" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameScorchedEarthTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameScorchedEarthProperty}">
+                                        <Button  Grid.Row="0" Grid.Column="5" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameScorchedEarthTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameScorchedEarthProperty}" VerticalAlignment="Top">
+                                            <Button.Style>
+                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                        </Button>
+                                        <Button  Grid.Row="0" Grid.Column="6" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameRagnarokTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameRagnarokProperty}" VerticalAlignment="Top">
                                             <Button.Style>
                                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                                                     <Setter Property="Visibility" Value="Visible"/>
@@ -1138,7 +1155,7 @@
                                         </Button>
 
                                         <Label   Grid.Row="2" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Margin="1" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
+                                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="6" Margin="1" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}">
                                             <Validation.ErrorTemplate>
                                                 <ControlTemplate>
                                                     <StackPanel>
@@ -1155,10 +1172,10 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Button  Grid.Row="2" Grid.Column="6" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" HorizontalAlignment="Left" Click="OpenModDetails_Click">
+                                        <Button  Grid.Row="2" Grid.Column="7" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" HorizontalAlignment="Left" Click="OpenModDetails_Click">
                                             <Image Source="Art/Help.png" Width="16" Height="16" />
                                         </Button>
-                                        <Button  Grid.Row="2" Grid.Column="7" Width="22" Height="22" Margin="5,0,0,0" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" HorizontalAlignment="Left" Click="ModUpgrade_Click">
+                                        <Button  Grid.Row="2" Grid.Column="8" Width="22" Height="22" Margin="5,0,0,0" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" HorizontalAlignment="Left" Click="ModUpgrade_Click">
                                             <Image Source="Art/Upgrade.png" Width="16" Height="16" />
                                             <Button.Style>
                                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
@@ -1249,7 +1266,7 @@
                                             <RowDefinition />
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                    
+
                                         <TextBox Grid.Row="0" Margin="1" Text="{Binding MOTD}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto"/>
                                         <local:AnnotatedSlider Grid.Row="1" Margin="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
                                     </Grid>
@@ -1283,7 +1300,7 @@
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisableValveAntiCheatSystem}" Content="{DynamicResource ServerSettings_DisableVACLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableVACTooltip}"/>
                                         <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisableAntiSpeedHackDetection}" Content="{DynamicResource ServerSettings_DisableAntiSpeedHackLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisableAntiSpeedHackTooltip}"/>
                                         <CheckBox Grid.Row="3" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding DisablePlayerMovePhysicsOptimization}" Content="{DynamicResource ServerSettings_DisablePMVOptimizationLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_DisablePMVOptimizationTooltip}"/>
@@ -1370,7 +1387,7 @@
                                     <GroupBox.Header>
                                         <CheckBox Name="EnableWebAlarmCheckbox" IsChecked="{Binding EnableWebAlarm}" Content="{DynamicResource ServerSettings_EnableWebAlarmLabel}" ToolTip="{DynamicResource ServerSettings_EnableWebAlarmTooltip}" />
                                     </GroupBox.Header>
-                                
+
                                     <Grid IsEnabled="{Binding ElementName=EnableWebAlarmCheckbox, Path=IsChecked}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="25"/>
@@ -1403,7 +1420,7 @@
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                    
+
                                         <Label     Grid.Column="0" Content="{DynamicResource ServerSettings_AdditionalArgsLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AdditionalArgsTooltip}"/>
                                         <DockPanel Grid.Column="1" LastChildFill="True">
                                             <Button DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" ToolTip="{DynamicResource ServerSettings_ShowCommandButtonTooltip}" Click="ShowCmd_Click"/>
@@ -1413,7 +1430,7 @@
                                 </GroupBox>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionAutomaticManagement" IsExpanded="{Binding CurrentConfig.SectionAutomaticManagementIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <DockPanel>
@@ -1535,7 +1552,7 @@
                                         <CheckBox Grid.Row="3" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding AutoRestartIfShutdown}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}" HorizontalAlignment="Left"/>
                                     </Grid>
                                 </GroupBox>
-                            
+
                                 <GroupBox Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <DockPanel>
@@ -1574,7 +1591,7 @@
                                 </GroupBox>
                             </StackPanel>
                         </Expander>
-                    
+
                         <Expander Name="SectionRules" IsExpanded="{Binding CurrentConfig.SectionRulesIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -1638,12 +1655,12 @@
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OverrideOfficialDifficultyLabel}" Value="{Binding OverrideOfficialDifficulty, Converter={StaticResource OfficialDifficultyValueConverter}}" Suffix="{DynamicResource SliderUnits_Levels}" Minimum="30" Maximum="1200" SmallChange="1" LargeChange="5" TickFrequency="30" ToolTip="{DynamicResource ServerSettings_OverrideOfficialDifficultyTooltip}" />
                                         </Grid>
                                     </GroupBox>
-                                    
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
@@ -1677,41 +1694,41 @@
                                             <local:AnnotatedSlider Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" IsEnabled="{Binding OverrideTributeDinoExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeDinoExpirationSecondsLabel}" Value="{Binding TributeDinoExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeDinoExpirationSecondsTooltip}" />
                                         </Grid>
                                     </GroupBox>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableIncreasePvPRespawnInterval" IsChecked="{Binding IncreasePvPRespawnInterval}" Content="{DynamicResource ServerSettings_PvPRespawnLabel}" ToolTip="{DynamicResource ServerSettings_PvPRespawnTooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <StackPanel  IsEnabled="{Binding ElementName=EnableIncreasePvPRespawnInterval, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_IntervalCheckPeriodLabel}" Value="{Binding IncreasePvPRespawnIntervalCheckPeriod}" Suffix="{DynamicResource ServerSettings_IntervalCheckPeriodUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalCheckPeriodTooltip}" />
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_IntervalMultiplierLabel}" Value="{Binding IncreasePvPRespawnIntervalMultiplier}" Suffix="{DynamicResource ServerSettings_IntervalMultiplierUnits}" Minimum="0.01" Maximum="10" SmallChange="0.5" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_IntervalMultiplierTooltip}" />
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_IntervalBaseLabel}" Value="{Binding IncreasePvPRespawnIntervalBaseAmount}" Suffix="{DynamicResource ServerSettings_IntervalBaseUnits}" Minimum="0" Maximum="1800" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_IntervalBaseTooltip}" />
                                         </StackPanel>
                                     </GroupBox>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnablePreventOfflinePvP" IsChecked="{Binding PreventOfflinePvP}" Content="{DynamicResource ServerSettings_PreventOfflinePvPLabel}" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPTooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <StackPanel IsEnabled="{Binding ElementName=EnablePreventOfflinePvP, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_PreventOfflinePvPIntervalLabel}" Value="{Binding PreventOfflinePvPInterval}" Suffix="{DynamicResource ServerSettings_PreventOfflinePvPIntervalUnits}" Minimum="0" Maximum="3600" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPIntervalTooltip}" />
                                         </StackPanel>
                                     </GroupBox>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableAutoPvETimer" IsChecked="{Binding AutoPvETimer}" Content="{DynamicResource ServerSettings_PvEScheduleLabel}" ToolTip="{DynamicResource ServerSettings_PvEScheduleTooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid IsEnabled="{Binding ElementName=EnableAutoPvETimer, Path=IsChecked}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                        
+
                                             <CheckBox Grid.Column="0" IsChecked="{Binding AutoPvEUseSystemTime}" Content="{DynamicResource ServerSettings_UseServerTimeLabel}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseServerTimeTooltip}"/>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                 <Label   Content="{DynamicResource ServerSettings_StartTimeLabel}" ToolTip="{DynamicResource ServerSettings_StartTimeTooltip}" VerticalAlignment="Center"/>
@@ -1757,9 +1774,9 @@
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
-                                
+
                                     <CheckBox Margin="5" IsChecked="{Binding AllowTribeAlliances}" Content="{DynamicResource ServerSettings_AllowTribeAlliancesLabel}" ToolTip="{DynamicResource ServerSettings_AllowTribeAlliancesTooltip}" />
-                                
+
                                     <GroupBox Header="{DynamicResource ServerSettings_TribeWarfareLabel}" Style="{StaticResource GroupBoxStyle}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1772,18 +1789,18 @@
                                             <CheckBox Grid.Column="1" Margin="5,5,5,0" IsEnabled="{Binding ElementName=AllowTribeWarPvECheckbox, Path=IsChecked}" IsChecked="{Binding AllowTribeWarCancelPvE}" Content="{DynamicResource ServerSettings_AllowCancelTribeWarfareLabel}" ToolTip="{DynamicResource ServerSettings_AllowCancelTribeWarfareTooltip}" HorizontalAlignment="Left"/>
                                         </Grid>
                                     </GroupBox>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableAllowCustomRecipes" IsChecked="{Binding AllowCustomRecipes}" Content="{DynamicResource ServerSettings_AllowCustomRecipesLabel}" ToolTip="{DynamicResource ServerSettings_AllowCustomRecipesTooltip}" />
                                         </GroupBox.Header>
-                                    
+
                                         <StackPanel  IsEnabled="{Binding ElementName=EnableAllowCustomRecipes, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_CustomRecipeEffectivenessMultiplierLabel}" Value="{Binding CustomRecipeEffectivenessMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_CustomRecipeEffectivenessMultiplierTooltip}" />
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_CustomRecipeSkillMultiplierLabel}" Value="{Binding CustomRecipeSkillMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_CustomRecipeSkillMultiplierTooltip}" />
                                         </StackPanel>
                                     </GroupBox>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox Name="EnableDiseasesCheckbox" IsChecked="{Binding EnableDiseases}" Content="{DynamicResource ServerSettings_EnableDiseasesLabel}" ToolTip="{DynamicResource ServerSettings_EnableDiseasesTooltip}" />
@@ -1822,7 +1839,7 @@
                                 </StackPanel>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionChatAndNotifications" IsExpanded="{Binding CurrentConfig.SectionChatAndNotificationsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -1861,13 +1878,13 @@
 
                                     <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableGlobalVoiceChat}" Content="{DynamicResource ServerSettings_EnableGlobalVoiceChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableGlobalVoiceChatTooltip}"/>
                                     <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" IsChecked="{Binding EnableProximityChat}" Content="{DynamicResource ServerSettings_EnableProximityChatLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableProximityChatTooltip}"/>
-                                
+
                                     <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding EnablePlayerLeaveNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerLeftLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerLeftTooltip}"/>
                                     <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" IsChecked="{Binding EnablePlayerJoinedNotifications}" Content="{DynamicResource ServerSettings_EnablePlayerJoinedLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnablePlayerJoinedTooltip}"/>
                                 </Grid>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionHUDAndVisuals" IsExpanded="{Binding CurrentConfig.SectionHUDAndVisualsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -1919,7 +1936,7 @@
                                 <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding AllowPvEGamma}" Content="{DynamicResource ServerSettings_AllowPlayerGammaInPvELabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AllowPlayerGammaInPvETooltip}"/>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionPlayerSettings" IsExpanded="{Binding CurrentConfig.SectionPlayerSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -2013,7 +2030,7 @@
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
                                             </Grid.ColumnDefinitions>
-                                        
+
                                             <StackPanel Grid.Column="0">
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatHealthLabel}"    Value="{Binding PerLevelStatsMultiplier_Player[0]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatHealthTooltip}"/>
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatStaminaLabel}"   Value="{Binding PerLevelStatsMultiplier_Player[1]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatStaminaTooltip}"/>
@@ -2022,7 +2039,7 @@
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatFoodLabel}"      Value="{Binding PerLevelStatsMultiplier_Player[4]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatFoodTooltip}"/>
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatWaterLabel}"     Value="{Binding PerLevelStatsMultiplier_Player[5]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatWaterTooltip}"/>
                                             </StackPanel>
-                                        
+
                                             <StackPanel Grid.Column="1">
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatTempLabel}"      Value="{Binding PerLevelStatsMultiplier_Player[6]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatTempTooltip}"/>
                                                 <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_StatWeightLabel}"    Value="{Binding PerLevelStatsMultiplier_Player[7]}"  Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_StatWeightTooltip}"/>
@@ -2036,7 +2053,7 @@
                                 </StackPanel>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionDinoSettings" IsExpanded="{Binding CurrentConfig.SectionDinoSettingsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -2084,12 +2101,12 @@
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_DinoSpawnsLabel}" Value="{Binding DinoCountMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_DinoSpawnsTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_HarvestingDamageLabel}" Value="{Binding DinoHarvestingDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_HarvestingDamageTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_TurretDamageLabel}" Value="{Binding DinoTurretDamageMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_TurretDamageTooltip}"/>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox IsChecked="{Binding AllowRaidDinoFeeding}" Content="{DynamicResource ServerSettings_AllowRaidDinoFeedingLabel}" ToolTip="{DynamicResource ServerSettings_AllowRaidDinoFeedingTooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <StackPanel>
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel}" Value="{Binding RaidDinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip}"/>
                                         </StackPanel>
@@ -2349,7 +2366,7 @@
                                                             </Style>
                                                         </DataGridTextColumn.CellStyle>
                                                     </DataGridTextColumn>
-                                            
+
                                                     <DataGridTemplateColumn Width="20*" CanUserReorder="False">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
@@ -2369,7 +2386,7 @@
                                                         </DataGridTemplateColumn.CellStyle>
                                                     </DataGridTemplateColumn>
                                                 </DataGrid.Columns>
-                                        
+
                                                 <DataGrid.RowStyle>
                                                     <Style TargetType="{x:Type DataGridRow}">
                                                         <Style.Triggers>
@@ -2404,7 +2421,7 @@
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
@@ -2438,7 +2455,7 @@
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
@@ -2472,7 +2489,7 @@
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
@@ -2506,7 +2523,7 @@
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
-                                    
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
@@ -2561,7 +2578,7 @@
                                 </StackPanel>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionEnvironment" IsExpanded="{Binding CurrentConfig.SectionEnvironmentIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -2595,7 +2612,7 @@
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_ResourceRespawnLabel}"            Value="{Binding ResourcesRespawnPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_ResourceRespawnTooltip}"/>
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_SuppressReplenishPlayerLabel}"    Value="{Binding ResourceNoReplenishRadiusPlayers}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SuppressReplenishPlayerTooltip}"/>
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_SuppressReplenishStructureLabel}" Value="{Binding ResourceNoReplenishRadiusStructures}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_SuppressReplenishStructureTooltip}"/>
-                                
+
                                     <CheckBox Margin="5" Content="{DynamicResource ServerSettings_ClampResourceHarvestDamageLabel}" IsChecked="{Binding ClampResourceHarvestDamage}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ClampResourceHarvestDamageTooltip}"/>
 
                                     <CheckBox Margin="5" Content="{DynamicResource ServerSettings_UseOptimizedHarvestingHealthLabel}" IsChecked="{Binding UseOptimizedHarvestingHealth}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseOptimizedHarvestingHealthTooltip}"/>
@@ -2713,7 +2730,7 @@
                                 </StackPanel>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionStructures" IsExpanded="{Binding CurrentConfig.SectionStructuresIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -2756,12 +2773,12 @@
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionLabel}" IsChecked="{Binding OverrideStructurePlatformPrevention}" ToolTip="{DynamicResource ServerSettings_OverrideStructurePlatformPreventionTooltip}" HorizontalAlignment="Left"/>
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel}" IsChecked="{Binding FlyerPlatformAllowUnalignedDinoBasing}" ToolTip="{DynamicResource ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip}" HorizontalAlignment="Left"/>
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PvEAllowStructuresAtSupplyDropsLabel}" IsChecked="{Binding PvEAllowStructuresAtSupplyDrops}" ToolTip="{DynamicResource ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip}" HorizontalAlignment="Left"/>
-                                
+
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
                                             <CheckBox x:Name="StructureDecayPvECheckbox" IsChecked="{Binding EnableStructureDecayPvE}" Content="{DynamicResource ServerSettings_EnableStructureDecayPvELabel}" ToolTip="{DynamicResource ServerSettings_EnableStructureDecayPvETooltip}"/>
                                         </GroupBox.Header>
-                                    
+
                                         <StackPanel Orientation="Vertical">
                                             <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayPvECheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayPeriodLabel}" Value="{Binding PvEStructureDecayDestructionPeriod}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayPeriodTooltip}" />
                                             <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=StructureDecayPvECheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_StructureDecayMultiplierLabel}" Value="{Binding PvEStructureDecayPeriodMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StructureDecayMultiplierTooltip}" />
@@ -2780,7 +2797,7 @@
                                 </StackPanel>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionEngrams" IsExpanded="{Binding CurrentConfig.SectionEngramsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -3137,7 +3154,7 @@
                                 </GroupBox>
                             </Grid>
                         </Expander>
-                    
+
                         <Expander Name="SectionCustomLevels" IsExpanded="{Binding CurrentConfig.SectionCustomLevelsIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -3197,7 +3214,7 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    
+
                                     <ListView x:Name="CustomPlayerLevelsView" ItemsSource="{Binding PlayerLevels}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
                                         <ListView.View>
                                             <GridView>
@@ -3274,7 +3291,7 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                    
+
                                     <ListView x:Name="CustomDinoLevelsView" ItemsSource="{Binding DinoLevels}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}">
                                         <ListView.View>
                                             <GridView>
@@ -3397,7 +3414,7 @@
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
-                            
+
                                 <GroupBox Grid.Column="1" HorizontalAlignment="Stretch" Height="400" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
@@ -3748,7 +3765,7 @@
                                                 <TextBox Grid.Row="0" Grid.Column="1" Margin="1,1,12,1" Text="{Binding PGM_Name}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_PGM_NameTooltip}"/>
                                                 <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" Text="{DynamicResource ServerSettings_PGM_Warning2Label}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Red"/>
                                             </Grid>
-                                        
+
                                             <GroupBox Style="{StaticResource GroupBoxStyle}" Header="{DynamicResource ServerSettings_PGM_TerrianSettingsLabel}">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
@@ -3974,7 +3991,7 @@
                                             </GroupBox>
                                         </StackPanel>
                                     </GroupBox>
-                                    
+
                                 </StackPanel>
                             </Grid>
                         </Expander>
@@ -4046,7 +4063,7 @@
                                         <DataGrid.VerticalGridLinesBrush>
                                             <SolidColorBrush Color="#FFB4B4B4"/>
                                         </DataGrid.VerticalGridLinesBrush>
-                                        
+
                                         <DataGrid.Columns>
                                             <DataGridTemplateColumn Width="1*" CanUserSort="True">
                                                 <DataGridTemplateColumn.Header>
@@ -4547,7 +4564,7 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-                                
+
                                     <Grid IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>

@@ -220,6 +220,7 @@
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesLabel">Validate Server Files</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Use smart cache copy</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Attempt retry on fail</sys:String>
@@ -529,6 +530,7 @@
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameScorchedEarthTooltip">Reset map name to the Scorched Earth map</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameRagnarokTooltip">Reset map name to the Ragnarok map</sys:String>
     <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
     <sys:String x:Key="ServerSettings_ResetTotalConversionPrimitivePlusTooltip">Reset total conversion to Primitive +</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>

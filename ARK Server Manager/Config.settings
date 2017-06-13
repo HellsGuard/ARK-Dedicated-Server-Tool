@@ -464,5 +464,11 @@
     <Setting Name="ScheduledTasksCheckTime" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="AutoUpdate_ValidateServerFiles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultServerMap_Ragnarok" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Ragnarok</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
