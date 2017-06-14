@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception checking status direct for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                Logger.Debug($"Failed checking status direct for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
                 return false;
             }
         }
@@ -175,7 +175,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception checking status via API for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                Logger.Debug($"Failed checking status via API for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
                 return false;
             }
         }
@@ -191,7 +191,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Exception calling API for: {endpoint.Address}:{endpoint.Port} {ex.Message}\r\n{ex.StackTrace}");
+                Logger.Debug($"Failed calling API for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
             }
         }
     }

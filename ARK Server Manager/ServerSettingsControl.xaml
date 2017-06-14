@@ -946,6 +946,7 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition/>
+                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -979,7 +980,8 @@
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
 
-                                        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}" VerticalAlignment="Center" Margin="5"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Content="{DynamicResource ServerSettings_UseRawSocketsWarningLabel}" Foreground="Red"/>
                                     </Grid>
                                 </GroupBox>
 

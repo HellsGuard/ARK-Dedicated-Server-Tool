@@ -17,6 +17,7 @@ namespace ARK_Server_Manager.Lib
         SurvivalOfTheFittest,
         PrimitivePlus,
         ScorchedEarth,
+        Ragnarok,
         Unknown,
     }
 
@@ -198,6 +199,15 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Manticore_Character_BP_Easy_C",      DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Manticore_Character_BP_Medium_C",    DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Manticore_Character_BP_Hard_C",      DinoNameTag=null,                       ArkApplication=ArkApplication.ScorchedEarth },
+
+            // Ragnarok dinos
+            new DinoSpawn { ClassName="Griffin_Character_BP_C",             DinoNameTag="Griffin",                  ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Polar_Bear_C",                       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Ragnarok_Wyvern_Override_Ice_C",     DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+
+            // Ragnarok Bosses
+            new DinoSpawn { ClassName="Iceworm_Queen_Character_BP_C",       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="LavaGolem_Character_BP_C",           DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
         };
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
@@ -238,6 +248,11 @@ namespace ARK_Server_Manager.Lib
                 case "Manticore_Character_BP_Easy_C":
                 case "Manticore_Character_BP_Medium_C":
                 case "Manticore_Character_BP_Hard_C":
+                    return false;
+
+                // Ragnarok
+                case "Iceworm_Queen_Character_BP_C":
+                case "LavaGolem_Character_BP_C":
                     return false;
 
                 default:
@@ -321,6 +336,14 @@ namespace ARK_Server_Manager.Lib
                 case "Wyvern_Character_BP_Poison_C":
                     return DinoTamable.ByBreeding;
 
+                // Ragnarok dinos
+                case "Ragnarok_Wyvern_Override_Ice_C":
+                    return DinoTamable.ByBreeding;
+
+                case "Iceworm_Queen_Character_BP_C":
+                case "LavaGolem_Character_BP_C":
+                    return DinoTamable.False;
+
                 default:
                     return DinoTamable.True;
             }
@@ -348,6 +371,13 @@ namespace ARK_Server_Manager.Lib
                 case "RubbleGolem_Character_BP_C":
                 case "Wyvern_Character_BP_Lightning_C":
                 case "Wyvern_Character_BP_Poison_C":
+                    return null;
+
+                // Ragnarok dinos
+                case "Polar_Bear_C":
+                case "Ragnarok_Wyvern_Override_Ice_C":
+                case "Iceworm_Queen_Character_BP_C":
+                case "LavaGolem_Character_BP_C":
                     return null;
 
                 default:
@@ -489,6 +519,11 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="RubbleGolem_Character_BP_C" },
             new ClassMultiplier { ClassName="Wyvern_Character_BP_Lightning_C" },
             new ClassMultiplier { ClassName="Wyvern_Character_BP_Poison_C" },
+
+            // Ragnarok
+            new ClassMultiplier { ClassName="Griffin_Character_BP_C" },
+            new ClassMultiplier { ClassName="Polar_Bear_C" },
+            new ClassMultiplier { ClassName="Ragnarok_Wyvern_Override_Ice_C" },
         };
 
         public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());

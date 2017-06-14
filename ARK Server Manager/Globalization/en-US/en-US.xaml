@@ -488,6 +488,7 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
     <sys:String x:Key="ServerSettings_LocalIP_ErrorLabel">Your Local IP address {0} is no longer available. Please review the available IP addresses and select a valid one. If you have a server running on the original IP, you will need to stop it first.</sys:String>
@@ -1872,6 +1873,15 @@
     <sys:String x:Key="Manticore_Character_BP_Easy_C">Manticore (Easy Variant)</sys:String>
     <sys:String x:Key="Manticore_Character_BP_Medium_C">Manticore (Medium Variant)</sys:String>
     <sys:String x:Key="Manticore_Character_BP_Hard_C">Manticore (Hard Variant)</sys:String>
+
+    <!-- Dino/Creature Class Names - Ragnarok -->
+    <sys:String x:Key="Griffin_Character_BP_C">Griffin</sys:String>
+    <sys:String x:Key="Polar_Bear_C">Polar Bear</sys:String>
+    <sys:String x:Key="Ragnarok_Wyvern_Override_Ice_C">Ice Wyvern</sys:String>
+
+    <!-- Dino/Creature Class Names - Ragnarok - Bosses -->
+    <sys:String x:Key="Iceworm_Queen_Character_BP_C">Ice Worm</sys:String>
+    <sys:String x:Key="LavaGolem_Character_BP_C">Lava Golem</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Advanced Bullet</sys:String>
