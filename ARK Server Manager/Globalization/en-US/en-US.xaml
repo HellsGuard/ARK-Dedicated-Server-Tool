@@ -98,6 +98,8 @@
     <sys:String x:Key="ModDetails_RemoveModTooltip">Remove mod from the list.</sys:String>
     <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Remove all mods from the list.</sys:String>
     <sys:String x:Key="ModDetails_SaveModsTooltip">Save mods back to the profile.</sys:String>
+    <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Save formatted mod details.</sys:String>
+    <sys:String x:Key="ModDetails_Clipboard_SaveTitle">Mod Details</sys:String>
 
     <!-- Workshop Files Window -->
     <sys:String x:Key="WorkshopFiles_Title">Workshop Details</sys:String>

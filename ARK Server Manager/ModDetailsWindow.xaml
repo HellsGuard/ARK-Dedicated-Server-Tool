@@ -34,6 +34,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="200*"/>
         </Grid.ColumnDefinitions>
 
@@ -65,17 +66,21 @@
             <Image Source="Art/Delete_6529.png" Width="14" />
         </Button>
 
-        <StackPanel Grid.Row="0" Grid.Column="7" Orientation="Horizontal">
+        <Button Grid.Row="0" Grid.Column="7" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SaveModDetails_Click" Margin="10,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ModDetails_SaveModDetailsTooltip}">
+            <Image Source="Art/Copy_6524.png" Width="14" />
+        </Button>
+
+        <StackPanel Grid.Row="0" Grid.Column="8" Orientation="Horizontal">
             <TextBlock Margin="30,5,5,0" Text="{DynamicResource ModDetails_TotalCountLabel}" VerticalAlignment="Center" />
             <TextBlock Margin="5,5,5,0" Text="{Binding ModDetails.Count}" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal" Height="30" DataContext="{Binding}" SourceUpdated="Filter_SourceUpdated">
             <TextBlock Margin="5,5,5,0" Text="{DynamicResource ModDetails_FilterLabel}" VerticalAlignment="Center" />
             <TextBox   Margin="5,5,5,0" Text="{Binding ModDetailsFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="200" VerticalAlignment="Stretch"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Name="ModDetailsGrid" ItemsSource="{Binding ModDetails}" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" RowHeaderWidth="0" SelectionMode="Single" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Style.Resources>
