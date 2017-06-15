@@ -29,11 +29,12 @@ namespace ARK_Server_Manager
     [Flags]
     public enum PlayerFilterType
     {
-        None            = 0,
-        Offline         = 0x1,
-        Online          = 0x2,
-        Banned          = 0x4,
-        Whitelisted     = 0x8
+        None = 0,
+        Offline = 0x1,
+        Online = 0x2,
+        Banned = 0x4,
+        Whitelisted = 0x8,
+        Invalid = 0x10
     }
 
     public enum InputMode
@@ -515,7 +516,7 @@ namespace ARK_Server_Manager
                         button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = Visibility.Visible;
                     },
-                    canExecute: (player) => true
+                    canExecute: (player) => player != null && player.IsValid && player.IsOnline
                 );
             }
         }
@@ -537,7 +538,7 @@ namespace ARK_Server_Manager
                         button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
-                    canExecute: (player) => player != null && player.ArkData != null && player.IsOnline
+                    canExecute: (player) => player?.ArkData != null && player.IsValid && player.IsOnline
                 );
             }
         }
@@ -559,7 +560,7 @@ namespace ARK_Server_Manager
                         button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
-                    canExecute: (player) => player != null && player.IsOnline
+                    canExecute: (player) => player != null && player.IsValid && player.IsOnline
                 );
             }
         }
@@ -592,7 +593,7 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { var command = player.IsBanned ? "unbanplayer" : "banplayer" ;  this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
-                    canExecute: (player) => true
+                    canExecute: (player) => player != null && player.IsValid
                     );
             }
         }
@@ -603,7 +604,7 @@ namespace ARK_Server_Manager
             {
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => { var command = player.IsWhitelisted ? "DisallowPlayerToJoinNoCheck" : "AllowPlayerToJoinNoCheck"; this.ServerRCON.IssueCommand($"{command} {player.SteamId}"); },
-                    canExecute: (player) => true
+                    canExecute: (player) => player != null && player.IsValid
                 );
             }
         }
@@ -700,7 +701,7 @@ namespace ARK_Server_Manager
                             }
                         }
                     },
-                    canExecute: (player) => player != null && player.ArkData != null
+                    canExecute: (player) => player?.ArkData != null && player.IsValid
                     );
 
             }
@@ -952,7 +953,8 @@ namespace ARK_Server_Manager
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
-                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted);
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);
             if (!result)
                 return false;
 

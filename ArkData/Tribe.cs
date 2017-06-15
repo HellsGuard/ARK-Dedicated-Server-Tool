@@ -7,6 +7,7 @@ namespace ArkData
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Filename { get; set; }
         public DateTime FileCreated { get; set; }
         public DateTime FileUpdated { get; set; }
         public int? OwnerId { get; set; }

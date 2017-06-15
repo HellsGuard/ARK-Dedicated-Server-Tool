@@ -137,6 +137,14 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 
         public static readonly DependencyProperty HasBanProperty = DependencyProperty.Register(nameof(HasBan), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
 
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
+
         internal async Task UpdateArkDataAsync(Player arkData)
         {
             if (!_dataUpdated)

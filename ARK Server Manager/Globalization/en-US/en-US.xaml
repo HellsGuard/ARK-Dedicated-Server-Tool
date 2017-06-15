@@ -1607,6 +1607,7 @@
     <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
     <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterInvalid">Show Invalid</sys:String>
 
     <sys:String x:Key="RCON_Menu_ChatPlayer">Chat to Player...</sys:String>
     <sys:String x:Key="RCON_Menu_RenamePlayer">Rename Player...</sys:String>
@@ -1628,7 +1629,8 @@
     <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
     <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
     <sys:String x:Key="RCON_FilterLabel">Filter:</sys:String>
-    <sys:String x:Key="RCON_ProfileCountLabel">Profile Count:</sys:String>
+    <sys:String x:Key="RCON_ProfileCountLabel">Profiles:</sys:String>
+    <sys:String x:Key="RCON_ProfileInvalidCountLabel">Invalid:</sys:String>
 
     <sys:String x:Key="RCON_Button_OK">OK</sys:String>
     <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>

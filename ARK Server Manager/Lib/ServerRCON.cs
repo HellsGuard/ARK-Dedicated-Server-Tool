@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Diagnostics;
+using System.IO;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -38,6 +39,14 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerRCON), new PropertyMetadata(0));
+
+        public int CountInvalidPlayers
+        {
+            get { return (int)GetValue(CountInvalidPlayersProperty); }
+            set { SetValue(CountInvalidPlayersProperty, value); }
+        }
+
+        public static readonly DependencyProperty CountInvalidPlayersProperty = DependencyProperty.Register(nameof(CountInvalidPlayers), typeof(int), typeof(ServerRCON), new PropertyMetadata(0));
 
 
         public enum ConsoleStatus
@@ -288,6 +297,8 @@ namespace ARK_Server_Manager.Lib
                     commandProcessor.PostAction(UpdatePlayerDetails);
                 }
 
+                this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
+
                 command.suppressOutput = false;
                 command.lines = output;
             }
@@ -352,11 +363,34 @@ namespace ARK_Server_Manager.Lib
                     {
                         foreach (var playerData in arkData.Players)
                         {
-                            var player = players.FirstOrDefault(p => p.SteamId == Int64.Parse(playerData.SteamId));
-                            if (player == null)
+                            PlayerInfo player = null;
+
+                            long steamId;
+                            if (Int64.TryParse(playerData.SteamId, out steamId))
                             {
-                                player = new PlayerInfo() { SteamId = Int64.Parse(playerData.SteamId), SteamName = playerData.SteamName };
-                                players.Add(player);
+                                player = players.FirstOrDefault(p => p.SteamId == steamId);
+                                if (player == null)
+                                {
+                                    player = new PlayerInfo() { SteamId = steamId, SteamName = playerData.SteamName, IsValid = true };
+                                    players.Add(player);
+                                }
+                            }
+                            else
+                            {
+                                var filename = Path.GetFileNameWithoutExtension(playerData.Filename);
+                                if (Int64.TryParse(filename, out steamId))
+                                {
+                                    player = players.FirstOrDefault(p => p.SteamId == steamId);
+                                    if (player == null)
+                                    {
+                                        player = new PlayerInfo() { SteamId = steamId, SteamName = "< corrupted profile >", IsValid = false };
+                                        players.Add(player);
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"Error: UpdatePlayerDetails - profile corrupted - {playerData.Filename}");
+                                }
                             }
 
                             if (player != null)
