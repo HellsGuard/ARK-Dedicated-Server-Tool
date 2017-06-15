@@ -1086,8 +1086,18 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                // restart the server
-                StartServer();
+                if (Config.Default.AutoUpdate_OverrideServerStartup)
+                {
+                    if (_serverRunning)
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be restarted.");
+                    else
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be started.");
+                }
+                else
+                {
+                    // restart the server
+                    StartServer();
+                }
 
                 if (Config.Default.EmailNotify_AutoUpdate)
                 {
@@ -1105,8 +1115,16 @@ namespace ARK_Server_Manager.Lib
 
                 _serverRunning = GetServerProcess() != null;
 
-                // restart the server
-                StartServer();
+                if (Config.Default.AutoUpdate_OverrideServerStartup)
+                {
+                    if (!_serverRunning)
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be started.");
+                }
+                else
+                {
+                    // restart the server
+                    StartServer();
+                }
             }
 
             if (ExitCode != EXITCODE_NORMALEXIT)

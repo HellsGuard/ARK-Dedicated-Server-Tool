@@ -320,6 +320,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -361,6 +362,8 @@
                         <CheckBox Grid.Row="1" Grid.Column="4" Margin="5,0,0,0" Content="{DynamicResource GlobalSettings_RetryOnFailLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_RetryOnFail, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_RetryOnFailTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                         <CheckBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_ShowUpdateReasonLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_ShowUpdateReason, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ShowUpdateReasonTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                        <CheckBox Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_OverrideServerStartupLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_OverrideServerStartup, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_OverrideServerStartupTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </Grid>
                 </GroupBox>
 

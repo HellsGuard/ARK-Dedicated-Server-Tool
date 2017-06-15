@@ -1666,5 +1666,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["DefaultServerMap_Ragnarok"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoUpdate_OverrideServerStartup {
+            get {
+                return ((bool)(this["AutoUpdate_OverrideServerStartup"]));
+            }
+            set {
+                this["AutoUpdate_OverrideServerStartup"] = value;
+            }
+        }
     }
 }

@@ -230,6 +230,8 @@
     <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">If enabled, when the server or mod fails to download a retry attempt will be made.</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Show Update Reason in Shutdown Messages</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">If enabled, when the auto-update is performed the broadcast message will include what (server or mods) is being updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Override server restart after auto-update</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">If enabled, when the auto-update is performed the server WILL NOT be restarted, regardless of if it was online before the auto-update.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
