@@ -492,7 +492,7 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
-    <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
     <sys:String x:Key="ServerSettings_LocalIP_ErrorLabel">Your Local IP address {0} is no longer available. Please review the available IP addresses and select a valid one. If you have a server running on the original IP, you will need to stop it first.</sys:String>
@@ -1456,7 +1456,7 @@
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_SaveTitle">Crafting Override Settings</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">WARNING: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already know, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">NOTE: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already known, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnTooltip">Crafted Item Class String</sys:String>
