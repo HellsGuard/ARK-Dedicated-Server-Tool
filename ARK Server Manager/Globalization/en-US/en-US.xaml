@@ -471,6 +471,7 @@
     <sys:String x:Key="ServerSettings_NameAndPasswordsLabel">Name and Passwords</sys:String>
     <sys:String x:Key="ServerSettings_ServerNameLabel">Server Name:</sys:String>
     <sys:String x:Key="ServerSettings_ServerNameTooltip">The public name of the Ark server, as seen in Steam and Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameLengthLabel">Length:</sys:String>
     <sys:String x:Key="ServerSettings_ServerPasswordLabel">Server Password:</sys:String>
     <sys:String x:Key="ServerSettings_ServerPasswordTooltip">The password users must enter in order to access the server. If this is set, only people who know the password can access your server.</sys:String>
     <sys:String x:Key="ServerSettings_AdminPasswordLabel">Admin Password:</sys:String>

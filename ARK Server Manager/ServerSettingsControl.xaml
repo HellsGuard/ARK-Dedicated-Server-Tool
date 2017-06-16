@@ -628,13 +628,13 @@
                                 </StackPanel.Style>
 
                                 <Label  FontSize="15" Content="{DynamicResource ServerSettings_OutOfDateModsLabel}" ToolTip="{DynamicResource ServerSettings_OutOfDateModsTooltip}"/>
-                                <Label  FontSize="15" Content="{Binding OutOfDateModCount}">
+                                <Label  FontSize="15" Content="{Binding OutOfDateModCount, FallbackValue=0}">
                                     <Label.Style>
                                         <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
-                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="Foreground" Value="Black"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding OutOfDateModCount}" Value="0">
-                                                    <Setter Property="Foreground" Value="Black"/>
+                                                <DataTrigger Binding="{Binding OutOfDateModCount, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 0}}" Value="true">
+                                                    <Setter Property="Foreground" Value="Red"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -925,7 +925,33 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerNameLabel}" ToolTip="{DynamicResource ServerSettings_ServerNameTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Text="{Binding ServerName}" ToolTip="{DynamicResource ServerSettings_ServerNameTooltip}" VerticalContentAlignment="Center" Margin="1"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="1" Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_ServerNameTooltip}" VerticalContentAlignment="Center" SourceUpdated="ServerName_SourceUpdated" />
+                                        <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
+                                            <Label  Content="{DynamicResource ServerSettings_ServerNameLengthLabel}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ServerNameLength, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 50}}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                            <Label  Content="{Binding ServerNameLength, FallbackValue=0}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ServerNameLength, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 50}}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                        </StackPanel>
 
                                         <Label   Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerPasswordLabel}" ToolTip="{DynamicResource ServerSettings_ServerPasswordTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Grid.Row="1" Grid.Column="1" Name="HideServerPasswordTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}"  ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus" Margin="1" Style="{StaticResource HiddenTextBoxStyle}"/>

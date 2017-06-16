@@ -427,7 +427,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionAdministrationIsExpanded {
             get {
                 return ((bool)(this["SectionAdministrationIsExpanded"]));
@@ -439,7 +439,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionAutomaticManagementIsExpanded {
             get {
                 return ((bool)(this["SectionAutomaticManagementIsExpanded"]));
@@ -451,7 +451,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionRulesIsExpanded {
             get {
                 return ((bool)(this["SectionRulesIsExpanded"]));
@@ -463,7 +463,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionChatAndNotificationsIsExpanded {
             get {
                 return ((bool)(this["SectionChatAndNotificationsIsExpanded"]));
@@ -475,7 +475,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionHUDAndVisualsIsExpanded {
             get {
                 return ((bool)(this["SectionHUDAndVisualsIsExpanded"]));
@@ -487,7 +487,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionPlayerSettingsIsExpanded {
             get {
                 return ((bool)(this["SectionPlayerSettingsIsExpanded"]));
@@ -499,7 +499,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionDinoSettingsIsExpanded {
             get {
                 return ((bool)(this["SectionDinoSettingsIsExpanded"]));
@@ -511,7 +511,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionEnvironmentIsExpanded {
             get {
                 return ((bool)(this["SectionEnvironmentIsExpanded"]));
@@ -523,7 +523,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionStructuresIsExpanded {
             get {
                 return ((bool)(this["SectionStructuresIsExpanded"]));
@@ -535,7 +535,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionEngramsIsExpanded {
             get {
                 return ((bool)(this["SectionEngramsIsExpanded"]));
@@ -547,7 +547,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionCustomLevelsIsExpanded {
             get {
                 return ((bool)(this["SectionCustomLevelsIsExpanded"]));
@@ -559,7 +559,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionSOTFIsExpanded {
             get {
                 return ((bool)(this["SectionSOTFIsExpanded"]));
@@ -1119,7 +1119,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionCustomGameUserSettingsIsExpanded {
             get {
                 return ((bool)(this["SectionCustomGameUserSettingsIsExpanded"]));
@@ -1311,7 +1311,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionServerFilesIsExpanded {
             get {
                 return ((bool)(this["SectionServerFilesIsExpanded"]));
@@ -1401,7 +1401,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public string SectionPGMIsExpanded {
             get {
                 return ((string)(this["SectionPGMIsExpanded"]));
@@ -1431,7 +1431,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionMapSpawnerOverridesIsExpanded {
             get {
                 return ((bool)(this["SectionMapSpawnerOverridesIsExpanded"]));
@@ -1455,7 +1455,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionCraftingOverridesIsExpanded {
             get {
                 return ((bool)(this["SectionCraftingOverridesIsExpanded"]));
@@ -1467,7 +1467,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SectionSupplyCrateOverridesIsExpanded {
             get {
                 return ((bool)(this["SectionSupplyCrateOverridesIsExpanded"]));

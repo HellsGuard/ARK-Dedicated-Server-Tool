@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>1.0.285.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -179,6 +179,7 @@
     <Compile Include="Lib\Utils\ProcessUtils.cs" />
     <Compile Include="Lib\Utils\SteamUtils.cs" />
     <Compile Include="Lib\Utils\ZipUtils.cs" />
+    <Compile Include="Lib\ViewConverters\GreaterThanIntValueConverter.cs" />
     <Compile Include="Lib\ViewModel\ComboBoxItem.cs" />
     <Compile Include="Lib\ViewModel\SupplyCrate.cs" />
     <Compile Include="Lib\ViewModel\NPCSpawnSettings.cs" />

@@ -917,6 +917,11 @@ namespace ARK_Server_Manager
             this.Runtime?.ResetModCheckTimer();
         }
 
+        private void ServerName_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            Settings.UpdateServerNameLength();
+        }
+
         #region Dinos
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
         {
