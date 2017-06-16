@@ -150,6 +150,11 @@ namespace ARK_Server_Manager
                     throw new ApplicationException($"An error occured during the shutdown process - ExitCode: {exitCode}");
 
                 ShutdownType = 0;
+                // if restarting the server after the shutdown, delay the form closing
+                if (restartServer)
+                    await Task.Delay(5000);
+
+                this.Close();
             }
             catch (Exception ex)
             {
