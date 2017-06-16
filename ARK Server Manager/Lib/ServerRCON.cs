@@ -371,9 +371,10 @@ namespace ARK_Server_Manager.Lib
                                 player = players.FirstOrDefault(p => p.SteamId == steamId);
                                 if (player == null)
                                 {
-                                    player = new PlayerInfo() { SteamId = steamId, SteamName = playerData.SteamName, IsValid = true };
+                                    player = new PlayerInfo() { SteamId = steamId, SteamName = playerData.SteamName };
                                     players.Add(player);
                                 }
+                                player.IsValid = true;
                             }
                             else
                             {
@@ -383,9 +384,10 @@ namespace ARK_Server_Manager.Lib
                                     player = players.FirstOrDefault(p => p.SteamId == steamId);
                                     if (player == null)
                                     {
-                                        player = new PlayerInfo() { SteamId = steamId, SteamName = "< corrupted profile >", IsValid = false };
+                                        player = new PlayerInfo() { SteamId = steamId, SteamName = "< corrupted profile >" };
                                         players.Add(player);
                                     }
+                                    player.IsValid = false;
                                 }
                                 else
                                 {
