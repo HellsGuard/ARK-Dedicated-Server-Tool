@@ -143,7 +143,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             set { SetValue(IsValidProperty, value); }
         }
 
-        public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(true));
 
         internal async Task UpdateArkDataAsync(Player arkData)
         {
