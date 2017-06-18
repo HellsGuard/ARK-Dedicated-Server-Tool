@@ -30,6 +30,7 @@ namespace ArkData
                 Name = Helpers.GetString(data, "TribeName"),
                 OwnerId = (int?)GetOwnerId(data),
 
+                Filename = fileInfo.Name,
                 FileCreated = fileInfo.CreationTime,
                 FileUpdated = fileInfo.LastWriteTime
             };

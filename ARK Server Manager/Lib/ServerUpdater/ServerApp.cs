@@ -1086,8 +1086,18 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                // restart the server
-                StartServer();
+                if (Config.Default.AutoUpdate_OverrideServerStartup)
+                {
+                    if (_serverRunning)
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be restarted.");
+                    else
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be started.");
+                }
+                else
+                {
+                    // restart the server
+                    StartServer();
+                }
 
                 if (Config.Default.EmailNotify_AutoUpdate)
                 {
@@ -1105,8 +1115,16 @@ namespace ARK_Server_Manager.Lib
 
                 _serverRunning = GetServerProcess() != null;
 
-                // restart the server
-                StartServer();
+                if (Config.Default.AutoUpdate_OverrideServerStartup)
+                {
+                    if (!_serverRunning)
+                        LogProfileMessage("The auto-update override server startup option is enabled, server will not be started.");
+                }
+                else
+                {
+                    // restart the server
+                    StartServer();
+                }
             }
 
             if (ExitCode != EXITCODE_NORMALEXIT)
@@ -1366,7 +1384,10 @@ namespace ARK_Server_Manager.Lib
                 gotNewVersion = false;
 
                 // update the server cache
-                var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, "validate");
+                var validateString = String.Empty;
+                if (Config.Default.AutoUpdate_ValidateServerFiles)
+                    validateString = "validate";
+                var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, validateString);
                 var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
                 if (success && downloadSuccessful)
                     // download was successful, exit loop and continue.

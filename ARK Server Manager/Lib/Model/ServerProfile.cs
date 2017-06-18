@@ -111,7 +111,19 @@ namespace ARK_Server_Manager.Lib
         public string ServerName
         {
             get { return (string)GetValue(ServerNameProperty); }
-            set { SetValue(ServerNameProperty, value); }
+            set
+            {
+                SetValue(ServerNameProperty, value);
+                UpdateServerNameLength();
+            }
+        }
+
+        public static readonly DependencyProperty ServerNameLengthProperty = DependencyProperty.Register(nameof(ServerNameLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        [XmlIgnore]
+        public int ServerNameLength
+        {
+            get { return (int)GetValue(ServerNameLengthProperty); }
+            set { SetValue(ServerNameLengthProperty, value); }
         }
 
         public static readonly DependencyProperty ServerPasswordProperty = DependencyProperty.Register(nameof(ServerPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -3203,6 +3215,11 @@ namespace ARK_Server_Manager.Lib
             File.SetCreationTime(mapFile, restoreFileInfo.CreationTime);
             File.SetLastWriteTime(mapFile, restoreFileInfo.LastWriteTime);
             File.SetLastAccessTime(mapFile, restoreFileInfo.LastAccessTime);
+        }
+
+        public void UpdateServerNameLength()
+        {
+            ServerNameLength = Encoding.UTF8.GetByteCount(ServerName);
         }
 
         #region Export Methods

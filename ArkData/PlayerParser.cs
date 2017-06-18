@@ -43,6 +43,7 @@ namespace ArkData
                 TribeId = Helpers.GetInt(data, "TribeID"),
                 Level = (short)(1 + Convert.ToInt32(Helpers.GetUInt16(data, "CharacterStatusComponent_ExtraCharacterLevel"))),
 
+                Filename = fileInfo.Name,
                 FileCreated = fileInfo.CreationTime,
                 FileUpdated = fileInfo.LastWriteTime
             };

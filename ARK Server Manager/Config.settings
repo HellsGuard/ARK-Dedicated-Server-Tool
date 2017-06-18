@@ -126,40 +126,40 @@
       <Value Profile="(Default)">en-US</Value>
     </Setting>
     <Setting Name="SectionAdministrationIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionAutomaticManagementIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionRulesIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionChatAndNotificationsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionHUDAndVisualsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionPlayerSettingsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionDinoSettingsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionEnvironmentIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionStructuresIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionEngramsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionCustomLevelsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionSOTFIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CustomLevelXPIncrease_Player" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -312,7 +312,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SectionCustomGameUserSettingsIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ServerUpdate_OnServerStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -372,7 +372,7 @@
       <Value Profile="(Default)">AllowedCheaterSteamIDs.txt</Value>
     </Setting>
     <Setting Name="SectionServerFilesIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ArkExclusiveFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PlayersExclusiveJoinList.txt</Value>
@@ -399,7 +399,7 @@
       <Value Profile="(Default)">AsmPGArk</Value>
     </Setting>
     <Setting Name="SectionPGMIsExpanded" Type="System.String" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="BackupDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">_Backup</Value>
@@ -408,16 +408,16 @@
       <Value Profile="(Default)">Game.ini</Value>
     </Setting>
     <Setting Name="SectionMapSpawnerOverridesIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ServerShutdown_CancelMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)">Server shutdown has been cancelled.</Value>
     </Setting>
     <Setting Name="SectionCraftingOverridesIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SectionSupplyCrateOverridesIsExpanded" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}</Value>
@@ -463,6 +463,15 @@
     </Setting>
     <Setting Name="ScheduledTasksCheckTime" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_ValidateServerFiles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultServerMap_Ragnarok" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Ragnarok</Value>
+    </Setting>
+    <Setting Name="AutoUpdate_OverrideServerStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

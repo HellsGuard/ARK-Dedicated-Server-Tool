@@ -59,6 +59,9 @@
                         </MultiDataTrigger.Conditions>
                         <Setter Property="BorderBrush" Value="Gray"/>
                     </MultiDataTrigger>
+                    <DataTrigger Binding="{Binding IsValid}"             Value="False">
+                        <Setter Property="BorderBrush" Value="Orange"/>
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
             <Style x:Key="Tribename" TargetType="Label">
@@ -125,13 +128,14 @@
                                     <MenuItem Header="{DynamicResource RCON_Menu_SortOnline}"         IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.Online}"         IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Online}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_SortName}"           IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.Name}"           IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Name}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_SortTribe}"          IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.Tribe}"          IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Tribe}"/>
-                                    <MenuItem Header="{DynamicResource RCON_Menu_SortLastUpdated}"    IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.LastUpdated}"     IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=LastUpdated}"/>
+                                    <MenuItem Header="{DynamicResource RCON_Menu_SortLastUpdated}"    IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.LastUpdated}"    IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=LastUpdated}"/>
                                 </MenuItem>
-                                <MenuItem Header="{DynamicResource RCON_Menu_Filter}">
+                                <MenuItem Header="{DynamicResource RCON_Menu_Filter}" HorizontalAlignment="Left" Width="111">
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterOnline}"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Online}"       IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Online, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterOffline}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Offline}"      IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Offline, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterBanned}"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Banned}"       IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Banned, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterWhitelisted}"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}"  IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
+                                    <MenuItem Header="{DynamicResource RCON_Menu_FilterInvalid}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Invalid}"      IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Invalid, Mode=OneWay}"/>
                                 </MenuItem>
                             </MenuItem>
                         </Menu>
@@ -154,10 +158,34 @@
                     <Label DockPanel.Dock="Left" Content="{DynamicResource RCON_FilterLabel}" HorizontalAlignment="Center"/>
                     <TextBox DockPanel.Dock="Left" Text="{Binding PlayerFilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" BorderBrush="LightGray" VerticalContentAlignment="Center" IsTabStop="True" Margin="0" Padding="2"/>
                 </DockPanel>
-                
+
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="{DynamicResource RCON_ProfileCountLabel}" HorizontalAlignment="Center"/>
                     <Label Content="{Binding ServerRCON.Players.Count, FallbackValue=0}" HorizontalAlignment="Center"/>
+                    <Label Content="{DynamicResource RCON_ProfileInvalidCountLabel}" HorizontalAlignment="Center">
+                        <Label.Style>
+                            <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ServerRCON.CountInvalidPlayers, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 0}}" Value="true">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding ServerRCON.CountInvalidPlayers, FallbackValue=0}" HorizontalAlignment="Center">
+                        <Label.Style>
+                            <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ServerRCON.CountInvalidPlayers, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 0}}" Value="true">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
                 </StackPanel>
                 
                 <ListBox DockPanel.Dock="Top" ItemsSource="{Binding ServerRCON.Players}" BorderBrush="LightGray" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">

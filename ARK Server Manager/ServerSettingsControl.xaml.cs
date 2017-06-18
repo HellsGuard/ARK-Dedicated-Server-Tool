@@ -56,6 +56,7 @@ namespace ARK_Server_Manager
         MapNameIslandProperty,
         MapNameCenterProperty,
         MapNameScorchedEarthProperty,
+        MapNameRagnarokProperty,
         MapNameTotalConversionProperty,
         TotalConversionPrimitivePlusProperty,
 
@@ -914,6 +915,11 @@ namespace ARK_Server_Manager
         private void OutOfDateModUpdate_Click(object sender, RoutedEventArgs e)
         {
             this.Runtime?.ResetModCheckTimer();
+        }
+
+        private void ServerName_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            Settings.UpdateServerNameLength();
         }
 
         #region Dinos
@@ -2580,6 +2586,10 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.MapNameScorchedEarthProperty:
                                 this.Settings.ResetMapName(Config.Default.DefaultServerMap_ScorchedEarth);
+                                break;
+
+                            case ServerSettingsResetAction.MapNameRagnarokProperty:
+                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_Ragnarok);
                                 break;
 
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:

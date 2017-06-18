@@ -98,6 +98,8 @@
     <sys:String x:Key="ModDetails_RemoveModTooltip">Remove mod from the list.</sys:String>
     <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Remove all mods from the list.</sys:String>
     <sys:String x:Key="ModDetails_SaveModsTooltip">Save mods back to the profile.</sys:String>
+    <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Save formatted mod details.</sys:String>
+    <sys:String x:Key="ModDetails_Clipboard_SaveTitle">Mod Details</sys:String>
 
     <!-- Workshop Files Window -->
     <sys:String x:Key="WorkshopFiles_Title">Workshop Details</sys:String>
@@ -220,12 +222,16 @@
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">This is where the automatic updater will cache copies of the server files.</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Update Interval:</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">How often to check Steam for server updates, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesLabel">Validate Server Files</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesTooltip">If enabled, when the automatic updater runs, it will validate the server files before updating. This will slow down the update process but will ensure that your server files are not corrupted.</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Use smart cache copy</sys:String>
     <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Attempt retry on fail</sys:String>
     <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">If enabled, when the server or mod fails to download a retry attempt will be made.</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Show Update Reason in Shutdown Messages</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">If enabled, when the auto-update is performed the broadcast message will include what (server or mods) is being updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Override server restart after auto-update</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">If enabled, when the auto-update is performed the server WILL NOT be restarted, regardless of if it was online before the auto-update.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
@@ -365,7 +371,7 @@
     <sys:String x:Key="ServerSettings_ProfileTooltip">The name for the server profile.  This is not the public name users will see in Ark.  For that, set the 'Server Name' field.</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Installed Version:</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionTooltip">The version of the Ark server that is currently downloaded (NOTE: will not update until the server is started).</sys:String>
-    <sys:String x:Key="ServerSettings_OutOfDateModsLabel">Out of Date Mods:</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsLabel">Outdated Mods:</sys:String>
     <sys:String x:Key="ServerSettings_OutOfDateModsTooltip">The number of mod that are currently out of date.</sys:String>
     <sys:String x:Key="ServerSettings_OutOfDateModsButtonTooltip">Perform a mod check.</sys:String>
     <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
@@ -465,6 +471,7 @@
     <sys:String x:Key="ServerSettings_NameAndPasswordsLabel">Name and Passwords</sys:String>
     <sys:String x:Key="ServerSettings_ServerNameLabel">Server Name:</sys:String>
     <sys:String x:Key="ServerSettings_ServerNameTooltip">The public name of the Ark server, as seen in Steam and Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerNameLengthLabel">Length:</sys:String>
     <sys:String x:Key="ServerSettings_ServerPasswordLabel">Server Password:</sys:String>
     <sys:String x:Key="ServerSettings_ServerPasswordTooltip">The password users must enter in order to access the server. If this is set, only people who know the password can access your server.</sys:String>
     <sys:String x:Key="ServerSettings_AdminPasswordLabel">Admin Password:</sys:String>
@@ -486,6 +493,7 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
     <sys:String x:Key="ServerSettings_LocalIP_ErrorLabel">Your Local IP address {0} is no longer available. Please review the available IP addresses and select a valid one. If you have a server running on the original IP, you will need to stop it first.</sys:String>
@@ -529,6 +537,7 @@
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Reset map name to the Island map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Reset map name to the Center map</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameScorchedEarthTooltip">Reset map name to the Scorched Earth map</sys:String>
+    <sys:String x:Key="ServerSettings_ResetMapNameRagnarokTooltip">Reset map name to the Ragnarok map</sys:String>
     <sys:String x:Key="ServerSettings_FindTotalConversionMapNameTooltip">Read total conversion mod to find the map name</sys:String>
     <sys:String x:Key="ServerSettings_ResetTotalConversionPrimitivePlusTooltip">Reset total conversion to Primitive +</sys:String>
     <sys:String x:Key="ServerSettings_ModIdsLabel">Mod IDs:</sys:String>
@@ -1448,7 +1457,7 @@
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_SaveTitle">Crafting Override Settings</sys:String>
-    <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">WARNING: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already know, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">NOTE: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already known, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnTooltip">Crafted Item Class String</sys:String>
@@ -1599,6 +1608,7 @@
     <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
     <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterInvalid">Show Invalid</sys:String>
 
     <sys:String x:Key="RCON_Menu_ChatPlayer">Chat to Player...</sys:String>
     <sys:String x:Key="RCON_Menu_RenamePlayer">Rename Player...</sys:String>
@@ -1620,7 +1630,8 @@
     <sys:String x:Key="RCON_PlayersSeparatorLabel">/</sys:String>
     <sys:String x:Key="RCON_ModeLabel">Mode:</sys:String>
     <sys:String x:Key="RCON_FilterLabel">Filter:</sys:String>
-    <sys:String x:Key="RCON_ProfileCountLabel">Profile Count:</sys:String>
+    <sys:String x:Key="RCON_ProfileCountLabel">Profiles:</sys:String>
+    <sys:String x:Key="RCON_ProfileInvalidCountLabel">Invalid:</sys:String>
 
     <sys:String x:Key="RCON_Button_OK">OK</sys:String>
     <sys:String x:Key="RCON_Button_Cancel">Cancel</sys:String>
@@ -1869,6 +1880,15 @@
     <sys:String x:Key="Manticore_Character_BP_Easy_C">Manticore (Easy Variant)</sys:String>
     <sys:String x:Key="Manticore_Character_BP_Medium_C">Manticore (Medium Variant)</sys:String>
     <sys:String x:Key="Manticore_Character_BP_Hard_C">Manticore (Hard Variant)</sys:String>
+
+    <!-- Dino/Creature Class Names - Ragnarok -->
+    <sys:String x:Key="Griffin_Character_BP_C">Griffin</sys:String>
+    <sys:String x:Key="Polar_Bear_C">Polar Bear</sys:String>
+    <sys:String x:Key="Ragnarok_Wyvern_Override_Ice_C">Ice Wyvern</sys:String>
+
+    <!-- Dino/Creature Class Names - Ragnarok - Bosses -->
+    <sys:String x:Key="Iceworm_Queen_Character_BP_C">Ice Worm</sys:String>
+    <sys:String x:Key="LavaGolem_Character_BP_C">Lava Golem</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Advanced Bullet</sys:String>

@@ -319,6 +319,24 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void SaveModDetails_Click(object sender, RoutedEventArgs e)
+        {
+            var modDetails = string.Empty;
+            var delimiter = string.Empty;
+            foreach (var modDetail in ModDetails)
+            {
+                modDetails += $"{delimiter}{modDetail.Title} ({modDetail.ModId}){Environment.NewLine}{modDetail.ModUrl}";
+                delimiter = Environment.NewLine;
+            }
+
+            var window = new CommandLineWindow(modDetails);
+            window.OutputTextWrapping = TextWrapping.NoWrap;
+            window.Height = 500;
+            window.Title = _globalizer.GetResourceString("ModDetails_Clipboard_SaveTitle");
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+        }
+
         public bool Filter(object obj)
         {
             var data = obj as ModDetail;
