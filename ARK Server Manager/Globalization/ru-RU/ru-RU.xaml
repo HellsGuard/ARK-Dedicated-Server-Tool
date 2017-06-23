@@ -74,102 +74,102 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Помощь...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Языки</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Настройки запуска Сервера</sys:String>
-    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
-    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
-    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">Dino Level Increase:</sys:String>
-    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputLabel">Output SteamCMD to the progress window</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputTooltip">If enabled, the SteamCMD output will be shown in the progress window instead of the command window. NOTE: if enabled, this could cause your server and mods updates to fail.</sys:String>
-    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartLabel">Validate profile on server start</sys:String>
-    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartTooltip">If enabled, when you manually start the server, a basic validation is performed on the server and mod files. NOTE: Will not be performed if Ark Mod Management enabled.</sys:String>
-    <sys:String x:Key="GlobalSettings_ServerUpdateOnServerStartLabel">Perform server and mod update on server start</sys:String>
-    <sys:String x:Key="GlobalSettings_ServerUpdateOnServerStartTooltip">If enabled, when you manually start the server, the server and mod files will be updated to the latest version. NOTE: Will not be performed if Ark Mod Management enabled.</sys:String>
-    <sys:String x:Key="GlobalSettings_UpdateModSettingsLabel">Mod Update Settings</sys:String>
-    <sys:String x:Key="GlobalSettings_UpdateModWithServerLabel">Update mods when updating server</sys:String>
-    <sys:String x:Key="GlobalSettings_UpdateModWithServerTooltip">If enabled, the mods will be updated when the server is updated.</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceUpdateModsLabel">Force mod file downloads</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">If enabled, the mods will be downloaded from steam even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Force mod file copying</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">If enabled, the mod files will be copied to the server folder even if the server has the latest version. Enabling can fix mod corruption issues.</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel">Force mod file downloads when no steam information available</sys:String>
-    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoTooltip">If enabled, the mods will be downloaded from steam even when no steam information is available.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsLabel">Use Anonymous Credentials</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Controls whether the anonymous user is used to download from SteamCMD.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Username:</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdUsernameTooltip">The user name associated with the steam account.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdPasswordLabel">Password:</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCmdPasswordTooltip">The password associated with the steam account.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Authenticate</sys:String>
-    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursLabel">Workshop Cache Expiry</sys:String>
-    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursTooltip">The number of hours since the last refresh the workshop cache will be considered old and will auto refresh.</sys:String>
-    <sys:String x:Key="GlobalSettings_AutoBackupLabel">Enable Auto Backup</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupIntervalLabel">Backup Interval:</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupIntervalTooltip">How often to perform the server backup, in hours and minutes (hh:mm). Set to 00:00 to disable.</sys:String>
-    <sys:String x:Key="GlobalSettings_DeleteOldFilesLabel">Delete Old Backup Files</sys:String>
-    <sys:String x:Key="GlobalSettings_DeleteIntervalLabel">Older Than:</sys:String>
-    <sys:String x:Key="GlobalSettings_DeleteIntervalTooltip">How old the backup file must be to be deleted in days.</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupWorldSaveLabel">WorldSave Message:</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupWorldSaveTooltip">This message will be displayed upon backup when the world is about to be saved.</sys:String>
-    <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Enable Auto Update</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Увеличение уровня игрока:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">Количество XP будет увеличено при добавлении нового настраиваемого уровня.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoLabel">Увеличение уровня динозавров:</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomLevelXPIncreaseDinoTooltip">Количество XP, которое должно быть увеличено при добавлении нового настраиваемого уровня.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputLabel">Вывести SteamCMD в окно выполнения</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdRedirectOutputTooltip">Если включено, выход SteamCMD будет отображаться в окне выполнения, а не в окне команд. ПРИМЕЧАНИЕ. Если этот параметр включен, это может привести к сбою обновления вашего сервера и мод.</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartLabel">Проверить профиль при старте сервера</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateProfileOnServerStartTooltip">Если включено, при ручном запуске сервера выполняется базовая проверка Сервера и файлов Модов. ПРИМЕЧАНИЕ. Не будет выполнено, если включено авто управление Ark Mod Management(Автоматическое управление Модами).</sys:String>
+    <sys:String x:Key="GlobalSettings_ServerUpdateOnServerStartLabel">Выполнение обновления сервера и модов при запуске сервера</sys:String>
+    <sys:String x:Key="GlobalSettings_ServerUpdateOnServerStartTooltip">Если включено, при ручном запуске сервера файлы сервера и мод будут обновлены до последней версии. ПРИМЕЧАНИЕ. Не будет выполнено, если включено управление Ark Mod Management(Автоматическое управление Модами).</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModSettingsLabel">Настройки обновления Модов</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModWithServerLabel">Обновить Моды при обновлении Сервера</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateModWithServerTooltip">Если включено, Моды будут обновляться при обновлении Сервера.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsLabel">Перезагружать Моды</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsTooltip">Если включено, Мод будет перезагружен, даже если сервер имеет последнюю версию. Включение может устранить проблемы с повреждением Модом.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceCopyModsLabel">Принудительно копировать файлы</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceCopyModsTooltip">Если включено, файлы Модов будут скопированы в папку сервера, даже если у сервера установлена последняя версия. Включение может устранить проблемы с повреждением Модом.</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel">Принудительная загрузка файлов Модов при отсутствии информации в Steam</sys:String>
+    <sys:String x:Key="GlobalSettings_ForceUpdateModsIfNoSteamInfoTooltip">Если включено, моды будут загружаться из Steam, даже если информация Steam не доступна.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsLabel">Анонимная учётная запись</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdCredentialsTooltip">Используется анонимная учётная запись для загрузки из SteamCMD.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdUsernameLabel">Логин:</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdUsernameTooltip">Имя пользователя учётной записи Steam аккаунта.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdPasswordLabel">Пароль:</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCmdPasswordTooltip">Пароль пользователя учётной записи Steam аккаунта.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthenticateButtonLabel">Авторизация</sys:String>
+    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursLabel">Хранение Кеша Мастерской</sys:String>
+    <sys:String x:Key="GlobalSettings_WorkshopCacheExpiredHoursTooltip">Количество часов с момента последнего обновления кеша Мастерской, будет считаться старым и будет автоматически обновляться.</sys:String>
+    <sys:String x:Key="GlobalSettings_AutoBackupLabel">Включить Авто-Сохранение</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupIntervalLabel">Интервал сохранения:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupIntervalTooltip">Укажите интервал Авто-Сохранения в часах и минутах  (Ч:М). Укажите 00:00 для отключения.</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteOldFilesLabel">Удалять Файлы Авто-Сохранения</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteIntervalLabel">старее чем:</sys:String>
+    <sys:String x:Key="GlobalSettings_DeleteIntervalTooltip">Укажите интервал, за кокой период будут сохранятся Авто-Сохранения, остальные будут удалены.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupWorldSaveLabel">Глобальное сообщение:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupWorldSaveTooltip">Укажите глобальное сообщение, которое увидят все игроки при сохранении мира.</sys:String>
+    <sys:String x:Key="GlobalSettings_AutoUpdateLabel">Включить Авто-Обновление</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryLabel">Каталог кэша:</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTooltip">Место где автоматическая программа обновления будет кэшировать копии файлов сервера.</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalLabel">Интервал обновления:</sys:String>
     <sys:String x:Key="GlobalSettings_UpdateIntervalTooltip">Как часто следует проверить сервера Steam на наличие обновлений, в часах и минутах (ЧЧ:ММ). Значение 00:00 для отключения функции.</sys:String>
-    <sys:String x:Key="GlobalSettings_ValidateServerFilesLabel">Validate Server Files</sys:String>
-    <sys:String x:Key="GlobalSettings_ValidateServerFilesTooltip">If enabled, when the automatic updater runs, it will validate the server files before updating. This will slow down the update process but will ensure that your server files are not corrupted.</sys:String>
-    <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Use smart cache copy</sys:String>
-    <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">If enabled, when the automatic updater copies files from the cache folder to the server folder, it will check the file time. This will speed up the copy as it will only copy changed files.</sys:String>
-    <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Attempt retry on fail</sys:String>
-    <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">If enabled, when the server or mod fails to download a retry attempt will be made.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Show Update Reason in Shutdown Messages</sys:String>
-    <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">If enabled, when the auto-update is performed the broadcast message will include what (server or mods) is being updated.</sys:String>
-    <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Override server restart after auto-update</sys:String>
-    <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">If enabled, when the auto-update is performed the server WILL NOT be restarted, regardless of if it was online before the auto-update.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage1Label">Message 1:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage1Tooltip">This message will be displayed upon shutdown when there is 2 or more minutes left.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage2Label">Message 2:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage2Tooltip">This message will be displayed upon shutdown when there is 1 minute left.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage3Label">Message 3:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">This message will be displayed when the server is about to shutdown.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">WorldSave Message:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">This message will be displayed upon shutdown when the world is about to be saved.</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Cancel Message:</sys:String>
-    <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">This message will be displayed when the server shutdown has been cancelled.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Email Settings</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailHostLabel">Host:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailHostTooltip">The name or IP address of the host used for SMTP transmissions.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailPortLabel">Port:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailPortTooltip">The port used for SMTP transmissions.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUseSSLLabel">Use SSL</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUseSSLTooltip">Whether to use Secure Sockets Layer (SSL) to encrypt the connection.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUseDefaultCredentialsLabel">Use Default Credentials</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUseDefaultCredentialsTooltip">Controls whether the DefaultCredentials are sent with requests.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUsernameLabel">Username:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailUsernameTooltip">The user name associated with the host account.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailPasswordLabel">Password:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailPasswordTooltip">The password associated with the host account.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailFromLabel">From:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailFromTooltip">The from address for the e-mail message.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailToLabel">To:</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailToTooltip">The address collection that contains the recipients of the e-mail message. Separate multiple email addresses with a comma (,).</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailTestButtonLabel">Send Test Email</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotifySettingsLabel">Email Notify Settings</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupLabel">Auto-Backup</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupTooltip">If enabled, an email will be sent if the server is backed up during the auto-backup process.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateLabel">Auto-Update</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateTooltip">If enabled, an email will be sent if the server is updated during the auto-update process.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartLabel">Auto-Shutdown</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is shutdown/restarted during the auto-shutdown process.</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Shutdown/Restart</sys:String>
-    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">If enabled, an email will be sent when the server is shutdown or restarted.</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesLabel">Проверка файлов сервера</sys:String>
+    <sys:String x:Key="GlobalSettings_ValidateServerFilesTooltip">Если этот параметр включен, при запуске автоматического обновления, он будет проверять файлы сервера перед обновлением. Это замедлит процесс обновления, но гарантирует, что файлы вашего сервера не будут повреждены.</sys:String>
+    <sys:String x:Key="GlobalSettings_UseSmartCopyLabel">Использовать Смарт-кеш-копию</sys:String>
+    <sys:String x:Key="GlobalSettings_UseSmartCopyTooltip">Если включено, когда автоматическое обновление копирует файлы из папки кэша в папку сервера, оно проверяет время файла. Это ускорит копирование, поскольку оно будет копировать только измененные файлы.</sys:String>
+    <sys:String x:Key="GlobalSettings_RetryOnFailLabel">Повторить при ошибке</sys:String>
+    <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">Если включено, когда сервер или мода не смогут загрузиться, будут сделана повторная попытка.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Показать причину обновления в Глобальном сообщении</sys:String>
+    <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">Если включено, когда выполняется Автоматическое обновление, Глобальное сообщение будет включать в себя то, что (сервер или моды) обновились.</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Не запускать сервер после Авто-Обновления.</sys:String>
+    <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">Если включено, когда выполняется Авто-Обновление, сервер НЕ будет перезагружен, независимо от того, был ли он включен в перед Авто-Обновлением.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownLabel">Настройки Выключения</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Указать период:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">Время в минутах через какое сервер будет выключен или обновлён.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage1Label">Сообщение 1:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage1Tooltip">Это сообщение будет отображаться при завершении работы, когда осталось 2 или более минут.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage2Label">Сообщение 2:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage2Tooltip">Это сообщение будет отображаться перед выключением, когда осталось 1 минута.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage3Label">Сообщение 3:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">Это сообщение будет отображаться при завершении работы сервера.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">Сообщение Сохранения мира:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">Это сообщение будет отображаться при завершении работы, когда мир будет сохранен.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Сообщение при отмене:</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">Это сообщение будет отображаться, когда выключение сервера было отменено.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Настройки Email</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailHostLabel">Хост:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailHostTooltip">Имя или IP-адрес хоста, используемого для передач SMTP.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailPortLabel">Порт:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailPortTooltip">Порт используется для передач SMTP.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUseSSLLabel">Использовать SSL</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUseSSLTooltip">Использовать Secure Sockets Layer (SSL) для шифрования соединения.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUseDefaultCredentialsLabel">Учетные данные по умолчанию</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUseDefaultCredentialsTooltip">Управляет отправкой учетных данных по умолчанию с запросами.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUsernameLabel">Логин:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailUsernameTooltip">Имя пользователя, связанное с учетной записью хоста.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailPasswordLabel">Пароль:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailPasswordTooltip">Пароль пользователя, связанный с учетной записью хоста.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailFromLabel">От:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailFromTooltip">От кого пришло сообщение</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailToLabel">Кому:</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailToTooltip">Список адресов, которые получат сообщение по электронной почте. Разделите несколько адресов электронной почты запятой (,).</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailTestButtonLabel">Отправить тестовое письмо</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotifySettingsLabel">Настройки уведомлений по Email</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupLabel">Авто-Сохранение</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoBackupTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Авто-Сохранение.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateLabel">Авто-Обновление</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoUpdateTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Авто-Обновление.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartLabel">Авто-Выключение</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Авто-Выключение.</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Выключение/Перезагрузка</sys:String>
+    <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Выключение/Перезагрузку.</sys:String>
 
-    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
-    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>
-    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Failed to change data directory</sys:String>
-    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">There was an error changing the data directory: {0}\r\nPlease correct the error and try again, or contact technical support for assistance.</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Подтвердить изменение каталога данных</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Изменение каталога данных приведет к перемещению любых существующих профилей в новое место, но оно не будет перемещать установки сервера. Вы все еще хотите изменить этот каталог?</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Не удалось изменить каталог данных</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">При изменении каталога данных произошла ошибка: {0}\r\nПожалуйста, исправьте ошибку и повторите попытку или обратитесь в службу технической поддержки.</sys:String>
 
     <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Select Cache Directory</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Invalid cache directory</sys:String>
@@ -196,10 +196,10 @@
     This is the portion of the main window at the top - the part which is not part of any profile.
     -->   
     <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
-    <sys:String x:Key="MainWindow_TitleWithAdmin">ARK Server Manager (Administrator)</sys:String>
+    <sys:String x:Key="MainWindow_TitleWithAdmin">ARK Server Manager (Администратор)</sys:String>
     <sys:String x:Key="MainWindow_ArkNameLabel">ARK Server Manager</sys:String>
-    <sys:String x:Key="MainWindow_NewProfileTooltip">Create a new server profile.</sys:String>
-    <sys:String x:Key="MainWindow_CloseProfileTooltip">Delete the server profile.</sys:String>
+    <sys:String x:Key="MainWindow_NewProfileTooltip">Создать новый Профиль Сервера.</sys:String>
+    <sys:String x:Key="MainWindow_CloseProfileTooltip">Удалить Профиль Сервера</sys:String>
     <sys:String x:Key="MainWindow_VersionLabel">Версия:</sys:String>
     <sys:String x:Key="MainWindow_BetaVersionLabel">Бета Версия:</sys:String>
     <sys:String x:Key="MainWindow_MyIpLabel">Мой публичный IP:</sys:String>
@@ -215,25 +215,25 @@
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Обновить до {0} сейчас!</sys:String>
     <sys:String x:Key="MainWindow_TaskStatusLabel">Статус задач</sys:String>
     <sys:String x:Key="MainWindow_AutoBackupLabel">Авто-Сохранение:</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Запуск Авто-Сохранения по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Запуск Авто-Сохранения</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateLabel">Авто-Обновление:</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Запуск Авто-Обновления по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Запуск Авто-Обновления</sys:String>
 
-    <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
-    <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
-    <sys:String x:Key="MainWindow_ProfileDelete_Title">Delete Profile {0}?</sys:String>
-    <sys:String x:Key="MainWindow_ProfileDelete_Label">Are you sure you want to delete this profile?\r\n\r\nNOTE: This will only delete the profile, not the installation directory, save games or settings files contained therein.</sys:String>
-    <sys:String x:Key="MainWindow_Donate_Title">Make a donation?</sys:String>
-    <sys:String x:Key="MainWindow_Donate_Label">Ark Server Manager is an open-source project, provided completely free of charge. You can still donate if you would like; however you are under no obligation. If you wish to donate, your browser will open to PayPal's website where you may donate as little or as much as you like. Would you like to donate now?</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_Title">Upgrade available</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_Label">Version {0} is now available. To upgrade the application must close. Close and upgrade now?</sys:String>
-    <sys:String x:Key="MainWindow_OverlayMessage_UpgradeLabel">Starting Upgrade...</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Upgrade failed!</sys:String>
-    <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Unable to run the update process. Please report this.\r\nException: {0}\r\nStacktrace: {1}</sys:String>
-    <sys:String x:Key="MainWindow_SteamCmd_Title">Reinstall SteamCMD</sys:String>
-    <sys:String x:Key="MainWindow_SteamCmd_Label">If you proceed the entire SteamCMD folder will be removed including all mod cache downloads.\r\nAre you sure you want to reinstall SteamCMD?</sys:String>
-    <sys:String x:Key="MainWindow_SteamCmd_FailedTitle">Reinstall SteamCMD Error</sys:String>
-    <sys:String x:Key="MainWindow_SteamCmd_FailedLabel">An error occured while trying to reinstall SteamCMD. This has left SteamCmd in an unstable state, try reinstalling again or please report this.\r\nException: {0}</sys:String>
+    <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Профиль не загружен</sys:String>
+    <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">Не удалось загрузить профиль в {0}. Ошибка: {1}\r\n{2}</sys:String>
+    <sys:String x:Key="MainWindow_ProfileDelete_Title">Удалить Профиль {0}?</sys:String>
+    <sys:String x:Key="MainWindow_ProfileDelete_Label">Вы действительно хотите удалить этот профиль?\r\n\r\nПримечание: Это удалит только профиль, а не каталог установки, сохранит игру или файлы настроек, содержащиеся в нем.</sys:String>
+    <sys:String x:Key="MainWindow_Donate_Title">Сделать пожертвование?</sys:String>
+    <sys:String x:Key="MainWindow_Donate_Label">Ark Server Manager - это проект с открытым исходным кодом, предоставляемый совершенно бесплатно. Вы можете пожертвовать, если хотите; Однако вы не обязаны. Если вы хотите пожертвовать, ваш браузер откроется на веб-сайте PayPal, где вы можете пожертвовать сколько вам не жалко :) Вы хотите пожертвовать сейчас?</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_Title">Доступно Обновление</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_Label">Версия {0} доступна. Для обновления, приложение должно быть закрыто. Закрыть и обновить сейчас?</sys:String>
+    <sys:String x:Key="MainWindow_OverlayMessage_UpgradeLabel">Запуск Обновления...</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_FailedTitle">Ошибка Обновления!</sys:String>
+    <sys:String x:Key="MainWindow_Upgrade_FailedLabel">Не удалось запустить процесс обновления. Сообщите об этом.\r\nException: {0}\r\nStacktrace: {1}</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_Title">Переустановить SteamCMD</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_Label">Если запустить, SteamCMD будет удален, включая все загрузки кэша Модов.\r\nВы уверены, что хотите переустановить SteamCMD?</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_FailedTitle">Ошибка переустановки SteamCMD</sys:String>
+    <sys:String x:Key="MainWindow_SteamCmd_FailedLabel">Произошла ошибка при попытке переустановки SteamCMD. Попробуйте повторно установить или сообщите об этом.\r\nException: {0}</sys:String>
 
     <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_Файл</sys:String>
@@ -264,19 +264,19 @@
     <sys:String x:Key="ServerSettings_ProfileTooltip">Имя профиля сервера. Это не публичное имя которое будут видеть пользователи в ARK. Для этого заполните поле "Имя сервера".</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionLabel">Установленная версия:</sys:String>
     <sys:String x:Key="ServerSettings_InstalledVersionTooltip">Версия сервера ARK, которая загружена в настоящее время и активна.</sys:String>
-    <sys:String x:Key="ServerSettings_OutOfDateModsLabel">Outdated Mods:</sys:String>
-    <sys:String x:Key="ServerSettings_OutOfDateModsTooltip">The number of mod that are currently out of date.</sys:String>
-    <sys:String x:Key="ServerSettings_OutOfDateModsButtonTooltip">Perform a mod check.</sys:String>
-    <sys:String x:Key="ServerSettings_PatchNotesTooltip">View the Patch Notes.</sys:String>
-    <sys:String x:Key="ServerSettings_OpenLogFolderTooltip">Open the server's logs folder.</sys:String>
-    <sys:String x:Key="ServerSettings_CreateSupportZipTooltip">Create a zip file that contains all the files necessary for use by the ASM support team to diagnose a problem.</sys:String>
-    <sys:String x:Key="ServerSettings_ValidateProfileTooltip">Performs a basic profile validation on the server and mod files.</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsLabel">Моды требующие обновления:</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsTooltip">Количество мод, которые в настоящее время устарели.</sys:String>
+    <sys:String x:Key="ServerSettings_OutOfDateModsButtonTooltip">Выполните проверку модов.</sys:String>
+    <sys:String x:Key="ServerSettings_PatchNotesTooltip">Посмотреть описание обновлений.</sys:String>
+    <sys:String x:Key="ServerSettings_OpenLogFolderTooltip">Откройте папку Логов Сервера.</sys:String>
+    <sys:String x:Key="ServerSettings_CreateSupportZipTooltip">Создать zip-файл, содержащий все файлы, необходимые для использования службой поддержки ASM для диагностики проблемы.</sys:String>
+    <sys:String x:Key="ServerSettings_ValidateProfileTooltip">Выполняет базовую проверку профиля на сервера и файлов мода.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionLabel">Последняя доступная версия:</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionTooltip">Версия сервера ARK, которая доступна для загрузки в настоящее время.</sys:String>
     <sys:String x:Key="ServerSettings_AvailableVersionRefreshTooltip">Обновит последнюю версию сервера ARK, которая доступна для загрузки в настоящее время.</sys:String>
     <sys:String x:Key="ServerSettings_InstallLocationLabel">Место установки:</sys:String>
     <sys:String x:Key="ServerSettings_InstallLocationTooltip">Папка, которая содержит игровой сервер и конфигурационные файлы ARK.</sys:String>
-    <sys:String x:Key="ServerSettings_OpenServerFolderTooltip">Open the server's installation folder.</sys:String>
+    <sys:String x:Key="ServerSettings_OpenServerFolderTooltip">Открыть папку установки сервера.</sys:String>
     <sys:String x:Key="ServerSettings_StatusLabel">Статус:</sys:String>
     <sys:String x:Key="ServerSettings_StatusTooltip">Статус сервера ARK в вашей локальной сети.</sys:String>
     <sys:String x:Key="ServerSettings_AvailabilityLabel">Доступность:</sys:String>
@@ -287,7 +287,7 @@
     <sys:String x:Key="ServerSettings_Availability_Waiting">В ожидании публикации</sys:String>
     <sys:String x:Key="ServerSettings_Availability_Available">Доступно</sys:String>
     <sys:String x:Key="ServerSettings_PlayersLabel">Игроки:</sys:String>
-    <sys:String x:Key="ServerSettings_PlayersTooltip">Число игроков подключеные к серверу ARK в настоящее время.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayersTooltip">Число игроков подключенные к серверу ARK в настоящее время.</sys:String>
 
     <!-- Server Settings - General Buttons -->
     <sys:String x:Key="ServerSettings_ImportButtonLabel">Импорт</sys:String>
@@ -385,7 +385,7 @@
     <sys:String x:Key="ServerSettings_LocalIPRecommendedLabel">(Рекомендуемые)</sys:String>
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Обновит доступные локальные IP-адреса.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Использовать Сырые сокеты</sys:String>
-    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Разрешено прямое подключене через P2P, а не через Steam. Открыть в брандмауэре и переадресации портов, как Порт сервера и Порт сервера + 1.</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Разрешено прямое подключение через P2P, а не через Steam. Открыть в брандмауэре и переадресации портов, как Порт сервера и Порт сервера + 1.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">ПРИМЕЧАНИЕ: Используйте опцию Сырые сокеты с осторожностью. Использование Сырые сокеты может привести к проблемам входа в систему и может не работать на всех картах.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Локальный IP недействителен</sys:String>
@@ -393,7 +393,7 @@
 
     <sys:String x:Key="ServerSettings_LoginOptionsLabel">Параметры входа</sys:String>
     <sys:String x:Key="ServerSettings_UseBanListLabel">Использовать URL-адрес бан-листа</sys:String>
-    <sys:String x:Key="ServerSettings_UseBanListTooltip">Если включен, то будет использоваться URL-адрес, со списком забаненых. По умолчанию http://playark.com/banlist.txt</sys:String>
+    <sys:String x:Key="ServerSettings_UseBanListTooltip">Если включен, то будет использоваться URL-адрес, со списком забаненных. По умолчанию http://playark.com/banlist.txt</sys:String>
     <sys:String x:Key="ServerSettings_BanListTooltip">Чтобы использовать, введите URL-адрес с бан-листом.</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutLabel">Включить Тайм-Аут простоя</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutTooltip">Если включено, то будет использован период простоя.</sys:String>
@@ -426,7 +426,7 @@
     <sys:String x:Key="ServerSettings_MapPathLabel">Карта или путь до Карт:</sys:String>
     <sys:String x:Key="ServerSettings_MapPathTooltip">Стандартное имя карты (например: TheIsland), или локальный путь к моду (например /Game/Mods/123456789/myModMap), если ваш мод имеет карту.</sys:String>
     <sys:String x:Key="ServerSettings_TotalConversionLabel">Total Conversion ID:</sys:String>
-    <sys:String x:Key="ServerSettings_TotalConversionTooltip">The id of the total conversion mod.</sys:String>
+    <sys:String x:Key="ServerSettings_TotalConversionTooltip">Укажите id Total Conversion мода.</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameIslandTooltip">Сбросить имя карты на официальную по умолчанию TheIsland</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameCenterTooltip">Сбросить имя карты на официальную по умолчанию TheCenter</sys:String>
     <sys:String x:Key="ServerSettings_ResetMapNameScorchedEarthTooltip">Сбросить имя карты на официальную по умолчанию ScorchedEarth</sys:String>
@@ -444,7 +444,7 @@
     <sys:String x:Key="ServerSettings_ExtinctionEventTimeIntervalTooltip">Задает количество секунд, обратного отсчета, прежде чем произойдет событие вымирания.</sys:String>
     <sys:String x:Key="ServerSettings_ExtinctionEventUTCTooltip">Дата и время Ивента "Вымирание"</sys:String>
 
-    <sys:String x:Key="ServerSettings_SavesLabel">Saves</sys:String>
+    <sys:String x:Key="ServerSettings_SavesLabel">Сохранение</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodLabel">Период Авто-Сохранения:</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodTooltip">Время между Авто-Сохранениями Сервера.</sys:String>
     <sys:String x:Key="ServerSettings_AutoSavesPeriodUnits">минут</sys:String>
@@ -459,8 +459,8 @@
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">Время отображения Сообщения дня, когда пользователь подключается к серверу.</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationUnits">секунд</sys:String>
 
-    <sys:String x:Key="ServerSettings_ServerOptionsLabel">Параметры сервера</sys:String>
-    <sys:String x:Key="ServerSettings_ResetServerOptionsTooltip">Reset all server options to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerOptionsLabel">Настройки сервера</sys:String>
+    <sys:String x:Key="ServerSettings_ResetServerOptionsTooltip">Сбросить все настройки сервера по умолчанию.</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACLabel">Отключить ValveAntiCheat систему (VAC)</sys:String>
     <sys:String x:Key="ServerSettings_DisableVACTooltip">Если этот параметр включен, система античит Valve будет отключена. Пожалуйста, используйте это с осторожностью!</sys:String>
     <sys:String x:Key="ServerSettings_DisablePMVOptimizationLabel">Выкл. Оптимизацию ФизикиДвиженияИгрока</sys:String>
@@ -498,22 +498,22 @@
     <sys:String x:Key="ServerSettings_WebAlarmUrlTooltip">Specifies the URL where your listening script is stored, waiting and ready to receive the post information by your game server.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmNote">NOTE: ASM does not provide the Web Alarms functionaility. ASM just allows you to enable/disable the Web Alarms and create the necessary AlarmPostCredentials file.</sys:String>
 
-    <sys:String x:Key="ServerSettings_ServerLogOptionsLabel">Server Log Options</sys:String>
-    <sys:String x:Key="ServerSettings_ResetServerLogOptionsTooltip">Reset all server log options to defaults.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Вкл. лог админа сервера</sys:String>
+    <sys:String x:Key="ServerSettings_ServerLogOptionsLabel">Настройки Логов Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_ResetServerLogOptionsTooltip">Сброс всех настроек Логов сервера по умолчанию.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAdminLogsLabel">Вкл. лог Админа сервера</sys:String>
     <sys:String x:Key="ServerSettings_EnableAdminLogsTooltip">Если опция включена, логи администратора сервера (включая поддержку RCON) будут задействован.</sys:String>
     <sys:String x:Key="ServerSettings_MaxTribeLogsLabel">Максимальный лог Племя:</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Устанавливает максимальное количество записей в лог Племя, которые хранятся в Племемени (по умолчанию 100).</sys:String>
-    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsLabel">Server Admin Logs Include Tribe Logs</sys:String>
-    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">If enabled, it will write all tribe log entries (for all tribes) into the Shootergame log files.</sys:String>
-    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Server RCON Output Tribe Logs</sys:String>
-    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">If enabled, it will write all tribe log entries (for all tribes) to the RCON window.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribeLogsTooltip">Устанавливает максимальное количество записей в лог Племя, которые хранятся в Племени (по умолчанию 100).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsLabel">Логи Администратора сервера включают Логи Племени</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">Если включено, он будет записывать все Логи племени (для всех племен) в файлы Логов Shootergame.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Вывод в RCON логов Племени.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">Если включено, он будет записывать все Логи Племени (для всех Племен) в окно RCON.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Лог Админа в чат</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">Если включен, команды администратора будут отображаться в чате</sys:String>
-    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatLabel">Log Admin Commands to Chat (admins only)</sys:String>
-    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">If enabled, admin commands will be echoed to chat for admins only to see.</sys:String>
-    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
-    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
+    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatLabel">Лог Админ команд в чате (только Админ)</sys:String>
+    <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">Если включено, команды администратора будут отображаться в чате для администраторов только для просмотра.</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Лог Племени об уничтожении строений Врагом</sys:String>
+    <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">Если включено, журнал уничтожения строений противником (для Племени жертвы) отобразит Племя злоумышленника в журналах Племени, а не общее сообщение об уничтожении строений.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Командная строка</sys:String>
     <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Дополнительные Аргументы:</sys:String>
@@ -537,7 +537,7 @@
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">Автоматически проверяет наличие обновлений сервера и модов. Если они присутствуют, запускает их установку. См. редактируется в "Глобальные настройки"</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Перезапустить сервер при завершении работы</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">Если этот параметр включен, сервер будет перезагружен, даже если вы отключите Автозапуск и Авто-Обновление.</sys:String>
-    <sys:String x:Key="ServerSettings_ARKSettingLabel">Официальные  настройки Ark</sys:String>
+    <sys:String x:Key="ServerSettings_ARKSettingLabel">Официальные  настройки Ark (Ark Server Manager)</sys:String>
     <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Автоматическое управление Модами при запуске сервера</sys:String>
     <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">Если включено, добавлена поддержка автоматической загрузки/установки/обновления Модов при запуске сервера.</sys:String>
 
@@ -552,7 +552,7 @@
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Отключить огонь по своим в PvE</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">Если этот параметр включен, игроки не могут нанести повреждения или убить других членов племени, Динозавров и разрушить структуры.</sys:String>
     <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Отключить Разграбление ящиков</sys:String>
-    <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">Если этот параметр включен из разграбленных ящиков не будет появлятся лут (контейнеры артефактов по-прежнему работают).</sys:String>
+    <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">Если этот параметр включен из разграбленных ящиков не будет появляться лут (контейнеры артефактов по-прежнему работают).</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Лучи дропа, останавливаются на крыше строений </sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">Если включено, лучи останавливаются на верхней части строения, а не проходят сквозь него до земли.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Запрещает строительство в зонах респа ресурсов.</sys:String>
@@ -569,33 +569,33 @@
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyTooltip">Определяет максимальные уровни существ в мире. Чем выше значение, тем выше максимальный уровень существа.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Включить загрузку данных</sys:String>
-    <sys:String x:Key="ServerSettings_EnableTributeTooltip">Если этот параметр включен, это позволит загружать внешних выживших/предметы/динозавров на ваш сервер.</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">No Transfer from Filtering</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">If enabled, the survivor, item and dino transfers are disabled if the server is not in the same cluster.</sys:String>
-    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">Не загружать выживших</sys:String>
-    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">Если этот параметр включен, загрузка выживших отключена.</sys:String>
-    <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">Не загружать предметы</sys:String>
-    <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">Если этот параметр включен, загрузка предметов отключена.</sys:String>
-    <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">Не загружать динозавров</sys:String>
-    <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">Если этот параметр включен, загрузка динозавров отключена.</sys:String>
-    <sys:String x:Key="ServerSettings_NoSurvivorUploadsLabel">No Survivor Uploads</sys:String>
-    <sys:String x:Key="ServerSettings_NoSurvivorUploadsTooltip">If enabled, the survivor uploads are disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_NoItemUploadsLabel">No Item Uploads</sys:String>
-    <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">If enabled, the item uploads are disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">No Dino Uploads</sys:String>
-    <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">If enabled, the dino uploads are disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsLabel">Override Survivor Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip">If enabled, will allow you to override the expiration timer.</sys:String>
-    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsLabel">Survivor Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsTooltip">Set the expiration timer for uploaded survivors.</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeItemExpirationSecondsLabel">Override Item Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeItemExpirationSecondsTooltip">If enabled, will allow you to override the expiration timer.</sys:String>
-    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsLabel">Item Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsTooltip">Set the expiration timer for uploaded items.</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsLabel">Override Dino Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsTooltip">If enabled, will allow you to override the expiration timer.</sys:String>
-    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsLabel">Dino Upload Expiration</sys:String>
-    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsTooltip">Set the expiration timer for uploaded dinos.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableTributeTooltip">Если этот параметр включен, это позволит загружать Выживших/Предметов/Динозавров на ваш сервер.</sys:String>
+    <sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">Трансфер только по Фильтру (Кластер)</sys:String>
+    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">Если включено, передача Выживших, предметов и Динозавров отключена, если сервер не находится в одном кластере.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">Не загружать Выживших</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">Если включено, загрузка Выживших отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">Не загружать Предметы</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">Если включено, загрузка предметов отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">Не загружать Динозавров</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">Если включено, загрузка Динозавров отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorUploadsLabel">Не выгружать Выживших</sys:String>
+    <sys:String x:Key="ServerSettings_NoSurvivorUploadsTooltip">Если включено, выгрузка Выживших отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemUploadsLabel">Не выгружать Предметы</sys:String>
+    <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">Если включено, выгрузка Предметов отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">Не выгружать Динозавров</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">Если включено, выгрузка Динозавров отключена.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsLabel">Изменить время хранения выгруженного Выжившего.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip">Если включено, вы можете выставить время хранения Выжившего в Кластере.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsLabel">Время хранения Выжившего</sys:String>
+    <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsTooltip">Установите время хранения Выжившего в Кластере (по умолчанию: 24ч. \ 1440 мин.)</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeItemExpirationSecondsLabel">Изменить время хранения выгруженного Предмета.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeItemExpirationSecondsTooltip">Если включено, вы можете выставить время хранения Предмета в Кластере.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsLabel">Время хранения Предмета</sys:String>
+    <sys:String x:Key="ServerSettings_TributeItemExpirationSecondsTooltip">Установите время хранения Предмета в Кластере (по умолчанию: 24ч. \ 1440 мин.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsLabel">Изменить время хранения выгруженного Динозавра.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsTooltip">Если включено, вы можете выставить время хранения Динозавра в Кластере.</sys:String>
+    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsLabel">Время хранения Динозавра</sys:String>
+    <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsTooltip">Установите время хранения Динозавра в Кластере (по умолчанию: 24ч. \ 1440 мин.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Увеличить интервал респауна в PvP</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">Если этот параметр включен, позволяет увеличить интервал респауна в PvP.</sys:String>
@@ -608,10 +608,10 @@
     <sys:String x:Key="ServerSettings_IntervalBaseLabel">Базовая сумма интервала:</sys:String>
     <sys:String x:Key="ServerSettings_IntervalBaseTooltip">Период базового времени, используемый для определения времени респауна.</sys:String>
     <sys:String x:Key="ServerSettings_IntervalBaseUnits">секунд</sys:String>
-    <sys:String x:Key="ServerSettings_PreventOfflinePvPLabel">Prevent Offline PvP</sys:String>
-    <sys:String x:Key="ServerSettings_PreventOfflinePvPTooltip">If enabled, enables the offline raiding prevention option.</sys:String>
-    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Logout Interval</sys:String>
-    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">The time period before a tribe/players dinos/structures become invulnerable/inactive after they log off (if tribe, requires ALL tribe members to be logged off).</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPLabel">Предотвратить Оффлайн PvP</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPTooltip">Если включено, активируется опция предотвращения Оффлайн-Рейдов.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Время до активации защиты</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">Период времени до того, как Выжившие / Динозавры / Структуры становятся неуязвимыми (ВСЕ игроки Племени должны быть оффлайн).</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">секунд</sys:String>
 
     <sys:String x:Key="ServerSettings_PvEScheduleLabel">Расписание PvE</sys:String>
@@ -638,10 +638,10 @@
     <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierLabel">Множитель навыка</sys:String>
     <sys:String x:Key="ServerSettings_CustomRecipeSkillMultiplierTooltip">Определяет множитель для навыка пользовательского рецепта. Более высокие значения увеличивают навык рецепта.</sys:String>
 
-    <sys:String x:Key="ServerSettings_EnableDiseasesLabel">Enable Diseases</sys:String>
-    <sys:String x:Key="ServerSettings_EnableDiseasesTooltip">If enabled, diseases will be enabled.</sys:String>
-    <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">Non Permanent Diseases</sys:String>
-    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">If enabled, will make diseases not permanent (you will then lose them if you respawn).</sys:String>
+    <sys:String x:Key="ServerSettings_EnableDiseasesLabel">Включить Заболевания</sys:String>
+    <sys:String x:Key="ServerSettings_EnableDiseasesTooltip">Если включено, на сервере появятся болезни и игроки будут болеть.</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">Непостоянные болезни</sys:String>
+    <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">Если включено, это сделает болезни не постоянными (они пропадут, если будет респаун).</sys:String>
 
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleLabel">Override NPC Network Stasis Range Scale</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleTooltip">If enabled, you can override the NPC network statis range scale settings.</sys:String>
@@ -652,8 +652,8 @@
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel">Scale Maximum</sys:String>
     <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip">The maximum scale percentage used by the server, when the online player count end value is reached.</sys:String>
 
-    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Oxygen Swim Speed Stat Multiplier</sys:String>
-    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Specifies the multiplier for how swim speed is multiplied by level spent in oxygen.</sys:String>
+    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Скорость расхода кислорода</sys:String>
+    <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Установить множитель, как скорость плавания влияет на трату кислорода.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Чат и уведомления</sys:String>
@@ -677,9 +677,9 @@
     <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">Разрешить позицию игрока на карта</sys:String>
     <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">Если этот параметр включен, показывает каждому игроку их положение на карте.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Разрешить гамму в PvP</sys:String>
-    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">Если этот параметр включен, позволяет измененять гамму в режиме PvP.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">Если этот параметр включен, позволяет изменять гамму в режиме PvP.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">Разрешить гамму в PvE</sys:String>
-    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">Если этот параметр включен, позволяет измененять гамму в режиме PvE.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">Если этот параметр включен, позволяет изменять гамму в режиме PvE.</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Показывать урон</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">Если этот параметр включен, урон будет показан в RPG-стиле, всплывающими сообщениями.</sys:String>
     <sys:String x:Key="ServerSettings_AllowHitMarkersLabel">Разрешить маркеры</sys:String>
@@ -713,7 +713,7 @@
     <sys:String x:Key="ServerSettings_TurretDamageTooltip">Определяет коэффициент для урона турелью (пули и снаряды турели). Более высокие значения увеличивают урон турелью. Более низкие значения уменьшают.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerBaseStatMultipliersLabel">Начальные параметры статов</sys:String>
-    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Поуровневый множитель статов</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">По уровневый множитель статов</sys:String>
     
     <sys:String x:Key="ServerSettings_StatHealthLabel">Здоровье:</sys:String>
     <sys:String x:Key="ServerSettings_StatHealthTooltip">Определяет множитель для улучшения здоровья на уровне. Более высокие значения увеличивают здоровье быстрее; более низкие значения увеличивают здоровье медленнее.</sys:String>
@@ -826,15 +826,15 @@
     <sys:String x:Key="ServerSettings_TamedResistanceColumnLabel">Сопротивление домашними</sys:String>
     <sys:String x:Key="ServerSettings_WildDamageColumnLabel">Урон Дикими</sys:String>
     <sys:String x:Key="ServerSettings_WildResistanceColumnLabel">Сопротивление Дикими</sys:String>
-    <sys:String x:Key="ServerSettings_DinoRemoveRecordTooltip">Удалить этого Динозавтра</sys:String>
+    <sys:String x:Key="ServerSettings_DinoRemoveRecordTooltip">Удалить этого Динозавра</sys:String>
 
-    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordTitle">Удалить Динозавтра</sys:String>
-    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordLabel">Нажмите «Да», для подтверждения, что вы хотите удалить запись Динозавтра.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordTitle">Удалить Динозавра</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_DinoRemoveRecordLabel">Нажмите «Да», для подтверждения, что вы хотите удалить запись Динозавра.</sys:String>
 
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">Поуровневый множитель (для домашних)</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Добавит поуровневый множитель статов (для домашних)</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">Поуровневый множитель влечения (для домашних)</sys:String>
-    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">Поуровневый множитель (для диких)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatMultipliersLabel">По уровневый множитель (для домашних)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel">Добавит по уровневый множитель статов (для домашних)</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel">По уровневый множитель влечения (для домашних)</sys:String>
+    <sys:String x:Key="ServerSettings_WildDinoPerLevelStatMultipliersLabel">По уровневый множитель (для диких)</sys:String>
     <sys:String x:Key="ServerSettings_DinoBreedingMultipliersLabel">Коэффициент размножения Динозавров</sys:String>
     <sys:String x:Key="ServerSettings_BaseStatMultipliersTooltip">Если включено, позволяет изменять коэффициенты, которые будут применяться к базовому стату.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">Если включено, позволяет изменять коэффициенты, которые будут применяться на каждый стат.</sys:String>
@@ -845,12 +845,12 @@
     <sys:String x:Key="ServerSettings_ResetBaseStatMultipliersTooltip">Сброс всех настроек обратно по умолчанию.</sys:String>
 
     <sys:String x:Key="ServerSettings_MatingIntervalLabel">Интервал спаривания:</sys:String>
-    <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Определяет множитель зависящий от уровня и времени прирученого. Более низкие значения уменьшают время между спариванием.</sys:String>
+    <sys:String x:Key="ServerSettings_MatingIntervalTooltip">Определяет множитель зависящий от уровня и времени прирученного. Более низкие значения уменьшают время между спариванием.</sys:String>
     <sys:String x:Key="ServerSettings_EggHatchSpeedLabel">Созревание яйца:</sys:String>
     <sys:String x:Key="ServerSettings_EggHatchSpeedTooltip">Определяет множитель время, созревания оплодотворенного яйца. Более высокие значения уменьшают время созревания яйца.</sys:String>
     <sys:String x:Key="ServerSettings_BabyMatureSpeedLabel">Скорость взросления:</sys:String>
     <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Определяет множитель для времени, в которое детеныш динозавра вырастет во взрослую особь. Более высокие значения уменьшают время созревания во взрослую особь.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Голод у "Динозоврят":</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Голод у "Динозаврят":</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Задает коэффициент скорости, с которым детеныш динозавра будет потреблять пищу. Более высокие значения сделают его более голодным (будет чаще хотеть есть).</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoImprintLabel">Dino Imprinting</sys:String>
@@ -863,10 +863,10 @@
     <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">Cuddle Lose Imprint Quality Speed:</sys:String>
     <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">A multiplier on how fast imprinting quality decreases after the grace period if you haven't yet cuddled with the baby. Lower values slow the imprint quality loss.</sys:String>
 
-    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetTitle">Confirm Reset Action</sys:String>
-    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
-    <sys:String x:Key="ServerSettings_DinoCustomization_ResetTitle">Confirm Reset Action</sys:String>
-    <sys:String x:Key="ServerSettings_DinoCustomization_ResetLabel">Click 'Yes' to confirm you want to reset all the current dino customizations.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetTitle">Подтвердить сброс</sys:String>
+    <sys:String x:Key="ServerSettings_DinoMaxXP_ResetLabel">Нажмите «Да», чтобы подтвердить, что вы хотите сбросить Max XP.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_ResetTitle">Подтвердить сброс</sys:String>
+    <sys:String x:Key="ServerSettings_DinoCustomization_ResetLabel">Нажмите «Да», чтобы подтвердить, что вы хотите сбросить все текущие настройки динозавров.</sys:String>
 
     <!-- Server Settings - Environment -->
     <sys:String x:Key="ServerSettings_EnvironmentLabel">Окружающая среда</sys:String>
@@ -875,11 +875,11 @@
     <sys:String x:Key="ServerSettings_HarvestAmountLabel">Количество урожая:</sys:String>
     <sys:String x:Key="ServerSettings_HarvestAmountTooltip">Задает коэффициент урожайности для всех видов сбора ресурсов (вырубка деревьев, сбор ягод, разделка туши, добыча руды, и т.д.). Более высокие значения увеличивают количество материалов, полученых с каждым ударом.</sys:String>
     <sys:String x:Key="ServerSettings_ResourceRespawnLabel">Появление ресурсов:</sys:String>
-    <sys:String x:Key="ServerSettings_ResourceRespawnTooltip">Определяет коэффициент скорости респауна для точек появления ресурсов (деревья, камни, кусты и т.д.). При более низких значениях сорость будет выше .</sys:String>
+    <sys:String x:Key="ServerSettings_ResourceRespawnTooltip">Определяет коэффициент скорости респауна для точек появления ресурсов (деревья, камни, кусты и т.д.). При более низких значениях скорость будет выше .</sys:String>
     <sys:String x:Key="ServerSettings_SuppressReplenishPlayerLabel">Изменить радиус восполнения до игрока:</sys:String>
-    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerTooltip">Определяет коэффициент растояния возобновления ресурсов, ближе или дальше от игрока. Более низкие значения уменьшит растояние до игрока.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishPlayerTooltip">Определяет коэффициент расстояния возобновления ресурсов, ближе или дальше от игрока. Более низкие значения уменьшит растояние до игрока.</sys:String>
     <sys:String x:Key="ServerSettings_SuppressReplenishStructureLabel">Изменить радиус восполнения до строений:</sys:String>
-    <sys:String x:Key="ServerSettings_SuppressReplenishStructureTooltip">Определяет коэффициент растояния возобновления ресурсов, ближе или дальше от строений. Более низкие значения уменьшит растояние до строений.</sys:String>
+    <sys:String x:Key="ServerSettings_SuppressReplenishStructureTooltip">Определяет коэффициент расстояния возобновления ресурсов, ближе или дальше от строений. Более низкие значения уменьшит растояние до строений.</sys:String>
     <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageLabel">Фиксировать урон при сборке</sys:String>
     <sys:String x:Key="ServerSettings_ClampResourceHarvestDamageTooltip">Если включено, Фиксирует количество повреждений которое вы можете нанести при сборе ресурсов.</sys:String>
     <sys:String x:Key="ServerSettings_HarvestHealthLabel">Жизнь ресурса:</sys:String>
@@ -921,7 +921,7 @@
     <sys:String x:Key="ServerSettings_EggLayingIntervalLabel">Время кладки яиц:</sys:String>
     <sys:String x:Key="ServerSettings_EggLayingIntervalTooltip">Позволяет изменить интервал времени кладки яиц динозавров. Более низкие значения заставят динозавров откладывать яйца чаще.</sys:String>
     <sys:String x:Key="ServerSettings_PoopIntervalLabel">Время дефекации:</sys:String>
-    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Позволяет изменить интервал времени дефекации персонажа и динозавров. Более низкие значения заставят персонажа и динозавров испорожняться чаще.</sys:String>
+    <sys:String x:Key="ServerSettings_PoopIntervalTooltip">Позволяет изменить интервал времени дефекации персонажа и динозавров. Более низкие значения заставят персонажа и динозавров испражняться чаще.</sys:String>
     <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierLabel">Скорость роста волос:</sys:String>
     <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierTooltip">Определяет множитель скорости роста волос. Более высокие значения увеличивают скорость роста. Более низкие значения уменьшают его.</sys:String>
 
@@ -943,7 +943,7 @@
     <!-- Server Settings - Structures -->
     <sys:String x:Key="ServerSettings_StructuresLabel">Структуры</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceLabel">Сопротивление структур:</sys:String>
-    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Определяет коэффициент устойчивости структур к повреждению получамых при атаке. Более высокие значения уменьшают сопротивление, увеличивая урон в атаке. Более низкие значения увеличивают его, уменьшая урон в атаке.</sys:String>
+    <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Определяет коэффициент устойчивости структур к повреждению получаемых при атаке. Более высокие значения уменьшают сопротивление, увеличивая урон в атаке. Более низкие значения увеличивают его, уменьшая урон в атаке.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageLabel">Урон от структур:</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageTooltip">Определяет коэффициент урона от структур (например стены с шипами). Более высокие значения увеличивают урон. Более низкие значения уменьшают его.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageRepairCooldownLabel">Время на ремонт:</sys:String>
@@ -960,7 +960,7 @@
     <sys:String x:Key="ServerSettings_MaxPlatformSaddleStructuresTooltip">Максимальное количество платформ или плотов на сервере.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionLabel">Разрешить установку турелей на платформах</sys:String>
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">Если включено, разрешает установку автоматических башен на седлах-платформах динозавров.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Вкл. Перенос нейтральных на платформх</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Вкл. Перенос нейтральных на платформах</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">Если этот параметр включен, нейтральные динозавры могут находится на платформах Кетсаля.</sys:String>
     <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsLabel">Разрешить строительство в зонах респа Лучей</sys:String>
     <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">Если включено, игроки могут строить здания на месте респа Лучей (дома не будут исчезать)</sys:String>
@@ -972,9 +972,9 @@
     <sys:String x:Key="ServerSettings_StructureDecayMultiplierLabel">Множитель время разрушения структур:</sys:String>
     <sys:String x:Key="ServerSettings_StructureDecayMultiplierTooltip">Определяет множитель для автоматического разрушения структур игрока в режиме PvE.</sys:String>
 
-    <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresLabel">Автоуничтожение заброшенных структур</sys:String>
+    <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresLabel">Авто уничтожение заброшенных структур</sys:String>
     <sys:String x:Key="ServerSettings_EnableAutoDestroyStructuresTooltip">Если включено, будет автоматически уничтожать структуры после истечения времени.</sys:String>
-    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Автоуничтожение заброшенных структур:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresLabel">Авто уничтожение заброшенных структур:</sys:String>
     <sys:String x:Key="ServerSettings_AutoDestroyOldStructuresTooltip">После того, как прошло достаточно времени "и поблизости нет племени" структуры будут автоматически уничтожены. Полезно для сервера, чтобы очистить от брошенных структур. Установите значение 0, чтобы отключить функцию.</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAutoDestroyCoreStructuresLabel">Автоматическое разрушение только Основных структур</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAutoDestroyCoreStructuresTooltip">Если включено, предотвратит автоматическое разрушение любых неосновных / не-фундаментных структур (однако они все равно будут автоматически уничтожены, если пол, на котором они находятся, автоматически разрушится).</sys:String>
@@ -1141,7 +1141,7 @@
     <sys:String x:Key="ServerSettings_SOTFNoEventsLabel">Нет Событий</sys:String>
     <sys:String x:Key="ServerSettings_SOTFNoEventsTooltip">Если параметр включен, события не будут срабатывать автоматически. Админ все еще может вызвать события вручную с помощью "cheat ce evorain" и т.д.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFNoBossesLabel">Без боссов</sys:String>
-    <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">Если параметр включен, боссы не будут появяться.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTFNoBossesTooltip">Если параметр включен, боссы не будут появляться.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFBothBossesLabel">Оба босса</sys:String>
     <sys:String x:Key="ServerSettings_SOTFBothBossesTooltip">Если включено, и если используются боссы, будут появляться оба босса. Паучиха праматерь и Мегапитек в соответствующие моменты времени.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFEvoEventIntervalLabel">Интервал событий эволюции</sys:String>
@@ -1559,7 +1559,7 @@
 
     <sys:String x:Key="RCON_Help_Keyword">/help</sys:String>
 
-    <sys:String x:Key="RCON_Help_Line1">Known commands:</sys:String>
+    <sys:String x:Key="RCON_Help_Line1">Список комманд:</sys:String>
     <sys:String x:Key="RCON_Help_Line2">AllowPlayerToJoinNoCheck &lt;steam id&gt; - Добавляет указанного игрока в белый список сервера.</sys:String>
     <sys:String x:Key="RCON_Help_Line3">BanPlayer &lt;steam id&gt; - Добавьте указанного игрока в чёрный список сервера.</sys:String>
     <sys:String x:Key="RCON_Help_Line4">Broadcast &lt;message&gt; - Отправить оповещение всем игрокам на сервере.</sys:String>
