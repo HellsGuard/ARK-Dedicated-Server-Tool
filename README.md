@@ -5,14 +5,8 @@ Requirements
 - VS 2012 or greater
 - .NET 4.5
 
-Contact the authors, HellsGuard and ChronosWS on steam:
-http://steamcommunity.com/id/HellsGuard
-http://steamcommunity.com/id/chronosws
-
 Find the Guide page for this tool at:
 http://arkservermanager.freeforums.net/
-             &
-http://steamcommunity.com/sharedfiles/filedetails/?id=468312476
 
 
 ARK Server Manager and it's creators are in no way affiliated with Studio WildCard or its partners. 
