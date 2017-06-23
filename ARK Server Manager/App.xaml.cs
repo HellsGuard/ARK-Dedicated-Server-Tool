@@ -51,6 +51,9 @@ namespace ARK_Server_Manager
 
         public App()
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.ASMUniqueKey))
+                Config.Default.ASMUniqueKey = Guid.NewGuid().ToString();
+
             ApplicationStarted = false;
             Args = string.Empty;
             BetaVersion = false;

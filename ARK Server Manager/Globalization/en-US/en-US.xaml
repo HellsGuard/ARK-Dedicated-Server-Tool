@@ -154,6 +154,8 @@
     <sys:String x:Key="ShutdownWindow_ShutdownIntervalTooltip">The number of minutes to countdown before the server will shutdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartServerLabel">Restart server after shutdown</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartServerTooltip">If enabled, the server will be immediately restarted after it is shutdown.</sys:String>
+    <sys:String x:Key="ShutdownWindow_UpdateServerLabel">Update server after shutdown</sys:String>
+    <sys:String x:Key="ShutdownWindow_UpdateServerTooltip">If enabled, the server will be updated after it is shutdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_BackupWorldFileLabel">Backup world file after shutdown</sys:String>
     <sys:String x:Key="ShutdownWindow_BackupWorldFileTooltip">If enabled, the world file will be backed up after shutdown.</sys:String>
     <sys:String x:Key="ShutdownWindow_ShutdownReasonLabel">Reason (optional):</sys:String>

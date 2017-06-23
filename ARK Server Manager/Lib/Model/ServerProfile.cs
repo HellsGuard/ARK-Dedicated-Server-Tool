@@ -84,6 +84,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(IsDirtyProperty, value); }
         }
 
+        public static readonly DependencyProperty ProfileIDProperty = DependencyProperty.Register(nameof(ProfileID), typeof(string), typeof(ServerProfile), new PropertyMetadata(Guid.NewGuid().ToString()));
+        public string ProfileID
+        {
+            get { return (string)GetValue(ProfileIDProperty); }
+            set { SetValue(ProfileIDProperty, value); }
+        }
+
         public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
         public string ProfileName
         {

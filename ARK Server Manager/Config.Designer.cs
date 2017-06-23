@@ -1678,5 +1678,17 @@ namespace ARK_Server_Manager {
                 this["AutoUpdate_OverrideServerStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ASMUniqueKey {
+            get {
+                return ((string)(this["ASMUniqueKey"]));
+            }
+            set {
+                this["ASMUniqueKey"] = value;
+            }
+        }
     }
 }
