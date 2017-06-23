@@ -623,8 +623,10 @@
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
-    <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Additional Args:</sys:String>
-    <sys:String x:Key="ServerSettings_AdditionalArgsTooltip">Additional command-line args for the server.  If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
+    <sys:String x:Key="ServerSettings_ServerArgsLabel">Server Args:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerArgsTooltip">Additional command-line args for the server. If you specify this, add the args which start with ?'s first, followed by any other args.  For example: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsLabel">Launcher Args:</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsTooltip">Additional command-line args for the server launcher. Use this with caution! For more information search 'Microsoft Start Command' on the internet.</sys:String>
     <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">Show Command...</sys:String>
     <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">View the command line start command for the server.</sys:String>
 
@@ -761,6 +763,9 @@
 
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Oxygen Swim Speed Stat Multiplier</sys:String>
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Specifies the multiplier for how swim speed is multiplied by level spent in oxygen.</sys:String>
+
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Use Corpse Locator</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">If enabled, upon death, a beam of light shoots into the sky to help the player locate where they died.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
@@ -1049,6 +1054,8 @@
 
     <!-- Server Settings - Structures -->
     <sys:String x:Key="ServerSettings_StructuresLabel">Structures</sys:String>
+    <sys:String x:Key="ServerSettings_DisableStructurePlacementCollisionLabel">Disable Structure Placement Collision</sys:String>
+    <sys:String x:Key="ServerSettings_DisableStructurePlacementCollisionTooltip">If enabled, will allow players to place structures that clip into terrain.</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceLabel">Structure Resistance:</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Specifies the scaling factor for the resistance to damage structures receive when attacked. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageLabel">Structure Damage:</sys:String>
@@ -1091,6 +1098,10 @@
     <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresTooltip">If enabled, will decay unsnapped foundations/pillars at faster speed.</sys:String>
     <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesLabel">Destroy Unconnected Water Pipes</sys:String>
     <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesTooltip">If enabled, after two real-time days the pipes will auto-destroy if unconnected to any non-pipe (directly or indirectly) and no allied player is nearby</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFastDecayIntervalLabel">Enable Fast Decay</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFastDecayIntervalTooltip">If enabled, allows the setting of the fast decay options.</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayIntervalLabel">Fast Decay Interval</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayIntervalTooltip">Sets a fixed constant decay period for "Fast Decay" structures (such as pillars or lone foundations).</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Force All Structure Locking</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
@@ -2684,6 +2695,7 @@
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Megaloceros Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_StegoSaddle_C">Stego Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TapejaraSaddle_C">Tapejara Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_Tapejara_Tek_C">Tapejara Tek Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekBoots_C">Tek Boots</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekGloves_C">Tek Gauntlets</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekHelmet_C">Tek Helmet</sys:String>

@@ -5,7 +5,7 @@
         xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         Title="{DynamicResource ShutdownWindow_Title}"
-        Width="500" ResizeMode="NoResize" SizeToContent="Height" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="Window_Closing" Closed="Window_Closed">
+        Width="600" ResizeMode="NoResize" SizeToContent="Height" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="Window_Closing" Closed="Window_Closed">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

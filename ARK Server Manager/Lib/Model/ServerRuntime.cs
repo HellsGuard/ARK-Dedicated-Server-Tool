@@ -267,6 +267,11 @@ namespace ARK_Server_Manager.Lib
             return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
         }
 
+        public string GetServerLauncherFile()
+        {
+            return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile);
+        }
+
         private void ProcessStatusUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
         {
             if(!Object.ReferenceEquals(registration, this.updateRegistration))
@@ -417,9 +422,9 @@ namespace ARK_Server_Manager.Lib
 
             UnregisterForUpdates();
             this.Status = ServerStatus.Initializing;
-            
+
             var serverExe = GetServerExe();
-            var serverArgs = this.ProfileSnapshot.ServerArgs;
+            var launcherExe = GetServerLauncherFile();
 
             if (Config.Default.ManageFirewallAutomatically)
             {
@@ -448,8 +453,7 @@ namespace ARK_Server_Manager.Lib
             {
                 var startInfo = new ProcessStartInfo()
                 {
-                    FileName = serverExe,
-                    Arguments = serverArgs,
+                    FileName = launcherExe
                 };
 
                 var process = Process.Start(startInfo);
@@ -457,7 +461,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Win32Exception ex)
             {
-                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.ProfileSnapshot.InstallDirectory), serverExe, ex);
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.LauncherFile, launcherExe, this.ProfileSnapshot.InstallDirectory), launcherExe, ex);
             }
             finally
             {

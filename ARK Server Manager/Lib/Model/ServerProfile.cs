@@ -534,6 +534,13 @@ namespace ARK_Server_Manager.Lib
             get { return (string)GetValue(AdditionalArgsProperty); }
             set { SetValue(AdditionalArgsProperty, value); }
         }
+
+        public static readonly DependencyProperty LauncherArgsProperty = DependencyProperty.Register(nameof(LauncherArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string LauncherArgs
+        {
+            get { return (string)GetValue(LauncherArgsProperty); }
+            set { SetValue(LauncherArgsProperty, value); }
+        }
         #endregion
 
         #region Automatic Management
@@ -1006,6 +1013,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(OxygenSwimSpeedStatMultiplierProperty); }
             set { SetValue(OxygenSwimSpeedStatMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseCorpseLocatorProperty = DependencyProperty.Register(nameof(UseCorpseLocator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator")]
+        public bool UseCorpseLocator
+        {
+            get { return (bool)GetValue(UseCorpseLocatorProperty); }
+            set { SetValue(UseCorpseLocatorProperty, value); }
         }
         #endregion
 
@@ -1999,6 +2014,29 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(DestroyUnconnectedWaterPipesProperty); }
             set { SetValue(DestroyUnconnectedWaterPipesProperty, value); }
         }
+
+        public static readonly DependencyProperty DisableStructurePlacementCollisionProperty = DependencyProperty.Register(nameof(DisableStructurePlacementCollision), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableStructurePlacementCollision")]
+        public bool DisableStructurePlacementCollision
+        {
+            get { return (bool)GetValue(DisableStructurePlacementCollisionProperty); }
+            set { SetValue(DisableStructurePlacementCollisionProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFastDecayIntervalProperty = DependencyProperty.Register(nameof(EnableFastDecayInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableFastDecayInterval
+        {
+            get { return (bool)GetValue(EnableFastDecayIntervalProperty); }
+            set { SetValue(EnableFastDecayIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty FastDecayIntervalProperty = DependencyProperty.Register(nameof(FastDecayInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(43200));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(EnableFastDecayInterval))]
+        public int FastDecayInterval
+        {
+            get { return (int)GetValue(FastDecayIntervalProperty); }
+            set { SetValue(FastDecayIntervalProperty, value); }
+        }
         #endregion
 
         #region Engrams
@@ -2887,8 +2925,27 @@ namespace ARK_Server_Manager.Lib
 
         private void SaveLauncher()
         {
+            var commandArgs = new StringBuilder();
+
+            commandArgs.Append("start");
+            commandArgs.Append($" \"{ProfileName}\"");
+
+            if (string.IsNullOrWhiteSpace(this.LauncherArgs))
+            {
+                commandArgs.Append(" /normal");
+            }
+            else
+            {
+                var args = this.LauncherArgs.Trim();
+                commandArgs.Append(" ");
+                commandArgs.Append(args);
+            }
+
+            commandArgs.Append($" \"{GetServerExeFile()}\"");
+            commandArgs.Append($" {GetServerArgs()}");
+
             Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherFile()));
-            File.WriteAllText(GetLauncherFile(), $"start \"{ProfileName}\" /normal \"{GetServerExeFile()}\" {GetServerArgs()}");
+            File.WriteAllText(GetLauncherFile(), commandArgs.ToString());
         }
 
         public void SaveINIFiles()
