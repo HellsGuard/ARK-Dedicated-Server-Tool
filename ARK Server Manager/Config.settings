@@ -359,10 +359,10 @@
     <Setting Name="LatestASMDownloadUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.s3.amazonaws.com/release/latest.zip</Value>
     </Setting>
-    <Setting Name="LatestASMPatchNotesUrl" Type="System.String" Scope="User">
+    <Setting Name="LatestASMPatchNotesUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/thread/3/downloads</Value>
     </Setting>
-    <Setting Name="LatestASMBetaPatchNotesUrl" Type="System.String" Scope="User">
+    <Setting Name="LatestASMBetaPatchNotesUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/board/11/beta-testers</Value>
     </Setting>
     <Setting Name="ArkWhitelistFile" Type="System.String" Scope="Application">
@@ -419,8 +419,8 @@
     <Setting Name="SectionSupplyCrateOverridesIsExpanded" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}</Value>
+    <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}</Value>
     </Setting>
     <Setting Name="SteamAPIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

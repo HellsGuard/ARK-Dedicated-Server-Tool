@@ -24,6 +24,7 @@ namespace ARK_Server_Manager.Lib
 
         public struct RuntimeProfileSnapshot
         {
+            public string ProfileId;
             public string ProfileName;            
             public string InstallDirectory;
             public string AltSaveDirectoryName;
@@ -150,6 +151,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ProfileSnapshot = new RuntimeProfileSnapshot
             {
+                ProfileId = profile.ProfileID,
                 ProfileName = profile.ProfileName,
                 InstallDirectory = profile.InstallDirectory,
                 AltSaveDirectoryName = profile.AltSaveDirectoryName,
@@ -389,7 +391,7 @@ namespace ARK_Server_Manager.Lib
                 IPEndPoint localServerQueryEndPoint;
                 IPEndPoint steamServerQueryEndPoint;
                 GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
-                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
+                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, this.ProfileSnapshot.ProfileId, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }
 

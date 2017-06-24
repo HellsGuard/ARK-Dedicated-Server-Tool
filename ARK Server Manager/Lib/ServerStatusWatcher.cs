@@ -100,6 +100,9 @@ namespace ARK_Server_Manager.Lib
             public StatusCallback UpdateCallback;
             public Func<Task> UnregisterAction;
 
+            public string AsmId;
+            public string ProfileId;
+
             public async Task DisposeAsync()
             {
                 await UnregisterAction();
@@ -128,14 +131,16 @@ namespace ARK_Server_Manager.Lib
             private set;
         }
 
-        public IAsyncDisposable RegisterForUpdates(string installDirectory, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> updateCallback)
+        public IAsyncDisposable RegisterForUpdates(string installDirectory, string profileId, IPEndPoint localEndpoint, IPEndPoint steamEndpoint, Action<IAsyncDisposable, ServerStatusUpdate> updateCallback)
         {
             var registration = new ServerStatusUpdateRegistration 
             { 
+                AsmId = Config.Default.ASMUniqueKey,
                 InstallDirectory = installDirectory,
+                ProfileId = profileId,
                 LocalEndpoint = localEndpoint, 
                 SteamEndpoint = steamEndpoint, 
-                UpdateCallback = updateCallback
+                UpdateCallback = updateCallback,
             };
 
             registration.UnregisterAction = async () => 
@@ -357,11 +362,10 @@ namespace ARK_Server_Manager.Lib
                 }
 
                 var lastExternalCallQuery = _lastExternalCallQuery.ContainsKey(registrationKey) ? _lastExternalCallQuery[registrationKey] : DateTime.MinValue;
-                //if (DateTime.Now >= lastExternalCallQuery.AddMilliseconds(REMOTE_CALL_QUERY_DELAY))
                 if (lastExternalCallQuery == DateTime.MinValue)
                 {
                     // perform a server call to the web api.
-                    await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint);
+                    await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint, registration.AsmId, registration.ProfileId);
 
                     _lastExternalCallQuery[registrationKey] = DateTime.Now;
                 }
