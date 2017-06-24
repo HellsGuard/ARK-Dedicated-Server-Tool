@@ -1405,7 +1405,7 @@
                                             <Label Content="{DynamicResource ServerSettings_MaxTribeLogsLabel}" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding MaxTribeLogs}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_MaxTribeLogsTooltip}"/>
                                         </StackPanel>
-                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding AdminLogging}" Content="{DynamicResource ServerSettings_LogAdminChatLabel}" ToolTip="{DynamicResource ServerSettings_LogAdminChatTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                         <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding NotifyAdminCommandsInChat}" Content="{DynamicResource ServerSettings_NotifyAdminCommandsInChatLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NotifyAdminCommandsInChatTooltip}"/>
                                         <CheckBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding TribeLogDestroyedEnemyStructures}" Content="{DynamicResource ServerSettings_TribeLogDestroyedEnemyStructuresLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_TribeLogDestroyedEnemyStructuresTooltip}"/>
                                     </Grid>
@@ -1455,12 +1455,11 @@
 
                                         <Label      Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_LauncherArgsLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_LauncherArgsTooltip}"/>
                                         <TextBox    Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding LauncherArgs}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_LauncherArgsTooltip}"/>
+                                        <CheckBox   Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" IsChecked="{Binding LauncherArgsOverride}" Content="{DynamicResource ServerSettings_LauncherArgsOverrideLabel}" ToolTip="{DynamicResource ServerSettings_LauncherArgsOverrideTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                                         <Label      Grid.Row="1" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerArgsLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_ServerArgsTooltip}"/>
-                                        <DockPanel  Grid.Row="1" Grid.Column="1" LastChildFill="True">
-                                            <Button     DockPanel.Dock="Right" Content="{StaticResource ShowCmdButtonContent}" ToolTip="{DynamicResource ServerSettings_ShowCommandButtonTooltip}" Click="ShowCmd_Click"/>
-                                            <TextBox    DockPanel.Dock="Right" Margin="1" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_ServerArgsTooltip}"/>
-                                        </DockPanel>
+                                        <TextBox    Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding AdditionalArgs}" VerticalContentAlignment="Center" ToolTip="{DynamicResource ServerSettings_ServerArgsTooltip}"/>
+                                        <Button     Grid.Row="1" Grid.Column="2" Margin="1" Content="{StaticResource ShowCmdButtonContent}" ToolTip="{DynamicResource ServerSettings_ShowCommandButtonTooltip}" Click="ShowCmd_Click"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>

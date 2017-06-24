@@ -542,6 +542,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AdditionalArgsProperty, value); }
         }
 
+        public static readonly DependencyProperty LauncherArgsOverrideProperty = DependencyProperty.Register(nameof(LauncherArgsOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool LauncherArgsOverride
+        {
+            get { return (bool)GetValue(LauncherArgsOverrideProperty); }
+            set { SetValue(LauncherArgsOverrideProperty, value); }
+        }
+
         public static readonly DependencyProperty LauncherArgsProperty = DependencyProperty.Register(nameof(LauncherArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         public string LauncherArgs
         {
@@ -2934,22 +2941,29 @@ namespace ARK_Server_Manager.Lib
         {
             var commandArgs = new StringBuilder();
 
-            commandArgs.Append("start");
-            commandArgs.Append($" \"{ProfileName}\"");
-
-            if (string.IsNullOrWhiteSpace(this.LauncherArgs))
+            if (this.LauncherArgsOverride)
             {
-                commandArgs.Append(" /normal");
+                commandArgs.Append(this.LauncherArgs);
             }
             else
             {
-                var args = this.LauncherArgs.Trim();
-                commandArgs.Append(" ");
-                commandArgs.Append(args);
-            }
+                commandArgs.Append("start");
+                commandArgs.Append($" \"{this.ProfileName}\"");
 
-            commandArgs.Append($" \"{GetServerExeFile()}\"");
-            commandArgs.Append($" {GetServerArgs()}");
+                if (string.IsNullOrWhiteSpace(this.LauncherArgs))
+                {
+                    commandArgs.Append(" /normal");
+                }
+                else
+                {
+                    var args = this.LauncherArgs.Trim();
+                    commandArgs.Append(" ");
+                    commandArgs.Append(args);
+                }
+
+                commandArgs.Append($" \"{GetServerExeFile()}\"");
+                commandArgs.Append($" {GetServerArgs()}");
+            }
 
             Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherFile()));
             File.WriteAllText(GetLauncherFile(), commandArgs.ToString());
