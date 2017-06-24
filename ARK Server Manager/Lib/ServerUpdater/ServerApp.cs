@@ -46,8 +46,10 @@ namespace ARK_Server_Manager.Lib
             public bool EnableAutoUpdate;
             public bool EnableAutoShutdown1;
             public bool RestartAfterShutdown1;
+            public bool UpdateAfterShutdown1;
             public bool EnableAutoShutdown2;
             public bool RestartAfterShutdown2;
+            public bool UpdateAfterShutdown2;
             public bool AutoRestartIfShutdown;
 
             public bool SotFEnabled;
@@ -80,8 +82,10 @@ namespace ARK_Server_Manager.Lib
                     EnableAutoUpdate = profile.EnableAutoUpdate,
                     EnableAutoShutdown1 = profile.EnableAutoShutdown1,
                     RestartAfterShutdown1 = profile.RestartAfterShutdown1,
+                    UpdateAfterShutdown1 = profile.UpdateAfterShutdown1,
                     EnableAutoShutdown2 = profile.EnableAutoShutdown2,
                     RestartAfterShutdown2 = profile.RestartAfterShutdown2,
+                    UpdateAfterShutdown2 = profile.UpdateAfterShutdown2,
                     AutoRestartIfShutdown = profile.AutoRestartIfShutdown,
 
                     SotFEnabled = profile.SOTF_Enabled,
@@ -846,6 +850,7 @@ namespace ARK_Server_Manager.Lib
                 // Server Update Section
                 // *********************
 
+                LogProfileMessage("\r\n");
                 LogProfileMessage("Starting server update.");
                 LogProfileMessage("Updating server from steam.\r\n");
 
@@ -2529,15 +2534,18 @@ namespace ARK_Server_Manager.Lib
 
                 var enableAutoShutdown = false;
                 var performRestart = false;
+                var performUpdate = false;
                 switch (type)
                 {
                     case ServerProcessType.AutoShutdown1:
                         enableAutoShutdown = profile.EnableAutoShutdown1;
                         performRestart = profile.RestartAfterShutdown1;
+                        performUpdate = profile.UpdateAfterShutdown1;
                         break;
                     case ServerProcessType.AutoShutdown2:
                         enableAutoShutdown = profile.EnableAutoShutdown2;
                         performRestart = profile.RestartAfterShutdown2;
+                        performUpdate = profile.UpdateAfterShutdown2;
                         break;
                     default:
                         return EXITCODE_BADARGUMENT;
@@ -2549,7 +2557,7 @@ namespace ARK_Server_Manager.Lib
                 var app = new ServerApp();
                 app.SendEmails = true;
                 app.ServerProcess = type;
-                exitCode = app.PerformProfileShutdown(profile, performRestart, false, CancellationToken.None);
+                exitCode = app.PerformProfileShutdown(profile, performRestart, performUpdate, CancellationToken.None);
             }
             catch (Exception)
             {

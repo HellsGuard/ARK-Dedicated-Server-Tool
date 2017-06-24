@@ -600,6 +600,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RestartAfterShutdown1Property, value); }
         }
 
+        public static readonly DependencyProperty UpdateAfterShutdown1Property = DependencyProperty.Register(nameof(UpdateAfterShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UpdateAfterShutdown1
+        {
+            get { return (bool)GetValue(UpdateAfterShutdown1Property); }
+            set { SetValue(UpdateAfterShutdown1Property, value); }
+        }
+
         public static readonly DependencyProperty EnableAutoShutdown2Property = DependencyProperty.Register(nameof(EnableAutoShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoShutdown2
         {
@@ -619,6 +626,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(RestartAfterShutdown2Property); }
             set { SetValue(RestartAfterShutdown2Property, value); }
+        }
+
+        public static readonly DependencyProperty UpdateAfterShutdown2Property = DependencyProperty.Register(nameof(UpdateAfterShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UpdateAfterShutdown2
+        {
+            get { return (bool)GetValue(UpdateAfterShutdown2Property); }
+            set { SetValue(UpdateAfterShutdown2Property, value); }
         }
 
         public static readonly DependencyProperty AutoRestartIfShutdownProperty = DependencyProperty.Register(nameof(AutoRestartIfShutdown), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));

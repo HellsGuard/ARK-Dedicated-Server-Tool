@@ -643,7 +643,9 @@
     <sys:String x:Key="ServerSettings_EnableAutoShutdownLabel">Shutdown server at</sys:String>
     <sys:String x:Key="ServerSettings_EnableAutoShutdownTooltip">The hour and minute of the day to force a server shutdown.</sys:String>
     <sys:String x:Key="ServerSettings_RestartAfterShutdownLabel">then restart</sys:String>
-    <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">If enabled, will restart server immediately after the shutdown</sys:String>
+    <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">If enabled, will restart the server after the shutdown</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateAfterShutdownLabel">perform update</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateAfterShutdownTooltip">If enabled, will update the server after the shutdown</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicBackupsLabel">Include server in the Auto-Backup cycle</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicBackupsTooltip">If enabled, the server will be periodically backed up during the Auto-Backup cycle. See the settings for Auto-Backup options.</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Include server in the Auto-Update cycle</sys:String>
