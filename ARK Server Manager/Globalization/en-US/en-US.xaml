@@ -867,7 +867,7 @@
     <sys:String x:Key="ServerSettings_StatFortitudeTooltip">Specifies the multiplier for fortitude gain per level. Higher values increase fortitude faster; lower values increase the fortitude more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_BaseStatFortitudeTooltip">Specifies the multiplier for base fortitude. Higher values increase base fortitude; lower values decrease base fortitude.</sys:String>
     <sys:String x:Key="ServerSettings_StatCraftingLabel">Crafting:</sys:String>
-    <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting speed gain per level. Higher values increase crafting speed faster; lower values increase crafting speed more slowly.</sys:String>
+    <sys:String x:Key="ServerSettings_StatCraftingTooltip">Specifies the multiplier for crafting skill gain per level. Higher values increase crafting skill faster; lower values increase crafting skill more slowly.</sys:String>
     <sys:String x:Key="ServerSettings_BaseStatCraftingTooltip">Specifies the multiplier for base crafting. Higher values increase base crafting; lower values decrease base crafting.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Confirm Reset Action</sys:String>
