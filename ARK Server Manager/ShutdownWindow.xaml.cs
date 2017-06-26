@@ -29,6 +29,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ShutdownTypeProperty = DependencyProperty.Register(nameof(ShutdownType), typeof(int), typeof(ShutdownWindow), new PropertyMetadata(0));
         public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(Server), typeof(ShutdownWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty ShutdownReasonProperty = DependencyProperty.Register(nameof(ShutdownReason), typeof(string), typeof(ShutdownWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty UpdateServerProperty = DependencyProperty.Register(nameof(UpdateServer), typeof(bool), typeof(ShutdownWindow), new PropertyMetadata(false));
 
         protected ShutdownWindow(Server server)
         {
@@ -87,6 +88,11 @@ namespace ARK_Server_Manager
             get { return (string)GetValue(ShutdownReasonProperty); }
             set { SetValue(ShutdownReasonProperty, value); }
         }
+        public bool UpdateServer
+        {
+            get { return (bool)GetValue(UpdateServerProperty); }
+            set { SetValue(UpdateServerProperty, value); }
+        }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -142,16 +148,17 @@ namespace ARK_Server_Manager
 
                 var profile = ProfileSnapshot.Create(Server.Profile);
                 var restartServer = RestartServer;
+                var updateServer = UpdateServer;
 
                 _shutdownCancellationSource = new CancellationTokenSource();
 
-                var exitCode = await Task.Run(() => app.PerformProfileShutdown(profile, restartServer, _shutdownCancellationSource.Token));
+                var exitCode = await Task.Run(() => app.PerformProfileShutdown(profile, restartServer, updateServer, _shutdownCancellationSource.Token));
                 if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
                     throw new ApplicationException($"An error occured during the shutdown process - ExitCode: {exitCode}");
 
                 ShutdownType = 0;
-                // if restarting the server after the shutdown, delay the form closing
-                if (restartServer)
+                // if restarting or updating the server after the shutdown, delay the form closing
+                if (restartServer || updateServer)
                     await Task.Delay(5000);
 
                 this.Close();

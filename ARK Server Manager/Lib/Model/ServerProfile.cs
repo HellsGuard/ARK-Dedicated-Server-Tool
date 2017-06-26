@@ -84,6 +84,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(IsDirtyProperty, value); }
         }
 
+        public static readonly DependencyProperty ProfileIDProperty = DependencyProperty.Register(nameof(ProfileID), typeof(string), typeof(ServerProfile), new PropertyMetadata(Guid.NewGuid().ToString()));
+        public string ProfileID
+        {
+            get { return (string)GetValue(ProfileIDProperty); }
+            set { SetValue(ProfileIDProperty, value); }
+        }
+
         public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(nameof(ProfileName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerProfileName));
         public string ProfileName
         {
@@ -534,6 +541,20 @@ namespace ARK_Server_Manager.Lib
             get { return (string)GetValue(AdditionalArgsProperty); }
             set { SetValue(AdditionalArgsProperty, value); }
         }
+
+        public static readonly DependencyProperty LauncherArgsOverrideProperty = DependencyProperty.Register(nameof(LauncherArgsOverride), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool LauncherArgsOverride
+        {
+            get { return (bool)GetValue(LauncherArgsOverrideProperty); }
+            set { SetValue(LauncherArgsOverrideProperty, value); }
+        }
+
+        public static readonly DependencyProperty LauncherArgsProperty = DependencyProperty.Register(nameof(LauncherArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        public string LauncherArgs
+        {
+            get { return (string)GetValue(LauncherArgsProperty); }
+            set { SetValue(LauncherArgsProperty, value); }
+        }
         #endregion
 
         #region Automatic Management
@@ -579,6 +600,13 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(RestartAfterShutdown1Property, value); }
         }
 
+        public static readonly DependencyProperty UpdateAfterShutdown1Property = DependencyProperty.Register(nameof(UpdateAfterShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UpdateAfterShutdown1
+        {
+            get { return (bool)GetValue(UpdateAfterShutdown1Property); }
+            set { SetValue(UpdateAfterShutdown1Property, value); }
+        }
+
         public static readonly DependencyProperty EnableAutoShutdown2Property = DependencyProperty.Register(nameof(EnableAutoShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoShutdown2
         {
@@ -598,6 +626,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(RestartAfterShutdown2Property); }
             set { SetValue(RestartAfterShutdown2Property, value); }
+        }
+
+        public static readonly DependencyProperty UpdateAfterShutdown2Property = DependencyProperty.Register(nameof(UpdateAfterShutdown2), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool UpdateAfterShutdown2
+        {
+            get { return (bool)GetValue(UpdateAfterShutdown2Property); }
+            set { SetValue(UpdateAfterShutdown2Property, value); }
         }
 
         public static readonly DependencyProperty AutoRestartIfShutdownProperty = DependencyProperty.Register(nameof(AutoRestartIfShutdown), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -1006,6 +1041,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(OxygenSwimSpeedStatMultiplierProperty); }
             set { SetValue(OxygenSwimSpeedStatMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseCorpseLocatorProperty = DependencyProperty.Register(nameof(UseCorpseLocator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator")]
+        public bool UseCorpseLocator
+        {
+            get { return (bool)GetValue(UseCorpseLocatorProperty); }
+            set { SetValue(UseCorpseLocatorProperty, value); }
         }
         #endregion
 
@@ -1999,6 +2042,29 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(DestroyUnconnectedWaterPipesProperty); }
             set { SetValue(DestroyUnconnectedWaterPipesProperty, value); }
         }
+
+        public static readonly DependencyProperty DisableStructurePlacementCollisionProperty = DependencyProperty.Register(nameof(DisableStructurePlacementCollision), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableStructurePlacementCollision")]
+        public bool DisableStructurePlacementCollision
+        {
+            get { return (bool)GetValue(DisableStructurePlacementCollisionProperty); }
+            set { SetValue(DisableStructurePlacementCollisionProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFastDecayIntervalProperty = DependencyProperty.Register(nameof(EnableFastDecayInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableFastDecayInterval
+        {
+            get { return (bool)GetValue(EnableFastDecayIntervalProperty); }
+            set { SetValue(EnableFastDecayIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty FastDecayIntervalProperty = DependencyProperty.Register(nameof(FastDecayInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(43200));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(EnableFastDecayInterval))]
+        public int FastDecayInterval
+        {
+            get { return (int)GetValue(FastDecayIntervalProperty); }
+            set { SetValue(FastDecayIntervalProperty, value); }
+        }
         #endregion
 
         #region Engrams
@@ -2887,8 +2953,34 @@ namespace ARK_Server_Manager.Lib
 
         private void SaveLauncher()
         {
+            var commandArgs = new StringBuilder();
+
+            if (this.LauncherArgsOverride)
+            {
+                commandArgs.Append(this.LauncherArgs);
+            }
+            else
+            {
+                commandArgs.Append("start");
+                commandArgs.Append($" \"{this.ProfileName}\"");
+
+                if (string.IsNullOrWhiteSpace(this.LauncherArgs))
+                {
+                    commandArgs.Append(" /normal");
+                }
+                else
+                {
+                    var args = this.LauncherArgs.Trim();
+                    commandArgs.Append(" ");
+                    commandArgs.Append(args);
+                }
+
+                commandArgs.Append($" \"{GetServerExeFile()}\"");
+                commandArgs.Append($" {GetServerArgs()}");
+            }
+
             Directory.CreateDirectory(Path.GetDirectoryName(GetLauncherFile()));
-            File.WriteAllText(GetLauncherFile(), $"start \"{ProfileName}\" /normal \"{GetServerExeFile()}\" {GetServerArgs()}");
+            File.WriteAllText(GetLauncherFile(), commandArgs.ToString());
         }
 
         public void SaveINIFiles()

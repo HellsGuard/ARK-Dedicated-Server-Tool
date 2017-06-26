@@ -1267,27 +1267,21 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/thread/3/downloads")]
         public string LatestASMPatchNotesUrl {
             get {
                 return ((string)(this["LatestASMPatchNotesUrl"]));
             }
-            set {
-                this["LatestASMPatchNotesUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/board/11/beta-testers")]
         public string LatestASMBetaPatchNotesUrl {
             get {
                 return ((string)(this["LatestASMBetaPatchNotesUrl"]));
-            }
-            set {
-                this["LatestASMBetaPatchNotesUrl"] = value;
             }
         }
         
@@ -1477,15 +1471,12 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}")]
         public string ServerCallUrlFormat {
             get {
                 return ((string)(this["ServerCallUrlFormat"]));
-            }
-            set {
-                this["ServerCallUrlFormat"] = value;
             }
         }
         
@@ -1676,6 +1667,18 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["AutoUpdate_OverrideServerStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ASMUniqueKey {
+            get {
+                return ((string)(this["ASMUniqueKey"]));
+            }
+            set {
+                this["ASMUniqueKey"] = value;
             }
         }
     }

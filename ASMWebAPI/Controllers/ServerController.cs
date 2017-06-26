@@ -18,7 +18,24 @@ namespace ASMWebAPI.Controllers
         {
             try
             {
-                Logger.Trace($"{ipString}:{port}");
+                Logger.Trace($"{ipString}:{port}; 0; 0");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // GET: api/Server/call/192.168.1.1/27017/asmid/profileid
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/Server/call/{ipString}/{port}/{asmId}/{profileId}")]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool Call(string ipString, int port, string asmId, string profileId)
+        {
+            try
+            {
+                Logger.Trace($"{ipString}:{port}; {asmId}; {profileId}");
                 return true;
             }
             catch

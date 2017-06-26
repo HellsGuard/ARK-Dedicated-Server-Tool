@@ -5,7 +5,7 @@
         xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
         Title="{DynamicResource ShutdownWindow_Title}"
-        Width="500" ResizeMode="NoResize" SizeToContent="Height" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="Window_Closing" Closed="Window_Closed">
+        Width="600" ResizeMode="NoResize" SizeToContent="Height" Icon="Art/favicon.ico" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="Window_Closing" Closed="Window_Closed">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -101,10 +101,15 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                <local:AnnotatedSlider Grid.Row="0" Margin="1" Label="{DynamicResource ShutdownWindow_ShutdownIntervalLabel}" Value="{Binding ShutdownInterval}" Minimum="1" Maximum="60" SmallChange="1" LargeChange="5" TickFrequency="1" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Minutes}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_ShutdownIntervalTooltip}"/>
-                <CheckBox Grid.Row="1" Margin="5" Content="{DynamicResource ShutdownWindow_RestartServerLabel}" IsChecked="{Binding RestartServer}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_RestartServerTooltip}"/>
-                <CheckBox Grid.Row="2" Margin="5" Content="{DynamicResource ShutdownWindow_BackupWorldFileLabel}" IsChecked="{Binding BackupWorldFile}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_BackupWorldFileTooltip}">
+                <local:AnnotatedSlider Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource ShutdownWindow_ShutdownIntervalLabel}" Value="{Binding ShutdownInterval}" Minimum="1" Maximum="60" SmallChange="1" LargeChange="5" TickFrequency="1" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Minutes}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_ShutdownIntervalTooltip}"/>
+                <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Content="{DynamicResource ShutdownWindow_RestartServerLabel}" IsChecked="{Binding RestartServer}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_RestartServerTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" Content="{DynamicResource ShutdownWindow_UpdateServerLabel}" IsChecked="{Binding UpdateServer}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_UpdateServerTooltip}" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="2" Grid.Column="0" Margin="5" Content="{DynamicResource ShutdownWindow_BackupWorldFileLabel}" IsChecked="{Binding BackupWorldFile}" IsEnabled="{Binding ShutdownStarted, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ShutdownWindow_BackupWorldFileTooltip}" HorizontalAlignment="Left">
                     <CheckBox.Style>
                         <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                             <Style.Triggers>
@@ -118,7 +123,7 @@
                         </Style>
                     </CheckBox.Style>
                 </CheckBox>
-                <Grid Grid.Row="3" Margin="1">
+                <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="1*"/>
@@ -127,7 +132,7 @@
                     <Label Grid.Column="0" Content="{DynamicResource ShutdownWindow_ShutdownReasonLabel}" ToolTip="{DynamicResource ShutdownWindow_ShutdownReasonTooltip}"/>
                     <TextBox Grid.Column="1" Text="{Binding ShutdownReason}" ToolTip="{DynamicResource ShutdownWindow_ShutdownReasonTooltip}"/>
                 </Grid>
-                <TextBox Grid.Row="4" Name="MessageOutput" Margin="1" Height="200" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="MessageOutput" Margin="1" Height="200" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <TextBox.Style>
                         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
                             <Setter Property="Visibility" Value="Visible" />

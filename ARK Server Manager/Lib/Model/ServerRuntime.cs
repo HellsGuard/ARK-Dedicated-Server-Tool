@@ -24,6 +24,7 @@ namespace ARK_Server_Manager.Lib
 
         public struct RuntimeProfileSnapshot
         {
+            public string ProfileId;
             public string ProfileName;            
             public string InstallDirectory;
             public string AltSaveDirectoryName;
@@ -150,6 +151,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ProfileSnapshot = new RuntimeProfileSnapshot
             {
+                ProfileId = profile.ProfileID,
                 ProfileName = profile.ProfileName,
                 InstallDirectory = profile.InstallDirectory,
                 AltSaveDirectoryName = profile.AltSaveDirectoryName,
@@ -265,6 +267,11 @@ namespace ARK_Server_Manager.Lib
         public string GetServerExe()
         {
             return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe);
+        }
+
+        public string GetServerLauncherFile()
+        {
+            return Path.Combine(this.ProfileSnapshot.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile);
         }
 
         private void ProcessStatusUpdate(IAsyncDisposable registration, ServerStatusWatcher.ServerStatusUpdate update)
@@ -384,7 +391,7 @@ namespace ARK_Server_Manager.Lib
                 IPEndPoint localServerQueryEndPoint;
                 IPEndPoint steamServerQueryEndPoint;
                 GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
-                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
+                this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, this.ProfileSnapshot.ProfileId, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }
 
@@ -417,9 +424,9 @@ namespace ARK_Server_Manager.Lib
 
             UnregisterForUpdates();
             this.Status = ServerStatus.Initializing;
-            
+
             var serverExe = GetServerExe();
-            var serverArgs = this.ProfileSnapshot.ServerArgs;
+            var launcherExe = GetServerLauncherFile();
 
             if (Config.Default.ManageFirewallAutomatically)
             {
@@ -448,8 +455,7 @@ namespace ARK_Server_Manager.Lib
             {
                 var startInfo = new ProcessStartInfo()
                 {
-                    FileName = serverExe,
-                    Arguments = serverArgs,
+                    FileName = launcherExe
                 };
 
                 var process = Process.Start(startInfo);
@@ -457,7 +463,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Win32Exception ex)
             {
-                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.ServerExe, serverExe, this.ProfileSnapshot.InstallDirectory), serverExe, ex);
+                throw new FileNotFoundException(String.Format("Unable to find {0} at {1}.  Server Install Directory: {2}", Config.Default.LauncherFile, launcherExe, this.ProfileSnapshot.InstallDirectory), launcherExe, ex);
             }
             finally
             {

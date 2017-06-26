@@ -180,13 +180,14 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static async Task PerformServerCallToAPI(IPEndPoint endpoint)
+        public static async Task PerformServerCallToAPI(IPEndPoint endpoint, string asmId, string profileId)
         {
             try
             {
                 using (var client = new WebClient())
                 {
-                    await client.DownloadStringTaskAsync(string.Format(Config.Default.ServerCallUrlFormat, endpoint.Address, endpoint.Port));
+                    var url = string.Format(Config.Default.ServerCallUrlFormat, endpoint.Address, endpoint.Port, asmId, profileId);
+                    await client.DownloadStringTaskAsync(url);
                 }
             }
             catch (Exception ex)

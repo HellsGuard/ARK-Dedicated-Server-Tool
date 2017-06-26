@@ -317,6 +317,9 @@ namespace ARK_Server_Manager
         private void Window_Closed(object sender, EventArgs e)
         {
             Window.GetWindow(this)?.Activate();
+
+            if (sender is ShutdownWindow)
+                this.Runtime?.ResetModCheckTimer();
         }
 
         private async void Start_Click(object sender, RoutedEventArgs e)
