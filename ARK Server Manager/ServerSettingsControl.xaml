@@ -26,6 +26,7 @@
             <vm:InstalledVersionConverter x:Key="InstalledVersionConverter"/>
             <vm:TributeExpirationConverter x:Key="TributeExpirationConverter"/>
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+            <vm:HasStringValueConverter x:Key="HasStringValueConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
             <ObjectDataProvider x:Key="ArkApplications" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -1360,8 +1361,8 @@
                                         </StackPanel>
                                         <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CrossArkClusterIdLabel}" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}" VerticalAlignment="Center" MinWidth="200"/>
-                                            <TextBox Text="{Binding CrossArkClusterId}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}"/>
-                                            <CheckBox Margin="5,1,0,0" IsChecked="{Binding ClusterDirOverride}" Content="{DynamicResource ServerSettings_ClusterDirOverrideLabel}" ToolTip="{DynamicResource ServerSettings_ClusterDirOverrideTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" UseLayoutRounding="False"/>
+                                            <TextBox Text="{Binding CrossArkClusterId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_CrossArkClusterIdTooltip}"/>
+                                            <CheckBox Margin="5,1,0,0" IsEnabled="{Binding CrossArkClusterId, Converter={StaticResource HasStringValueConverter}, FallbackValue=false}" IsChecked="{Binding ClusterDirOverride}" Content="{DynamicResource ServerSettings_ClusterDirOverrideLabel}" ToolTip="{DynamicResource ServerSettings_ClusterDirOverrideTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" UseLayoutRounding="False"/>
                                         </StackPanel>
 
                                         <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>
@@ -1692,12 +1693,47 @@
 
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
                                         <GroupBox.Header>
-                                            <CheckBox Name="EnableTributeDownloadsCheckbox" IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
+                                            <CheckBox IsChecked="{Binding EnableTributeDownloads}" Content="{DynamicResource ServerSettings_EnableTributeLabel}" ToolTip="{DynamicResource ServerSettings_EnableTributeTooltip}"/>
                                         </GroupBox.Header>
 
-                                        <Grid IsEnabled="{Binding ElementName=EnableTributeDownloadsCheckbox, Path=IsChecked}">
+                                        <Grid IsEnabled="{Binding EnableTributeDownloads}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                            <CheckBox Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                            <CheckBox Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                        </Grid>
+                                    </GroupBox>
+
+                                    <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                        <GroupBox.Header>
+                                            <Label Content="{DynamicResource ServerSettings_TributeUploadLabel}"/>
+                                        </GroupBox.Header>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventUploadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorUploadsTooltip}"/>
+                                            <CheckBox Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventUploadItems}" Content="{DynamicResource ServerSettings_NoItemUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemUploadsTooltip}"/>
+                                            <CheckBox Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventUploadDinos}" Content="{DynamicResource ServerSettings_NoDinoUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoUploadsTooltip}"/>
+                                        </Grid>
+                                    </GroupBox>
+
+                                    <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                        <GroupBox.Header>
+                                            <Label Content="{DynamicResource ServerSettings_ClusterTributeLabel}"/>
+                                        </GroupBox.Header>
+
+                                        <Grid IsEnabled="{Binding CrossArkClusterId, Converter={StaticResource HasStringValueConverter}, FallbackValue=false}">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
@@ -1705,27 +1741,21 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="2*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding NoTransferFromFiltering}"  Content="{DynamicResource ServerSettings_NoTransferFromFilteringLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoTransferFromFilteringTooltip}"/>
 
-                                            <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
-                                            <CheckBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
-                                            <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                            <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeCharacterExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeCharacterExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="1" Grid.Column="1"  Margin="1" IsEnabled="{Binding OverrideTributeCharacterExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsLabel}" Value="{Binding TributeCharacterExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsTooltip}" />
+                                            <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeItemExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeItemExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeItemExpirationSecondsTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="2" Grid.Column="1" Margin="1" IsEnabled="{Binding OverrideTributeItemExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeItemExpirationSecondsLabel}" Value="{Binding TributeItemExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeItemExpirationSecondsTooltip}" />
+                                            <CheckBox Grid.Row="3" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeDinoExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeDinoExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeDinoExpirationSecondsTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="3" Grid.Column="1" Margin="1" IsEnabled="{Binding OverrideTributeDinoExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeDinoExpirationSecondsLabel}" Value="{Binding TributeDinoExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeDinoExpirationSecondsTooltip}" />
 
-                                            <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventUploadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorUploadsTooltip}"/>
-                                            <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventUploadItems}" Content="{DynamicResource ServerSettings_NoItemUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemUploadsTooltip}"/>
-                                            <CheckBox Grid.Row="2" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventUploadDinos}" Content="{DynamicResource ServerSettings_NoDinoUploadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoUploadsTooltip}"/>
-
-                                            <CheckBox Grid.Row="3" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeCharacterExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeCharacterExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip}"/>
-                                            <local:AnnotatedSlider Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" IsEnabled="{Binding OverrideTributeCharacterExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsLabel}" Value="{Binding TributeCharacterExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeCharacterExpirationSecondsTooltip}" />
-                                            <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeItemExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeItemExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeItemExpirationSecondsTooltip}"/>
-                                            <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" IsEnabled="{Binding OverrideTributeItemExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeItemExpirationSecondsLabel}" Value="{Binding TributeItemExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeItemExpirationSecondsTooltip}" />
-                                            <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideTributeDinoExpirationSeconds}"  Content="{DynamicResource ServerSettings_OverrideTributeDinoExpirationSecondsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideTributeDinoExpirationSecondsTooltip}"/>
-                                            <local:AnnotatedSlider Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" IsEnabled="{Binding OverrideTributeDinoExpirationSeconds}" Label="{DynamicResource ServerSettings_TributeDinoExpirationSecondsLabel}" Value="{Binding TributeDinoExpirationSeconds, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_TributeDinoExpirationSecondsTooltip}" />
+                                            <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideMinimumDinoReuploadInterval}"  Content="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip}"/>
+                                            <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Margin="1" IsEnabled="{Binding OverrideMinimumDinoReuploadInterval}" Label="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalLabel}" Value="{Binding MinimumDinoReuploadInterval, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalTooltip}" />
                                         </Grid>
                                     </GroupBox>
 

@@ -124,6 +124,8 @@ namespace ARK_Server_Manager
                         }
                     }
 
+                    ServerManager.Instance.CheckProfiles();
+
                     Tabs.SelectedIndex = 0;
                 }).DoNotWait();
 

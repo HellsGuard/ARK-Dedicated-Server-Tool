@@ -80,5 +80,22 @@ namespace ARK_Server_Manager.Lib
 
             this.Servers.Remove(server);
         }
+
+        public void CheckProfiles()
+        {
+            var serverIds = new Dictionary<string, bool>();
+            foreach (var server in Servers)
+            {
+                if (server == null || server.Profile == null)
+                    continue;
+
+                while (serverIds.ContainsKey(server.Profile.ProfileID))
+                {
+                    server.Profile.ResetProfileId();
+                }
+
+                serverIds.Add(server.Profile.ProfileID, true);
+            }
+        }
     }
 }

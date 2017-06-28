@@ -685,20 +685,24 @@
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">No Transfer from Filtering</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">If enabled, the survivor, item and dino transfers are disabled if the server is not in the same cluster.</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">No Survivor Downloads</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">If enabled, the survivor downloads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">No Item Downloads</sys:String>
     <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">If enabled, the item downloads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">No Dino Downloads</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">If enabled, the dino downloads are disabled.</sys:String>
+
+    <sys:String x:Key="ServerSettings_TributeUploadLabel">Tribute Upload Options</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorUploadsLabel">No Survivor Uploads</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorUploadsTooltip">If enabled, the survivor uploads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoItemUploadsLabel">No Item Uploads</sys:String>
     <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">If enabled, the item uploads are disabled.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">No Dino Uploads</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">If enabled, the dino uploads are disabled.</sys:String>
+
+    <sys:String x:Key="ServerSettings_ClusterTributeLabel">Cluster Tribute Options</sys:String>
+    <sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">No Transfer from Filtering</sys:String>
+    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">If enabled, the survivor, item and dino transfers are disabled if the server is not in the same cluster.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsLabel">Override Survivor Upload Expiration</sys:String>
     <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip">If enabled, will allow you to override the expiration timer.</sys:String>
     <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsLabel">Survivor Upload Expiration</sys:String>
@@ -711,6 +715,10 @@
     <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsTooltip">If enabled, will allow you to override the expiration timer.</sys:String>
     <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsLabel">Dino Upload Expiration</sys:String>
     <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsTooltip">Set the expiration timer for uploaded dinos.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalLabel">Override Minimum Dino Re-upload Interval</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip">If enabled, will allow you to override the re-upload interval.</sys:String>
+    <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalLabel">Minimum Dino Re-upload Interval</sys:String>
+    <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalTooltip">Set the cooldown between allowed Dino re-uploads. Remaining cooldown time is displayed on the Dino Upload UI.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>

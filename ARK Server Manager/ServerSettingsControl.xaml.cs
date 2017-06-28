@@ -760,6 +760,8 @@ namespace ARK_Server_Manager
                 try
                 {
                     this.Server.ImportFromPath(dialog.FileName);
+                    this.Server.Profile.ResetProfileId();
+
                     this.Settings = this.Server.Profile;
                     this.Runtime = this.Server.Runtime;
                 }
