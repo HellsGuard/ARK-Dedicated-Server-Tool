@@ -7,6 +7,113 @@
     LinkedStyle="ru-RU-style"
     >
 
+    <sys:String x:Key="Generic_ErrorLabel">Ошибка</sys:String>
+    
+    <!-- Application -->
+    <sys:String x:Key="Application_RunAsAdministratorTitle">Запустить в режиме Администратора.</sys:String>
+    <sys:String x:Key="Application_RunAsAdministratorLabel">Это приложение требует Административных привилегий для доступа ко всем функциям. Вы хотите запустить как из режима Администратора?</sys:String>
+    <sys:String x:Key="Application_RunAsAdministrator_FailedTitle">Ошибка загрузки в режиме Администратора.</sys:String>
+    <sys:String x:Key="Application_RunAsAdministrator_FailedLabel">К сожалению, это приложение не может быть запущено как в режиме Администратора, нехватает привилегий Пользователя.</sys:String>
+    <sys:String x:Key="Application_SingleInstanceTitle"> Приложение уже запущено.</sys:String>
+    <sys:String x:Key="Application_SingleInstanceLabel">Другой экземпляр приложения уже запущен. Вы хотите переключиться на этот экземпляр?</sys:String>
+    <sys:String x:Key="Application_SingleInstance_FailedTitle">Ошибка переключения приложения.</sys:String>
+    <sys:String x:Key="Application_SingleInstance_FailedLabel">Не удалось переключиться на другой экземпляр приложения. Запуск нового экземпляра приложения.</sys:String>
+
+
+    <sys:String x:Key="Application_DataDirectoryTitle">Выберите каталог данных</sys:String>
+    <sys:String x:Key="Application_DataDirectoryLabel">Кажется, у вас нет набора каталогов данных. Каталог данных - это где ваши профили и SteamCMD будут сохранены. Это не то же самое, что и каталог установки сервера, который вы можете выбрать для каждого профиля. Теперь вам будет предложено выбрать местоположение, в котором находится каталог данных Ark Server Manager. Вы можете позже изменить это в окне настроек.</sys:String>
+    <sys:String x:Key="Application_DataDirectory_DialogTitle">Выберите каталог данных</sys:String>
+    <sys:String x:Key="Application_DataDirectory_ConfirmTitle">Подтвердить расположение</sys:String>
+    <sys:String x:Key="Application_DataDirectory_ConfirmLabel">Ark Server Manager будет хранить профили и SteamCMD в следующих каталогах:\r\n\r\nПрофили: {0}\r\nSteamCMD: {1}\r\n\r\nВы подтверждаете?</sys:String>
+    <sys:String x:Key="Application_Profile_SaveFailedTitle">Ошибка сохранения профиля</sys:String>
+    <sys:String x:Key="Application_Profile_SaveFailedLabel">Ошибка сохранения профиля {0}.  {1}\n{2}</sys:String>
+
+    <!-- Updater Window -->
+    <sys:String x:Key="AutoUpdater_Title">ARK Server Manager - Обновление...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status">Статус</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_CleaningSteamCmd">Очистка SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadingSteamCmd">Загрузка SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_UnzippingSteamCmd">Распаковка SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_RunningSteamCmd">Авторизация SteamCMD...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_InstallSteamCmdComplete">SteamCMD установка</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_CheckForNewServerVersion">Проверка новой версии сервера...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadNewServerVersion">Загрузка новой версии сервера...</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_DownloadNewServerComplete">Загрузка сервера завершена</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_Complete">Завершено</sys:String>
+    <sys:String x:Key="AutoUpdater_Status_Cancelled">Отменено</sys:String>
+    <sys:String x:Key="AutoUpdater_CancelButtonLabel">Отмена</sys:String>
+
+    <!-- CommandLine Window -->
+    <sys:String x:Key="CommandLine_Title">Командная строка</sys:String>
+    <sys:String x:Key="CommandLine_CopyButtonLabel">Скопировать в буфер обмена</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ConfirmTitle">Скопировано в буфер обмена</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ConfirmLabel">Готово!</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ErrorTitle">Скопировать в буфер обмена не удалось.</sys:String>
+    <sys:String x:Key="CommandLine_CopyButton_ErrorLabel">Буфер обмена не открывается. Другое приложение может использовать его. Попробуйте закрыть другие приложения и повторите попытку.</sys:String>
+
+    <!-- CustomConfigDataWindow Window -->
+    <sys:String x:Key="CustomConfigData_Title">Пользовательские данные конфигурации</sys:String>
+    <sys:String x:Key="CustomConfigData_ProcessButtonLabel">Обработать</sys:String>
+    <sys:String x:Key="CustomConfigData_CancelButtonLabel">Отмена</sys:String>
+
+    <!-- AddSteamUserWindow Window -->
+    <sys:String x:Key="AddSteamUser_Title">Добавить пользователей Steam</sys:String>
+    <sys:String x:Key="AddSteamUser_InstructionLabel">Введите один или несколько SteamIds. Каждый идентификатор должен быть на новой строке.</sys:String>
+    <sys:String x:Key="AddSteamUser_ProcessButtonLabel">OK</sys:String>
+    <sys:String x:Key="AddSteamUser_CancelButtonLabel">Отмена</sys:String>
+
+    <!-- Mod Details Window -->
+    <sys:String x:Key="ModDetails_Title">Детали Модов</sys:String>
+    <sys:String x:Key="ModDetails_ProfileTitle">Детали Модов - {0}</sys:String>
+    <sys:String x:Key="ModDetails_Load_FailedTitle">Ошибка загрузки модов</sys:String>
+    <sys:String x:Key="ModDetails_Load_FailedLabel">Произошла ошибка при получении деталей мод.\r\n{0}</sys:String>
+    <sys:String x:Key="ModDetails_Purge_FailedTitle">Ошибка очистки неиспользуемых мод</sys:String>
+    <sys:String x:Key="ModDetails_Purge_Title">Очистить неиспользуемые моды</sys:String>
+    <sys:String x:Key="ModDetails_Refresh_FailedTitle">Ошибка обновления Модов</sys:String>
+    <sys:String x:Key="ModDetails_Reload_FailedTitle">Ошибка перезагрузки Модов</sys:String>
+    <sys:String x:Key="ModDetails_Save_FailedTitle">Ошибка сохранения Модов</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownTitle">Неизвестный тип Модов</sys:String>
+    <sys:String x:Key="ModDetails_Save_UnknownLabel">Есть один или несколько модов, которые не были загружены, это может помешать корректной работе модов и карт. Вы хотите продолжить?</sys:String>
+    <sys:String x:Key="ModDetails_Unsaved_Title">Без изменений</sys:String>
+    <sys:String x:Key="ModDetails_Unsaved_Label">Вы внесли изменения, которые не были сохранены в профиле, если вы продолжите изменения, вы будете отброшены. Вы хотите продолжить?</sys:String>
+    
+    <sys:String x:Key="ModDetails_TotalCountLabel">Общее колличество:</sys:String>
+    <sys:String x:Key="ModDetails_FilterLabel">Фильтр:</sys:String>
+
+    <sys:String x:Key="ModDetails_IndexColumnLabel">#</sys:String>
+    <sys:String x:Key="ModDetails_ModIdColumnLabel">Мод ID</sys:String>
+    <sys:String x:Key="ModDetails_TitleColumnLabel">Имя</sys:String>
+    <sys:String x:Key="ModDetails_TypeColumnLabel">Тип Мода</sys:String>
+    <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Последняя загрузка</sys:String>
+    <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Последнее обновление (Автор)</sys:String>
+    <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Размер</sys:String>
+
+    <sys:String x:Key="ModDetails_AddModsTooltip">Добавить в список.</sys:String>
+    <sys:String x:Key="ModDetails_LoadModsTooltip">Загрузить список модов из папки сервера.</sys:String>
+    <sys:String x:Key="ModDetails_MoveModUpTooltip">Поднять Мод в верх по списку.</sys:String>
+    <sys:String x:Key="ModDetails_MoveModDownTooltip">Опустить Мод в низ по списку.</sys:String>
+    <sys:String x:Key="ModDetails_PurgeModsFolderTooltip">Очистите неиспользуемые моды из папки Mods.</sys:String>
+    <sys:String x:Key="ModDetails_RefreshModsTooltip">Обновить информацию Модов.</sys:String>
+    <sys:String x:Key="ModDetails_ReloadModsTooltip">Обновить список Мод из профиля.</sys:String>
+    <sys:String x:Key="ModDetails_RemoveModTooltip">Удалите Мод из списка.</sys:String>
+    <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Удалите все Моды из списка.</sys:String>
+    <sys:String x:Key="ModDetails_SaveModsTooltip">Сохраните Моды в профиль.</sys:String>
+    <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Сохраните данные мод по модам.</sys:String>
+    <sys:String x:Key="ModDetails_Clipboard_SaveTitle">Детали модов</sys:String>
+
+    <!-- Workshop Files Window -->
+    <sys:String x:Key="WorkshopFiles_Title">Детали мастерской</sys:String>
+    <sys:String x:Key="WorkshopFiles_ProfileTitle">Детали мастерской - {0}</sys:String>
+    <sys:String x:Key="WorkshopFiles_Load_FailedTitle">Ошибка загрузки мастерской</sys:String>
+    <sys:String x:Key="WorkshopFiles_Refresh_FailedTitle">Ошибка обновления мастерской</sys:String>
+    <sys:String x:Key="WorkshopFiles_Refresh_FailedLabel">Загрузка информации из Steam не удалась, вместо этого была заполнена локальным кешем.</sys:String>
+
+    <sys:String x:Key="WorkshopFiles_TotalCountLabel">Общее количество:</sys:String>
+    <sys:String x:Key="WorkshopFiles_SelectedCountLabel">Выбрать количество:</sys:String>
+    <sys:String x:Key="WorkshopFiles_LastRefreshedLabel">Последнее обновление:</sys:String>
+    <sys:String x:Key="WorkshopFiles_FilterLabel">Фильтр:</sys:String>
+    <sys:String x:Key="WorkshopFiles_FilterExistingLabel">Отфильтруйте существующие моды</sys:String>
+
     <sys:String x:Key="WorkshopFiles_SelectedColumnLabel">Выбрать</sys:String>
     <sys:String x:Key="WorkshopFiles_ModIdColumnLabel">Mod ID</sys:String>
     <sys:String x:Key="WorkshopFiles_TitleColumnLabel">Имя</sys:String>
@@ -47,6 +154,8 @@
     <sys:String x:Key="ShutdownWindow_ShutdownIntervalTooltip">Количество минут до выключения сервера.</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartServerLabel">Перезагрузить сервер после остановки</sys:String>
     <sys:String x:Key="ShutdownWindow_RestartServerTooltip">Если включено, сервер будет немедленно перезагружен после его завершения.</sys:String>
+    <sys:String x:Key="ShutdownWindow_UpdateServerLabel">Обновление сервера после выключения</sys:String>
+    <sys:String x:Key="ShutdownWindow_UpdateServerTooltip">Если включено, сервер будет обновлен после его завершения.</sys:String>
     <sys:String x:Key="ShutdownWindow_BackupWorldFileLabel">Сохранить сервер при выключении.</sys:String>
     <sys:String x:Key="ShutdownWindow_BackupWorldFileTooltip">Если это разрешено, сервер будет сохранён после завершения работы.</sys:String>
     <sys:String x:Key="ShutdownWindow_ShutdownReasonLabel">Причина (необязательно):</sys:String>
@@ -171,24 +280,24 @@
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Не удалось изменить каталог данных</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">При изменении каталога данных произошла ошибка: {0}\r\nПожалуйста, исправьте ошибку и повторите попытку или обратитесь в службу технической поддержки.</sys:String>
 
-    <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Select Cache Directory</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Invalid cache directory</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorLabel">The cache directory must specify a valid location or the cache update period must be 0.</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorTitle">Update task failed</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorLabel">Failed to update the cache task. Ensure you have administrative rights and try again.</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledTitle">Updates enabled</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledLabel">Server cache will update every {0} minutes.</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledTitle">Updates disabled</sys:String>
-    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledLabel">Server cache updating disabled.</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorTitle">Update task failed</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorLabel">Failed to update the server backup task. Ensure you have administrative rights and try again.</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledTitle">Backups enabled</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledLabel">Server backups will run every {0} minutes.</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledTitle">Backups disabled</sys:String>
-    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledLabel">Server backups are disabled.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTitle">SteamCmd Authentication Disabled</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledLabel">You have chosen to redirect the steamcmd output to the progress window. You are not able to use your steam credentials, you must use anonymous credentials.</sys:String>
-    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTooltip">To use your steam credentials you must turn off the Output SteamCMD to the progress window option.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Выберете директорию Авто-Обновления кеша</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Недопустимый каталог кеша Авто-Обновления</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorLabel">Каталог кеша должен указывать допустимое расположение или период Авто-Обновления кеша должен быть 0.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorTitle">Ошибка выполнения Авто-Обновления</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheTaskUpdate_ErrorLabel">Не удалось обновить задачу кэширования Авто-Обновления. Убедитесь, что у вас есть права администратора и повторите попытку.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledTitle">Авто-Обновления включено.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_EnabledLabel">Кэш Авто-Обновления сервера выполняется каждые {0} минут.</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledTitle">Авто-Обновления отключено</sys:String>
+    <sys:String x:Key="GlobalSettings_CacheUpdate_DisabledLabel">Авто-Обновления кеша сервера отключено.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorTitle">Ошибка выполнения задачи Авто-Обновления</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_ErrorLabel">Не удалось обновить задачу Авто-Сохранения копирования сервера. Убедитесь, что у вас есть права администратора и повторите попытку.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledTitle">Авто-Сохранения включено</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_EnabledLabel">Авто-Сохранения серверов будут выполняться каждые {0} минут.</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledTitle">Авто-Сохранения отключено</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupTaskUpdate_DisabledLabel">Авто-Сохранения сервера отключено.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTitle">Идентификация SteamCmd отключена</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledLabel">Вы выбрали перенаправление вывода SteamCMD в окно выполнения. Вы не можете использовать свои парольные учетные данные, вы должны использовать анонимные учетные данные.</sys:String>
+    <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTooltip">Чтобы использовать парольные учетные данные, вы должны отключить вывод SteamCMD в окне окна выполнения.</sys:String>
 
     <!-- 
     Main Window 
@@ -312,52 +421,52 @@
     <sys:String x:Key="ServerSettings_ValidateButtonTooltip">Проверит различие содержимого сервера с версией Steam.</sys:String>
     <sys:String x:Key="ServerSettings_ResetSectionTooltip">Сбрасывает раздел обратно по умолчанию.</sys:String>
 
-    <sys:String x:Key="ServerSettings_AdminRequired_ErrorTitle">Needs Administrator Access</sys:String>
-    <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Automatic Management features of the Server Manager use administrator features of Windows to schedule tasks that will run even if the ASM is not running, without installing any separate processes or services. To do this, the Server Manager must run with administrator privileges. Restart the Server Manager and 'Run As Administrator' and you will be able to utilize these features.</sys:String>
-    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorTitle">ARK Auto Settings</sys:String>
-    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorLabel">The ARK automatic settings and ASM automatic settings cannot be enabled at the same time. They are similar features that cause problems for the other and if the ASM automatic features are enabled, the ARK features are disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Server running</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">The server must be stopped to upgrade. Do you wish to proceed?</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeServer_FailedTitle">Server Update Error</sys:String>
-    <sys:String x:Key="ServerSettings_UpgradeServer_MutexFailedLabel">Could not lock the server, another process is using the server. Update process was cancelled.</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_StartingTitle">Stop the server?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_StartingLabel">This will shut down the server. Do you wish to proceed?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Stop the server?</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">This will shut down the server. Do you wish to proceed?\r\n\r\nClick Yes to shutdown with a timer.\r\nClick No to shutdown now.\r\nClick Cancel to cancel shutdown.</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_FailedTitle">Starting Server Error</sys:String>
-    <sys:String x:Key="ServerSettings_StartServer_MutexFailedLabel">Could not lock the server, another process is using the server. Server start was cancelled.</sys:String>
-    <sys:String x:Key="ServerSettings_BackupServer_Title">Backup Server</sys:String>
-    <sys:String x:Key="ServerSettings_BackupServer_FailedTitle">Backup Server Error</sys:String>
-    <sys:String x:Key="ServerSettings_ShutdownServer_FailedTitle">Shutdown Server Error</sys:String>
-    <sys:String x:Key="ServerSettings_ShutdownServer_CancelledTitle">Shutdown Server Cancelled</sys:String>
-    <sys:String x:Key="ServerSettings_ShutdownServer_AlreadyOpenLabel">The shutdown window is already open for this server.</sys:String>
-    <sys:String x:Key="ServerSettings_StopServer_FailedTitle">Stopping Server Error</sys:String>
-    <sys:String x:Key="ServerSettings_InstallServer_Title">Select Install Directory</sys:String>
-    <sys:String x:Key="ServerSettings_LoadConfig_Title">Load Server Profile or GameUserSettings.ini</sys:String>
-    <sys:String x:Key="ServerSettings_LoadConfig_ErrorTitle">Profile failed to load</sys:String>
-    <sys:String x:Key="ServerSettings_LoadConfig_ErrorLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
-    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Server cache not configured</sys:String>
-    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Auto-updates is enabled but the Server Cache update is not yet configured. The server cache downloads server updates in the background automatically to enable faster server updates, particularly when there are multiple servers. You must first configure the cache, then you may enable automatic updating. Would you like to configure the cache now?</sys:String>
-    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">The server cache was not configured. Disabling auto-updates.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorTitle">SotF Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorLabel">Auto-restarts are enabled but is not compatible with SotF. Disabling auto-restarts.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Auto-updates are enabled but is not compatible with SotF. Disabling auto-updates.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Auto Managed Mods Not Compatible</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">ARK's auto managed mods are enabled but is not compatible with ASM's auto updates. Disabling ARK's auto managed mods.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Update directory permissions</sys:String>
-    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Failed to update directory permissions. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Update schedule failed</sys:String>
-    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Failed to update scheduled tasks. Ensure you have administrator rights on this machine and try again. If the problem persists, please report this as a bug.</sys:String>
-    <sys:String x:Key="ServerSettings_ResetTitle">Confirm Reset Action</sys:String>
-    <sys:String x:Key="ServerSettings_ResetLabel">Click 'Yes' to confirm you want to perform the reset.</sys:String>
-    <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Load Ini File.</sys:String>
-    <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">The ini file was successfully loaded.</sys:String>
-    <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ini File Load Error</sys:String>
-    <sys:String x:Key="ServerSettings_ClearTitle">Confirm Clear Action</sys:String>
-    <sys:String x:Key="ServerSettings_ClearLabel">Click 'Yes' to confirm you want to clear all.</sys:String>
-    <sys:String x:Key="ServerSettings_DeleteTitle">Confirm Delete Action</sys:String>
-    <sys:String x:Key="ServerSettings_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
+    <sys:String x:Key="ServerSettings_AdminRequired_ErrorTitle">Нужны права Администратора</sys:String>
+    <sys:String x:Key="ServerSettings_AdminRequired_ErrorLabel">Функции автоматического управления диспетчером сервера используют функции администратора Windows для планирования задач, которые будут выполняться, даже если ASM не работает, без установки каких-либо отдельных процессов или служб. Для этого диспетчер сервера должен запускаться с правами администратора. Перезапустите диспетчер сервера и «Запуск от имени Администратора», и вы сможете использовать эти функции.</sys:String>
+    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorTitle">ARK Авто Настройки</sys:String>
+    <sys:String x:Key="ServerSettings_ArkAutoSettings_ErrorLabel">Автоматические настройки ARK и автоматические настройки ASM не могут быть включены одновременно. Они аналогичны функциям, которые вызывают проблемы для другого, и если включены автоматические функции ASM, функции ARK отключены.</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_RunningTitle">Сервер запущен</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_RunningLabel">Для обновления необходимо остановить сервер. Вы хотите продолжить?</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_FailedTitle">Ошибка обновления Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_UpgradeServer_MutexFailedLabel">Не удалось заблокировать процесс, другой процесс использует сервер. Процесс обновления был отменен.</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_StartingTitle">Остановить Сервер?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_StartingLabel">Этот сервер будет выключен. Вы хотите продолжить?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_RunningTitle">Остановить Сервер?</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_RunningLabel">Этот сервер будет выключен. Вы хотите продолжить?\r\n\r\nНажмите «Да» для выключения с помощью таймера.\r\nНажмите «Нет», чтобы отключиться.\r\nНажмите «Отмена», чтобы отменить выключение.</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_FailedTitle">Ошибка запуска Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_StartServer_MutexFailedLabel">Не удалось заблокировать процесс, другой процесс использует сервер. Начало работы сервера было отменено.</sys:String>
+    <sys:String x:Key="ServerSettings_BackupServer_Title">Авто-Сохранение Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_BackupServer_FailedTitle">Ошибка Авто-Сохранения Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_ShutdownServer_FailedTitle">Ошибка Выключения Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_ShutdownServer_CancelledTitle">Выключение Сервера отменено</sys:String>
+    <sys:String x:Key="ServerSettings_ShutdownServer_AlreadyOpenLabel">Окно Выключения уже открыто для этого сервера.</sys:String>
+    <sys:String x:Key="ServerSettings_StopServer_FailedTitle">Ошибка остановки Сервера</sys:String>
+    <sys:String x:Key="ServerSettings_InstallServer_Title">Выберете каталог установки</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_Title">Загрузить профиль сервера или GameUserSettings.ini</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_ErrorTitle">Профиль не загружен</sys:String>
+    <sys:String x:Key="ServerSettings_LoadConfig_ErrorLabel">Профиль в {0} ошибка загрузки. Ошибка: {1}\r\n{2}</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorTitle">Кэш сервера не настроен</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel1">Авто-Обновление включено, но обновление кэша сервера еще не настроено. Кэш сервера автоматически загружает обновления сервера в фоновом режиме, чтобы обеспечить более быстрое обновление сервера, особенно при наличии нескольких серверов. Сначала вы должны сконфигурировать кеш, затем включить Авто-Обновление. Вы хотите настроить кеш сейчас?</sys:String>
+    <sys:String x:Key="ServerSettings_Save_ServerCache_ErrorLabel2">Кэш сервера не был настроен. Отключение Авто-Обновлений.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorTitle">SotF не совместим</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorLabel">Авто-перезагрузка включена, но не совместима с SotF. Отключение Авто-перезагрузки.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF не совместим</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Авто-Обновление включено, но не совместима с SotF. Отключение Авто-Обновления.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Автоматически управляемые модами несовместимо</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">Автоматически управляемые моды ARK включены, но не совместимы с автоматическими обновлениями ASM. Отключение автоматическое управление модами ARK.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Обновить разрешения для каталога</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Не удалось обновить разрешения каталога. Убедитесь, что у вас есть права администратора на этом компьютере и повторите попытку. Если проблема не устранена, сообщите об этом как об ошибке.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Не удалось выполнить расписание обновления</sys:String>
+    <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorLabel">Не удалось обновить запланированные задачи. Убедитесь, что у вас есть права администратора на этом компьютере и повторите попытку. Если проблема не устранена, сообщите об этом как об ошибке.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetTitle">Подтвердить сброс</sys:String>
+    <sys:String x:Key="ServerSettings_ResetLabel">Нажмите «Да», чтобы подтвердить, что вы хотите выполнить сброс.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Title">Загрузить ini файл.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_Label">Файл ini был успешно загружен.</sys:String>
+    <sys:String x:Key="ServerSettings_LoadCustomConfig_ErrorTitle">Ошибка загрузки ini файла</sys:String>
+    <sys:String x:Key="ServerSettings_ClearTitle">Подтвердить очистку</sys:String>
+    <sys:String x:Key="ServerSettings_ClearLabel">Нажмите «Да», чтобы подтвердить, что вы хотите очистить все.</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteTitle">Подтвердить удаление</sys:String>
+    <sys:String x:Key="ServerSettings_DeleteLabel">Нажмите «Да», чтобы подтвердить, что вы хотите выполнить удаление.</sys:String>
 
     <!-- Server Settings - Administration   -->
     <sys:String x:Key="ServerSettings_AdministrationSectionLabel">Администрирование</sys:String>
@@ -406,20 +515,20 @@
     <sys:String x:Key="ServerSettings_EnableRCONPortLabel">Включить RCON порт</sys:String>
     <sys:String x:Key="ServerSettings_EnableRCONPortTooltip">Если включено, RCON порт будет задействован.</sys:String>
     <sys:String x:Key="ServerSettings_RCONPortTooltip">Этот RCON порт будет использовать ваш сервер.</sys:String>
-    <sys:String x:Key="ServerSettings_RCONResetTooltip">Resets the RCON Window settings back to defaults.</sys:String>
+    <sys:String x:Key="ServerSettings_RCONResetTooltip">Сбрасывает настройки окна RCON обратно по умолчанию.</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferLabel">Сервер лог буфера RCON:</sys:String>
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Устанавливает максимальную длину RCON игрового лог буфера (по умолчанию 600).</sys:String>
-    <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force Respawn Dinos on Startup (Causes lag after 'Ready' while repopulating)</sys:String>
-    <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">If enabled, when the server is started ALL wild creatures will be wiped and respawned (this will only destroy wild creatures that are NOT currently being tamed).</sys:String>
-    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Alternate Save Directory Name:</sys:String>
-    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel2">(Optional)</sys:String>
-    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameTooltip">Sets the directory name (underneath the servers Saved folder) to store the world, player and tribe files.</sys:String>
-    <sys:String x:Key="ServerSettings_CrossArkClusterIdLabel">Cross-ARK Data Transfer ClusterId:</sys:String>
-    <sys:String x:Key="ServerSettings_CrossArkClusterIdTooltip">Sets a cluster id for this server that will group ARK servers together via Cross-ARK Data Transfer.</sys:String>
-    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonLabel">Create SymLink</sys:String>
-    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonTooltip">Creates a cluster symbolic link for this server to the ASM clusters folder.</sys:String>
-    <sys:String x:Key="ServerSettings_ClusterDirOverrideLabel">Cluster Directory Override</sys:String>
-    <sys:String x:Key="ServerSettings_ClusterDirOverrideTooltip">If enabled, allows you to use a common cross-server storage location that functions between multiple servers running on the same machine. Uses the clusters directory in the ASM Data directory.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Перезаселить Мир во время Запуска сервера (Вызывает лаг после запуска Сервера)</sys:String>
+    <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">Если включено, при запуске сервера все дикие существа будут уничтожены и обновлены (это уничтожит только диких существ, которые в настоящее время не приручены).</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Альтернативная папка Сохранения:</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel2">(Необязательно)</sys:String>
+    <sys:String x:Key="ServerSettings_AltSaveDirectoryNameTooltip">Устанавливает имя каталога (под серверами «Сохраненная папка») для хранения файлов мира, игрока и племени.</sys:String>
+    <sys:String x:Key="ServerSettings_CrossArkClusterIdLabel">Установить КластерID Cross-ARK:</sys:String>
+    <sys:String x:Key="ServerSettings_CrossArkClusterIdTooltip">Устанавливает идентификатор Кластера для этого сервера, который будет группировать серверы ARK вместе с помощью передачи данных Cross-ARK.</sys:String>
+    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonLabel">Создать SymLink</sys:String>
+    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonTooltip">Создать Кластер symbolic link для использования ASM папку Кластера .</sys:String>
+    <sys:String x:Key="ServerSettings_ClusterDirOverrideLabel">Установить каталог Кластера</sys:String>
+    <sys:String x:Key="ServerSettings_ClusterDirOverrideTooltip">Если это разрешено, вы можете использовать общее хранилище Кластера, которое работает между несколькими серверами, работающими на одном компьютере.</sys:String>
 
     <sys:String x:Key="ServerSettings_MapsAndModsLabel">Карты и моды</sys:String>
     <sys:String x:Key="ServerSettings_MapsAndModsSOTFLabel">Survival of the Fittest включено - Карты и моды отключено</sys:String>
@@ -472,31 +581,31 @@
     <sys:String x:Key="ServerSettings_UseBattlEyeLabel">Вкл. BattlEye Анти-Чит Систему</sys:String>
     <sys:String x:Key="ServerSettings_UseBattlEyeTooltip">Если опция включена, BattlEye Анти-Чит Система будет включена.</sys:String>
     <sys:String x:Key="ServerSettings_AntiSpeedHackBiasUnits">x</sys:String>
-    <sys:String x:Key="ServerSettings_UseAllAvailableCoresLabel">Use All Available Cores</sys:String>
-    <sys:String x:Key="ServerSettings_UseAllAvailableCoresTooltip">If enabled, all of your CPU cores will be used, if all of them are not being utilized after using this launch option, then try to disable it.</sys:String>
-    <sys:String x:Key="ServerSettings_UseCacheLabel">Use Cache</sys:String>
-    <sys:String x:Key="ServerSettings_UseCacheTooltip">If enabled, ~70% faster loading speed option. The first and second times that you start the game will be still be slow, but the third time onwards will be fast.</sys:String>
-    <sys:String x:Key="ServerSettings_UseOldSaveFormatLabel">Use Old Save Format</sys:String>
-    <sys:String x:Key="ServerSettings_UseOldSaveFormatTooltip">If enabled, will use the old save formatt. New saves are not backwards compatible.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceDirectX10Label">Force DirectX 10</sys:String>
-    <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">If enabled, the game is forced to use DirectX 10 instead of DirectX 11.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Force Shader Model 4</sys:String>
-    <sys:String x:Key="ServerSettings_ForceShaderModel4Tooltip">If enabled, the game is forced to use Shader Model 4 instead of the Shader Model 5.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceLowMemoryLabel">Force Low Memory</sys:String>
-    <sys:String x:Key="ServerSettings_ForceLowMemoryTooltip">If enabled, reduces graphics and audio effects to save about 800 MB RAM, likely enabling 4GB RAM players to get past infinite-loading screens.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceNoManSkyLabel">Force No Man Sky</sys:String>
-    <sys:String x:Key="ServerSettings_ForceNoManSkyTooltip">If enabled, lots of the detailed sky features are disabled, such as clouds and starry night sky. You still see the stars, the sun, and the moon.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableWebAlarmLabel">Enable Web Alarms</sys:String>
-    <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">If enabled, servers can now get web notifications posted somewhere when important things happen to a tribe.</sys:String>
-    <sys:String x:Key="ServerSettings_UseNoMemoryBiasLabel">Use No Memory Bias</sys:String>
-    <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">If enabled, will use the old method, more RAM usage but no potential performance loss.</sys:String>
+    <sys:String x:Key="ServerSettings_UseAllAvailableCoresLabel">Использовать все ядра Процессора</sys:String>
+    <sys:String x:Key="ServerSettings_UseAllAvailableCoresTooltip">Если включено, все ваши ядра процессора будут использоваться, если все они не будут использоваться после использования этого параметра запуска, отключить его.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCacheLabel">Использовать Кеш</sys:String>
+    <sys:String x:Key="ServerSettings_UseCacheTooltip">Если включено, ~ 70% более быстрая скорость загрузки. Первый и второй раз, когда вы начинаете игру, будут все еще медленными, но в третий раз вперед будет быстро.</sys:String>
+    <sys:String x:Key="ServerSettings_UseOldSaveFormatLabel">Использовать старый формат Сохранения</sys:String>
+    <sys:String x:Key="ServerSettings_UseOldSaveFormatTooltip">Если включено, будет использоваться старый формат сохранения. Новые сохранения не сохраняются в старый формат.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceDirectX10Label">Использовать DirectX 10</sys:String>
+    <sys:String x:Key="ServerSettings_ForceDirectX10Tooltip">Если включено, игра вынуждена использовать DirectX 10 вместо DirectX 11.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceShaderModel4Label">Использовать Shader Model 4</sys:String>
+    <sys:String x:Key="ServerSettings_ForceShaderModel4Tooltip">Если включено, игра вынуждена использовать Shader Model 4 вместо Shader Model 5.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceLowMemoryLabel">Использовать Low Memory</sys:String>
+    <sys:String x:Key="ServerSettings_ForceLowMemoryTooltip">Если включено, уменьшает графические и звуковые эффекты, чтобы сэкономить около 800 МБ ОЗУ, что, вероятно, позволит игрокам 4 ГБ RAM пройти мимо экранов с бесконечной загрузкой.</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNoManSkyLabel">Использовать No Man Sky</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNoManSkyTooltip">Если включено, многие детали неба недоступны, например, облака и звездное ночное небо. Вы все еще видите звезды, солнце и луну.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableWebAlarmLabel">Включить Web Alarms</sys:String>
+    <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">Если это разрешено, серверы теперь могут получать сетевые уведомления, размещенные где-то, когда важные вещи случаются с племенем.</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoMemoryBiasLabel">Использовать No Memory Bias</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">Если включено, будет использоваться старый метод, больше использования ОЗУ, но нет потенциальной потери производительности.</sys:String>
     <sys:String x:Key="ServerSettings_StasisKeepControllersLabel">Stasis Keep Controllers</sys:String>
-    <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">If enabled, the server can gain performance by keeping the AI's in memory of statised creatures. NOTE: your server must have a lot of RAM otherwise your server will suffer with a large memory overhead.</sys:String>
+    <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">Если это разрешено, сервер может получить производительность, сохранив AI в памяти о статусных существах. ПРИМЕЧАНИЕ. На вашем сервере должно быть много ОЗУ, иначе ваш сервер будет страдать с большими издержками памяти.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
-    <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">Ключ, который необязательно использовать в скрипте прослушивания, но должен быть в текстовом файле.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
-    <sys:String x:Key="ServerSettings_WebAlarmUrlTooltip">Specifies the URL where your listening script is stored, waiting and ready to receive the post information by your game server.</sys:String>
-    <sys:String x:Key="ServerSettings_WebAlarmNote">NOTE: ASM does not provide the Web Alarms functionaility. ASM just allows you to enable/disable the Web Alarms and create the necessary AlarmPostCredentials file.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmUrlTooltip">Указывает URL-адрес, в котором хранится ваш скрипт прослушивания, ожидающий и готовый к отправке информации о вашем сервере.</sys:String>
+    <sys:String x:Key="ServerSettings_WebAlarmNote">ПРИМЕЧАНИЕ. ASM не предоставляет функциональность Web Alarms. ASM позволяет вам включать/отключать Web Alarms и создавать необходимые файлы AlarmPostCredentials.</sys:String>
 
     <sys:String x:Key="ServerSettings_ServerLogOptionsLabel">Настройки Логов Сервера</sys:String>
     <sys:String x:Key="ServerSettings_ResetServerLogOptionsTooltip">Сброс всех настроек Логов сервера по умолчанию.</sys:String>
@@ -516,8 +625,12 @@
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">Если включено, журнал уничтожения строений противником (для Племени жертвы) отобразит Племя злоумышленника в журналах Племени, а не общее сообщение об уничтожении строений.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Командная строка</sys:String>
-    <sys:String x:Key="ServerSettings_AdditionalArgsLabel">Дополнительные Аргументы:</sys:String>
-    <sys:String x:Key="ServerSettings_AdditionalArgsTooltip">Дополнительные аргументы командной строки для сервера.  Если вы укажете это, добавьте аргументы, которые начинаются с ?, а затем другие. Например: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsLabel">Launcher Args:</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsTooltip">Дополнительные аргументы командной строки для серверной пусковой установки. Используйте это с осторожностью! Для получения дополнительной информации найдите «Microsoft Start Command» в Интернете.</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsOverrideLabel">Использовать Launcher</sys:String>
+    <sys:String x:Key="ServerSettings_LauncherArgsOverrideTooltip">Если включено, файл RunServer.cmd будет содержать только то, что включено в поле Launcher Args.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerArgsLabel">Server Args:</sys:String>
+    <sys:String x:Key="ServerSettings_ServerArgsTooltip">Дополнительные параметры командной строки для сервера. Если вы укажете это, добавьте аргументы, начинающиеся с "?" сначала, а затем любые другие аргументы. Например: ?MaxPlayers=5?QueryPort=9999 -nosteamclient</sys:String>
     <sys:String x:Key="ServerSettings_ShowCommandButtonLabel">Показать команды...</sys:String>
     <sys:String x:Key="ServerSettings_ShowCommandButtonTooltip">Просмотр команд запуска командной строки для сервера.</sys:String>
 
@@ -531,6 +644,8 @@
     <sys:String x:Key="ServerSettings_EnableAutoShutdownTooltip">Укажите время выключения сервера (формат в ЧЧ:ММ)</sys:String>
     <sys:String x:Key="ServerSettings_RestartAfterShutdownLabel">затем перезагрузить</sys:String>
     <sys:String x:Key="ServerSettings_RestartAfterShutdownTooltip">Если включено, перезагрузить сервер сразу после завершения работы</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateAfterShutdownLabel">Выполнять обновление</sys:String>
+    <sys:String x:Key="ServerSettings_UpdateAfterShutdownTooltip">Если включено, обновит сервер после завершения работы</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicBackupsLabel">Включить периодические Авто-Сохранение</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicBackupsTooltip">Если этот параметр включен, сервер будет периодически Авто-Сохраняться. См. редактируется в "Глобальные настройки".</sys:String>
     <sys:String x:Key="ServerSettings_PeriodicUpdatesLabel">Включить периодические Авто-Обновления</sys:String>
@@ -643,17 +758,20 @@
     <sys:String x:Key="ServerSettings_NonPermanentDiseasesLabel">Непостоянные болезни</sys:String>
     <sys:String x:Key="ServerSettings_NonPermanentDiseasesTooltip">Если включено, это сделает болезни не постоянными (они пропадут, если будет респаун).</sys:String>
 
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleLabel">Override NPC Network Stasis Range Scale</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleTooltip">If enabled, you can override the NPC network statis range scale settings.</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartLabel">Online Player Count Start</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartTooltip">The minimum number of online players when the statis scale is enabled.</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndLabel">Online Player Count End</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndTooltip">The maximum number of online players when the scale maximum is reached.</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel">Scale Maximum</sys:String>
-    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip">The maximum scale percentage used by the server, when the online player count end value is reached.</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleLabel">Определить NPC заморозку при Онлайне</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScaleTooltip">Если включено, вы можете переопределить настройки радиуса заморозки NPC от игроков.</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartLabel">Минимальное кол-во игроков для включения</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountStartTooltip">Минимальное количество онлайн-игроков при включенной шкале статуса.</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndLabel">Максимальное кол-во игроков для выключения</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePlayerCountEndTooltip">Максимальное количество онлайн-игроков при включенной шкале статуса.</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndLabel">Максимальный процент</sys:String>
+    <sys:String x:Key="ServerSettings_NPCNetworkStasisRangeScalePercentEndTooltip">Максимальный процент масштабирования, используемый сервером при достижении конечного значения счетчика онлайн-игроков.</sys:String>
 
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Скорость расхода кислорода</sys:String>
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Установить множитель, как скорость плавания влияет на трату кислорода.</sys:String>
+
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Включить Луч для поиска Лута</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">Если включено, после смерти луч света стреляет в небо, чтобы помочь игроку найти место, где он погиб.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Чат и уведомления</sys:String>
@@ -713,7 +831,7 @@
     <sys:String x:Key="ServerSettings_TurretDamageTooltip">Определяет коэффициент для урона турелью (пули и снаряды турели). Более высокие значения увеличивают урон турелью. Более низкие значения уменьшают.</sys:String>
 
     <sys:String x:Key="ServerSettings_PlayerBaseStatMultipliersLabel">Начальные параметры статов</sys:String>
-    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">По уровневый множитель статов</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Поуровневый множитель статов</sys:String>
     
     <sys:String x:Key="ServerSettings_StatHealthLabel">Здоровье:</sys:String>
     <sys:String x:Key="ServerSettings_StatHealthTooltip">Определяет множитель для улучшения здоровья на уровне. Более высокие значения увеличивают здоровье быстрее; более низкие значения увеличивают здоровье медленнее.</sys:String>
@@ -764,39 +882,39 @@
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Максимально ручных: (Племя):</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Установить максимальное количество домашних динозавров в Племени.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Появление Дино:</sys:String>
-    <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Определяет коэффициент для появления динозавров. Более высокие значения увеличивают количество появляемых динозавров по всему ARК.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Allow Raid Dino Feeding</sys:String>
-    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingTooltip">If enabled, allows your server's Titanosaurs to be permanently tamed (namely allows them to be Fed).</sys:String>
-    <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel">Food Drain Multiplier</sys:String>
-    <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip">Specifies the multiplier for food drain of the raid dinos. Higher values increase the food drain; lower values decrease the food drain.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Определяет коэффициент для появления динозавров. Более высокие значения увеличивают колличество появляемых динозавров по всему ARК.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Разрешить на постоянной основе держать Рейд-Животных.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingTooltip">Если это разрешено, позволяет Титанозаврам вашего сервера быть постоянно прирученным (а именно, позволяет им быть накормленным).</sys:String>
+    <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel">Потребление корма Рейд-Животными</sys:String>
+    <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip">Определяет множитель потребления пищи Рейд-Животными. Более высокие значения увеличивают потребление еды; Более низкие значения уменьшают потребление еды.</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersLabel">Включить полет в пещерах</sys:String>
     <sys:String x:Key="ServerSettings_EnableAllowCaveFlyersTooltip">Если этот параметр включен, позволяет полет на динозаврах в пещерах.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowFlyingStaminaRecoveryLabel">Allow Flying Stamina Recovery</sys:String>
-    <sys:String x:Key="ServerSettings_AllowFlyingStaminaRecoveryTooltip">If enabled, recovers stamina while standing on a flyer.</sys:String>
-    <sys:String x:Key="ServerSettings_PreventMateBoostLabel">Prevent Dino Mate Boost</sys:String>
-    <sys:String x:Key="ServerSettings_PreventMateBoostTooltip">If enabled, the dino mate boost will be disabled.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Disable Force Ground Flyer with Explosives</sys:String>
-    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesTooltip">If enabled, will disable the grounding of the flyer when explosives are put on them.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Label">Allow Multiple Attached C4</sys:String>
-    <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Tooltip">If enabled, will allow more than one C4 attached per dino.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowFlyingStaminaRecoveryLabel">Разрешить восстановление выносливости в воздухе</sys:String>
+    <sys:String x:Key="ServerSettings_AllowFlyingStaminaRecoveryTooltip">Если включено, восстанавливает выносливость, в воздухе.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventMateBoostLabel">Отключить Dino Mate Boost</sys:String>
+    <sys:String x:Key="ServerSettings_PreventMateBoostTooltip">Если включено, усиление Dino Mate Boost будет отключено.(Животные с более быстрыми кладками яиц)</sys:String>
+    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Отключить Посадку Летающих с бомбами</sys:String>
+    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesTooltip">Если включено, отключит приземление Летающих при наложении на них взрывчатых веществ.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Label">Разрешить множественное присоединение C4</sys:String>
+    <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Tooltip">Если включено, разрешено прикреплять более одного C4 на каждого динозавра.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayLabel">Выкл. Потерю прав на Дино в PvE</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">Если этот параметр включен, отключается постепенная потеря права собственности на дино в PvE; в противном случае каждый Дино может быть заявлен как собственный, любым игроком.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Disable Dino Decay PvP</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">If enabled, disables the gradual decay of dino ownership in PvP; otherwise every dino can be claimed by any player.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Отключить PvP Dino Decay</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">Если включено, отключает снятие клейма с динозавров в PvP; В противном случае любой динозавр может быть заклеймен любым игроком, по истечению времени.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Отключить Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">Если включено, отключает сбор дропа кроме мяса с рыбы.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">Время потери прав на Дино в PvE:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Множитель  потери прав на Дино. Работает только если "Выкл. Потерю прав на Дино PvE" не активно.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Disable Baby Dino Imprint Buff</sys:String>
-    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">If enabled, will disable the dino imprinting-player stat bonus, where normally whomever specifically imprinted on the dino and raised it to have an imprinting quality, gets extra damage/resistance buff.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Allow Baby Dino Imprint Cuddle by Anyone</sys:String>
-    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">If enabled, ANYONE will to be able to take care of a Baby Dino (cuddle etc), not just whomever imprinted on it.</sys:String>
-    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosLabel">Auto Destroy Decayed Dinos</sys:String>
-    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosTooltip">If enabled, all claimable decayed dinos will auto-destroy on load, rather than have them remain around as Claimable.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoRidingLabel">Disable Dino Riding</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoRidingTooltip">If enabled, all tamed dinos will be unable to be ridden.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Disable Dino Taming</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoTamingTooltip">If enabled, all wild dinos will be unable to be tamed.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Отключить Baby Dino бонус</sys:String>
+    <sys:String x:Key="ServerSettings_DisableImprintDinoBuffTooltip">Если включено, выращенные динозавры не будут получать бонусы от выращенного им персонажа. Бонус дамаги\резистов и т.д.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleLabel">Разрешить играть с Baby Dino всем</sys:String>
+    <sys:String x:Key="ServerSettings_AllowAnyoneBabyImprintCuddleTooltip">Если включено, каждый в племени сможет позаботиться о Baby Dino (покормить и т. д.), А не только те, за кем он закреплён.</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosLabel">Авто-Уничтожение Разклейменных Существ</sys:String>
+    <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosTooltip">Если включено, все заклейменные динозавры будут автоматически уничтожаться при загрузке, если клеймо спало.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoRidingLabel">Отключить езду на Динозаврах</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoRidingTooltip">Если включено, запрещено ездить на прирученных динозаврах.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Отключить приручение Диких</sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoTamingTooltip">Если включено, все дикие динозавры не смогут быть приручены.</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Кастомизация Дино</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Множитель появления</sys:String>
@@ -840,7 +958,7 @@
     <sys:String x:Key="ServerSettings_PerLevelStatMultipliersTooltip">Если включено, позволяет изменять коэффициенты, которые будут применяться на каждый стат.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatTamedAddMultipliersTooltip">Если этот параметр включен, позволяет изменять факторы, которые должны применяться к добавлению Приручения для каждого стата.</sys:String>
     <sys:String x:Key="ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip">Если этот параметр включен, позволяет изменять факторы, которые должны применяться к множителю Приручения для каждого стата.</sys:String>
-    <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">Если этот параметр включен, позволит изменять коэффициенты приручения для "Одомашливания" при каждом стате.</sys:String>
+    <sys:String x:Key="ServerSettings_PerLevelStatTamedMultipliersTooltip">Если этот параметр включен, позволит изменять коэффициенты приручения для "Одомашнивания" при каждом стате.</sys:String>
     <sys:String x:Key="ServerSettings_ResetPerLevelStatMultipliersTooltip">Сброс всех настроек обратно по умолчанию.</sys:String>
     <sys:String x:Key="ServerSettings_ResetBaseStatMultipliersTooltip">Сброс всех настроек обратно по умолчанию.</sys:String>
 
@@ -850,18 +968,18 @@
     <sys:String x:Key="ServerSettings_EggHatchSpeedTooltip">Определяет множитель время, созревания оплодотворенного яйца. Более высокие значения уменьшают время созревания яйца.</sys:String>
     <sys:String x:Key="ServerSettings_BabyMatureSpeedLabel">Скорость взросления:</sys:String>
     <sys:String x:Key="ServerSettings_BabyMatureSpeedTooltip">Определяет множитель для времени, в которое детеныш динозавра вырастет во взрослую особь. Более высокие значения уменьшают время созревания во взрослую особь.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Голод у "Динозаврят":</sys:String>
+    <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedLabel">Голод у "Baby Dino":</sys:String>
     <sys:String x:Key="ServerSettings_BabyFoodConsumptionSpeedTooltip">Задает коэффициент скорости, с которым детеныш динозавра будет потреблять пищу. Более высокие значения сделают его более голодным (будет чаще хотеть есть).</sys:String>
 
-    <sys:String x:Key="ServerSettings_DinoImprintLabel">Dino Imprinting</sys:String>
-    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">Imprinting Stat Scale:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">How much of an effect on stats the imprinting quality has. Set it to 0 to effectively disable the system.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierLabel">Cuddle Interval:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">A multiplier on how often babies want to cuddle. Lower values means you'll need to cuddle with them more frequently to gain imprinting quality.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierLabel">Cuddle Grace Period:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">A multiplier on how long after delaying cuddling with the baby before imprinting quality starts to decrease. Higher values increase the grace period.</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">Cuddle Lose Imprint Quality Speed:</sys:String>
-    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">A multiplier on how fast imprinting quality decreases after the grace period if you haven't yet cuddled with the baby. Lower values slow the imprint quality loss.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoImprintLabel">Приручение Baby Dino</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierLabel">Качество приручения Baby Dino:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyImprintingStatScaleMultiplierTooltip">Влияет на качество приручения. Установите значение 0, чтобы отключить систему.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierLabel">Интервал приручения Baby Dino:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleIntervalMultiplierTooltip">Множитель того, как часто младенцы хотят обниматься. Более низкие значения означают, что вам нужно чаще обниматься с ними.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierLabel">Период спада качества приручения Baby Dino:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleGracePeriodMultiplierTooltip">Множитель на то, как долго после задержки в обнимке с Baby Dino до приручения качество начинает снижаться. Более высокие значения увеличивают льготный период.</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierLabel">Потеря качества приручения:</sys:String>
+    <sys:String x:Key="ServerSettings_BabyCuddleLoseImprintQualitySpeedMultiplierTooltip">Множитель того, как быстро качество приручения уменьшается после льготного периода, если вы еще не обнимались с Baby Dino. Более низкие значения замедляют потерю качества приручения</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoMaxXP_ResetTitle">Подтвердить сброс</sys:String>
     <sys:String x:Key="ServerSettings_DinoMaxXP_ResetLabel">Нажмите «Да», чтобы подтвердить, что вы хотите сбросить Max XP.</sys:String>
@@ -925,23 +1043,25 @@
     <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierLabel">Скорость роста волос:</sys:String>
     <sys:String x:Key="ServerSettings_HairGrowthSpeedMultiplierTooltip">Определяет множитель скорости роста волос. Более высокие значения увеличивают скорость роста. Более низкие значения уменьшают его.</sys:String>
 
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliersLabel">Earned XP Multipliers</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_GenericLabel">Generic (over time)</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_GenericTooltip">Specifies the scaling factor for the XP gained over time. Higher values increase the XP rate.</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_CraftingLabel">Crafting</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_CraftingTooltip">Specifies the scaling factor for the XP gained while Crafting. Higher values increase the XP rate.</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_HarvestingLabel">Harvesting</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_HarvestingTooltip">Specifies the scaling factor for the XP gained while Harvesting. Higher values increase the XP rate.</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_KillingLabel">Killing</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_KillingTooltip">Specifies the scaling factor for the XP gained while Killing. Higher values increase the XP rate.</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_SpecialLabel">Special Events</sys:String>
-    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_SpecialTooltip">Specifies the scaling factor for the XP gained for Special Events. Higher values increase the XP rate.</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliersLabel">Множители XP</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_GenericLabel">Общий (с течением времени)</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_GenericTooltip">Определяет коэффициент масштабирования для XP, полученный с течением времени. Более высокие значения увеличивают скорость XP.</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_CraftingLabel">Крафт</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_CraftingTooltip">Определяет коэффициент масштабирования для XP, полученного во время Крафта. Более высокие значения увеличивают скорость XP.</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_HarvestingLabel">Сбор урожая</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_HarvestingTooltip">Определяет коэффициент масштабирования для XP, полученного при уборке урожая. Более высокие значения увеличивают скорость XP.</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_KillingLabel">Убийство</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_KillingTooltip">Определяет коэффициент масштабирования для XP, полученного при убийстве. Более высокие значения увеличивают скорость XP.</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_SpecialLabel">Специальные Ивенты</sys:String>
+    <sys:String x:Key="ServerSettings_EarnedXPMultipliers_SpecialTooltip">Определяет коэффициент масштабирования для XP, полученный для специальных Ивентов. Более высокие значения увеличивают скорость XP.</sys:String>
 
-    <sys:String x:Key="ServerSettings_CustomHarvest_ResetTitle">Confirm Reset Action</sys:String>
-    <sys:String x:Key="ServerSettings_CustomHarvest_ResetLabel">Click 'Yes' to confirm you want to reset all the current resource harvest amount multiplier changes.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvest_ResetTitle">Подтвердить сброс</sys:String>
+    <sys:String x:Key="ServerSettings_CustomHarvest_ResetLabel">Нажмите «Да», чтобы подтвердить, что вы хотите сбросить все изменения множителя суммы урожая ресурсов.</sys:String>
 
     <!-- Server Settings - Structures -->
     <sys:String x:Key="ServerSettings_StructuresLabel">Структуры</sys:String>
+    <sys:String x:Key="ServerSettings_DisableStructurePlacementCollisionLabel">Включить игнорирование коллизий текстур</sys:String>
+    <sys:String x:Key="ServerSettings_DisableStructurePlacementCollisionTooltip">Если включено, позволит игрокам размещать структуры, на неровной местности.</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceLabel">Сопротивление структур:</sys:String>
     <sys:String x:Key="ServerSettings_StructureResistanceTooltip">Определяет коэффициент устойчивости структур к повреждению получаемых при атаке. Более высокие значения уменьшают сопротивление, увеличивая урон в атаке. Более низкие значения увеличивают его, уменьшая урон в атаке.</sys:String>
     <sys:String x:Key="ServerSettings_StructureDamageLabel">Урон от структур:</sys:String>
@@ -961,7 +1081,7 @@
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionLabel">Разрешить установку турелей на платформах</sys:String>
     <sys:String x:Key="ServerSettings_OverrideStructurePlatformPreventionTooltip">Если включено, разрешает установку автоматических башен на седлах-платформах динозавров.</sys:String>
     <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformLabel">Вкл. Перенос нейтральных на платформах</sys:String>
-    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">Если этот параметр включен, нейтральные динозавры могут находится на платформах Кетсаля.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnalignedDinosOnFlyerPlatformTooltip">Если этот параметр включен, нейтральные динозавры могут находится на платформах Кетцаля.</sys:String>
     <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsLabel">Разрешить строительство в зонах респа Лучей</sys:String>
     <sys:String x:Key="ServerSettings_PvEAllowStructuresAtSupplyDropsTooltip">Если включено, игроки могут строить здания на месте респа Лучей (дома не будут исчезать)</sys:String>
 
@@ -984,6 +1104,10 @@
     <sys:String x:Key="ServerSettings_FastDecayUnsnappedCoreStructuresTooltip">Если включено, быстрое авто-разрушение отдельно стоящих фундаментов \ столбов.</sys:String>
     <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesLabel">Разрушать не подключённые трубы</sys:String>
     <sys:String x:Key="ServerSettings_DestroyUnconnectedWaterPipesTooltip">Если включено, после двух дней в реальном времени трубы будут автоматически уничтожаться, если они не подключены к какой-либо трубе (воде или строению), и если игрок не находится поблизости.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFastDecayIntervalLabel">Включить быстрое разрушения.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableFastDecayIntervalTooltip">Если включено, позволяет установить параметры быстрого разрушения.</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayIntervalLabel">Интервал разрушения</sys:String>
+    <sys:String x:Key="ServerSettings_FastDecayIntervalTooltip">Устанавливает фиксированный постоянный период исчезновения структур «быстрого разрушения» (например, столбов или одиночных фундаментов).</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingLabel">Замыкать все контейнеры</sys:String>
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">Если этот параметр включен, позволит замыкать все контейнеры.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Пассивный урон структурами</sys:String>
@@ -1129,12 +1253,12 @@
     <sys:String x:Key="ServerSettings_RingOfDeathCollapseTimeTooltip">Продолжительность игры до внезапной смерти.</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartDelayTimeLabel">Время автостарта:</sys:String>
     <sys:String x:Key="ServerSettings_AutoStartDelayTimeTooltip">Время за которое должно быть достигнуто минимальное количество племен до начала игры.</sys:String>
-    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">Время авторестарта:</sys:String>
+    <sys:String x:Key="ServerSettings_AutoRestartDelayTimeLabel">Время Авто-Рестарта:</sys:String>
     <sys:String x:Key="ServerSettings_AutoRestartDelayTimeTooltip">Время после окончания последней игры, до начала новой.</sys:String>
     <sys:String x:Key="ServerSettings_SuddenDeathTimeLabel">Время Внезапной смерти:</sys:String>
     <sys:String x:Key="ServerSettings_SuddenDeathTimeTooltip">Количество время внезапной смерти, до того как будет объявлена ничья</sys:String>
-    <sys:String x:Key="ServerSettings_EnableOutputGameReportLabel">Output Game Report</sys:String>
-    <sys:String x:Key="ServerSettings_EnableOutputGameReportTooltip">If enabled, generates a timestamped HTML after-action report file at the end of each game in the server's "Saved" directory, as the Official Ranked servers do.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableOutputGameReportLabel">Отчет при завершении игры</sys:String>
+    <sys:String x:Key="ServerSettings_EnableOutputGameReportTooltip">Если включено, генерирует файл отчета о результатах после истечения времени, указанный в конце каждой игры в «Сохраненной» директории сервера, как это делают серверы Official Ranked.</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingLabel">Вкл. лог геймплея</sys:String>
     <sys:String x:Key="ServerSettings_EnableGamePlayLoggingTooltip">Если включен, создает лог файл в папке \Saved, который будет содержать данные победителей с перечнем Steam ID, Steam имя, имя персонажа, и т. д. Удобно для автоматической записи турнира.</sys:String>
     <sys:String x:Key="ServerSettings_SOTFGameOptionsLabel">Параметры игры</sys:String>
@@ -1149,31 +1273,31 @@
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeLabel">Время поединка</sys:String>
     <sys:String x:Key="ServerSettings_SOTFRingStartTimeTooltip">Вы можете установить "заранее" время поединка (прогресс кольца смерти) в определенное время. Более низкие значения уменьшают время матча и более высокие значения увеличивают это время.</sys:String>
 
-    <sys:String x:Key="ServerSettings_SOTF_HelpTooltip">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
-    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Go to SotF web page?</sys:String>
-    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest is an alternate game to Survival Evolved that uses a different set of server files and changes many of the rules. See the web for more details.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpTooltip">Survival of the Fittest - это альтернативная игра Survival Evolved, которая использует другой набор файлов сервера и изменяет многие правила. Подробнее см. В Интернете.</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpTitle">Перейдите на веб-страницу SotF?</sys:String>
+    <sys:String x:Key="ServerSettings_SOTF_HelpLabel">Survival of the Fittest - это альтернативная игра Survival Evolved, которая использует другой набор файлов сервера и изменяет многие правила. Подробнее см. В Интернете.</sys:String>
 
     <!-- Server Settings - Procedurally Generated Arks -->
-    <sys:String x:Key="ServerSettings_PGMLabel">Procedurally Generated Arks</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_EnableLabel">Enable Procedurally Generated Arks</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_EnableTooltip">If enabled, configures the server to use a procedurally generated ark.</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_PasteSettingsTooltip">Paste Procedurally Generated String</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_PasteSettingsTitle">Paste Procedurally Generated String</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_PasteSettingsConfirmTitle">Confirm Paste Procedurally Generated String</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_PasteSettingsConfirmLabel">You are about to overwrite ALL your Procedurally Generated ARK settings. Do you want to continue?</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_SaveSettingsTooltip">Save Procedurally Generated Settings String</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_SaveSettingsTitle">Procedurally Generated Settings String</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_RandomSettingsLabel">Randomize</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_RandomSettingsTooltip">Randomize the Procedurally Generated Settings</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_NameLabel">World File Name</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_NameTooltip">The name to use for the world file (e.g. MyPGArk1).</sys:String>
+    <sys:String x:Key="ServerSettings_PGMLabel">Процедурная генерация Arks</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_EnableLabel">Включить процедурную генерацию Arks</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_EnableTooltip">Если включено, настраивает сервер для использует генерированный мир Arks.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_PasteSettingsTooltip">Вставить настройки процедурной генерации</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_PasteSettingsTitle">Вставить настройки процедурной генерации</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_PasteSettingsConfirmTitle">Подтвердить настройки процедурной генерации</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_PasteSettingsConfirmLabel">Вы собираетесь перезаписать ВСЕ ваши настройки с использованием процедур сгенерированных ARK. Вы хотите продолжить?</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_SaveSettingsTooltip">Сохранить настройки процедурной генерации</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_SaveSettingsTitle">Настройки процедурной генерации</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_RandomSettingsLabel">Рандомная генерация</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_RandomSettingsTooltip">Рандомная процедура генерации мира</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_NameLabel">Название Карты</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_NameTooltip">Имя, которое будет использоваться для файла (пример MyPGArk1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_XLabel">X</sys:String>
     <sys:String x:Key="ServerSettings_PGM_YLabel">Y</sys:String>
     <sys:String x:Key="ServerSettings_PGM_ZLabel">Z</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Warning1Label">WARNING: The procedurally generated Ark system is HIGHLY EXPERIMENTAL. Your saved procedurally generated Arks will necessarily be wiped in subsequent updates as the dynamic algorithms are further developed. We only recommend using this system at the present time if you're willing to accept the frequent clearing of your procedurally generated Ark's save data!</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Warning2Label">NOTE: Once you have started your server, changing these settings will have NO effect. To create an ARK with your new settings, you must either change the World File Name, or delete the existing world save file. In both cases you will loss ALL progress.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Warning1Label">ПРЕДУПРЕЖДЕНИЕ. Процедурно созданная система Ark ВЫСОКО ЭКСПЕРИМЕНТАЛЬНАЯ. Ваши сохраненные обработанные процедурой Арки обязательно будут уничтожены в последующих обновлениях по мере дальнейшего развития динамических алгоритмов. Мы рекомендуем использовать эту систему только в настоящее время, если вы согласны принять частую очистку данных, сохраненных в процедуре, созданных Ark.</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Warning2Label">ПРИМЕЧАНИЕ. После того, как вы запустили свой сервер, изменение этих параметров не будет иметь никакого эффекта. Чтобы создать ARK с новыми настройками, вы должны либо изменить имя файла MyPGArk1, либо удалить существующий файл сохранения мира. В обоих случаях вы потеряете ВЕСЬ прогресс.</sys:String>
 
-    <sys:String x:Key="ServerSettings_PGM_TerrianSettingsLabel">Terrian Settings</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_TerrianSettingsLabel">Настройки ландшафта</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_MapSeedLabel">Map Seed</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_MapSeedTooltip">The seed used in the noise and random functions.</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_LandscapeRadiusLabel">Landscape Radius</sys:String>
@@ -1209,7 +1333,7 @@
     <sys:String x:Key="ServerSettings_PGM_Terrain_MountainGeneralTreesPercentLabel">General Mountain Trees %</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Terrain_MountainGeneralTreesPercentTooltip">.</sys:String>
 
-    <sys:String x:Key="ServerSettings_PGM_BiomeSettingsLabel">Biome Settings</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_BiomeSettingsLabel">Настройки биома</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Biome_SnowBiomeSizeLabel">Snow Biome Size</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Biome_SnowBiomeSizeTooltip">The radius of the Snow biome (from 0 to 1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Biome_RedWoodBiomeSizeLabel">Redwood Biome Size</sys:String>
@@ -1261,7 +1385,7 @@
     <sys:String x:Key="ServerSettings_PGM_Biome_DeepWaterBiomesDepthLabel">Deep Water Biomes Depth</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Biome_DeepWaterBiomesDepthTooltip">The depth value of the Deep Water biome.</sys:String>
 
-    <sys:String x:Key="ServerSettings_PGM_MapSettingsLabel">Map Settings</sys:String>
+    <sys:String x:Key="ServerSettings_PGM_MapSettingsLabel">Настройки карты</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_SnowBiomeLocationLabel">Snow Biome Location</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_SnowBiomeLocationTooltip">The location of the Snow biome (X, Y from 0 to 1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_RedWoodForestBiomeLocationLabel">Redwood Biome Location</sys:String>
@@ -1444,9 +1568,9 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_SaveCrateTooltip">Save supply crate</sys:String>
 
     <!-- Server Settings - Overlay -->
-    <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Saving...</sys:String>
-    <sys:String x:Key="ServerSettings_OverlayMessage_PermissionsLabel">Checking Directory Permissions...</sys:String>
-    <sys:String x:Key="ServerSettings_OverlayMessage_SchedulesLabel">Checking Scheduled Tasks...</sys:String>
+    <sys:String x:Key="ServerSettings_OverlayMessage_SavingLabel">Сохранение...</sys:String>
+    <sys:String x:Key="ServerSettings_OverlayMessage_PermissionsLabel">Проверка разрешений каталога...</sys:String>
+    <sys:String x:Key="ServerSettings_OverlayMessage_SchedulesLabel">Проверка запланированных задач...</sys:String>
 
     <!-- Player/Tribe Profile Window -->
     <sys:String x:Key="Profile_SteamSectionLabel">Детали Steam</sys:String>
@@ -1540,15 +1664,15 @@
     <sys:String x:Key="RCON_SaveWorldLabel">A world save is about to be performed, you may experience some lag during this process. Please be patient.</sys:String>
     <sys:String x:Key="RCON_DestroyWildDinosLabel">About to destroy all wild creatures, you may experience some lag during this process. Please be patient.</sys:String>
 
-    <sys:String x:Key="RCON_ChatPlayerLabel">Send a chat message to :</sys:String>
-    <sys:String x:Key="RCON_RenamePlayerLabel">Rename player from :</sys:String>
-    <sys:String x:Key="RCON_RenameTribeLabel">Rename tribe from :</sys:String>
-    <sys:String x:Key="RCON_CopySteamIdLabel">Steam ID copied to the clipboard for :</sys:String>
-    <sys:String x:Key="RCON_CopySteamIdTitle">Steam ID copied</sys:String>
-    <sys:String x:Key="RCON_CopyPlayerIdLabel">Player ID copied to the clipboard for :</sys:String>
-    <sys:String x:Key="RCON_CopyPlayerIdTitle">Player ID copied</sys:String>
-    <sys:String x:Key="RCON_ClipboardErrorLabel">Clipboard could not be opened. Another application may be using it. Please try closing other applications and trying again.</sys:String>
-    <sys:String x:Key="RCON_ClipboardErrorTitle">Copy to clipboard failed.</sys:String>
+    <sys:String x:Key="RCON_ChatPlayerLabel">Отправить сообщение в чат :</sys:String>
+    <sys:String x:Key="RCON_RenamePlayerLabel">Переименовать игрока из :</sys:String>
+    <sys:String x:Key="RCON_RenameTribeLabel">Переименовать Трайб из :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdLabel">Steam ID скопирован в буфер обмена для :</sys:String>
+    <sys:String x:Key="RCON_CopySteamIdTitle">Steam ID скопирован</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdLabel">ID Игрока скопирован в буфер обмена для  :</sys:String>
+    <sys:String x:Key="RCON_CopyPlayerIdTitle">ID Игрока скопирован</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorLabel">Буфер обмена не открывается. Другое приложение может использовать его. Попробуйте закрыть другие приложения и повторите попытку.</sys:String>
+    <sys:String x:Key="RCON_ClipboardErrorTitle">Скопировать в буфер обмена не удалось.</sys:String>
 
     <sys:String x:Key="RCON_Comments_Line1">Введите команды или побеседуйте в поле внизу.</sys:String>
     <sys:String x:Key="RCON_Comments_Line2">В Command режиме все, что вы вводите, будет восприниматься командой администратора.</sys:String>
@@ -2577,6 +2701,7 @@
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Megaloceros Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_StegoSaddle_C">Stego Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TapejaraSaddle_C">Tapejara Saddle</sys:String>
+    <sys:String x:Key="PrimalItemArmor_Tapejara_Tek_C">Tapejara Tek Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekBoots_C">Tek Boots</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekGloves_C">Tek Gauntlets</sys:String>
     <sys:String x:Key="PrimalItemArmor_TekHelmet_C">Tek Helmet</sys:String>
