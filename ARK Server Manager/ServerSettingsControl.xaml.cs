@@ -59,6 +59,7 @@ namespace ARK_Server_Manager
         MapNameRagnarokProperty,
         MapNameTotalConversionProperty,
         TotalConversionPrimitivePlusProperty,
+        BanListProperty,
 
         PlayerMaxXpProperty,
         DinoMaxXpProperty,
@@ -760,6 +761,8 @@ namespace ARK_Server_Manager
                 try
                 {
                     this.Server.ImportFromPath(dialog.FileName);
+                    this.Server.Profile.ResetProfileId();
+
                     this.Settings = this.Server.Profile;
                     this.Runtime = this.Server.Runtime;
                 }
@@ -2619,6 +2622,10 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
                                 this.Settings.TotalConversionModId = ModUtils.MODID_PRIMITIVEPLUS;
                                 this.Settings.ServerMap = Config.Default.DefaultServerMap_TheIsland;
+                                break;
+
+                            case ServerSettingsResetAction.BanListProperty:
+                                this.Settings.ResetBanlist();
                                 break;
 
                             case ServerSettingsResetAction.PlayerMaxXpProperty:

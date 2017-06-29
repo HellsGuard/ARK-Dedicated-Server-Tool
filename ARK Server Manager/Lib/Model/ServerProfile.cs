@@ -196,7 +196,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableBanListURLProperty, value); }
         }
 
-        public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("\"http://playark.com/banlist.txt\""));
+        public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("http://playark.com/banlist.txt"));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL), QuotedString = QuotedStringType.True)]
         public string BanListURL
         {
@@ -771,7 +771,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadSurvivorsProperty = DependencyProperty.Register(nameof(PreventUploadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool PreventUploadSurvivors
         {
             get { return (bool)GetValue(PreventUploadSurvivorsProperty); }
@@ -779,7 +779,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadItemsProperty = DependencyProperty.Register(nameof(PreventUploadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool PreventUploadItems
         {
             get { return (bool)GetValue(PreventUploadItemsProperty); }
@@ -787,7 +787,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventUploadDinosProperty = DependencyProperty.Register(nameof(PreventUploadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public bool PreventUploadDinos
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
@@ -815,24 +815,38 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OverrideTributeDinoExpirationSecondsProperty, value); }
         }
 
+        public static readonly DependencyProperty OverrideMinimumDinoReuploadIntervalProperty = DependencyProperty.Register(nameof(OverrideMinimumDinoReuploadInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool OverrideMinimumDinoReuploadInterval
+        {
+            get { return (bool)GetValue(OverrideMinimumDinoReuploadIntervalProperty); }
+            set { SetValue(OverrideMinimumDinoReuploadIntervalProperty, value); }
+        }
+
         [XmlIgnore]
         public bool SaveTributeCharacterExpirationSeconds
         {
-            get { return EnableTributeDownloads && OverrideTributeCharacterExpirationSeconds; }
+            get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeCharacterExpirationSeconds; }
             set { value = value; }
         }
 
         [XmlIgnore]
         public bool SaveTributeItemExpirationSeconds
         {
-            get { return EnableTributeDownloads && OverrideTributeItemExpirationSeconds; }
+            get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeItemExpirationSeconds; }
             set { value = value; }
         }
 
         [XmlIgnore]
         public bool SaveTributeDinoExpirationSeconds
         {
-            get { return EnableTributeDownloads && OverrideTributeDinoExpirationSeconds; }
+            get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeDinoExpirationSeconds; }
+            set { value = value; }
+        }
+
+        [XmlIgnore]
+        public bool SaveMinimumDinoReuploadInterval
+        {
+            get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideMinimumDinoReuploadInterval; }
             set { value = value; }
         }
 
@@ -858,6 +872,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
             set { SetValue(TributeDinoExpirationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimumDinoReuploadIntervalProperty = DependencyProperty.Register(nameof(MinimumDinoReuploadInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(43200));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveMinimumDinoReuploadInterval))]
+        public int MinimumDinoReuploadInterval
+        {
+            get { return (int)GetValue(MinimumDinoReuploadIntervalProperty); }
+            set { SetValue(MinimumDinoReuploadIntervalProperty, value); }
         }
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -2560,19 +2582,19 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            if (this.EnableTributeDownloads && this.NoTransferFromFiltering)
-            {
-                serverArgs.Append(" -NoTransferFromFiltering");
-            }
-
             if (!string.IsNullOrWhiteSpace(this.CrossArkClusterId))
             {
                 serverArgs.Append($" -clusterid={this.CrossArkClusterId}");
-            }
 
-            if (this.ClusterDirOverride)
-            {
-                serverArgs.Append($" -ClusterDirOverride=\"{Config.Default.DataDir}\"");
+                if (this.ClusterDirOverride)
+                {
+                    serverArgs.Append($" -ClusterDirOverride=\"{Config.Default.DataDir}\"");
+                }
+
+                if (this.NoTransferFromFiltering)
+                {
+                    serverArgs.Append(" -NoTransferFromFiltering");
+                }
             }
 
             if (this.EnableWebAlarm)
@@ -3434,7 +3456,18 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public void ResetProfileId()
+        {
+            this.ProfileID = Guid.NewGuid().ToString();
+        }
+
         // individual value reset methods
+        public void ResetBanlist()
+        {
+            this.ClearValue(EnableBanListURLProperty);
+            this.ClearValue(BanListURLProperty);
+        }
+
         public void ResetMapName(string mapName)
         {
             this.ServerMap = mapName;
@@ -3754,6 +3787,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(NPCNetworkStasisRangeScalePlayerCountStartProperty);
             this.ClearValue(NPCNetworkStasisRangeScalePlayerCountEndProperty);
             this.ClearValue(NPCNetworkStasisRangeScalePercentEndProperty);
+
+            this.ClearValue(UseCorpseLocatorProperty);
         }
 
         public void ResetSOTFSection()
@@ -3779,6 +3814,7 @@ namespace ARK_Server_Manager.Lib
 
         public void ResetStructuresSection()
         {
+            this.ClearValue(DisableStructurePlacementCollisionProperty);
             this.ClearValue(StructureResistanceMultiplierProperty);
             this.ClearValue(StructureDamageMultiplierProperty);
             this.ClearValue(StructureDamageRepairCooldownProperty);
@@ -3800,6 +3836,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(OnlyDecayUnsnappedCoreStructuresProperty);
             this.ClearValue(FastDecayUnsnappedCoreStructuresProperty);
             this.ClearValue(DestroyUnconnectedWaterPipesProperty);
+            this.ClearValue(EnableFastDecayIntervalProperty);
+            this.ClearValue(FastDecayIntervalProperty);
         }
 
         public void ResetSupplyCreateOverridesSection()

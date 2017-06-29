@@ -17,7 +17,7 @@ namespace ARK_Server_Manager.Lib
     public class ServerRuntime : DependencyObject, IDisposable
     {
         private const int DIRECTORIES_PER_LINE = 200;
-        private const int MOD_STATUS_QUERY_DELAY = 300000; // milliseconds
+        private const int MOD_STATUS_QUERY_DELAY = 900000; // milliseconds
 
         public event EventHandler StatusUpdate;
 
