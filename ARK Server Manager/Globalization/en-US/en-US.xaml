@@ -504,6 +504,7 @@
     <sys:String x:Key="ServerSettings_UseBanListLabel">Use Ban List URL</sys:String>
     <sys:String x:Key="ServerSettings_UseBanListTooltip">If enabled, the ban list URL specified will be used.</sys:String>
     <sys:String x:Key="ServerSettings_BanListTooltip">The URL of the ban list to use.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetBanlistTooltip">Reset the ban list properties to defaults.</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutLabel">Enable Idle Timeout</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutTooltip">If enabled, the idle timeout period will be used.</sys:String>
     <sys:String x:Key="ServerSettings_IdleTimeoutTooltip">The time until idle players are kicked from the server.</sys:String>

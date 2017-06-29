@@ -1029,6 +1029,9 @@
 
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Name="EnableBanListCheckbox" IsChecked="{Binding EnableBanListURL}" Content="{DynamicResource ServerSettings_UseBanListLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseBanListTooltip}"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding BanListURL}" ToolTip="{DynamicResource ServerSettings_BanListTooltip}" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
+                                        <Button  Grid.Row="0" Grid.Column="2" Width="22" Height="22" Margin="5,0,5,0" ToolTip="{DynamicResource ServerSettings_ResetBanlistTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.BanListProperty}">
+                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
+                                        </Button>
                                         <local:AnnotatedSlider Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersLabel}" Value="{Binding MaxPlayers}" ToolTip="{DynamicResource ServerSettings_MaxPlayersTooltip}" VerticalAlignment="Center" Minimum="1" Maximum="127" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0"/>
 
                                         <CheckBox Grid.Row="1" Grid.Column="0" Margin="5" Name="EnableKickIdlePlayersCheckbox" IsChecked="{Binding EnableKickIdlePlayers}" Content="{DynamicResource ServerSettings_EnableIdleTimeoutLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableIdleTimeoutTooltip}"/>

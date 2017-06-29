@@ -196,7 +196,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableBanListURLProperty, value); }
         }
 
-        public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("\"http://playark.com/banlist.txt\""));
+        public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("http://playark.com/banlist.txt"));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL), QuotedString = QuotedStringType.True)]
         public string BanListURL
         {
@@ -3462,6 +3462,12 @@ namespace ARK_Server_Manager.Lib
         }
 
         // individual value reset methods
+        public void ResetBanlist()
+        {
+            this.ClearValue(EnableBanListURLProperty);
+            this.ClearValue(BanListURLProperty);
+        }
+
         public void ResetMapName(string mapName)
         {
             this.ServerMap = mapName;
