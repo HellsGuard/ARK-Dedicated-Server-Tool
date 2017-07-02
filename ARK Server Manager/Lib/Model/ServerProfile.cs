@@ -2420,6 +2420,31 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        private static string[] GetExclusions()
+        {
+            var exclusions = new List<string>();
+
+            if (!Config.Default.SectionCraftingOverridesEnabled)
+            {
+                exclusions.Add(nameof(ConfigOverrideItemCraftingCosts));
+            }
+
+            if (!Config.Default.SectionMapSpawnerOverridesEnabled)
+            {
+                exclusions.Add(nameof(ConfigAddNPCSpawnEntriesContainer));
+                exclusions.Add(nameof(ConfigSubtractNPCSpawnEntriesContainer));
+                exclusions.Add(nameof(ConfigOverrideNPCSpawnEntriesContainer));
+                exclusions.Add(nameof(NPCSpawnSettings));
+            }
+
+            if (!Config.Default.SectionSupplyCrateOverridesEnabled)
+            {
+                exclusions.Add(nameof(ConfigOverrideSupplyCrateItems));
+            }
+
+            return exclusions.ToArray();
+        }
+
         private LevelList GetLevelList(LevelProgression levelProgression)
         {
             LevelList list = null;
@@ -2760,8 +2785,10 @@ namespace ARK_Server_Manager.Lib
             settings.PlayerLevels.UpdateTotals();
             settings.DinoLevels.UpdateTotals();
             settings.DinoSettings.RenderToView();
-            settings.NPCSpawnSettings.RenderToView();
-            settings.ConfigOverrideSupplyCrateItems.RenderToView();
+            if (Config.Default.SectionMapSpawnerOverridesEnabled)
+                settings.NPCSpawnSettings.RenderToView();
+            if (Config.Default.SectionSupplyCrateOverridesEnabled)
+                settings.ConfigOverrideSupplyCrateItems.RenderToView();
             settings._lastSaveLocation = path;
 
             return settings;
@@ -2769,9 +2796,11 @@ namespace ARK_Server_Manager.Lib
 
         private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
         {
+            var exclusions = GetExclusions();
+
             var iniFile = new SystemIniFile(Path.GetDirectoryName(path));
             settings = settings ?? new ServerProfile();
-            iniFile.Deserialize(settings);
+            iniFile.Deserialize(settings, exclusions);
 
             var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
 
@@ -2829,8 +2858,10 @@ namespace ARK_Server_Manager.Lib
                 settings.PlayerLevels.UpdateTotals();
                 settings.DinoLevels.UpdateTotals();
                 settings.DinoSettings.RenderToView();
-                settings.NPCSpawnSettings.RenderToView();
-                settings.ConfigOverrideSupplyCrateItems.RenderToView();
+                if (Config.Default.SectionMapSpawnerOverridesEnabled)
+                    settings.NPCSpawnSettings.RenderToView();
+                if (Config.Default.SectionSupplyCrateOverridesEnabled)
+                    settings.ConfigOverrideSupplyCrateItems.RenderToView();
                 settings._lastSaveLocation = path;
             }
             return settings;
@@ -2862,6 +2893,10 @@ namespace ARK_Server_Manager.Lib
             if (!OverrideNamedEngramEntries.IsEnabled)
                 OnlyAllowSpecifiedEngrams = false;
             OverrideNamedEngramEntries.OnlyAllowSelectedEngrams = OnlyAllowSpecifiedEngrams;
+
+            // check if the launcher args override is enabled, but nothing has been defined in the launcher args
+            if (LauncherArgsOverride && string.IsNullOrWhiteSpace(LauncherArgs))
+                LauncherArgsOverride = false;
 
             // ensure that the extinction event date is cleared if the extinction event is disabled
             if (!EnableExtinctionEvent)
@@ -2898,11 +2933,17 @@ namespace ARK_Server_Manager.Lib
             progressCallback?.Invoke(0, "Constructing Dino Information...");
             this.DinoSettings.RenderToModel();
 
-            progressCallback?.Invoke(0, "Constructing Map Spawner Information...");
-            this.NPCSpawnSettings.RenderToModel();
+            if (Config.Default.SectionMapSpawnerOverridesEnabled)
+            {
+                progressCallback?.Invoke(0, "Constructing Map Spawner Information...");
+                this.NPCSpawnSettings.RenderToModel();
+            }
 
-            progressCallback?.Invoke(0, "Constructing Supply Crate Information...");
-            this.ConfigOverrideSupplyCrateItems.RenderToModel();
+            if (Config.Default.SectionSupplyCrateOverridesEnabled)
+            {
+                progressCallback?.Invoke(0, "Constructing Supply Crate Information...");
+                this.ConfigOverrideSupplyCrateItems.RenderToModel();
+            }
 
             //
             // Save the profile
@@ -3024,8 +3065,10 @@ namespace ARK_Server_Manager.Lib
 
         private void SaveINIFile(string profileIniDir)
         {
+            var exclusions = GetExclusions();
+
             var iniFile = new SystemIniFile(profileIniDir);
-            iniFile.Serialize(this);
+            iniFile.Serialize(this, exclusions);
 
             var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
 
@@ -3286,7 +3329,7 @@ namespace ARK_Server_Manager.Lib
                 if (!string.IsNullOrWhiteSpace(CrossArkClusterId) && !string.IsNullOrWhiteSpace(ServerPassword))
                 {
                     // cluster server configured, and server has a password
-                    result.AppendLine("This server is setup in a cluster, but has a server password defined, this will prevent your players transfers. To setup correctly, remove the password and use the Whitelist in the Server File Details.");
+                    result.AppendLine("This server is setup in a cluster, but has a server password defined, this will prevent your players transfers. To setup correctly, remove the password and use the exclusive join option in the Server File Details.");
                 }
             }
 
