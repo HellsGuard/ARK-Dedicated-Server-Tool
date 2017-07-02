@@ -1057,6 +1057,38 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NPCNetworkStasisRangeScalePercentEndProperty, value); }
         }
 
+        public static readonly DependencyProperty UseCorpseLocatorProperty = DependencyProperty.Register(nameof(UseCorpseLocator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator")]
+        public bool UseCorpseLocator
+        {
+            get { return (bool)GetValue(UseCorpseLocatorProperty); }
+            set { SetValue(UseCorpseLocatorProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreventSpawnAnimationsProperty = DependencyProperty.Register(nameof(PreventSpawnAnimations), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool PreventSpawnAnimations
+        {
+            get { return (bool)GetValue(PreventSpawnAnimationsProperty); }
+            set { SetValue(PreventSpawnAnimationsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowUnlimitedRespecsProperty = DependencyProperty.Register(nameof(AllowUnlimitedRespecs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowUnlimitedRespecs")]
+        public bool AllowUnlimitedRespecs
+        {
+            get { return (bool)GetValue(AllowUnlimitedRespecsProperty); }
+            set { SetValue(AllowUnlimitedRespecsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowPlatformSaddleMultiFloorsProperty = DependencyProperty.Register(nameof(AllowPlatformSaddleMultiFloors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowPlatformSaddleMultiFloors")]
+        public bool AllowPlatformSaddleMultiFloors
+        {
+            get { return (bool)GetValue(AllowPlatformSaddleMultiFloorsProperty); }
+            set { SetValue(AllowPlatformSaddleMultiFloorsProperty, value); }
+        }
+
         public static readonly DependencyProperty OxygenSwimSpeedStatMultiplierProperty = DependencyProperty.Register(nameof(OxygenSwimSpeedStatMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float OxygenSwimSpeedStatMultiplier
@@ -1065,12 +1097,27 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OxygenSwimSpeedStatMultiplierProperty, value); }
         }
 
-        public static readonly DependencyProperty UseCorpseLocatorProperty = DependencyProperty.Register(nameof(UseCorpseLocator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator")]
-        public bool UseCorpseLocator
+        public static readonly DependencyProperty SupplyCrateLootQualityMultiplierProperty = DependencyProperty.Register(nameof(SupplyCrateLootQualityMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float SupplyCrateLootQualityMultiplier
         {
-            get { return (bool)GetValue(UseCorpseLocatorProperty); }
-            set { SetValue(UseCorpseLocatorProperty, value); }
+            get { return (float)GetValue(SupplyCrateLootQualityMultiplierProperty); }
+            set { SetValue(SupplyCrateLootQualityMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty FishingLootQualityMultiplierProperty = DependencyProperty.Register(nameof(FishingLootQualityMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float FishingLootQualityMultiplier
+        {
+            get { return (float)GetValue(FishingLootQualityMultiplierProperty); }
+            set { SetValue(FishingLootQualityMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableNoFishLootProperty = DependencyProperty.Register(nameof(EnableNoFishLoot), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool EnableNoFishLoot
+        {
+            get { return (bool)GetValue(EnableNoFishLootProperty); }
+            set { SetValue(EnableNoFishLootProperty, value); }
         }
         #endregion
 
@@ -1272,6 +1319,14 @@ namespace ARK_Server_Manager.Lib
             get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_PlayerProperty); }
             set { SetValue(PerLevelStatsMultiplier_PlayerProperty, value); }
         }
+
+        public static readonly DependencyProperty CraftingSkillBonusMultiplierProperty = DependencyProperty.Register(nameof(CraftingSkillBonusMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float CraftingSkillBonusMultiplier
+        {
+            get { return (float)GetValue(CraftingSkillBonusMultiplierProperty); }
+            set { SetValue(CraftingSkillBonusMultiplierProperty, value); }
+        }
         #endregion
 
         #region Dino Settings
@@ -1408,13 +1463,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(PreventMateBoostProperty); }
             set { SetValue(PreventMateBoostProperty, value); }
-        }
-
-        public static readonly DependencyProperty EnableNoFishLootProperty = DependencyProperty.Register(nameof(EnableNoFishLoot), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool EnableNoFishLoot
-        {
-            get { return (bool)GetValue(EnableNoFishLootProperty); }
-            set { SetValue(EnableNoFishLootProperty, value); }
         }
 
         public static readonly DependencyProperty DisableDinoDecayPvEProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -3659,7 +3707,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(RaidDinoCharacterFoodDrainMultiplierProperty);
 
             this.ClearValue(EnableAllowCaveFlyersProperty);
-            this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(DisableDinoDecayPvEProperty);
             this.ClearValue(DisableDinoDecayPvPProperty);
             this.ClearValue(AutoDestroyDecayedDinosProperty);
@@ -3774,6 +3821,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PlayerCharacterStaminaDrainMultiplierProperty);
             this.ClearValue(PlayerCharacterHealthRecoveryMultiplierProperty);
             this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
+            this.ClearValue(CraftingSkillBonusMultiplierProperty);
 
             this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
             this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
@@ -3832,6 +3880,12 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(NPCNetworkStasisRangeScalePercentEndProperty);
 
             this.ClearValue(UseCorpseLocatorProperty);
+            this.ClearValue(PreventSpawnAnimationsProperty);
+            this.ClearValue(AllowUnlimitedRespecsProperty);
+            this.ClearValue(AllowPlatformSaddleMultiFloorsProperty);
+            this.ClearValue(SupplyCrateLootQualityMultiplierProperty);
+            this.ClearValue(FishingLootQualityMultiplierProperty);
+            this.ClearValue(EnableNoFishLootProperty);
         }
 
         public void ResetSOTFSection()

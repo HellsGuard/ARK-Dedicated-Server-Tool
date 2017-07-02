@@ -684,10 +684,18 @@
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Use Corpse Locator</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">If enabled, upon death, a beam of light shoots into the sky to help the player locate where they died.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsLabel">Prevent Spawn Animations</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsTooltip">If enabled, will disable the respawn animation.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsLabel">Allow Unlimited Respecs</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsTooltip">If enabled, will allow the player to have unlimited respecs using the mindwipe tonic.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsLabel">Allow Platform Saddle Multi Floors</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsTooltip">If enabled, will allow multiple platform floors on rafts and saddle platforms.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">Max Players in Tribe:</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">Set to 0 for unlimited player in tribe, set to a number > 0 to act as a limit.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">players</sys:String>
-    
+
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideLabel">Enable Difficulty Override</sys:String>
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">If enabled, this will allow the max level of creatures in the world to be changed.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Max Dino Level:</sys:String>
@@ -787,9 +795,12 @@
 
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Oxygen Swim Speed Stat Multiplier</sys:String>
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Specifies the multiplier for how swim speed is multiplied by level spent in oxygen.</sys:String>
-
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Use Corpse Locator</sys:String>
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">If enabled, upon death, a beam of light shoots into the sky to help the player locate where they died.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierLabel">Supply Crate Loot Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierTooltip">Specifies the multiplier for the supply crate loot quality.</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierLabel">Fishing Loot Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierTooltip">Specifies the multiplier for the fishing loot quality.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
@@ -891,6 +902,9 @@
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
 
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierLabel">Crafting Skill Bonus Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Specifies the multiplier for the crafting skill bonus.</sys:String>
+
     <!-- Server Settings - Dino Settings -->
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
@@ -919,8 +933,6 @@
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Disable Dino Decay PvP</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">If enabled, disables the gradual decay of dino ownership in PvP; otherwise every dino can be claimed by any player.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Disable Baby Dino Imprint Buff</sys:String>
