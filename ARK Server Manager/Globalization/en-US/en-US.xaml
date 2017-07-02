@@ -2998,6 +2998,7 @@
     <sys:String x:Key="PrimalItemRaft_C">Wooden Raft</sys:String>
     <sys:String x:Key="PrimalItemResource_AmmoniteBlood_C">Ammonite Bile</sys:String>
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">Angler Gel</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Allo_C">Allosaurus Brain</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaCarno_C">Alpha Carnotaurus Arm</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaLeeds_C">Alpha Leedsichthys Blubber</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaMegalodon_C">Alpha Megalodon Fin</sys:String>
@@ -3006,10 +3007,19 @@
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaRex_C">Alpha Tyrannosaur Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaTuso_C">Alpha Tusoteuthis Eye</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Basilo_C">Basilosaurus Blubber</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Boa_C">Titanoboa Venom</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Giga_C">Giganotosaurus Heart</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Megalania_C">Megalania Toxin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Rex_C">Tyrannosaurus Arm</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Sarco_C">Sarcosuchus Skin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Sauro_C">Sauropod Vertebra</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Spino_C">Spinosaurus Sail</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Theriz_C">Therizino Claws</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Thylaco_C">Thylacoleo Hook-Claw</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Tuso_C">Tusoteuthis Tentacle</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Yuty_C">Yutyrannus Lungs</sys:String>
     <sys:String x:Key="PrimalItemResource_Beer_C">Beer Liquid</sys:String>
     <sys:String x:Key="PrimalItemResource_BlackPearl_C">Black Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Charcoal_C">Charcoal</sys:String>
@@ -3246,6 +3256,7 @@
     <sys:String x:Key="PrimalItemStructure_TekTeleporter_C">Tek Teleporter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTrapdoor_C">Tek Trapdoor</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekTrough_C">Tek Trough</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_C">Tek Wall</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Left_C">Sloped Tek Wall Left</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Right_C">Sloped Tek Wall Right</sys:String>
