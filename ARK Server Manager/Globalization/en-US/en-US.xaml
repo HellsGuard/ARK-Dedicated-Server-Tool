@@ -154,7 +154,7 @@
     <sys:String x:Key="ProfileSyncWindow_ProcessButtonLabel">Process</sys:String>
     <sys:String x:Key="ProfileSyncWindow_CancelButtonLabel">Cancel</sys:String>
 
-    <sys:String x:Key="ProfileSyncWindow_InformationLabel">This form will copy selected settings from another profile to your current profile.</sys:String>
+    <sys:String x:Key="ProfileSyncWindow_InformationLabel">This form will copy the selected settings from the selected profile to the current profile.</sys:String>
     <sys:String x:Key="ProfileSyncWindow_ProfileFilterLabel">Profile to Copy From:</sys:String>
     <sys:String x:Key="ProfileSyncWindow_ProfileFilterTooltip">Select the profile to copy the settings from.</sys:String>
 

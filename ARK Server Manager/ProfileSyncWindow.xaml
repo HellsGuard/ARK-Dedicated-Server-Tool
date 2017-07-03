@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ARK_Server_Manager.ProfileSyncWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Width="500" Height="600" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize"
+        Width="400" Height="500" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize"
         Icon="Art/favicon.ico"
         Title="{DynamicResource ProfileSyncWindow_Title}" Loaded="Window_Loaded">
     <Window.Resources>
@@ -25,18 +25,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" Content="{DynamicResource ProfileSyncWindow_InformationLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" Text="{DynamicResource ProfileSyncWindow_InformationLabel}" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold"/>
 
         <Label Grid.Row="1" Grid.Column="0" Margin="5,5,0,0" Content="{DynamicResource ProfileSyncWindow_ProfileFilterLabel}"/>
-        <ComboBox  Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" ItemsSource="{Binding Profiles}" SelectedValue="{Binding SelectedProfileId}" SelectedValuePath="ProfileID" ToolTip="{DynamicResource ProfileSyncWindow_ProfileFilterTooltip}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <!--<Label Content="{Binding ProfileID}"/>-->
-                        <Label Content="{Binding ProfileName}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
+        <ComboBox  Grid.Row="1" Grid.Column="1" Margin="5,5,5,0" ItemsSource="{Binding Profiles}" SelectedValue="{Binding SelectedProfileId}" DisplayMemberPath="ProfileName" SelectedValuePath="ProfileID" ToolTip="{DynamicResource ProfileSyncWindow_ProfileFilterTooltip}">
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ComboBoxItem}" >
+                    <Setter Property="Height" Value="20" />
+                </Style>
+            </ComboBox.ItemContainerStyle>
         </ComboBox>
 
         <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" ItemsSource="{Binding ProfileSections}" HorizontalContentAlignment="Stretch">
@@ -48,19 +45,14 @@
                         </GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" Margin="0"/>
+                                <CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="500">
+                    <GridViewColumn Width="330" DisplayMemberBinding="{Binding SectionName}">
                         <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Padding="5,0,0,0">
                             <TextBlock Text="{DynamicResource ProfileSyncWindow_SectionNameColumnLabel}" />
                         </GridViewColumnHeader>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding SectionName}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
@@ -69,6 +61,7 @@
                 <Style TargetType="{x:Type ListViewItem}" >
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="Background" Value="White" />
+                    <Setter Property="Height" Value="20" />
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

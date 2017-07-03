@@ -182,6 +182,14 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Получить WebApi Ключ...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Помощь...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Языки</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Настройка перераспределения Настроек</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Включить Crafting Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">Если включено, Crafting Overrides будут использовать настройки ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerLabel">Включить Map Spawner Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">Если включено, Map Spawner Overrides будут использовать настройки ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Включить Supply Crate Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">Если включено, Supply Crate Overrides будут использовать настройки ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">ПРЕДУПРЕЖДЕНИЕ. Если любой из этих параметров отключен, ASM не будет читать или записывать связанные с этип параметры переопределения. Повторное включение любого из этих параметров приведет к удалению всех существующих связанных переопределений в файле конфигурации.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Настройки запуска Сервера</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Увеличение уровня игрока:</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">Количество XP будет увеличено при добавлении нового настраиваемого уровня.</sys:String>
@@ -399,6 +407,7 @@
     <sys:String x:Key="ServerSettings_PlayersTooltip">Число игроков подключенные к серверу ARK в настоящее время.</sys:String>
 
     <!-- Server Settings - General Buttons -->
+    <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Create Support Zip</sys:String>
     <sys:String x:Key="ServerSettings_ImportButtonLabel">Импорт</sys:String>
     <sys:String x:Key="ServerSettings_ImportButtonTooltip">Загрузить существующий профиль, или импортировать непосредственно из существующего сервера.</sys:String>
     <sys:String x:Key="ServerSettings_SaveButtonLabel">Сохранить</sys:String>
@@ -504,6 +513,7 @@
     <sys:String x:Key="ServerSettings_UseBanListLabel">Использовать URL-адрес бан-листа</sys:String>
     <sys:String x:Key="ServerSettings_UseBanListTooltip">Если включен, то будет использоваться URL-адрес, со списком забаненных. По умолчанию http://playark.com/banlist.txt</sys:String>
     <sys:String x:Key="ServerSettings_BanListTooltip">Чтобы использовать, введите URL-адрес с бан-листом.</sys:String>
+    <sys:String x:Key="ServerSettings_ResetBanlistTooltip">Сбросьте настройки Бан листа по умолчанию.</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutLabel">Включить Тайм-Аут простоя</sys:String>
     <sys:String x:Key="ServerSettings_EnableIdleTimeoutTooltip">Если включено, то будет использован период простоя.</sys:String>
     <sys:String x:Key="ServerSettings_IdleTimeoutTooltip">Время простоя игроков до кика с сервера.</sys:String>
@@ -674,6 +684,14 @@
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">Если включено, полностью запрещает строительство в зонах с богатыми ресурсами, в частности настройка на карте TheIsland вокруг основных гор.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Отключить огонь по своим в PvP</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">Если этот параметр включен, игроки не могут нанести повреждения или убить других членов племени, Динозавров и разрушить структуры.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Включить Луч для поиска Лута</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">Если включено, после смерти луч света стреляет в небо, чтобы помочь игроку найти место, где он погиб.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsLabel">Отключит анимацию респауна.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsTooltip">Если включено, отключит анимацию респауна(поднятие с кровати).</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsLabel">Разрешить бесконечно использовать суп "Амнезия"</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsTooltip">Если включено, разрешает неограниченно использовать суп "Амнезия" на сервере.(по умолчанию 1 раз за уровень)</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsLabel">Разрешает постройку на платформе нескольких уровней</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsTooltip">Если включено, разрешает постройку в несколько уровней под платформами.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">Максимальное число игроков в Племени:</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">Установите для 0 для неограниченного числа игроков в племени, установите число > 0, чтобы включить ограничение.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">игроков</sys:String>
@@ -685,20 +703,24 @@
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Включить загрузку данных</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">Если этот параметр включен, это позволит загружать Выживших/Предметов/Динозавров на ваш сервер.</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">Трансфер только по Фильтру (Кластер)</sys:String>
-    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">Если включено, передача Выживших, предметов и Динозавров отключена, если сервер не находится в одном кластере.</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorDownloadsLabel">Не загружать Выживших</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorDownloadsTooltip">Если включено, загрузка Выживших отключена.</sys:String>
     <sys:String x:Key="ServerSettings_NoItemDownloadsLabel">Не загружать Предметы</sys:String>
     <sys:String x:Key="ServerSettings_NoItemDownloadsTooltip">Если включено, загрузка предметов отключена.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsLabel">Не загружать Динозавров</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoDownloadsTooltip">Если включено, загрузка Динозавров отключена.</sys:String>
+
+    <sys:String x:Key="ServerSettings_TributeUploadLabel">Включить выгрузку данных</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorUploadsLabel">Не выгружать Выживших</sys:String>
     <sys:String x:Key="ServerSettings_NoSurvivorUploadsTooltip">Если включено, выгрузка Выживших отключена.</sys:String>
     <sys:String x:Key="ServerSettings_NoItemUploadsLabel">Не выгружать Предметы</sys:String>
     <sys:String x:Key="ServerSettings_NoItemUploadsTooltip">Если включено, выгрузка Предметов отключена.</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsLabel">Не выгружать Динозавров</sys:String>
     <sys:String x:Key="ServerSettings_NoDinoUploadsTooltip">Если включено, выгрузка Динозавров отключена.</sys:String>
+
+    <sys:String x:Key="ServerSettings_ClusterTributeLabel">Настройки работы Кластера</sys:String>
+	<sys:String x:Key="ServerSettings_NoTransferFromFilteringLabel">Трансфер только по Фильтру (Кластер)</sys:String>
+    <sys:String x:Key="ServerSettings_NoTransferFromFilteringTooltip">Если включено, передача Выживших, предметов и Динозавров отключена, если сервер не находится в одном кластере.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsLabel">Изменить время хранения выгруженного Выжившего.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideTributeCharacterExpirationSecondsTooltip">Если включено, вы можете выставить время хранения Выжившего в Кластере.</sys:String>
     <sys:String x:Key="ServerSettings_TributeCharacterExpirationSecondsLabel">Время хранения Выжившего</sys:String>
@@ -711,6 +733,10 @@
     <sys:String x:Key="ServerSettings_OverrideTributeDinoExpirationSecondsTooltip">Если включено, вы можете выставить время хранения Динозавра в Кластере.</sys:String>
     <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsLabel">Время хранения Динозавра</sys:String>
     <sys:String x:Key="ServerSettings_TributeDinoExpirationSecondsTooltip">Установите время хранения Динозавра в Кластере (по умолчанию: 24ч. \ 1440 мин.</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalLabel">Установить время повторной выгрузки Динозавров</sys:String>
+    <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip">Если включено, вы сможете указать интервал повторной выгрузки Динозавров.</sys:String>
+    <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalLabel">Минимальный интервал выгрузки.</sys:String>
+    <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalTooltip">Установите время между разрешенными выгрузами Dino. Оставшееся время перезарядки отображается в пользовательском интерфейсе загрузки Dino.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Увеличить интервал респауна в PvP</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">Если этот параметр включен, позволяет увеличить интервал респауна в PvP.</sys:String>
@@ -769,9 +795,12 @@
 
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Скорость расхода кислорода</sys:String>
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Установить множитель, как скорость плавания влияет на трату кислорода.</sys:String>
-
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Включить Луч для поиска Лута</sys:String>
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">Если включено, после смерти луч света стреляет в небо, чтобы помочь игроку найти место, где он погиб.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierLabel">Качества добычи в контейнерах</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierTooltip">Множитель для качества добычи в контейнерах (принимают значения от 1 до 5)</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierLabel">Качества добычи с рыбалки</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierTooltip">Множитель для качества добычи с рыбалки (принимают значения от 1 до 5)</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Отключить Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">Если включено, отключает сбор дропа кроме мяса с рыбы.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Чат и уведомления</sys:String>
@@ -873,6 +902,9 @@
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Подтвердить сброс</sys:String>
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetLabel">Нажмите «Да», для подтверждения, что вы хотите сбросить Max XP.</sys:String>
 
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierLabel">Бонус навыка Крафтинг</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Определяет множитель для бонуса навыка Крафтинг.</sys:String>
+
     <!-- Server Settings - Dino Settings -->
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Параметры Дино</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Урон домашними:</sys:String>
@@ -901,8 +933,6 @@
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">Если этот параметр включен, отключается постепенная потеря права собственности на дино в PvE; в противном случае каждый Дино может быть заявлен как собственный, любым игроком.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Отключить PvP Dino Decay</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">Если включено, отключает снятие клейма с динозавров в PvP; В противном случае любой динозавр может быть заклеймен любым игроком, по истечению времени.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Отключить Non-Meat Fish Loot</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">Если включено, отключает сбор дропа кроме мяса с рыбы.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">Время потери прав на Дино в PvE:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Множитель  потери прав на Дино. Работает только если "Выкл. Потерю прав на Дино PvE" не активно.</sys:String>
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Отключить Baby Dino бонус</sys:String>
@@ -1144,6 +1174,7 @@
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Свои настройки уровня</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevelProgressions_InformationLabel">ПРИМЕЧАНИЕ. Последние 15 уровней игроков используются для восхождения и показаны цветным фоном. Если вы настроите свои собственные уровни игроков, убедитесь, что вы добавили еще 15 уровней для восхождения.</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Вкл. Свои настройки уровня</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">Если параметр включен, Вы сможете изменять прогресс для каждого уровня персонажа и динозавров самостоятельно.</sys:String>
     <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">Свои уровни персонажа</sys:String>
@@ -1444,6 +1475,7 @@
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerLabel">Containers</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryLabel">Entries</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_SaveTitle">Map Spawner Settings</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
 
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnLabel">Type</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnTooltip">Spawner Override Type</sys:String>
@@ -1474,6 +1506,7 @@
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_SaveTitle">Crafting Override Settings</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">NOTE: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already known, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
@@ -1503,6 +1536,7 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntriesLabel">Item Set Entries</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemsLabel">Items</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_SaveTitle">Supply Crate Override Settings</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_WarningLabel">WARNING: If you do not populate each grid properly, it could result in the Supply Crate not spawning into the world. Please ensure ALL sections are populated.</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnLabel">Supply Crate</sys:String>
@@ -2964,6 +2998,7 @@
     <sys:String x:Key="PrimalItemRaft_C">Wooden Raft</sys:String>
     <sys:String x:Key="PrimalItemResource_AmmoniteBlood_C">Ammonite Bile</sys:String>
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">Angler Gel</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Allo_C">Allosaurus Brain</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaCarno_C">Alpha Carnotaurus Arm</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaLeeds_C">Alpha Leedsichthys Blubber</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaMegalodon_C">Alpha Megalodon Fin</sys:String>
@@ -2972,10 +3007,19 @@
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaRex_C">Alpha Tyrannosaur Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaTuso_C">Alpha Tusoteuthis Eye</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Basilo_C">Basilosaurus Blubber</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Boa_C">Titanoboa Venom</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Giga_C">Giganotosaurus Heart</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Megalania_C">Megalania Toxin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Rex_C">Tyrannosaurus Arm</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Sarco_C">Sarcosuchus Skin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Sauro_C">Sauropod Vertebra</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Spino_C">Spinosaurus Sail</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Theriz_C">Therizino Claws</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Thylaco_C">Thylacoleo Hook-Claw</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Tuso_C">Tusoteuthis Tentacle</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Yuty_C">Yutyrannus Lungs</sys:String>
     <sys:String x:Key="PrimalItemResource_Beer_C">Beer Liquid</sys:String>
     <sys:String x:Key="PrimalItemResource_BlackPearl_C">Black Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Charcoal_C">Charcoal</sys:String>
@@ -3212,6 +3256,7 @@
     <sys:String x:Key="PrimalItemStructure_TekTeleporter_C">Tek Teleporter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTrapdoor_C">Tek Trapdoor</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekTrough_C">Tek Trough</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_C">Tek Wall</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Left_C">Sloped Tek Wall Left</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Right_C">Sloped Tek Wall Right</sys:String>
