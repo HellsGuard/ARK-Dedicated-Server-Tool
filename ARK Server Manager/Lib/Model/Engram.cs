@@ -144,5 +144,18 @@ namespace ARK_Server_Manager.Lib
                 !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
                 !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
         }
+
+        public EngramEntry Clone()
+        {
+            var engramEntry = new EngramEntry();
+            engramEntry.ArkApplication = this.ArkApplication;
+            engramEntry.EngramClassName = this.EngramClassName;
+            engramEntry.EngramLevelRequirement = this.EngramLevelRequirement;
+            engramEntry.EngramPointsCost = this.EngramPointsCost;
+            engramEntry.EngramHidden = this.EngramHidden;
+            engramEntry.RemoveEngramPreReq = this.RemoveEngramPreReq;
+            engramEntry.SaveEngramOverride = this.SaveEngramOverride;
+            return engramEntry;
+        }
     }
 }

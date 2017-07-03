@@ -32,7 +32,7 @@
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.0.288.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.289.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -162,11 +162,11 @@
     <Compile Include="AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProfileSyncWindow.xaml.cs">
+      <DependentUpon>ProfileSyncWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ItemsMasterListWindow.xaml.cs">
-      <DependentUpon>ItemsMasterListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\BindingProxy.cs" />
     <Compile Include="Lib\Model\FloatIniValueList.cs" />
@@ -360,11 +360,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomConfigDataWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ProfileSyncWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="ItemsMasterListWindow.xaml">
+    <Page Include="CustomConfigDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
