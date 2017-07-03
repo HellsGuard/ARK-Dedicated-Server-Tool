@@ -168,7 +168,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SetNameProperty = DependencyProperty.Register(nameof(SetName), typeof(string), typeof(SupplyCrateItemSet), new PropertyMetadata(string.Empty));
-        [AggregateIniValueEntry]
+        [AggregateIniValueEntry(ExcludeIfEmpty = true)]
         public string SetName
         {
             get { return (string)GetValue(SetNameProperty); }
@@ -257,7 +257,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemEntryNameProperty = DependencyProperty.Register(nameof(ItemEntryName), typeof(string), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(string.Empty));
-        [AggregateIniValueEntry]
+        [AggregateIniValueEntry(ExcludeIfEmpty = true)]
         public string ItemEntryName
         {
             get { return (string)GetValue(ItemEntryNameProperty); }

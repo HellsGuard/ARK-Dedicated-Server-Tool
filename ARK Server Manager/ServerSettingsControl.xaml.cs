@@ -648,6 +648,7 @@ namespace ARK_Server_Manager
                 var comment = new StringBuilder();
                 comment.AppendLine($"ARK Version: {this.Settings.LastInstalledVersion}");
                 comment.AppendLine($"ASM Version: {App.Version}");
+                comment.AppendLine($"ASM Key: {Config.Default.ASMUniqueKey}");
 
                 comment.AppendLine($"MachinePublicIP: {Config.Default.MachinePublicIP}");
                 comment.AppendLine($"ASM Directory: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
@@ -663,20 +664,38 @@ namespace ARK_Server_Manager
                 comment.AppendLine($"ManageFirewallAutomatically: {Config.Default.ManageFirewallAutomatically}");
                 comment.AppendLine($"SteamCmdRedirectOutput: {Config.Default.SteamCmdRedirectOutput}");
                 comment.AppendLine($"SteamCmd_UseAnonymousCredentials: {Config.Default.SteamCmd_UseAnonymousCredentials}");
+                comment.AppendLine($"SteamAPIKey: {!string.IsNullOrWhiteSpace(Config.Default.SteamAPIKey)}");
+                comment.AppendLine($"ValidateProfileOnServerStart: {Config.Default.ValidateProfileOnServerStart}");
+
+                comment.AppendLine($"AutoBackup_EnableBackup: {Config.Default.AutoBackup_EnableBackup}");
+                comment.AppendLine($"AutoBackup_BackupPeriod: {Config.Default.AutoBackup_BackupPeriod}");
+                comment.AppendLine($"AutoBackup_DeleteOldFiles: {Config.Default.AutoBackup_DeleteOldFiles}");
+                comment.AppendLine($"AutoBackup_DeleteInterval: {Config.Default.AutoBackup_DeleteInterval}");
 
                 comment.AppendLine($"AutoUpdate_EnableUpdate: {Config.Default.AutoUpdate_EnableUpdate}");
                 comment.AppendLine($"AutoUpdate_CacheDir: {Config.Default.AutoUpdate_CacheDir}");
                 comment.AppendLine($"AutoUpdate_UpdatePeriod: {Config.Default.AutoUpdate_UpdatePeriod}");
                 comment.AppendLine($"AutoUpdate_UseSmartCopy: {Config.Default.AutoUpdate_UseSmartCopy}");
+                comment.AppendLine($"AutoUpdate_RetryOnFail: {Config.Default.AutoUpdate_RetryOnFail}");
+                comment.AppendLine($"AutoUpdate_ShowUpdateReason: {Config.Default.AutoUpdate_ShowUpdateReason}");
+                comment.AppendLine($"AutoUpdate_ValidateServerFiles: {Config.Default.AutoUpdate_ValidateServerFiles}");
+                comment.AppendLine($"AutoUpdate_OverrideServerStartup: {Config.Default.AutoUpdate_OverrideServerStartup}");
 
                 comment.AppendLine($"ServerShutdown_EnableWorldSave: {Config.Default.ServerShutdown_EnableWorldSave}");
                 comment.AppendLine($"ServerShutdown_GracePeriod: {Config.Default.ServerShutdown_GracePeriod}");
                 comment.AppendLine($"ServerUpdate_UpdateModsWhenUpdatingServer: {Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer}");
                 comment.AppendLine($"ServerUpdate_ForceCopyMods: {Config.Default.ServerUpdate_ForceCopyMods}");
                 comment.AppendLine($"ServerUpdate_ForceUpdateMods: {Config.Default.ServerUpdate_ForceUpdateMods}");
+                comment.AppendLine($"ServerUpdate_ForceUpdateModsIfNoSteamInfo: {Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo}");
+                comment.AppendLine($"ServerUpdate_OnServerStart: {Config.Default.ServerUpdate_OnServerStart}");
                 comment.AppendLine($"EmailNotify_AutoRestart: {Config.Default.EmailNotify_AutoRestart}");
+                comment.AppendLine($"EmailNotify_AutoBackup: {Config.Default.EmailNotify_AutoBackup}");
                 comment.AppendLine($"EmailNotify_AutoUpdate: {Config.Default.EmailNotify_AutoUpdate}");
                 comment.AppendLine($"EmailNotify_ShutdownRestart: {Config.Default.EmailNotify_ShutdownRestart}");
+
+                comment.AppendLine($"SectionCraftingOverridesEnabled: {Config.Default.SectionCraftingOverridesEnabled}");
+                comment.AppendLine($"SectionMapSpawnerOverridesEnabled: {Config.Default.SectionMapSpawnerOverridesEnabled}");
+                comment.AppendLine($"SectionSupplyCrateOverridesEnabled: {Config.Default.SectionSupplyCrateOverridesEnabled}");
 
                 var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
                 ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());

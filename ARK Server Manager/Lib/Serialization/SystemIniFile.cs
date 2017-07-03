@@ -143,13 +143,19 @@ namespace ARK_Server_Manager.Lib
             basePath = INIPath;
         }
 
-        public void Deserialize(object obj)
+        public void Deserialize(object obj, string[] exclusions)
         {
             var iniFiles = new Dictionary<string, IniFile>();
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
 
+            if (exclusions == null)
+                exclusions = new string[0];
+
             foreach (var field in fields)
             {
+                if (exclusions.Contains(field.Name))
+                    continue;
+
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
                 foreach (var attr in attributes.OfType<IniFileEntryAttribute>())
                 {
@@ -248,13 +254,19 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public void Serialize(object obj)
+        public void Serialize(object obj, string[] exclusions)
         {
             var iniFiles = new Dictionary<string, IniFile>();
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
 
+            if (exclusions == null)
+                exclusions = new string[0];
+
             foreach (var field in fields)
             {
+                if (exclusions.Contains(field.Name))
+                    continue;
+
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>();
                 foreach (var attr in attributes)
                 {

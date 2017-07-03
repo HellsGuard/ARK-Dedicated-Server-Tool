@@ -12,7 +12,7 @@ namespace ARK_Server_Manager {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
     public sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
         
         private static Config defaultInstance = ((Config)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Config())));
@@ -1679,6 +1679,42 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["ASMUniqueKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionSupplyCrateOverridesEnabled {
+            get {
+                return ((bool)(this["SectionSupplyCrateOverridesEnabled"]));
+            }
+            set {
+                this["SectionSupplyCrateOverridesEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionCraftingOverridesEnabled {
+            get {
+                return ((bool)(this["SectionCraftingOverridesEnabled"]));
+            }
+            set {
+                this["SectionCraftingOverridesEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SectionMapSpawnerOverridesEnabled {
+            get {
+                return ((bool)(this["SectionMapSpawnerOverridesEnabled"]));
+            }
+            set {
+                this["SectionMapSpawnerOverridesEnabled"] = value;
             }
         }
     }

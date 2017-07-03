@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -38,6 +39,11 @@ namespace ARK_Server_Manager.Lib
         /// Determines the number od brackets around the Value delimiter. Default 1, but will be higher for hierarchial values.
         /// </summary>
         public int BracketsAroundValueDelimiter = 1;
+
+        /// <summary>
+        /// If true, then the property with not be written if empty. This does not work for collections, only value types.
+        /// </summary>
+        public bool ExcludeIfEmpty;
     }
 
     /// <summary>
@@ -144,9 +150,16 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                result.Append($"{propName}={propValue}");
+                if (attr?.ExcludeIfEmpty ?? false && string.IsNullOrWhiteSpace(propValue))
+                {
+                    Debug.WriteLine($"{propName} skipped, ExcludeIfEmpty = true and value is empty");
+                }
+                else
+                {
+                    result.Append($"{propName}={propValue}");
 
-                delimiter = DELIMITER.ToString();
+                    delimiter = DELIMITER.ToString();
+                }
             }
 
             result.Append(")");
@@ -227,14 +240,14 @@ namespace ARK_Server_Manager.Lib
                 var attr = prop.GetCustomAttributes(typeof(AggregateIniValueEntryAttribute), false).OfType<AggregateIniValueEntryAttribute>().FirstOrDefault();
                 var propName = string.IsNullOrWhiteSpace(attr?.Key) ? prop.Name : attr.Key;
 
-                result.Append($"{propName}=");
-                if (attr?.ValueWithinBrackets ?? false)
-                    result.Append("(");
-
                 var val = prop.GetValue(this);
                 var collection = val as IIniValuesCollection;
                 if (collection != null)
                 {
+                    result.Append($"{propName}=");
+                    if (attr?.ValueWithinBrackets ?? false)
+                        result.Append("(");
+
                     var iniVals = collection.ToIniValues();
                     var delimiter2 = "";
                     foreach (var iniVal in iniVals)
@@ -247,17 +260,34 @@ namespace ARK_Server_Manager.Lib
 
                         delimiter2 = DELIMITER.ToString();
                     }
+
+                    if (attr?.ValueWithinBrackets ?? false)
+                        result.Append(")");
+
+                    delimiter = DELIMITER.ToString();
                 }
                 else
                 {
                     var propValue = StringUtils.GetPropertyValue(val, prop);
-                    result.Append(propValue);
+
+                    if (attr?.ExcludeIfEmpty ?? false && string.IsNullOrWhiteSpace(propValue))
+                    {
+                        Debug.WriteLine($"{propName} skipped, ExcludeIfEmpty = true and value is empty");
+                    }
+                    else
+                    {
+                        result.Append($"{propName}=");
+                        if (attr?.ValueWithinBrackets ?? false)
+                            result.Append("(");
+
+                        result.Append(propValue);
+
+                        if (attr?.ValueWithinBrackets ?? false)
+                            result.Append(")");
+
+                        delimiter = DELIMITER.ToString();
+                    }
                 }
-
-                if (attr?.ValueWithinBrackets ?? false)
-                    result.Append(")");
-
-                delimiter = DELIMITER.ToString();
             }
 
             if (resultWithinBrackets)

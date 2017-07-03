@@ -182,6 +182,14 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Get WebApi Key...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Help...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Custom Override Options</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Enable Crafting Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">If enabled, the crafting overrides will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerLabel">Enable Map Spawner Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">If enabled, the map spawner overrides will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Enable Supply Crate Overrides</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">If enabled, the supply crate overrides will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">WARNING: While any of these options are disabled, ASM will not read or write the associated overrides settings. Re-enabling any of these options will cause ALL existing associated overrides to be removed from the config file.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Server Startup Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerTooltip">The amount of XP to be increased when adding a new custom level.</sys:String>
@@ -399,6 +407,7 @@
     <sys:String x:Key="ServerSettings_PlayersTooltip">The current number of players connected to the Ark server.</sys:String>
 
     <!-- Server Settings - General Buttons -->
+    <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Create Support Zip</sys:String>
     <sys:String x:Key="ServerSettings_ImportButtonLabel">Import</sys:String>
     <sys:String x:Key="ServerSettings_ImportButtonTooltip">Load an existing profile, or import one directly from an existing server.</sys:String>
     <sys:String x:Key="ServerSettings_SaveButtonLabel">Save</sys:String>
@@ -675,10 +684,18 @@
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireTooltip">If enabled, players are unable to deal damage to or kill other tribe members, dinos and structures when PvP mode is enabled.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Use Corpse Locator</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">If enabled, upon death, a beam of light shoots into the sky to help the player locate where they died.</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsLabel">Prevent Spawn Animations</sys:String>
+    <sys:String x:Key="ServerSettings_PreventSpawnAnimationsTooltip">If enabled, will disable the respawn animation.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsLabel">Allow Unlimited Respecs</sys:String>
+    <sys:String x:Key="ServerSettings_AllowUnlimitedRespecsTooltip">If enabled, will allow the player to have unlimited respecs using the mindwipe tonic.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsLabel">Allow Platform Saddle Multi Floors</sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlatformSaddleMultiFloorsTooltip">If enabled, will allow multiple platform floors on rafts and saddle platforms.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeLabel">Max Players in Tribe:</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeTooltip">Set to 0 for unlimited player in tribe, set to a number > 0 to act as a limit.</sys:String>
     <sys:String x:Key="ServerSettings_MaxNumberOfPlayersInTribeUnits">players</sys:String>
-    
+
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideLabel">Enable Difficulty Override</sys:String>
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">If enabled, this will allow the max level of creatures in the world to be changed.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Max Dino Level:</sys:String>
@@ -778,9 +795,12 @@
 
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierLabel">Oxygen Swim Speed Stat Multiplier</sys:String>
     <sys:String x:Key="ServerSettings_OxygenSwimSpeedStatMultiplierTooltip">Specifies the multiplier for how swim speed is multiplied by level spent in oxygen.</sys:String>
-
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorLabel">Use Corpse Locator</sys:String>
-    <sys:String x:Key="ServerSettings_UseCorpseLocatorTooltip">If enabled, upon death, a beam of light shoots into the sky to help the player locate where they died.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierLabel">Supply Crate Loot Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrateLootQualityMultiplierTooltip">Specifies the multiplier for the supply crate loot quality.</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierLabel">Fishing Loot Quality Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierTooltip">Specifies the multiplier for the fishing loot quality.</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
+    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
@@ -882,6 +902,9 @@
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_PlayerMaxXP_ResetLabel">Click 'Yes' to confirm you want to reset the Max XP.</sys:String>
 
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierLabel">Crafting Skill Bonus Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Specifies the multiplier for the crafting skill bonus.</sys:String>
+
     <!-- Server Settings - Dino Settings -->
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
@@ -910,8 +933,6 @@
     <sys:String x:Key="ServerSettings_DisableDinoDecayTooltip">If enabled, disables the gradual decay of dino ownership in PvE; otherwise every dino can be claimed by any player.</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPLabel">Disable Dino Decay PvP</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoDecayPvPTooltip">If enabled, disables the gradual decay of dino ownership in PvP; otherwise every dino can be claimed by any player.</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
-    <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodLabel">PvE Dino Decay Period:</sys:String>
     <sys:String x:Key="ServerSettings_DinoDecayPeriodTooltip">Multiplier on the base decay of dino ownership time. Only works when Disable Dino Decay PvE is unchecked.</sys:String>
     <sys:String x:Key="ServerSettings_DisableImprintDinoBuffLabel">Disable Baby Dino Imprint Buff</sys:String>
@@ -1153,6 +1174,7 @@
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevelProgressions_InformationLabel">NOTE: The last 15 player levels are used for Ascension and are shown with a coloured background. If you customize your own player levels, make sure you add an additional 15 levels for Ascension.</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Enable Custom Level Progressions</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">If enabled, enables player and dino level customizations.</sys:String>
     <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">Custom Player Levels</sys:String>
@@ -1453,6 +1475,7 @@
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerLabel">Containers</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_EntryLabel">Entries</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_SaveTitle">Map Spawner Settings</sys:String>
+    <sys:String x:Key="ServerSettings_MapSpawnerOverrides_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
 
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnLabel">Type</sys:String>
     <sys:String x:Key="ServerSettings_MapSpawnerOverrides_ContainerTypeColumnTooltip">Spawner Override Type</sys:String>
@@ -1483,6 +1506,7 @@
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemsLabel">Crafted Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_ResourcesLabel">Resource Items</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_SaveTitle">Crafting Override Settings</sys:String>
+    <sys:String x:Key="ServerSettings_CraftingOverrides_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
     <sys:String x:Key="ServerSettings_CraftingOverrides_WarningLabel">NOTE: Changing the resources of a crafted item will require the Engram to be re-learnt. If the Engram is already known, a mindwipe tonic must be used so that it can be re-learnt.</sys:String>
 
     <sys:String x:Key="ServerSettings_CraftingOverrides_ItemClassColumnLabel">Crafted Item</sys:String>
@@ -1512,6 +1536,7 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSetEntriesLabel">Item Set Entries</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemsLabel">Items</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_SaveTitle">Supply Crate Override Settings</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_DisableLabel">NOTE: If you want to manage your overrides manually or with another application, you can disable the option that will prevent ASM managing the overrides. See the 'Custom Override Options' in the global settings.</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_WarningLabel">WARNING: If you do not populate each grid properly, it could result in the Supply Crate not spawning into the world. Please ensure ALL sections are populated.</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_ClassColumnLabel">Supply Crate</sys:String>
@@ -2973,6 +2998,7 @@
     <sys:String x:Key="PrimalItemRaft_C">Wooden Raft</sys:String>
     <sys:String x:Key="PrimalItemResource_AmmoniteBlood_C">Ammonite Bile</sys:String>
     <sys:String x:Key="PrimalItemResource_AnglerGel_C">Angler Gel</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Allo_C">Allosaurus Brain</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaCarno_C">Alpha Carnotaurus Arm</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaLeeds_C">Alpha Leedsichthys Blubber</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaMegalodon_C">Alpha Megalodon Fin</sys:String>
@@ -2981,10 +3007,19 @@
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaRex_C">Alpha Tyrannosaur Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_AlphaTuso_C">Alpha Tusoteuthis Eye</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Argentavis_C">Argentavis Talon</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Basilo_C">Basilosaurus Blubber</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Boa_C">Titanoboa Venom</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Giga_C">Giganotosaurus Heart</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Megalania_C">Megalania Toxin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Megalodon_C">Megalodon Tooth</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Rex_C">Tyrannosaurus Arm</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Sarco_C">Sarcosuchus Skin</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Sauro_C">Sauropod Vertebra</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Spino_C">Spinosaurus Sail</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Theriz_C">Therizino Claws</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Thylaco_C">Thylacoleo Hook-Claw</sys:String>
     <sys:String x:Key="PrimalItemResource_ApexDrop_Tuso_C">Tusoteuthis Tentacle</sys:String>
+    <sys:String x:Key="PrimalItemResource_ApexDrop_Yuty_C">Yutyrannus Lungs</sys:String>
     <sys:String x:Key="PrimalItemResource_Beer_C">Beer Liquid</sys:String>
     <sys:String x:Key="PrimalItemResource_BlackPearl_C">Black Pearl</sys:String>
     <sys:String x:Key="PrimalItemResource_Charcoal_C">Charcoal</sys:String>
@@ -3221,6 +3256,7 @@
     <sys:String x:Key="PrimalItemStructure_TekTeleporter_C">Tek Teleporter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekTrapdoor_C">Tek Trapdoor</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekTrough_C">Tek Trough</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_C">Tek Wall</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Left_C">Sloped Tek Wall Left</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekWall_Sloped_Right_C">Sloped Tek Wall Right</sys:String>
