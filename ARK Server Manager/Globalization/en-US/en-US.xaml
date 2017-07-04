@@ -263,6 +263,7 @@
     <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Override server restart after auto-update</sys:String>
     <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">If enabled, when the auto-update is performed the server WILL NOT be restarted, regardless of if it was online before the auto-update.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownLabel">Shutdown Options</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownMessageInformationLabel">These warning messages will only be broadcast to your server if RCON is enabled and the RCON port set on your server profile.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalLabel">Grace Period:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownGraceIntervalTooltip">The amount of time in minutes to broadcast messages about the upgrade before shutting down and upgrading the server.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownMessage1Label">Message 1:</sys:String>
@@ -1711,6 +1712,7 @@
     <sys:String x:Key="RCON_Button_Change">Change</sys:String>
     <sys:String x:Key="RCON_Button_Send">Send</sys:String>
 
+    <sys:String x:Key="RCON_TitleLabel">RCON: {0}</sys:String>
     <sys:String x:Key="RCON_UnnamedLabel">unnamed</sys:String>
 
     <sys:String x:Key="RCON_ConnectionEstablishedLabel">Connection established.</sys:String>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Name="RCON" Title="{Binding RCONParameters.ProfileName}"
+        Name="RCON" Title="{Binding RCONParameters.RCONWindowTitle}"
         Width="1024" Height="768" ResizeMode="CanResizeWithGrip" Icon="Art/Command.png"
         SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged">
     <Window.Resources>
