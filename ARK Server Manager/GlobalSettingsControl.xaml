@@ -389,6 +389,8 @@
                         <CheckBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_ShowUpdateReasonLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_ShowUpdateReason, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ShowUpdateReasonTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                         <CheckBox Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_OverrideServerStartupLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_OverrideServerStartup, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_OverrideServerStartupTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                        <CheckBox Grid.Row="3" Grid.Column="3" Margin="5,0,0,0" Grid.ColumnSpan="3" Content="{DynamicResource GlobalSettings_ParallelUpdateLabel}" IsChecked="{Binding CurrentConfig.AutoUpdate_ParallelUpdate, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ParallelUpdateTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </Grid>
                 </GroupBox>
 

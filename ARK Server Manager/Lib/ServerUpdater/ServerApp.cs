@@ -2473,9 +2473,9 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                // check if the server backup has been enabled.
-                if (!Config.Default.AutoBackup_EnableBackup)
-                    return EXITCODE_AUTOBACKUPNOTENABLED;
+                // check if a data directory has been setup.
+                if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                    return EXITCODE_INVALIDDATADIRECTORY;
 
                 // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                 LoadProfiles();
@@ -2509,6 +2509,10 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
+                // check if a data directory has been setup.
+                if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                    return EXITCODE_INVALIDDATADIRECTORY;
+
                 if (string.IsNullOrWhiteSpace(argument) || (!argument.StartsWith(App.ARG_AUTOSHUTDOWN1) && !argument.StartsWith(App.ARG_AUTOSHUTDOWN2)))
                     return EXITCODE_BADARGUMENT;
 
@@ -2578,10 +2582,6 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                // check if the server cache has been enabled.
-                if (!Config.Default.AutoUpdate_EnableUpdate)
-                    return EXITCODE_AUTOUPDATENOTENABLED;
-
                 // check if a data directory has been setup.
                 if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
                     return EXITCODE_INVALIDDATADIRECTORY;
@@ -2616,12 +2616,25 @@ namespace ARK_Server_Manager.Lib
                     {
                         var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
 
-                        Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
-                            app = new ServerApp();
-                            app.SendEmails = true;
-                            app.ServerProcess = ServerProcessType.AutoUpdate;
-                            exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
-                        });
+                        if (Config.Default.AutoUpdate_ParallelUpdate)
+                        {
+                            Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
+                                app = new ServerApp();
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcessType.AutoUpdate;
+                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                            });
+                        }
+                        else
+                        {
+                            foreach (var profile in _profiles.Keys.Where(p => p.EnableAutoUpdate))
+                            {
+                                app = new ServerApp();
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcessType.AutoUpdate;
+                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                            }
+                        }
 
                         if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
                             exitCode = EXITCODE_EXITWITHERRORS;
