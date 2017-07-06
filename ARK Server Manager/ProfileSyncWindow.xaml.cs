@@ -172,6 +172,8 @@ namespace ARK_Server_Manager
         {
             ProfileSections.Clear();
 
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.AdministrationSection, SectionName = _globalizer.GetResourceString("ServerSettings_AdministrationSectionLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.AutomaticManagement, SectionName = _globalizer.GetResourceString("ServerSettings_AutomaticManagementLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.RulesSection, SectionName = _globalizer.GetResourceString("ServerSettings_RulesLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.ChatAndNotificationsSection, SectionName = _globalizer.GetResourceString("ServerSettings_ChatAndNotificationsLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.HudAndVisualsSection, SectionName = _globalizer.GetResourceString("ServerSettings_HUDAndVisualsLabel") });

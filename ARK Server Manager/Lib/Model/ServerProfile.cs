@@ -507,13 +507,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(WebAlarmUrlProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool AutoManagedMods
-        {
-            get { return (bool)GetValue(AutoManagedModsProperty); }
-            set { SetValue(AutoManagedModsProperty, value); }
-        }
-
         public static readonly DependencyProperty UseOldSaveFormatProperty = DependencyProperty.Register(nameof(UseOldSaveFormat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool UseOldSaveFormat
         {
@@ -533,13 +526,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(StasisKeepControllersProperty); }
             set { SetValue(StasisKeepControllersProperty, value); }
-        }
-
-        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool NoTransferFromFiltering
-        {
-            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
-            set { SetValue(NoTransferFromFilteringProperty, value); }
         }
 
         public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
@@ -600,11 +586,11 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAutoUpdateProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableServerRestart1Property = DependencyProperty.Register(nameof(EnableAutoShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableAutoShutdown1Property = DependencyProperty.Register(nameof(EnableAutoShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoShutdown1
         {
-            get { return (bool)GetValue(EnableServerRestart1Property); }
-            set { SetValue(EnableServerRestart1Property, value); }
+            get { return (bool)GetValue(EnableAutoShutdown1Property); }
+            set { SetValue(EnableAutoShutdown1Property, value); }
         }
 
         public static readonly DependencyProperty AutoShutdownTime1Property = DependencyProperty.Register(nameof(AutoShutdownTime1), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
@@ -661,6 +647,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(AutoRestartIfShutdownProperty); }
             set { SetValue(AutoRestartIfShutdownProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool AutoManagedMods
+        {
+            get { return (bool)GetValue(AutoManagedModsProperty); }
+            set { SetValue(AutoManagedModsProperty, value); }
         }
         #endregion
 
@@ -813,6 +806,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
             set { SetValue(PreventUploadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NoTransferFromFiltering
+        {
+            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
+            set { SetValue(NoTransferFromFilteringProperty, value); }
         }
 
         public static readonly DependencyProperty OverrideTributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeCharacterExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -4040,9 +4040,11 @@ namespace ARK_Server_Manager.Lib
             switch (section)
             {
                 case ServerProfileSection.AdministrationSection:
-                case ServerProfileSection.AutomaticManagement:
+                    SyncAdministrationSection(sourceProfile);
                     break;
-
+                case ServerProfileSection.AutomaticManagement:
+                    SyncAutomaticManagement(sourceProfile);
+                    break;
                 case ServerProfileSection.RulesSection:
                     SyncRulesSection(sourceProfile);
                     break;
@@ -4089,6 +4091,92 @@ namespace ARK_Server_Manager.Lib
                     SyncSOTFSection(sourceProfile);
                     break;
             }
+        }
+
+        private void SyncAdministrationSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(ServerPasswordProperty, sourceProfile.ServerPassword);
+            this.SetValue(AdminPasswordProperty, sourceProfile.AdminPassword);
+            this.SetValue(SpectatorPasswordProperty, sourceProfile.SpectatorPassword);
+            this.SetValue(ServerConnectionPortProperty, sourceProfile.ServerConnectionPort);
+            this.SetValue(ServerPortProperty, sourceProfile.ServerPort);
+            this.SetValue(ServerIPProperty, sourceProfile.ServerIP);
+            this.SetValue(UseRawSocketsProperty, sourceProfile.UseRawSockets);
+
+            this.SetValue(EnableBanListURLProperty, sourceProfile.EnableBanListURL);
+            this.SetValue(BanListURLProperty, sourceProfile.BanListURL);
+            this.SetValue(MaxPlayersProperty, sourceProfile.MaxPlayers);
+            this.SetValue(EnableKickIdlePlayersProperty, sourceProfile.EnableKickIdlePlayers);
+            this.SetValue(KickIdlePlayersPeriodProperty, sourceProfile.KickIdlePlayersPeriod);
+
+            this.SetValue(RCONEnabledProperty, sourceProfile.RCONEnabled);
+            this.SetValue(RCONPortProperty, sourceProfile.RCONPort);
+            this.SetValue(RCONServerGameLogBufferProperty, sourceProfile.RCONServerGameLogBuffer);
+            this.SetValue(AdminLoggingProperty, sourceProfile.AdminLogging);
+
+            this.SetValue(ServerMapProperty, sourceProfile.ServerMap);
+            this.SetValue(TotalConversionModIdProperty, sourceProfile.TotalConversionModId);
+            this.SetValue(ServerModIdsProperty, sourceProfile.ServerModIds);
+
+            this.SetValue(EnableExtinctionEventProperty, sourceProfile.EnableExtinctionEvent);
+            this.SetValue(ExtinctionEventTimeIntervalProperty, sourceProfile.ExtinctionEventTimeInterval);
+            this.SetValue(ExtinctionEventUTCProperty, sourceProfile.ExtinctionEventUTC);
+
+            this.SetValue(AutoSavePeriodMinutesProperty, sourceProfile.AutoSavePeriodMinutes);
+            this.SetValue(MOTDProperty, sourceProfile.MOTD);
+            this.SetValue(MOTDDurationProperty, sourceProfile.MOTDDuration);
+
+            this.SetValue(DisableValveAntiCheatSystemProperty, sourceProfile.DisableValveAntiCheatSystem);
+            this.SetValue(DisablePlayerMovePhysicsOptimizationProperty, sourceProfile.DisablePlayerMovePhysicsOptimization);
+            this.SetValue(DisableAntiSpeedHackDetectionProperty, sourceProfile.DisableAntiSpeedHackDetection);
+            this.SetValue(SpeedHackBiasProperty, sourceProfile.SpeedHackBias);
+            this.SetValue(UseBattlEyeProperty, sourceProfile.UseBattlEye);
+            this.SetValue(ForceRespawnDinosProperty, sourceProfile.ForceRespawnDinos);
+            this.SetValue(EnableServerAdminLogsProperty, sourceProfile.EnableServerAdminLogs);
+            this.SetValue(ServerAdminLogsIncludeTribeLogsProperty, sourceProfile.ServerAdminLogsIncludeTribeLogs);
+            this.SetValue(ServerRCONOutputTribeLogsProperty, sourceProfile.ServerRCONOutputTribeLogs);
+            this.SetValue(NotifyAdminCommandsInChatProperty, sourceProfile.NotifyAdminCommandsInChat);
+            this.SetValue(MaxTribeLogsProperty, sourceProfile.MaxTribeLogs);
+            this.SetValue(TribeLogDestroyedEnemyStructuresProperty, sourceProfile.TribeLogDestroyedEnemyStructures);
+            this.SetValue(ForceDirectX10Property, sourceProfile.ForceDirectX10);
+            this.SetValue(ForceShaderModel4Property, sourceProfile.ForceShaderModel4);
+            this.SetValue(ForceLowMemoryProperty, sourceProfile.ForceLowMemory);
+            this.SetValue(ForceNoManSkyProperty, sourceProfile.ForceNoManSky);
+            this.SetValue(UseAllAvailableCoresProperty, sourceProfile.UseAllAvailableCores);
+            this.SetValue(UseCacheProperty, sourceProfile.UseCache);
+            this.SetValue(UseOldSaveFormatProperty, sourceProfile.UseOldSaveFormat);
+            this.SetValue(UseNoMemoryBiasProperty, sourceProfile.UseNoMemoryBias);
+            this.SetValue(StasisKeepControllersProperty, sourceProfile.StasisKeepControllers);
+
+            this.SetValue(AltSaveDirectoryNameProperty, sourceProfile.AltSaveDirectoryName);
+            this.SetValue(EnableWebAlarmProperty, sourceProfile.EnableWebAlarm);
+            this.SetValue(WebAlarmKeyProperty, sourceProfile.WebAlarmKey);
+            this.SetValue(WebAlarmUrlProperty, sourceProfile.WebAlarmUrl);
+
+            this.SetValue(CrossArkClusterIdProperty, sourceProfile.CrossArkClusterId);
+            this.SetValue(ClusterDirOverrideProperty, sourceProfile.ClusterDirOverride);
+
+            this.SetValue(AdditionalArgsProperty, sourceProfile.AdditionalArgs);
+            this.SetValue(LauncherArgsOverrideProperty, sourceProfile.LauncherArgsOverride);
+            this.SetValue(LauncherArgsProperty, sourceProfile.LauncherArgs);
+        }
+
+        private void SyncAutomaticManagement(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableAutoBackupProperty, sourceProfile.EnableAutoBackup);
+            this.SetValue(EnableAutoStartProperty, sourceProfile.EnableAutoStart);
+            this.SetValue(EnableAutoUpdateProperty, sourceProfile.EnableAutoUpdate);
+            this.SetValue(EnableAutoShutdown1Property, sourceProfile.EnableAutoShutdown1);
+            this.SetValue(AutoShutdownTime1Property, sourceProfile.AutoShutdownTime1);
+            this.SetValue(RestartAfterShutdown1Property, sourceProfile.RestartAfterShutdown1);
+            this.SetValue(UpdateAfterShutdown1Property, sourceProfile.UpdateAfterShutdown1);
+            this.SetValue(EnableAutoShutdown2Property, sourceProfile.EnableAutoShutdown2);
+            this.SetValue(AutoShutdownTime2Property, sourceProfile.AutoShutdownTime2);
+            this.SetValue(RestartAfterShutdown2Property, sourceProfile.RestartAfterShutdown2);
+            this.SetValue(UpdateAfterShutdown2Property, sourceProfile.UpdateAfterShutdown2);
+            this.SetValue(AutoRestartIfShutdownProperty, sourceProfile.AutoRestartIfShutdown);
+
+            this.SetValue(AutoManagedModsProperty, sourceProfile.AutoManagedMods);
         }
 
         private void SyncChatAndNotificationsSection(ServerProfile sourceProfile)
@@ -4337,6 +4425,16 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(PreventUploadSurvivorsProperty, sourceProfile.PreventUploadSurvivors);
             this.SetValue(PreventUploadItemsProperty, sourceProfile.PreventUploadItems);
             this.SetValue(PreventUploadDinosProperty, sourceProfile.PreventUploadDinos);
+
+            this.SetValue(NoTransferFromFilteringProperty, sourceProfile.NoTransferFromFiltering);
+            this.SetValue(OverrideTributeCharacterExpirationSecondsProperty, sourceProfile.OverrideTributeCharacterExpirationSeconds);
+            this.SetValue(OverrideTributeItemExpirationSecondsProperty, sourceProfile.OverrideTributeItemExpirationSeconds);
+            this.SetValue(OverrideTributeDinoExpirationSecondsProperty, sourceProfile.OverrideTributeDinoExpirationSeconds);
+            this.SetValue(OverrideMinimumDinoReuploadIntervalProperty, sourceProfile.OverrideMinimumDinoReuploadInterval);
+            this.SetValue(TributeCharacterExpirationSecondsProperty, sourceProfile.TributeCharacterExpirationSeconds);
+            this.SetValue(TributeItemExpirationSecondsProperty, sourceProfile.TributeItemExpirationSeconds);
+            this.SetValue(TributeDinoExpirationSecondsProperty, sourceProfile.TributeDinoExpirationSeconds);
+            this.SetValue(MinimumDinoReuploadIntervalProperty, sourceProfile.MinimumDinoReuploadInterval);
 
             this.SetValue(IncreasePvPRespawnIntervalProperty, sourceProfile.IncreasePvPRespawnInterval);
             this.SetValue(IncreasePvPRespawnIntervalCheckPeriodProperty, sourceProfile.IncreasePvPRespawnIntervalCheckPeriod);
