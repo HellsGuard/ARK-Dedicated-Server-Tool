@@ -21,6 +21,27 @@ namespace ARK_Server_Manager.Lib
     [Serializable]
     public class ServerProfile : DependencyObject
     {
+        public enum ServerProfileSection
+        {
+            AdministrationSection,
+            AutomaticManagement,
+            RulesSection,
+            ChatAndNotificationsSection,
+            HudAndVisualsSection,
+            PlayerSettingsSection,
+            DinoSettingsSection,
+            EnvironmentSection,
+            StructuresSection,
+            EngramsSection,
+            CustomSettingsSection,
+            CustomLevelsSection,
+            MapSpawnerOverridesSection,
+            CraftingOverridesSection,
+            SupplyCrateOverridesSection,
+            PGMSection,
+            SOTFSection,
+        }
+
         public enum LevelProgression
         {
             Player,
@@ -486,13 +507,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(WebAlarmUrlProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool AutoManagedMods
-        {
-            get { return (bool)GetValue(AutoManagedModsProperty); }
-            set { SetValue(AutoManagedModsProperty, value); }
-        }
-
         public static readonly DependencyProperty UseOldSaveFormatProperty = DependencyProperty.Register(nameof(UseOldSaveFormat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool UseOldSaveFormat
         {
@@ -512,13 +526,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(StasisKeepControllersProperty); }
             set { SetValue(StasisKeepControllersProperty, value); }
-        }
-
-        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        public bool NoTransferFromFiltering
-        {
-            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
-            set { SetValue(NoTransferFromFilteringProperty, value); }
         }
 
         public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
@@ -579,11 +586,11 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EnableAutoUpdateProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableServerRestart1Property = DependencyProperty.Register(nameof(EnableAutoShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableAutoShutdown1Property = DependencyProperty.Register(nameof(EnableAutoShutdown1), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         public bool EnableAutoShutdown1
         {
-            get { return (bool)GetValue(EnableServerRestart1Property); }
-            set { SetValue(EnableServerRestart1Property, value); }
+            get { return (bool)GetValue(EnableAutoShutdown1Property); }
+            set { SetValue(EnableAutoShutdown1Property, value); }
         }
 
         public static readonly DependencyProperty AutoShutdownTime1Property = DependencyProperty.Register(nameof(AutoShutdownTime1), typeof(string), typeof(ServerProfile), new PropertyMetadata("00:00"));
@@ -640,6 +647,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(AutoRestartIfShutdownProperty); }
             set { SetValue(AutoRestartIfShutdownProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool AutoManagedMods
+        {
+            get { return (bool)GetValue(AutoManagedModsProperty); }
+            set { SetValue(AutoManagedModsProperty, value); }
         }
         #endregion
 
@@ -792,6 +806,13 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
             set { SetValue(PreventUploadDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty NoTransferFromFilteringProperty = DependencyProperty.Register(nameof(NoTransferFromFiltering), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool NoTransferFromFiltering
+        {
+            get { return (bool)GetValue(NoTransferFromFilteringProperty); }
+            set { SetValue(NoTransferFromFilteringProperty, value); }
         }
 
         public static readonly DependencyProperty OverrideTributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(OverrideTributeCharacterExpirationSeconds), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
@@ -3552,6 +3573,52 @@ namespace ARK_Server_Manager.Lib
             this.ProfileID = Guid.NewGuid().ToString();
         }
 
+        public void RandomizePGMSettings()
+        {
+            var random = new Random(DateTime.Now.Millisecond);
+
+            this.PGM_Terrain.MapSeed = random.Next(1, 999);
+
+            this.PGM_Terrain.WaterFrequency = (float)Math.Round(random.NextDouble() * 5f, 5);
+            this.PGM_Terrain.MountainsFrequency = (float)Math.Round(random.NextDouble() * 10f, 5);
+            if (this.PGM_Terrain.MountainsFrequency < 3.0f)
+                this.PGM_Terrain.MountainsFrequency += 3.0f;
+
+            this.PGM_Terrain.MountainsSlope = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsSlope < 0.5f)
+                this.PGM_Terrain.MountainsSlope += 0.5f;
+            this.PGM_Terrain.MountainsHeight = (float)Math.Round(random.NextDouble() + 0.3f, 5);
+            if (this.PGM_Terrain.MountainsHeight < 0.5f)
+                this.PGM_Terrain.MountainsHeight += 0.5f;
+
+            this.PGM_Terrain.SnowBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.RedWoodBiomeSize = (float)Math.Round(random.NextDouble(), 5);
+            if (this.PGM_Terrain.RedWoodBiomeSize > 0.5f)
+                this.PGM_Terrain.RedWoodBiomeSize -= 0.5f;
+
+            this.PGM_Terrain.MountainBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+            this.PGM_Terrain.JungleBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
+
+            this.PGM_Terrain.GrassDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.JungleGrassDensity = (float)Math.Round(random.Next(2, 9) / 100.1f, 3);
+            this.PGM_Terrain.MountainGrassDensity = (float)Math.Round(random.Next(3, 10) / 100.1f, 3);
+            this.PGM_Terrain.RedwoodGrassDensity = (float)Math.Round(random.Next(5, 15) / 100.1f, 3);
+            this.PGM_Terrain.SnowGrassDensity = (float)Math.Round(random.Next(10, 30) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainGrassDensity = (float)Math.Round(random.Next(10, 20) / 100.1f, 3);
+
+            this.PGM_Terrain.TreeDensity = (float)Math.Round(random.Next(11, 135) / 10000.1f, 3);
+            this.PGM_Terrain.JungleTreeDensity = (float)Math.Round(random.Next(48, 83) / 100.1f, 3);
+            this.PGM_Terrain.MountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.RedWoodTreeDensity = (float)Math.Round(random.Next(23, 51) / 100.1f, 3);
+            this.PGM_Terrain.SnowTreeDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
+            this.PGM_Terrain.SnowMountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
+            this.PGM_Terrain.ShoreTreeDensity = (float)Math.Round(random.Next(48, 83) / 1000.1f, 3);
+            this.PGM_Terrain.SnowShoreTreeDensity = (float)Math.Round(random.Next(14, 31) / 1000.1f, 3);
+
+            this.PGM_Terrain.InlandWaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+            this.PGM_Terrain.UnderwaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
+        }
+
         // individual value reset methods
         public void ResetBanlist()
         {
@@ -3721,6 +3788,7 @@ namespace ARK_Server_Manager.Lib
             this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
+            this.DinoSettings.RenderToView();
 
             this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
             this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
@@ -3743,6 +3811,7 @@ namespace ARK_Server_Manager.Lib
         public void ResetEngramsSection()
         {
             this.ClearValue(OnlyAllowSpecifiedEngramsProperty);
+
             this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             this.OverrideNamedEngramEntries.Reset();
         }
@@ -3962,6 +4031,510 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Sync Methods
+        public void SyncSettings(ServerProfileSection section, ServerProfile sourceProfile)
+        {
+            if (sourceProfile == null)
+                return;
+
+            switch (section)
+            {
+                case ServerProfileSection.AdministrationSection:
+                    SyncAdministrationSection(sourceProfile);
+                    break;
+                case ServerProfileSection.AutomaticManagement:
+                    SyncAutomaticManagement(sourceProfile);
+                    break;
+                case ServerProfileSection.RulesSection:
+                    SyncRulesSection(sourceProfile);
+                    break;
+                case ServerProfileSection.ChatAndNotificationsSection:
+                    SyncChatAndNotificationsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.HudAndVisualsSection:
+                    SyncHudAndVisualsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.PlayerSettingsSection:
+                    SyncPlayerSettingsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.DinoSettingsSection:
+                    SyncDinoSettingsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.EnvironmentSection:
+                    SyncEnvironmentSection(sourceProfile);
+                    break;
+                case ServerProfileSection.StructuresSection:
+                    SyncStructuresSection(sourceProfile);
+                    break;
+                case ServerProfileSection.EngramsSection:
+                    SyncEngramsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.CustomSettingsSection:
+                    SyncCustomSettingsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.CustomLevelsSection:
+                    SyncCustomLevelsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.MapSpawnerOverridesSection:
+                    SyncNPCSpawnOverridesSection(sourceProfile);
+                    break;
+                case ServerProfileSection.CraftingOverridesSection:
+                    SyncCraftingOverridesSection(sourceProfile);
+                    break;
+                case ServerProfileSection.SupplyCrateOverridesSection:
+                    SyncSupplyCrateOverridesSection(sourceProfile);
+                    break;
+                case ServerProfileSection.PGMSection:
+                    SyncPGMSection(sourceProfile);
+                    break;
+                case ServerProfileSection.SOTFSection:
+                    SyncSOTFSection(sourceProfile);
+                    break;
+            }
+        }
+
+        private void SyncAdministrationSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(ServerPasswordProperty, sourceProfile.ServerPassword);
+            this.SetValue(AdminPasswordProperty, sourceProfile.AdminPassword);
+            this.SetValue(SpectatorPasswordProperty, sourceProfile.SpectatorPassword);
+            this.SetValue(ServerConnectionPortProperty, sourceProfile.ServerConnectionPort);
+            this.SetValue(ServerPortProperty, sourceProfile.ServerPort);
+            this.SetValue(ServerIPProperty, sourceProfile.ServerIP);
+            this.SetValue(UseRawSocketsProperty, sourceProfile.UseRawSockets);
+
+            this.SetValue(EnableBanListURLProperty, sourceProfile.EnableBanListURL);
+            this.SetValue(BanListURLProperty, sourceProfile.BanListURL);
+            this.SetValue(MaxPlayersProperty, sourceProfile.MaxPlayers);
+            this.SetValue(EnableKickIdlePlayersProperty, sourceProfile.EnableKickIdlePlayers);
+            this.SetValue(KickIdlePlayersPeriodProperty, sourceProfile.KickIdlePlayersPeriod);
+
+            this.SetValue(RCONEnabledProperty, sourceProfile.RCONEnabled);
+            this.SetValue(RCONPortProperty, sourceProfile.RCONPort);
+            this.SetValue(RCONServerGameLogBufferProperty, sourceProfile.RCONServerGameLogBuffer);
+            this.SetValue(AdminLoggingProperty, sourceProfile.AdminLogging);
+
+            this.SetValue(ServerMapProperty, sourceProfile.ServerMap);
+            this.SetValue(TotalConversionModIdProperty, sourceProfile.TotalConversionModId);
+            this.SetValue(ServerModIdsProperty, sourceProfile.ServerModIds);
+
+            this.SetValue(EnableExtinctionEventProperty, sourceProfile.EnableExtinctionEvent);
+            this.SetValue(ExtinctionEventTimeIntervalProperty, sourceProfile.ExtinctionEventTimeInterval);
+            this.SetValue(ExtinctionEventUTCProperty, sourceProfile.ExtinctionEventUTC);
+
+            this.SetValue(AutoSavePeriodMinutesProperty, sourceProfile.AutoSavePeriodMinutes);
+            this.SetValue(MOTDProperty, sourceProfile.MOTD);
+            this.SetValue(MOTDDurationProperty, sourceProfile.MOTDDuration);
+
+            this.SetValue(DisableValveAntiCheatSystemProperty, sourceProfile.DisableValveAntiCheatSystem);
+            this.SetValue(DisablePlayerMovePhysicsOptimizationProperty, sourceProfile.DisablePlayerMovePhysicsOptimization);
+            this.SetValue(DisableAntiSpeedHackDetectionProperty, sourceProfile.DisableAntiSpeedHackDetection);
+            this.SetValue(SpeedHackBiasProperty, sourceProfile.SpeedHackBias);
+            this.SetValue(UseBattlEyeProperty, sourceProfile.UseBattlEye);
+            this.SetValue(ForceRespawnDinosProperty, sourceProfile.ForceRespawnDinos);
+            this.SetValue(EnableServerAdminLogsProperty, sourceProfile.EnableServerAdminLogs);
+            this.SetValue(ServerAdminLogsIncludeTribeLogsProperty, sourceProfile.ServerAdminLogsIncludeTribeLogs);
+            this.SetValue(ServerRCONOutputTribeLogsProperty, sourceProfile.ServerRCONOutputTribeLogs);
+            this.SetValue(NotifyAdminCommandsInChatProperty, sourceProfile.NotifyAdminCommandsInChat);
+            this.SetValue(MaxTribeLogsProperty, sourceProfile.MaxTribeLogs);
+            this.SetValue(TribeLogDestroyedEnemyStructuresProperty, sourceProfile.TribeLogDestroyedEnemyStructures);
+            this.SetValue(ForceDirectX10Property, sourceProfile.ForceDirectX10);
+            this.SetValue(ForceShaderModel4Property, sourceProfile.ForceShaderModel4);
+            this.SetValue(ForceLowMemoryProperty, sourceProfile.ForceLowMemory);
+            this.SetValue(ForceNoManSkyProperty, sourceProfile.ForceNoManSky);
+            this.SetValue(UseAllAvailableCoresProperty, sourceProfile.UseAllAvailableCores);
+            this.SetValue(UseCacheProperty, sourceProfile.UseCache);
+            this.SetValue(UseOldSaveFormatProperty, sourceProfile.UseOldSaveFormat);
+            this.SetValue(UseNoMemoryBiasProperty, sourceProfile.UseNoMemoryBias);
+            this.SetValue(StasisKeepControllersProperty, sourceProfile.StasisKeepControllers);
+
+            this.SetValue(AltSaveDirectoryNameProperty, sourceProfile.AltSaveDirectoryName);
+            this.SetValue(EnableWebAlarmProperty, sourceProfile.EnableWebAlarm);
+            this.SetValue(WebAlarmKeyProperty, sourceProfile.WebAlarmKey);
+            this.SetValue(WebAlarmUrlProperty, sourceProfile.WebAlarmUrl);
+
+            this.SetValue(CrossArkClusterIdProperty, sourceProfile.CrossArkClusterId);
+            this.SetValue(ClusterDirOverrideProperty, sourceProfile.ClusterDirOverride);
+
+            this.SetValue(AdditionalArgsProperty, sourceProfile.AdditionalArgs);
+            this.SetValue(LauncherArgsOverrideProperty, sourceProfile.LauncherArgsOverride);
+            this.SetValue(LauncherArgsProperty, sourceProfile.LauncherArgs);
+        }
+
+        private void SyncAutomaticManagement(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableAutoBackupProperty, sourceProfile.EnableAutoBackup);
+            this.SetValue(EnableAutoStartProperty, sourceProfile.EnableAutoStart);
+            this.SetValue(EnableAutoUpdateProperty, sourceProfile.EnableAutoUpdate);
+            this.SetValue(EnableAutoShutdown1Property, sourceProfile.EnableAutoShutdown1);
+            this.SetValue(AutoShutdownTime1Property, sourceProfile.AutoShutdownTime1);
+            this.SetValue(RestartAfterShutdown1Property, sourceProfile.RestartAfterShutdown1);
+            this.SetValue(UpdateAfterShutdown1Property, sourceProfile.UpdateAfterShutdown1);
+            this.SetValue(EnableAutoShutdown2Property, sourceProfile.EnableAutoShutdown2);
+            this.SetValue(AutoShutdownTime2Property, sourceProfile.AutoShutdownTime2);
+            this.SetValue(RestartAfterShutdown2Property, sourceProfile.RestartAfterShutdown2);
+            this.SetValue(UpdateAfterShutdown2Property, sourceProfile.UpdateAfterShutdown2);
+            this.SetValue(AutoRestartIfShutdownProperty, sourceProfile.AutoRestartIfShutdown);
+
+            this.SetValue(AutoManagedModsProperty, sourceProfile.AutoManagedMods);
+        }
+
+        private void SyncChatAndNotificationsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableGlobalVoiceChatProperty, sourceProfile.EnableGlobalVoiceChat);
+            this.SetValue(EnableProximityChatProperty, sourceProfile.EnableProximityChat);
+            this.SetValue(EnablePlayerLeaveNotificationsProperty, sourceProfile.EnablePlayerLeaveNotifications);
+            this.SetValue(EnablePlayerJoinedNotificationsProperty, sourceProfile.EnablePlayerJoinedNotifications);
+        }
+
+        private void SyncCraftingOverridesSection(ServerProfile sourceProfile)
+        {
+            this.ConfigOverrideItemCraftingCosts.Clear();
+            this.ConfigOverrideItemCraftingCosts.FromIniValues(sourceProfile.ConfigOverrideItemCraftingCosts.ToIniValues());
+            this.ConfigOverrideItemCraftingCosts.IsEnabled = this.ConfigOverrideItemCraftingCosts.Count > 0;
+        }
+
+        private void SyncCustomLevelsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableLevelProgressionsProperty, sourceProfile.EnableLevelProgressions);
+
+            this.PlayerLevels = LevelList.FromINIValues(sourceProfile.PlayerLevels.ToINIValueForXP(), sourceProfile.PlayerLevels.ToINIValuesForEngramPoints());
+            this.DinoLevels = LevelList.FromINIValues(sourceProfile.DinoLevels.ToINIValueForXP(), sourceProfile.DinoLevels.ToINIValuesForEngramPoints());
+        }
+
+        private void SyncCustomSettingsSection(ServerProfile sourceProfile)
+        {
+            this.CustomGameUserSettingsSections.Clear();
+            foreach (var section in sourceProfile.CustomGameUserSettingsSections)
+            {
+                this.CustomGameUserSettingsSections.Add(section.SectionName, section.ToIniValues().ToArray());
+            }
+        }
+
+        private void SyncDinoSettingsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(OverrideMaxExperiencePointsDinoProperty, sourceProfile.OverrideMaxExperiencePointsDino);
+            this.SetValue(DinoDamageMultiplierProperty, sourceProfile.DinoDamageMultiplier);
+            this.SetValue(TamedDinoDamageMultiplierProperty, sourceProfile.TamedDinoDamageMultiplier);
+            this.SetValue(DinoResistanceMultiplierProperty, sourceProfile.DinoResistanceMultiplier);
+            this.SetValue(TamedDinoResistanceMultiplierProperty, sourceProfile.TamedDinoResistanceMultiplier);
+            this.SetValue(MaxTamedDinosProperty, sourceProfile.MaxTamedDinos);
+            this.SetValue(MaxPersonalTamedDinosProperty, sourceProfile.MaxPersonalTamedDinos);
+            this.SetValue(DinoCharacterFoodDrainMultiplierProperty, sourceProfile.DinoCharacterFoodDrainMultiplier);
+            this.SetValue(DinoCharacterStaminaDrainMultiplierProperty, sourceProfile.DinoCharacterStaminaDrainMultiplier);
+            this.SetValue(DinoCharacterHealthRecoveryMultiplierProperty, sourceProfile.DinoCharacterHealthRecoveryMultiplier);
+            this.SetValue(DinoCountMultiplierProperty, sourceProfile.DinoCountMultiplier);
+            this.SetValue(HarvestingDamageMultiplierDinoProperty, sourceProfile.DinoHarvestingDamageMultiplier);
+            this.SetValue(TurretDamageMultiplierDinoProperty, sourceProfile.DinoTurretDamageMultiplier);
+
+            this.SetValue(AllowRaidDinoFeedingProperty, sourceProfile.AllowRaidDinoFeeding);
+            this.SetValue(RaidDinoCharacterFoodDrainMultiplierProperty, sourceProfile.RaidDinoCharacterFoodDrainMultiplier);
+
+            this.SetValue(EnableAllowCaveFlyersProperty, sourceProfile.EnableAllowCaveFlyers);
+            this.SetValue(AllowFlyingStaminaRecoveryProperty, sourceProfile.AllowFlyingStaminaRecovery);
+            this.SetValue(PreventMateBoostProperty, sourceProfile.PreventMateBoost);
+            this.SetValue(DisableDinoDecayPvEProperty, sourceProfile.DisableDinoDecayPvE);
+            this.SetValue(DisableDinoDecayPvPProperty, sourceProfile.DisableDinoDecayPvP);
+            this.SetValue(AutoDestroyDecayedDinosProperty, sourceProfile.AutoDestroyDecayedDinos);
+            this.SetValue(PvEDinoDecayPeriodMultiplierProperty, sourceProfile.PvEDinoDecayPeriodMultiplier);
+            this.SetValue(ForceFlyerExplosivesProperty, sourceProfile.ForceFlyerExplosives);
+            this.SetValue(AllowMultipleAttachedC4Property, sourceProfile.AllowMultipleAttachedC4);
+            this.SetValue(DisableDinoRidingProperty, sourceProfile.DisableDinoRiding);
+            this.SetValue(DisableDinoTamingProperty, sourceProfile.DisableDinoTaming);
+
+            sourceProfile.DinoSettings.RenderToModel();
+
+            this.DinoSpawnWeightMultipliers.Clear();
+            this.DinoSpawnWeightMultipliers.FromIniValues(sourceProfile.DinoSpawnWeightMultipliers.ToIniValues());
+            this.DinoSpawnWeightMultipliers.IsEnabled = sourceProfile.DinoSpawnWeightMultipliers.IsEnabled;
+            this.PreventDinoTameClassNames.Clear();
+            this.PreventDinoTameClassNames.FromIniValues(sourceProfile.PreventDinoTameClassNames.ToIniValues());
+            this.PreventDinoTameClassNames.IsEnabled = sourceProfile.PreventDinoTameClassNames.IsEnabled;
+            this.NPCReplacements.Clear();
+            this.NPCReplacements.FromIniValues(sourceProfile.NPCReplacements.ToIniValues());
+            this.NPCReplacements.IsEnabled = sourceProfile.NPCReplacements.IsEnabled;
+            this.TamedDinoClassDamageMultipliers.Clear();
+            this.TamedDinoClassDamageMultipliers.FromIniValues(sourceProfile.TamedDinoClassDamageMultipliers.ToIniValues());
+            this.TamedDinoClassDamageMultipliers.IsEnabled = sourceProfile.TamedDinoClassDamageMultipliers.IsEnabled;
+            this.TamedDinoClassResistanceMultipliers.Clear();
+            this.TamedDinoClassResistanceMultipliers.FromIniValues(sourceProfile.TamedDinoClassResistanceMultipliers.ToIniValues());
+            this.TamedDinoClassResistanceMultipliers.IsEnabled = sourceProfile.TamedDinoClassResistanceMultipliers.IsEnabled;
+            this.DinoClassDamageMultipliers.Clear();
+            this.DinoClassDamageMultipliers.FromIniValues(sourceProfile.DinoClassDamageMultipliers.ToIniValues());
+            this.DinoClassDamageMultipliers.IsEnabled = sourceProfile.DinoClassDamageMultipliers.IsEnabled;
+            this.DinoClassResistanceMultipliers.Clear();
+            this.DinoClassResistanceMultipliers.FromIniValues(sourceProfile.DinoClassResistanceMultipliers.ToIniValues());
+            this.DinoClassResistanceMultipliers.IsEnabled = sourceProfile.DinoClassResistanceMultipliers.IsEnabled;
+            this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
+            this.DinoSettings.RenderToView();
+
+            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PerLevelStatsMultiplier_DinoWild.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoWild.ToIniValues());
+            this.PerLevelStatsMultiplier_DinoWild.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoWild.IsEnabled;
+            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
+            this.PerLevelStatsMultiplier_DinoTamed.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed.ToIniValues());
+            this.PerLevelStatsMultiplier_DinoTamed.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed.IsEnabled;
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
+            this.PerLevelStatsMultiplier_DinoTamed_Add.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.ToIniValues());
+            this.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled;
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.ToIniValues());
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled;
+
+            this.SetValue(MatingIntervalMultiplierProperty, sourceProfile.MatingIntervalMultiplier);
+            this.SetValue(EggHatchSpeedMultiplierProperty, sourceProfile.EggHatchSpeedMultiplier);
+            this.SetValue(BabyMatureSpeedMultiplierProperty, sourceProfile.BabyMatureSpeedMultiplier);
+            this.SetValue(BabyFoodConsumptionSpeedMultiplierProperty, sourceProfile.BabyFoodConsumptionSpeedMultiplier);
+
+            this.SetValue(DisableImprintDinoBuffProperty, sourceProfile.DisableImprintDinoBuff);
+            this.SetValue(AllowAnyoneBabyImprintCuddleProperty, sourceProfile.AllowAnyoneBabyImprintCuddle);
+            this.SetValue(BabyImprintingStatScaleMultiplierProperty, sourceProfile.BabyImprintingStatScaleMultiplier);
+            this.SetValue(BabyCuddleIntervalMultiplierProperty, sourceProfile.BabyCuddleIntervalMultiplier);
+            this.SetValue(BabyCuddleGracePeriodMultiplierProperty, sourceProfile.BabyCuddleGracePeriodMultiplier);
+            this.SetValue(BabyCuddleLoseImprintQualitySpeedMultiplierProperty, sourceProfile.BabyCuddleLoseImprintQualitySpeedMultiplier);
+        }
+
+        private void SyncEngramsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(OnlyAllowSpecifiedEngramsProperty, sourceProfile.OnlyAllowSpecifiedEngrams);
+
+            this.OverrideNamedEngramEntries.Clear();
+            foreach (var ee in sourceProfile.OverrideNamedEngramEntries)
+            {
+                this.OverrideNamedEngramEntries.Add(ee.Clone());
+            }
+            this.OverrideNamedEngramEntries.IsEnabled = sourceProfile.OverrideNamedEngramEntries.IsEnabled;
+        }
+
+        private void SyncEnvironmentSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(TamingSpeedMultiplierProperty, sourceProfile.TamingSpeedMultiplier);
+            this.SetValue(HarvestAmountMultiplierProperty, sourceProfile.HarvestAmountMultiplier);
+            this.SetValue(ResourcesRespawnPeriodMultiplierProperty, sourceProfile.ResourcesRespawnPeriodMultiplier);
+            this.SetValue(ResourceNoReplenishRadiusPlayersProperty, sourceProfile.ResourceNoReplenishRadiusPlayers);
+            this.SetValue(ResourceNoReplenishRadiusStructuresProperty, sourceProfile.ResourceNoReplenishRadiusStructures);
+            this.SetValue(ClampResourceHarvestDamageProperty, sourceProfile.ClampResourceHarvestDamage);
+            this.SetValue(UseOptimizedHarvestingHealthProperty, sourceProfile.UseOptimizedHarvestingHealth);
+            this.SetValue(HarvestHealthMultiplierProperty, sourceProfile.HarvestHealthMultiplier);
+
+            this.HarvestResourceItemAmountClassMultipliers.Clear();
+            this.HarvestResourceItemAmountClassMultipliers.FromIniValues(sourceProfile.HarvestResourceItemAmountClassMultipliers.ToIniValues());
+            this.HarvestResourceItemAmountClassMultipliers.IsEnabled = sourceProfile.HarvestResourceItemAmountClassMultipliers.IsEnabled;
+            
+            this.SetValue(DayCycleSpeedScaleProperty, sourceProfile.DayCycleSpeedScale);
+            this.SetValue(DayTimeSpeedScaleProperty, sourceProfile.DayTimeSpeedScale);
+            this.SetValue(NightTimeSpeedScaleProperty, sourceProfile.NightTimeSpeedScale);
+            this.SetValue(GlobalSpoilingTimeMultiplierProperty, sourceProfile.GlobalSpoilingTimeMultiplier);
+            this.SetValue(ClampItemSpoilingTimesProperty, sourceProfile.ClampItemSpoilingTimes);
+            this.SetValue(GlobalItemDecompositionTimeMultiplierProperty, sourceProfile.GlobalItemDecompositionTimeMultiplier);
+            this.SetValue(GlobalCorpseDecompositionTimeMultiplierProperty, sourceProfile.GlobalCorpseDecompositionTimeMultiplier);
+            this.SetValue(CropDecaySpeedMultiplierProperty, sourceProfile.CropDecaySpeedMultiplier);
+            this.SetValue(CropGrowthSpeedMultiplierProperty, sourceProfile.CropGrowthSpeedMultiplier);
+            this.SetValue(LayEggIntervalMultiplierProperty, sourceProfile.LayEggIntervalMultiplier);
+            this.SetValue(PoopIntervalMultiplierProperty, sourceProfile.PoopIntervalMultiplier);
+            this.SetValue(HairGrowthSpeedMultiplierProperty, sourceProfile.HairGrowthSpeedMultiplier);
+
+            this.SetValue(CraftXPMultiplierProperty, sourceProfile.CraftXPMultiplier);
+            this.SetValue(GenericXPMultiplierProperty, sourceProfile.GenericXPMultiplier);
+            this.SetValue(HarvestXPMultiplierProperty, sourceProfile.HarvestXPMultiplier);
+            this.SetValue(KillXPMultiplierProperty, sourceProfile.KillXPMultiplier);
+            this.SetValue(SpecialXPMultiplierProperty, sourceProfile.SpecialXPMultiplier);
+        }
+
+        private void SyncHudAndVisualsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(AllowCrosshairProperty, sourceProfile.AllowCrosshair);
+            this.SetValue(AllowHUDProperty, sourceProfile.AllowHUD);
+            this.SetValue(AllowThirdPersonViewProperty, sourceProfile.AllowThirdPersonView);
+            this.SetValue(AllowMapPlayerLocationProperty, sourceProfile.AllowMapPlayerLocation);
+            this.SetValue(AllowPVPGammaProperty, sourceProfile.AllowPVPGamma);
+            this.SetValue(AllowPvEGammaProperty, sourceProfile.AllowPvEGamma);
+            this.SetValue(ShowFloatingDamageTextProperty, sourceProfile.ShowFloatingDamageText);
+            this.SetValue(AllowHitMarkersProperty, sourceProfile.AllowHitMarkers);
+        }
+
+        private void SyncNPCSpawnOverridesSection(ServerProfile sourceProfile)
+        {
+            sourceProfile.NPCSpawnSettings.RenderToModel();
+
+            this.ConfigAddNPCSpawnEntriesContainer.Clear();
+            this.ConfigAddNPCSpawnEntriesContainer.FromIniValues(sourceProfile.ConfigAddNPCSpawnEntriesContainer.ToIniValues());
+            this.ConfigAddNPCSpawnEntriesContainer.IsEnabled = this.ConfigAddNPCSpawnEntriesContainer.Count > 0;
+            this.ConfigSubtractNPCSpawnEntriesContainer.Clear();
+            this.ConfigSubtractNPCSpawnEntriesContainer.FromIniValues(sourceProfile.ConfigSubtractNPCSpawnEntriesContainer.ToIniValues());
+            this.ConfigSubtractNPCSpawnEntriesContainer.IsEnabled = this.ConfigSubtractNPCSpawnEntriesContainer.Count > 0;
+            this.ConfigOverrideNPCSpawnEntriesContainer.Clear();
+            this.ConfigOverrideNPCSpawnEntriesContainer.FromIniValues(sourceProfile.ConfigOverrideNPCSpawnEntriesContainer.ToIniValues());
+            this.ConfigOverrideNPCSpawnEntriesContainer.IsEnabled = this.ConfigOverrideNPCSpawnEntriesContainer.Count > 0;
+
+            this.NPCSpawnSettings = new NPCSpawnSettingsList(this.ConfigAddNPCSpawnEntriesContainer, this.ConfigSubtractNPCSpawnEntriesContainer, this.ConfigOverrideNPCSpawnEntriesContainer);
+            this.NPCSpawnSettings.RenderToView();
+        }
+
+        private void SyncPGMSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(PGM_EnabledProperty, sourceProfile.PGM_Enabled);
+            this.SetValue(PGM_NameProperty, sourceProfile.PGM_Name);
+
+            this.PGM_Terrain.InitializeFromINIValue(sourceProfile.PGM_Terrain.ToINIValue());
+        }
+
+        private void SyncPlayerSettingsSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableFlyerCarryProperty, sourceProfile.EnableFlyerCarry);
+            this.SetValue(XPMultiplierProperty, sourceProfile.XPMultiplier);
+            this.SetValue(OverrideMaxExperiencePointsPlayerProperty, sourceProfile.OverrideMaxExperiencePointsPlayer);
+            this.SetValue(PlayerDamageMultiplierProperty, sourceProfile.PlayerDamageMultiplier);
+            this.SetValue(PlayerResistanceMultiplierProperty, sourceProfile.PlayerResistanceMultiplier);
+            this.SetValue(PlayerCharacterWaterDrainMultiplierProperty, sourceProfile.PlayerCharacterWaterDrainMultiplier);
+            this.SetValue(PlayerCharacterFoodDrainMultiplierProperty, sourceProfile.PlayerCharacterFoodDrainMultiplier);
+            this.SetValue(PlayerCharacterStaminaDrainMultiplierProperty, sourceProfile.PlayerCharacterStaminaDrainMultiplier);
+            this.SetValue(PlayerCharacterHealthRecoveryMultiplierProperty, sourceProfile.PlayerCharacterHealthRecoveryMultiplier);
+            this.SetValue(HarvestingDamageMultiplierPlayerProperty, sourceProfile.PlayerHarvestingDamageMultiplier);
+            this.SetValue(CraftingSkillBonusMultiplierProperty, sourceProfile.CraftingSkillBonusMultiplier);
+
+            this.PlayerBaseStatMultipliers.Clear();
+            this.PlayerBaseStatMultipliers.FromIniValues(sourceProfile.PlayerBaseStatMultipliers.ToIniValues());
+            this.PlayerBaseStatMultipliers.IsEnabled = sourceProfile.PlayerBaseStatMultipliers.IsEnabled;
+
+            this.PerLevelStatsMultiplier_Player.Clear();
+            this.PerLevelStatsMultiplier_Player.FromIniValues(sourceProfile.PerLevelStatsMultiplier_Player.ToIniValues());
+            this.PerLevelStatsMultiplier_Player.IsEnabled = sourceProfile.PerLevelStatsMultiplier_Player.IsEnabled;
+        }
+
+        private void SyncRulesSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(EnableHardcoreProperty, sourceProfile.EnableHardcore);
+            this.SetValue(EnablePVPProperty, sourceProfile.EnablePVP);
+            this.SetValue(AllowCaveBuildingPvEProperty, sourceProfile.AllowCaveBuildingPvE);
+            this.SetValue(DisableFriendlyFirePvPProperty, sourceProfile.DisableFriendlyFirePvP);
+            this.SetValue(DisableFriendlyFirePvEProperty, sourceProfile.DisableFriendlyFirePvE);
+            this.SetValue(DisableLootCratesProperty, sourceProfile.DisableLootCrates);
+            this.SetValue(AllowCrateSpawnsOnTopOfStructuresProperty, sourceProfile.AllowCrateSpawnsOnTopOfStructures);
+            this.SetValue(EnableExtraStructurePreventionVolumesProperty, sourceProfile.EnableExtraStructurePreventionVolumes);
+
+            this.SetValue(EnableDifficultyOverrideProperty, sourceProfile.EnableDifficultyOverride);
+            this.SetValue(OverrideOfficialDifficultyProperty, sourceProfile.OverrideOfficialDifficulty);
+            this.SetValue(DifficultyOffsetProperty, sourceProfile.DifficultyOffset);
+            this.SetValue(MaxNumberOfPlayersInTribeProperty, sourceProfile.MaxNumberOfPlayersInTribe);
+
+            this.SetValue(EnableTributeDownloadsProperty, sourceProfile.EnableTributeDownloads);
+            this.SetValue(PreventDownloadSurvivorsProperty, sourceProfile.PreventDownloadSurvivors);
+            this.SetValue(PreventDownloadItemsProperty, sourceProfile.PreventDownloadItems);
+            this.SetValue(PreventDownloadDinosProperty, sourceProfile.PreventDownloadDinos);
+            this.SetValue(PreventUploadSurvivorsProperty, sourceProfile.PreventUploadSurvivors);
+            this.SetValue(PreventUploadItemsProperty, sourceProfile.PreventUploadItems);
+            this.SetValue(PreventUploadDinosProperty, sourceProfile.PreventUploadDinos);
+
+            this.SetValue(NoTransferFromFilteringProperty, sourceProfile.NoTransferFromFiltering);
+            this.SetValue(OverrideTributeCharacterExpirationSecondsProperty, sourceProfile.OverrideTributeCharacterExpirationSeconds);
+            this.SetValue(OverrideTributeItemExpirationSecondsProperty, sourceProfile.OverrideTributeItemExpirationSeconds);
+            this.SetValue(OverrideTributeDinoExpirationSecondsProperty, sourceProfile.OverrideTributeDinoExpirationSeconds);
+            this.SetValue(OverrideMinimumDinoReuploadIntervalProperty, sourceProfile.OverrideMinimumDinoReuploadInterval);
+            this.SetValue(TributeCharacterExpirationSecondsProperty, sourceProfile.TributeCharacterExpirationSeconds);
+            this.SetValue(TributeItemExpirationSecondsProperty, sourceProfile.TributeItemExpirationSeconds);
+            this.SetValue(TributeDinoExpirationSecondsProperty, sourceProfile.TributeDinoExpirationSeconds);
+            this.SetValue(MinimumDinoReuploadIntervalProperty, sourceProfile.MinimumDinoReuploadInterval);
+
+            this.SetValue(IncreasePvPRespawnIntervalProperty, sourceProfile.IncreasePvPRespawnInterval);
+            this.SetValue(IncreasePvPRespawnIntervalCheckPeriodProperty, sourceProfile.IncreasePvPRespawnIntervalCheckPeriod);
+            this.SetValue(IncreasePvPRespawnIntervalMultiplierProperty, sourceProfile.IncreasePvPRespawnIntervalMultiplier);
+            this.SetValue(IncreasePvPRespawnIntervalBaseAmountProperty, sourceProfile.IncreasePvPRespawnIntervalBaseAmount);
+
+            this.SetValue(PreventOfflinePvPProperty, sourceProfile.PreventOfflinePvP);
+            this.SetValue(PreventOfflinePvPIntervalProperty, sourceProfile.PreventOfflinePvPInterval);
+
+            this.SetValue(AutoPvETimerProperty, sourceProfile.AutoPvETimer);
+            this.SetValue(AutoPvEUseSystemTimeProperty, sourceProfile.AutoPvEUseSystemTime);
+            this.SetValue(AutoPvEStartTimeSecondsProperty, sourceProfile.AutoPvEStartTimeSeconds);
+            this.SetValue(AutoPvEStopTimeSecondsProperty, sourceProfile.AutoPvEStopTimeSeconds);
+
+            this.SetValue(AllowTribeWarPvEProperty, sourceProfile.AllowTribeWarPvE);
+            this.SetValue(AllowTribeWarCancelPvEProperty, sourceProfile.AllowTribeWarCancelPvE);
+            this.SetValue(AllowTribeAlliancesProperty, sourceProfile.AllowTribeAlliances);
+
+            this.SetValue(AllowCustomRecipesProperty, sourceProfile.AllowCustomRecipes);
+            this.SetValue(CustomRecipeEffectivenessMultiplierProperty, sourceProfile.CustomRecipeEffectivenessMultiplier);
+            this.SetValue(CustomRecipeSkillMultiplierProperty, sourceProfile.CustomRecipeSkillMultiplier);
+
+            this.SetValue(EnableDiseasesProperty, sourceProfile.EnableDiseases);
+            this.SetValue(NonPermanentDiseasesProperty, sourceProfile.NonPermanentDiseases);
+
+            this.SetValue(OverrideNPCNetworkStasisRangeScaleProperty, sourceProfile.OverrideNPCNetworkStasisRangeScale);
+            this.SetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty, sourceProfile.NPCNetworkStasisRangeScalePlayerCountStart);
+            this.SetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty, sourceProfile.NPCNetworkStasisRangeScalePlayerCountEnd);
+            this.SetValue(NPCNetworkStasisRangeScalePercentEndProperty, sourceProfile.NPCNetworkStasisRangeScalePercentEnd);
+
+            this.SetValue(UseCorpseLocatorProperty, sourceProfile.UseCorpseLocator);
+            this.SetValue(PreventSpawnAnimationsProperty, sourceProfile.PreventSpawnAnimations);
+            this.SetValue(AllowUnlimitedRespecsProperty, sourceProfile.AllowUnlimitedRespecs);
+            this.SetValue(AllowPlatformSaddleMultiFloorsProperty, sourceProfile.AllowPlatformSaddleMultiFloors);
+            this.SetValue(SupplyCrateLootQualityMultiplierProperty, sourceProfile.SupplyCrateLootQualityMultiplier);
+            this.SetValue(FishingLootQualityMultiplierProperty, sourceProfile.FishingLootQualityMultiplier);
+            this.SetValue(EnableNoFishLootProperty, sourceProfile.EnableNoFishLoot);
+            this.SetValue(OxygenSwimSpeedStatMultiplierProperty, sourceProfile.OxygenSwimSpeedStatMultiplier);
+        }
+
+        private void SyncSOTFSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(SOTF_EnabledProperty, sourceProfile.SOTF_Enabled);
+            this.SetValue(SOTF_OutputGameReportProperty, sourceProfile.SOTF_OutputGameReport);
+            this.SetValue(SOTF_GamePlayLoggingProperty, sourceProfile.SOTF_GamePlayLogging);
+            this.SetValue(SOTF_DisableDeathSPectatorProperty, sourceProfile.SOTF_DisableDeathSPectator);
+            this.SetValue(SOTF_OnlyAdminRejoinAsSpectatorProperty, sourceProfile.SOTF_OnlyAdminRejoinAsSpectator);
+            this.SetValue(SOTF_MaxNumberOfPlayersInTribeProperty, sourceProfile.SOTF_MaxNumberOfPlayersInTribe);
+            this.SetValue(SOTF_BattleNumOfTribesToStartGameProperty, sourceProfile.SOTF_BattleNumOfTribesToStartGame);
+            this.SetValue(SOTF_TimeToCollapseRODProperty, sourceProfile.SOTF_TimeToCollapseROD);
+            this.SetValue(SOTF_BattleAutoStartGameIntervalProperty, sourceProfile.SOTF_BattleAutoStartGameInterval);
+            this.SetValue(SOTF_BattleAutoRestartGameIntervalProperty, sourceProfile.SOTF_BattleAutoRestartGameInterval);
+            this.SetValue(SOTF_BattleSuddenDeathIntervalProperty, sourceProfile.SOTF_BattleSuddenDeathInterval);
+
+            this.SetValue(SOTF_NoEventsProperty, sourceProfile.SOTF_NoEvents);
+            this.SetValue(SOTF_NoBossesProperty, sourceProfile.SOTF_NoBosses);
+            this.SetValue(SOTF_BothBossesProperty, sourceProfile.SOTF_BothBosses);
+            this.SetValue(SOTF_EvoEventIntervalProperty, sourceProfile.SOTF_EvoEventInterval);
+            this.SetValue(SOTF_RingStartTimeProperty, sourceProfile.SOTF_RingStartTime);
+        }
+
+        private void SyncStructuresSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(DisableStructurePlacementCollisionProperty, sourceProfile.DisableStructurePlacementCollision);
+            this.SetValue(StructureResistanceMultiplierProperty, sourceProfile.StructureResistanceMultiplier);
+            this.SetValue(StructureDamageMultiplierProperty, sourceProfile.StructureDamageMultiplier);
+            this.SetValue(StructureDamageRepairCooldownProperty, sourceProfile.StructureDamageRepairCooldown);
+            this.SetValue(PvPStructureDecayProperty, sourceProfile.PvPStructureDecay);
+            this.SetValue(PvPZoneStructureDamageMultiplierProperty, sourceProfile.PvPZoneStructureDamageMultiplier);
+            this.SetValue(MaxStructuresVisibleProperty, sourceProfile.MaxStructuresVisible);
+            this.SetValue(PerPlatformMaxStructuresMultiplierProperty, sourceProfile.PerPlatformMaxStructuresMultiplier);
+            this.SetValue(MaxPlatformSaddleStructureLimitProperty, sourceProfile.MaxPlatformSaddleStructureLimit);
+            this.SetValue(OverrideStructurePlatformPreventionProperty, sourceProfile.OverrideStructurePlatformPrevention);
+            this.SetValue(FlyerPlatformAllowUnalignedDinoBasingProperty, sourceProfile.FlyerPlatformAllowUnalignedDinoBasing);
+            this.SetValue(PvEAllowStructuresAtSupplyDropsProperty, sourceProfile.PvEAllowStructuresAtSupplyDrops);
+            this.SetValue(EnableStructureDecayPvEProperty, sourceProfile.EnableStructureDecayPvE);
+            this.SetValue(PvEStructureDecayDestructionPeriodProperty, sourceProfile.PvEStructureDecayDestructionPeriod);
+            this.SetValue(PvEStructureDecayPeriodMultiplierProperty, sourceProfile.PvEStructureDecayPeriodMultiplier);
+            this.SetValue(AutoDestroyOldStructuresMultiplierProperty, sourceProfile.AutoDestroyOldStructuresMultiplier);
+            this.SetValue(ForceAllStructureLockingProperty, sourceProfile.ForceAllStructureLocking);
+            this.SetValue(PassiveDefensesDamageRiderlessDinosProperty, sourceProfile.PassiveDefensesDamageRiderlessDinos);
+            this.SetValue(OnlyAutoDestroyCoreStructuresProperty, sourceProfile.OnlyAutoDestroyCoreStructures);
+            this.SetValue(OnlyDecayUnsnappedCoreStructuresProperty, sourceProfile.OnlyDecayUnsnappedCoreStructures);
+            this.SetValue(FastDecayUnsnappedCoreStructuresProperty, sourceProfile.FastDecayUnsnappedCoreStructures);
+            this.SetValue(DestroyUnconnectedWaterPipesProperty, sourceProfile.DestroyUnconnectedWaterPipes);
+            this.SetValue(EnableFastDecayIntervalProperty, sourceProfile.EnableFastDecayInterval);
+            this.SetValue(FastDecayIntervalProperty, sourceProfile.FastDecayInterval);
+        }
+
+        private void SyncSupplyCrateOverridesSection(ServerProfile sourceProfile)
+        {
+            sourceProfile.ConfigOverrideSupplyCrateItems.RenderToModel();
+
+            this.ConfigOverrideSupplyCrateItems.Clear();
+            this.ConfigOverrideSupplyCrateItems.FromIniValues(sourceProfile.ConfigOverrideSupplyCrateItems.ToIniValues());
+            this.ConfigOverrideSupplyCrateItems.IsEnabled = this.ConfigOverrideSupplyCrateItems.Count > 0;
+            this.ConfigOverrideSupplyCrateItems.RenderToView();
+        }
+        #endregion
+
         public static string GetProfileMapName(ServerProfile profile)
         {
             return GetProfileMapName(profile?.ServerMap, profile?.PGM_Enabled ?? false);
@@ -4019,53 +4592,6 @@ namespace ARK_Server_Manager.Lib
 
             return ModUtils.GetMapName(serverMap);
         }
-
-        public void RandomizePGMSettings()
-        {
-            var random = new Random(DateTime.Now.Millisecond);
-
-            this.PGM_Terrain.MapSeed = random.Next(1, 999);
-
-            this.PGM_Terrain.WaterFrequency = (float)Math.Round(random.NextDouble() * 5f, 5);
-            this.PGM_Terrain.MountainsFrequency = (float)Math.Round(random.NextDouble() * 10f, 5);
-            if (this.PGM_Terrain.MountainsFrequency < 3.0f)
-                this.PGM_Terrain.MountainsFrequency += 3.0f;
-
-            this.PGM_Terrain.MountainsSlope = (float)Math.Round(random.NextDouble() + 0.3f, 5);
-            if (this.PGM_Terrain.MountainsSlope < 0.5f)
-                this.PGM_Terrain.MountainsSlope += 0.5f;
-            this.PGM_Terrain.MountainsHeight = (float)Math.Round(random.NextDouble() + 0.3f, 5);
-            if (this.PGM_Terrain.MountainsHeight < 0.5f)
-                this.PGM_Terrain.MountainsHeight += 0.5f;
-
-            this.PGM_Terrain.SnowBiomeSize = (float)Math.Round(random.NextDouble(), 5);
-            this.PGM_Terrain.RedWoodBiomeSize = (float)Math.Round(random.NextDouble(), 5);
-            if (this.PGM_Terrain.RedWoodBiomeSize > 0.5f)
-                this.PGM_Terrain.RedWoodBiomeSize -= 0.5f;
-
-            this.PGM_Terrain.MountainBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
-            this.PGM_Terrain.JungleBiomeStart = -(float)Math.Round(random.NextDouble(), 5);
-
-            this.PGM_Terrain.GrassDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
-            this.PGM_Terrain.JungleGrassDensity = (float)Math.Round(random.Next(2, 9) / 100.1f, 3);
-            this.PGM_Terrain.MountainGrassDensity = (float)Math.Round(random.Next(3, 10) / 100.1f, 3);
-            this.PGM_Terrain.RedwoodGrassDensity = (float)Math.Round(random.Next(5, 15) / 100.1f, 3);
-            this.PGM_Terrain.SnowGrassDensity = (float)Math.Round(random.Next(10, 30) / 100.1f, 3);
-            this.PGM_Terrain.SnowMountainGrassDensity = (float)Math.Round(random.Next(10, 20) / 100.1f, 3);
-
-            this.PGM_Terrain.TreeDensity = (float)Math.Round(random.Next(11, 135) / 10000.1f, 3);
-            this.PGM_Terrain.JungleTreeDensity = (float)Math.Round(random.Next(48, 83) / 100.1f, 3);
-            this.PGM_Terrain.MountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
-            this.PGM_Terrain.RedWoodTreeDensity = (float)Math.Round(random.Next(23, 51) / 100.1f, 3);
-            this.PGM_Terrain.SnowTreeDensity = (float)Math.Round(random.Next(80, 100) / 100.1f, 3);
-            this.PGM_Terrain.SnowMountainsTreeDensity = (float)Math.Round(random.Next(9, 16) / 1000.1f, 3);
-            this.PGM_Terrain.ShoreTreeDensity = (float)Math.Round(random.Next(48, 83) / 1000.1f, 3);
-            this.PGM_Terrain.SnowShoreTreeDensity = (float)Math.Round(random.Next(14, 31) / 1000.1f, 3);
-
-            this.PGM_Terrain.InlandWaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
-            this.PGM_Terrain.UnderwaterObjectsDensity = (float)Math.Round(random.Next(36, 67) / 100.1f, 3);
-        }
-
         #endregion
     }
 }

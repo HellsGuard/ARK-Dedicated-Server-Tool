@@ -289,6 +289,7 @@ namespace ARK_Server_Manager
                     ProfileName = server.Profile.ProfileName,
                     RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
+                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Profile.ProfileName),
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
                     MaxPlayers = server.Runtime.MaxPlayers,
                     Server = server

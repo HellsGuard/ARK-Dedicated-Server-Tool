@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         Title="{DynamicResource Settings_Title}" 
         mc:Ignorable="d" 
-        MinWidth="800" MinHeight="600" Width="800" Height="700" ResizeMode="CanResize" Icon="Art/Settings.png" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+        MinWidth="800" MinHeight="600" Width="800" Height="700" ResizeMode="CanResizeWithGrip" Icon="Art/Settings.png" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

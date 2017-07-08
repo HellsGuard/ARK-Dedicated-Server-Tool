@@ -947,6 +947,14 @@ namespace ARK_Server_Manager
             Settings.UpdateServerNameLength();
         }
 
+        private void SyncProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new ProfileSyncWindow(ServerManager, Server.Profile);
+            window.Owner = Window.GetWindow(this);
+            window.Closed += Window_Closed;
+            window.ShowDialog();
+        }
+
         #region Dinos
         private void DinoCustomization_Reset(object sender, RoutedEventArgs e)
         {

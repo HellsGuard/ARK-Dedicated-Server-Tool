@@ -1717,5 +1717,17 @@ namespace ARK_Server_Manager {
                 this["SectionMapSpawnerOverridesEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoUpdate_ParallelUpdate {
+            get {
+                return ((bool)(this["AutoUpdate_ParallelUpdate"]));
+            }
+            set {
+                this["AutoUpdate_ParallelUpdate"] = value;
+            }
+        }
     }
 }

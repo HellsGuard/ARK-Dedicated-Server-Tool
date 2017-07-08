@@ -150,7 +150,7 @@ namespace ARK_Server_Manager.Lib
                 var val = prop.GetValue(this);
                 var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                if (attr?.ExcludeIfEmpty ?? false && string.IsNullOrWhiteSpace(propValue))
+                if ((attr?.ExcludeIfEmpty ?? false) && string.IsNullOrWhiteSpace(propValue))
                 {
                     Debug.WriteLine($"{propName} skipped, ExcludeIfEmpty = true and value is empty");
                 }
@@ -270,7 +270,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     var propValue = StringUtils.GetPropertyValue(val, prop);
 
-                    if (attr?.ExcludeIfEmpty ?? false && string.IsNullOrWhiteSpace(propValue))
+                    if ((attr?.ExcludeIfEmpty ?? false) && string.IsNullOrWhiteSpace(propValue))
                     {
                         Debug.WriteLine($"{propName} skipped, ExcludeIfEmpty = true and value is empty");
                     }

@@ -595,7 +595,7 @@ namespace ARK_Server_Manager.Lib
                     var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
                     var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : string.Empty);
 
-                    success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken);
+                    success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
                     if (success && downloadSuccessful)
                     {
                         progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished server update.");
@@ -777,7 +777,7 @@ namespace ARK_Server_Manager.Lib
                                                 steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
                                         }
 
-                                        modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken);
+                                        modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
                                         if (modSuccess && downloadSuccessful)
                                         {
                                             progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");

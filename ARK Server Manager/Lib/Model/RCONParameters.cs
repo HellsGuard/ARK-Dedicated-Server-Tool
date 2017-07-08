@@ -28,6 +28,8 @@ namespace ARK_Server_Manager.Lib
 
         public string PGM_Name { get; set; }
 
+        public string RCONWindowTitle { get; set; }
+
         public Rect RCONWindowExtents { get; set; }
 
         public int MaxPlayers

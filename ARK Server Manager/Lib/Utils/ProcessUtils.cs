@@ -136,7 +136,7 @@ namespace ARK_Server_Manager.Lib
                 FileName = fileName,
                 Arguments = arguments,
                 Verb = verb,
-                UseShellExecute = false,
+                UseShellExecute = windowStyle == ProcessWindowStyle.Minimized,
                 RedirectStandardOutput = outputHandler != null,
                 CreateNoWindow = outputHandler != null || windowStyle == ProcessWindowStyle.Hidden,
                 WindowStyle = windowStyle,

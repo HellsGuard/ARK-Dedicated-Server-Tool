@@ -174,6 +174,7 @@ namespace ARK_Server_Manager.Lib
         public ServerProcessType ServerProcess = ServerProcessType.Unknown;
         public int ShutdownInterval = Config.Default.ServerShutdown_GracePeriod;
         public ProgressDelegate ProgressCallback = null;
+        public ProcessWindowStyle SteamCMDProcessWindowStyle = ProcessWindowStyle.Minimized;
 
         private void BackupServer()
         {
@@ -872,7 +873,7 @@ namespace ARK_Server_Manager.Lib
                 var steamCmdInstallServerArgsFormat = _profile.SotFEnabled ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
                 var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, _profile.InstallDirectory, validate ? "validate" : string.Empty);
 
-                success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, _profile.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken).Result;
+                success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, _profile.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, SteamCMDProcessWindowStyle).Result;
                 if (success && downloadSuccessful)
                 {
                     LogProfileMessage("Finished server update.");
@@ -1044,7 +1045,7 @@ namespace ARK_Server_Manager.Lib
                                             steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
                                     }
 
-                                    modSuccess = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken).Result;
+                                    modSuccess = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken, SteamCMDProcessWindowStyle).Result;
                                     if (modSuccess && downloadSuccessful)
                                     {
                                         LogProfileMessage("Finished mod download.");
@@ -1682,7 +1683,7 @@ namespace ARK_Server_Manager.Lib
                         steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_AnonymousUsername, modId);
                     else
                         steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat, Config.Default.SteamCmd_Username, modId);
-                    var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
+                    var success = ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, CancellationToken.None, SteamCMDProcessWindowStyle).Result;
                     if (success && downloadSuccessful)
                         // download was successful, exit loop and continue.
                         break;
@@ -1786,7 +1787,7 @@ namespace ARK_Server_Manager.Lib
                 if (Config.Default.AutoUpdate_ValidateServerFiles)
                     validateString = "validate";
                 var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, validateString);
-                var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, ProcessWindowStyle.Hidden).Result;
+                var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, SteamCMDProcessWindowStyle).Result;
                 if (success && downloadSuccessful)
                     // download was successful, exit loop and continue.
                     break;
@@ -2473,9 +2474,9 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                // check if the server backup has been enabled.
-                if (!Config.Default.AutoBackup_EnableBackup)
-                    return EXITCODE_AUTOBACKUPNOTENABLED;
+                // check if a data directory has been setup.
+                if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                    return EXITCODE_INVALIDDATADIRECTORY;
 
                 // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                 LoadProfiles();
@@ -2509,6 +2510,10 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
+                // check if a data directory has been setup.
+                if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                    return EXITCODE_INVALIDDATADIRECTORY;
+
                 if (string.IsNullOrWhiteSpace(argument) || (!argument.StartsWith(App.ARG_AUTOSHUTDOWN1) && !argument.StartsWith(App.ARG_AUTOSHUTDOWN2)))
                     return EXITCODE_BADARGUMENT;
 
@@ -2557,6 +2562,7 @@ namespace ARK_Server_Manager.Lib
                 var app = new ServerApp();
                 app.SendEmails = true;
                 app.ServerProcess = type;
+                app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
                 exitCode = app.PerformProfileShutdown(profile, performRestart, performUpdate, CancellationToken.None);
             }
             catch (Exception)
@@ -2578,10 +2584,6 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                // check if the server cache has been enabled.
-                if (!Config.Default.AutoUpdate_EnableUpdate)
-                    return EXITCODE_AUTOUPDATENOTENABLED;
-
                 // check if a data directory has been setup.
                 if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
                     return EXITCODE_INVALIDDATADIRECTORY;
@@ -2603,11 +2605,13 @@ namespace ARK_Server_Manager.Lib
 
                     ServerApp app = new ServerApp();
                     app.ServerProcess = ServerProcessType.AutoUpdate;
+                    app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
                     app.UpdateServerCache();
                     exitCode = app.ExitCode;
 
                     if (exitCode == EXITCODE_NORMALEXIT)
                     {
+                        app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
                         app.UpdateModCache();
                         exitCode = app.ExitCode;
                     }
@@ -2616,12 +2620,27 @@ namespace ARK_Server_Manager.Lib
                     {
                         var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
 
-                        Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
-                            app = new ServerApp();
-                            app.SendEmails = true;
-                            app.ServerProcess = ServerProcessType.AutoUpdate;
-                            exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
-                        });
+                        if (Config.Default.AutoUpdate_ParallelUpdate)
+                        {
+                            Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
+                                app = new ServerApp();
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcessType.AutoUpdate;
+                                app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
+                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                            });
+                        }
+                        else
+                        {
+                            foreach (var profile in _profiles.Keys.Where(p => p.EnableAutoUpdate))
+                            {
+                                app = new ServerApp();
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcessType.AutoUpdate;
+                                app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
+                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                            }
+                        }
 
                         if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
                             exitCode = EXITCODE_EXITWITHERRORS;
