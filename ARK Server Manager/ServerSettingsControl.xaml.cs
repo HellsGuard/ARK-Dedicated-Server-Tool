@@ -543,6 +543,9 @@ namespace ARK_Server_Manager
                 var file = Path.Combine(this.Settings.InstallDirectory, Config.Default.LastUpdatedTimeFile);
                 if (File.Exists(file)) files.Add(file);
 
+                file = Path.Combine(this.Settings.InstallDirectory, "version.txt");
+                if (File.Exists(file)) files.Add(file);
+
                 // <server>\ShooterGame\Content\Mods
                 var folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerModsRelativePath);
                 var dirInfo = new DirectoryInfo(folder);
@@ -590,6 +593,20 @@ namespace ARK_Server_Manager
                 }
 
                 // Logs
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOBACKUP);
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
+                {
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
+                }
+
+                folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOSHUTDOWN);
+                dirInfo = new DirectoryInfo(folder);
+                if (dirInfo.Exists)
+                {
+                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
+                }
+
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOUPDATE);
                 dirInfo = new DirectoryInfo(folder);
                 if (dirInfo.Exists)
@@ -697,9 +714,10 @@ namespace ARK_Server_Manager
                 comment.AppendLine($"SectionMapSpawnerOverridesEnabled: {Config.Default.SectionMapSpawnerOverridesEnabled}");
                 comment.AppendLine($"SectionSupplyCrateOverridesEnabled: {Config.Default.SectionSupplyCrateOverridesEnabled}");
 
-                var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".zip");
-                ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());
+                var zipFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), this.Settings.ProfileID + ".zip");
+                if (File.Exists(zipFile)) File.Delete(zipFile);
 
+                ZipUtils.ZipFiles(zipFile, files.ToArray(), comment.ToString());
                 foreach (var kvp in obfuscateFiles)
                 {
                     ZipUtils.ZipAFile(zipFile, kvp.Key, kvp.Value);
