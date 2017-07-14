@@ -185,7 +185,42 @@
                         </StackPanel>
                     </Grid>
 
-                    <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                    <Grid DockPanel.Dock="Right" VerticalAlignment="Top" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Plugins_Click" ToolTip="{DynamicResource MainWindow_OpenPluginsTooltip}">
+                            <Image Source="Art/Plugins.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
+                            <Image Source="Art/SteamCMD.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
+                            <Image Source="Art/Command.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}">
+                            <Image Source="Art/OpenLog.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
+                            <Image Source="Art/Settings.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Help_Click" ToolTip="{DynamicResource MainWindow_OpenHelpTooltip}">
+                            <Image Source="Art/Help.png" Width="16"/>
+                        </Button>
+                        <Button Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Background="#00ffffff" Margin="5,0,5,5" Click="Donate_Click" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
+                            <Image Source="Art/Donate.png" Height="22"/>
+                        </Button>
+                    </Grid>
+                    <!--<StackPanel DockPanel.Dock="Right" VerticalAlignment="Top" Orientation="Horizontal" Margin="5">
                         <Button Background="#00ffffff" Margin="5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
                             <Image Source="Art/SteamCMD.png" Width="16"/>
                         </Button>
@@ -204,7 +239,7 @@
                         <Button Background="#00ffffff" Margin="5" Padding="5" Click="Donate_Click" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
                             <Image Source="Art/Donate.png" />
                         </Button>
-                    </StackPanel>
+                    </StackPanel>-->
                 </DockPanel>
 
                 <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,0" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">

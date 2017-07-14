@@ -20,6 +20,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using ARK_Server_Manager.Lib.Model;
 using static ARK_Server_Manager.Lib.ServerApp;
+using ArkServerManager.Plugin.Common;
 
 namespace ARK_Server_Manager
 {
@@ -340,6 +341,9 @@ namespace ARK_Server_Manager
 
                         try
                         {
+                            PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, this.Settings.ProfileName, _globalizer.GetResourceString("Alert_Server_Stop"));
+                            await Task.Delay(2000);
+
                             await this.Server.StopAsync();
                         }
                         catch (Exception ex)
@@ -398,6 +402,9 @@ namespace ARK_Server_Manager
                                 if (MessageBox.Show($"The following validation problems were encountered.\r\n\r\n{validateMessage}\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Profile Validation", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                                     return;
                             }
+
+                            PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, _globalizer.GetResourceString("Alert_Server_Started"));
+                            await Task.Delay(2000);
 
                             await this.Server.StartAsync();
                         }

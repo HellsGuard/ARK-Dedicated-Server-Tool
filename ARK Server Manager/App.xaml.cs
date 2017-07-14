@@ -13,6 +13,7 @@ using WPFSharp.Globalizer;
 using System.Globalization;
 using System.Diagnostics;
 using System.Linq;
+using ArkServerManager.Plugin.Common;
 
 namespace ARK_Server_Manager
 {
@@ -201,6 +202,9 @@ namespace ARK_Server_Manager
             if (!string.IsNullOrWhiteSpace(Config.Default.StyleName))
                 _globalizer.StyleManager.SwitchStyle($"{Config.Default.StyleName}.xaml");
 
+            var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            PluginHelper.Instance.LoadPlugins(installPath, true);
+
             Args = string.Join(" ", e.Args);
 
             // check if we are starting ASM for server restart
@@ -354,7 +358,7 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
 
-            if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+            if (String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
                 Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
             }

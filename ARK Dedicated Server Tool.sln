@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARK Server Manager", "ARK Server Manager\ARK Server Manager.csproj", "{70CE930F-E1CB-424F-9833-A5E1CA42A785}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeXt.Vdf", "NeXtVdf\NeXt.Vdf.csproj", "{E4EDA8B8-006C-4D41-822F-F64B6DB0021F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMWebAPI", "ASMWebAPI\ASMWebAPI.csproj", "{FA62BCEA-71CC-4465-A8EE-7B4E0BD5A530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Test", "Plugin.Test\Plugin.Test.csproj", "{95E9000A-C71B-49CB-AF5D-3717BE59318A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Common", "Plugin.Common\Plugin.Common.csproj", "{679FE859-9A82-4FFB-A758-C1E8DF915F58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{FA62BCEA-71CC-4465-A8EE-7B4E0BD5A530}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA62BCEA-71CC-4465-A8EE-7B4E0BD5A530}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA62BCEA-71CC-4465-A8EE-7B4E0BD5A530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E9000A-C71B-49CB-AF5D-3717BE59318A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E9000A-C71B-49CB-AF5D-3717BE59318A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E9000A-C71B-49CB-AF5D-3717BE59318A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E9000A-C71B-49CB-AF5D-3717BE59318A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{679FE859-9A82-4FFB-A758-C1E8DF915F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{679FE859-9A82-4FFB-A758-C1E8DF915F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{679FE859-9A82-4FFB-A758-C1E8DF915F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{679FE859-9A82-4FFB-A758-C1E8DF915F58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

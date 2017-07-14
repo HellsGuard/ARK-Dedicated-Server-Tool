@@ -488,5 +488,8 @@
     <Setting Name="AutoUpdate_ParallelUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="AutoUpdate_UpdateReasonPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server Update Reason:</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

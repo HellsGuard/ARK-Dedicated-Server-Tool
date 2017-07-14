@@ -1729,5 +1729,17 @@ namespace ARK_Server_Manager {
                 this["AutoUpdate_ParallelUpdate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server Update Reason:")]
+        public string AutoUpdate_UpdateReasonPrefix {
+            get {
+                return ((string)(this["AutoUpdate_UpdateReasonPrefix"]));
+            }
+            set {
+                this["AutoUpdate_UpdateReasonPrefix"] = value;
+            }
+        }
     }
 }

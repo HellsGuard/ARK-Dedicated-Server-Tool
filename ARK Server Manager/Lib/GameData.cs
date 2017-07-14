@@ -95,6 +95,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Megalania_Character_BP_C",           DinoNameTag="Megalania" },
             new DinoSpawn { ClassName="Megalodon_Character_BP_C",           DinoNameTag="Mega" },
             new DinoSpawn { ClassName="Megalosaurus_Character_BP_C",        DinoNameTag="Megalosaurus" },
+            new DinoSpawn { ClassName="MEgaMegalodon_Character_BP_C",       DinoNameTag="Elite Mega" },
             new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",          DinoNameTag="Elite Raptor" },
             new DinoSpawn { ClassName="MegaRex_Character_BP_C",             DinoNameTag="Elite Rex" },
             new DinoSpawn { ClassName="Megatherium_Character_BP_C",         DinoNameTag="Megatherium" },
@@ -148,7 +149,6 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="FlyingAnt_Character_BP_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Leech_Character_Diseased_C",         DinoNameTag=null },
             new DinoSpawn { ClassName="Mega_Tusoteuthis_Character_BP_C",    DinoNameTag=null },
-            new DinoSpawn { ClassName="MEgaMegalodon_Character_BP_C",       DinoNameTag=null },
             new DinoSpawn { ClassName="Mosa_Character_BP_Mega_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Yeti_Character_BP_C",                DinoNameTag=null },
 
@@ -276,6 +276,7 @@ namespace ARK_Server_Manager.Lib
                 case "Leech_Character_C":
                 case "Leedsichthys_Character_BP_C":
                 case "MegaCarno_Character_BP_C":
+                case "MEgaMegalodon_Character_BP_C":
                 case "MegaRaptor_Character_BP_C":
                 case "MegaRex_Character_BP_C":
                 case "Piranha_Character_BP_C":
@@ -287,7 +288,6 @@ namespace ARK_Server_Manager.Lib
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                 case "Mega_Tusoteuthis_Character_BP_C":
-                case "MEgaMegalodon_Character_BP_C":
                 case "Mosa_Character_BP_Mega_C":
                 case "Yeti_Character_BP_C":
                     return DinoTamable.False;
@@ -359,7 +359,6 @@ namespace ARK_Server_Manager.Lib
                 case "FlyingAnt_Character_BP_C":
                 case "Leech_Character_Diseased_C":
                 case "Mega_Tusoteuthis_Character_BP_C":
-                case "MEgaMegalodon_Character_BP_C":
                 case "Mosa_Character_BP_Mega_C":
                 case "Yeti_Character_BP_C":
                     return null;
