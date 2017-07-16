@@ -2147,6 +2147,9 @@ namespace ARK_Server_Manager.Lib
 
         private void LogProfileMessage(string message, bool includeProgressCallback = true)
         {
+            if (_profile == null)
+                return;
+
             lock (LockObjectProfileMessage)
             {
                 message = message ?? string.Empty;
@@ -2162,10 +2165,7 @@ namespace ARK_Server_Manager.Lib
                 if (includeProgressCallback)
                     ProgressCallback?.Invoke(0, message);
 
-                if (_profile != null)
-                    Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
-                else
-                    Debug.WriteLine(message);
+                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
             }
         }
 
@@ -2174,13 +2174,15 @@ namespace ARK_Server_Manager.Lib
             if (_pluginHelper == null || !SendAlerts)
                 return;
 
+            var alertSent = false;
+
             lock (LockObjectAlert)
             {
-                if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))
-                {
-                    LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
-                }
+                alertSent = _pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage);
             }
+
+            if (alertSent)
+                LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
         }
 
         private void SendCommand(string command, bool retryIfFailed)
