@@ -1376,6 +1376,9 @@ namespace ARK_Server_Manager.Lib
                 Mutex mutex = null;
                 bool createdNew = false;
 
+                alertMessage.AppendLine();
+                alertMessage.AppendLine("Update performed, includes:");
+
                 // check if the server needs to be updated
                 if (updateServer)
                 {
@@ -1398,8 +1401,7 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
-                            alertMessage.AppendLine();
-                            alertMessage.AppendLine("ARK Server Update: See ARK patch notes.");
+                            alertMessage.AppendLine("ARK Server Update");
 
                             emailMessage.AppendLine();
                             emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");
@@ -1431,9 +1433,6 @@ namespace ARK_Server_Manager.Lib
                 if (updateModIds.Count > 0)
                 {
                     LogProfileMessage($"Updating {updateModIds.Count} mods from cache...");
-
-                    alertMessage.AppendLine();
-                    alertMessage.AppendLine("Mod Updates:");
 
                     emailMessage.AppendLine();
                     emailMessage.AppendLine("Mod Updates:");
