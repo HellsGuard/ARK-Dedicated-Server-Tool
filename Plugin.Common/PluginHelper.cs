@@ -16,6 +16,8 @@ namespace ArkServerManager.Plugin.Common
 
         public static PluginHelper Instance = new PluginHelper();
 
+        private Object lockObject = new Object();
+
         public PluginHelper()
         {
             Plugins = new ObservableCollection<PluginItem>();
@@ -187,13 +189,25 @@ namespace ArkServerManager.Plugin.Common
             if (Plugins == null || Plugins.Count == 0 || string.IsNullOrWhiteSpace(alertMessage))
                 return;
 
-            var plugins = Plugins.Where(p => (p.PluginType is nameof(IAlertPlugin)) && (p.Plugin?.Enabled ?? false));
-            if (plugins.Count() == 0)
-                return;
-
-            foreach (var pluginItem in plugins)
+            lock (lockObject)
             {
-                ((IAlertPlugin)pluginItem.Plugin).HandleAlert(alertType, profileName, alertMessage);
+                var plugins = Plugins.Where(p => (p.PluginType is nameof(IAlertPlugin)) && (p.Plugin?.Enabled ?? false));
+                if (plugins.Count() == 0)
+                    return;
+
+                foreach (var pluginItem in plugins)
+                {
+                    ((IAlertPlugin)pluginItem.Plugin).HandleAlert(alertType, profileName, alertMessage);
+                }
+            }
+        }
+
+        public static string PluginFolder
+        {
+            get
+            {
+                var folder = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location ?? Environment.CurrentDirectory);
+                return Path.Combine(folder, PLUGINFILE_FOLDER);
             }
         }
     }

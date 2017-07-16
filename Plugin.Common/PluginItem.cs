@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace ArkServerManager.Plugin.Common
+﻿namespace ArkServerManager.Plugin.Common
 {
-    public class PluginItem
+    public sealed class PluginItem
     {
         public IPlugin Plugin
         {

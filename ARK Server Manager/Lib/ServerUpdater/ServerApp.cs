@@ -1403,7 +1403,6 @@ namespace ARK_Server_Manager.Lib
 
                             alertMessage.AppendLine();
                             alertMessage.AppendLine("See ARK patch notes.");
-                            alertMessage.AppendLine(Config.Default.ArkSE_PatchNotesUrl);
 
                             emailMessage.AppendLine();
                             emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");
@@ -1480,9 +1479,6 @@ namespace ARK_Server_Manager.Lib
 
                                         LogProfileMessage($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
                                         LogProfileMessage($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
-
-                                        alertMessage.AppendLine($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
-                                        alertMessage.AppendLine($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
 
                                         emailMessage.AppendLine($"Workshop page: http://steamcommunity.com/sharedfiles/filedetails/?id={modId}");
                                         emailMessage.AppendLine($"Change notes: http://steamcommunity.com/sharedfiles/filedetails/changelog/{modId}");
