@@ -16,7 +16,7 @@ namespace ArkServerManager.Plugin.Common
 
         public static PluginHelper Instance = new PluginHelper();
 
-        private Object lockObject = new Object();
+        private Object lockObjectProcessAlert = new Object();
 
         public PluginHelper()
         {
@@ -184,22 +184,24 @@ namespace ArkServerManager.Plugin.Common
             plugin.OpenConfigForm(owner);
         }
 
-        public void ProcessAlert(AlertType alertType, string profileName, string alertMessage)
+        public bool ProcessAlert(AlertType alertType, string profileName, string alertMessage)
         {
             if (Plugins == null || Plugins.Count == 0 || string.IsNullOrWhiteSpace(alertMessage))
-                return;
+                return false;
 
-            lock (lockObject)
+            lock (lockObjectProcessAlert)
             {
                 var plugins = Plugins.Where(p => (p.PluginType is nameof(IAlertPlugin)) && (p.Plugin?.Enabled ?? false));
                 if (plugins.Count() == 0)
-                    return;
+                    return false;
 
                 foreach (var pluginItem in plugins)
                 {
                     ((IAlertPlugin)pluginItem.Plugin).HandleAlert(alertType, profileName, alertMessage);
                 }
             }
+
+            return true;
         }
 
         public static string PluginFolder

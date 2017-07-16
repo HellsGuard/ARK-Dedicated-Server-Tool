@@ -157,7 +157,9 @@ namespace ARK_Server_Manager.Lib
 
         private const int DIRECTORIES_PER_LINE = 200;
 
-        private static readonly object LockObject = new object();
+        private static readonly object LockObjectAlert = new object();
+        private static readonly object LockObjectMessage = new object();
+        private static readonly object LockObjectProfileMessage = new object();
         private static DateTime _startTime = DateTime.Now;
         private static string _logPrefix = "";
         private static Dictionary<ProfileSnapshot, ServerProfile> _profiles = null;
@@ -2122,18 +2124,17 @@ namespace ARK_Server_Manager.Lib
 
         private static void LogMessage(string message)
         {
-            message = message ?? string.Empty;
-
-            var logFile = GetLogFile();
-            lock (LockObject)
+            lock (LockObjectMessage)
             {
+                message = message ?? string.Empty;
+
+                var logFile = GetLogFile();
                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                     Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-
                 File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
-            }
 
-            Debug.WriteLine(message);
+                Debug.WriteLine(message);
+            }
         }
 
         private void LogProfileError(string error, bool includeProgressCallback = true)
@@ -2146,23 +2147,26 @@ namespace ARK_Server_Manager.Lib
 
         private void LogProfileMessage(string message, bool includeProgressCallback = true)
         {
-            message = message ?? string.Empty;
-
-            if (OutputLogs)
+            lock (LockObjectProfileMessage)
             {
-                var logFile = GetProfileLogFile();
-                if (!Directory.Exists(Path.GetDirectoryName(logFile)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-                File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                message = message ?? string.Empty;
+
+                if (OutputLogs)
+                {
+                    var logFile = GetProfileLogFile();
+                    if (!Directory.Exists(Path.GetDirectoryName(logFile)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(logFile));
+                    File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                }
+
+                if (includeProgressCallback)
+                    ProgressCallback?.Invoke(0, message);
+
+                if (_profile != null)
+                    Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
+                else
+                    Debug.WriteLine(message);
             }
-
-            if (includeProgressCallback)
-                ProgressCallback?.Invoke(0, message);
-
-            if (_profile != null)
-                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
-            else
-                Debug.WriteLine(message);
         }
 
         private void ProcessAlert(AlertType alertType, string alertMessage)
@@ -2170,10 +2174,13 @@ namespace ARK_Server_Manager.Lib
             if (_pluginHelper == null || !SendAlerts)
                 return;
 
-            _pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage);
-#if DEBUG
-            LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
-#endif
+            lock (LockObjectAlert)
+            {
+                if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))
+                {
+                    LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
+                }
+            }
         }
 
         private void SendCommand(string command, bool retryIfFailed)

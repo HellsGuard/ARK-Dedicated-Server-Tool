@@ -30,9 +30,9 @@ namespace ArkServerManager.Plugin.Discord
 
         public bool Enabled => true;
 
-        public string PluginCode => "_ASMDiscordPlugin";
+        public string PluginCode => "_BletchDiscordPlugin";
 
-        public string PluginName => "Discord Plugin (ASM)";
+        public string PluginName => "Discord Plugin";
 
         public bool HasConfigForm => true;
 
@@ -43,13 +43,13 @@ namespace ArkServerManager.Plugin.Discord
 
             lock (lockObject)
             {
-                var configProfile = Config.ConfigProfiles.FirstOrDefault(cp => cp.AlertTypes.Any(pn => pn.Value.Equals(alertType)) && cp.ProfileNames.Any(pn => pn.Value.Equals(profileName, StringComparison.OrdinalIgnoreCase)));
-                if (configProfile == null)
-                    return;
-
-                if (!string.IsNullOrWhiteSpace(configProfile.DiscordWebhookUrl))
+                var configProfiles = Config.ConfigProfiles.Where(cp => cp.AlertTypes.Any(pn => pn.Value.Equals(alertType)) 
+                                                                    && cp.ProfileNames.Any(pn => pn.Value.Equals(profileName, StringComparison.OrdinalIgnoreCase)) 
+                                                                    && !string.IsNullOrWhiteSpace(cp.DiscordWebhookUrl));
+                foreach (var configProfile in configProfiles)
                 {
                     var postData = String.Empty;
+
                     if (configProfile.DiscordUseTTS)
                         postData += $"&tts={configProfile.DiscordUseTTS}";
                     if (!string.IsNullOrWhiteSpace(configProfile.DiscordBotName))
@@ -58,6 +58,7 @@ namespace ArkServerManager.Plugin.Discord
                     if (configProfile.PrefixMessageWithProfileName && !string.IsNullOrWhiteSpace(profileName))
                         postData += $"({profileName.Replace("&", "_")}) ";
                     postData += $"{alertMessage.Replace("&", "_")}";
+
                     if (postData.Length > MAX_MESSAGE_LENGTH)
                         postData = $"{postData.Substring(0, MAX_MESSAGE_LENGTH - 3)}...";
 
