@@ -23,7 +23,7 @@ namespace ArkServerManager.Plugin.Discord
 
         public override bool HasAnyChanges
         {
-            get => base.HasChanges || (ConfigProfiles?.Any(p => p?.HasAnyChanges ?? false) ?? false);
+            get => base.HasChanges || (ConfigProfiles?.HasAnyChanges ?? false);
         }
     }
 }
