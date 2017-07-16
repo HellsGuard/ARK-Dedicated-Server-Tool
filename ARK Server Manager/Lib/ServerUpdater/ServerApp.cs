@@ -1381,9 +1381,6 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage("Updating server from cache...");
 
-                    alertMessage.AppendLine();
-                    alertMessage.AppendLine("ARK Server Update:");
-
                     emailMessage.AppendLine();
                     emailMessage.AppendLine("ARK Server Update:");
 
@@ -1402,7 +1399,7 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
                             alertMessage.AppendLine();
-                            alertMessage.AppendLine("See ARK patch notes.");
+                            alertMessage.AppendLine("ARK Server Update: See ARK patch notes.");
 
                             emailMessage.AppendLine();
                             emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");
@@ -1466,7 +1463,6 @@ namespace ARK_Server_Manager.Lib
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"Mod Name: {modName} (Mod ID: {modId})");
 
-                                        alertMessage.AppendLine();
                                         alertMessage.AppendLine($"{modName} ({modId})");
 
                                         emailMessage.AppendLine();
