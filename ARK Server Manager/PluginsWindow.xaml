@@ -47,11 +47,6 @@
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                         </Style.Resources>
-                        <!--<Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDeleted}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>-->
                     </Style>
                 </DataGrid.Resources>
 
@@ -63,14 +58,19 @@
                 </DataGrid.VerticalGridLinesBrush>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn     Width="2*" Binding="{Binding Plugin.PluginName}" IsReadOnly="True">
+                    <DataGridTextColumn     Width="4*" Binding="{Binding Plugin.PluginName}" IsReadOnly="True">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource PluginsWindow_NameColumnLabel}" />
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
-                    <DataGridTextColumn     Width="1*" Binding="{Binding PluginType}" IsReadOnly="True">
+                    <DataGridTextColumn     Width="2*" Binding="{Binding PluginType}" IsReadOnly="True">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource PluginsWindow_TypeColumnLabel}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn     Width="1*" Binding="{Binding Plugin.PluginVersion}" IsReadOnly="True">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource PluginsWindow_VersionColumnLabel}" />
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
                     <DataGridTemplateColumn Width="30" CanUserReorder="False" IsReadOnly="True">

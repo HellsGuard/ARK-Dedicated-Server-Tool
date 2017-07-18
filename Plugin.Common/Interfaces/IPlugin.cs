@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace ArkServerManager.Plugin.Common
 {
@@ -22,6 +23,13 @@ namespace ArkServerManager.Plugin.Common
         ///   Gets a value indicating the name of the plugin
         /// </summary>
         string PluginName
+        {
+            get;
+        }
+        /// <summary>
+        ///   Gets a value indicating the version of the plugin
+        /// </summary>
+        Version PluginVersion
         {
             get;
         }

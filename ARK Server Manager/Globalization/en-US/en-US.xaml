@@ -182,6 +182,7 @@
 
     <sys:String x:Key="PluginsWindow_NameColumnLabel">Name</sys:String>
     <sys:String x:Key="PluginsWindow_TypeColumnLabel">Type</sys:String>
+    <sys:String x:Key="PluginsWindow_VersionColumnLabel">Version</sys:String>
 
     <sys:String x:Key="PluginsWindow_AddErrorTitle">Add Action Error</sys:String>
     <sys:String x:Key="PluginsWindow_AddErrorLabel">An error occurred while reading the selected file.</sys:String>

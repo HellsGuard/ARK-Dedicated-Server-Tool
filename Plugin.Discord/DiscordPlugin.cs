@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 
@@ -13,6 +14,7 @@ namespace ArkServerManager.Plugin.Discord
 {
     public sealed class DiscordPlugin : IAlertPlugin
     {
+        private const int REQUEST_TIMEOUT = 5000;
         private const int MAX_MESSAGE_LENGTH = 2000;
 
         private Object lockObject = new Object();
@@ -34,6 +36,21 @@ namespace ArkServerManager.Plugin.Discord
 
         public string PluginName => "Discord Plugin";
 
+        public Version PluginVersion
+        {
+            get
+            {
+                try
+                {
+                    return Assembly.GetExecutingAssembly().GetName().Version;
+                }
+                catch
+                {
+                    return new Version();
+                }
+            }
+        }
+
         public bool HasConfigForm => true;
 
         public void HandleAlert(AlertType alertType, string profileName, string alertMessage)
@@ -43,12 +60,22 @@ namespace ArkServerManager.Plugin.Discord
 
             lock (lockObject)
             {
-                var configProfiles = Config.ConfigProfiles.Where(cp => cp.AlertTypes.Any(pn => pn.Value.Equals(alertType)) 
-                                                                    && cp.ProfileNames.Any(pn => pn.Value.Equals(profileName, StringComparison.OrdinalIgnoreCase)) 
+                var configProfiles = Config.ConfigProfiles.Where(cp => cp.IsEnabled
+                                                                    && cp.AlertTypes.Any(pn => pn.Value.Equals(alertType))
+                                                                    && cp.ProfileNames.Any(pn => pn.Value.Equals(profileName, StringComparison.OrdinalIgnoreCase))
                                                                     && !string.IsNullOrWhiteSpace(cp.DiscordWebhookUrl));
+                if (configProfiles == null || configProfiles.Count() == 0)
+                {
+#if DEBUG
+                    var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordErrors.log");
+                    File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} (No config profiles found)" }, Encoding.Unicode);
+#endif                
+                    return;
+                }
+
                 foreach (var configProfile in configProfiles)
                 {
-                    var postData = String.Empty;
+                    var postData = string.Empty;
 
                     if (configProfile.DiscordUseTTS)
                         postData += $"&tts={configProfile.DiscordUseTTS}";
@@ -66,8 +93,13 @@ namespace ArkServerManager.Plugin.Discord
                     {
                         var data = Encoding.ASCII.GetBytes(postData);
 
-                        var httpRequest = WebRequest.Create(configProfile.DiscordWebhookUrl);
-                        httpRequest.Timeout = 30000;
+                        var url = configProfile.DiscordWebhookUrl;
+                        url = url.Trim();
+                        if (url.EndsWith("/"))
+                            url = url.Substring(0, url.Length - 1);
+
+                        var httpRequest = WebRequest.Create($"{url}?wait=true");
+                        httpRequest.Timeout = REQUEST_TIMEOUT;
                         httpRequest.Method = "POST";
                         httpRequest.ContentType = "application/x-www-form-urlencoded";
                         httpRequest.ContentLength = data.Length;
@@ -79,10 +111,30 @@ namespace ArkServerManager.Plugin.Discord
 
                         var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
                         var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                        if (httpResponse.StatusCode == HttpStatusCode.OK)
+                        {
+                            Debug.WriteLine($"{nameof(HandleAlert)}\r\nResponse: {responseString}");
+#if DEBUG
+                            var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordSuccess.log");
+                            File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
+#endif
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{nameof(HandleAlert)}\r\n{httpResponse.StatusCode}: {responseString}");
+#if DEBUG
+                            var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordErrors.log");
+                            File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
+#endif
+                        }
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine($"ERROR: {nameof(HandleAlert)}\r\n{ex.Message}");
+#if DEBUG
+                        var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordExceptions.log");
+                        File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({ex.Message})" }, Encoding.Unicode);
+#endif
                     }
                 }
             }

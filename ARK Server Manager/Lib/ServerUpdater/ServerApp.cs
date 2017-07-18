@@ -111,6 +111,7 @@ namespace ARK_Server_Manager.Lib
 
         public const int MUTEX_TIMEOUT = 5;         // 5 minutes
         public const int MUTEX_ATTEMPTDELAY = 5000; // 5 seconds
+        private const int WRITELOG_ERRORRETRYDELAY = 2000; // 2 seconds
 
         private const int STEAM_MAXRETRIES = 10;
         private const int RCON_MAXRETRIES = 3;
@@ -157,7 +158,6 @@ namespace ARK_Server_Manager.Lib
 
         private const int DIRECTORIES_PER_LINE = 200;
 
-        private static readonly object LockObjectAlert = new object();
         private static readonly object LockObjectMessage = new object();
         private static readonly object LockObjectProfileMessage = new object();
         private static DateTime _startTime = DateTime.Now;
@@ -1398,8 +1398,6 @@ namespace ARK_Server_Manager.Lib
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
 
-                            emailMessage.AppendLine();
-
                             LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
@@ -2124,17 +2122,31 @@ namespace ARK_Server_Manager.Lib
 
         private static void LogMessage(string message)
         {
+            message = message ?? string.Empty;
+
+            var logFile = GetLogFile();
             lock (LockObjectMessage)
             {
-                message = message ?? string.Empty;
-
-                var logFile = GetLogFile();
                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                     Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-                File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
 
-                Debug.WriteLine(message);
+                int retries = 0;
+                while (retries < 3)
+                {
+                    try
+                    {
+                        File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                        break;
+                    }
+                    catch (IOException)
+                    {
+                        retries++;
+                        Task.Delay(WRITELOG_ERRORRETRYDELAY).Wait();
+                    }
+                }
             }
+
+            Debug.WriteLine(message);
         }
 
         private void LogProfileError(string error, bool includeProgressCallback = true)
@@ -2147,26 +2159,40 @@ namespace ARK_Server_Manager.Lib
 
         private void LogProfileMessage(string message, bool includeProgressCallback = true)
         {
-            if (_profile == null)
-                return;
+            message = message ?? string.Empty;
 
-            lock (LockObjectProfileMessage)
+            if (OutputLogs)
             {
-                message = message ?? string.Empty;
-
-                if (OutputLogs)
+                var logFile = GetProfileLogFile();
+                lock (LockObjectProfileMessage)
                 {
-                    var logFile = GetProfileLogFile();
                     if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                         Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-                    File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+
+                    int retries = 0;
+                    while (retries < 3)
+                    {
+                        try
+                        {
+                            File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                            break;
+                        }
+                        catch (IOException)
+                        {
+                            retries++;
+                            Task.Delay(WRITELOG_ERRORRETRYDELAY).Wait();
+                        }
+                    }
                 }
-
-                if (includeProgressCallback)
-                    ProgressCallback?.Invoke(0, message);
-
-                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
             }
+
+            if (includeProgressCallback)
+                ProgressCallback?.Invoke(0, message);
+
+            if (_profile != null)
+                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
+            else
+                Debug.WriteLine(message);
         }
 
         private void ProcessAlert(AlertType alertType, string alertMessage)
@@ -2174,22 +2200,17 @@ namespace ARK_Server_Manager.Lib
             if (_pluginHelper == null || !SendAlerts)
                 return;
 
-            var alertSent = false;
-
-            lock (LockObjectAlert)
+            if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))
             {
-                alertSent = _pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage);
-            }
-
-            if (alertSent)
                 LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
+            }
         }
 
         private void SendCommand(string command, bool retryIfFailed)
         {
-            if (string.IsNullOrWhiteSpace(command))
+            if (_profile == null || !_profile.RCONEnabled)
                 return;
-            if (!(_profile?.RCONEnabled ?? false))
+            if (string.IsNullOrWhiteSpace(command))
                 return;
 
             int retries = 0;
@@ -2200,7 +2221,15 @@ namespace ARK_Server_Manager.Lib
             {
                 SetupRconConsole();
 
-                if (_rconConsole != null)
+                if (_rconConsole == null)
+                {
+                    LogProfileMessage($"RCON> {command} - attempt {rconRetries + 1} (a).", false);
+#if DEBUG
+                    LogProfileMessage("RCON connection not created.", false);
+#endif
+                    rconRetries++;
+                }
+                else
                 {
                     rconRetries = 0;
                     try
@@ -2219,14 +2248,6 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     retries++;
-                }
-                else
-                {
-                    LogProfileMessage($"RCON> {command} - attempt {rconRetries + 1} (a).", false);
-#if DEBUG
-                    LogProfileMessage("RCON connection not created.", false);
-#endif
-                    rconRetries++;
                 }
             }
         }
@@ -2278,7 +2299,7 @@ namespace ARK_Server_Manager.Lib
         {
             CloseRconConsole();
 
-            if (!(_profile?.RCONEnabled ?? false))
+            if (_profile == null || !_profile.RCONEnabled)
                 return;
 
             try
@@ -2521,8 +2542,12 @@ namespace ARK_Server_Manager.Lib
             catch (Exception ex)
             {
                 LogProfileError(ex.Message);
+                LogProfileError(ex.GetType().ToString());
                 if (ex.InnerException != null)
+                {
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
+                    LogProfileMessage(ex.InnerException.GetType().ToString());
+                }
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
                 if (Config.Default.EmailNotify_AutoUpdate)
@@ -2740,8 +2765,12 @@ namespace ARK_Server_Manager.Lib
             catch (Exception ex)
             {
                 LogError(ex.Message);
+                LogError(ex.GetType().ToString());
                 if (ex.InnerException != null)
+                {
                     LogMessage($"InnerException - {ex.InnerException.Message}");
+                    LogMessage(ex.InnerException.GetType().ToString());
+                }
                 LogMessage($"StackTrace\r\n{ex.StackTrace}");
                 exitCode = EXITCODE_UNKNOWNERROR;
             }

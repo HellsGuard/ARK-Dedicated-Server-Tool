@@ -54,6 +54,7 @@
 
                 <Label    Grid.Row="0" Grid.Column="0" Content="{DynamicResource ConfigProfileWindow_NameLabel}" ToolTip="{DynamicResource ConfigProfileWindow_NameTooltip}"/>
                 <TextBox  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Text="{Binding Profile.Name}" ToolTip="{DynamicResource ConfigProfileWindow_NameTooltip}" VerticalContentAlignment="Center" />
+                <CheckBox Grid.Row="0" Grid.Column="3" Margin="5,2,20,2" Content="{DynamicResource ConfigProfileWindow_IsEnabledLabel}" IsChecked="{Binding Profile.IsEnabled}" ToolTip="{DynamicResource ConfigProfileWindow_IsEnabledTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                 <Label    Grid.Row="1" Grid.Column="0" Content="{DynamicResource ConfigProfileWindow_WebhookLabel}" ToolTip="{DynamicResource ConfigProfileWindow_WebhookTooltip}"/>
                 <TextBox  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="1" Text="{Binding Profile.DiscordWebhookUrl}" ToolTip="{DynamicResource ConfigProfileWindow_WebhookTooltip}" VerticalContentAlignment="Center" />

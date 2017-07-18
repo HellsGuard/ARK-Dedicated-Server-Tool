@@ -42,6 +42,8 @@
 
     <sys:String x:Key="ConfigProfileWindow_NameLabel">Name:</sys:String>
     <sys:String x:Key="ConfigProfileWindow_NameTooltip">The name of your config profile.</sys:String>
+    <sys:String x:Key="ConfigProfileWindow_IsEnabledLabel">Enabled</sys:String>
+    <sys:String x:Key="ConfigProfileWindow_IsEnabledTooltip">Is the config profile enabled.</sys:String>
     <sys:String x:Key="ConfigProfileWindow_WebhookLabel">Webhook Url:</sys:String>
     <sys:String x:Key="ConfigProfileWindow_WebhookTooltip">This is your Webhook Url provided by discord.</sys:String>
     <sys:String x:Key="ConfigProfileWindow_BotNameLabel">Bot Name:</sys:String>

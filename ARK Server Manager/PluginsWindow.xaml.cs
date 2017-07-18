@@ -37,21 +37,17 @@ namespace ARK_Server_Manager
 
         private void AddPlugin_Click(object sender, RoutedEventArgs e)
         {
-            var pluginFile = string.Empty;
-
             var dialog = new CommonOpenFileDialog();
             dialog.Title = GlobalizedApplication.Instance.GetResourceString("PluginsWindow_AddDialogTitle");
             dialog.DefaultExtension = GlobalizedApplication.Instance.GetResourceString("PluginsWindow_PluginDefaultExtension");
             dialog.Filters.Add(new CommonFileDialogFilter(GlobalizedApplication.Instance.GetResourceString("PluginsWindow_AddFilterLabel"), GlobalizedApplication.Instance.GetResourceString("PluginsWindow_AddFilterExtension")));
-            if (dialog != null && dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                pluginFile = dialog.FileName;
+            if (dialog == null || dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                return;
 
             try
             {
                 var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                PluginHelperInstance.AddPlugin(installPath, pluginFile);
-
-                ReloadPlugins();
+                PluginHelperInstance.AddPlugin(installPath, dialog.FileName);
             }
             catch (PluginException ex)
             {
@@ -71,8 +67,6 @@ namespace ARK_Server_Manager
             try
             {
                 PluginHelperInstance.DeleteAllPlugins();
-
-                ReloadPlugins();
             }
             catch (Exception ex)
             {
@@ -95,19 +89,11 @@ namespace ARK_Server_Manager
             {
                 var pluginItem = ((PluginItem)((Button)e.Source).DataContext);
                 PluginHelperInstance.DeletePlugin(pluginItem.PluginFile);
-
-                ReloadPlugins();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, _globalizer.GetResourceString("PluginsWindow_DeleteErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void ReloadPlugins()
-        {
-            //var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            //PluginHelperInstance.LoadPlugins(installPath, true);
         }
     }
 }

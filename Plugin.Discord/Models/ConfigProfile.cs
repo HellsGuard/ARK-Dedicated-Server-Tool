@@ -15,6 +15,7 @@ namespace ArkServerManager.Plugin.Discord
             DiscordBotName = string.Empty;
             DiscordUseTTS = false;
             PrefixMessageWithProfileName = false;
+            IsEnabled = true;
         }
 
         [DataMember]
@@ -66,6 +67,13 @@ namespace ArkServerManager.Plugin.Discord
             set { Set(value); }
         }
 
+        [DataMember]
+        public bool IsEnabled
+        {
+            get { return Get<bool>(); }
+            set { Set(value); }
+        }
+
         public ConfigProfile Clone()
         {
             var clone = new ConfigProfile();
@@ -86,6 +94,7 @@ namespace ArkServerManager.Plugin.Discord
             clone.DiscordBotName = this.DiscordBotName;
             clone.DiscordUseTTS = this.DiscordUseTTS;
             clone.PrefixMessageWithProfileName = this.PrefixMessageWithProfileName;
+            clone.IsEnabled = this.IsEnabled;
             clone.HasChanges = this.HasChanges;
             return clone;
         }
@@ -125,6 +134,7 @@ namespace ArkServerManager.Plugin.Discord
                 this.DiscordBotName = source.DiscordBotName;
                 this.DiscordUseTTS = source.DiscordUseTTS;
                 this.PrefixMessageWithProfileName = source.PrefixMessageWithProfileName;
+                this.IsEnabled = source.IsEnabled;
 
                 if (source.HasChanges)
                     this.HasChanges = true;

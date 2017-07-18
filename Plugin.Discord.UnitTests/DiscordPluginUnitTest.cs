@@ -1,6 +1,8 @@
 ﻿using ArkServerManager.Plugin.Discord;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Plugin.Discord.UnitTests
 {
@@ -82,6 +84,121 @@ namespace Plugin.Discord.UnitTests
 
             // Act
             plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Shutdown, "Server 3", alertMessage.ToString());
+
+            // Assert
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void DiscordPlugin_HandleAlert_When_SendingMultipleMessagesSingleServer_Then_Valid()
+        {
+            var plugin = new DiscordPlugin();
+
+            SendMultipleMessages(plugin, "Server 1");
+        }
+
+        [TestMethod]
+        public void DiscordPlugin_HandleAlert_When_SendingMultipleMessagesMultipleServers_Sync_Then_Valid()
+        {
+            // Arrange
+            var plugin = new DiscordPlugin();
+            var alertMessage1 = new StringBuilder();
+            alertMessage1.AppendLine("Message 1 - shutdown 1.");
+            var alertMessage2 = new StringBuilder();
+            alertMessage2.AppendLine("Message 2 - shutdown 2.");
+            var alertMessage3 = new StringBuilder();
+            alertMessage3.AppendLine("Message 3 - start.");
+            var alertMessage4 = new StringBuilder();
+            alertMessage4.AppendLine("Message 4 - update reason.");
+
+            // Act
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 1", alertMessage1.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 2", alertMessage1.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 3", alertMessage1.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 4", alertMessage1.ToString());
+            Task.Delay(2000).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 1", alertMessage2.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 2", alertMessage2.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 3", alertMessage2.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, "Server 4", alertMessage2.ToString());
+            Task.Delay(2000).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Startup, "Server 1", alertMessage3.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Startup, "Server 2", alertMessage3.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Startup, "Server 3", alertMessage3.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Startup, "Server 4", alertMessage3.ToString());
+            Task.Delay(2000).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.UpdateResults, "Server 1", alertMessage4.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.UpdateResults, "Server 2", alertMessage4.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.UpdateResults, "Server 3", alertMessage4.ToString());
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.UpdateResults, "Server 4", alertMessage4.ToString());
+
+            // Assert
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void DiscordPlugin_HandleAlert_When_SendingMultipleMessagesMultipleServers_ASync_Then_Valid()
+        {
+            var plugin = new DiscordPlugin();
+
+            Parallel.For(1, 9, (i) => {
+                switch (i)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        SendMultipleMessages(plugin, $"Server {i}");
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        SendMultipleErrors(plugin, $"Server {i-4}");
+                        break;
+                }
+            });
+        }
+
+        private void SendMultipleMessages(DiscordPlugin plugin, string profileName)
+        {
+            // Arrange
+            Random rnd = new Random();
+            var alertMessage1 = new StringBuilder();
+            alertMessage1.AppendLine("Message 1 - shutdown 1.");
+            var alertMessage2 = new StringBuilder();
+            alertMessage2.AppendLine("Message 2 - shutdown 2.");
+            var alertMessage3 = new StringBuilder();
+            alertMessage3.AppendLine("Message 3 - start.");
+            var alertMessage4 = new StringBuilder();
+            alertMessage4.AppendLine("Message 4 - update reason.");
+
+            // Act
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, profileName, alertMessage1.ToString());
+            Task.Delay(rnd.Next(1000, 5000)).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.ShutdownMessage, profileName, alertMessage2.ToString());
+            Task.Delay(rnd.Next(1000, 5000)).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Startup, profileName, alertMessage3.ToString());
+            Task.Delay(rnd.Next(1000, 5000)).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.UpdateResults, profileName, alertMessage4.ToString());
+
+            // Assert
+            Assert.IsTrue(true);
+        }
+
+        private void SendMultipleErrors(DiscordPlugin plugin, string profileName)
+        {
+            // Arrange
+            Random rnd = new Random();
+            var alertMessage1 = new StringBuilder();
+            alertMessage1.AppendLine("Error 1.");
+            var alertMessage2 = new StringBuilder();
+            alertMessage2.AppendLine("Error 2.");
+
+            // Act
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Error, profileName, alertMessage1.ToString());
+            Task.Delay(rnd.Next(1000, 5000)).Wait();
+            plugin.HandleAlert(ArkServerManager.Plugin.Common.AlertType.Error, profileName, alertMessage2.ToString());
 
             // Assert
             Assert.IsTrue(true);
