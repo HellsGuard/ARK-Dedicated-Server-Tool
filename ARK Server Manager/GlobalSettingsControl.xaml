@@ -68,6 +68,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -438,6 +440,44 @@
 
                 <GroupBox Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
+                        <Label Content="{DynamicResource GlobalSettings_AlertsLabel}"/>
+                    </GroupBox.Header>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerStopMessageLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerStopMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerStopMessageTooltip}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerShutdownMessageLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerShutdownMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerShutdownMessageTooltip}"/>
+                        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerStartedMessageLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerStartedMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerStartedMessageTooltip}"/>
+                        <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_BackupProcessErrorLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_BackupProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_BackupProcessErrorTooltip}"/>
+                        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ShutdownProcessErrorLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ShutdownProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ShutdownProcessErrorTooltip}"/>
+                        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_RestartProcessErrorLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_RestartProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_RestartProcessErrorTooltip}"/>
+                        <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_UpdateProcessErrorLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_UpdateProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_UpdateProcessErrorTooltip}"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
+                    <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_EmailSettingsLabel}"/>
                     </GroupBox.Header>
             
@@ -478,7 +518,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
+                <GroupBox Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_EmailNotifySettingsLabel}"/>
                     </GroupBox.Header>

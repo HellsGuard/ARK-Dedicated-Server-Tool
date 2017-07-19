@@ -188,7 +188,7 @@ namespace ARK_Server_Manager
                 ShutdownType = 2;
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
 
-                PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, Server.Profile.ProfileName, _globalizer.GetResourceString("Alert_Server_Stop"));
+                PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, Server.Profile.ProfileName, Config.Default.Alert_ServerStopMessage);
                 await Task.Delay(2000);
 
                 await this.Server.StopAsync();

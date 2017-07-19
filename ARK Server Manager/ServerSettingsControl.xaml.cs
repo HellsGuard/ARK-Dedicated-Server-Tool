@@ -341,7 +341,7 @@ namespace ARK_Server_Manager
 
                         try
                         {
-                            PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, this.Settings.ProfileName, _globalizer.GetResourceString("Alert_Server_Stop"));
+                            PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, this.Settings.ProfileName, Config.Default.Alert_ServerStopMessage);
                             await Task.Delay(2000);
 
                             await this.Server.StopAsync();
@@ -403,7 +403,7 @@ namespace ARK_Server_Manager
                                     return;
                             }
 
-                            PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, _globalizer.GetResourceString("Alert_Server_Started"));
+                            PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, Config.Default.Alert_ServerStartedMessage);
                             await Task.Delay(2000);
 
                             await this.Server.StartAsync();

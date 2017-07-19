@@ -521,9 +521,9 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("");
 
                 if (Config.Default.EmailNotify_ShutdownRestart)
-                    SendEmail($"{_profile.ProfileName} server started", $"The server has been started.", false);
+                    SendEmail($"{_profile.ProfileName} server started", Config.Default.Alert_ServerStartedMessage, false);
 
-                ProcessAlert(AlertType.Startup, _globalizer.GetResourceString("Alert_Server_Started"));
+                ProcessAlert(AlertType.Startup, Config.Default.Alert_ServerStartedMessage);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -747,7 +747,7 @@ namespace ARK_Server_Manager.Lib
                 // Stop the server
                 LogProfileMessage("");
                 LogProfileMessage("Stopping server...");
-                ProcessAlert(AlertType.Shutdown, _globalizer.GetResourceString("Alert_Server_Shutdown"));
+                ProcessAlert(AlertType.Shutdown, Config.Default.Alert_ServerShutdownMessage);
 
                 TaskCompletionSource<bool> ts = new TaskCompletionSource<bool>();
                 EventHandler handler = (s, e) => ts.TrySetResult(true);
@@ -2371,8 +2371,8 @@ namespace ARK_Server_Manager.Lib
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
                         if (Config.Default.EmailNotify_AutoBackup)
-                            SendEmail($"{_profile.ProfileName} server backup", $"The server backup process was performed but an error occurred.", true);
-                        ProcessAlert(AlertType.Error, "The server backup process was performed but an error occurred.");
+                            SendEmail($"{_profile.ProfileName} server backup", Config.Default.Alert_BackupProcessError, true);
+                        ProcessAlert(AlertType.Error, Config.Default.Alert_BackupProcessError);
                     }
                 }
                 else
@@ -2389,8 +2389,8 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
                 if (Config.Default.EmailNotify_AutoBackup)
-                    SendEmail($"{_profile.ProfileName} server update", $"The server backup process was performed but an error occurred.", true);
-                ProcessAlert(AlertType.Error, "The server backup process was performed but an error occurred.");
+                    SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_BackupProcessError, true);
+                ProcessAlert(AlertType.Error, Config.Default.Alert_BackupProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -2439,14 +2439,14 @@ namespace ARK_Server_Manager.Lib
                         if (Config.Default.EmailNotify_AutoRestart)
                         {
                             if (performRestart)
-                                SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                                SendEmail($"{_profile.ProfileName} server restart", Config.Default.Alert_RestartProcessError, true);
                             else
-                                SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                                SendEmail($"{_profile.ProfileName} server shutdown", Config.Default.Alert_ShutdownProcessError, true);
                         }
                         if (performRestart)
-                            ProcessAlert(AlertType.Error, "The server restart process was performed but an error occurred.");
+                            ProcessAlert(AlertType.Error, Config.Default.Alert_RestartProcessError);
                         else
-                            ProcessAlert(AlertType.Error, "The server shutdown process was performed but an error occurred.");
+                            ProcessAlert(AlertType.Error, Config.Default.Alert_ShutdownProcessError);
                     }
                 }
                 else
@@ -2468,14 +2468,14 @@ namespace ARK_Server_Manager.Lib
                 if (Config.Default.EmailNotify_AutoRestart)
                 {
                     if (performRestart)
-                        SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                        SendEmail($"{_profile.ProfileName} server restart", Config.Default.Alert_RestartProcessError, true);
                     else
-                        SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                        SendEmail($"{_profile.ProfileName} server shutdown", Config.Default.Alert_ShutdownProcessError, true);
                 }
                 if (performRestart)
-                    ProcessAlert(AlertType.Error, "The server restart process was performed but an error occurred.");
+                    ProcessAlert(AlertType.Error, Config.Default.Alert_RestartProcessError);
                 else
-                    ProcessAlert(AlertType.Error, "The server shutdown process was performed but an error occurred.");
+                    ProcessAlert(AlertType.Error, Config.Default.Alert_ShutdownProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -2529,8 +2529,8 @@ namespace ARK_Server_Manager.Lib
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
                         if (Config.Default.EmailNotify_AutoUpdate)
-                            SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
-                        ProcessAlert(AlertType.Error, "The server update process was performed but an error occurred.");
+                            SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_UpdateProcessError, true);
+                        ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
                     }
                 }
                 else
@@ -2551,8 +2551,8 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
                 if (Config.Default.EmailNotify_AutoUpdate)
-                    SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
-                ProcessAlert(AlertType.Error, "The server update process was performed but an error occurred.");
+                    SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_UpdateProcessError, true);
+                ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
