@@ -19,7 +19,6 @@ namespace ASMWebAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ReconfigureLogging();
-
         }
 
         private static void ReconfigureLogging()
@@ -61,6 +60,13 @@ namespace ASMWebAPI
             {
                 target.FileName = Path.Combine(logDir, "ASM_ServerWarn.log");
                 target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerWarn.{#}.log");
+            }
+
+            target = (FileTarget)LogManager.Configuration.FindTargetByName("pluginInfoFile");
+            if (target != null)
+            {
+                target.FileName = Path.Combine(logDir, "ASM_PluginInfo.log");
+                target.ArchiveFileName = Path.Combine(logDir, "ASM_PluginInfo.{#}.log");
             }
 
             LogManager.ReconfigExistingLoggers();
