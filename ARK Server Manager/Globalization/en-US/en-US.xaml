@@ -172,6 +172,7 @@
     <sys:String x:Key="PluginsWindow_AddPluginTooltip">Add Plugin</sys:String>
     <sys:String x:Key="PluginsWindow_ClearPluginsTooltip">Delete All Plugins</sys:String>
     <sys:String x:Key="PluginsWindow_ConfigPluginTooltip">Open Plugin Configuration</sys:String>
+    <sys:String x:Key="PluginsWindow_OpenPluginsFolderTooltip">Open Plugins Folder</sys:String>
     <sys:String x:Key="PluginsWindow_RemovePluginTooltip">Delete Plugin</sys:String>
 
     <sys:String x:Key="PluginsWindow_NameColumnLabel">Name</sys:String>
@@ -183,9 +184,11 @@
     <sys:String x:Key="PluginsWindow_ClearTitle">Confirm Clear Action</sys:String>
     <sys:String x:Key="PluginsWindow_ClearLabel">Click 'Yes' to confirm you want to clear all.</sys:String>
     <sys:String x:Key="PluginsWindow_ClearErrorTitle">Clear Action Error</sys:String>
+    <sys:String x:Key="PluginsWindow_ConfigErrorTitle">Plugin Configuration Error</sys:String>
     <sys:String x:Key="PluginsWindow_DeleteTitle">Confirm Delete Action</sys:String>
     <sys:String x:Key="PluginsWindow_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
     <sys:String x:Key="PluginsWindow_DeleteErrorTitle">Delete Action Error</sys:String>
+    <sys:String x:Key="PluginsWindow_OpenErrorTitle">Open Folder Error</sys:String>
 
     <sys:String x:Key="PluginsWindow_AddDialogTitle">Select plugin file</sys:String>
     <sys:String x:Key="PluginsWindow_PluginDefaultExtension">dll</sys:String>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource ConfigWindow_Title}"
         Icon="/ArkServerManager.Plugin.Discord;component/Art/favicon.ico"
-        Width="640" Height="480" ResizeMode="CanResizeWithGrip" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="ConfigWindow_Closing">
+        Width="640" Height="480" MinWidth="640" MinHeight="480" ResizeMode="CanResizeWithGrip" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="ConfigWindow_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

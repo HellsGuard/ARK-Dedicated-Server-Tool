@@ -2,6 +2,7 @@
 using ArkServerManager.Plugin.Common;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -76,8 +77,27 @@ namespace ARK_Server_Manager
 
         private void ConfigPlugin_Click(object sender, RoutedEventArgs e)
         {
-            var pluginItem = ((PluginItem)((Button)e.Source).DataContext);
-            PluginHelperInstance.OpenConfigForm(pluginItem.Plugin, this);
+            try
+            {
+                var pluginItem = ((PluginItem)((Button)e.Source).DataContext);
+                PluginHelperInstance.OpenConfigForm(pluginItem.Plugin, this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("PluginsWindow_ConfigErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void OpenPluginsFolder_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("explorer.exe", PluginHelper.PluginFolder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("PluginsWindow_OpenErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void RemovePlugin_Click(object sender, RoutedEventArgs e)

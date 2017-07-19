@@ -59,6 +59,7 @@
     <Compile Include="Models\ProfileNameValue.cs" />
     <Compile Include="Models\ProfileNameValueList.cs" />
     <Compile Include="Utils\NetworkUtils.cs" />
+    <Compile Include="Utils\TaskUtils.cs" />
     <Compile Include="Windows\ConfigProfileWindow.xaml.cs">
       <DependentUpon>ConfigProfileWindow.xaml</DependentUpon>
     </Compile>

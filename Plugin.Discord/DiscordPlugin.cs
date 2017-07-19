@@ -22,7 +22,7 @@ namespace ArkServerManager.Plugin.Discord
         public DiscordPlugin()
         {
             LoadConfig();
-            CallHome().Wait();
+            CallHomeAsync().DoNotWait();
         }
 
         private DiscordPluginConfig Config
@@ -54,16 +54,24 @@ namespace ArkServerManager.Plugin.Discord
 
         public bool HasConfigForm => true;
 
-        private async Task CallHome()
+        private async Task CallHomeAsync()
         {
             try
             {
                 var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
                 await NetworkUtils.PerformCallToAPIAsync(publicIP, PluginCode);
+#if DEBUG
+                var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordApiCalls.log");
+                File.AppendAllLines(logFile, new[] { "CallHomeAsync successful" }, Encoding.Unicode);
+#endif                
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Failed calling home {ex.Message}");
+#if DEBUG
+                var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordErrors.log");
+                File.AppendAllLines(logFile, new[] { $"Failed calling home {ex.Message}" }, Encoding.Unicode);
+#endif                
             }
         }
 
@@ -89,68 +97,76 @@ namespace ArkServerManager.Plugin.Discord
 
                 foreach (var configProfile in configProfiles)
                 {
-                    var postData = string.Empty;
-
-                    if (configProfile.DiscordUseTTS)
-                        postData += $"&tts={configProfile.DiscordUseTTS}";
-                    if (!string.IsNullOrWhiteSpace(configProfile.DiscordBotName))
-                        postData += $"&username={configProfile.DiscordBotName.Replace("&", "_")}";
-                    postData += $"&content=";
-                    if (configProfile.PrefixMessageWithProfileName && !string.IsNullOrWhiteSpace(profileName))
-                        postData += $"({profileName.Replace("&", "_")}) ";
-                    postData += $"{alertMessage.Replace("&", "_")}";
-
-                    if (postData.Length > MAX_MESSAGE_LENGTH)
-                        postData = $"{postData.Substring(0, MAX_MESSAGE_LENGTH - 3)}...";
-
-                    try
-                    {
-                        var data = Encoding.ASCII.GetBytes(postData);
-
-                        var url = configProfile.DiscordWebhookUrl;
-                        url = url.Trim();
-                        if (url.EndsWith("/"))
-                            url = url.Substring(0, url.Length - 1);
-
-                        var httpRequest = WebRequest.Create($"{url}?wait=true");
-                        httpRequest.Timeout = REQUEST_TIMEOUT;
-                        httpRequest.Method = "POST";
-                        httpRequest.ContentType = "application/x-www-form-urlencoded";
-                        httpRequest.ContentLength = data.Length;
-
-                        using (var stream = httpRequest.GetRequestStream())
-                        {
-                            stream.Write(data, 0, data.Length);
-                        }
-
-                        var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                        var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-                        if (httpResponse.StatusCode == HttpStatusCode.OK)
-                        {
-                            Debug.WriteLine($"{nameof(HandleAlert)}\r\nResponse: {responseString}");
-#if DEBUG
-                            var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordSuccess.log");
-                            File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
-#endif
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"{nameof(HandleAlert)}\r\n{httpResponse.StatusCode}: {responseString}");
-#if DEBUG
-                            var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordErrors.log");
-                            File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
-#endif
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"ERROR: {nameof(HandleAlert)}\r\n{ex.Message}");
-#if DEBUG
-                        var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordExceptions.log");
-                        File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({ex.Message})" }, Encoding.Unicode);
-#endif
-                    }
+                    HandleAlert(configProfile, alertType, profileName, alertMessage);
                 }
+            }
+        }
+
+        internal void HandleAlert(ConfigProfile configProfile, AlertType alertType, string profileName, string alertMessage)
+        {
+            if (configProfile == null || string.IsNullOrWhiteSpace(configProfile.DiscordWebhookUrl) || string.IsNullOrWhiteSpace(alertMessage))
+                return;
+
+            var postData = string.Empty;
+
+            if (configProfile.DiscordUseTTS)
+                postData += $"&tts={configProfile.DiscordUseTTS}";
+            if (!string.IsNullOrWhiteSpace(configProfile.DiscordBotName))
+                postData += $"&username={configProfile.DiscordBotName.Replace("&", "_")}";
+            postData += $"&content=";
+            if (configProfile.PrefixMessageWithProfileName && !string.IsNullOrWhiteSpace(profileName))
+                postData += $"({profileName.Replace("&", "_")}) ";
+            postData += $"{alertMessage.Replace("&", "_")}";
+
+            if (postData.Length > MAX_MESSAGE_LENGTH)
+                postData = $"{postData.Substring(0, MAX_MESSAGE_LENGTH - 3)}...";
+
+            try
+            {
+                var data = Encoding.ASCII.GetBytes(postData);
+
+                var url = configProfile.DiscordWebhookUrl;
+                url = url.Trim();
+                if (url.EndsWith("/"))
+                    url = url.Substring(0, url.Length - 1);
+
+                var httpRequest = WebRequest.Create($"{url}?wait=true");
+                httpRequest.Timeout = REQUEST_TIMEOUT;
+                httpRequest.Method = "POST";
+                httpRequest.ContentType = "application/x-www-form-urlencoded";
+                httpRequest.ContentLength = data.Length;
+
+                using (var stream = httpRequest.GetRequestStream())
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseString = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    Debug.WriteLine($"{nameof(HandleAlert)}\r\nResponse: {responseString}");
+#if DEBUG
+                    var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordSuccess.log");
+                    File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
+#endif
+                }
+                else
+                {
+                    Debug.WriteLine($"{nameof(HandleAlert)}\r\n{httpResponse.StatusCode}: {responseString}");
+#if DEBUG
+                    var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordErrors.log");
+                    File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({responseString})" }, Encoding.Unicode);
+#endif
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR: {nameof(HandleAlert)}\r\n{ex.Message}");
+#if DEBUG
+                var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordExceptions.log");
+                File.AppendAllLines(logFile, new[] { $"{alertType}; {profileName} - {alertMessage.Replace(Environment.NewLine, " ")} ({ex.Message})" }, Encoding.Unicode);
+#endif
             }
         }
 

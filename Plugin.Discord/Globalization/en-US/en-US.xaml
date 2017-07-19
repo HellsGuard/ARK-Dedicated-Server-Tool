@@ -66,6 +66,8 @@
     <sys:String x:Key="ConfigProfileWindow_ProfileNameColumnLabel">ASM Profile Name</sys:String>
     <sys:String x:Key="ConfigProfileWindow_AlertTypeColumnLabel">Alert Type</sys:String>
 
+    <sys:String x:Key="ConfigProfileWindow_TestButtonLabel">Test</sys:String>
+    
     <sys:String x:Key="ConfigProfileWindow_AddErrorTitle">Add Action Error</sys:String>
     <sys:String x:Key="ConfigProfileWindow_AddAlertTypeErrorLabel">An error occurred while trying to add an alert type.</sys:String>
     <sys:String x:Key="ConfigProfileWindow_AddProfileNameErrorLabel">An error occurred while trying to add a profile name.</sys:String>
@@ -81,5 +83,8 @@
     <sys:String x:Key="ConfigProfileWindow_DeleteErrorTitle">Delete Action Error</sys:String>
     <sys:String x:Key="ConfigProfileWindow_DeleteAlertTypeErrorLabel">An error occurred while trying to delete the alert type.</sys:String>
     <sys:String x:Key="ConfigProfileWindow_DeleteProfileNameErrorLabel">An error occurred while trying to delete the profile name.</sys:String>
+    <sys:String x:Key="ConfigProfileWindow_TestErrorTitle">Test Action Error</sys:String>
+    <sys:String x:Key="ConfigProfileWindow_TestErrorLabel">An error occurred while trying to test the config profile.</sys:String>
+    <sys:String x:Key="ConfigProfileWindow_TestEnabledErrorLabel">The profile is not enabled and cannot be tested.</sys:String>
 
 </ResourceDictionary>

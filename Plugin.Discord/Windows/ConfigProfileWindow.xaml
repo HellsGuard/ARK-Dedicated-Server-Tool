@@ -5,7 +5,7 @@
         xmlns:pc="clr-namespace:ArkServerManager.Plugin.Common;assembly=ArkServerManager.Plugin.Common"
         Title="{DynamicResource ConfigProfileWindow_Title}"
         Icon="/ArkServerManager.Plugin.Discord;component/Art/favicon.ico"
-        Width="640" Height="480" ResizeMode="CanResizeWithGrip" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="ConfigProfileWindow_Closing">
+        Width="640" Height="480" MinWidth="640" MinHeight="480" ResizeMode="CanResizeWithGrip" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="ConfigProfileWindow_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -66,10 +66,17 @@
                 <CheckBox Grid.Row="3" Grid.Column="2" Margin="0,2,20,2" Content="{DynamicResource ConfigProfileWindow_PrefixMessageWithProfileNameLabel}" IsChecked="{Binding Profile.PrefixMessageWithProfileName}" ToolTip="{DynamicResource ConfigProfileWindow_PrefixMessageWithProfileNameTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Grid>
             
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <Button Content="{DynamicResource Global_OkButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Right" Click="Ok_Click"/>
-                <Button Content="{DynamicResource Global_CancelButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Left" IsCancel="True"/>
-            </StackPanel>
+            <Grid DockPanel.Dock="Bottom" Margin="0,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="{DynamicResource ConfigProfileWindow_TestButtonLabel}" Margin="5" MinWidth="75" Click="Test_Click"/>
+                <Button Grid.Column="2" Content="{DynamicResource Global_OkButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Right" Click="Ok_Click"/>
+                <Button Grid.Column="3" Content="{DynamicResource Global_CancelButtonLabel}" Margin="5" MinWidth="75" HorizontalAlignment="Left" IsCancel="True"/>
+            </Grid>
 
             <Grid>
                 <Grid.RowDefinitions>

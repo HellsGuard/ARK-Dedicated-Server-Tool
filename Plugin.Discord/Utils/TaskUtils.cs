@@ -1,0 +1,14 @@
+﻿using System.Threading.Tasks;
+
+namespace ArkServerManager.Plugin.Discord
+{
+    internal static class TaskUtils
+    {
+        public static void DoNotWait(this Task task)
+        {
+            // Do nothing, let the task continue.  Eliminates compiler warning about non-awaited tasks in an async method.
+        }
+
+        public static readonly Task FinishedTask = Task.FromResult(true);
+    }
+}

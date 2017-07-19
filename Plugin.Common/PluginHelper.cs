@@ -14,11 +14,11 @@ namespace ArkServerManager.Plugin.Common
         private const string PLUGINFILE_PREFIX = "";
         private const string PLUGINFILE_EXTENSION = "dll";
 
-        public static PluginHelper Instance = new PluginHelper();
+        internal static PluginHelper Instance = new PluginHelper();
 
         private Object lockObjectProcessAlert = new Object();
 
-        public PluginHelper()
+        internal PluginHelper()
         {
             Plugins = new ObservableCollection<PluginItem>();
         }
@@ -29,7 +29,7 @@ namespace ArkServerManager.Plugin.Common
             private set;
         }
 
-        public void AddPlugin(string folder, string pluginFile)
+        internal void AddPlugin(string folder, string pluginFile)
         {
             if (!CheckPluginFile(pluginFile))
                 throw new PluginException("The selected file does not contain ASM plugins.");
@@ -47,7 +47,7 @@ namespace ArkServerManager.Plugin.Common
             LoadPlugin(newPluginFile);
         }
 
-        public bool CheckPluginFile(string pluginFile)
+        internal bool CheckPluginFile(string pluginFile)
         {
             if (string.IsNullOrWhiteSpace(pluginFile))
                 return false;
@@ -82,7 +82,7 @@ namespace ArkServerManager.Plugin.Common
             return false;
         }
 
-        public void DeleteAllPlugins()
+        internal void DeleteAllPlugins()
         {
             for (int index = Plugins.Count - 1; index >= 0; index--)
             {
@@ -95,7 +95,7 @@ namespace ArkServerManager.Plugin.Common
             }
         }
 
-        public void DeletePlugin(string pluginFile)
+        internal void DeletePlugin(string pluginFile)
         {
             if (string.IsNullOrWhiteSpace(pluginFile))
                 return;
@@ -110,7 +110,7 @@ namespace ArkServerManager.Plugin.Common
                 File.Delete(pluginFile);
         }
 
-        public void LoadPlugin(string pluginFile)
+        internal void LoadPlugin(string pluginFile)
         {
             if (string.IsNullOrWhiteSpace(pluginFile))
                 return;
@@ -149,7 +149,7 @@ namespace ArkServerManager.Plugin.Common
             }
         }
 
-        public void LoadPlugins(string folder, bool ClearExisting)
+        internal void LoadPlugins(string folder, bool ClearExisting)
         {
             if (ClearExisting)
                 Plugins.Clear();
@@ -167,7 +167,7 @@ namespace ArkServerManager.Plugin.Common
             }
         }
 
-        public void OpenConfigForm(string pluginCode, Window owner)
+        internal void OpenConfigForm(string pluginCode, Window owner)
         {
             if (Plugins == null)
                 return;
@@ -176,7 +176,7 @@ namespace ArkServerManager.Plugin.Common
             OpenConfigForm(pluginItem.Plugin, owner);
         }
 
-        public void OpenConfigForm(IPlugin plugin, Window owner)
+        internal void OpenConfigForm(IPlugin plugin, Window owner)
         {
             if (plugin == null || !plugin.Enabled || !plugin.HasConfigForm)
                 return;
@@ -184,7 +184,7 @@ namespace ArkServerManager.Plugin.Common
             plugin.OpenConfigForm(owner);
         }
 
-        public bool ProcessAlert(AlertType alertType, string profileName, string alertMessage)
+        internal bool ProcessAlert(AlertType alertType, string profileName, string alertMessage)
         {
             if (Plugins == null || Plugins.Count == 0 || string.IsNullOrWhiteSpace(alertMessage))
                 return false;

@@ -2,6 +2,10 @@
 {
     public sealed class PluginItem
     {
+        internal PluginItem()
+        {
+        }
+
         public IPlugin Plugin
         {
             get;

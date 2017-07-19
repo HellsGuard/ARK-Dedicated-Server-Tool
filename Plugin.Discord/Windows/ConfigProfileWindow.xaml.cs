@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,6 +39,8 @@ namespace ArkServerManager.Plugin.Discord.Windows
             set { SetValue(ProfileProperty, value); }
         }
 
+        private DiscordPlugin Plugin => new DiscordPlugin();
+
         private void ConfigProfileWindow_Closing(object sender, CancelEventArgs e)
         {
             if (DialogResult.HasValue && DialogResult.Value)
@@ -71,6 +74,32 @@ namespace ArkServerManager.Plugin.Discord.Windows
 
             DialogResult = true;
             Close();
+        }
+
+        private void Test_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Profile.IsEnabled)
+            {
+                MessageBox.Show(ResourceUtils.GetResourceString(this.Resources, "ConfigProfileWindow_TestEnabledErrorLabel"), ResourceUtils.GetResourceString(this.Resources, "ConfigProfileWindow_TestErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                foreach (var profileName in Profile.ProfileNames)
+                {
+                    foreach (var alertType in Profile.AlertTypes)
+                    {
+                        Plugin.HandleAlert(Profile, alertType.Value, profileName.Value, $"Test '{alertType.Value}' message for profile name '{profileName.Value}'.");
+                        Task.Delay(1000).Wait();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR: {nameof(Test_Click)}\r\n{ex.Message}");
+                MessageBox.Show(ResourceUtils.GetResourceString(this.Resources, "ConfigProfileWindow_TestErrorLabel"), ResourceUtils.GetResourceString(this.Resources, "ConfigProfileWindow_TestErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void AddAlertType_Click(object sender, RoutedEventArgs e)

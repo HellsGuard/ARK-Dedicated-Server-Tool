@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ArkServerManager.Plugin.Discord
 {
-    public static class NetworkUtils
+    internal static class NetworkUtils
     {
         public static async Task<IPAddress> DiscoverPublicIPAsync()
         {
