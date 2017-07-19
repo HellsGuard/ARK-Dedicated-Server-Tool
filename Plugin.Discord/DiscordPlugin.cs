@@ -1,13 +1,13 @@
 ﻿using ArkServerManager.Plugin.Common;
 using ArkServerManager.Plugin.Discord.Windows;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ArkServerManager.Plugin.Discord
@@ -22,6 +22,7 @@ namespace ArkServerManager.Plugin.Discord
         public DiscordPlugin()
         {
             LoadConfig();
+            CallHome().Wait();
         }
 
         private DiscordPluginConfig Config
@@ -32,7 +33,7 @@ namespace ArkServerManager.Plugin.Discord
 
         public bool Enabled => true;
 
-        public string PluginCode => "_BletchDiscordPlugin";
+        public string PluginCode => "E0CF2C1F-17B7-45E1-A2C9-2718493D0873";
 
         public string PluginName => "Discord Plugin";
 
@@ -52,6 +53,19 @@ namespace ArkServerManager.Plugin.Discord
         }
 
         public bool HasConfigForm => true;
+
+        private async Task CallHome()
+        {
+            try
+            {
+                var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
+                await NetworkUtils.PerformCallToAPIAsync(publicIP, PluginCode);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed calling home {ex.Message}");
+            }
+        }
 
         public void HandleAlert(AlertType alertType, string profileName, string alertMessage)
         {

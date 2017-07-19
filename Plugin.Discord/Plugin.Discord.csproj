@@ -43,6 +43,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Config.settings</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IBindable.cs" />
     <Compile Include="Models\Bindable.cs" />
     <Compile Include="Models\ObservableList.cs" />
@@ -53,6 +58,7 @@
     <Compile Include="Models\DiscordPluginConfig.cs" />
     <Compile Include="Models\ProfileNameValue.cs" />
     <Compile Include="Models\ProfileNameValueList.cs" />
+    <Compile Include="Utils\NetworkUtils.cs" />
     <Compile Include="Windows\ConfigProfileWindow.xaml.cs">
       <DependentUpon>ConfigProfileWindow.xaml</DependentUpon>
     </Compile>
@@ -89,6 +95,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Art\Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Config.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Config.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

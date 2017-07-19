@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ArkServerManager.Plugin.Discord" GeneratedClassName="Config">
+  <Profiles />
+  <Settings>
+    <Setting Name="PluginsCallUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}</Value>
+    </Setting>
+    <Setting Name="PublicIPCheckUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://whatismyip.akamai.com/</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
