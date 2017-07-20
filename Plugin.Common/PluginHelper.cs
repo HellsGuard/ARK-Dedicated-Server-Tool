@@ -20,7 +20,14 @@ namespace ArkServerManager.Plugin.Common
 
         internal PluginHelper()
         {
+            BetaEnabled = false;
             Plugins = new ObservableCollection<PluginItem>();
+        }
+
+        internal bool BetaEnabled
+        {
+            get;
+            set;
         }
 
         public ObservableCollection<PluginItem> Plugins
@@ -143,6 +150,10 @@ namespace ArkServerManager.Plugin.Common
                     var plugin = assembly.CreateInstance(type.FullName) as IAlertPlugin;
                     if (plugin != null && plugin.Enabled)
                     {
+                        if (type.GetInterface(typeof(IBeta).Name) != null)
+                            ((IBeta)plugin).BetaEnabled = BetaEnabled;
+                        plugin.Initialize();
+
                         Plugins.Add(new PluginItem { Plugin = plugin, PluginFile = pluginFile, PluginType = nameof(IAlertPlugin) });
                     }
                 }

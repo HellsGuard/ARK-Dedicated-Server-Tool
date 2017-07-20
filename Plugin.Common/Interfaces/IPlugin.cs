@@ -43,6 +43,11 @@ namespace ArkServerManager.Plugin.Common
         }
 
         /// <summary>
+        /// Performs any initialization for the plugin.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
         /// Opens the configuration form.
         /// </summary>
         /// <param name="owner">The owner window.</param>

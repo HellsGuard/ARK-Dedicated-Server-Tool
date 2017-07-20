@@ -202,16 +202,17 @@ namespace ARK_Server_Manager
             if (!string.IsNullOrWhiteSpace(Config.Default.StyleName))
                 _globalizer.StyleManager.SwitchStyle($"{Config.Default.StyleName}.xaml");
 
-            var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            PluginHelper.Instance.LoadPlugins(installPath, true);
-
             Args = string.Join(" ", e.Args);
 
             // check if we are starting ASM for server restart
-            if (e.Args.Any(a => a.StartsWith(ARG_BETA)))
+            if (e.Args.Any(a => a.Equals(ARG_BETA)))
             {
                 BetaVersion = true;
             }
+
+            var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            PluginHelper.Instance.BetaEnabled = BetaVersion;
+            PluginHelper.Instance.LoadPlugins(installPath, true);
 
             // check if we are starting ASM for the old server restart - no longer supported
             if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))

@@ -40,6 +40,9 @@
                     <Button Width="22" Height="22" Click="OpenPluginsFolder_Click" Margin="10,0,0,0" ToolTip="{DynamicResource PluginsWindow_OpenPluginsFolderTooltip}">
                         <Image Source="Art/Open_6529.png" Width="16"/>
                     </Button>
+                    <Button Width="22" Height="22" Click="PluginsForum_Click" Margin="20,0,0,0" ToolTip="{DynamicResource PluginsWindow_PluginsForumTooltip}">
+                        <Image Source="Art/Help.png" Width="16"/>
+                    </Button>
                 </StackPanel>
             </GroupBox.Header>
 

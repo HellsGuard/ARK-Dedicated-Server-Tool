@@ -14,6 +14,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage = new StringBuilder();
             alertMessage.AppendLine("The server has been started.");
 
@@ -29,6 +31,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage = new StringBuilder();
             alertMessage.AppendLine("The server is being shutdown.");
             alertMessage.AppendLine("Please logout to avoid profile corruption.");
@@ -45,6 +49,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage = new StringBuilder();
             alertMessage.AppendLine("The server encountered an error while starting.");
 
@@ -60,6 +66,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage = new StringBuilder();
             alertMessage.AppendLine("The server has been started.");
 
@@ -75,6 +83,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage = new StringBuilder();
             alertMessage.AppendLine("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac lorem pretium, volutpat massa ut, iaculis augue. Aenean condimentum gravida laoreet. Morbi mattis leo non enim imperdiet dignissim. Donec et consectetur est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Curabitur leo ipsum, commodo sed ante eu, vulputate maximus nulla. In sollicitudin, magna ut fringilla scelerisque, neque nulla semper nunc, at tempus nibh mi quis diam. Nunc quis tortor neque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.");
             alertMessage.AppendLine("Maecenas ultrices in est a iaculis.Sed eget pharetra nibh.Duis luctus neque id iaculis vestibulum.Duis condimentum sapien metus, at pretium dui aliquam ullamcorper.Sed at efficitur tellus.Praesent eget ex blandit orci venenatis fringilla et in ex.Curabitur id mauris sed augue pharetra ornare.Integer at malesuada nisl, id blandit orci.");
@@ -93,6 +103,7 @@ namespace Plugin.Discord.UnitTests
         public void DiscordPlugin_HandleAlert_When_SendingMultipleMessagesSingleServer_Then_Valid()
         {
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
 
             SendMultipleMessages(plugin, "Server 1");
         }
@@ -102,6 +113,8 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
             var alertMessage1 = new StringBuilder();
             alertMessage1.AppendLine("Message 1 - shutdown 1.");
             var alertMessage2 = new StringBuilder();
@@ -140,6 +153,7 @@ namespace Plugin.Discord.UnitTests
         public void DiscordPlugin_HandleAlert_When_SendingMultipleMessagesMultipleServers_ASync_Then_Valid()
         {
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
 
             Parallel.For(1, 9, (i) => {
                 switch (i)
@@ -209,6 +223,22 @@ namespace Plugin.Discord.UnitTests
         {
             // Arrange
             var plugin = new DiscordPlugin();
+            plugin.Initialize();
+
+            // Act
+            plugin.OpenConfigForm(null);
+
+            // Assert
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void DiscordPlugin_OpenConfigForm_DebugMode()
+        {
+            // Arrange
+            var plugin = new DiscordPlugin();
+            plugin.BetaEnabled = true;
+            plugin.Initialize();
 
             // Act
             plugin.OpenConfigForm(null);

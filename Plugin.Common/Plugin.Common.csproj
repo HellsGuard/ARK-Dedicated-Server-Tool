@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Enums\AlertTypeEnum.cs" />
     <Compile Include="Interfaces\IAlertPlugin.cs" />
+    <Compile Include="Interfaces\IBeta.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="PluginException.cs" />
     <Compile Include="PluginItem.cs" />

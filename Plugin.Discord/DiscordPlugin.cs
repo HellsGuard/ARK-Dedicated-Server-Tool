@@ -12,20 +12,24 @@ using System.Windows;
 
 namespace ArkServerManager.Plugin.Discord
 {
-    public sealed class DiscordPlugin : IAlertPlugin
+    public sealed class DiscordPlugin : IAlertPlugin, IBeta
     {
-        private const int REQUEST_TIMEOUT = 5000;
         private const int MAX_MESSAGE_LENGTH = 2000;
 
         private Object lockObject = new Object();
 
         public DiscordPlugin()
         {
-            LoadConfig();
-            CallHomeAsync().DoNotWait();
+            BetaEnabled = false;
         }
 
-        private DiscordPluginConfig Config
+        private DiscordPluginConfig PluginConfig
+        {
+            get;
+            set;
+        }
+
+        public bool BetaEnabled
         {
             get;
             set;
@@ -33,9 +37,9 @@ namespace ArkServerManager.Plugin.Discord
 
         public bool Enabled => true;
 
-        public string PluginCode => "E0CF2C1F-17B7-45E1-A2C9-2718493D0873";
+        public string PluginCode => Config.Default.PluginCode;
 
-        public string PluginName => "Discord Plugin";
+        public string PluginName => Config.Default.PluginName;
 
         public Version PluginVersion
         {
@@ -82,7 +86,7 @@ namespace ArkServerManager.Plugin.Discord
 
             lock (lockObject)
             {
-                var configProfiles = Config.ConfigProfiles.Where(cp => cp.IsEnabled
+                var configProfiles = PluginConfig.ConfigProfiles.Where(cp => cp.IsEnabled
                                                                     && cp.AlertTypes.Any(pn => pn.Value.Equals(alertType))
                                                                     && cp.ProfileNames.Any(pn => pn.Value.Equals(profileName, StringComparison.OrdinalIgnoreCase))
                                                                     && !string.IsNullOrWhiteSpace(cp.DiscordWebhookUrl));
@@ -131,7 +135,7 @@ namespace ArkServerManager.Plugin.Discord
                     url = url.Substring(0, url.Length - 1);
 
                 var httpRequest = WebRequest.Create($"{url}?wait=true");
-                httpRequest.Timeout = REQUEST_TIMEOUT;
+                httpRequest.Timeout = Config.Default.RequestTimeout;
                 httpRequest.Method = "POST";
                 httpRequest.ContentType = "application/x-www-form-urlencoded";
                 httpRequest.ContentLength = data.Length;
@@ -170,34 +174,47 @@ namespace ArkServerManager.Plugin.Discord
             }
         }
 
+        public void Initialize()
+        {
+            LoadConfig();
+
+            if (PluginConfig.LastCallHome.AddHours(Config.Default.CallHomeDelay) < DateTime.Now)
+            {
+                CallHomeAsync().DoNotWait();
+
+                PluginConfig.LastCallHome = DateTime.Now;
+                SaveConfig();
+            }
+        }
+
         private void LoadConfig()
         {
             try
             {
-                Config = null;
+                PluginConfig = null;
 
                 var configFile = Path.Combine(PluginHelper.PluginFolder, DiscordPluginConfig.CONFIG_FILENAME);
-                Config = JsonUtils.DeserializeFromFile<DiscordPluginConfig>(configFile);
+                PluginConfig = JsonUtils.DeserializeFromFile<DiscordPluginConfig>(configFile);
 
-                if ((Config?.ConfigProfiles?.Count ?? 0) == 0)
+                if ((PluginConfig?.ConfigProfiles?.Count ?? 0) == 0)
                 {
-                    Config = new DiscordPluginConfig();
+                    PluginConfig = new DiscordPluginConfig();
 
                     SaveConfig();
                 }
 
-                Config?.CommitChanges();
+                PluginConfig?.CommitChanges();
             }
             catch (Exception ex)
             {
-                Config = new DiscordPluginConfig();
+                PluginConfig = new DiscordPluginConfig();
                 Debug.WriteLine($"ERROR: {nameof(LoadConfig)}\r\n{ex.Message}");
             }
         }
 
         public void OpenConfigForm(Window owner)
         {
-            var window = new ConfigWindow(this.Config);
+            var window = new ConfigWindow(this, this.PluginConfig);
             window.Owner = owner;
 
             var dialogResult = window.ShowDialog();
@@ -213,8 +230,8 @@ namespace ArkServerManager.Plugin.Discord
             try
             {
                 var configFile = Path.Combine(PluginHelper.PluginFolder, DiscordPluginConfig.CONFIG_FILENAME);
-                JsonUtils.SerializeToFile(Config, configFile);
-                Config?.CommitChanges();
+                JsonUtils.SerializeToFile(PluginConfig, configFile);
+                PluginConfig?.CommitChanges();
             }
             catch (Exception ex)
             {

@@ -173,6 +173,7 @@
     <sys:String x:Key="PluginsWindow_ClearPluginsTooltip">Delete All Plugins</sys:String>
     <sys:String x:Key="PluginsWindow_ConfigPluginTooltip">Open Plugin Configuration</sys:String>
     <sys:String x:Key="PluginsWindow_OpenPluginsFolderTooltip">Open Plugins Folder</sys:String>
+    <sys:String x:Key="PluginsWindow_PluginsForumTooltip">Open Plugins Forum</sys:String>
     <sys:String x:Key="PluginsWindow_RemovePluginTooltip">Delete Plugin</sys:String>
 
     <sys:String x:Key="PluginsWindow_NameColumnLabel">Name</sys:String>

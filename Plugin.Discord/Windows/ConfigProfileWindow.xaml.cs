@@ -16,13 +16,17 @@ namespace ArkServerManager.Plugin.Discord.Windows
     {
         private static readonly DependencyProperty ProfileProperty = DependencyProperty.Register(nameof(Profile), typeof(ConfigProfile), typeof(ConfigProfileWindow));
 
-        internal ConfigProfileWindow(ConfigProfile profile)
+        internal ConfigProfileWindow(DiscordPlugin plugin, ConfigProfile profile)
         {
+            this.Plugin = plugin ?? new DiscordPlugin();
             this.OriginalProfile = profile;
             this.Profile = profile.Clone();
             this.Profile.CommitChanges();
 
             InitializeComponent();
+
+            if (plugin.BetaEnabled)
+                Title = $"{Title} {ResourceUtils.GetResourceString(this.Resources, "Global_BetaModeLabel")}";
 
             this.DataContext = this;
         }
@@ -39,7 +43,11 @@ namespace ArkServerManager.Plugin.Discord.Windows
             set { SetValue(ProfileProperty, value); }
         }
 
-        private DiscordPlugin Plugin => new DiscordPlugin();
+        private DiscordPlugin Plugin
+        {
+            get;
+            set;
+        }
 
         private void ConfigProfileWindow_Closing(object sender, CancelEventArgs e)
         {

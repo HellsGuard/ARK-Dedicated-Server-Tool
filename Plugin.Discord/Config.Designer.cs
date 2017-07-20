@@ -26,9 +26,9 @@ namespace ArkServerManager.Plugin.Discord {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}")]
-        public string PluginsCallUrlFormat {
+        public string PluginCallUrlFormat {
             get {
-                return ((string)(this["PluginsCallUrlFormat"]));
+                return ((string)(this["PluginCallUrlFormat"]));
             }
         }
         
@@ -38,6 +38,91 @@ namespace ArkServerManager.Plugin.Discord {
         public string PublicIPCheckUrl {
             get {
                 return ((string)(this["PublicIPCheckUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plug" +
+            "in.Discord.zip")]
+        public string LatestDownloadUrl {
+            get {
+                return ((string)(this["LatestDownloadUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plug" +
+            "in.Discord.txt")]
+        public string LatestVersionUrl {
+            get {
+                return ((string)(this["LatestVersionUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin." +
+            "Discord.zip")]
+        public string LatestBetaDownloadUrl {
+            get {
+                return ((string)(this["LatestBetaDownloadUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin." +
+            "Discord.txt")]
+        public string LatestBetaVersionUrl {
+            get {
+                return ((string)(this["LatestBetaVersionUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ArkServerManager.Plugin.Discord.zip")]
+        public string PluginZipFilename {
+            get {
+                return ((string)(this["PluginZipFilename"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int CallHomeDelay {
+            get {
+                return ((int)(this["CallHomeDelay"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int RequestTimeout {
+            get {
+                return ((int)(this["RequestTimeout"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E0CF2C1F-17B7-45E1-A2C9-2718493D0873")]
+        public string PluginCode {
+            get {
+                return ((string)(this["PluginCode"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Discord Plugin")]
+        public string PluginName {
+            get {
+                return ((string)(this["PluginName"]));
             }
         }
     }

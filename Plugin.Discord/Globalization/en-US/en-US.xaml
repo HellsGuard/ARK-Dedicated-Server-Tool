@@ -9,7 +9,11 @@
     <sys:String x:Key="Global_CloseButtonLabel">Close</sys:String>
     <sys:String x:Key="Global_OkButtonLabel">OK</sys:String>
     <sys:String x:Key="Global_SaveButtonLabel">Save</sys:String>
-    
+
+    <sys:String x:Key="Global_BetaModeLabel"> (Beta Mode)</sys:String>
+    <sys:String x:Key="Global_NewVersionAvailableLabel">A new version of the plugin is available.</sys:String>
+    <sys:String x:Key="Global_DownloadNewVersionTooltip">Download the latest version.</sys:String>
+
     <!-- Config Window -->
     <sys:String x:Key="ConfigWindow_Title">Discord Plugin Configuration</sys:String>
     
@@ -32,6 +36,10 @@
     <sys:String x:Key="ConfigWindow_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
     <sys:String x:Key="ConfigWindow_DeleteErrorTitle">Delete Action Error</sys:String>
     <sys:String x:Key="ConfigWindow_DeleteErrorLabel">An error occurred while trying to delete the profile.</sys:String>
+    <sys:String x:Key="ConfigWindow_DownloadErrorTitle">Download Action Error</sys:String>
+    <sys:String x:Key="ConfigWindow_DownloadErrorLabel">An error occurred while trying to perform the download.</sys:String>
+    <sys:String x:Key="ConfigWindow_DownloadSuccessTitle">Download Successful</sys:String>
+    <sys:String x:Key="ConfigWindow_DownloadSuccessLabel">The latest version has been saved to your desktop.</sys:String>
     <sys:String x:Key="ConfigWindow_EditErrorTitle">Edit Action Error</sys:String>
     <sys:String x:Key="ConfigWindow_EditErrorLabel">An error occurred while trying to edit a profile.</sys:String>
     <sys:String x:Key="ConfigWindow_SaveErrorTitle">Save Action Error</sys:String>

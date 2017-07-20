@@ -1825,5 +1825,14 @@ namespace ARK_Server_Manager {
                 this["Alert_UpdateProcessError"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/board/22/plugins")]
+        public string ASMPluginUrl {
+            get {
+                return ((string)(this["ASMPluginUrl"]));
+            }
+        }
     }
 }

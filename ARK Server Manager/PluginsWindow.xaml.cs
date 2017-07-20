@@ -100,6 +100,11 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void PluginsForum_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Config.Default.ASMPluginUrl);
+        }
+
         private void RemovePlugin_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(_globalizer.GetResourceString("PluginsWindow_DeleteLabel"), _globalizer.GetResourceString("PluginsWindow_DeleteTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)

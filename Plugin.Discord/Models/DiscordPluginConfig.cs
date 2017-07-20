@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace ArkServerManager.Plugin.Discord
@@ -11,7 +11,15 @@ namespace ArkServerManager.Plugin.Discord
         public DiscordPluginConfig()
             : base()
         {
+            LastCallHome = DateTime.MinValue;
             ConfigProfiles = new ObservableList<ConfigProfile>();
+        }
+
+        [DataMember]
+        public DateTime LastCallHome
+        {
+            get;
+            set;
         }
 
         [DataMember]

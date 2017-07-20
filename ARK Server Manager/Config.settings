@@ -512,5 +512,8 @@
     <Setting Name="Alert_UpdateProcessError" Type="System.String" Scope="User">
       <Value Profile="(Default)">The server update process was performed but an error occurred.</Value>
     </Setting>
+    <Setting Name="ASMPluginUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.freeforums.net/board/22/plugins</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
