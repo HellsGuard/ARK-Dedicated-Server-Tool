@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,6 @@ namespace ArkServerManager.Plugin.Common
     public sealed class PluginHelper
     {
         private const string PLUGINFILE_FOLDER = "Plugins";
-        private const string PLUGINFILE_PREFIX = "";
         private const string PLUGINFILE_EXTENSION = "dll";
 
         internal static PluginHelper Instance = new PluginHelper();
@@ -39,15 +39,15 @@ namespace ArkServerManager.Plugin.Common
         internal void AddPlugin(string folder, string pluginFile)
         {
             if (!CheckPluginFile(pluginFile))
-                throw new PluginException("The selected file does not contain ASM plugins.");
+                throw new PluginException("The selected file does not contain Ark Server Manager plugins or is for a previous version of Ark Server Manager.");
 
             var pluginFolder = Path.Combine(folder, PLUGINFILE_FOLDER);
             if (!Directory.Exists(pluginFolder))
                 Directory.CreateDirectory(pluginFolder);
 
-            var newPluginFile = Path.Combine(pluginFolder, $"{PLUGINFILE_PREFIX}{Path.GetFileName(pluginFile)}");
+            var newPluginFile = Path.Combine(pluginFolder, $"{Path.GetFileName(pluginFile)}");
             if (File.Exists(newPluginFile))
-                throw new PluginException("A file with the same name already exists.");
+                throw new PluginException("A file with the same name already exists, delete the existing file and try again.");
 
             File.Copy(pluginFile, newPluginFile, true);
 
@@ -145,17 +145,24 @@ namespace ArkServerManager.Plugin.Common
             // check if the file contains one or more plugins
             foreach (Type type in types)
             {
-                if (type.GetInterface(typeof(IAlertPlugin).Name) != null)
+                try
                 {
-                    var plugin = assembly.CreateInstance(type.FullName) as IAlertPlugin;
-                    if (plugin != null && plugin.Enabled)
+                    if (type.GetInterface(typeof(IAlertPlugin).Name) != null)
                     {
-                        if (type.GetInterface(typeof(IBeta).Name) != null)
-                            ((IBeta)plugin).BetaEnabled = BetaEnabled;
-                        plugin.Initialize();
+                        var plugin = assembly.CreateInstance(type.FullName) as IAlertPlugin;
+                        if (plugin != null && plugin.Enabled)
+                        {
+                            if (type.GetInterface(typeof(IBeta).Name) != null)
+                                ((IBeta)plugin).BetaEnabled = BetaEnabled;
+                            plugin.Initialize();
 
-                        Plugins.Add(new PluginItem { Plugin = plugin, PluginFile = pluginFile, PluginType = nameof(IAlertPlugin) });
+                            Plugins.Add(new PluginItem { Plugin = plugin, PluginFile = pluginFile, PluginType = nameof(IAlertPlugin) });
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"ERROR: {nameof(LoadPlugin)} - {type.FullName}\r\n{ex.Message}");
                 }
             }
         }
@@ -171,7 +178,7 @@ namespace ArkServerManager.Plugin.Common
             if (!Directory.Exists(pluginFolder))
                 return;
 
-            var pluginFiles = Directory.GetFiles(pluginFolder, $"{PLUGINFILE_PREFIX}*.{PLUGINFILE_EXTENSION}");
+            var pluginFiles = Directory.GetFiles(pluginFolder, $"*.{PLUGINFILE_EXTENSION}");
             foreach (var pluginFile in pluginFiles)
             {
                 LoadPlugin(pluginFile);
