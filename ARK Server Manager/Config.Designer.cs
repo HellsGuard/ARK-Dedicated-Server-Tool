@@ -1359,7 +1359,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://asmwebapi.azurewebsites.net/api/server/{0}/{1}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/{0}/{1}")]
         public string ServerStatusUrlFormat {
             get {
                 return ((string)(this["ServerStatusUrlFormat"]));
@@ -1473,7 +1473,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://asmwebapi.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}")]
         public string ServerCallUrlFormat {
             get {
                 return ((string)(this["ServerCallUrlFormat"]));
@@ -1727,6 +1727,111 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["AutoUpdate_ParallelUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server Update Reason:")]
+        public string AutoUpdate_UpdateReasonPrefix {
+            get {
+                return ((string)(this["AutoUpdate_UpdateReasonPrefix"]));
+            }
+            set {
+                this["AutoUpdate_UpdateReasonPrefix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server is stopping.")]
+        public string Alert_ServerStopMessage {
+            get {
+                return ((string)(this["Alert_ServerStopMessage"]));
+            }
+            set {
+                this["Alert_ServerStopMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server is shutting down.")]
+        public string Alert_ServerShutdownMessage {
+            get {
+                return ((string)(this["Alert_ServerShutdownMessage"]));
+            }
+            set {
+                this["Alert_ServerShutdownMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server is starting.")]
+        public string Alert_ServerStartedMessage {
+            get {
+                return ((string)(this["Alert_ServerStartedMessage"]));
+            }
+            set {
+                this["Alert_ServerStartedMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server backup process was performed but an error occurred.")]
+        public string Alert_BackupProcessError {
+            get {
+                return ((string)(this["Alert_BackupProcessError"]));
+            }
+            set {
+                this["Alert_BackupProcessError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server shutdown process was performed but an error occurred.")]
+        public string Alert_ShutdownProcessError {
+            get {
+                return ((string)(this["Alert_ShutdownProcessError"]));
+            }
+            set {
+                this["Alert_ShutdownProcessError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server restart process was performed but an error occurred.")]
+        public string Alert_RestartProcessError {
+            get {
+                return ((string)(this["Alert_RestartProcessError"]));
+            }
+            set {
+                this["Alert_RestartProcessError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The server update process was performed but an error occurred.")]
+        public string Alert_UpdateProcessError {
+            get {
+                return ((string)(this["Alert_UpdateProcessError"]));
+            }
+            set {
+                this["Alert_UpdateProcessError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.freeforums.net/board/22/plugins")]
+        public string ASMPluginUrl {
+            get {
+                return ((string)(this["ASMPluginUrl"]));
             }
         }
     }

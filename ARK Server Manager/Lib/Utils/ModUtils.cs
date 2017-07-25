@@ -24,6 +24,7 @@ namespace ARK_Server_Manager.Lib
 
         public const string MODID_PRIMITIVEPLUS = "111111111";
         public const string MODID_THECENTER = "TheCenter";
+        public const string MODID_RAGNAROK = "Ragnarok";
 
         private class FCompressedChunkInfo
         {
@@ -294,6 +295,7 @@ namespace ARK_Server_Manager.Lib
             {
                 case MODID_PRIMITIVEPLUS:
                 case MODID_THECENTER:
+                case MODID_RAGNAROK:
                     return true;
 
                 default:
@@ -302,25 +304,25 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static bool ParseBaseInformation(string fileName, List<string> mapNames)
+        {
+            if (!File.Exists(fileName))
+                return false;
+
+            using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
             {
-                if (!File.Exists(fileName))
-                    return false;
+                string readString1;
+                ReadUE4String(reader, out readString1);
 
-                using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+                int num = reader.ReadInt32();
+                for (int index = 0; index < num; ++index)
                 {
-                    string readString1;
-                    ReadUE4String(reader, out readString1);
-
-                    int num = reader.ReadInt32();
-                    for (int index = 0; index < num; ++index)
-                    {
-                        string readString2;
-                        ReadUE4String(reader, out readString2);
-                        mapNames.Add(readString2);
-                    }
+                    string readString2;
+                    ReadUE4String(reader, out readString2);
+                    mapNames.Add(readString2);
                 }
-                return true;
             }
+            return true;
+        }
 
         public static bool ParseMetaInformation(string fileName, Dictionary<string, string> metaInformation)
         {

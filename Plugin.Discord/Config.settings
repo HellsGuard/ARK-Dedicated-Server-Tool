@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ArkServerManager.Plugin.Discord" GeneratedClassName="Config">
+  <Profiles />
+  <Settings>
+    <Setting Name="PluginCallUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}</Value>
+    </Setting>
+    <Setting Name="PublicIPCheckUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://whatismyip.akamai.com/</Value>
+    </Setting>
+    <Setting Name="LatestDownloadUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plugin.Discord.zip</Value>
+    </Setting>
+    <Setting Name="LatestVersionUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plugin.Discord.txt</Value>
+    </Setting>
+    <Setting Name="LatestBetaDownloadUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin.Discord.zip</Value>
+    </Setting>
+    <Setting Name="LatestBetaVersionUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin.Discord.txt</Value>
+    </Setting>
+    <Setting Name="PluginZipFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ArkServerManager.Plugin.Discord.zip</Value>
+    </Setting>
+    <Setting Name="CallHomeDelay" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="RequestTimeout" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
+    <Setting Name="PluginCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">E0CF2C1F-17B7-45E1-A2C9-2718493D0873</Value>
+    </Setting>
+    <Setting Name="PluginName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Discord Plugin</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

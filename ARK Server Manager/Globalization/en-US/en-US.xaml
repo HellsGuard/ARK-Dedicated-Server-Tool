@@ -166,6 +166,36 @@
     <sys:String x:Key="Progress_UpgradeServer_WindowTitle">Update Progress - {0}</sys:String>
     <sys:String x:Key="Progress_ReinstallSteamCmd_WindowTitle">SteamCMD Progress</sys:String>
 
+    <!-- Plugins Window -->
+    <sys:String x:Key="PluginsWindow_Title">Plugins</sys:String>
+
+    <sys:String x:Key="PluginsWindow_AddPluginTooltip">Add Plugin</sys:String>
+    <sys:String x:Key="PluginsWindow_ClearPluginsTooltip">Delete All Plugins</sys:String>
+    <sys:String x:Key="PluginsWindow_ConfigPluginTooltip">Open Plugin Configuration</sys:String>
+    <sys:String x:Key="PluginsWindow_OpenPluginsFolderTooltip">Open Plugins Folder</sys:String>
+    <sys:String x:Key="PluginsWindow_PluginsForumTooltip">Open Plugins Forum</sys:String>
+    <sys:String x:Key="PluginsWindow_RemovePluginTooltip">Delete Plugin</sys:String>
+
+    <sys:String x:Key="PluginsWindow_NameColumnLabel">Name</sys:String>
+    <sys:String x:Key="PluginsWindow_TypeColumnLabel">Type</sys:String>
+    <sys:String x:Key="PluginsWindow_VersionColumnLabel">Version</sys:String>
+
+    <sys:String x:Key="PluginsWindow_AddErrorTitle">Add Action Error</sys:String>
+    <sys:String x:Key="PluginsWindow_AddErrorLabel">An error occurred while reading the selected file.</sys:String>
+    <sys:String x:Key="PluginsWindow_ClearTitle">Confirm Clear Action</sys:String>
+    <sys:String x:Key="PluginsWindow_ClearLabel">Click 'Yes' to confirm you want to clear all.</sys:String>
+    <sys:String x:Key="PluginsWindow_ClearErrorTitle">Clear Action Error</sys:String>
+    <sys:String x:Key="PluginsWindow_ConfigErrorTitle">Plugin Configuration Error</sys:String>
+    <sys:String x:Key="PluginsWindow_DeleteTitle">Confirm Delete Action</sys:String>
+    <sys:String x:Key="PluginsWindow_DeleteLabel">Click 'Yes' to confirm you want to perform the delete.</sys:String>
+    <sys:String x:Key="PluginsWindow_DeleteErrorTitle">Delete Action Error</sys:String>
+    <sys:String x:Key="PluginsWindow_OpenErrorTitle">Open Folder Error</sys:String>
+
+    <sys:String x:Key="PluginsWindow_AddDialogTitle">Select plugin file</sys:String>
+    <sys:String x:Key="PluginsWindow_PluginDefaultExtension">dll</sys:String>
+    <sys:String x:Key="PluginsWindow_AddFilterLabel">Plugin Files</sys:String>
+    <sys:String x:Key="PluginsWindow_AddFilterExtension">*.dll</sys:String>
+
     <!-- Shutdown Window -->
     <sys:String x:Key="ShutdownWindow_Title">Server Shutdown</sys:String>
     <sys:String x:Key="ShutdownWindow_ProfileTitle">Server Shutdown - {0}</sys:String>
@@ -260,6 +290,8 @@
     <sys:String x:Key="GlobalSettings_RetryOnFailTooltip">If enabled, when the server or mod fails to download a retry attempt will be made.</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonLabel">Show Update Reason in Shutdown Messages</sys:String>
     <sys:String x:Key="GlobalSettings_ShowUpdateReasonTooltip">If enabled, when the auto-update is performed the broadcast message will include what (server or mods) is being updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateReasonPrefixLabel">Update Reason Prefix:</sys:String>
+    <sys:String x:Key="GlobalSettings_UpdateReasonPrefixTooltip">This text is shown at the start of the Auto-Update reason message.</sys:String>
     <sys:String x:Key="GlobalSettings_OverrideServerStartupLabel">Override server restart after auto-update</sys:String>
     <sys:String x:Key="GlobalSettings_OverrideServerStartupTooltip">If enabled, when the auto-update is performed the server WILL NOT be restarted, regardless of if it was online before the auto-update.</sys:String>
     <sys:String x:Key="GlobalSettings_ParallelUpdateLabel">Update servers in parallel</sys:String>
@@ -330,6 +362,22 @@
     <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledLabel">You have chosen to redirect the steamcmd output to the progress window. You are not able to use your steam credentials, you must use anonymous credentials.</sys:String>
     <sys:String x:Key="GlobalSettings_SteamCMDAuthentication_DisabledTooltip">To use your steam credentials you must turn off the Output SteamCMD to the progress window option.</sys:String>
 
+    <sys:String x:Key="GlobalSettings_AlertsLabel">Alert Options</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStopMessageLabel">Server Stop Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStopMessageTooltip">This message will be displayed when the server is being stopped.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerShutdownMessageLabel">Server Shutdown Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerShutdownMessageTooltip">This message will be displayed when the server is being shutdown.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStartedMessageLabel">Server Started Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStartedMessageTooltip">This message will be displayed when the server is being started.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_BackupProcessErrorLabel">Backup Process Error:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_BackupProcessErrorTooltip">This message will be displayed when the auto-backup process encountered an error.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ShutdownProcessErrorLabel">Shutdown Process Error:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ShutdownProcessErrorTooltip">This message will be displayed when the auto-shutdown process encountered an error.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_RestartProcessErrorLabel">Restart Process Error:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_RestartProcessErrorTooltip">This message will be displayed when the auto-restart process encountered an error.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorLabel">Update Process Error:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorTooltip">This message will be displayed when the auto-update process encountered an error.</sys:String>
+
     <!-- 
     Main Window 
     
@@ -351,6 +399,7 @@
     <sys:String x:Key="MainWindow_OpenRCONTooltip">Open remote console</sys:String>
     <sys:String x:Key="MainWindow_OpenLogFolderTooltip">Open ASM logs folder</sys:String>
     <sys:String x:Key="MainWindow_OpenSettingsTooltip">Open Global Settings</sys:String>
+    <sys:String x:Key="MainWindow_OpenPluginsTooltip">Open Plugins</sys:String>
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
     <sys:String x:Key="MainWindow_TaskStatusLabel">Task Status</sys:String>

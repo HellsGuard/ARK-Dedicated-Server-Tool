@@ -198,6 +198,14 @@ namespace ARK_Server_Manager
             window.ShowDialog();
         }
 
+        private void Plugins_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new PluginsWindow();
+            window.Closed += Window_Closed;
+            window.Owner = this;
+            window.ShowDialog();
+        }
+
         private async void SteamCMD_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(_globalizer.GetResourceString("MainWindow_SteamCmd_Label"), _globalizer.GetResourceString("MainWindow_SteamCmd_Title"), MessageBoxButton.YesNo, MessageBoxImage.Question);

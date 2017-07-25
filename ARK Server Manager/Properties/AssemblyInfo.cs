@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ARK Server Manager")]
-[assembly: AssemblyCopyright("Copyright © 2015-2016")]
+[assembly: AssemblyCopyright("Copyright © 2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

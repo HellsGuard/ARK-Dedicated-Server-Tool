@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("The ARK Server Manager WEB API is used to provide an external WEB API for the ARK Server Manager.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ARK Server Manager WEB API")]
-[assembly: AssemblyCopyright("Copyright © 2015-2016")]
+[assembly: AssemblyProduct("ARK Server Manager")]
+[assembly: AssemblyCopyright("Copyright © 2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

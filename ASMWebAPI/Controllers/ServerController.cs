@@ -71,7 +71,6 @@ namespace ASMWebAPI.Controllers
             }
             catch (Exception)
             {
-                //Logger.Warn($"{endpoint.Address}:{endpoint.Port}; {ex.Message}");
                 Logger.Warn($"{endpoint.Address}:{endpoint.Port}");
                 return false;
             }
@@ -90,7 +89,6 @@ namespace ASMWebAPI.Controllers
             }
             catch (Exception)
             {
-                //Logger.Warn($"{ipString}:{port}; {ex.Message}");
                 Logger.Warn($"{ipString}:{port}");
                 return false;
             }

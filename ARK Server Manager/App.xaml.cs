@@ -13,6 +13,7 @@ using WPFSharp.Globalizer;
 using System.Globalization;
 using System.Diagnostics;
 using System.Linq;
+using ArkServerManager.Plugin.Common;
 
 namespace ARK_Server_Manager
 {
@@ -204,10 +205,14 @@ namespace ARK_Server_Manager
             Args = string.Join(" ", e.Args);
 
             // check if we are starting ASM for server restart
-            if (e.Args.Any(a => a.StartsWith(ARG_BETA)))
+            if (e.Args.Any(a => a.Equals(ARG_BETA)))
             {
                 BetaVersion = true;
             }
+
+            var installPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            PluginHelper.Instance.BetaEnabled = BetaVersion;
+            PluginHelper.Instance.LoadPlugins(installPath, true);
 
             // check if we are starting ASM for the old server restart - no longer supported
             if (e.Args.Any(a => a.StartsWith(ARG_AUTORESTART)))
@@ -354,7 +359,7 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
 
-            if(String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
+            if (String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
             {
                 Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
             }

@@ -15,12 +15,14 @@ using System.Reflection;
 using WPFSharp.Globalizer;
 using ARK_Server_Manager.Lib.Utils;
 using System.Net.Mail;
+using ArkServerManager.Plugin.Common;
 
 namespace ARK_Server_Manager.Lib
 {
     internal class ServerApp
     {
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
+        private readonly PluginHelper _pluginHelper = PluginHelper.Instance;
 
         internal class ProfileSnapshot
         {
@@ -109,6 +111,7 @@ namespace ARK_Server_Manager.Lib
 
         public const int MUTEX_TIMEOUT = 5;         // 5 minutes
         public const int MUTEX_ATTEMPTDELAY = 5000; // 5 seconds
+        private const int WRITELOG_ERRORRETRYDELAY = 2000; // 2 seconds
 
         private const int STEAM_MAXRETRIES = 10;
         private const int RCON_MAXRETRIES = 3;
@@ -155,7 +158,8 @@ namespace ARK_Server_Manager.Lib
 
         private const int DIRECTORIES_PER_LINE = 200;
 
-        private static readonly object LockObject = new object();
+        private static readonly object LockObjectMessage = new object();
+        private static readonly object LockObjectProfileMessage = new object();
         private static DateTime _startTime = DateTime.Now;
         private static string _logPrefix = "";
         private static Dictionary<ProfileSnapshot, ServerProfile> _profiles = null;
@@ -168,6 +172,7 @@ namespace ARK_Server_Manager.Lib
         public bool DeleteOldBackupWorldFiles = false;
         public int ExitCode = EXITCODE_NORMALEXIT;
         public bool OutputLogs = true;
+        public bool SendAlerts = false;
         public bool SendEmails = false;
         public string ShutdownReason = null;
         public string UpdateReason = null;
@@ -225,6 +230,7 @@ namespace ARK_Server_Manager.Lib
                             if (!string.IsNullOrWhiteSpace(Config.Default.ServerBackup_WorldSaveMessage))
                             {
                                 SendMessage(Config.Default.ServerBackup_WorldSaveMessage);
+                                ProcessAlert(AlertType.Backup, Config.Default.ServerBackup_WorldSaveMessage);
                                 emailMessage.AppendLine("sent worldsave message.");
 
                                 Task.Delay(2000).Wait();
@@ -515,7 +521,9 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("");
 
                 if (Config.Default.EmailNotify_ShutdownRestart)
-                    SendEmail($"{_profile.ProfileName} server started", $"The server has been started.", false);
+                    SendEmail($"{_profile.ProfileName} server started", Config.Default.Alert_ServerStartedMessage, false);
+
+                ProcessAlert(AlertType.Startup, Config.Default.Alert_ServerStartedMessage);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -547,92 +555,80 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage($"Server process found PID {process.Id}.");
 
             // check if RCON is enabled
-            if (_profile.RCONEnabled)
+            if (!_profile.RCONEnabled)
             {
-                QueryMaster.Server gameServer = null;
+                LogProfileMessage("RCON not enabled.");
+            }
 
-                try
+            QueryMaster.Server gameServer = null;
+
+            try
+            {
+                // create a connection to the server
+                var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
+                gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
+
+                // check if there is a shutdown reason
+                if (!string.IsNullOrWhiteSpace(ShutdownReason))
                 {
-                    // create a connection to the server
-                    var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
-                    gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
+                    LogProfileMessage("Sending shutdown reason...");
 
-                    // check if there is a shutdown reason
-                    if (!string.IsNullOrWhiteSpace(ShutdownReason))
+                    SendMessage(ShutdownReason);
+                    ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
+
+                    Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
+                }
+
+                LogProfileMessage("Starting shutdown timer...");
+
+                var minutesLeft = ShutdownInterval;
+                while (minutesLeft > 0)
+                {
+                    if (cancellationToken.IsCancellationRequested)
                     {
-                        LogProfileMessage("Sending shutdown reason...");
+                        LogProfileMessage("Cancelling shutdown...");
 
-                        SendMessage(ShutdownReason);
+                        if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                        {
+                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                            ProcessAlert(AlertType.Shutdown, Config.Default.ServerShutdown_CancelMessage);
+                        }
 
-                        Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
+                        ExitCode = EXITCODE_CANCELLED;
+                        return;
                     }
 
-                    LogProfileMessage("Starting shutdown timer...");
-
-                    var minutesLeft = ShutdownInterval;
-                    while (minutesLeft > 0)
+                    try
                     {
-                        if (cancellationToken.IsCancellationRequested)
+                        var playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList();
+
+                        // check if anyone is logged into the server
+                        var playerCount = playerInfo?.Count ?? -1;
+                        if (playerCount <= 0)
                         {
-                            LogProfileMessage("Cancelling shutdown...");
-
-                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
-                                SendMessage(Config.Default.ServerShutdown_CancelMessage);
-
-                            ExitCode = EXITCODE_CANCELLED;
-                            return;
+                            LogProfileMessage("No online players, shutdown timer cancelled.");
+                            break;
                         }
 
-                        try
+                        LogProfileMessage($"Online players: {playerCount}.");
+                        if (playerInfo != null)
                         {
-                            var playerInfo = gameServer?.GetPlayers()?.Where(p => !string.IsNullOrWhiteSpace(p.Name?.Trim())).ToList();
-
-                            // check if anyone is logged into the server
-                            var playerCount = playerInfo?.Count ?? -1;
-                            if (playerCount <= 0)
+                            foreach (var player in playerInfo)
                             {
-                                LogProfileMessage("No online players, shutdown timer cancelled.");
-                                break;
-                            }
-
-                            LogProfileMessage($"Online players: {playerCount}.");
-                            if (playerInfo != null)
-                            {
-                                foreach (var player in playerInfo)
-                                {
-                                    LogProfileMessage($"{player.Name}; joined {player.Time} ago");
-                                }
+                                LogProfileMessage($"{player.Name}; joined {player.Time} ago");
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine($"Error getting/displaying online players.\r\n{ex.Message}");
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error getting/displaying online players.\r\n{ex.Message}");
+                    }
 
-                        var message = string.Empty;
-                        if (minutesLeft >= 5)
-                        {
-                            // check if the we have just started the countdown
-                            if (minutesLeft == ShutdownInterval)
-                            {
-                                message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
-                                if (!string.IsNullOrWhiteSpace(UpdateReason))
-                                    message += $"\n\n{UpdateReason}";
-                            }
-                            else
-                            {
-                                int remainder;
-                                Math.DivRem(minutesLeft, 5, out remainder);
-
-                                if (remainder == 0)
-                                {
-                                    message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
-                                    if (!string.IsNullOrWhiteSpace(UpdateReason))
-                                        message += $"\n\n{UpdateReason}";
-                                }
-                            }
-                        }
-                        else if (minutesLeft > 1)
+                    var message = string.Empty;
+                    if (minutesLeft >= 5)
+                    {
+                        // check if the we have just started the countdown
+                        if (minutesLeft == ShutdownInterval)
                         {
                             message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
                             if (!string.IsNullOrWhiteSpace(UpdateReason))
@@ -640,75 +636,107 @@ namespace ARK_Server_Manager.Lib
                         }
                         else
                         {
-                            message = Config.Default.ServerShutdown_GraceMessage2;
-                            if (!string.IsNullOrWhiteSpace(UpdateReason))
-                                message += $"\n\n{UpdateReason}";
-                        }
+                            int remainder;
+                            Math.DivRem(minutesLeft, 5, out remainder);
 
-                        if (!string.IsNullOrWhiteSpace(message))
-                            SendMessage(message);
-
-                        minutesLeft--;
-                        Task.Delay(60000, cancellationToken).Wait(cancellationToken);
-                    }
-
-                    // check if we need to perform a world save (not required for SotF servers)
-                    if (Config.Default.ServerShutdown_EnableWorldSave && !_profile.SotFEnabled)
-                    {
-                        try
-                        {
-                            // perform a world save
-                            if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_WorldSaveMessage))
+                            if (remainder == 0)
                             {
-                                SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
-
-                                Task.Delay(2000).Wait();
+                                message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
+                                if (!string.IsNullOrWhiteSpace(UpdateReason))
+                                    message += $"\n\n{UpdateReason}";
                             }
-
-                            SendCommand("saveworld", false);
-
-                            Task.Delay(10000, cancellationToken).Wait(cancellationToken);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine($"RCON> saveworld command.\r\n{ex.Message}");
                         }
                     }
-
-                    if (cancellationToken.IsCancellationRequested)
+                    else if (minutesLeft > 1)
                     {
-                        LogProfileMessage("Cancelling shutdown...");
-
-                        if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
-                            SendMessage(Config.Default.ServerShutdown_CancelMessage);
-
-                        ExitCode = EXITCODE_CANCELLED;
-                        return;
+                        message = Config.Default.ServerShutdown_GraceMessage1.Replace("{minutes}", minutesLeft.ToString());
+                        if (!string.IsNullOrWhiteSpace(UpdateReason))
+                            message += $"\n\n{UpdateReason}";
+                    }
+                    else
+                    {
+                        message = Config.Default.ServerShutdown_GraceMessage2;
+                        if (!string.IsNullOrWhiteSpace(UpdateReason))
+                            message += $"\n\n{UpdateReason}";
                     }
 
-                    // send the final shutdown message
-                    if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
-                        SendMessage(Config.Default.ServerShutdown_GraceMessage3);
+                    if (!string.IsNullOrWhiteSpace(message))
+                    {
+                        SendMessage(message);
+                        ProcessAlert(AlertType.ShutdownMessage, message);
+                    }
+
+                    minutesLeft--;
+                    Task.Delay(60000, cancellationToken).Wait(cancellationToken);
                 }
-                finally
+
+                // check if we need to perform a world save (not required for SotF servers)
+                if (Config.Default.ServerShutdown_EnableWorldSave && !_profile.SotFEnabled)
                 {
-                    if (gameServer != null)
+                    try
                     {
-                        gameServer.Dispose();
-                        gameServer = null;
+                        // perform a world save
+                        if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_WorldSaveMessage))
+                        {
+                            SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
+                            ProcessAlert(AlertType.ShutdownMessage, Config.Default.ServerShutdown_WorldSaveMessage);
+
+                            Task.Delay(2000).Wait();
+                        }
+
+                        SendCommand("saveworld", false);
+
+                        Task.Delay(10000, cancellationToken).Wait(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"RCON> saveworld command.\r\n{ex.Message}");
+                    }
+                }
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    LogProfileMessage("Cancelling shutdown...");
+
+                    if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                    {
+                        SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                        ProcessAlert(AlertType.Shutdown, Config.Default.ServerShutdown_CancelMessage);
                     }
 
-                    CloseRconConsole();
+                    ExitCode = EXITCODE_CANCELLED;
+                    return;
+                }
+
+                // send the final shutdown message
+                if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
+                {
+                    SendMessage(Config.Default.ServerShutdown_GraceMessage3);
+                    ProcessAlert(AlertType.ShutdownMessage, Config.Default.ServerShutdown_GraceMessage3);
                 }
             }
-            else
+            finally
             {
-                LogProfileMessage("RCON not enabled.");
+                CloseRconConsole();
+
+                if (gameServer != null)
+                {
+                    gameServer.Dispose();
+                    gameServer = null;
+                }
             }
 
             if (cancellationToken.IsCancellationRequested)
             {
                 LogProfileMessage("Cancelling shutdown...");
+
+                if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_CancelMessage))
+                {
+                    SendMessage(Config.Default.ServerShutdown_CancelMessage);
+                    ProcessAlert(AlertType.Shutdown, Config.Default.ServerShutdown_CancelMessage);
+                }
+
+                CloseRconConsole();
 
                 ExitCode = EXITCODE_CANCELLED;
                 return;
@@ -719,6 +747,7 @@ namespace ARK_Server_Manager.Lib
                 // Stop the server
                 LogProfileMessage("");
                 LogProfileMessage("Stopping server...");
+                ProcessAlert(AlertType.Shutdown, Config.Default.Alert_ServerShutdownMessage);
 
                 TaskCompletionSource<bool> ts = new TaskCompletionSource<bool>();
                 EventHandler handler = (s, e) => ts.TrySetResult(true);
@@ -754,6 +783,8 @@ namespace ARK_Server_Manager.Lib
 
                     LogProfileMessage("Exiting server timed out, attempting to close the server.");
                 }
+
+                CloseRconConsole();
 
                 // Method 2 - Close the process
                 process.CloseMainWindow();
@@ -1214,6 +1245,7 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
+            var alertMessage = new StringBuilder();
             var emailMessage = new StringBuilder();
 
             LogProfileMessage("------------------------");
@@ -1250,8 +1282,15 @@ namespace ARK_Server_Manager.Lib
                 UpdateReason = string.Empty;
                 if (Config.Default.AutoUpdate_ShowUpdateReason)
                 {
-                    // create the update message to broadcast 
                     var delimiter = string.Empty;
+
+                    // create the update message to broadcast 
+                    if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_UpdateReasonPrefix))
+                    {
+                        UpdateReason += $"{Config.Default.AutoUpdate_UpdateReasonPrefix.Trim()}";
+                        delimiter = " ";
+                    }
+
                     if (updateServer)
                     {
                         UpdateReason += $"{delimiter}Ark Server";
@@ -1339,6 +1378,9 @@ namespace ARK_Server_Manager.Lib
                 Mutex mutex = null;
                 bool createdNew = false;
 
+                alertMessage.AppendLine();
+                alertMessage.AppendLine("Update performed, includes:");
+
                 // check if the server needs to be updated
                 if (updateServer)
                 {
@@ -1356,12 +1398,13 @@ namespace ARK_Server_Manager.Lib
                             // update the server files from the cache.
                             DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
 
-                            emailMessage.AppendLine();
-
-                            LogProfileMessage("Updated server from cache. See ARK patch notes:");
+                            LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
-                            emailMessage.AppendLine("Updated server from cache. See ARK patch notes:");
+                            alertMessage.AppendLine("ARK Server Update");
+
+                            emailMessage.AppendLine();
+                            emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");
                             emailMessage.AppendLine(Config.Default.ArkSE_PatchNotesUrl);
 
                             _profile.ServerUpdated = true;
@@ -1392,7 +1435,7 @@ namespace ARK_Server_Manager.Lib
                     LogProfileMessage($"Updating {updateModIds.Count} mods from cache...");
 
                     emailMessage.AppendLine();
-                    emailMessage.AppendLine("Mods:");
+                    emailMessage.AppendLine("Mod Updates:");
 
                     try
                     {
@@ -1419,8 +1462,10 @@ namespace ARK_Server_Manager.Lib
                                         LogProfileMessage($"Started mod update from cache {index + 1} of {updateModIds.Count}...");
                                         LogProfileMessage($"Mod Name: {modName} (Mod ID: {modId})");
 
+                                        alertMessage.AppendLine($"{modName} ({modId})");
+
                                         emailMessage.AppendLine();
-                                        emailMessage.AppendLine($"Mod Name: {modName} (Mod ID: {modId})");
+                                        emailMessage.AppendLine($"{modName} ({modId})");
 
                                         ModUtils.CopyMod(modCachePath, modPath, modId, null);
 
@@ -1504,6 +1549,8 @@ namespace ARK_Server_Manager.Lib
                     emailMessage.AppendLine("See attached log file more details.");
                     SendEmail($"{_profile.ProfileName} auto update finished", emailMessage.ToString(), true);
                 }
+
+                ProcessAlert(AlertType.UpdateResults, alertMessage.ToString());
             }
             else
             {
@@ -2078,12 +2125,25 @@ namespace ARK_Server_Manager.Lib
             message = message ?? string.Empty;
 
             var logFile = GetLogFile();
-            lock (LockObject)
+            lock (LockObjectMessage)
             {
                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                     Directory.CreateDirectory(Path.GetDirectoryName(logFile));
 
-                File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                int retries = 0;
+                while (retries < 3)
+                {
+                    try
+                    {
+                        File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                        break;
+                    }
+                    catch (IOException)
+                    {
+                        retries++;
+                        Task.Delay(WRITELOG_ERRORRETRYDELAY).Wait();
+                    }
+                }
             }
 
             Debug.WriteLine(message);
@@ -2104,9 +2164,26 @@ namespace ARK_Server_Manager.Lib
             if (OutputLogs)
             {
                 var logFile = GetProfileLogFile();
-                if (!Directory.Exists(Path.GetDirectoryName(logFile)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-                File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                lock (LockObjectProfileMessage)
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(logFile)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(logFile));
+
+                    int retries = 0;
+                    while (retries < 3)
+                    {
+                        try
+                        {
+                            File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                            break;
+                        }
+                        catch (IOException)
+                        {
+                            retries++;
+                            Task.Delay(WRITELOG_ERRORRETRYDELAY).Wait();
+                        }
+                    }
+                }
             }
 
             if (includeProgressCallback)
@@ -2118,8 +2195,21 @@ namespace ARK_Server_Manager.Lib
                 Debug.WriteLine(message);
         }
 
+        private void ProcessAlert(AlertType alertType, string alertMessage)
+        {
+            if (_pluginHelper == null || !SendAlerts)
+                return;
+
+            if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))
+            {
+                LogProfileMessage($"Alert message sent - {alertType}: {alertMessage}", false);
+            }
+        }
+
         private void SendCommand(string command, bool retryIfFailed)
         {
+            if (_profile == null || !_profile.RCONEnabled)
+                return;
             if (string.IsNullOrWhiteSpace(command))
                 return;
 
@@ -2131,7 +2221,15 @@ namespace ARK_Server_Manager.Lib
             {
                 SetupRconConsole();
 
-                if (_rconConsole != null)
+                if (_rconConsole == null)
+                {
+                    LogProfileMessage($"RCON> {command} - attempt {rconRetries + 1} (a).", false);
+#if DEBUG
+                    LogProfileMessage("RCON connection not created.", false);
+#endif
+                    rconRetries++;
+                }
+                else
                 {
                     rconRetries = 0;
                     try
@@ -2150,14 +2248,6 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     retries++;
-                }
-                else
-                {
-                    LogProfileMessage($"RCON> {command} - attempt {rconRetries + 1} (a).", false);
-#if DEBUG
-                    LogProfileMessage("RCON connection not created.", false);
-#endif
-                    rconRetries++;
                 }
             }
         }
@@ -2209,7 +2299,7 @@ namespace ARK_Server_Manager.Lib
         {
             CloseRconConsole();
 
-            if (_profile == null)
+            if (_profile == null || !_profile.RCONEnabled)
                 return;
 
             try
@@ -2281,7 +2371,8 @@ namespace ARK_Server_Manager.Lib
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
                         if (Config.Default.EmailNotify_AutoBackup)
-                            SendEmail($"{_profile.ProfileName} server backup", $"The server backup process was performed but an error occurred.", true);
+                            SendEmail($"{_profile.ProfileName} server backup", Config.Default.Alert_BackupProcessError, true);
+                        ProcessAlert(AlertType.Error, Config.Default.Alert_BackupProcessError);
                     }
                 }
                 else
@@ -2298,7 +2389,8 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
                 if (Config.Default.EmailNotify_AutoBackup)
-                    SendEmail($"{_profile.ProfileName} server update", $"The server backup process was performed but an error occurred.", true);
+                    SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_BackupProcessError, true);
+                ProcessAlert(AlertType.Error, Config.Default.Alert_BackupProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -2347,10 +2439,14 @@ namespace ARK_Server_Manager.Lib
                         if (Config.Default.EmailNotify_AutoRestart)
                         {
                             if (performRestart)
-                                SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                                SendEmail($"{_profile.ProfileName} server restart", Config.Default.Alert_RestartProcessError, true);
                             else
-                                SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                                SendEmail($"{_profile.ProfileName} server shutdown", Config.Default.Alert_ShutdownProcessError, true);
                         }
+                        if (performRestart)
+                            ProcessAlert(AlertType.Error, Config.Default.Alert_RestartProcessError);
+                        else
+                            ProcessAlert(AlertType.Error, Config.Default.Alert_ShutdownProcessError);
                     }
                 }
                 else
@@ -2372,10 +2468,14 @@ namespace ARK_Server_Manager.Lib
                 if (Config.Default.EmailNotify_AutoRestart)
                 {
                     if (performRestart)
-                        SendEmail($"{_profile.ProfileName} server restart", $"The server restart process was performed but an error occurred.", true);
+                        SendEmail($"{_profile.ProfileName} server restart", Config.Default.Alert_RestartProcessError, true);
                     else
-                        SendEmail($"{_profile.ProfileName} server shutdown", $"The server shutdown process was performed but an error occurred.", true);
+                        SendEmail($"{_profile.ProfileName} server shutdown", Config.Default.Alert_ShutdownProcessError, true);
                 }
+                if (performRestart)
+                    ProcessAlert(AlertType.Error, Config.Default.Alert_RestartProcessError);
+                else
+                    ProcessAlert(AlertType.Error, Config.Default.Alert_ShutdownProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -2429,7 +2529,8 @@ namespace ARK_Server_Manager.Lib
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
                         if (Config.Default.EmailNotify_AutoUpdate)
-                            SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                            SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_UpdateProcessError, true);
+                        ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
                     }
                 }
                 else
@@ -2441,12 +2542,17 @@ namespace ARK_Server_Manager.Lib
             catch (Exception ex)
             {
                 LogProfileError(ex.Message);
+                LogProfileError(ex.GetType().ToString());
                 if (ex.InnerException != null)
+                {
                     LogProfileMessage($"InnerException - {ex.InnerException.Message}");
+                    LogProfileMessage(ex.InnerException.GetType().ToString());
+                }
                 LogProfileMessage($"StackTrace\r\n{ex.StackTrace}");
 
                 if (Config.Default.EmailNotify_AutoUpdate)
-                    SendEmail($"{_profile.ProfileName} server update", $"The server update process was performed but an error occurred.", true);
+                    SendEmail($"{_profile.ProfileName} server update", Config.Default.Alert_UpdateProcessError, true);
+                ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
                 ExitCode = EXITCODE_UNKNOWNTHREADERROR;
             }
             finally
@@ -2486,6 +2592,7 @@ namespace ARK_Server_Manager.Lib
                 Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoBackup), profile => {
                     var app = new ServerApp();
                     app.DeleteOldBackupWorldFiles = Config.Default.AutoBackup_DeleteOldFiles;
+                    app.SendAlerts = true;
                     app.SendEmails = true;
                     app.ServerProcess = ServerProcessType.AutoBackup;
                     exitCodes.TryAdd(profile, app.PerformProfileBackup(profile));
@@ -2560,6 +2667,7 @@ namespace ARK_Server_Manager.Lib
                     return EXITCODE_AUTOSHUTDOWNNOTENABLED;
 
                 var app = new ServerApp();
+                app.SendAlerts = true;
                 app.SendEmails = true;
                 app.ServerProcess = type;
                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
@@ -2624,6 +2732,7 @@ namespace ARK_Server_Manager.Lib
                         {
                             Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
                                 app = new ServerApp();
+                                app.SendAlerts = true;
                                 app.SendEmails = true;
                                 app.ServerProcess = ServerProcessType.AutoUpdate;
                                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
@@ -2635,6 +2744,7 @@ namespace ARK_Server_Manager.Lib
                             foreach (var profile in _profiles.Keys.Where(p => p.EnableAutoUpdate))
                             {
                                 app = new ServerApp();
+                                app.SendAlerts = true;
                                 app.SendEmails = true;
                                 app.ServerProcess = ServerProcessType.AutoUpdate;
                                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
@@ -2655,8 +2765,12 @@ namespace ARK_Server_Manager.Lib
             catch (Exception ex)
             {
                 LogError(ex.Message);
+                LogError(ex.GetType().ToString());
                 if (ex.InnerException != null)
+                {
                     LogMessage($"InnerException - {ex.InnerException.Message}");
+                    LogMessage(ex.InnerException.GetType().ToString());
+                }
                 LogMessage($"StackTrace\r\n{ex.StackTrace}");
                 exitCode = EXITCODE_UNKNOWNERROR;
             }

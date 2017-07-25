@@ -28,3 +28,11 @@ SteamKit2/bin/
 SteamKit2/obj/
 ArkData/bin/
 ArkData/obj/
+Plugin.Common/bin/
+Plugin.Common/obj/
+Plugin.Test/bin/
+Plugin.Test/obj/
+Plugin.Discord/bin/
+Plugin.Discord/obj/
+Plugin.Discord.UnitTests/bin/
+Plugin.Discord.UnitTests/obj/
