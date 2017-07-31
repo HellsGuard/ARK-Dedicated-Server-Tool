@@ -185,7 +185,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid DockPanel.Dock="Right" VerticalAlignment="Top" Margin="5">
+                    <Grid DockPanel.Dock="Right" VerticalAlignment="Top" Margin="5" MinWidth="190">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>

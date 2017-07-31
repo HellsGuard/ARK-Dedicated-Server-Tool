@@ -20,6 +20,11 @@
             <Style x:Key="GroupBoxStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
                 <Setter Property="BorderBrush" Value="{StaticResource BeigeBorder}"/>
             </Style>
+            <Style x:Key="HiddenTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Background" Value="Wheat"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+            </Style>
 
             <ContentControl x:Key="DataDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
@@ -48,6 +53,7 @@
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
+    
     <Grid Margin="3">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid>
@@ -95,7 +101,8 @@
                 <Button   Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5,1,0,1" Content="{DynamicResource DataDirectoryButtonContent}" VerticalAlignment="Center" Click="SetDataDir_Click"/>
 
                 <Label    Grid.Row="5" Grid.Column="0" Margin="1" Content="{DynamicResource GlobalSettings_SteamAPIKeyLabel}" VerticalAlignment="Center"/>
-                <TextBox  Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.SteamAPIKey, Mode=TwoWay}" VerticalContentAlignment="Center" />
+                <TextBox  Grid.Row="5" Grid.Column="1" Margin="1" Name="HideSteamAPIKeyTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}" ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus" Style="{StaticResource HiddenTextBoxStyle}"/>
+                <TextBox  Grid.Row="5" Grid.Column="1" Margin="1" Name="SteamAPIKeyTextBox" Text="{Binding CurrentConfig.SteamAPIKey, Mode=TwoWay}" LostFocus="HiddenField_LostFocus" VerticalContentAlignment="Center" Visibility="Collapsed"/>
 
                 <StackPanel Grid.Row="5" Grid.Column="3" Margin="5,1,0,1" Orientation="Horizontal">
                     <Button  Content="{DynamicResource SteamAPIKeyButtonContent}" VerticalAlignment="Center" Click="ApplySteamAPIKey_Click"/>
@@ -245,7 +252,35 @@
                             </TextBox.Style>
                         </TextBox>
                         <Label Grid.Row="2" Grid.Column="5" Content="{DynamicResource GlobalSettings_SteamCmdPasswordLabel}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="2" Grid.Column="6" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
+                        <!--<TextBox Grid.Row="2" Grid.Column="6" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
+                            <TextBox.Style>
+                                <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmdRedirectOutput}" Value="true">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Value="true">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>-->
+                        <TextBox  Grid.Row="2" Grid.Column="6" Margin="1" Name="HideSteamPasswordTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}"  ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus">
+                            <TextBox.Style>
+                                <Style BasedOn="{StaticResource HiddenTextBoxStyle}" TargetType="{x:Type TextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmdRedirectOutput}" Value="true">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Value="true">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <TextBox  Grid.Row="2" Grid.Column="6" Margin="1" Name="SteamPasswordTextBox" Text="{Binding CurrentConfig.SteamCmd_Password, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}" LostFocus="HiddenField_LostFocus" VerticalContentAlignment="Center" Visibility="Collapsed">
                             <TextBox.Style>
                                 <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
                                     <Style.Triggers>
@@ -508,7 +543,8 @@
                         <Label Grid.Row="1" Grid.Column="3" Content="{DynamicResource GlobalSettings_EmailUsernameLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="1" Grid.Column="4" Margin="1" Text="{Binding CurrentConfig.Email_Username}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailUsernameTooltip}" IsEnabled="{Binding CurrentConfig.Email_UseDetaultCredentials, Converter={StaticResource InvertBooleanConverter}}"/>
                         <Label Grid.Row="1" Grid.Column="6" Content="{DynamicResource GlobalSettings_EmailPasswordLabel}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="7" Margin="1" Text="{Binding CurrentConfig.Email_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailPasswordTooltip}" IsEnabled="{Binding CurrentConfig.Email_UseDetaultCredentials, Converter={StaticResource InvertBooleanConverter}}"/>
+                        <TextBox Grid.Row="1" Grid.Column="7" Margin="1" Name="HideEmailPasswordTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}" IsEnabled="{Binding Config.Email_UseDetaultCredentials, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus" Style="{StaticResource HiddenTextBoxStyle}"/>
+                        <TextBox Grid.Row="1" Grid.Column="7" Margin="1" Name="EmailPasswordTextBox" Text="{Binding CurrentConfig.Email_Password, Mode=TwoWay}" IsEnabled="{Binding Config.Email_UseDetaultCredentials, Converter={StaticResource InvertBooleanConverter}}" ToolTip="{DynamicResource GlobalSettings_EmailPasswordTooltip}" LostFocus="HiddenField_LostFocus" VerticalContentAlignment="Center" Visibility="Collapsed"/>
 
                         <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource GlobalSettings_EmailFromLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Email_From}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_EmailFromTooltip}"/>

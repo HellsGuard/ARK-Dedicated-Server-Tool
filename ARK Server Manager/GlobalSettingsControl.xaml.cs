@@ -251,5 +251,49 @@ namespace ARK_Server_Manager
         {
             CurrentConfig.StyleName = AvailableStyles.Instance.SelectedStyle;
         }
+
+        private void HiddenField_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox hideTextBox)
+            {
+                TextBox textBox = null;
+                if (Equals(hideTextBox, HideSteamPasswordTextBox))
+                    textBox = SteamPasswordTextBox;
+                if (Equals(hideTextBox, HideSteamAPIKeyTextBox))
+                    textBox = SteamAPIKeyTextBox;
+                if (Equals(hideTextBox, HideEmailPasswordTextBox))
+                    textBox = EmailPasswordTextBox;
+
+                if (textBox != null)
+                {
+                    textBox.Visibility = System.Windows.Visibility.Visible;
+                    hideTextBox.Visibility = System.Windows.Visibility.Collapsed;
+                    textBox.Focus();
+                }
+
+                UpdateLayout();
+            }
+        }
+
+        private void HiddenField_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                TextBox hideTextBox = null;
+                if (textBox == SteamPasswordTextBox)
+                    hideTextBox = HideSteamPasswordTextBox;
+                if (textBox == SteamAPIKeyTextBox)
+                    hideTextBox = HideSteamAPIKeyTextBox;
+                if (textBox == EmailPasswordTextBox)
+                    hideTextBox = HideEmailPasswordTextBox;
+
+                if (hideTextBox != null)
+                {
+                    hideTextBox.Visibility = System.Windows.Visibility.Visible;
+                    textBox.Visibility = System.Windows.Visibility.Collapsed;
+                }
+                UpdateLayout();
+            }
+        }
     }
 }
