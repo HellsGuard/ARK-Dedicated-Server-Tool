@@ -378,6 +378,7 @@ namespace ARK_Server_Manager
         private async Task LoadModsFromList()
         {
             var modIdList = ModDetails.Select(m => m.ModId).ToList();
+            modIdList = ModUtils.ValidateModList(modIdList);
 
             var response = await GetModDetails(modIdList);
             var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);
@@ -399,6 +400,7 @@ namespace ARK_Server_Manager
                 modIdList.Add(_profile.TotalConversionModId);
 
             modIdList.AddRange(ModUtils.GetModIdList(_profile.ServerModIds));
+            modIdList = ModUtils.ValidateModList(modIdList);
 
             var response = await GetModDetails(modIdList);
             var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);
@@ -425,6 +427,8 @@ namespace ARK_Server_Manager
                     modIdList.Add(Path.GetFileNameWithoutExtension(modFile));
                 }
             }
+
+            modIdList = ModUtils.ValidateModList(modIdList);
 
             var response = await GetModDetails(modIdList);
             var modDetails = ModDetailList.GetModDetails(response, Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath), modIdList);

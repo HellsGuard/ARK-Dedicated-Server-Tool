@@ -55,7 +55,6 @@ namespace ARK_Server_Manager
 
         // Properties
         MapNameTotalConversionProperty,
-        TotalConversionPrimitivePlusProperty,
         BanListProperty,
 
         PlayerMaxXpProperty,
@@ -86,6 +85,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty BasePrimalItemListProperty = DependencyProperty.Register(nameof(BasePrimalItemList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseSupplyCrateListProperty = DependencyProperty.Register(nameof(BaseSupplyCrateList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseGameMapsProperty = DependencyProperty.Register(nameof(BaseGameMaps), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BaseTotalConversionsProperty = DependencyProperty.Register(nameof(BaseTotalConversions), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -141,6 +141,12 @@ namespace ARK_Server_Manager
         {
             get { return (ComboBoxItemList)GetValue(BaseGameMapsProperty); }
             set { SetValue(BaseGameMapsProperty, value); }
+        }
+
+        public ComboBoxItemList BaseTotalConversions
+        {
+            get { return (ComboBoxItemList)GetValue(BaseTotalConversionsProperty); }
+            set { SetValue(BaseTotalConversionsProperty, value); }
         }
 
         public Config CurrentConfig
@@ -273,6 +279,7 @@ namespace ARK_Server_Manager
             this.BasePrimalItemList = new ComboBoxItemList();
             this.BaseSupplyCrateList = new ComboBoxItemList();
             this.BaseGameMaps = new ComboBoxItemList();
+            this.BaseTotalConversions = new ComboBoxItemList();
 
             this.ServerFilesAdmins = new SteamUserList();
             this.ServerFilesWhitelisted = new SteamUserList();
@@ -301,6 +308,7 @@ namespace ARK_Server_Manager
                         ssc.RefreshBasePrimalItemList();
                         ssc.RefreshBaseSupplyCrateList();
                         ssc.RefreshBaseGameMapsList();
+                        ssc.RefreshBaseTotalConversionsList();
                         ssc.LoadServerFiles();
                     }).DoNotWait();
             }
@@ -317,6 +325,7 @@ namespace ARK_Server_Manager
             this.RefreshBasePrimalItemList();
             this.RefreshBaseSupplyCrateList();
             this.RefreshBaseGameMapsList();
+            this.RefreshBaseTotalConversionsList();
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
@@ -996,7 +1005,10 @@ namespace ARK_Server_Manager
                 return;
 
             this.Settings.ServerMap = Config.Default.DefaultServerMap;
+            this.Settings.TotalConversionModId = string.Empty;
+            this.Settings.ServerModIds = string.Empty;
             RefreshBaseGameMapsList();
+            RefreshBaseTotalConversionsList();
         }
 
         #region Dinos
@@ -2565,7 +2577,42 @@ namespace ARK_Server_Manager
             }
 
             this.BaseGameMaps = newList;
-            this.GameMapCheckbox.SelectedValue = this.Settings.ServerMap;
+            this.GameMapComboBox.SelectedValue = this.Settings.ServerMap;
+        }
+
+        public void RefreshBaseTotalConversionsList()
+        {
+            var newList = new ComboBoxItemList();
+
+            if (this.Settings.SOTF_Enabled)
+            {
+                foreach (var gameMap in GameData.GetTotalConversionsSotF())
+                {
+                    newList.Add(gameMap);
+                }
+            }
+            else
+            {
+                foreach (var item in GameData.GetTotalConversions())
+                {
+                    newList.Add(item);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.Settings.TotalConversionModId))
+            {
+                if (!newList.Any(m => m.ValueMember.Equals(this.Settings.TotalConversionModId, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = this.Settings.TotalConversionModId,
+                        ValueMember = this.Settings.TotalConversionModId,
+                    });
+                }
+            }
+
+            this.BaseTotalConversions = newList;
+            this.TotalConversionComboBox.SelectedValue = this.Settings.TotalConversionModId;
         }
 
         private void ReinitializeNetworkAdapters()
@@ -2624,6 +2671,7 @@ namespace ARK_Server_Manager
                             case ServerSettingsResetAction.AdministrationSection:
                                 this.Settings.ResetAdministrationSection();
                                 RefreshBaseGameMapsList();
+                                RefreshBaseTotalConversionsList();
                                 break;
 
                             case ServerSettingsResetAction.ChatAndNotificationsSection:
@@ -2708,11 +2756,6 @@ namespace ARK_Server_Manager
                                 this.Settings.ServerMap = mapName;
 
                                 MessageBox.Show("The map name has been updated.", "Find Total Conversion Map Name", MessageBoxButton.OK, MessageBoxImage.Information);
-                                break;
-
-                            case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
-                                this.Settings.TotalConversionModId = ModUtils.MODID_PRIMITIVEPLUS;
-                                this.Settings.ServerMap = Config.Default.DefaultServerMap;
                                 break;
 
                             case ServerSettingsResetAction.BanListProperty:
@@ -2816,6 +2859,7 @@ namespace ARK_Server_Manager
                             RefreshBasePrimalItemList();
                             RefreshBaseSupplyCrateList();
                             RefreshBaseGameMapsList();
+                            RefreshBaseTotalConversionsList();
 
                             OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
                             await Task.Delay(500);

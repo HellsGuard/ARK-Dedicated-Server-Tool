@@ -2689,6 +2689,21 @@ namespace ARK_Server_Manager.Lib
 
         public static IEnumerable<ComboBoxItem> GetGameMapsSotF() => gameMapsSotF.Select(d => d.Duplicate());
 
+        private static readonly ComboBoxItem[] totalConversions = new ComboBoxItem[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
+            new ComboBoxItem { ValueMember=ModUtils.MODID_PRIMITIVEPLUS, DisplayMember=FriendlyNameForClass(ModUtils.MODID_PRIMITIVEPLUS) },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetTotalConversions() => totalConversions.Select(d => d.Duplicate());
+
+        private static readonly ComboBoxItem[] totalConversionsSotF = new ComboBoxItem[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetTotalConversionsSotF() => totalConversionsSotF.Select(d => d.Duplicate());
+
         private static readonly Level[] levelProgressionDinoOfficial = new Level[]
             {
                 new Level { XPRequired=10 },

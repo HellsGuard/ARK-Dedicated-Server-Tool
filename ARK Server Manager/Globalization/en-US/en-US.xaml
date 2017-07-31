@@ -1851,6 +1851,9 @@
     <sys:String x:Key="ScorchedEarth_P">Scorched Earth</sys:String>
     <sys:String x:Key="Ragnarok">Ragnarok</sys:String>
 
+    <!-- Total Conversion Names -->
+    <sys:String x:Key="111111111">Primitive Plus</sys:String>
+
     <!-- Dino/Creature Class Names -->
     <sys:String x:Key="Achatina_Character_BP_C">Achatina</sys:String>
     <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>

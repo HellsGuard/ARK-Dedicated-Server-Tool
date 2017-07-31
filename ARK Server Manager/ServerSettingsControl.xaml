@@ -1094,7 +1094,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_MapPathLabel}" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" VerticalAlignment="Center"/>
-                                        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Name="GameMapCheckbox" ItemsSource="{Binding BaseGameMaps, ElementName=SettingsControl}" SelectedValue="{Binding ServerMap, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel">
+                                        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Name="GameMapComboBox" ItemsSource="{Binding BaseGameMaps, ElementName=SettingsControl}" SelectedValue="{Binding ServerMap, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel">
                                             <ComboBox.Style>
                                                 <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
                                                     <Setter Property="IsEnabled" Value="True"/>
@@ -1108,7 +1108,7 @@
                                         </ComboBox>
 
                                         <Label   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_TotalConversionLabel}" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding TotalConversionModId}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
+                                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="1" Name="TotalConversionComboBox" ItemsSource="{Binding BaseTotalConversions, ElementName=SettingsControl}" SelectedValue="{Binding TotalConversionModId, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                         <Button  Grid.Row="1" Grid.Column="3" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_FindTotalConversionMapNameTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameTotalConversionProperty}">
                                             <Button.Style>
                                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
@@ -1121,19 +1121,6 @@
                                                 </Style>
                                             </Button.Style>
                                             <Image Source="Art/Find.png" Width="16" Height="16" />
-                                        </Button>
-                                        <Button  Grid.Row="1" Grid.Column="4" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetTotalConversionPrimitivePlusTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.TotalConversionPrimitivePlusProperty}">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
                                         </Button>
 
                                         <Label   Grid.Row="2" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}" VerticalAlignment="Center"/>
