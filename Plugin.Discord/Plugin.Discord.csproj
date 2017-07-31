@@ -103,6 +103,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
     </None>
+    <None Include="DeployBetaToAzure.cmd" />
+    <None Include="DeployToAzure.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Art\Down.png" />
