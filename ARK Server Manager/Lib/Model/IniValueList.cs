@@ -23,9 +23,9 @@ namespace ARK_Server_Manager.Lib
 
         public Func<T, string> ToIniValue { get; }
         public Func<string, T> FromIniValue { get; }
-        private Func<IEnumerable<T>> ResetFunc { get; }
-        private Func<T, T, bool> EquivalencyFunc { get; }
-        private Func<T, object> SortKeySelectorFunc { get; }
+        protected Func<IEnumerable<T>> ResetFunc { get; }
+        protected Func<T, T, bool> EquivalencyFunc { get; }
+        protected Func<T, object> SortKeySelectorFunc { get; }
 
         public bool IsEnabled
         {

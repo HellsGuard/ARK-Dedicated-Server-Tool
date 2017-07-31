@@ -54,10 +54,6 @@ namespace ARK_Server_Manager
         SupplyCrateOverridesSection,
 
         // Properties
-        MapNameIslandProperty,
-        MapNameCenterProperty,
-        MapNameScorchedEarthProperty,
-        MapNameRagnarokProperty,
         MapNameTotalConversionProperty,
         TotalConversionPrimitivePlusProperty,
         BanListProperty,
@@ -89,6 +85,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty BaseMapSpawnerDinoListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BasePrimalItemListProperty = DependencyProperty.Register(nameof(BasePrimalItemList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseSupplyCrateListProperty = DependencyProperty.Register(nameof(BaseSupplyCrateList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BaseGameMapsProperty = DependencyProperty.Register(nameof(BaseGameMaps), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -138,6 +135,12 @@ namespace ARK_Server_Manager
         {
             get { return (ComboBoxItemList)GetValue(BaseSupplyCrateListProperty); }
             set { SetValue(BaseSupplyCrateListProperty, value); }
+        }
+
+        public ComboBoxItemList BaseGameMaps
+        {
+            get { return (ComboBoxItemList)GetValue(BaseGameMapsProperty); }
+            set { SetValue(BaseGameMapsProperty, value); }
         }
 
         public Config CurrentConfig
@@ -269,6 +272,7 @@ namespace ARK_Server_Manager
             this.BaseMapSpawnerDinoList = new ComboBoxItemList();
             this.BasePrimalItemList = new ComboBoxItemList();
             this.BaseSupplyCrateList = new ComboBoxItemList();
+            this.BaseGameMaps = new ComboBoxItemList();
 
             this.ServerFilesAdmins = new SteamUserList();
             this.ServerFilesWhitelisted = new SteamUserList();
@@ -296,6 +300,7 @@ namespace ARK_Server_Manager
                         ssc.RefreshBaseMapSpawnerList();
                         ssc.RefreshBasePrimalItemList();
                         ssc.RefreshBaseSupplyCrateList();
+                        ssc.RefreshBaseGameMapsList();
                         ssc.LoadServerFiles();
                     }).DoNotWait();
             }
@@ -311,6 +316,7 @@ namespace ARK_Server_Manager
             this.RefreshBaseMapSpawnerList();
             this.RefreshBasePrimalItemList();
             this.RefreshBaseSupplyCrateList();
+            this.RefreshBaseGameMapsList();
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
@@ -397,7 +403,7 @@ namespace ARK_Server_Manager
                             }
 
                             string validateMessage;
-                            if (!this.Server.Profile.Validate(out validateMessage))
+                            if (!this.Server.Profile.Validate(false, out validateMessage))
                             {
                                 if (MessageBox.Show($"The following validation problems were encountered.\r\n\r\n{validateMessage}\r\n\r\nDo you want to continue with the server start, this could cause problems?", "Profile Validation", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                                     return;
@@ -591,13 +597,13 @@ namespace ARK_Server_Manager
                 file = Path.Combine(this.Settings.InstallDirectory, Config.Default.ServerConfigRelativePath, "RunServer.cmd");
                 if (File.Exists(file)) files.Add(file);
 
-                // <server>\ShooterGame\Saved\Logs
-                folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.SavedRelativePath, "Logs");
-                dirInfo = new DirectoryInfo(folder);
-                if (dirInfo.Exists)
-                {
-                    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
-                }
+                //// <server>\ShooterGame\Saved\Logs
+                //folder = Path.Combine(this.Settings.InstallDirectory, Config.Default.SavedRelativePath, "Logs");
+                //dirInfo = new DirectoryInfo(folder);
+                //if (dirInfo.Exists)
+                //{
+                //    files.AddRange(dirInfo.GetFiles("*.log").Where(f => f.LastWriteTime > DateTime.Today.AddDays(-MAX_DAYS)).Select(logFile => logFile.FullName));
+                //}
 
                 // Logs
                 folder = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir, ServerApp.LOGPREFIX_AUTOBACKUP);
@@ -670,6 +676,9 @@ namespace ARK_Server_Manager
                 }
 
                 var comment = new StringBuilder();
+                comment.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
+                comment.AppendLine($"Windows Version: {Environment.OSVersion.VersionString}");
+
                 comment.AppendLine($"ARK Version: {this.Settings.LastInstalledVersion}");
                 comment.AppendLine($"ASM Version: {App.Version}");
                 comment.AppendLine($"ASM Key: {Config.Default.ASMUniqueKey}");
@@ -752,7 +761,7 @@ namespace ARK_Server_Manager
                 await Task.Delay(500);
 
                 string validationMessage;
-                var result = this.Settings.Validate(out validationMessage);
+                var result = this.Settings.Validate(true, out validationMessage);
 
                 if (result)
                     MessageBox.Show("The profile passed the basic validation.", "Profile Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -969,7 +978,7 @@ namespace ARK_Server_Manager
 
         private void ServerName_SourceUpdated(object sender, DataTransferEventArgs e)
         {
-            Settings.UpdateServerNameLength();
+            Settings.ValidateServerName();
         }
 
         private void SyncProfile_Click(object sender, RoutedEventArgs e)
@@ -978,6 +987,16 @@ namespace ARK_Server_Manager
             window.Owner = Window.GetWindow(this);
             window.Closed += Window_Closed;
             window.ShowDialog();
+        }
+
+        private void EnableSOTFCheckbox_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            var checkBox = sender as CheckBox;
+            if (checkBox == null || checkBox != EnableSOTFCheckbox)
+                return;
+
+            this.Settings.ServerMap = Config.Default.DefaultServerMap;
+            RefreshBaseGameMapsList();
         }
 
         #region Dinos
@@ -2514,6 +2533,41 @@ namespace ARK_Server_Manager
             }
         }
 
+        public void RefreshBaseGameMapsList()
+        {
+            var newList = new ComboBoxItemList();
+
+            if (this.Settings.SOTF_Enabled)
+            {
+                foreach (var gameMap in GameData.GetGameMapsSotF())
+                {
+                    newList.Add(gameMap);
+                }
+            }
+            else
+            {
+                foreach (var gameMap in GameData.GetGameMaps())
+                {
+                    newList.Add(gameMap);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.Settings.ServerMap))
+            {
+                if (!newList.Any(m => m.ValueMember.Equals(this.Settings.ServerMap, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = this.Settings.ServerMap,
+                        ValueMember = this.Settings.ServerMap,
+                    });
+                }
+            }
+
+            this.BaseGameMaps = newList;
+            this.GameMapCheckbox.SelectedValue = this.Settings.ServerMap;
+        }
+
         private void ReinitializeNetworkAdapters()
         {
             var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
@@ -2569,6 +2623,7 @@ namespace ARK_Server_Manager
                             // sections
                             case ServerSettingsResetAction.AdministrationSection:
                                 this.Settings.ResetAdministrationSection();
+                                RefreshBaseGameMapsList();
                                 break;
 
                             case ServerSettingsResetAction.ChatAndNotificationsSection:
@@ -2634,25 +2689,9 @@ namespace ARK_Server_Manager
                                 break;
 
                             // Properties
-                            case ServerSettingsResetAction.MapNameIslandProperty:
-                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_TheIsland);
-                                break;
-
-                            case ServerSettingsResetAction.MapNameCenterProperty:
-                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_TheCenter);
-                                break;
-
-                            case ServerSettingsResetAction.MapNameScorchedEarthProperty:
-                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_ScorchedEarth);
-                                break;
-
-                            case ServerSettingsResetAction.MapNameRagnarokProperty:
-                                this.Settings.ResetMapName(Config.Default.DefaultServerMap_Ragnarok);
-                                break;
-
                             case ServerSettingsResetAction.MapNameTotalConversionProperty:
                                 // set the map name to the ARK default.
-                                var mapName = Config.Default.DefaultServerMap_TheIsland;
+                                var mapName = Config.Default.DefaultServerMap;
 
                                 // check if we are running an official total conversion mod.
                                 if (!this.Settings.TotalConversionModId.Equals(ModUtils.MODID_PRIMITIVEPLUS))
@@ -2673,7 +2712,7 @@ namespace ARK_Server_Manager
 
                             case ServerSettingsResetAction.TotalConversionPrimitivePlusProperty:
                                 this.Settings.TotalConversionModId = ModUtils.MODID_PRIMITIVEPLUS;
-                                this.Settings.ServerMap = Config.Default.DefaultServerMap_TheIsland;
+                                this.Settings.ServerMap = Config.Default.DefaultServerMap;
                                 break;
 
                             case ServerSettingsResetAction.BanListProperty:
@@ -2776,6 +2815,7 @@ namespace ARK_Server_Manager
                             RefreshBaseMapSpawnerList();
                             RefreshBasePrimalItemList();
                             RefreshBaseSupplyCrateList();
+                            RefreshBaseGameMapsList();
 
                             OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
                             await Task.Delay(500);

@@ -1844,7 +1844,13 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Settings</sys:String>
-    
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="TheIsland">The Island</sys:String>
+    <sys:String x:Key="TheCenter">The Center</sys:String>
+    <sys:String x:Key="ScorchedEarth_P">Scorched Earth</sys:String>
+    <sys:String x:Key="Ragnarok">Ragnarok</sys:String>
+
     <!-- Dino/Creature Class Names -->
     <sys:String x:Key="Achatina_Character_BP_C">Achatina</sys:String>
     <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>

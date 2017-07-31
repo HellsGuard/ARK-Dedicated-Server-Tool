@@ -1686,9 +1686,6 @@ namespace ARK_Server_Manager.Lib
             if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
             {
                 LogError($"SteamCMD could not be found. Expected location is {steamCmdFile}");
-                if (Config.Default.SteamCmdRedirectOutput)
-                    LogMessage($"If the mod cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
-
                 ExitCode = EXITCODE_STEAMCMDNOTFOUND;
                 return;
             }

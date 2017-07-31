@@ -162,6 +162,7 @@
     <Compile Include="AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\Model\StatsMultiplierArray.cs" />
     <Compile Include="ProfileSyncWindow.xaml.cs">
       <DependentUpon>ProfileSyncWindow.xaml</DependentUpon>
     </Compile>

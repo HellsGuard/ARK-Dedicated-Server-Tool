@@ -944,7 +944,7 @@
                                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
                                                         <Setter Property="Foreground" Value="Black"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ServerNameLength, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 50}}" Value="true">
+                                                            <DataTrigger Binding="{Binding ServerNameLengthToLong, FallbackValue=False}" Value="true">
                                                                 <Setter Property="Foreground" Value="Red"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -956,7 +956,7 @@
                                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
                                                         <Setter Property="Foreground" Value="Black"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ServerNameLength, FallbackValue=0, Converter={vm:GreaterThanIntValueConverter 50}}" Value="true">
+                                                            <DataTrigger Binding="{Binding ServerNameLengthToLong, FallbackValue=False}" Value="true">
                                                                 <Setter Property="Foreground" Value="Red"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -1093,80 +1093,19 @@
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_MapPathLabel}" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Name="MapNameTextbox" Text="{Binding ServerMap}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}">
-                                            <TextBox.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                                        <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_MapPathLabel}" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" VerticalAlignment="Center"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="1" Name="GameMapCheckbox" ItemsSource="{Binding BaseGameMaps, ElementName=SettingsControl}" SelectedValue="{Binding ServerMap, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_MapPathTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel">
+                                            <ComboBox.Style>
+                                                <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
                                                     <Setter Property="IsEnabled" Value="True"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
+                                                        <DataTrigger Binding="{Binding PGM_Enabled}" Value="True">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </TextBox.Style>
-                                        </TextBox>
-                                        <Button  Grid.Row="0" Grid.Column="3" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameIslandTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameIslandProperty}">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                        </Button>
-                                        <Button  Grid.Row="0" Grid.Column="4" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameCenterTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameCenterProperty}">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                        </Button>
-                                        <Button  Grid.Row="0" Grid.Column="5" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameScorchedEarthTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameScorchedEarthProperty}" VerticalAlignment="Top">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                        </Button>
-                                        <Button  Grid.Row="0" Grid.Column="6" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_ResetMapNameRagnarokTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameRagnarokProperty}" VerticalAlignment="Top">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <Image Source="Art/Refresh.png" Width="16" Height="16" />
-                                        </Button>
+                                            </ComboBox.Style>
+                                        </ComboBox>
 
                                         <Label   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_TotalConversionLabel}" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}" VerticalAlignment="Center"/>
                                         <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding TotalConversionModId}" HorizontalAlignment="Stretch" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}"/>
@@ -4682,7 +4621,7 @@
                                 <GroupBox Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled}" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                                            <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled, NotifyOnSourceUpdated=True}" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold" SourceUpdated="EnableSOTFCheckbox_SourceUpdated" />
                                             <Button Margin="20,5,5,5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}">
                                                 <Image Source="Art/Help.png" Height="16" Margin="0" />
                                             </Button>

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="PluginCallUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}/</Value>
     </Setting>
     <Setting Name="PublicIPCheckUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://whatismyip.akamai.com/</Value>

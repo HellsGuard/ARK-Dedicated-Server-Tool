@@ -182,9 +182,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TheIsland")]
-        public string DefaultServerMap_TheIsland {
+        public string DefaultServerMap {
             get {
-                return ((string)(this["DefaultServerMap_TheIsland"]));
+                return ((string)(this["DefaultServerMap"]));
             }
         }
         
@@ -316,10 +316,10 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FFCBEA136C8DC6935A313B1F9A1978BA")]
-        public string ASMSteamAPIKey {
+        [global::System.Configuration.DefaultSettingValueAttribute("CF77278DB5C2AFA68F3972AFCFFEE81D")]
+        public string DefaultSteamAPIKey {
             get {
-                return ((string)(this["ASMSteamAPIKey"]));
+                return ((string)(this["DefaultSteamAPIKey"]));
             }
         }
         
@@ -843,15 +843,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("TheCenter")]
-        public string DefaultServerMap_TheCenter {
-            get {
-                return ((string)(this["DefaultServerMap_TheCenter"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("AlarmPostCredentials.txt")]
         public string WebAlarmFile {
             get {
@@ -1224,15 +1215,6 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ScorchedEarth_P")]
-        public string DefaultServerMap_ScorchedEarth {
-            get {
-                return ((string)(this["DefaultServerMap_ScorchedEarth"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Clusters")]
         public string ClustersDir {
             get {
@@ -1359,7 +1341,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/{0}/{1}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/{0}/{1}/")]
         public string ServerStatusUrlFormat {
             get {
                 return ((string)(this["ServerStatusUrlFormat"]));
@@ -1473,7 +1455,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/")]
         public string ServerCallUrlFormat {
             get {
                 return ((string)(this["ServerCallUrlFormat"]));
@@ -1646,15 +1628,6 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["AutoUpdate_ValidateServerFiles"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Ragnarok")]
-        public string DefaultServerMap_Ragnarok {
-            get {
-                return ((string)(this["DefaultServerMap_Ragnarok"]));
             }
         }
         

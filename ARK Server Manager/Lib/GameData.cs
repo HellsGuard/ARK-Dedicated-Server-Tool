@@ -2672,6 +2672,23 @@ namespace ARK_Server_Manager.Lib
 
         public static bool HasSupplyCrateForClass(string className) => supplyCrates.Any(e => e.ClassName.Equals(className));
 
+        private static readonly ComboBoxItem[] gameMaps = new ComboBoxItem[]
+        {
+            new ComboBoxItem { ValueMember=Config.Default.DefaultServerMap, DisplayMember=FriendlyNameForClass(Config.Default.DefaultServerMap) },
+            new ComboBoxItem { ValueMember="TheCenter", DisplayMember=FriendlyNameForClass("TheCenter") },
+            new ComboBoxItem { ValueMember="ScorchedEarth_P", DisplayMember=FriendlyNameForClass("ScorchedEarth_P") },
+            new ComboBoxItem { ValueMember="Ragnarok", DisplayMember=FriendlyNameForClass("Ragnarok") },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetGameMaps() => gameMaps.Select(d => d.Duplicate());
+
+        private static readonly ComboBoxItem[] gameMapsSotF = new ComboBoxItem[]
+        {
+            new ComboBoxItem { ValueMember=Config.Default.DefaultServerMap, DisplayMember=FriendlyNameForClass(Config.Default.DefaultServerMap) },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetGameMapsSotF() => gameMapsSotF.Select(d => d.Duplicate());
+
         private static readonly Level[] levelProgressionDinoOfficial = new Level[]
             {
                 new Level { XPRequired=10 },

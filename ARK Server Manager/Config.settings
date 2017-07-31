@@ -53,7 +53,7 @@
     <Setting Name="ProfileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.profile</Value>
     </Setting>
-    <Setting Name="DefaultServerMap_TheIsland" Type="System.String" Scope="Application">
+    <Setting Name="DefaultServerMap" Type="System.String" Scope="Application">
       <Value Profile="(Default)">TheIsland</Value>
     </Setting>
     <Setting Name="DataDir" Type="System.String" Scope="User">
@@ -95,8 +95,8 @@
     <Setting Name="UpdateCheckTime" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1440</Value>
     </Setting>
-    <Setting Name="ASMSteamAPIKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">FFCBEA136C8DC6935A313B1F9A1978BA</Value>
+    <Setting Name="DefaultSteamAPIKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CF77278DB5C2AFA68F3972AFCFFEE81D</Value>
     </Setting>
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
@@ -236,9 +236,6 @@
     <Setting Name="ServerUpdate_ForceCopyMods" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DefaultServerMap_TheCenter" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">TheCenter</Value>
-    </Setting>
     <Setting Name="WebAlarmFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AlarmPostCredentials.txt</Value>
     </Setting>
@@ -344,9 +341,6 @@
     <Setting Name="ServerAppIdFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">steam_appid.txt</Value>
     </Setting>
-    <Setting Name="DefaultServerMap_ScorchedEarth" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ScorchedEarth_P</Value>
-    </Setting>
     <Setting Name="ClustersDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Clusters</Value>
     </Setting>
@@ -387,7 +381,7 @@
       <Value Profile="(Default)">Server</Value>
     </Setting>
     <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/{0}/{1}</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/{0}/{1}/</Value>
     </Setting>
     <Setting Name="DefaultServerMap_PGM" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PGARK</Value>
@@ -420,7 +414,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/</Value>
     </Setting>
     <Setting Name="SteamAPIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -466,9 +460,6 @@
     </Setting>
     <Setting Name="AutoUpdate_ValidateServerFiles" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="DefaultServerMap_Ragnarok" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Ragnarok</Value>
     </Setting>
     <Setting Name="AutoUpdate_OverrideServerStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

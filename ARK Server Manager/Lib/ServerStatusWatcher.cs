@@ -199,20 +199,20 @@ namespace ARK_Server_Manager.Lib
             {
                 foreach (var process in Process.GetProcessesByName(Config.Default.ServerProcessName))
                 {
-                    var commandLine = ProcessUtils.GetCommandLineForProcess(process.Id);
+                    var commandLine = ProcessUtils.GetCommandLineForProcess(process.Id)?.ToLower();
 
-                    if (commandLine != null && commandLine.Contains(updateContext.InstallDirectory) && commandLine.Contains(Config.Default.ServerExe))
+                    if (commandLine != null && commandLine.Contains(updateContext.InstallDirectory.ToLower()) && commandLine.Contains(Config.Default.ServerExe.ToLower()))
                     {
                         // Does this match our server exe and port?
-                        var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.LocalEndpoint.Port);
+                        var serverArgMatch = String.Format(Config.Default.ServerCommandLineArgsMatchFormat, updateContext.LocalEndpoint.Port).ToLower();
                         if (commandLine.Contains(serverArgMatch))
                         {
                             // Was an IP set on it?
-                            var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty);
+                            var anyIpArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, String.Empty).ToLower();
                             if (commandLine.Contains(anyIpArgMatch))
                             {
                                 // If we have a specific IP, check for it.
-                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.LocalEndpoint.Address.ToString());
+                                var ipArgMatch = String.Format(Config.Default.ServerCommandLineArgsIPMatchFormat, updateContext.LocalEndpoint.Address.ToString()).ToLower();
                                 if (!commandLine.Contains(ipArgMatch))
                                 {
                                     // Specific IP set didn't match

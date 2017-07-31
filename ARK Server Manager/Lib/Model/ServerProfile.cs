@@ -54,6 +54,15 @@ namespace ARK_Server_Manager.Lib
         private string _lastSaveLocation = String.Empty;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private List<int> dinoStatMultiplierExclusions = new List<int> {
+            (int)GameData.StatsMultiplier.Water,
+            (int)GameData.StatsMultiplier.Temperature,
+            (int)GameData.StatsMultiplier.TemperatureFortitude,
+            (int)GameData.StatsMultiplier.CraftingSpeedMultiplier,
+        };
+        private List<int> playerStatMultiplierExclusions = new List<int> {
+        };
+
         private ServerProfile()
         {
             ServerPassword = SecurityUtils.GeneratePassword(16);
@@ -73,12 +82,12 @@ namespace ARK_Server_Manager.Lib
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
-            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
-            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
-            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
+            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default, playerStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default, playerStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
 
             this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(ConfigOverrideItemCraftingCosts), null);
 
@@ -142,7 +151,7 @@ namespace ARK_Server_Manager.Lib
             set
             {
                 SetValue(ServerNameProperty, value);
-                UpdateServerNameLength();
+                ValidateServerName();
             }
         }
 
@@ -152,6 +161,14 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (int)GetValue(ServerNameLengthProperty); }
             set { SetValue(ServerNameLengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerNameLengthToLongProperty = DependencyProperty.Register(nameof(ServerNameLengthToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [XmlIgnore]
+        public bool ServerNameLengthToLong
+        {
+            get { return (bool)GetValue(ServerNameLengthToLongProperty); }
+            set { SetValue(ServerNameLengthToLongProperty, value); }
         }
 
         public static readonly DependencyProperty ServerPasswordProperty = DependencyProperty.Register(nameof(ServerPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -280,7 +297,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(AdminLoggingProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap_TheIsland));
+        public static readonly DependencyProperty ServerMapProperty = DependencyProperty.Register(nameof(ServerMap), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerMap));
         public string ServerMap
         {
             get { return (string)GetValue(ServerMapProperty); }
@@ -1323,21 +1340,21 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(HarvestingDamageMultiplierPlayerProperty, value); }
         }
 
-        public static readonly DependencyProperty PlayerBaseStatMultipliersProperty = DependencyProperty.Register(nameof(PlayerBaseStatMultipliers), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PlayerBaseStatMultipliersProperty = DependencyProperty.Register(nameof(PlayerBaseStatMultipliers), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PlayerBaseStatMultipliers
+        public StatsMultiplierArray PlayerBaseStatMultipliers
         {
-            get { return (FloatIniValueArray)GetValue(PlayerBaseStatMultipliersProperty); }
+            get { return (StatsMultiplierArray)GetValue(PlayerBaseStatMultipliersProperty); }
             set { SetValue(PlayerBaseStatMultipliersProperty, value); }
         }
 
-        public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PerLevelStatsMultiplier_Player
+        public StatsMultiplierArray PerLevelStatsMultiplier_Player
         {
-            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_PlayerProperty); }
+            get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_PlayerProperty); }
             set { SetValue(PerLevelStatsMultiplier_PlayerProperty, value); }
         }
 
@@ -1565,39 +1582,39 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoSettingsProperty, value); }
         }
 
-        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PerLevelStatsMultiplier_DinoWild
+        public StatsMultiplierArray PerLevelStatsMultiplier_DinoWild
         {
-            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoWildProperty); }
+            get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoWildProperty); }
             set { SetValue(PerLevelStatsMultiplier_DinoWildProperty, value); }
         }
 
-        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamedProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamedProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed
+        public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed
         {
-            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamedProperty); }
+            get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamedProperty); }
             set { SetValue(PerLevelStatsMultiplier_DinoTamedProperty, value); }
         }
 
-        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AddProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Add), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AddProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Add), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed_Add
+        public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed_Add
         {
-            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty); }
+            get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty); }
             set { SetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty, value); }
         }
 
-        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AffinityProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), typeof(FloatIniValueArray), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AffinityProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public FloatIniValueArray PerLevelStatsMultiplier_DinoTamed_Affinity
+        public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed_Affinity
         {
-            get { return (FloatIniValueArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty); }
+            get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty); }
             set { SetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty, value); }
         }
 
@@ -2811,35 +2828,21 @@ namespace ARK_Server_Manager.Lib
             return serverArgs.ToString();
         }
 
-        public static ServerProfile LoadFrom(string path)
+        public static ServerProfile LoadFrom(string file)
         {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
+            if (Path.GetExtension(file) == Config.Default.ProfileExtension)
+                return LoadFromProfileFile(file);
+
+            var filePath = Path.GetDirectoryName(file);
+            if (!filePath.EndsWith(Config.Default.ServerConfigRelativePath))
+                return null;
+
             ServerProfile settings = null;
-            if (Path.GetExtension(path) == Config.Default.ProfileExtension)
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
-
-                using (var reader = File.OpenRead(path))
-                {
-                    settings = (ServerProfile)serializer.Deserialize(reader);
-                    settings.IsDirty = false;
-                }
-
-                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsConfigFile);
-                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
-                if (File.Exists(configIniPath))
-                {
-                    settings = LoadFromINIFiles(configIniPath, settings);
-                }
-                else if (File.Exists(profileIniPath))
-                {
-                    settings = LoadFromINIFiles(profileIniPath, settings);
-                }
-            }
-            else
-            {
-                settings = LoadFromINIFiles(path, settings);
-                settings.InstallDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(path)))));
-            }
+            settings = LoadFromINIFiles(file, settings);
+            settings.InstallDirectory = filePath.Replace(Config.Default.ServerConfigRelativePath, string.Empty).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
             if (settings.PlayerLevels.Count == 0)
             {
@@ -2858,16 +2861,21 @@ namespace ARK_Server_Manager.Lib
                 settings.NPCSpawnSettings.RenderToView();
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
                 settings.ConfigOverrideSupplyCrateItems.RenderToView();
-            settings._lastSaveLocation = path;
 
+            settings._lastSaveLocation = file;
+            settings.IsDirty = true;
             return settings;
         }
 
-        private static ServerProfile LoadFromINIFiles(string path, ServerProfile settings)
+        private static ServerProfile LoadFromINIFiles(string file, ServerProfile settings)
         {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
             var exclusions = GetExclusions();
 
-            var iniFile = new SystemIniFile(Path.GetDirectoryName(path));
+            var iniPath = Path.GetDirectoryName(file);
+            var iniFile = new SystemIniFile(iniPath);
             settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings, exclusions);
 
@@ -2890,49 +2898,52 @@ namespace ARK_Server_Manager.Lib
             return settings;
         }
 
-        public static ServerProfile LoadFromProfileFile(string path)
+        public static ServerProfile LoadFromProfileFile(string file)
         {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
+            if (Path.GetExtension(file) != Config.Default.ProfileExtension)
+                return null;
+
             ServerProfile settings = null;
-            if (Path.GetExtension(path) == Config.Default.ProfileExtension)
+            XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
+            using (var reader = File.OpenRead(file))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
-
-                using (var reader = File.OpenRead(path))
-                {
-                    settings = (ServerProfile)serializer.Deserialize(reader);
-                    settings.IsDirty = false;
-                }
-
-                var profileIniPath = Path.Combine(Path.ChangeExtension(path, null), Config.Default.ServerGameUserSettingsConfigFile);
-                var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
-                if (File.Exists(configIniPath))
-                {
-                    settings = LoadFromINIFiles(configIniPath, settings);
-                }
-                else if (File.Exists(profileIniPath))
-                {
-                    settings = LoadFromINIFiles(profileIniPath, settings);
-                }
-
-                if (settings.PlayerLevels.Count == 0)
-                {
-                    settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
-                    settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
-                    settings.EnableLevelProgressions = false;
-                }
-
-                //
-                // Since these are not inserted the normal way, we force a recomputation here.
-                //
-                settings.PlayerLevels.UpdateTotals();
-                settings.DinoLevels.UpdateTotals();
-                settings.DinoSettings.RenderToView();
-                if (Config.Default.SectionMapSpawnerOverridesEnabled)
-                    settings.NPCSpawnSettings.RenderToView();
-                if (Config.Default.SectionSupplyCrateOverridesEnabled)
-                    settings.ConfigOverrideSupplyCrateItems.RenderToView();
-                settings._lastSaveLocation = path;
+                settings = (ServerProfile)serializer.Deserialize(reader);
             }
+
+            var profileIniPath = Path.Combine(Path.ChangeExtension(file, null), Config.Default.ServerGameUserSettingsConfigFile);
+            var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
+            if (File.Exists(configIniPath))
+            {
+                settings = LoadFromINIFiles(configIniPath, settings);
+            }
+            else if (File.Exists(profileIniPath))
+            {
+                settings = LoadFromINIFiles(profileIniPath, settings);
+            }
+
+            if (settings.PlayerLevels.Count == 0)
+            {
+                settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
+                settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
+                settings.EnableLevelProgressions = false;
+            }
+
+            //
+            // Since these are not inserted the normal way, we force a recomputation here.
+            //
+            settings.PlayerLevels.UpdateTotals();
+            settings.DinoLevels.UpdateTotals();
+            settings.DinoSettings.RenderToView();
+            if (Config.Default.SectionMapSpawnerOverridesEnabled)
+                settings.NPCSpawnSettings.RenderToView();
+            if (Config.Default.SectionSupplyCrateOverridesEnabled)
+                settings.ConfigOverrideSupplyCrateItems.RenderToView();
+
+            settings._lastSaveLocation = file;
+            settings.IsDirty = false;
             return settings;
         }
 
@@ -3229,14 +3240,14 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public bool Validate(out string validationMessage)
+        public bool Validate(bool forceValidate, out string validationMessage)
         {
             validationMessage = string.Empty;
             StringBuilder result = new StringBuilder();
 
             var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
 
-            if (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods)
+            if (forceValidate || (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods))
             {
                 // build a list of mods to be processed
                 var serverMapModId = GetProfileMapModId(this);
@@ -3443,9 +3454,10 @@ namespace ARK_Server_Manager.Lib
             File.SetLastAccessTime(mapFile, restoreFileInfo.LastAccessTime);
         }
 
-        public void UpdateServerNameLength()
+        public void ValidateServerName()
         {
             ServerNameLength = Encoding.UTF8.GetByteCount(ServerName);
+            ServerNameLengthToLong = ServerNameLength > 50;
         }
 
         #region Export Methods
@@ -3790,10 +3802,10 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoSettings.RenderToView();
 
-            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
-            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
 
             this.ClearValue(MatingIntervalMultiplierProperty);
             this.ClearValue(EggHatchSpeedMultiplierProperty);
@@ -3892,8 +3904,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
             this.ClearValue(CraftingSkillBonusMultiplierProperty);
 
-            this.PlayerBaseStatMultipliers = new FloatIniValueArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default);
-            this.PerLevelStatsMultiplier_Player = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default, playerStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default, playerStatMultiplierExclusions);
         }
 
         public void ResetRulesSection()
@@ -4268,16 +4280,16 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoSettings.RenderToView();
 
-            this.PerLevelStatsMultiplier_DinoWild = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default);
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
             this.PerLevelStatsMultiplier_DinoWild.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoWild.ToIniValues());
             this.PerLevelStatsMultiplier_DinoWild.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoWild.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed);
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
             this.PerLevelStatsMultiplier_DinoTamed.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
             this.PerLevelStatsMultiplier_DinoTamed_Add.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new FloatIniValueArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
             this.PerLevelStatsMultiplier_DinoTamed_Affinity.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled;
 

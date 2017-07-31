@@ -25,7 +25,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}/")]
         public string PluginCallUrlFormat {
             get {
                 return ((string)(this["PluginCallUrlFormat"]));

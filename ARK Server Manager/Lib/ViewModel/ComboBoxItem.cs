@@ -27,6 +27,15 @@ namespace ARK_Server_Manager.Lib.ViewModel
             get { return (string)GetValue(ValueMemberProperty); }
             set { SetValue(ValueMemberProperty, value); }
         }
+
+        public ComboBoxItem Duplicate()
+        {
+            return new ComboBoxItem
+            {
+                DisplayMember = this.DisplayMember,
+                ValueMember = this.ValueMember,
+            };
+        }
     }
 
     public class ComboBoxItemList : SortableObservableCollection<ComboBoxItem>

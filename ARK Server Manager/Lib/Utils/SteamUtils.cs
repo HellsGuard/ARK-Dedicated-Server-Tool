@@ -213,7 +213,7 @@ namespace ARK_Server_Manager.Lib
             {
                 if (!string.IsNullOrWhiteSpace(Config.Default.SteamAPIKey))
                     return Config.Default.SteamAPIKey;
-                return Config.Default.ASMSteamAPIKey;
+                return Config.Default.DefaultSteamAPIKey;
             }
         }
     }
