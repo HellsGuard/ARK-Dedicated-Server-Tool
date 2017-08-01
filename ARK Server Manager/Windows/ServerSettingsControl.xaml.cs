@@ -660,6 +660,21 @@ namespace ARK_Server_Manager
                     }
                 }
 
+                file = this.Settings.GetProfileFileNew();
+                if (File.Exists(file))
+                {
+                    var profileFile = ServerProfile.LoadFromProfileFileNew(file);
+                    if (profileFile != null)
+                    {
+                        profileFile.AdminPassword = "obfuscated";
+                        profileFile.ServerPassword = "obfuscated";
+                        profileFile.SpectatorPassword = "obfuscated";
+                        profileFile.WebAlarmKey = "obfuscated";
+                        profileFile.WebAlarmUrl = "obfuscated";
+                        obfuscateFiles.Add(file, profileFile.ToOutputString());
+                    }
+                }
+
                 // <data folder>\SteamCMD\steamapps\workshop\content\<app id>
                 if (this.Settings.SOTF_Enabled)
                     folder = Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath_SotF);

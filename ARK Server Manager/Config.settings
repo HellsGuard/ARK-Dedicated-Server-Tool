@@ -506,5 +506,8 @@
     <Setting Name="ASMPluginUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/board/22/plugins</Value>
     </Setting>
+    <Setting Name="ProfileExtensionNew" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.asmprofile</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

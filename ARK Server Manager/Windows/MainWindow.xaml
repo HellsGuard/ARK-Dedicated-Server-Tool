@@ -225,8 +225,22 @@
 
                 <eo:TabControl Name="Tabs" Grid.Row ="1" Margin="0,5,0,0" ShowCloseTabButton="True" ShowNewTabButton="True" NewItemRequested="Servers_AddNew" PreviewItemClose="Servers_Remove" ItemsSource="{Binding ServerManager.Servers}">
                     <eo:TabControl.HeaderTemplate>
-                        <DataTemplate >
-                            <TextBlock Text="{Binding Profile.ProfileName}"/>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Profile.ProfileName}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Profile.SOTF_Enabled}" Value="True">
+                                                <Setter Property="Foreground" Value="DarkRed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Profile.PGM_Enabled}" Value="True">
+                                                <Setter Property="Foreground" Value="#4E008B"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </DataTemplate>
                     </eo:TabControl.HeaderTemplate>
                     <eo:TabControl.NewTabButtonStyle>

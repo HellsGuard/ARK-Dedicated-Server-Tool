@@ -414,11 +414,13 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("Backing up profile and config files...");
 
                 var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                var profileFileNew = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
                 var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
                 var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
 
                 var profileBackupFolder = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName, DateTime.Now.ToString("yyyyMMdd_HHmmss")));
                 var profileBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                var profileBackupFileNew = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
                 var gameIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameConfigFile));
                 var gusIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameUserSettingsConfigFile));
 
@@ -427,6 +429,9 @@ namespace ARK_Server_Manager.Lib
 
                 if (File.Exists(profileFile))
                     File.Copy(profileFile, profileBackupFile, true);
+
+                if (File.Exists(profileFileNew))
+                    File.Copy(profileFileNew, profileBackupFileNew, true);
 
                 if (File.Exists(gameIniFile))
                     File.Copy(gameIniFile, gameIniBackupFile, true);

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class PGMTerrain : AggregateIniValue
     {
         private new const char DELIMITER = ';';
@@ -43,6 +45,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MapSeedProperty = DependencyProperty.Register(nameof(MapSeed), typeof(int), typeof(PGMTerrain), new PropertyMetadata(999));
+        [DataMember]
         [AggregateIniValueEntry]
         public int MapSeed
         {
@@ -51,6 +54,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty LandscapeRadiusProperty = DependencyProperty.Register(nameof(LandscapeRadius), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float LandscapeRadius
         {
@@ -59,6 +63,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WaterFrequencyProperty = DependencyProperty.Register(nameof(WaterFrequency), typeof(float), typeof(PGMTerrain), new PropertyMetadata(5.0f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "Water Frequency")]
         public float WaterFrequency
         {
@@ -67,6 +72,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainsFrequencyProperty = DependencyProperty.Register(nameof(MountainsFrequency), typeof(float), typeof(PGMTerrain), new PropertyMetadata(12.0f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "Mountains Frequency")]
         public float MountainsFrequency
         {
@@ -75,6 +81,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainsSlopeProperty = DependencyProperty.Register(nameof(MountainsSlope), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.8f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "Mountains Slope")]
         public float MountainsSlope
         {
@@ -83,6 +90,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainsHeightProperty = DependencyProperty.Register(nameof(MountainsHeight), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.25f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MountainsHeight
         {
@@ -91,6 +99,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TurbulencePowerProperty = DependencyProperty.Register(nameof(TurbulencePower), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.0125f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "Turbulence Power")]
         public float TurbulencePower
         {
@@ -99,6 +108,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShoreSlopeProperty = DependencyProperty.Register(nameof(ShoreSlope), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "Shore Slope")]
         public float ShoreSlope
         {
@@ -107,6 +117,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WaterLevelProperty = DependencyProperty.Register(nameof(WaterLevel), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.72f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float WaterLevel
         {
@@ -115,6 +126,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShoreLineEndProperty = DependencyProperty.Register(nameof(ShoreLineEnd), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.715f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ShoreLineEnd
         {
@@ -123,6 +135,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty GrassDensityProperty = DependencyProperty.Register(nameof(GrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float GrassDensity
         {
@@ -131,6 +144,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty JungleGrassDensityProperty = DependencyProperty.Register(nameof(JungleGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.02f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float JungleGrassDensity
         {
@@ -139,6 +153,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty OceanFloorLevelProperty = DependencyProperty.Register(nameof(OceanFloorLevel), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float OceanFloorLevel
         {
@@ -147,6 +162,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowBiomeSizeProperty = DependencyProperty.Register(nameof(SnowBiomeSize), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.3f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowBiomeSize
         {
@@ -155,6 +171,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RedWoodBiomeSizeProperty = DependencyProperty.Register(nameof(RedWoodBiomeSize), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.075f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "RWBiomeSize")]
         public float RedWoodBiomeSize
         {
@@ -163,6 +180,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainBiomeStartProperty = DependencyProperty.Register(nameof(MountainBiomeStart), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.55f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MountainBiomeStart
         {
@@ -171,6 +189,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainsTreeDensityProperty = DependencyProperty.Register(nameof(MountainsTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.01f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MountainsTreeDensity
         {
@@ -179,6 +198,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty JungleBiomeStartProperty = DependencyProperty.Register(nameof(JungleBiomeStart), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.65f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float JungleBiomeStart
         {
@@ -187,6 +207,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty IslandBorderCurveExponentProperty = DependencyProperty.Register(nameof(IslandBorderCurveExponent), typeof(float), typeof(PGMTerrain), new PropertyMetadata(4.0f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "IslandBorderCurveExp")]
         public float IslandBorderCurveExponent
         {
@@ -195,6 +216,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxSpawnPointHeightProperty = DependencyProperty.Register(nameof(MaxSpawnPointHeight), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.1f));
+        [DataMember]
         [AggregateIniValueEntry(Key = "MaxSawnPointHeight")]
         public float MaxSpawnPointHeight
         {
@@ -203,6 +225,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainGrassDensityProperty = DependencyProperty.Register(nameof(MountainGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.05f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MountainGrassDensity
         {
@@ -211,6 +234,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowMountainGrassDensityProperty = DependencyProperty.Register(nameof(SnowMountainGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.15f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowMountainGrassDensity
         {
@@ -219,6 +243,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowGrassDensityProperty = DependencyProperty.Register(nameof(SnowGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.25f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowGrassDensity
         {
@@ -227,6 +252,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty UnderwaterObjectsDensityProperty = DependencyProperty.Register(nameof(UnderwaterObjectsDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float UnderwaterObjectsDensity
         {
@@ -235,6 +261,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowMountainsTreeDensityProperty = DependencyProperty.Register(nameof(SnowMountainsTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.01f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowMountainsTreeDensity
         {
@@ -243,6 +270,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TreeDensityProperty = DependencyProperty.Register(nameof(TreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.003f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float TreeDensity
         {
@@ -251,6 +279,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty JungleTreeDensityProperty = DependencyProperty.Register(nameof(JungleTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.66f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float JungleTreeDensity
         {
@@ -259,6 +288,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RedWoodTreeDensityProperty = DependencyProperty.Register(nameof(RedWoodTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.35f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float RedWoodTreeDensity
         {
@@ -267,6 +297,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowTreeDensityProperty = DependencyProperty.Register(nameof(SnowTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowTreeDensity
         {
@@ -275,6 +306,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RedwoodGrassDensityProperty = DependencyProperty.Register(nameof(RedwoodGrassDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.1f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float RedwoodGrassDensity
         {
@@ -283,6 +315,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShoreTreeDensityProperty = DependencyProperty.Register(nameof(ShoreTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.05f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ShoreTreeDensity
         {
@@ -291,6 +324,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowShoreTreeDensityProperty = DependencyProperty.Register(nameof(SnowShoreTreeDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.025f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SnowShoreTreeDensity
         {
@@ -299,6 +333,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DeepWaterBiomesDepthProperty = DependencyProperty.Register(nameof(DeepWaterBiomesDepth), typeof(float), typeof(PGMTerrain), new PropertyMetadata(-0.24f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float DeepWaterBiomesDepth
         {
@@ -307,6 +342,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty InlandWaterObjectsDensityProperty = DependencyProperty.Register(nameof(InlandWaterObjectsDensity), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float InlandWaterObjectsDensity
         {
@@ -315,6 +351,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShorelineStartOffsetProperty = DependencyProperty.Register(nameof(ShorelineStartOffset), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.01f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ShorelineStartOffset
         {
@@ -323,6 +360,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ShorelineThicknessProperty = DependencyProperty.Register(nameof(ShorelineThickness), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.0015f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ShorelineThickness
         {
@@ -331,6 +369,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TreesGroundSlopeAccuracyProperty = DependencyProperty.Register(nameof(TreesGroundSlopeAccuracy), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float TreesGroundSlopeAccuracy
         {
@@ -339,6 +378,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ErosionStepsProperty = DependencyProperty.Register(nameof(ErosionSteps), typeof(int), typeof(PGMTerrain), new PropertyMetadata(4));
+        [DataMember]
         [AggregateIniValueEntry]
         public int ErosionSteps
         {
@@ -347,6 +387,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ErosionStrengthProperty = DependencyProperty.Register(nameof(ErosionStrength), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.75f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ErosionStrength
         {
@@ -355,6 +396,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DepositionStrengthProperty = DependencyProperty.Register(nameof(DepositionStrength), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.5f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float DepositionStrength
         {
@@ -363,6 +405,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MountainGeneralTreesPercentProperty = DependencyProperty.Register(nameof(MountainGeneralTreesPercent), typeof(float), typeof(PGMTerrain), new PropertyMetadata(0.1f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MountainGeneralTreesPercent
         {
@@ -371,6 +414,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SnowBiomeLocationProperty = DependencyProperty.Register(nameof(SnowBiomeLocation), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SnowBiomeLocation
         {
@@ -379,6 +423,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty RedWoodForestBiomeLocationProperty = DependencyProperty.Register(nameof(RedWoodForestBiomeLocation), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(Key = "RWForestBiomeLocation")]
         public PGMTerrainXY RedWoodForestBiomeLocation
         {
@@ -387,6 +432,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion1StartProperty = DependencyProperty.Register(nameof(NorthRegion1Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion1Start
         {
@@ -395,6 +441,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion1EndProperty = DependencyProperty.Register(nameof(NorthRegion1End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion1End
         {
@@ -403,6 +450,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion2StartProperty = DependencyProperty.Register(nameof(NorthRegion2Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion2Start
         {
@@ -411,6 +459,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion2EndProperty = DependencyProperty.Register(nameof(NorthRegion2End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion2End
         {
@@ -419,6 +468,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion3StartProperty = DependencyProperty.Register(nameof(NorthRegion3Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion3Start
         {
@@ -427,6 +477,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NorthRegion3EndProperty = DependencyProperty.Register(nameof(NorthRegion3End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY NorthRegion3End
         {
@@ -435,6 +486,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion1StartProperty = DependencyProperty.Register(nameof(SouthRegion1Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion1Start
         {
@@ -443,6 +495,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion1EndProperty = DependencyProperty.Register(nameof(SouthRegion1End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion1End
         {
@@ -451,6 +504,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion2StartProperty = DependencyProperty.Register(nameof(SouthRegion2Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion2Start
         {
@@ -459,6 +513,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion2EndProperty = DependencyProperty.Register(nameof(SouthRegion2End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion2End
         {
@@ -467,6 +522,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion3StartProperty = DependencyProperty.Register(nameof(SouthRegion3Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion3Start
         {
@@ -475,6 +531,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SouthRegion3EndProperty = DependencyProperty.Register(nameof(SouthRegion3End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY SouthRegion3End
         {
@@ -483,6 +540,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion1StartProperty = DependencyProperty.Register(nameof(EastRegion1Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion1Start
         {
@@ -491,6 +549,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion1EndProperty = DependencyProperty.Register(nameof(EastRegion1End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion1End
         {
@@ -499,6 +558,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion2StartProperty = DependencyProperty.Register(nameof(EastRegion2Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion2Start
         {
@@ -507,6 +567,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion2EndProperty = DependencyProperty.Register(nameof(EastRegion2End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion2End
         {
@@ -515,6 +576,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion3StartProperty = DependencyProperty.Register(nameof(EastRegion3Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion3Start
         {
@@ -523,6 +585,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EastRegion3EndProperty = DependencyProperty.Register(nameof(EastRegion3End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY EastRegion3End
         {
@@ -531,6 +594,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion1StartProperty = DependencyProperty.Register(nameof(WestRegion1Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion1Start
         {
@@ -539,6 +603,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion1EndProperty = DependencyProperty.Register(nameof(WestRegion1End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion1End
         {
@@ -547,6 +612,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion2StartProperty = DependencyProperty.Register(nameof(WestRegion2Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion2Start
         {
@@ -555,6 +621,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion2EndProperty = DependencyProperty.Register(nameof(WestRegion2End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion2End
         {
@@ -563,6 +630,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion3StartProperty = DependencyProperty.Register(nameof(WestRegion3Start), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion3Start
         {
@@ -571,6 +639,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty WestRegion3EndProperty = DependencyProperty.Register(nameof(WestRegion3End), typeof(PGMTerrainXY), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXY WestRegion3End
         {
@@ -579,6 +648,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TerrainScaleMultiplierProperty = DependencyProperty.Register(nameof(TerrainScaleMultiplier), typeof(PGMTerrainXYZ), typeof(PGMTerrain), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry]
         public PGMTerrainXYZ TerrainScaleMultiplier
         {
@@ -656,6 +726,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class PGMTerrainXY : AggregateIniValue
     {
         public PGMTerrainXY()
@@ -668,6 +739,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(nameof(X), typeof(float), typeof(PGMTerrainXY), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float X
         {
@@ -676,6 +748,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(nameof(Y), typeof(float), typeof(PGMTerrainXY), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float Y
         {
@@ -755,6 +828,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class PGMTerrainXYZ : PGMTerrainXY
     {
         public PGMTerrainXYZ()
@@ -767,6 +841,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ZProperty = DependencyProperty.Register(nameof(Z), typeof(float), typeof(PGMTerrainXYZ), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float Z
         {

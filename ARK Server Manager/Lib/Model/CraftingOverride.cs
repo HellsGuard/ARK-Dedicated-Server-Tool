@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Runtime.Serialization;
+using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class CraftingOverride : AggregateIniValue
     {
         public CraftingOverride()
@@ -10,6 +12,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemClassStringProperty = DependencyProperty.Register(nameof(ItemClassString), typeof(string), typeof(CraftingOverride), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         public string ItemClassString
         {
@@ -18,6 +21,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty BaseCraftingResourceRequirementsProperty = DependencyProperty.Register(nameof(BaseCraftingResourceRequirements), typeof(AggregateIniValueList<CraftingResourceRequirement>), typeof(CraftingOverride), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         public AggregateIniValueList<CraftingResourceRequirement> BaseCraftingResourceRequirements
         {
@@ -60,9 +64,11 @@ namespace ARK_Server_Manager.Lib
         public bool IsValid => !string.IsNullOrWhiteSpace(ItemClassString) && BaseCraftingResourceRequirements.Count > 0;
     }
 
+    [DataContract]
     public class CraftingResourceRequirement : AggregateIniValue
     {
         public static readonly DependencyProperty ResourceItemTypeStringProperty = DependencyProperty.Register(nameof(ResourceItemTypeString), typeof(string), typeof(CraftingResourceRequirement), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         public string ResourceItemTypeString
         {
@@ -71,6 +77,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty BaseResourceRequirementProperty = DependencyProperty.Register(nameof(BaseResourceRequirement), typeof(float), typeof(CraftingResourceRequirement), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float BaseResourceRequirement
         {
@@ -79,6 +86,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty CraftingRequireExactResourceTypeProperty = DependencyProperty.Register(nameof(CraftingRequireExactResourceType), typeof(bool), typeof(CraftingResourceRequirement), new PropertyMetadata(false));
+        [DataMember]
         [AggregateIniValueEntry(Key = "bCraftingRequireExactResourceType")]
         public bool CraftingRequireExactResourceType
         {

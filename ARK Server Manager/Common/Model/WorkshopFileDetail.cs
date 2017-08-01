@@ -12,7 +12,6 @@ namespace ARK_Server_Manager.Lib.Model
         public WorkshopFileDetailResponse response { get; set; }
     }
 
-    [Serializable]
     public class WorkshopFileDetailResponse
     {
         public DateTime cached = DateTime.UtcNow;
@@ -38,7 +37,6 @@ namespace ARK_Server_Manager.Lib.Model
         }
     }
 
-    [Serializable]
     public class WorkshopFileDetail
     {
         public int result { get; set; }

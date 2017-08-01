@@ -1807,5 +1807,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ASMPluginUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".asmprofile")]
+        public string ProfileExtensionNew {
+            get {
+                return ((string)(this["ProfileExtensionNew"]));
+            }
+        }
     }
 }

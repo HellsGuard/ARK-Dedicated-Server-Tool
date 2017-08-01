@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class NPCSpawnAttribute : Attribute
     {
@@ -21,6 +23,7 @@ namespace ARK_Server_Manager.Lib
         /// <summary>
         /// The ContainerTypes that are valid for the property.
         /// </summary>
+        [DataMember]
         public List<NPCSpawnContainerType> ContainerTypes;
     }
 
@@ -32,6 +35,7 @@ namespace ARK_Server_Manager.Lib
         Override,
     }
 
+    [DataContract]
     public class NPCSpawnContainerList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
          where T : AggregateIniValue, new()
     {
@@ -41,6 +45,7 @@ namespace ARK_Server_Manager.Lib
             ContainerType = containerType;
         }
 
+        [DataMember]
         public NPCSpawnContainerType ContainerType
         {
             get;
@@ -61,6 +66,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class NPCSpawnContainer : AggregateIniValue, ISpawnIniValue
     {
         public NPCSpawnContainer()
@@ -69,9 +75,11 @@ namespace ARK_Server_Manager.Lib
             NPCSpawnLimits = new NPCSpawnList<NPCSpawnLimit>(null);
         }
 
+        [DataMember]
         public Guid UniqueId = Guid.NewGuid();
 
         public static readonly DependencyProperty NPCSpawnEntriesContainerClassStringProperty = DependencyProperty.Register(nameof(NPCSpawnEntriesContainerClassString), typeof(string), typeof(NPCSpawnContainer), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public string NPCSpawnEntriesContainerClassString
@@ -81,6 +89,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCSpawnEntriesProperty = DependencyProperty.Register(nameof(NPCSpawnEntries), typeof(NPCSpawnList<NPCSpawnEntry>), typeof(NPCSpawnContainer), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public NPCSpawnList<NPCSpawnEntry> NPCSpawnEntries
@@ -90,6 +99,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCSpawnLimitsProperty = DependencyProperty.Register(nameof(NPCSpawnLimits), typeof(NPCSpawnList<NPCSpawnLimit>), typeof(NPCSpawnContainer), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public NPCSpawnList<NPCSpawnLimit> NPCSpawnLimits
@@ -213,6 +223,7 @@ namespace ARK_Server_Manager.Lib
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString) && NPCSpawnEntries.Count == NPCSpawnLimits.Count;
     }
 
+    [DataContract]
     public class NPCSpawnList<T> : AggregateIniValueList<T>, ISpawnIniValuesCollection
          where T : AggregateIniValue, new()
     {
@@ -235,9 +246,11 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class NPCSpawnEntry : AggregateIniValue, ISpawnIniValue
     {
         public static readonly DependencyProperty AnEntryNameProperty = DependencyProperty.Register(nameof(AnEntryName), typeof(string), typeof(NPCSpawnEntry), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Override })]
         public string AnEntryName
@@ -247,6 +260,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EntryWeightProperty = DependencyProperty.Register(nameof(EntryWeight), typeof(float), typeof(NPCSpawnEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Override })]
         public float EntryWeight
@@ -256,6 +270,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCsToSpawnStringsProperty = DependencyProperty.Register(nameof(NPCsToSpawnStrings), typeof(string), typeof(NPCSpawnEntry), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true)]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public string NPCsToSpawnStrings
@@ -367,9 +382,11 @@ namespace ARK_Server_Manager.Lib
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCsToSpawnStrings);
     }
 
+    [DataContract]
     public class NPCSpawnLimit : AggregateIniValue, ISpawnIniValue
     {
         public static readonly DependencyProperty NPCClassStringProperty = DependencyProperty.Register(nameof(NPCClassString), typeof(string), typeof(NPCSpawnLimit), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Subtract, NPCSpawnContainerType.Override })]
         public string NPCClassString
@@ -379,6 +396,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxPercentageOfDesiredNumToAllowProperty = DependencyProperty.Register(nameof(MaxPercentageOfDesiredNumToAllow), typeof(float), typeof(NPCSpawnLimit), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         [NPCSpawn(new[] { NPCSpawnContainerType.Add, NPCSpawnContainerType.Override })]
         public float MaxPercentageOfDesiredNumToAllow
