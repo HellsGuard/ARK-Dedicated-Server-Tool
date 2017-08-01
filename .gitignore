@@ -16,12 +16,6 @@ Ark Server Manager/obj/
 Ark Server Manager/publish/
 ArkData/bin/
 ArkData/obj/
-ASMWeb/bin/
-ASMWeb/obj/
-ASMWebAPI/bin/
-ASMWebAPI/obj/
-ASMWebAPI/publish/
-ASMWebAPI/Logs/
 NeXtVdf/bin/
 NeXtVdf/obj/
 Plugin.Common/bin/
@@ -35,5 +29,9 @@ QueryMaster/bin/
 QueryMaster/obj/
 SteamKit2/bin/
 SteamKit2/obj/
+WebAPI/bin/
+WebAPI/obj/
+WebAPI/publish/
+WebAPI/Logs/
 WPFSharp.Globalizer/bin/
 WPFSharp.Globalizer/obj/
