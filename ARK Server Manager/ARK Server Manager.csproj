@@ -159,14 +159,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddSteamUserWindow.xaml.cs">
+    <Compile Include="Windows\AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\Model\StatsMultiplierArray.cs" />
-    <Compile Include="ProfileSyncWindow.xaml.cs">
+    <Compile Include="Windows\ProfileSyncWindow.xaml.cs">
       <DependentUpon>ProfileSyncWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomConfigDataWindow.xaml.cs">
+    <Compile Include="Windows\CustomConfigDataWindow.xaml.cs">
       <DependentUpon>CustomConfigDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\BindingProxy.cs" />
@@ -198,28 +198,27 @@
     <Compile Include="Lib\ViewConverters\ExtinctionEventTimeIntervalConverter.cs" />
     <Compile Include="Lib\ValidationRules\StringValidationRule.cs" />
     <Compile Include="Lib\ViewModel\SupplyCrateSettings.cs" />
-    <Compile Include="PluginsWindow.xaml.cs">
+    <Compile Include="Windows\PluginsWindow.xaml.cs">
       <DependentUpon>PluginsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorldSaveRestoreWindow.xaml.cs">
+    <Compile Include="Windows\WorldSaveRestoreWindow.xaml.cs">
       <DependentUpon>WorldSaveRestoreWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorkshopFilesWindow.xaml.cs">
+    <Compile Include="Windows\WorkshopFilesWindow.xaml.cs">
       <DependentUpon>WorkshopFilesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShutdownWindow.xaml.cs">
+    <Compile Include="Windows\ShutdownWindow.xaml.cs">
       <DependentUpon>ShutdownWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ViewConverters\UnixTimeToDateTimeConverter.cs" />
-    <Compile Include="ModDetailsWindow.xaml.cs">
+    <Compile Include="Windows\ModDetailsWindow.xaml.cs">
       <DependentUpon>ModDetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs" />
     <Compile Include="Lib\Utils\JsonUtils.cs" />
     <Compile Include="Lib\Model\PublishedFileDetail.cs" />
     <Compile Include="Lib\Model\WorkshopFileDetail.cs" />
     <Compile Include="Lib\ViewConverters\InvertBooleanConverter.cs" />
-    <Compile Include="ProgressWindow.xaml.cs">
+    <Compile Include="Windows\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ListViewSorting.cs" />
@@ -236,11 +235,11 @@
     <Compile Include="WPFControls\AnnotatedSlider.xaml.cs">
       <DependentUpon>AnnotatedSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommandLineWindow.xaml.cs">
+    <Compile Include="Windows\CommandLineWindow.xaml.cs">
       <DependentUpon>CommandLineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ErrorHandling.cs" />
-    <Compile Include="GlobalSettingsControl.xaml.cs">
+    <Compile Include="Windows\GlobalSettingsControl.xaml.cs">
       <DependentUpon>GlobalSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ActionQueue.cs" />
@@ -276,15 +275,15 @@
     <Compile Include="Lib\Serialization\IniFile.cs" />
     <Compile Include="Lib\Serialization\ValueArray.cs" />
     <Compile Include="Lib\Server.cs" />
-    <Compile Include="Lib\Model\ServerProfile.cs" />
+    <Compile Include="Lib\ServerProfile.cs" />
     <Compile Include="Lib\ServerRCON.cs" />
     <Compile Include="Lib\Utils\TaskSchedulerUtils.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerUpdater.cs" />
-    <Compile Include="Lib\ServerUpdater\ServerApp.cs" />
+    <Compile Include="Lib\ServerUpdater.cs" />
+    <Compile Include="Lib\ServerApp.cs" />
     <Compile Include="Lib\SortableObservableCollection.cs" />
     <Compile Include="Lib\Utils\TaskUtils.cs" />
     <Compile Include="Lib\ViewModelBase.cs" />
-    <Compile Include="Lib\Model\ServerRuntime.cs" />
+    <Compile Include="Lib\ServerRuntime.cs" />
     <Compile Include="Lib\ViewConverters\AllTrueMultiValueConverter.cs" />
     <Compile Include="Lib\ViewModel\BindingProxy.cs" />
     <Compile Include="Lib\ViewConverters\DifficultyOffsetValueConverter.cs" />
@@ -306,31 +305,27 @@
     <Compile Include="Lib\ViewConverters\LevelIndexToDisplayOffsetConverter.cs" />
     <Compile Include="Lib\ViewModel\RCON\PlayerInfo.cs" />
     <Compile Include="Lib\ViewConverters\ResourceNameValueConverter.cs" />
-    <Compile Include="MainFrame.xaml.cs">
-      <DependentUpon>MainFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OpenRCONWindow.xaml.cs">
+    <Compile Include="Windows\OpenRCONWindow.xaml.cs">
       <DependentUpon>OpenRCONWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlayerProfileWindow.xaml.cs">
+    <Compile Include="Windows\PlayerProfileWindow.xaml.cs">
       <DependentUpon>PlayerProfileWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RCONWindow.xaml.cs">
+    <Compile Include="Windows\RCONWindow.xaml.cs">
       <DependentUpon>RCONWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ServerSettingsControl.xaml.cs">
+    <Compile Include="Windows\ServerSettingsControl.xaml.cs">
       <DependentUpon>ServerSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\ServerStatusWatcher.cs" />
-    <Compile Include="TribeProfileWindow.xaml.cs">
+    <Compile Include="Windows\TribeProfileWindow.xaml.cs">
       <DependentUpon>TribeProfileWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <None Include="ARK Server Manager_TemporaryKey.pfx" />
     <None Include="DeployBetaToAWS.cmd" />
-    <None Include="Lib\ServerUpdater\mcrcon.exe" />
     <Resource Include="Art\SteamCMD.png" />
     <Resource Include="Art\OpenLog.png" />
     <Resource Include="Art\Down.png" />
@@ -361,39 +356,39 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="AddSteamUserWindow.xaml">
+    <Page Include="Windows\AddSteamUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProfileSyncWindow.xaml">
+    <Page Include="Windows\ProfileSyncWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CustomConfigDataWindow.xaml">
+    <Page Include="Windows\CustomConfigDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PluginsWindow.xaml">
+    <Page Include="Windows\PluginsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorldSaveRestoreWindow.xaml">
+    <Page Include="Windows\WorldSaveRestoreWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorkshopFilesWindow.xaml">
+    <Page Include="Windows\WorkshopFilesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ShutdownWindow.xaml">
+    <Page Include="Windows\ShutdownWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ModDetailsWindow.xaml">
+    <Page Include="Windows\ModDetailsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ProgressWindow.xaml">
+    <Page Include="Windows\ProgressWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -408,31 +403,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AutoUpdateWindow.xaml">
+    <Page Include="Windows\AutoUpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Eraseme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Content Include="Globalization\de-DE\de-DE.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="MainFrame.xaml">
+    <Page Include="Windows\OpenRCONWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OpenRCONWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PlayerProfileWindow.xaml">
+    <Page Include="Windows\PlayerProfileWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TribeProfileWindow.xaml">
+    <Page Include="Windows\TribeProfileWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -459,15 +446,15 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="CommandLineWindow.xaml">
+    <Page Include="Windows\CommandLineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GlobalSettingsControl.xaml">
+    <Page Include="Windows\GlobalSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -475,7 +462,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AutoUpdateWindow.xaml.cs">
+    <Compile Include="Windows\AutoUpdateWindow.xaml.cs">
       <DependentUpon>AutoUpdateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Config.Designer.cs">
@@ -485,67 +472,22 @@
     </Compile>
     <Compile Include="Lib\Updater.cs" />
     <Compile Include="Lib\ServerManager.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RCONWindow.xaml">
+    <Page Include="Windows\RCONWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ServerSettingsControl.xaml">
+    <Page Include="Windows\ServerSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <BlendEmbeddedFont Include="Fonts\Montserrat-Bold.otf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\Montserrat-Regular.otf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\Montserrat-Black.otf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\Montserrat-Hairline.otf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\Montserrat-Light.otf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -556,8 +498,6 @@
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
     </None>
     <None Include="DeployToAWS.cmd" />
-    <None Include="Lib\ServerUpdater\AutoUpdateFromCache.ps1" />
-    <None Include="Lib\ServerUpdater\AutoUpdateServerCache.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <AppDesigner Include="Properties\" />

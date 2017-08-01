@@ -107,7 +107,7 @@
     <sys:String x:Key="WorkshopFiles_Load_FailedTitle">Load Workshop Items Error</sys:String>
     <sys:String x:Key="WorkshopFiles_Refresh_FailedTitle">Refresh Workshop Items Error</sys:String>
     <sys:String x:Key="WorkshopFiles_Refresh_FailedLabel">Loading workshop information from Steam failed, populating with the local cache instead.</sys:String>
-    <sys:String x:Key="WorkshopFiles_SelectedCountLabel">Selected Count:</sys:String>
+    <sys:String x:Key="WorkshopFiles_TotalCountLabel">Count:</sys:String>
     <sys:String x:Key="WorkshopFiles_LastRefreshedLabel">Last Refreshed:</sys:String>
     <sys:String x:Key="WorkshopFiles_FilterLabel">Filter:</sys:String>
     <sys:String x:Key="WorkshopFiles_FilterExistingLabel">Filter out existing mods</sys:String>
