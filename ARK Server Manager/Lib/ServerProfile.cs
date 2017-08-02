@@ -3750,8 +3750,8 @@ namespace ARK_Server_Manager.Lib
         {
             var profileSaveFolder = GetProfileSavePath(this);
             var mapName = GetProfileMapFileName(this);
-            var mapFile = Path.Combine(profileSaveFolder, $"{mapName}.ark");
-            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}");
+            var mapFile = Path.Combine(profileSaveFolder, $"{mapName}{Config.Default.MapExtension}");
+            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupServerExtension}");
 
             FileInfo mapFileInfo = new FileInfo(mapFile);
             FileInfo restoreFileInfo = new FileInfo(restoreFile);

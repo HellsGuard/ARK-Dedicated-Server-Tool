@@ -48,11 +48,11 @@ namespace ARK_Server_Manager
 
         public Boolean IsTribeOwner => ArkDataPlayer != null && ArkDataTribe != null && ArkDataTribe.OwnerId == ArkDataPlayer.Id;
 
-        public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, $"{Player.SteamId}.arkprofile")}";
+        public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, $"{Player.SteamId}{Config.Default.PlayerFileExtension}")}";
 
         public String ProfileLink => ArkDataPlayer?.ProfileUrl;
 
-        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}.arktribe")}";
+        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}{Config.Default.TribeFileExtension}")}";
 
         public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? $"{ArkDataTribe.Owner.SteamName} ({ArkDataTribe.Owner.CharacterName})" : null;
 

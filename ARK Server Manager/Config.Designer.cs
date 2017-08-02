@@ -1604,9 +1604,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".asmbak")]
-        public string BackupExtension {
+        public string BackupServerExtension {
             get {
-                return ((string)(this["BackupExtension"]));
+                return ((string)(this["BackupServerExtension"]));
             }
         }
         
@@ -1814,6 +1814,42 @@ namespace ARK_Server_Manager {
         public string ProfileExtensionNew {
             get {
                 return ((string)(this["ProfileExtensionNew"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".arkprofile")]
+        public string PlayerFileExtension {
+            get {
+                return ((string)(this["PlayerFileExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".arktribe")]
+        public string TribeFileExtension {
+            get {
+                return ((string)(this["TribeFileExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".zip")]
+        public string BackupExtension {
+            get {
+                return ((string)(this["BackupExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".ark")]
+        public string MapExtension {
+            get {
+                return ((string)(this["MapExtension"]));
             }
         }
     }

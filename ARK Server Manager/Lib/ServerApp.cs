@@ -26,6 +26,7 @@ namespace ARK_Server_Manager.Lib
 
         internal class ProfileSnapshot
         {
+            public string ProfileId;
             public string ProfileName;
             public string InstallDirectory;
             public string AltSaveDirectoryName;
@@ -62,6 +63,7 @@ namespace ARK_Server_Manager.Lib
             {
                 return new ProfileSnapshot
                 {
+                    ProfileId = profile.ProfileID,
                     ProfileName = profile.ProfileName,
                     InstallDirectory = profile.InstallDirectory,
                     AltSaveDirectoryName = profile.AltSaveDirectoryName,
@@ -112,6 +114,7 @@ namespace ARK_Server_Manager.Lib
         public const int MUTEX_TIMEOUT = 5;         // 5 minutes
         public const int MUTEX_ATTEMPTDELAY = 5000; // 5 seconds
         private const int WRITELOG_ERRORRETRYDELAY = 2000; // 2 seconds
+        private const int BACKUP_DELETEINTERVAL = 7; // 7 days
 
         private const int STEAM_MAXRETRIES = 10;
         private const int RCON_MAXRETRIES = 3;
@@ -169,7 +172,7 @@ namespace ARK_Server_Manager.Lib
         private bool _serverRunning = false;
 
         public bool BackupWorldFile = true;
-        public bool DeleteOldBackupWorldFiles = false;
+        public bool DeleteOldServerBackupFiles = false;
         public int ExitCode = EXITCODE_NORMALEXIT;
         public bool OutputLogs = true;
         public bool SendAlerts = false;
@@ -199,9 +202,6 @@ namespace ARK_Server_Manager.Lib
             emailMessage.AppendLine("ASM Backup Summary:");
             emailMessage.AppendLine();
             emailMessage.AppendLine($"ASM version: {App.Version}");
-
-            emailMessage.AppendLine();
-            emailMessage.AppendLine("Backup:");
 
             // Find the server process.
             Process process = GetServerProcess();
@@ -266,71 +266,17 @@ namespace ARK_Server_Manager.Lib
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
 
-            // make a backup of the current world file.
-            var worldFile = GetServerWorldFile();
-            if (File.Exists(worldFile))
-            {
-                emailMessage.AppendLine();
-
-                try
-                {
-                    LogProfileMessage("Backing up world file...");
-
-                    var backupFile = GetServerWorldBackupFile();
-                    File.Copy(worldFile, backupFile, true);
-
-                    File.SetCreationTime(backupFile, _startTime);
-                    File.SetLastWriteTime(backupFile, _startTime);
-                    File.SetLastAccessTime(backupFile, _startTime);
-
-                    LogProfileMessage($"Backed up world file '{worldFile}'.");
-
-                    emailMessage.AppendLine("Backed up world file.");
-                    emailMessage.AppendLine(worldFile);
-                }
-                catch (Exception ex)
-                {
-                    LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
-
-                    emailMessage.AppendLine("Unable to back up world file.");
-                    emailMessage.AppendLine(worldFile);
-                    emailMessage.AppendLine(ex.Message);
-                }
-            }
-            else
-            {
-                LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
-
-                emailMessage.AppendLine("Unable to back up world file.");
-                emailMessage.AppendLine(worldFile);
-                emailMessage.AppendLine("File could not be found.");
-            }
+            // make a backup of the current profile and config files.
+            CreateProfileBackupArchiveFile();
 
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
 
-            // delete the old backup files
-            if (DeleteOldBackupWorldFiles)
-            {
-                var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
-                var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-                var backupFileFilter = $"{mapName}_ASMBackup_*{Config.Default.BackupExtension}";
-                var backupDateFilter = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
+            // make a backup of the current world file.
+            CreateServerBackupArchiveFile(emailMessage);
 
-                var backupFiles = new DirectoryInfo(profileSaveFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
-                foreach (var backupFile in backupFiles)
-                {
-                    try
-                    {
-                        LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.CreationTime.ToString()}.");
-                        backupFile.Delete();
-                    }
-                    catch
-                    {
-                        // if unable to delete, do not bother
-                    }
-                }
-            }
+            if (ExitCode != EXITCODE_NORMALEXIT)
+                return;
 
             if (Config.Default.EmailNotify_AutoBackup)
             {
@@ -379,75 +325,20 @@ namespace ARK_Server_Manager.Lib
                 return;
             }
 
+            // make a backup of the current profile and config files.
+            CreateProfileBackupArchiveFile();
+
+            if (ExitCode != EXITCODE_NORMALEXIT)
+                return;
+
             if (BackupWorldFile)
             {
                 // make a backup of the current world file.
-                var worldFile = GetServerWorldFile();
-                if (File.Exists(worldFile))
-                {
-                    try
-                    {
-                        LogProfileMessage("Backing up world save file...");
-
-                        var backupFile = GetServerWorldBackupFile();
-                        File.Copy(worldFile, backupFile, true);
-
-                        LogProfileMessage($"Backed up world save file '{worldFile}'.");
-                    }
-                    catch (Exception ex)
-                    {
-                        LogProfileError($"Unable to back up world save file - {worldFile}.\r\n{ex.Message}", false);
-                    }
-                }
-                else
-                {
-                    LogProfileMessage($"Unable to back up world save file - '{worldFile}'\r\nWorld save file could not be found.");
-                }
+                CreateServerBackupArchiveFile(null);
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
             }
-
-            // make a backup of the current profile and config files.
-            try
-            {
-                LogProfileMessage("Backing up profile and config files...");
-
-                var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
-                var profileFileNew = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
-                var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
-                var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
-
-                var profileBackupFolder = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName, DateTime.Now.ToString("yyyyMMdd_HHmmss")));
-                var profileBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
-                var profileBackupFileNew = Updater.NormalizePath(Path.Combine(profileBackupFolder, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
-                var gameIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameConfigFile));
-                var gusIniBackupFile = Updater.NormalizePath(Path.Combine(profileBackupFolder, Config.Default.ServerGameUserSettingsConfigFile));
-
-                if (!Directory.Exists(profileBackupFolder))
-                    Directory.CreateDirectory(profileBackupFolder);
-
-                if (File.Exists(profileFile))
-                    File.Copy(profileFile, profileBackupFile, true);
-
-                if (File.Exists(profileFileNew))
-                    File.Copy(profileFileNew, profileBackupFileNew, true);
-
-                if (File.Exists(gameIniFile))
-                    File.Copy(gameIniFile, gameIniBackupFile, true);
-
-                if (File.Exists(gusIniFile))
-                    File.Copy(gusIniFile, gusIniBackupFile, true);
-
-                LogProfileMessage("Backed up profile and config files.");
-            }
-            catch (Exception ex)
-            {
-                LogProfileError($"Unable to back up profile and config files.\r\n{ex.Message}", false);
-            }
-
-            if (ExitCode != EXITCODE_NORMALEXIT)
-                return;
 
             if (updateServer)
             {
@@ -1335,46 +1226,16 @@ namespace ARK_Server_Manager.Lib
                 emailMessage.AppendLine();
                 emailMessage.AppendLine($"ASM version: {App.Version}");
 
+                // make a backup of the current profile and config files.
+                CreateProfileBackupArchiveFile();
+
+                if (ExitCode != EXITCODE_NORMALEXIT)
+                    return;
+
                 if (BackupWorldFile)
                 {
-                    emailMessage.AppendLine();
-                    emailMessage.AppendLine("Backup:");
-
                     // make a backup of the current world file.
-                    var worldFile = GetServerWorldFile();
-                    if (File.Exists(worldFile))
-                    {
-                        emailMessage.AppendLine();
-
-                        try
-                        {
-                            LogProfileMessage("Backing up world file...");
-
-                            var backupFile = GetServerWorldBackupFile();
-                            File.Copy(worldFile, backupFile, true);
-
-                            LogProfileMessage($"Backed up world file '{worldFile}'.");
-
-                            emailMessage.AppendLine("Backed up world file.");
-                            emailMessage.AppendLine(worldFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogProfileError($"Unable to back up world file - {worldFile}.\r\n{ex.Message}", false);
-
-                            emailMessage.AppendLine("Unable to back up world file.");
-                            emailMessage.AppendLine(worldFile);
-                            emailMessage.AppendLine(ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        LogProfileMessage($"Unable to back up world file - '{worldFile}'\r\nFile could not be found.");
-
-                        emailMessage.AppendLine("Unable to back up world file.");
-                        emailMessage.AppendLine(worldFile);
-                        emailMessage.AppendLine("File could not be found.");
-                    }
+                    CreateServerBackupArchiveFile(emailMessage);
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                         return;
@@ -1898,6 +1759,282 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        private void CreateProfileBackupArchiveFile()
+        {
+            if (_profile == null)
+            {
+                ExitCode = EXITCODE_BADPROFILE;
+                return;
+            }
+
+            // create the backup file.
+            try
+            {
+                LogProfileMessage("Back up profile and config files started...");
+
+                var backupFolder = GetProfileBackupFolder();
+                var backupFileName = $"{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}";
+                var backupFile = Updater.NormalizePath(Path.Combine(backupFolder, backupFileName));
+
+                var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                var profileFileNew = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
+                var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
+                var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
+                var launcherFile = GetLauncherFile();
+
+                if (!Directory.Exists(backupFolder))
+                    Directory.CreateDirectory(backupFolder);
+
+                if (File.Exists(backupFile))
+                    File.Delete(backupFile);
+
+                var files = new List<string>();
+                if (File.Exists(profileFile))
+                    files.Add(profileFile);
+
+                if (File.Exists(profileFileNew))
+                    files.Add(profileFileNew);
+
+                if (File.Exists(gameIniFile))
+                    files.Add(gameIniFile);
+
+                if (File.Exists(gusIniFile))
+                    files.Add(gusIniFile);
+
+                if (File.Exists(launcherFile))
+                    files.Add(launcherFile);
+
+                var comment = new StringBuilder();
+                comment.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
+                comment.AppendLine($"Windows Version: {Environment.OSVersion.VersionString}");
+                comment.AppendLine($"ASM Version: {App.Version}");
+                comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
+                comment.AppendLine($"Server Directory: {_profile.InstallDirectory}");
+                comment.AppendLine($"Profile Name: {_profile.ProfileName}");
+                comment.AppendLine($"SotF Server: {_profile.SotFEnabled}");
+                comment.AppendLine($"PGM Server: {_profile.PGM_Enabled}");
+                comment.AppendLine($"Process: {ServerProcess}");
+
+                ZipUtils.ZipFiles(backupFile, files.ToArray(), comment.ToString(), false);
+            }
+            catch (Exception ex)
+            {
+                LogProfileError($"Error backing up profile and config files.\r\n{ex.Message}", false);
+            }
+            finally
+            {
+                LogProfileMessage("Back up profile and config files finished.");
+            }
+
+            // delete the old backup files
+            try
+            {
+                LogProfileMessage("Delete old profile backup files started...");
+
+                var backupFolder = GetProfileBackupFolder();
+                var backupFileFilter = $"*{Config.Default.BackupExtension}";
+                var backupDateFilter = DateTime.Now.AddDays(-BACKUP_DELETEINTERVAL);
+
+                var backupFiles = new DirectoryInfo(backupFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
+                foreach (var backupFile in backupFiles)
+                {
+                    try
+                    {
+                        LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.CreationTime.ToString()}.");
+                        backupFile.Delete();
+                    }
+                    catch
+                    {
+                        // if unable to delete, do not bother
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogProfileError($"Error deleting old profile backup files.\r\n{ex.Message}", false);
+            }
+            finally
+            {
+                LogProfileMessage("Delete old profile backup files finished.");
+            }
+
+            // cleanup any backup folders from old backup process
+            try
+            {
+                var backupFolder = GetProfileBackupFolder();
+
+                var oldBackupFolders = new DirectoryInfo(backupFolder).GetDirectories();
+                foreach (var oldBackupFolder in oldBackupFolders)
+                {
+                    oldBackupFolder.Delete(true);
+                }
+            }
+            catch
+            {
+                // if unable to delete, do not bother
+            }
+        }
+
+        private void CreateServerBackupArchiveFile(StringBuilder emailMessage)
+        {
+            if (_profile == null || _profile.SotFEnabled)
+            {
+                ExitCode = EXITCODE_BADPROFILE;
+                return;
+            }
+
+            // check if the servers save folder exists
+            var saveFolder = GetServerSaveFolder();
+            if (Directory.Exists(saveFolder))
+            {
+                // make a backup of the current world file.
+                var worldFile = GetServerWorldFile();
+                if (File.Exists(worldFile))
+                {
+                    try
+                    {
+                        LogProfileMessage("Back up world files started...");
+
+                        var backupFolder = GetServerBackupFolder();
+                        var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
+                        var backupFileName = $"{mapName}_{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}";
+                        var backupFile = Updater.NormalizePath(Path.Combine(backupFolder, backupFileName));
+
+                        if (!Directory.Exists(backupFolder))
+                            Directory.CreateDirectory(backupFolder);
+
+                        if (File.Exists(backupFile))
+                            File.Delete(backupFile);
+
+                        var files = new List<string>();
+                        files.Add(worldFile);
+
+                        var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
+                        var playerFiles = new DirectoryInfo(saveFolder).GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
+                        foreach (var playerFile in playerFiles)
+                        {
+                            files.Add(playerFile.FullName);
+                        }
+
+                        var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
+                        var tribeFiles = new DirectoryInfo(saveFolder).GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
+                        foreach (var tribeFile in tribeFiles)
+                        {
+                            files.Add(tribeFile.FullName);
+                        }
+
+                        var comment = new StringBuilder();
+                        comment.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
+                        comment.AppendLine($"Windows Version: {Environment.OSVersion.VersionString}");
+                        comment.AppendLine($"ASM Version: {App.Version}");
+                        comment.AppendLine($"Config Directory: {Config.Default.ConfigDirectory}");
+                        comment.AppendLine($"Server Directory: {_profile.InstallDirectory}");
+                        comment.AppendLine($"Profile Name: {_profile.ProfileName}");
+                        comment.AppendLine($"SotF Server: {_profile.SotFEnabled}");
+                        comment.AppendLine($"PGM Server: {_profile.PGM_Enabled}");
+                        comment.AppendLine($"Process: {ServerProcess}");
+
+                        ZipUtils.ZipFiles(backupFile, files.ToArray(), comment.ToString(), false);
+
+                        emailMessage.AppendLine();
+                        emailMessage.AppendLine("Backed up world files.");
+                        emailMessage.AppendLine(saveFolder);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogProfileError($"Error backing up world files.\r\n{ex.Message}", false);
+
+                        emailMessage.AppendLine();
+                        emailMessage.AppendLine("Error backing up world files.");
+                        emailMessage.AppendLine(ex.Message);
+                    }
+                    finally
+                    {
+                        LogProfileMessage("Back up world files finished.");
+                    }
+                }
+                else
+                {
+                    LogProfileMessage($"Server save file does not exist or could not be found '{worldFile}'.");
+                    LogProfileMessage($"Backup not performed.");
+
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine($"Server save file does not exist or could not be found.");
+                    emailMessage.AppendLine(worldFile);
+
+                    emailMessage.AppendLine();
+                    emailMessage.AppendLine("Backup not performed.");
+                }
+            }
+            else
+            {
+                LogProfileMessage($"Server save folder does not exist or could not be found '{saveFolder}'.");
+                LogProfileMessage($"Backup not performed.");
+
+                emailMessage.AppendLine();
+                emailMessage.AppendLine($"Server save folder does not exist or could not be found.");
+                emailMessage.AppendLine(saveFolder);
+
+                emailMessage.AppendLine();
+                emailMessage.AppendLine("Backup not performed.");
+            }
+
+            // delete the old backup files
+            if (DeleteOldServerBackupFiles)
+            {
+                try
+                {
+                    LogProfileMessage("Delete old server backup files started...");
+
+                    var backupFolder = GetServerBackupFolder();
+                    var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
+                    var backupFileFilter = $"{mapName}_*{Config.Default.BackupExtension}";
+                    var backupDateFilter = DateTime.Now.AddDays(-Config.Default.AutoBackup_DeleteInterval);
+
+                    var backupFiles = new DirectoryInfo(backupFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
+                    foreach (var backupFile in backupFiles)
+                    {
+                        try
+                        {
+                            LogProfileMessage($"{backupFile.Name} was deleted, last updated {backupFile.CreationTime.ToString()}.");
+                            backupFile.Delete();
+                        }
+                        catch
+                        {
+                            // if unable to delete, do not bother
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogProfileError($"Error deleting old server backup files.\r\n{ex.Message}", false);
+                }
+                finally
+                {
+                    LogProfileMessage("Delete old server backup files finished.");
+                }
+            }
+
+            // slowly cleanup any backup files from old backup process
+            try
+            {
+                var backupFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
+                var backupFileFilter = $"*{Config.Default.BackupServerExtension}";
+                var backupDateFilter = DateTime.Now.AddDays(-BACKUP_DELETEINTERVAL);
+
+                var oldBackupFiles = new DirectoryInfo(backupFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
+                foreach (var oldBackupFile in oldBackupFiles)
+                {
+                    LogProfileMessage($"{oldBackupFile.Name} was deleted, last updated {oldBackupFile.CreationTime.ToString()}.");
+                    oldBackupFile.Delete();
+                }
+            }
+            catch
+            {
+                // if unable to delete, do not bother
+            }
+        }
+
         public static void DirectoryCopy(string sourceFolder, string destinationFolder, bool copySubFolders, bool useSmartCopy, ProgressDelegate progressCallback)
         {
             var directory = new DirectoryInfo(sourceFolder);
@@ -1987,6 +2124,8 @@ namespace ARK_Server_Manager.Lib
             return ModUtils.ValidateModList(modIdList);
         }
 
+        private string GetProfileBackupFolder() => Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName));
+
         private string GetProfileLogFile() => _profile != null ? Updater.NormalizePath(Path.Combine(Updater.GetLogFolder(), _profile.ProfileName, _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log")) : GetLogFile();
 
         private string GetModPath(string modId) => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath, modId));
@@ -2007,6 +2146,8 @@ namespace ARK_Server_Manager.Lib
                 return builder.ToString();
             }
         }
+
+        private string GetServerBackupFolder() => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.BackupDir, _profile.ProfileName));
 
         private static string GetServerCacheTimeFile() => Updater.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
 
@@ -2050,18 +2191,13 @@ namespace ARK_Server_Manager.Lib
 
         private string GetServerTimeFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.LastUpdatedTimeFile));
 
+        private string GetServerSaveFolder() => Updater.NormalizePath(ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name));
+
         private string GetServerWorldFile()
         {
-            var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
+            var profileSaveFolder = GetServerSaveFolder();
             var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}.ark"));
-        }
-
-        private string GetServerWorldBackupFile()
-        {
-            var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
-            var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}_ASMBackup_{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}"));
+            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}{Config.Default.MapExtension}"));
         }
 
         public static bool HasNewServerVersion(string directory, DateTime checkTime)
@@ -2593,7 +2729,7 @@ namespace ARK_Server_Manager.Lib
 
                 Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoBackup), profile => {
                     var app = new ServerApp();
-                    app.DeleteOldBackupWorldFiles = Config.Default.AutoBackup_DeleteOldFiles;
+                    app.DeleteOldServerBackupFiles = Config.Default.AutoBackup_DeleteOldFiles;
                     app.SendAlerts = true;
                     app.SendEmails = true;
                     app.ServerProcess = ServerProcessType.AutoBackup;

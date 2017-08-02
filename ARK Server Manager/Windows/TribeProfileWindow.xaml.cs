@@ -55,7 +55,7 @@ namespace ARK_Server_Manager
 
         public String CreatedDate => ArkDataTribe?.FileCreated.ToString("G");
 
-        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}.arktribe")}";
+        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}{Config.Default.TribeFileExtension}")}";
 
         public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? string.Format("{0} ({1})", ArkDataTribe.Owner.SteamName, ArkDataTribe.Owner.CharacterName) : null;
 

@@ -226,15 +226,15 @@ namespace ARK_Server_Manager
 
                 var profileSaveFolderInfo = new DirectoryInfo(profileSaveFolder);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile);
-                var mapFileName = $"{mapName}.ark";
-                var searchPattern = $"{mapName}*.ark";
+                var mapFileName = $"{mapName}{Config.Default.MapExtension}";
+                var searchPattern = $"{mapName}*{Config.Default.MapExtension}";
 
                 foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
                 {
                     WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
                 }
 
-                searchPattern = $"{mapName}*{Config.Default.BackupExtension}";
+                searchPattern = $"{mapName}*{Config.Default.BackupServerExtension}";
                 foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
                 {
                     WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });

@@ -7,7 +7,7 @@ namespace ARK_Server_Manager.Lib.Utils
 {
     public static class ZipUtils
     {
-        public static void ZipFiles(string zipFile, string[] filesToZip, string comment)
+        public static void ZipFiles(string zipFile, string[] filesToZip, string comment, bool preserveDirHierarchy = true, string directoryPathInArchive = "")
         {
             if (string.IsNullOrWhiteSpace(zipFile))
                 throw new ArgumentNullException(nameof(zipFile));
@@ -16,7 +16,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
             using (var zip = new ZipFile())
             {
-                zip.AddFiles(filesToZip.Where(f => !string.IsNullOrWhiteSpace(f) && File.Exists(f)), true, string.Empty);
+                zip.AddFiles(filesToZip.Where(f => !string.IsNullOrWhiteSpace(f) && File.Exists(f)), preserveDirHierarchy, directoryPathInArchive);
 
                 zip.CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
                 if (!string.IsNullOrWhiteSpace(comment))

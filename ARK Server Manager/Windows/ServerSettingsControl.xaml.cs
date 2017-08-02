@@ -870,7 +870,7 @@ namespace ARK_Server_Manager
 
                 var app = new ServerApp()
                 {
-                    DeleteOldBackupWorldFiles = false,
+                    DeleteOldServerBackupFiles = false,
                     SendEmails = false,
                     OutputLogs = false,
                     ServerProcess = ServerProcessType.Backup,
@@ -882,7 +882,7 @@ namespace ARK_Server_Manager
                 if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
                     throw new ApplicationException($"An error occured during the backup process - ExitCode: {exitCode}");
 
-                MessageBox.Show("The backup was successful.", _globalizer.GetResourceString("ServerSettings_BackupServer_Title"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("The backup was successful.", _globalizer.GetResourceString("ServerSettings_BackupServer_Title"), MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
