@@ -39,10 +39,10 @@
             </Style>
             <Style x:Key="CommunityBanned" TargetType="{x:Type Label}">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding ArkDataPlayer.CommunityBanned}" Value="False">
+                    <DataTrigger Binding="{Binding PlayerData.CommunityBanned}" Value="False">
                         <Setter Property="Foreground" Value="Black"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding ArkDataPlayer.CommunityBanned}" Value="True">
+                    <DataTrigger Binding="{Binding PlayerData.CommunityBanned}" Value="True">
                         <Setter Property="Foreground" Value="Red"/>
                         <Setter Property="FontWeight" Value="Bold"/>
                     </DataTrigger>
@@ -50,10 +50,10 @@
             </Style>
             <Style x:Key="VACBanned" TargetType="{x:Type Label}">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding ArkDataPlayer.VACBanned}" Value="False">
+                    <DataTrigger Binding="{Binding PlayerData.VACBanned}" Value="False">
                         <Setter Property="Foreground" Value="Black"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding ArkDataPlayer.VACBanned}" Value="True">
+                    <DataTrigger Binding="{Binding PlayerData.VACBanned}" Value="True">
                         <Setter Property="Foreground" Value="Red"/>
                         <Setter Property="FontWeight" Value="Bold"/>
                     </DataTrigger>
@@ -134,13 +134,13 @@
                     <Label Grid.Row="0" Content="{DynamicResource Profile_IdLabel}"/>
                     <Label Grid.Row="0" Grid.Column="1" Content="{Binding Player.SteamId}"/>
                     <Label Grid.Row="1" Content="{DynamicResource Profile_BannedCommunityLabel}"/>
-                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding ArkDataPlayer.CommunityBanned}" Style="{DynamicResource CommunityBanned}"/>
+                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding PlayerData.CommunityBanned}" Style="{DynamicResource CommunityBanned}"/>
                     <Label Grid.Row="2" Content="{DynamicResource Profile_BannedVACLabel}"/>
-                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding ArkDataPlayer.VACBanned}" Style="{DynamicResource VACBanned}"/>
+                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding PlayerData.VACBanned}" Style="{DynamicResource VACBanned}"/>
                     <Label Grid.Row="3" Content="{DynamicResource Profile_BannedVACCountLabel}"/>
-                    <Label Grid.Row="3" Grid.Column="1" Content="{Binding ArkDataPlayer.NumberOfVACBans}"/>
+                    <Label Grid.Row="3" Grid.Column="1" Content="{Binding PlayerData.NumberOfVACBans}"/>
                     <Label Grid.Row="4" Content="{DynamicResource Profile_BannedVACDaysLabel}"/>
-                    <Label Grid.Row="4" Grid.Column="1" Content="{Binding ArkDataPlayer.DaysSinceLastBan}"/>
+                    <Label Grid.Row="4" Grid.Column="1" Content="{Binding PlayerData.DaysSinceLastBan}"/>
                 </Grid>
             </GroupBox>
             
@@ -165,20 +165,20 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource Profile_NavigateProfile}">
                         <Hyperlink NavigateUri="{Binding PlayerLink}" Command="{Binding ExplorerLinkCommand}" CommandParameter="{Binding PlayerLink}">
                            <Hyperlink.Inlines>
-                                <Run Text="{Binding ArkDataPlayer.Id}"/>
+                                <Run Text="{Binding PlayerData.Id}"/>
                            </Hyperlink.Inlines>
                         </Hyperlink>
                     </TextBlock>
                     <Label Grid.Row="1" Content="{DynamicResource Profile_NameLabel}"/>
-                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding ArkDataPlayer.CharacterName}"/>
+                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding PlayerData.CharacterName}"/>
                     <Label Grid.Row="2" Content="{DynamicResource Profile_LevelLabel}"/>
-                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding ArkDataPlayer.Level}"/>
+                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding PlayerData.Level}"/>
                     <Label Grid.Row="3" Content="{DynamicResource Profile_WhitelistedLabel}"/>
                     <Label Grid.Row="3" Grid.Column="1" Content="{Binding Player.IsWhitelisted}" Style="{DynamicResource Whitelisted}"/>
                     <Label Grid.Row="4" Content="{DynamicResource Profile_BannedLabel}"/>
                     <Label Grid.Row="4" Grid.Column="1" Content="{Binding Player.IsBanned}" Style="{DynamicResource Banned}"/>
                     <Label Grid.Row="5" Content="{DynamicResource Profile_BannedGameCountLabel}"/>
-                    <Label Grid.Row="5" Grid.Column="1" Content="{Binding ArkDataPlayer.NumberOfGameBans}"/>
+                    <Label Grid.Row="5" Grid.Column="1" Content="{Binding PlayerData.NumberOfGameBans}"/>
                 </Grid>
             </GroupBox>
             
@@ -200,12 +200,12 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource Profile_NavigateProfile}">
                         <Hyperlink NavigateUri="{Binding TribeLink}" Command="{Binding ExplorerLinkCommand}" CommandParameter="{Binding TribeLink}">
                            <Hyperlink.Inlines>
-                                <Run Text="{Binding ArkDataTribe.Id}"/>
+                                <Run Text="{Binding TribeData.Id}"/>
                            </Hyperlink.Inlines>
                         </Hyperlink>
                     </TextBlock>
                     <Label Grid.Row="1" Content="{DynamicResource Profile_NameLabel}"/>
-                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding ArkDataTribe.Name}"/>
+                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding TribeData.Name}"/>
                     <Label Grid.Row="2" Content="{DynamicResource Profile_TribeOwnerLabel}"/>
                     <Label Grid.Row="2" Grid.Column="1" Content="{Binding TribeOwner}"/>
                 </Grid>

@@ -74,7 +74,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource Profile_NavigateProfile}">
                         <Hyperlink NavigateUri="{Binding TribeLink}" Command="{Binding ExplorerLinkCommand}" CommandParameter="{Binding TribeLink}">
                            <Hyperlink.Inlines>
-                                <Run Text="{Binding ArkDataTribe.Id}"/>
+                                <Run Text="{Binding TribeData.Id}"/>
                            </Hyperlink.Inlines>
                         </Hyperlink>
                     </TextBlock>
@@ -93,11 +93,11 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{DynamicResource Profile_SteamNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding SteamName}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_CharacterNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.CharacterName}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_LevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.Level}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_CharacterNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding PlayerData.CharacterName}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_LevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding PlayerData.Level}"/>
                                 <GridViewColumn Header="{DynamicResource Profile_OnlineColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding IsOnline}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_CreatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.FileCreated}"/>
-                                <GridViewColumn Header="{DynamicResource Profile_UpdatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkData.FileUpdated}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_CreatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding PlayerData.FileCreated}"/>
+                                <GridViewColumn Header="{DynamicResource Profile_UpdatedColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding PlayerData.FileUpdated}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

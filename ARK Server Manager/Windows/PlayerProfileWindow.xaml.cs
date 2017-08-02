@@ -40,23 +40,23 @@ namespace ARK_Server_Manager
             private set;
         }
 
-        public Player ArkDataPlayer => Player?.ArkData;
+        public Player PlayerData => Player?.PlayerData;
 
-        public Tribe ArkDataTribe => Player?.ArkData?.Tribe;
+        public Tribe TribeData => Player?.PlayerData?.Tribe;
 
-        public String CreatedDate => ArkDataPlayer?.FileCreated.ToString("G");
+        public String CreatedDate => PlayerData?.FileCreated.ToString("G");
 
-        public Boolean IsTribeOwner => ArkDataPlayer != null && ArkDataTribe != null && ArkDataTribe.OwnerId == ArkDataPlayer.Id;
+        public Boolean IsTribeOwner => PlayerData != null && TribeData != null && TribeData.OwnerId == PlayerData.Id;
 
         public String PlayerLink => String.IsNullOrWhiteSpace(ServerFolder) ? null : $"/select, {Path.Combine(ServerFolder, $"{Player.SteamId}{Config.Default.PlayerFileExtension}")}";
 
-        public String ProfileLink => ArkDataPlayer?.ProfileUrl;
+        public String ProfileLink => PlayerData?.ProfileUrl;
 
-        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || ArkDataTribe == null ? null : $"/select, {Path.Combine(ServerFolder, $"{ArkDataTribe.Id}{Config.Default.TribeFileExtension}")}";
+        public String TribeLink => String.IsNullOrWhiteSpace(ServerFolder) || TribeData == null ? null : $"/select, {Path.Combine(ServerFolder, $"{TribeData.Id}{Config.Default.TribeFileExtension}")}";
 
-        public String TribeOwner => ArkDataTribe != null && ArkDataTribe.Owner != null ? $"{ArkDataTribe.Owner.SteamName} ({ArkDataTribe.Owner.CharacterName})" : null;
+        public String TribeOwner => TribeData != null && TribeData.Owner != null ? $"{TribeData.Owner.SteamName} ({TribeData.Owner.CharacterName})" : null;
 
-        public String UpdatedDate => ArkDataPlayer?.FileUpdated.ToString("G");
+        public String UpdatedDate => PlayerData?.FileUpdated.ToString("G");
 
         public String WindowTitle => String.Format(_globalizer.GetResourceString("Profile_WindowTitle_Player"), Player.SteamName);
 

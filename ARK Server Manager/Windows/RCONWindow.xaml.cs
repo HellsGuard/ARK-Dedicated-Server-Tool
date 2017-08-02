@@ -339,7 +339,7 @@ namespace ARK_Server_Manager
 
                             case InputWindowMode.RenamePlayer:
                                 player = inputBox.Tag as PlayerInfo;
-                                if (player != null && player.ArkData != null)
+                                if (player != null && player.PlayerData != null)
                                     this.ServerRCON.IssueCommand($"RenamePlayer \"{player.CharacterName}\" {inputText}");
                                 break;
 
@@ -539,7 +539,7 @@ namespace ARK_Server_Manager
                         button2.Content = _globalizer.GetResourceString("RCON_Button_Cancel");
                         inputBox.Visibility = System.Windows.Visibility.Visible;
                     },
-                    canExecute: (player) => player?.ArkData != null && player.IsValid && player.IsOnline
+                    canExecute: (player) => player?.PlayerData != null && player.IsValid && player.IsOnline
                 );
             }
         }
@@ -571,7 +571,7 @@ namespace ARK_Server_Manager
             get
             {
                 return new RelayCommand<PlayerInfo>(
-                    execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.ArkData.Id}"); },
+                    execute: (player) => { this.ServerRCON.IssueCommand($"KillPlayer {player.PlayerData.Id}"); },
                     canExecute: (player) => false //player != null && player.IsOnline
                 );
             }
@@ -617,10 +617,10 @@ namespace ARK_Server_Manager
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => 
                     {
-                        if (player.ArkData == null || string.IsNullOrWhiteSpace(player.ArkData.ProfileUrl))
+                        if (player.PlayerData == null || string.IsNullOrWhiteSpace(player.PlayerData.ProfileUrl))
                             Process.Start($"http://steamcommunity.com/profiles/{player.SteamId}");
                         else
-                            Process.Start(player.ArkData.ProfileUrl);
+                            Process.Start(player.PlayerData.ProfileUrl);
                     },
                     canExecute: (player) => player != null
                 );
@@ -638,7 +638,7 @@ namespace ARK_Server_Manager
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player?.ArkData != null
+                    canExecute: (player) => player?.PlayerData != null
                     );
             }
         }
@@ -654,7 +654,7 @@ namespace ARK_Server_Manager
                         window.Owner = this;
                         window.ShowDialog();
                     },
-                    canExecute: (player) => player?.ArkData != null && !string.IsNullOrWhiteSpace(player.TribeName)
+                    canExecute: (player) => player?.PlayerData != null && !string.IsNullOrWhiteSpace(player.TribeName)
                     );
             }
         }
@@ -689,11 +689,11 @@ namespace ARK_Server_Manager
                 return new RelayCommand<PlayerInfo>(
                     execute: (player) => 
                     {
-                        if (player.ArkData != null)
+                        if (player.PlayerData != null)
                         {
                             try
                             {
-                                System.Windows.Clipboard.SetText(player.ArkData.Id.ToString());
+                                System.Windows.Clipboard.SetText(player.PlayerData.Id.ToString());
                                 MessageBox.Show($"{_globalizer.GetResourceString("RCON_CopyPlayerIdLabel")} {player.SteamName}", _globalizer.GetResourceString("RCON_CopyPlayerIdTitle"), MessageBoxButton.OK);
                             }
                             catch
@@ -702,7 +702,7 @@ namespace ARK_Server_Manager
                             }
                         }
                     },
-                    canExecute: (player) => player?.ArkData != null && player.IsValid
+                    canExecute: (player) => player?.PlayerData != null && player.IsValid
                     );
 
             }

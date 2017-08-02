@@ -3505,7 +3505,7 @@ namespace ARK_Server_Manager.Lib
 
             var taskKey = GetProfileKey();
 
-            if(!TaskSchedulerUtils.ScheduleAutoStart(taskKey, null, this.EnableAutoStart, GetLauncherFile(), ProfileName))
+            if(!TaskSchedulerUtils.ScheduleAutoStart(taskKey, null, this.EnableAutoStart, GetLauncherFile(), ProfileName, true))
             {
                 return false;
             }

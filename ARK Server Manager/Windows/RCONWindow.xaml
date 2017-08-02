@@ -74,7 +74,7 @@
                         <Setter Property="Foreground" Value="LightGray"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="False">
-                        <Setter Property="Content" Value="{Binding ArkData.Tribe.Name}"/>
+                        <Setter Property="Content" Value="{Binding PlayerData.Tribe.Name}"/>
                         <Setter Property="FontStyle" Value="Normal"/>
                         <Setter Property="Foreground" Value="Black"/>
                     </DataTrigger>
@@ -239,7 +239,7 @@
                                         <Label Content="{Binding SteamName}" ToolTip="{Binding SteamId}" Padding="0,-1,0,-1" Background="AliceBlue" VerticalContentAlignment="Center"/>
                                         <StackPanel Orientation="Horizontal" Margin="0" >
                                             <Label Content="{Binding CharacterName}" Padding="0,-1,0,-1"/>
-                                            <TextBlock Text="{Binding ArkData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
+                                            <TextBlock Text="{Binding PlayerData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
                                         </StackPanel>
                                         <Label Padding="0,-1,0,-1" Style="{DynamicResource Tribename}"/>
                                     </StackPanel>
