@@ -43,6 +43,9 @@
                         <DataTrigger Binding="{Binding IsActiveFile}" Value="True">
                             <Setter Property="Background" Value="#FFF5DFB8" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding IsArchiveFile}" Value="True">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.Resources>

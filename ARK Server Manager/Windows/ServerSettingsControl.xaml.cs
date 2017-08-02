@@ -868,9 +868,9 @@ namespace ARK_Server_Manager
             {
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
 
-                var app = new ServerApp()
+                var app = new ServerApp(true)
                 {
-                    DeleteOldServerBackupFiles = false,
+                    DeleteOldServerBackupFiles = !Config.Default.AutoBackup_EnableBackup,
                     SendEmails = false,
                     OutputLogs = false,
                     ServerProcess = ServerProcessType.Backup,

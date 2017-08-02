@@ -39,6 +39,7 @@ namespace ARK_Server_Manager
             public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register(nameof(FileName), typeof(string), typeof(WorldSaveFile), new PropertyMetadata(string.Empty));
             public static readonly DependencyProperty UpdatedDateProperty = DependencyProperty.Register(nameof(UpdatedDate), typeof(DateTime), typeof(WorldSaveFile), new PropertyMetadata(DateTime.MinValue));
             public static readonly DependencyProperty IsActiveFileProperty = DependencyProperty.Register(nameof(IsActiveFile), typeof(bool), typeof(WorldSaveFile), new PropertyMetadata(false));
+            public static readonly DependencyProperty IsArchiveFileProperty = DependencyProperty.Register(nameof(IsArchiveFile), typeof(bool), typeof(WorldSaveFile), new PropertyMetadata(false));
 
             public DateTime CreatedDate
             {
@@ -68,6 +69,12 @@ namespace ARK_Server_Manager
             {
                 get { return (bool)GetValue(IsActiveFileProperty); }
                 set { SetValue(IsActiveFileProperty, value); }
+            }
+
+            public bool IsArchiveFile
+            {
+                get { return (bool)GetValue(IsArchiveFileProperty); }
+                set { SetValue(IsArchiveFileProperty, value); }
             }
 
             public override string ToString()
@@ -143,24 +150,32 @@ namespace ARK_Server_Manager
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             var item = ((WorldSaveFile)((Button)e.Source).DataContext);
-
-            var message = $"You are able to delete worldsave file {item.FileName}.\r\n\r\nDo you want to continue?";
-            if (MessageBox.Show(this, message, "Delete WorldSave Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (item == null)
                 return;
+
+            var message = $"You are about to delete backup file\r\n{item.FileName}.\r\n\r\nDo you want to continue?";
+            if (MessageBox.Show(this, message, "Delete Backup Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            var cursor = this.Cursor;
 
             try
             {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
                 File.Delete(item.File);
 
-                MessageBox.Show(this, "The worldsave file has been deleted.", "Delete WorldSave Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(this, "The backup file has been deleted.", "Delete Backup Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Delete WorldSave Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, ex.Message, "Delete Backup Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 await LoadWorldSaveFiles();
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
         }
 
@@ -188,24 +203,44 @@ namespace ARK_Server_Manager
         private async void Restore_Click(object sender, RoutedEventArgs e)
         {
             var item = ((WorldSaveFile)((Button)e.Source).DataContext);
-            
-            var message = $"You are about to restore worldsave file {item.FileName}.\r\n\r\nDo you want to continue?";
-            if (MessageBox.Show(this, message, "Restore WorldSave Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (item == null)
                 return;
+
+            var restoreAll = true;
+            if (item.IsArchiveFile)
+            {
+                var message = $"You are about to restore backup file\r\n{item.FileName}.\r\n\r\nSelect Yes to restore the world save, player and tribe files.\r\nSelect No to only restore the world save.\r\nSelect Cancel to quit the restore.";
+                var result = MessageBox.Show(this, message, "Restore Backup Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Cancel)
+                    return;
+                restoreAll = result == MessageBoxResult.Yes;
+            }
+            else
+            {
+                var message = $"You are about to restore backup file\r\n{item.FileName}.\r\n\r\nDo you want to continue?";
+                if (MessageBox.Show(this, message, "Restore Backup Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+            }
+
+            var cursor = this.Cursor;
 
             try
             {
-                _profile.RestoreWorldSave(item.File);
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
 
-                MessageBox.Show(this, "The worldsave file has been restored.", "Restore WorldSave Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                var restoredFileCount = _profile.RestoreSaveFiles(item.File, item.IsArchiveFile, restoreAll);
+
+                MessageBox.Show(this, $"The backup file has been restored, {restoredFileCount} file(s) restored.", "Restore Backup Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Restore WorldSave Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, ex.Message, "Restore Backup Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 await LoadWorldSaveFiles();
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
             }
         }
 
@@ -220,24 +255,32 @@ namespace ARK_Server_Manager
 
                 WorldSaveFiles.Clear();
 
-                var profileSaveFolder = ServerProfile.GetProfileSavePath(_profile);
-                if (!Directory.Exists(profileSaveFolder))
+                var saveFolder = ServerProfile.GetProfileSavePath(_profile);
+                if (!Directory.Exists(saveFolder))
                     return;
 
-                var profileSaveFolderInfo = new DirectoryInfo(profileSaveFolder);
+                var saveFolderInfo = new DirectoryInfo(saveFolder);
                 var mapName = ServerProfile.GetProfileMapFileName(_profile);
                 var mapFileName = $"{mapName}{Config.Default.MapExtension}";
                 var searchPattern = $"{mapName}*{Config.Default.MapExtension}";
 
-                foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
+                var saveFiles = saveFolderInfo.GetFiles(searchPattern);
+                foreach (var file in saveFiles)
                 {
-                    WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
+                    WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsArchiveFile = false, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
                 }
 
-                searchPattern = $"{mapName}*{Config.Default.BackupServerExtension}";
-                foreach (var file in profileSaveFolderInfo.GetFiles(searchPattern))
+                var backupFolder = ServerApp.GetServerBackupFolder(_profile.ProfileName);
+                if (Directory.Exists(backupFolder))
                 {
-                    WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName , FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsActiveFile = file.Name.Equals(mapFileName, StringComparison.OrdinalIgnoreCase) });
+                    var backupFolderInfo = new DirectoryInfo(backupFolder);
+                    searchPattern = $"{mapName}*{Config.Default.BackupExtension}";
+
+                    var backupFiles = backupFolderInfo.GetFiles(searchPattern);
+                    foreach (var file in backupFiles)
+                    {
+                        WorldSaveFiles.Add(new WorldSaveFile { File = file.FullName, FileName = file.Name, CreatedDate = file.CreationTime, UpdatedDate = file.LastWriteTime, IsArchiveFile = true, IsActiveFile = false });
+                    }
                 }
 
                 WorldSaveFiles.Sort(f => f, new WorldSaveFileComparer());

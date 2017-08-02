@@ -1,28 +1,70 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.IO;
 using System.Linq;
-using Ionic.Zip;
 
 namespace ARK_Server_Manager.Lib.Utils
 {
     public static class ZipUtils
     {
-        public static void ZipFiles(string zipFile, string[] filesToZip, string comment, bool preserveDirHierarchy = true, string directoryPathInArchive = "")
+        public static bool DoesFileExist(string zipFile, string entryName)
         {
             if (string.IsNullOrWhiteSpace(zipFile))
                 throw new ArgumentNullException(nameof(zipFile));
-            if (filesToZip == null || filesToZip.Length == 0)
-                throw new ArgumentNullException(nameof(filesToZip));
+            if (string.IsNullOrWhiteSpace(entryName))
+                throw new ArgumentNullException(nameof(entryName));
 
-            using (var zip = new ZipFile())
+            if (!File.Exists(zipFile))
+                throw new FileNotFoundException();
+
+            using (var zip = ZipFile.Read(zipFile))
             {
-                zip.AddFiles(filesToZip.Where(f => !string.IsNullOrWhiteSpace(f) && File.Exists(f)), preserveDirHierarchy, directoryPathInArchive);
+                return zip.Entries.Any(e => Path.GetFileName(e.FileName).Equals(entryName, StringComparison.OrdinalIgnoreCase));
+            }
+        }
 
-                zip.CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
-                if (!string.IsNullOrWhiteSpace(comment))
-                    zip.Comment = comment;
+        public static int ExtractAFile(string zipFile, string entryName, string destinationPath)
+        {
+            if (string.IsNullOrWhiteSpace(zipFile))
+                throw new ArgumentNullException(nameof(zipFile));
+            if (string.IsNullOrWhiteSpace(entryName))
+                throw new ArgumentNullException(nameof(entryName));
+            if (string.IsNullOrWhiteSpace(destinationPath))
+                throw new ArgumentNullException(nameof(destinationPath));
 
-                zip.Save(zipFile);
+            if (!File.Exists(zipFile))
+                throw new FileNotFoundException();
+            if (!Directory.Exists(destinationPath))
+                Directory.CreateDirectory(destinationPath);
+
+            using (var zip = ZipFile.Read(zipFile))
+            {
+                var selection = zip.Entries.Where(e => Path.GetFileName(e.FileName).Equals(entryName, StringComparison.OrdinalIgnoreCase));
+
+                foreach (var entry in selection)
+                {
+                    entry.Extract(destinationPath, ExtractExistingFileAction.OverwriteSilently);
+                }
+
+                return selection.Count();
+            }
+        }
+
+        public static int ExtractAllFiles(string zipFile, string destinationPath)
+        {
+            if (string.IsNullOrWhiteSpace(zipFile))
+                throw new ArgumentNullException(nameof(zipFile));
+            if (string.IsNullOrWhiteSpace(destinationPath))
+                throw new ArgumentNullException(nameof(destinationPath));
+
+            if (!Directory.Exists(destinationPath))
+                Directory.CreateDirectory(destinationPath);
+
+            using (var zip = ZipFile.Read(zipFile))
+            {
+                zip.ExtractAll(destinationPath, ExtractExistingFileAction.OverwriteSilently);
+
+                return zip.Entries.Count;
             }
         }
 
@@ -54,6 +96,25 @@ namespace ARK_Server_Manager.Lib.Utils
 
                     zip.Save();
                 }
+            }
+        }
+
+        public static void ZipFiles(string zipFile, string[] filesToZip, string comment, bool preserveDirHierarchy = true, string directoryPathInArchive = "")
+        {
+            if (string.IsNullOrWhiteSpace(zipFile))
+                throw new ArgumentNullException(nameof(zipFile));
+            if (filesToZip == null || filesToZip.Length == 0)
+                throw new ArgumentNullException(nameof(filesToZip));
+
+            using (var zip = new ZipFile())
+            {
+                zip.AddFiles(filesToZip.Where(f => !string.IsNullOrWhiteSpace(f) && File.Exists(f)), preserveDirHierarchy, directoryPathInArchive);
+
+                zip.CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
+                if (!string.IsNullOrWhiteSpace(comment))
+                    zip.Comment = comment;
+
+                zip.Save(zipFile);
             }
         }
     }

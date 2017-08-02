@@ -1,4 +1,5 @@
 ﻿using ARK_Server_Manager.Lib.Model;
+using ARK_Server_Manager.Lib.Utils;
 using ARK_Server_Manager.Lib.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -3746,27 +3747,102 @@ namespace ARK_Server_Manager.Lib
             return result.ToString();
         }
 
-        public void RestoreWorldSave(string restoreFile)
+        public int RestoreSaveFiles(string restoreFile, bool isArchiveFile, bool restoreAll)
         {
-            var profileSaveFolder = GetProfileSavePath(this);
+            if (string.IsNullOrWhiteSpace(restoreFile) || !File.Exists(restoreFile))
+                throw new FileNotFoundException("Backup file could not be found or does not exist.", restoreFile);
+
+            var saveFolder = GetProfileSavePath(this);
+            if (!Directory.Exists(saveFolder))
+                throw new DirectoryNotFoundException($"The server save folder could not be found or does not exist.\r\n{saveFolder}");
+
             var mapName = GetProfileMapFileName(this);
-            var mapFile = Path.Combine(profileSaveFolder, $"{mapName}{Config.Default.MapExtension}");
-            var mapFileBackup = Path.Combine(profileSaveFolder, $"{mapName}_restorebackup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupServerExtension}");
+            var worldFileName = $"{mapName}{Config.Default.MapExtension}";
 
-            FileInfo mapFileInfo = new FileInfo(mapFile);
-            FileInfo restoreFileInfo = new FileInfo(restoreFile);
+            // check if the archive file contains the world save file at minimum
+            if (isArchiveFile)
+            {
+                if (!ZipUtils.DoesFileExist(restoreFile, worldFileName))
+                {
+                    throw new Exception("The backup file does not contain the world save file.");
+                }
+            }
 
-            // rename the existing save file
-            File.Move(mapFile, mapFileBackup);
-            File.SetCreationTime(mapFileBackup, mapFileInfo.CreationTime);
-            File.SetLastWriteTime(mapFileBackup, mapFileInfo.LastWriteTime);
-            File.SetLastAccessTime(mapFileBackup, mapFileInfo.LastAccessTime);
+            // create a backup of the existing save folder
+            var app = new ServerApp(true)
+            {
+                BackupWorldFile = false,
+                DeleteOldServerBackupFiles = false,
+                SendAlerts = false,
+                SendEmails = false,
+                OutputLogs = false
+            };
+            app.CreateServerBackupArchiveFile(null, ServerApp.ProfileSnapshot.Create(this));
 
-            // copy the selected file
-            File.Copy(restoreFile, mapFile, true);
-            File.SetCreationTime(mapFile, restoreFileInfo.CreationTime);
-            File.SetLastWriteTime(mapFile, restoreFileInfo.LastWriteTime);
-            File.SetLastAccessTime(mapFile, restoreFileInfo.LastAccessTime);
+            var worldFile = Updater.NormalizePath(Path.Combine(saveFolder, worldFileName));
+            var restoreFileInfo = new FileInfo(restoreFile);
+            var restoredFileCount = 0;
+
+            if (isArchiveFile)
+            {
+                // create a list of files to be deleted
+                var files = new List<string>();
+                files.Add(worldFile);
+
+                if (restoreAll)
+                {
+                    // get the player files
+                    var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
+                    var playerFiles = new DirectoryInfo(saveFolder).GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
+                    foreach (var playerFile in playerFiles)
+                    {
+                        files.Add(playerFile.FullName);
+                    }
+
+                    // get the tribe files
+                    var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
+                    var tribeFiles = new DirectoryInfo(saveFolder).GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
+                    foreach (var tribeFile in tribeFiles)
+                    {
+                        files.Add(tribeFile.FullName);
+                    }
+                }
+
+                // delete the selected files
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch
+                    {
+                        // if unable to delete, do not bother
+                    }
+                }
+
+                // restore the files from the backup
+                if (restoreAll)
+                {
+                    restoredFileCount = ZipUtils.ExtractAllFiles(restoreFile, saveFolder);
+                }
+                else
+                {
+                    restoredFileCount = ZipUtils.ExtractAFile(restoreFile, worldFileName, saveFolder);
+                }
+            }
+            else
+            {
+                // copy the selected file
+                File.Copy(restoreFile, worldFile, true);
+                File.SetCreationTime(worldFile, restoreFileInfo.CreationTime);
+                File.SetLastWriteTime(worldFile, restoreFileInfo.LastWriteTime);
+                File.SetLastAccessTime(worldFile, restoreFileInfo.LastAccessTime);
+
+                restoredFileCount = 1;
+            }
+
+            return restoredFileCount;
         }
 
         public void ValidateServerName()

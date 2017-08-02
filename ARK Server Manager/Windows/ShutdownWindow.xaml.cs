@@ -137,7 +137,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
                 Application.Current.Dispatcher.Invoke(() => this.CancelShutdownButton.Cursor = System.Windows.Input.Cursors.Arrow);
 
-                var app = new ServerApp()
+                var app = new ServerApp(true)
                 {
                     BackupWorldFile = this.BackupWorldFile,
                     ShutdownInterval = this.ShutdownInterval,
