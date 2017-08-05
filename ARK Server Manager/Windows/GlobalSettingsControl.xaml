@@ -253,20 +253,6 @@
                             </TextBox.Style>
                         </TextBox>
                         <Label Grid.Row="2" Grid.Column="5" Content="{DynamicResource GlobalSettings_SteamCmdPasswordLabel}" VerticalAlignment="Center"/>
-                        <!--<TextBox Grid.Row="2" Grid.Column="6" Margin="1" Text="{Binding CurrentConfig.SteamCmd_Password}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_SteamCmdPasswordTooltip}">
-                            <TextBox.Style>
-                                <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmdRedirectOutput}" Value="true">
-                                            <Setter Property="IsEnabled" Value="false"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CurrentConfig.SteamCmd_UseAnonymousCredentials}" Value="true">
-                                            <Setter Property="IsEnabled" Value="false"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>-->
                         <TextBox  Grid.Row="2" Grid.Column="6" Margin="1" Name="HideSteamPasswordTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}"  ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus">
                             <TextBox.Style>
                                 <Style BasedOn="{StaticResource HiddenTextBoxStyle}" TargetType="{x:Type TextBox}">

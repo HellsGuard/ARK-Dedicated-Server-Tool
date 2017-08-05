@@ -172,6 +172,10 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                         PlayerInfo.avatarImages[this.SteamId] = avatarImage;
                         _logger.Debug($"Avatar image for {this.SteamId} found and added.");
                     }
+                    else
+                    {
+                        _logger.Error($"Avatar image for {this.SteamId} not found.");
+                    }
                 }
 
                 this.AvatarImage = avatarImage;

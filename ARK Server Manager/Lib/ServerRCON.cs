@@ -383,6 +383,7 @@ namespace ARK_Server_Manager.Lib
                 try
                 {
                     await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey);
+                    debugLogger.Debug($"{nameof(UpdatePlayerDetails)} - LoadSteamAsync called.\r\n{savedPath}");
                 }
                 catch (Exception ex)
                 {
