@@ -3,22 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="PluginCallUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}/</Value>
     </Setting>
     <Setting Name="PublicIPCheckUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://whatismyip.akamai.com/</Value>
     </Setting>
     <Setting Name="LatestDownloadUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plugin.Discord.zip</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.Plugin.Discord.zip</Value>
     </Setting>
     <Setting Name="LatestVersionUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plugin.Discord.txt</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.Plugin.Discord.txt</Value>
     </Setting>
     <Setting Name="LatestBetaDownloadUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin.Discord.zip</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plugin.Discord.zip</Value>
     </Setting>
     <Setting Name="LatestBetaVersionUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin.Discord.txt</Value>
+      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plugin.Discord.txt</Value>
     </Setting>
     <Setting Name="PluginZipFilename" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ArkServerManager.Plugin.Discord.zip</Value>

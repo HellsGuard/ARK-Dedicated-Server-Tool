@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using ARK_Server_Manager.Lib.ViewModel;
+using System.Runtime.Serialization;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class EngramEntryList<T> : AggregateIniValueList<T>
          where T : EngramEntry, new()
     {
         private bool _onlyAllowSelectedEngrams;
 
+        [DataMember]
         public bool OnlyAllowSelectedEngrams
         {
             get { return this._onlyAllowSelectedEngrams; }
@@ -37,6 +40,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class EngramEntry : AggregateIniValue
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(EngramEntry), new PropertyMetadata(ArkApplication.SurvivalEvolved));
@@ -47,12 +51,14 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty RemoveEngramPreReqProperty = DependencyProperty.Register(nameof(RemoveEngramPreReq), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
         public static readonly DependencyProperty SaveEngramOverrideProperty = DependencyProperty.Register(nameof(SaveEngramOverride), typeof(bool), typeof(EngramEntry), new PropertyMetadata(false));
 
+        [DataMember]
         public ArkApplication ArkApplication
         {
             get { return (ArkApplication)GetValue(ArkApplicationProperty); }
             set { SetValue(ArkApplicationProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public string EngramClassName
         {
@@ -60,6 +66,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EngramClassNameProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public int EngramLevelRequirement
         {
@@ -67,6 +74,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EngramLevelRequirementProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public int EngramPointsCost
         {
@@ -74,6 +82,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EngramPointsCostProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public bool EngramHidden
         {
@@ -81,6 +90,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(EngramHiddenProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public bool RemoveEngramPreReq
         {

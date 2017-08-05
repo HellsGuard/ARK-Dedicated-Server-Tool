@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib
-{   
+{
+    [DataContract]
     public class DinoSpawn : AggregateIniValue
     {
         public const bool DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE = true;
@@ -17,12 +19,14 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_SPAWN_LIMIT_PERCENTAGE));
         public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_SPAWN_WEIGHT_MULTIPLIER));
 
+        [DataMember]
         public ArkApplication ArkApplication
         {
             get { return (ArkApplication)GetValue(ArkApplicationProperty); }
             set { SetValue(ArkApplicationProperty, value); }
         }
 
+        [DataMember]
         public string ClassName
         {
             get { return (string)GetValue(ClassNameProperty); }
@@ -30,6 +34,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         [XmlElement(ElementName="Name")]
+        [DataMember]
         [AggregateIniValueEntry]
         public string DinoNameTag
         {
@@ -37,6 +42,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoNameTagProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public bool OverrideSpawnLimitPercentage
         {
@@ -44,6 +50,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OverrideSpawnLimitPercentageProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public float SpawnLimitPercentage
         {
@@ -51,6 +58,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public float SpawnWeightMultiplier
         {

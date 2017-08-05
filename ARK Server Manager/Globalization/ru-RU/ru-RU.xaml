@@ -128,18 +128,20 @@
     <sys:String x:Key="WorkshopFiles_UnselectTooltip">Отменить всё выделенное</sys:String>
 
     <!-- WorldSave Restore Window -->
-    <sys:String x:Key="WorldSaveRestore_Title">Сохранение мира Восстановлено</sys:String>
-    <sys:String x:Key="WorldSaveRestore_ProfileTitle">Сохранение мира Восстановлено - {0}</sys:String>
-    <sys:String x:Key="WorldSaveRestore_Load_FailedTitle">Загрузка Сохранение мира не удалась, ошибка файла.</sys:String>
-    <sys:String x:Key="WorldSaveRestore_Refresh_FailedTitle">Обновление Сохранение мира не удалась, ошибка файла.</sys:String>
+    <!--
+    <sys:String x:Key="WorldSaveRestore_Title"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_ProfileTitle"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_Load_FailedTitle"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_Refresh_FailedTitle"></sys:String>
 
-    <sys:String x:Key="WorldSaveRestore_NameColumnLabel">Название</sys:String>
-    <sys:String x:Key="WorldSaveRestore_CreatedDateColumnLabel">Создан</sys:String>
-    <sys:String x:Key="WorldSaveRestore_UpdatedDateColumnLabel">Последнее обновление</sys:String>
+    <sys:String x:Key="WorldSaveRestore_NameColumnLabel"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_CreatedDateColumnLabel"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_UpdatedDateColumnLabel"></sys:String>
 
-    <sys:String x:Key="WorldSaveRestore_DeleteTooltip">Удалить файл сохранение мира</sys:String>
-    <sys:String x:Key="WorldSaveRestore_ReloadTooltip">Обновить список файлов сохрание мира</sys:String>
-    <sys:String x:Key="WorldSaveRestore_RestoreTooltip">Восстановить сохрание мира</sys:String>
+    <sys:String x:Key="WorldSaveRestore_DeleteTooltip"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_ReloadTooltip"></sys:String>
+    <sys:String x:Key="WorldSaveRestore_RestoreTooltip"></sys:String>
+    -->
 
     <!-- Progress Window -->
     <sys:String x:Key="Progress_Title">Процесс</sys:String>

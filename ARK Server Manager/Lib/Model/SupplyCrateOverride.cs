@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using ARK_Server_Manager.Lib.ViewModel;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.Windows;
-using ARK_Server_Manager.Lib.ViewModel;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class SupplyCrateOverrideList : AggregateIniValueList<SupplyCrateOverride>
     {
         public SupplyCrateOverrideList(string aggregateValueName)
@@ -70,6 +72,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
+    [DataContract]
     public class SupplyCrateOverride : AggregateIniValue
     {
         public SupplyCrateOverride()
@@ -78,6 +81,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SupplyCrateClassStringProperty = DependencyProperty.Register(nameof(SupplyCrateClassString), typeof(string), typeof(SupplyCrateOverride), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry]
         public string SupplyCrateClassString
         {
@@ -86,6 +90,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MinItemSetsProperty = DependencyProperty.Register(nameof(MinItemSets), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MinItemSets
         {
@@ -94,6 +99,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxItemSetsProperty = DependencyProperty.Register(nameof(MaxItemSets), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MaxItemSets
         {
@@ -102,6 +108,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NumItemSetsPowerProperty = DependencyProperty.Register(nameof(NumItemSetsPower), typeof(float), typeof(SupplyCrateOverride), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float NumItemSetsPower
         {
@@ -110,6 +117,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SetsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(SetsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(true));
+        [DataMember]
         [AggregateIniValueEntry(Key = "bSetsRandomWithoutReplacement")]
         public bool SetsRandomWithoutReplacement
         {
@@ -118,6 +126,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemSetsProperty = DependencyProperty.Register(nameof(ItemSets), typeof(AggregateIniValueList<SupplyCrateItemSet>), typeof(SupplyCrateOverride), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true, BracketsAroundValueDelimiter = 2)]
         public AggregateIniValueList<SupplyCrateItemSet> ItemSets
         {
@@ -160,6 +169,7 @@ namespace ARK_Server_Manager.Lib
         public bool IsValid => !string.IsNullOrWhiteSpace(SupplyCrateClassString) && ItemSets.Count > 0;
     }
 
+    [DataContract]
     public class SupplyCrateItemSet : AggregateIniValue
     {
         public SupplyCrateItemSet()
@@ -168,6 +178,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SetNameProperty = DependencyProperty.Register(nameof(SetName), typeof(string), typeof(SupplyCrateItemSet), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry(ExcludeIfEmpty = true)]
         public string SetName
         {
@@ -176,6 +187,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MinNumItemsProperty = DependencyProperty.Register(nameof(MinNumItems), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MinNumItems
         {
@@ -184,6 +196,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxNumItemsProperty = DependencyProperty.Register(nameof(MaxNumItems), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MaxNumItems
         {
@@ -192,6 +205,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NumItemsPowerProperty = DependencyProperty.Register(nameof(NumItemsPower), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float NumItemsPower
         {
@@ -200,6 +214,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty SetWeightProperty = DependencyProperty.Register(nameof(SetWeight), typeof(float), typeof(SupplyCrateItemSet), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float SetWeight
         {
@@ -208,6 +223,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemsRandomWithoutReplacementProperty = DependencyProperty.Register(nameof(ItemsRandomWithoutReplacement), typeof(bool), typeof(SupplyCrateItemSet), new PropertyMetadata(true));
+        [DataMember]
         [AggregateIniValueEntry(Key = "bItemsRandomWithoutReplacement")]
         public bool ItemsRandomWithoutReplacement
         {
@@ -216,6 +232,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemEntriesProperty = DependencyProperty.Register(nameof(ItemEntries), typeof(AggregateIniValueList<SupplyCrateItemSetEntry>), typeof(SupplyCrateItemSet), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true)]
         public AggregateIniValueList<SupplyCrateItemSetEntry> ItemEntries
         {
@@ -246,6 +263,7 @@ namespace ARK_Server_Manager.Lib
         public bool IsValid => ItemEntries.Count > 0;
     }
 
+    [DataContract]
     public class SupplyCrateItemSetEntry : AggregateIniValue
     {
         public SupplyCrateItemSetEntry()
@@ -257,6 +275,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemEntryNameProperty = DependencyProperty.Register(nameof(ItemEntryName), typeof(string), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(string.Empty));
+        [DataMember]
         [AggregateIniValueEntry(ExcludeIfEmpty = true)]
         public string ItemEntryName
         {
@@ -265,6 +284,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty EntryWeightProperty = DependencyProperty.Register(nameof(EntryWeight), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float EntryWeight
         {
@@ -273,6 +293,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MinQuantityProperty = DependencyProperty.Register(nameof(MinQuantity), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MinQuantity
         {
@@ -281,6 +302,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxQuantityProperty = DependencyProperty.Register(nameof(MaxQuantity), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MaxQuantity
         {
@@ -289,6 +311,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MinQualityProperty = DependencyProperty.Register(nameof(MinQuality), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MinQuality
         {
@@ -297,6 +320,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MaxQualityProperty = DependencyProperty.Register(nameof(MaxQuality), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(1.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float MaxQuality
         {
@@ -305,6 +329,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ForceBlueprintProperty = DependencyProperty.Register(nameof(ForceBlueprint), typeof(bool), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(false));
+        [DataMember]
         [AggregateIniValueEntry(Key = "bForceBlueprint")]
         public bool ForceBlueprint
         {
@@ -313,6 +338,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ChanceToBeBlueprintOverrideProperty = DependencyProperty.Register(nameof(ChanceToBeBlueprintOverride), typeof(float), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(0.0f));
+        [DataMember]
         [AggregateIniValueEntry]
         public float ChanceToBeBlueprintOverride
         {
@@ -321,6 +347,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemClassStringsProperty = DependencyProperty.Register(nameof(ItemClassStrings), typeof(StringIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true)]
         public StringIniValueList ItemClassStrings
         {
@@ -329,6 +356,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ItemsWeightsProperty = DependencyProperty.Register(nameof(ItemsWeights), typeof(FloatIniValueList), typeof(SupplyCrateItemSetEntry), new PropertyMetadata(null));
+        [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true)]
         public FloatIniValueList ItemsWeights
         {

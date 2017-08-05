@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class NPCReplacement : AggregateIniValue
     {
         public static readonly DependencyProperty FromClassNameProperty = DependencyProperty.Register(nameof(FromClassName), typeof(string), typeof(NPCReplacement), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty ToClassNameProperty = DependencyProperty.Register(nameof(ToClassName), typeof(string), typeof(NPCReplacement), new PropertyMetadata(String.Empty));
 
+        [DataMember]
         [AggregateIniValueEntry]
         public string FromClassName
         {
@@ -15,6 +18,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(FromClassNameProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public string ToClassName
         {

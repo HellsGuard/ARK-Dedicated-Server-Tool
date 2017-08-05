@@ -122,34 +122,32 @@ namespace ARK_Server_Manager
             return logFilePath;
         }
 
-        public static Logger GetProfileLogger(string profileName, string name)
+        public static Logger GetProfileLogger(string profileName, string name, LogLevel logLevel)
         {
-            var loggerName = $"{profileName}_{name}";
+            var loggerName = $"{profileName}_{name}".Replace(" ", "_");
 
-            Logger logger = null;
-            var config = LogManager.Configuration;
-            if (config.FindTargetByName(loggerName) == null)
+            if (LogManager.Configuration.FindTargetByName(loggerName) == null)
             {            
-                var logFile = new FileTarget();
-                config.AddTarget(loggerName, logFile);
-
                 var logFilePath = GetProfileLogDir(profileName);
-                logFile.FileName = Path.Combine(logFilePath, $"{name}.log");
-                logFile.Layout = "${time} ${message}";
-                var datePlaceholder = "{#}";
-                logFile.ArchiveFileName = Path.Combine(logFilePath, $"{name}.{datePlaceholder}.log");
-                logFile.ArchiveNumbering = ArchiveNumberingMode.DateAndSequence;
-                logFile.ArchiveEvery = FileArchivePeriod.Day;
-                logFile.ArchiveDateFormat = "yyyyMMdd";
+                if (!System.IO.Directory.Exists(logFilePath))
+                    System.IO.Directory.CreateDirectory(logFilePath);
 
-                var rule = new LoggingRule(loggerName, LogLevel.Info, logFile);
-                config.LoggingRules.Add(rule);
+                var logFile = new FileTarget(loggerName)
+                {
+                    FileName = Path.Combine(logFilePath, $"{name}.log"),
+                    Layout = "${time} ${message}",
+                    ArchiveFileName = Path.Combine(logFilePath, $"{name}.{{#}}.log"),
+                    ArchiveNumbering = ArchiveNumberingMode.DateAndSequence,
+                    ArchiveEvery = FileArchivePeriod.Day,
+                    ArchiveDateFormat = "yyyyMMdd"
+                };
+                LogManager.Configuration.AddTarget(loggerName, logFile);
 
-                LogManager.Configuration = config;
+                var rule = new LoggingRule(loggerName, logLevel, logFile);
+                LogManager.Configuration.LoggingRules.Add(rule);
             }
 
-            logger = LogManager.GetLogger(loggerName);
-            return logger;
+            return LogManager.GetLogger(loggerName);
         }
 
         private static void MigrateSettings()

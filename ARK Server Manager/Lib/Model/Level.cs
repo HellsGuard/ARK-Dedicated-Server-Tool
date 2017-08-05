@@ -7,10 +7,11 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Serialization;
 using TinyCsvParser.Mapping;
+using System.Runtime.Serialization;
 
 namespace ARK_Server_Manager.Lib
 {
-
+    [DataContract]
     public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
@@ -155,7 +156,7 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
-    [Serializable()]
+    [DataContract]
     public class Level : DependencyObject
     {
         public static readonly DependencyProperty LevelIndexProperty = DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
@@ -165,18 +166,21 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty EngramTotalProperty = DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
         public static readonly DependencyProperty ShowColoredProperty = DependencyProperty.Register(nameof(ShowColored), typeof(bool), typeof(Level), new PropertyMetadata(false));
 
+        [DataMember]
         public int LevelIndex
         {
             get { return (int)GetValue(LevelIndexProperty); }
             set { SetValue(LevelIndexProperty, value); }
         }
 
+        [DataMember]
         public int XPRequired
         {
             get { return (int)GetValue(XPRequiredProperty); }
             set { SetValue(XPRequiredProperty, value); }
         }
 
+        [DataMember]
         public int EngramPoints
         {
             get { return (int)GetValue(EngramPointsProperty); }

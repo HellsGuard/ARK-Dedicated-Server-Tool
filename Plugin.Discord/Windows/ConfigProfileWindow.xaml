@@ -176,7 +176,7 @@
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ComboBox IsEditable="True" ItemsSource="{Binding Source={StaticResource AlertTypes}}" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                        <ComboBox IsEditable="False" ItemsSource="{Binding Source={StaticResource AlertTypes}}" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

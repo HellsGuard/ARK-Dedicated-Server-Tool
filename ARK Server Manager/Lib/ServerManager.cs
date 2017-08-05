@@ -66,13 +66,23 @@ namespace ARK_Server_Manager.Lib
 
         public void Remove(Server server, bool deleteProfile)
         {
-            if(deleteProfile)
+            if (deleteProfile)
             {
                 try
                 {
-                    File.Delete(server.Profile.GetProfileFile());
+                    var profileFile = server.Profile.GetProfileFile();
+                    if (File.Exists(profileFile))
+                        File.Delete(profileFile);
+
+                    var profileFileNew = server.Profile.GetProfileFileNew();
+                    if (File.Exists(profileFileNew))
+                        File.Delete(profileFileNew);
+
+                    var profileFolder = server.Profile.GetProfileIniDir();
+                    if (Directory.Exists(profileFolder))
+                        Directory.Delete(profileFolder, recursive: true);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Best effort to delete.
                 }

@@ -25,7 +25,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}/")]
         public string PluginCallUrlFormat {
             get {
                 return ((string)(this["PluginCallUrlFormat"]));
@@ -43,8 +43,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plug" +
-            "in.Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServ" +
+            "erManager.Plugin.Discord.zip")]
         public string LatestDownloadUrl {
             get {
                 return ((string)(this["LatestDownloadUrl"]));
@@ -53,8 +53,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/release/ArkServerManager.Plug" +
-            "in.Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServ" +
+            "erManager.Plugin.Discord.txt")]
         public string LatestVersionUrl {
             get {
                 return ((string)(this["LatestVersionUrl"]));
@@ -63,8 +63,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin." +
-            "Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerM" +
+            "anager.Plugin.Discord.zip")]
         public string LatestBetaDownloadUrl {
             get {
                 return ((string)(this["LatestBetaDownloadUrl"]));
@@ -73,8 +73,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/beta/ArkServerManager.Plugin." +
-            "Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerM" +
+            "anager.Plugin.Discord.txt")]
         public string LatestBetaVersionUrl {
             get {
                 return ((string)(this["LatestBetaVersionUrl"]));

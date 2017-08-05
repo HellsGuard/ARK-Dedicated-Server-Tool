@@ -107,7 +107,7 @@
     <sys:String x:Key="WorkshopFiles_Load_FailedTitle">Load Workshop Items Error</sys:String>
     <sys:String x:Key="WorkshopFiles_Refresh_FailedTitle">Refresh Workshop Items Error</sys:String>
     <sys:String x:Key="WorkshopFiles_Refresh_FailedLabel">Loading workshop information from Steam failed, populating with the local cache instead.</sys:String>
-    <sys:String x:Key="WorkshopFiles_SelectedCountLabel">Selected Count:</sys:String>
+    <sys:String x:Key="WorkshopFiles_TotalCountLabel">Count:</sys:String>
     <sys:String x:Key="WorkshopFiles_LastRefreshedLabel">Last Refreshed:</sys:String>
     <sys:String x:Key="WorkshopFiles_FilterLabel">Filter:</sys:String>
     <sys:String x:Key="WorkshopFiles_FilterExistingLabel">Filter out existing mods</sys:String>
@@ -126,18 +126,18 @@
     <sys:String x:Key="WorkshopFiles_UnselectTooltip">Unselect all</sys:String>
 
     <!-- WorldSave Restore Window -->
-    <sys:String x:Key="WorldSaveRestore_Title">WorldSave Restore</sys:String>
-    <sys:String x:Key="WorldSaveRestore_ProfileTitle">WorldSave Restore - {0}</sys:String>
-    <sys:String x:Key="WorldSaveRestore_Load_FailedTitle">Load WorldSave Files Error</sys:String>
-    <sys:String x:Key="WorldSaveRestore_Refresh_FailedTitle">Refresh WorldSave Files Error</sys:String>
+    <sys:String x:Key="WorldSaveRestore_Title">Restore</sys:String>
+    <sys:String x:Key="WorldSaveRestore_ProfileTitle">Restore - {0}</sys:String>
+    <sys:String x:Key="WorldSaveRestore_Load_FailedTitle">Load Backup Files Error</sys:String>
+    <sys:String x:Key="WorldSaveRestore_Refresh_FailedTitle">Refresh Backup Files Error</sys:String>
 
     <sys:String x:Key="WorldSaveRestore_NameColumnLabel">Name</sys:String>
     <sys:String x:Key="WorldSaveRestore_CreatedDateColumnLabel">Created</sys:String>
     <sys:String x:Key="WorldSaveRestore_UpdatedDateColumnLabel">Last Updated</sys:String>
 
-    <sys:String x:Key="WorldSaveRestore_DeleteTooltip">Delete worldsave file</sys:String>
-    <sys:String x:Key="WorldSaveRestore_ReloadTooltip">Reload worldsave files</sys:String>
-    <sys:String x:Key="WorldSaveRestore_RestoreTooltip">Restore worldsave</sys:String>
+    <sys:String x:Key="WorldSaveRestore_DeleteTooltip">Delete backup file</sys:String>
+    <sys:String x:Key="WorldSaveRestore_ReloadTooltip">Reload backup files</sys:String>
+    <sys:String x:Key="WorldSaveRestore_RestoreTooltip">Restore backup</sys:String>
 
     <!-- Profile Sync Window -->
     <sys:String x:Key="ProfileSyncWindow_Title">Profile Sync</sys:String>
@@ -1844,7 +1844,16 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Settings</sys:String>
-    
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="TheIsland">The Island</sys:String>
+    <sys:String x:Key="TheCenter">The Center</sys:String>
+    <sys:String x:Key="ScorchedEarth_P">Scorched Earth</sys:String>
+    <sys:String x:Key="Ragnarok">Ragnarok</sys:String>
+
+    <!-- Total Conversion Names -->
+    <sys:String x:Key="111111111">Primitive Plus</sys:String>
+
     <!-- Dino/Creature Class Names -->
     <sys:String x:Key="Achatina_Character_BP_C">Achatina</sys:String>
     <sys:String x:Key="Allo_Character_BP_C">Allosaurus</sys:String>

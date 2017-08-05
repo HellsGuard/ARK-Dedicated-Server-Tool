@@ -361,9 +361,9 @@
 
     <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">Falls aktiviert, ist im PvE das Bauen in Höhlen möglich.</sys:String>
 
-    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Friendly Fire im PvE aktivieren</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Friendly Fire im PvE deaktivieren</sys:String>
 
-    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">Falls deaktiviert, können Spieler im PvE keinen Schaden an an Mitgliedern, Dinos oder Gebäuden des eigenen Stammes anrichten.</sys:String>
+    <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">Falls aktiviert, können Spieler im PvE keinen Schaden an an Mitgliedern, Dinos oder Gebäuden des eigenen Stammes anrichten.</sys:String>
 
     <sys:String x:Key="ServerSettings_DisableLootCratesLabel">Beutekisten deaktivieren</sys:String>
 

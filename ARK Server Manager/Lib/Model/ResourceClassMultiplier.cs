@@ -1,12 +1,14 @@
-﻿using System.Windows;
-using ARK_Server_Manager.Lib.ViewModel;
+﻿using System.Runtime.Serialization;
+using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class ResourceClassMultiplier : ClassMultiplier
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(ResourceClassMultiplier), new PropertyMetadata(ArkApplication.SurvivalEvolved));
 
+        [DataMember]
         public ArkApplication ArkApplication
         {
             get { return (ArkApplication)GetValue(ArkApplicationProperty); }

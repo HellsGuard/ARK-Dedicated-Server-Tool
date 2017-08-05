@@ -37,6 +37,10 @@ namespace ARK_Server_Manager
                 details.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
                 details.AppendLine();
 
+                details.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
+                details.AppendLine($"Windows Version: {Environment.OSVersion.VersionString}");
+                details.AppendLine();
+
                 details.AppendLine($"Crash Dump: {crashFile}");
                 details.AppendLine();
 

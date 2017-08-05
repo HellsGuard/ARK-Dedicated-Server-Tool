@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DataContract]
     public class ClassMultiplier : AggregateIniValue
     {
         public const float DEFAULT_MULTIPLIER = 1.0f;
@@ -10,6 +12,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(ClassMultiplier), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty MultiplierProperty = DependencyProperty.Register(nameof(Multiplier), typeof(float), typeof(ClassMultiplier), new PropertyMetadata(DEFAULT_MULTIPLIER));
 
+        [DataMember]
         [AggregateIniValueEntry]
         public string ClassName
         {
@@ -17,6 +20,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ClassNameProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public float Multiplier
         {
