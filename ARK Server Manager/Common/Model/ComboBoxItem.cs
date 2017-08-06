@@ -14,6 +14,13 @@ namespace ARK_Server_Manager.Lib.ViewModel
             DisplayMember = displayMember;
         }
 
+        public ComboBoxItem(string valueMember, string displayMember, string groupMember)
+        {
+            ValueMember = valueMember;
+            DisplayMember = displayMember;
+            GroupMember = groupMember;
+        }
+
         public static readonly DependencyProperty DisplayMemberProperty = DependencyProperty.Register(nameof(DisplayMember), typeof(string), typeof(ComboBoxItem), new PropertyMetadata(string.Empty));
         public string DisplayMember
         {
@@ -28,12 +35,20 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ValueMemberProperty, value); }
         }
 
+        public static readonly DependencyProperty GroupMemberProperty = DependencyProperty.Register(nameof(GroupMember), typeof(string), typeof(ComboBoxItem), new PropertyMetadata(string.Empty));
+        public string GroupMember
+        {
+            get { return (string)GetValue(GroupMemberProperty); }
+            set { SetValue(GroupMemberProperty, value); }
+        }
+
         public ComboBoxItem Duplicate()
         {
             return new ComboBoxItem
             {
                 DisplayMember = this.DisplayMember,
                 ValueMember = this.ValueMember,
+                GroupMember = this.GroupMember,
             };
         }
     }

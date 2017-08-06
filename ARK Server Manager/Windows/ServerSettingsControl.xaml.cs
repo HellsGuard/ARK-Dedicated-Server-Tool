@@ -2347,28 +2347,32 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var dino in GameData.GetDinoSpawns().OrderBy(d => d.DisplayName))
+            foreach (var dino in GameData.GetDinoSpawns())
             {
                 if (string.IsNullOrWhiteSpace(dino.ClassName))
                     continue;
 
-                newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
-                                ValueMember = dino.ClassName,
-                            });
+                newList.Add(new Lib.ViewModel.ComboBoxItem
+                {
+                    DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
+                    ValueMember = dino.ClassName,
+                });
             }
+
+            newList.Sort(i => $"{i.GroupMember}||{i.DisplayMember}");
 
             foreach (var dinoSetting in this.Settings.DinoSettings)
             {
+                if (string.IsNullOrWhiteSpace(dinoSetting.ReplacementClass))
+                    continue;
+
                 if (!newList.Any(s => s.ValueMember.Equals(dinoSetting.ReplacementClass, StringComparison.OrdinalIgnoreCase)))
                 {
-                    if (string.IsNullOrWhiteSpace(dinoSetting.ReplacementClass))
-                        continue;
-
-                    newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                    DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
-                                    ValueMember = dinoSetting.ReplacementClass,
-                                });
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
+                        ValueMember = dinoSetting.ReplacementClass,
+                    });
                 }
             }
 
@@ -2376,11 +2380,11 @@ namespace ARK_Server_Manager
             {
                 foreach (var spawnEntry in spawnSetting.NPCSpawnEntrySettings)
                 {
+                    if (string.IsNullOrWhiteSpace(spawnEntry.NPCClassString))
+                        continue;
+
                     if (!newList.Any(s => s.ValueMember.Equals(spawnEntry.NPCClassString, StringComparison.OrdinalIgnoreCase)))
                     {
-                        if (string.IsNullOrWhiteSpace(spawnEntry.NPCClassString))
-                            continue;
-
                         newList.Add(new Lib.ViewModel.ComboBoxItem
                         {
                             DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
@@ -2411,23 +2415,27 @@ namespace ARK_Server_Manager
 
             foreach (var mapSpawner in GameData.GetStandardMapSpawners())
             {
-                newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = mapSpawner.DisplayName,
-                                ValueMember = mapSpawner.ClassName,
-                            });
+                newList.Add(new Lib.ViewModel.ComboBoxItem
+                {
+                    DisplayMember = mapSpawner.DisplayName,
+                    ValueMember = mapSpawner.ClassName,
+                });
             }
+
+            newList.Sort(i => $"{i.GroupMember}||{i.DisplayMember}");
 
             foreach (var spawnSetting in this.Settings.NPCSpawnSettings)
             {
+                if (string.IsNullOrWhiteSpace(spawnSetting.NPCSpawnEntriesContainerClassString))
+                    continue;
+
                 if (!newList.Any(s => s.ValueMember.Equals(spawnSetting.NPCSpawnEntriesContainerClassString, StringComparison.OrdinalIgnoreCase)))
                 {
-                    if (string.IsNullOrWhiteSpace(spawnSetting.NPCSpawnEntriesContainerClassString))
-                        continue;
-
-                    newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                    DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
-                                    ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
-                                });
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = spawnSetting.NPCSpawnEntriesContainerClassString,
+                        ValueMember = spawnSetting.NPCSpawnEntriesContainerClassString,
+                    });
                 }
             }
 
@@ -2447,40 +2455,45 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardPrimalItems().OrderBy(i => i.DisplayName))
+            foreach (var primalItem in GameData.GetStandardPrimalItems())
             {
                 var categoryName = primalItem.ArkApplication == ArkApplication.SurvivalEvolved ? string.Empty : $" ({primalItem.ArkApplication.ToString()})";
 
-                newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = $"{primalItem.DisplayName}{categoryName}",
-                                ValueMember = primalItem.ClassName,
-                            });
+                newList.Add(new Lib.ViewModel.ComboBoxItem
+                {
+                    DisplayMember = $"{primalItem.DisplayName}{categoryName}",
+                    ValueMember = primalItem.ClassName,
+                });
             }
+
+            newList.Sort(i => $"{i.GroupMember}||{i.DisplayMember}");
 
             foreach (var craftingItem in this.Settings.ConfigOverrideItemCraftingCosts)
             {
+                if (string.IsNullOrWhiteSpace(craftingItem.ItemClassString))
+                    continue;
+
                 if (!newList.Any(s => s.ValueMember.Equals(craftingItem.ItemClassString, StringComparison.OrdinalIgnoreCase)))
                 {
-                    if (string.IsNullOrWhiteSpace(craftingItem.ItemClassString))
-                        continue;
-
-                    newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                    DisplayMember = craftingItem.ItemClassString,
-                                    ValueMember = craftingItem.ItemClassString,
-                                });
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = craftingItem.ItemClassString,
+                        ValueMember = craftingItem.ItemClassString,
+                    });
                 }
 
                 foreach (var craftingResource in craftingItem.BaseCraftingResourceRequirements)
                 {
+                    if (string.IsNullOrWhiteSpace(craftingResource.ResourceItemTypeString))
+                        continue;
+
                     if (!newList.Any(s => s.ValueMember.Equals(craftingResource.ResourceItemTypeString, StringComparison.OrdinalIgnoreCase)))
                     {
-                        if (string.IsNullOrWhiteSpace(craftingResource.ResourceItemTypeString))
-                            continue;
-
-                        newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                        DisplayMember = craftingResource.ResourceItemTypeString,
-                                        ValueMember = craftingResource.ResourceItemTypeString,
-                                    });
+                        newList.Add(new Lib.ViewModel.ComboBoxItem
+                        {
+                            DisplayMember = craftingResource.ResourceItemTypeString,
+                            ValueMember = craftingResource.ResourceItemTypeString,
+                        });
                     }
                 }
             }
@@ -2493,6 +2506,9 @@ namespace ARK_Server_Manager
                     {
                         foreach (var itemClass in itemEntry.Items)
                         {
+                            if (string.IsNullOrWhiteSpace(itemClass.ItemClassString))
+                                continue;
+
                             if (!newList.Any(s => s.ValueMember.Equals(itemClass.ItemClassString, StringComparison.OrdinalIgnoreCase)))
                             {
                                 newList.Add(new Lib.ViewModel.ComboBoxItem
@@ -2526,13 +2542,16 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardSupplyCrates().OrderBy(i => i.DisplayName))
+            foreach (var primalItem in GameData.GetStandardSupplyCrates())
             {
-                newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                DisplayMember = primalItem.DisplayName,
-                                ValueMember = primalItem.ClassName,
-                            });
+                newList.Add(new Lib.ViewModel.ComboBoxItem
+                {
+                    DisplayMember = primalItem.DisplayName,
+                    ValueMember = primalItem.ClassName,
+                });
             }
+
+            newList.Sort(i => $"{i.GroupMember}||{i.DisplayMember}");
 
             foreach (var supplyCrate in this.Settings.ConfigOverrideSupplyCrateItems)
             {
@@ -2541,10 +2560,11 @@ namespace ARK_Server_Manager
                     if (string.IsNullOrWhiteSpace(supplyCrate.SupplyCrateClassString))
                         continue;
 
-                    newList.Add(new Lib.ViewModel.ComboBoxItem {
-                                    DisplayMember = supplyCrate.SupplyCrateClassString,
-                                    ValueMember = supplyCrate.SupplyCrateClassString,
-                                });
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = supplyCrate.SupplyCrateClassString,
+                        ValueMember = supplyCrate.SupplyCrateClassString,
+                    });
                 }
             }
 
