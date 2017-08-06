@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ARK_Server_Manager.Lib.Model
 {
     public class StatsMultiplierArray : FloatIniValueArray
     {
-        public StatsMultiplierArray(string iniKeyName, Func<IEnumerable<float>> resetFunc, List<int> exclusions)
+        public StatsMultiplierArray(string iniKeyName, Func<IEnumerable<float>> resetFunc, bool[] inclusions)
             : base(iniKeyName, resetFunc)
         {
-            Exclusions = exclusions ?? new List<int>();
+            Inclusions = inclusions;
         }
 
-        private List<int> Exclusions
+        public bool[] Inclusions
         {
             get;
-            set;
+            private set;
         }
 
         public override void FromIniValues(IEnumerable<string> values)
@@ -60,7 +61,7 @@ namespace ARK_Server_Manager.Lib.Model
             var values = new List<string>();
             for (var i = 0; i < this.Count; i++)
             {
-                if (Exclusions?.Contains(i) ?? false)
+                if (!(Inclusions?.ElementAtOrDefault(i) ?? true))
                     continue;
 
                 if (string.IsNullOrWhiteSpace(IniCollectionKey))

@@ -51,15 +51,6 @@ namespace ARK_Server_Manager.Lib
         private string _lastSaveLocation = String.Empty;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private List<int> dinoStatMultiplierExclusions = new List<int> {
-            (int)GameData.StatsMultiplier.Water,
-            (int)GameData.StatsMultiplier.Temperature,
-            (int)GameData.StatsMultiplier.TemperatureFortitude,
-            (int)GameData.StatsMultiplier.CraftingSpeedMultiplier,
-        };
-        private List<int> playerStatMultiplierExclusions = new List<int> {
-        };
-
         private ServerProfile()
         {
             ServerPassword = SecurityUtils.GeneratePassword(16);
@@ -79,12 +70,12 @@ namespace ARK_Server_Manager.Lib
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
-            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default, playerStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default, playerStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
+            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Player, GameData.GetStatMultiplierInclusions_PlayerBase());
+            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Player, GameData.GetStatMultiplierInclusions_PlayerPerLevel());
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_DinoWild, GameData.GetStatMultiplierInclusions_DinoWildPerLevel());
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, GameData.GetStatMultiplierInclusions_DinoTamedPerLevel());
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamedAdd, GameData.GetStatMultiplierInclusions_DinoTamedAdd());
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamedAffinity, GameData.GetStatMultiplierInclusions_DinoTamedAffinity());
 
             this.ConfigOverrideItemCraftingCosts = new AggregateIniValueList<CraftingOverride>(nameof(ConfigOverrideItemCraftingCosts), null);
 
@@ -4193,10 +4184,10 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoSettings.RenderToView();
 
-            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_DinoWild, GameData.GetStatMultiplierInclusions_DinoWildPerLevel());
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, GameData.GetStatMultiplierInclusions_DinoTamedPerLevel());
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamedAdd, GameData.GetStatMultiplierInclusions_DinoTamedAdd());
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamedAffinity, GameData.GetStatMultiplierInclusions_DinoTamedAffinity());
 
             this.ClearValue(MatingIntervalMultiplierProperty);
             this.ClearValue(EggHatchSpeedMultiplierProperty);
@@ -4295,8 +4286,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(HarvestingDamageMultiplierPlayerProperty);
             this.ClearValue(CraftingSkillBonusMultiplierProperty);
 
-            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Default, playerStatMultiplierExclusions);
-            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Default, playerStatMultiplierExclusions);
+            this.PlayerBaseStatMultipliers = new StatsMultiplierArray(nameof(PlayerBaseStatMultipliers), GameData.GetBaseStatMultipliers_Player, GameData.GetStatMultiplierInclusions_PlayerBase());
+            this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Player, GameData.GetStatMultiplierInclusions_PlayerPerLevel());
         }
 
         public void ResetRulesSection()
@@ -4671,16 +4662,16 @@ namespace ARK_Server_Manager.Lib
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoSettings.RenderToView();
 
-            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_Default, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoWild = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoWild), GameData.GetPerLevelStatsMultipliers_DinoWild, GameData.GetStatMultiplierInclusions_DinoWildPerLevel());
             this.PerLevelStatsMultiplier_DinoWild.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoWild.ToIniValues());
             this.PerLevelStatsMultiplier_DinoWild.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoWild.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed), GameData.GetPerLevelStatsMultipliers_DinoTamed, GameData.GetStatMultiplierInclusions_DinoTamedPerLevel());
             this.PerLevelStatsMultiplier_DinoTamed.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamed_Add, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Add = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Add), GameData.GetPerLevelStatsMultipliers_DinoTamedAdd, GameData.GetStatMultiplierInclusions_DinoTamedAdd());
             this.PerLevelStatsMultiplier_DinoTamed_Add.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled;
-            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamed_Affinity, dinoStatMultiplierExclusions);
+            this.PerLevelStatsMultiplier_DinoTamed_Affinity = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), GameData.GetPerLevelStatsMultipliers_DinoTamedAffinity, GameData.GetStatMultiplierInclusions_DinoTamedAffinity());
             this.PerLevelStatsMultiplier_DinoTamed_Affinity.FromIniValues(sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.ToIniValues());
             this.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled = sourceProfile.PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled;
 
