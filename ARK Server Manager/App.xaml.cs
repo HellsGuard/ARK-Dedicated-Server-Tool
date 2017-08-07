@@ -122,7 +122,7 @@ namespace ARK_Server_Manager
             return logFilePath;
         }
 
-        public static Logger GetProfileLogger(string profileName, string name, LogLevel logLevel)
+        public static Logger GetProfileLogger(string profileName, string name, LogLevel minLevel, LogLevel maxLevel)
         {
             var loggerName = $"{profileName}_{name}".Replace(" ", "_");
 
@@ -143,8 +143,9 @@ namespace ARK_Server_Manager
                 };
                 LogManager.Configuration.AddTarget(loggerName, logFile);
 
-                var rule = new LoggingRule(loggerName, logLevel, logFile);
+                var rule = new LoggingRule(loggerName, minLevel, maxLevel, logFile);
                 LogManager.Configuration.LoggingRules.Add(rule);
+                LogManager.ReconfigExistingLoggers();
             }
 
             return LogManager.GetLogger(loggerName);
@@ -389,20 +390,18 @@ namespace ARK_Server_Manager
         public static void ReconfigureLogging()
         {               
             string logDir = Path.Combine(Config.Default.DataDir, Config.Default.LogsDir);
-            LogManager.Configuration.Variables["logDir"] = logDir;
 
             System.IO.Directory.CreateDirectory(logDir);
-            var target = (FileTarget)LogManager.Configuration.FindTargetByName("statuswatcher");
-            target.FileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.log");
-            target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerStatusWatcher.{#}.log");
 
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
-            target.FileName = Path.Combine(logDir, "ASM_Debug.log");
-            target.ArchiveFileName = Path.Combine(logDir, "ASM_Debug.{#}.log");
+            LogManager.Configuration.Variables["logDir"] = logDir;
 
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("scripts");
-            target.FileName = Path.Combine(logDir, "ASM_Scripts.log");
-            target.ArchiveFileName = Path.Combine(logDir, "ASM_Scripts.{#}.log");
+            var fileTargets = LogManager.Configuration.AllTargets.OfType<FileTarget>();
+            foreach (var fileTarget in fileTargets)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(fileTarget.FileName.ToString());
+                fileTarget.FileName = Path.Combine(logDir, $"{fileName}.log");
+                fileTarget.ArchiveFileName = Path.Combine(logDir, $"{fileName}.{{#}}.log");
+            }
 
             LogManager.ReconfigExistingLoggers();
         }   

@@ -76,15 +76,17 @@ namespace ARK_Server_Manager.Lib
         private Logger allLogger;
         private Logger eventLogger;
         private Logger debugLogger;
+        private Logger errorLogger;
 
         public ServerRCON(RCONParameters parameters)
         {
             this.rconParams = parameters;
 
-            this.allLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_All", LogLevel.Info);
-            this.chatLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Chat", LogLevel.Info);
-            this.eventLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Event", LogLevel.Info);
-            this.debugLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Debug", LogLevel.Trace);
+            this.allLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_All", LogLevel.Info, LogLevel.Info);
+            this.chatLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Chat", LogLevel.Info, LogLevel.Info);
+            this.eventLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Event", LogLevel.Info, LogLevel.Info);
+            this.debugLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Debug", LogLevel.Trace, LogLevel.Debug);
+            this.errorLogger = App.GetProfileLogger(this.rconParams.ProfileName, "RCON_Error", LogLevel.Error, LogLevel.Fatal);
 
             commandProcessor.PostAction(AutoPlayerList);
             commandProcessor.PostAction(AutoGetChat);
@@ -213,7 +215,7 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                debugLogger.Error("Failed to send command '{0}'.  {1}\n{2}", command.rawCommand, ex.Message, ex.ToString());
+                errorLogger.Error($"Failed to send command '{command.rawCommand}'. {ex.Message}");
                 command.status = ConsoleStatus.Disconnected;
                 this.outputProcessor.PostAction(() => ProcessOutput(command));
                 return false;
@@ -245,7 +247,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    debugLogger.Error("Exception in command listener: {0}\n{1}", ex.Message, ex.StackTrace);
+                    errorLogger.Error("Exception in command listener: {0}\n{1}", ex.Message, ex.StackTrace);
                 }
             }
         }
@@ -387,7 +389,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    debugLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
+                    errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
                 }
 
                 TaskUtils.RunOnUIThreadAsync(() =>
@@ -435,7 +437,7 @@ namespace ARK_Server_Manager.Lib
                                 }
                                 else
                                 {
-                                    debugLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: corrupted profile.\r\n{playerData.Filename}.");
+                                    debugLogger.Debug($"{nameof(UpdatePlayerDetails)} - Error: corrupted profile.\r\n{playerData.Filename}.");
                                 }
                             }
 
@@ -488,8 +490,8 @@ namespace ARK_Server_Manager.Lib
                 retries++;
             }
 
-            debugLogger.Debug($"Failed to connect to RCON at {this.rconParams.RCONHostIP}:{this.rconParams.RCONPort} with {this.rconParams.AdminPassword}. {lastException.Message}\r\n{lastException.StackTrace}");
-            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}\n{lastException.StackTrace}", lastException);
+            errorLogger.Error($"Failed to connect to RCON at {this.rconParams.RCONHostIP}:{this.rconParams.RCONPort} with {this.rconParams.AdminPassword}. {lastException.Message}");
+            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
         }
 
         private bool Reconnect()

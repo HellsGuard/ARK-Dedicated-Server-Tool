@@ -2404,48 +2404,6 @@ namespace ARK_Server_Manager.Lib
         public static PrimalItem GetPrimalItemForClass(string className) => primalItems.FirstOrDefault(e => e.ClassName.Equals(className));
 
         public static bool HasPrimalItemForClass(string className) => primalItems.Any(e => e.ClassName.Equals(className));
-
-        public enum StatsMultiplier
-        {
-            Health = 0,
-            Stamina = 1,
-            Torpidity = 2,
-            Oxygen = 3,
-            Food = 4,
-            Water = 5,
-            Temperature = 6,
-            Weight = 7,
-            MeleeDamageMultiplier = 8,
-            SpeedMultiplier = 9,
-            TemperatureFortitude = 10,
-            CraftingSpeedMultiplier = 11
-        };
-
-        internal static IEnumerable<float> GetBaseStatMultipliers_Default()
-        {
-            return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-        }
-
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_Default()
-        {
-            return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-        }
-
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed()
-        {
-            return new float[12] { 0.2f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.17f, 1.0f, 1.0f, 1.0f };
-        }
-
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Add()
-        {
-            return new float[12] { 0.14f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.14f, 1.0f, 1.0f, 1.0f };
-        }
-
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Affinity()
-        {
-            return new float[12] { 0.44f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.44f, 1.0f, 1.0f, 1.0f };
-        }
-
         private static readonly MapSpawner[] mapSpawners = new[]
         {
             new MapSpawner { ClassName="DinoSpawnEntries_Beavers_C" },
@@ -2703,6 +2661,82 @@ namespace ARK_Server_Manager.Lib
         };
 
         public static IEnumerable<ComboBoxItem> GetTotalConversionsSotF() => totalConversionsSotF.Select(d => d.Duplicate());
+
+        public enum StatsMultiplier
+        {
+            Health = 0,
+            Stamina = 1,
+            Torpidity = 2,
+            Oxygen = 3,
+            Food = 4,
+            Water = 5,
+            Temperature = 6,
+            Weight = 7,
+            Melee = 8,
+            Speed = 9,
+            Fortitude = 10,
+            Crafting = 11
+        };
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoWild()
+        {
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed()
+        {
+            return new float[] { 0.2f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.17f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamedAdd()
+        {
+            return new float[] { 0.14f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.14f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamedAffinity()
+        {
+            return new float[] { 0.44f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.44f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetBaseStatMultipliers_Player()
+        {
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_Player()
+        {
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoWildPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, false, true, true, true, true, false, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, false, true, true, true, true, false, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedAdd()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedAffinity()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_PlayerBase()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, true };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_PlayerPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, true, true, true, true, true, false, true };
+        }
 
         private static readonly Level[] levelProgressionDinoOfficial = new Level[]
             {

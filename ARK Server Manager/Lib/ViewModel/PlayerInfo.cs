@@ -174,7 +174,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                     }
                     else
                     {
-                        _logger.Error($"Avatar image for {this.SteamId} not found.");
+                        _logger.Debug($"Avatar image for {this.SteamId} not found.");
                     }
                 }
 

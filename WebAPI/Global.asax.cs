@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using NLog;
+using NLog.Targets;
+using System.IO;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using NLog;
-using NLog.Targets;
 
 namespace ASMWebAPI
 {
@@ -34,39 +35,12 @@ namespace ASMWebAPI
 
             LogManager.Configuration.Variables["logDir"] = logDir;
 
-            var target = (FileTarget)LogManager.Configuration.FindTargetByName("debugFile");
-            if (target != null)
+            var fileTargets = LogManager.Configuration.AllTargets.OfType<FileTarget>();
+            foreach (var fileTarget in fileTargets)
             {
-                target.FileName = Path.Combine(logDir, "ASM_Debug.log");
-                target.ArchiveFileName = Path.Combine(logDir, "ASM_Debug.{#}.log");
-            }
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverInfoFile");
-            if (target != null)
-            {
-                target.FileName = Path.Combine(logDir, "ASM_ServerInfo.log");
-                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerInfo.{#}.log");
-            }
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverTraceFile");
-            if (target != null)
-            {
-                target.FileName = Path.Combine(logDir, "ASM_ServerTrace.log");
-                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerTrace.{#}.log");
-            }
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("serverWarnFile");
-            if (target != null)
-            {
-                target.FileName = Path.Combine(logDir, "ASM_ServerWarn.log");
-                target.ArchiveFileName = Path.Combine(logDir, "ASM_ServerWarn.{#}.log");
-            }
-
-            target = (FileTarget)LogManager.Configuration.FindTargetByName("pluginInfoFile");
-            if (target != null)
-            {
-                target.FileName = Path.Combine(logDir, "ASM_PluginInfo.log");
-                target.ArchiveFileName = Path.Combine(logDir, "ASM_PluginInfo.{#}.log");
+                var fileName = Path.GetFileNameWithoutExtension(fileTarget.FileName.ToString());
+                fileTarget.FileName = Path.Combine(logDir, $"{fileName}.log");
+                fileTarget.ArchiveFileName = Path.Combine(logDir, $"{fileName}.{{#}}.log");
             }
 
             LogManager.ReconfigExistingLoggers();
