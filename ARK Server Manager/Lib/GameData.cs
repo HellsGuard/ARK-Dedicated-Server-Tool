@@ -2735,7 +2735,7 @@ namespace ARK_Server_Manager.Lib
 
         internal static bool[] GetStatMultiplierInclusions_PlayerPerLevel()
         {
-            return new bool[] { true, true, false, true, true, true, true, true, true, true, false, true };
+            return new bool[] { true, true, false, true, true, true, true, true, true, true, true, true };
         }
 
         private static readonly Level[] levelProgressionDinoOfficial = new Level[]
