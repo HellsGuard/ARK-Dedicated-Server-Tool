@@ -55,7 +55,7 @@ namespace ARK_Server_Manager
 
                 var window = RCONWindow.GetRCON(new Lib.RCONParameters()
                 {
-                    ProfileName = $"{ServerIP}:{RCONPort}",
+                    ProfileName = $"{ServerIP} {RCONPort}",
                     RCONHost = ServerIP,
                     RCONPort = RCONPort,
                     AdminPassword = Password,
