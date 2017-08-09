@@ -20,11 +20,23 @@ using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager
 {
+    public class ProfileEventArgs : EventArgs
+    {
+        public ProfileEventArgs(ServerProfile profile)
+        {
+            Profile = profile;
+        }
+
+        public ServerProfile Profile;
+    }
+
     /// <summary>
     /// Interaction logic for ModDetailsWindow.xaml
     /// </summary>
     public partial class ModDetailsWindow : Window
     {
+        public EventHandler<ProfileEventArgs> SavePerformed;
+
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private readonly ServerProfile _profile = null;
 
@@ -308,6 +320,7 @@ namespace ARK_Server_Manager
                 }
 
                 await LoadModsFromProfile();
+                OnSavePerformed();
             }
             catch (Exception ex)
             {
@@ -349,6 +362,11 @@ namespace ARK_Server_Manager
                 return true;
 
             return data.ModId.Contains(filterString) || data.TitleFilterString.Contains(filterString);
+        }
+
+        protected void OnSavePerformed()
+        {
+            SavePerformed?.Invoke(this, new ProfileEventArgs(_profile));
         }
 
         public int SelectedRowIndex()

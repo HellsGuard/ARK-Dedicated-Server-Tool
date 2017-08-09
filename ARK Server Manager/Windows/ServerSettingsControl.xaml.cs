@@ -335,8 +335,27 @@ namespace ARK_Server_Manager
         {
             Window.GetWindow(this)?.Activate();
 
+            if (sender is Window)
+                ((Window)sender).Closed += Window_Closed;
+
             if (sender is ShutdownWindow)
                 this.Runtime?.ResetModCheckTimer();
+
+            if (sender is ModDetailsWindow)
+            {
+                ((ModDetailsWindow)sender).SavePerformed -= ModDetailsWindow_SavePerformed;
+                RefreshBaseGameMapsList();
+                RefreshBaseTotalConversionsList();
+            }
+        }
+
+        private void ModDetailsWindow_SavePerformed(object sender, ProfileEventArgs e)
+        {
+            if (sender is ModDetailsWindow && Equals(e.Profile, Settings))
+            {
+                RefreshBaseGameMapsList();
+                RefreshBaseTotalConversionsList();
+            }
         }
 
         private async void Start_Click(object sender, RoutedEventArgs e)
@@ -505,6 +524,7 @@ namespace ARK_Server_Manager
             var window = new ModDetailsWindow(this.Server.Profile);
             window.Owner = Window.GetWindow(this);
             window.Closed += Window_Closed;
+            window.SavePerformed += ModDetailsWindow_SavePerformed;
             window.Show();
             window.Focus();
         }
