@@ -263,9 +263,17 @@ namespace ARK_Server_Manager
                     OverlayGrid.Visibility = Visibility.Visible;
 
                     await Task.Delay(500);
-                    await Task.Run(() => Updater.UpdateASM());
+                    await Task.Run(() => Updater.UpdateASM((p, m, n) =>
+                    {
+                        TaskUtils.RunOnUIThreadAsync(() =>
+                        {
+                            OverlayMessage.Content = _globalizer.GetResourceString(m);
+                            Task.Delay(500).Wait();
+                        }).Wait();
+                    }));
+                    Logger.Debug("Upgrade performed");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(String.Format(_globalizer.GetResourceString("MainWindow_Upgrade_FailedLabel"), ex.Message, ex.StackTrace), _globalizer.GetResourceString("MainWindow_Upgrade_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }

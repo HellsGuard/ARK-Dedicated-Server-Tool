@@ -424,6 +424,11 @@
     <sys:String x:Key="MainWindow_SteamCmd_FailedTitle">Reinstall SteamCMD Error</sys:String>
     <sys:String x:Key="MainWindow_SteamCmd_FailedLabel">An error occured while trying to reinstall SteamCMD. This has left SteamCmd in an unstable state, try reinstalling again or please report this.\r\nException: {0}</sys:String>
 
+    <sys:String x:Key="Updater_ProgressMessage_DownloadLabel">Downloading latest version file...</sys:String>
+    <sys:String x:Key="Updater_ProgressMessage_PrepareLabel">Preparing downloadeded file...</sys:String>
+    <sys:String x:Key="Updater_ProgressMessage_ExtractLabel">Extracting latest version to staging area...</sys:String>
+    <sys:String x:Key="Updater_ProgressMessage_UpgradeLabel">Starting upgrade...</sys:String>
+
     <!-- General Menu strings -->
     <sys:String x:Key="Menu_File">_File</sys:String>
     <sys:String x:Key="Menu_File_Exit">_Exit</sys:String>
