@@ -336,7 +336,7 @@ namespace ARK_Server_Manager
             Window.GetWindow(this)?.Activate();
 
             if (sender is Window)
-                ((Window)sender).Closed += Window_Closed;
+                ((Window)sender).Closed -= Window_Closed;
 
             if (sender is ShutdownWindow)
                 this.Runtime?.ResetModCheckTimer();
