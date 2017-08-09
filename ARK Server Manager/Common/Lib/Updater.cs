@@ -5,11 +5,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Runtime.InteropServices;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -237,7 +237,7 @@ namespace ARK_Server_Manager.Lib
             return DeleteFile(fileName + ":Zone.Identifier");
         }
 
-        public static void UpdateASM()
+        public static void UpdateASM(ProgressDelegate progressCallback = null)
         {
             var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
             var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
@@ -248,10 +248,13 @@ namespace ARK_Server_Manager.Lib
             // Grab the latest version
             using (var client = new WebClient())
             {
+                progressCallback?.Invoke(0, "Updater_ProgressMessage_DownloadLabel", true);
                 if (App.Instance.BetaVersion)
                     client.DownloadFile(Config.Default.LatestASMBetaDownloadUrl, applicationZip);
                 else
                     client.DownloadFile(Config.Default.LatestASMDownloadUrl, applicationZip);
+
+                progressCallback?.Invoke(0, "Updater_ProgressMessage_PrepareLabel", true);
                 Unblock(applicationZip);
             }
 
@@ -263,6 +266,7 @@ namespace ARK_Server_Manager.Lib
             catch { }
 
             // Extract latest version to extraction directory
+            progressCallback?.Invoke(0, "Updater_ProgressMessage_ExtractLabel", true);
             ZipFile.ExtractToDirectory(applicationZip, extractPath);
 
             // Replace the current installation
@@ -274,6 +278,8 @@ namespace ARK_Server_Manager.Lib
             script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
             script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()} {App.Instance.Args}");
             script.AppendLine("exit");
+
+            progressCallback?.Invoke(0, "Updater_ProgressMessage_UpgradeLabel", true);
 
             TaskUtils.RunOnUIThreadAsync(() =>
             {
