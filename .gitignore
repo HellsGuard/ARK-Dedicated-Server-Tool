@@ -27,6 +27,8 @@ Plugin.Discord.UnitTests/bin/
 Plugin.Discord.UnitTests/obj/
 QueryMaster/bin/
 QueryMaster/obj/
+ServerManager.Updater/bin/
+ServerManager.Updater/obj/
 SteamKit2/bin/
 SteamKit2/obj/
 WebAPI/bin/

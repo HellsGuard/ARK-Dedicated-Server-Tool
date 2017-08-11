@@ -3770,7 +3770,7 @@ namespace ARK_Server_Manager.Lib
             };
             app.CreateServerBackupArchiveFile(null, ServerApp.ProfileSnapshot.Create(this));
 
-            var worldFile = Updater.NormalizePath(Path.Combine(saveFolder, worldFileName));
+            var worldFile = IOUtils.NormalizePath(Path.Combine(saveFolder, worldFileName));
             var restoreFileInfo = new FileInfo(restoreFile);
             var restoredFileCount = 0;
 

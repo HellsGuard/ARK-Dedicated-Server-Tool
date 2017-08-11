@@ -18,7 +18,7 @@ namespace ARK_Server_Manager.Lib
     /// <summary>
     /// Checks for an updates this program
     /// </summary>
-    class Updater
+    class SteamCmdUpdater
     {
         public const string OUTPUT_PREFIX = "[UPDATER]";
 
@@ -56,9 +56,6 @@ namespace ARK_Server_Manager.Lib
 
         enum Status
         {
-            CheckForNewServerVersion,
-            DownloadNewServerVersion,
-            DownloadNewServerComplete,
             CleaningSteamCmd,
             DownloadingSteamCmd,
             UnzippingSteamCmd,
@@ -71,20 +68,17 @@ namespace ARK_Server_Manager.Lib
         Dictionary<Status, Update> statuses = new Dictionary<Status, Update>()
         {
            { Status.CleaningSteamCmd, new Update("AutoUpdater_Status_CleaningSteamCmd", 0) },
-           { Status.DownloadingSteamCmd, new Update("AutoUpdater_Status_DownloadingSteamCmd", 0) },
-           { Status.UnzippingSteamCmd, new Update("AutoUpdater_Status_UnzippingSteamCmd", 20) },
-           { Status.RunningSteamCmd, new Update("AutoUpdater_Status_RunningSteamCmd", 40) },
-           { Status.InstallSteamCmdComplete, new Update("AutoUpdater_Status_InstallSteamCmdComplete", 50) },
-           { Status.CheckForNewServerVersion, new Update("AutoUpdater_Status_CheckForNewServerVersion", 50) },
-           { Status.DownloadNewServerVersion, new Update("AutoUpdater_Status_DownloadNewServerVersion", 60) },
-           { Status.DownloadNewServerComplete, new Update("AutoUpdater_Status_DownloadNewServerComplete", 90) },
+           { Status.DownloadingSteamCmd, new Update("AutoUpdater_Status_DownloadingSteamCmd", 10) },
+           { Status.UnzippingSteamCmd, new Update("AutoUpdater_Status_UnzippingSteamCmd", 30) },
+           { Status.RunningSteamCmd, new Update("AutoUpdater_Status_RunningSteamCmd", 50) },
+           { Status.InstallSteamCmdComplete, new Update("AutoUpdater_Status_InstallSteamCmdComplete", 80) },
            { Status.Complete, Update.AsCompleted("AutoUpdater_Status_Complete") },
            { Status.Cancelled, Update.AsCancelled("AutoUpdater_Status_Cancelled") }
         };
 
         public static bool IsAutoUpdateCacheEnabled => Config.Default.AutoUpdate_EnableUpdate && Config.Default.AutoUpdate_UpdatePeriod >= 0 && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir);
 
-        public static string GetLogFolder() => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.LogsDir));
+        public static string GetLogFolder() => IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.LogsDir));
 
         public static Version GetServerVersion(string versionFile)
         {
@@ -107,9 +101,7 @@ namespace ARK_Server_Manager.Lib
             return new Version(0, 0);
         }
 
-        public static string GetSteamCmdFile() => NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe));
-
-        public static string NormalizePath(string path) => Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).ToLowerInvariant();
+        public static string GetSteamCmdFile() => IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamCmdExe));
 
         #region SteamCMD
         public async Task ReinstallSteamCmdAsync(IProgress<Update> reporter, CancellationToken cancellationToken)
@@ -224,69 +216,6 @@ namespace ARK_Server_Manager.Lib
             {
                 reporter?.Report(statuses[Status.Complete].SetFailed(ex.ToString()));
             }
-        }
-        #endregion
-
-        #region ASM Update
-        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool DeleteFile(string name);
-
-        private static bool Unblock(string fileName)
-        {
-            return DeleteFile(fileName + ":Zone.Identifier");
-        }
-
-        public static void UpdateASM(ProgressDelegate progressCallback = null)
-        {
-            var applicationZip = Path.Combine(Path.GetTempPath(), "ASMLatest.zip");
-            var extractPath = Path.Combine(Path.GetTempPath(), "ASMLatest");
-            var updateFilePath = Path.Combine(Path.GetTempPath(), "ASMUpdate.cmd");
-            var currentInstallPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var backupPath = currentInstallPath + "_bak";
-
-            // Grab the latest version
-            using (var client = new WebClient())
-            {
-                progressCallback?.Invoke(0, "Updater_ProgressMessage_DownloadLabel", true);
-                if (App.Instance.BetaVersion)
-                    client.DownloadFile(Config.Default.LatestASMBetaDownloadUrl, applicationZip);
-                else
-                    client.DownloadFile(Config.Default.LatestASMDownloadUrl, applicationZip);
-
-                progressCallback?.Invoke(0, "Updater_ProgressMessage_PrepareLabel", true);
-                Unblock(applicationZip);
-            }
-
-            try
-            {
-                // Delete the old extraction directory
-                Directory.Delete(extractPath, true);
-            }
-            catch { }
-
-            // Extract latest version to extraction directory
-            progressCallback?.Invoke(0, "Updater_ProgressMessage_ExtractLabel", true);
-            ZipFile.ExtractToDirectory(applicationZip, extractPath);
-
-            // Replace the current installation
-            var script = new StringBuilder();
-            
-            script.AppendLine("timeout 10");
-            script.AppendLine($"rmdir /s /q {backupPath.AsQuoted()}");
-            script.AppendLine($"rename {currentInstallPath.AsQuoted()} {Path.GetFileName(backupPath).AsQuoted()}");
-            script.AppendLine($"xcopy /e /y {(extractPath + "\\*.*").AsQuoted()} {(currentInstallPath + "\\").AsQuoted()}");
-            script.AppendLine($"start \"\" {Assembly.GetExecutingAssembly().Location.AsQuoted()} {App.Instance.Args}");
-            script.AppendLine("exit");
-
-            progressCallback?.Invoke(0, "Updater_ProgressMessage_UpgradeLabel", true);
-
-            TaskUtils.RunOnUIThreadAsync(() =>
-            {
-                ScriptUtils.RunShellScript(nameof(UpdateASM), script.ToString(), withElevation: false, waitForExit: false);
-
-                Application.Current.Shutdown(0);
-            }).DoNotWait();
         }
         #endregion
     }

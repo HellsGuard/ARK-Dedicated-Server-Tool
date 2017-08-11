@@ -767,7 +767,7 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                var steamCmdFile = Updater.GetSteamCmdFile();
+                var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
                 if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
                 {
                     LogProfileError($"SteamCMD could not be found. Expected location is {steamCmdFile}");
@@ -1556,7 +1556,7 @@ namespace ARK_Server_Manager.Lib
                 }
             }
 
-            var steamCmdFile = Updater.GetSteamCmdFile();
+            var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
             if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
             {
                 LogError($"SteamCMD could not be found. Expected location is {steamCmdFile}");
@@ -1669,7 +1669,7 @@ namespace ARK_Server_Manager.Lib
             var gotNewVersion = false;
             var downloadSuccessful = false;
 
-            var steamCmdFile = Updater.GetSteamCmdFile();
+            var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
             if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
             {
                 LogError($"SteamCMD could not be found. Expected location is {steamCmdFile}");
@@ -1789,12 +1789,12 @@ namespace ARK_Server_Manager.Lib
 
                     var backupFolder = GetProfileBackupFolder();
                     var backupFileName = $"{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}";
-                    var backupFile = Updater.NormalizePath(Path.Combine(backupFolder, backupFileName));
+                    var backupFile = IOUtils.NormalizePath(Path.Combine(backupFolder, backupFileName));
 
-                    var profileFile = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
-                    var profileFileNew = Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
-                    var gameIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
-                    var gusIniFile = Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
+                    var profileFile = IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
+                    var profileFileNew = IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
+                    var gameIniFile = IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
+                    var gusIniFile = IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
                     var launcherFile = GetLauncherFile();
 
                     if (!Directory.Exists(backupFolder))
@@ -1927,7 +1927,7 @@ namespace ARK_Server_Manager.Lib
                             var backupFolder = GetServerBackupFolder(_profile.ProfileName);
                             var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
                             var backupFileName = $"{mapName}_{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}";
-                            var backupFile = Updater.NormalizePath(Path.Combine(backupFolder, backupFileName));
+                            var backupFile = IOUtils.NormalizePath(Path.Combine(backupFolder, backupFileName));
 
                             if (!Directory.Exists(backupFolder))
                                 Directory.CreateDirectory(backupFolder);
@@ -2122,9 +2122,9 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private string GetLauncherFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile));
+        private string GetLauncherFile() => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile));
 
-        private static string GetLogFile() => Updater.NormalizePath(Path.Combine(Updater.GetLogFolder(), _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log"));
+        private static string GetLogFile() => IOUtils.NormalizePath(Path.Combine(SteamCmdUpdater.GetLogFolder(), _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log"));
 
         private List<string> GetModList()
         {
@@ -2167,11 +2167,11 @@ namespace ARK_Server_Manager.Lib
             return ModUtils.ValidateModList(modIdList);
         }
 
-        private string GetProfileBackupFolder() => Updater.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName));
+        private string GetProfileBackupFolder() => IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName));
 
-        private string GetProfileLogFile() => _profile != null ? Updater.NormalizePath(Path.Combine(Updater.GetLogFolder(), _profile.ProfileName, _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log")) : GetLogFile();
+        private string GetProfileLogFile() => _profile != null ? IOUtils.NormalizePath(Path.Combine(SteamCmdUpdater.GetLogFolder(), _profile.ProfileName, _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log")) : GetLogFile();
 
-        private string GetModPath(string modId) => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath, modId));
+        private string GetModPath(string modId) => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath, modId));
 
         public static string GetMutexName(string directory)
         {
@@ -2190,11 +2190,11 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static string GetServerBackupFolder(string profileName) => Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.BackupDir, profileName));
+        public static string GetServerBackupFolder(string profileName) => IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.BackupDir, profileName));
 
-        private static string GetServerCacheTimeFile() => Updater.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
+        private static string GetServerCacheTimeFile() => IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
 
-        private string GetServerExecutableFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe));
+        private string GetServerExecutableFile() => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe));
 
         private DateTime GetServerLatestTime(string timeFile)
         {
@@ -2232,15 +2232,15 @@ namespace ARK_Server_Manager.Lib
             return process;
         }
 
-        private string GetServerTimeFile() => Updater.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.LastUpdatedTimeFile));
+        private string GetServerTimeFile() => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.LastUpdatedTimeFile));
 
-        private string GetServerSaveFolder() => Updater.NormalizePath(ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name));
+        private string GetServerSaveFolder() => IOUtils.NormalizePath(ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name));
 
         private string GetServerWorldFile()
         {
             var profileSaveFolder = GetServerSaveFolder();
             var mapName = ServerProfile.GetProfileMapFileName(_profile.ServerMap, _profile.PGM_Enabled, _profile.PGM_Name);
-            return Updater.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}{Config.Default.MapExtension}"));
+            return IOUtils.NormalizePath(Path.Combine(profileSaveFolder, $"{mapName}{Config.Default.MapExtension}"));
         }
 
         public static bool HasNewServerVersion(string directory, DateTime checkTime)

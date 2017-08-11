@@ -8,6 +8,7 @@ using System.Windows;
 using WPFSharp.Globalizer;
 using System.Threading;
 using NLog;
+using System.Reflection;
 
 namespace ARK_Server_Manager
 {
@@ -164,7 +165,7 @@ namespace ARK_Server_Manager
 
         private void OpenLogFolder_Click(object sender, RoutedEventArgs e)
         {
-            var logFolder = Updater.GetLogFolder();
+            var logFolder = SteamCmdUpdater.GetLogFolder();
             if (!Directory.Exists(logFolder))
                 logFolder = Config.Default.DataDir;
             Process.Start("explorer.exe", logFolder);
@@ -215,7 +216,7 @@ namespace ARK_Server_Manager
 
                 try
                 {
-                    var updater = new Updater();
+                    var updater = new SteamCmdUpdater();
                     var cancelSource = new CancellationTokenSource();
 
                     window = new ProgressWindow(_globalizer.GetResourceString("Progress_ReinstallSteamCmd_WindowTitle"));
@@ -224,10 +225,10 @@ namespace ARK_Server_Manager
                     window.Show();
 
                     await Task.Delay(1000);
-                    await updater.ReinstallSteamCmdAsync(new Progress<Updater.Update>(u =>
+                    await updater.ReinstallSteamCmdAsync(new Progress<SteamCmdUpdater.Update>(u =>
                     {
                         var resourceString = string.IsNullOrWhiteSpace(u.StatusKey) ? null : _globalizer.GetResourceString(u.StatusKey);
-                        var message = resourceString != null ? $"{Updater.OUTPUT_PREFIX} {resourceString}" : u.StatusKey;
+                        var message = resourceString != null ? $"{SteamCmdUpdater.OUTPUT_PREFIX} {resourceString}" : u.StatusKey;
                         window?.AddMessage(message);
 
                         if (u.FailureText != null)
@@ -263,15 +264,34 @@ namespace ARK_Server_Manager
                     OverlayGrid.Visibility = Visibility.Visible;
 
                     await Task.Delay(500);
-                    await Task.Run(() => Updater.UpdateASM((p, m, n) =>
-                    {
-                        TaskUtils.RunOnUIThreadAsync(() =>
+
+                    var process = Process.GetCurrentProcess();
+                    if (process == null || process.HasExited)
+                        throw new Exception("Application process could not be found or does not exist.");
+
+                    var assemblyLocation = Assembly.GetEntryAssembly().Location;
+                    var updaterFile = Path.Combine(Path.GetDirectoryName(assemblyLocation), Config.Default.UpdaterFile);
+                    if (!File.Exists(updaterFile))
+                        throw new FileNotFoundException("The updater application could not be found or does not exist.");
+
+                    var arguments = new string[]
                         {
-                            OverlayMessage.Content = _globalizer.GetResourceString(m);
-                            Task.Delay(500).Wait();
-                        }).Wait();
-                    }));
-                    Logger.Debug("Upgrade performed");
+                            process.Id.ToString().AsQuoted(),
+                            App.Instance.BetaVersion ? Config.Default.LatestASMBetaDownloadUrl.AsQuoted() : Config.Default.LatestASMDownloadUrl.AsQuoted(),
+                            Config.Default.UpdaterPrefix.AsQuoted(),
+                        };
+
+                    ProcessStartInfo info = new ProcessStartInfo()
+                    {
+                        FileName = updaterFile.AsQuoted(),
+                        Arguments = string.Join(" ", arguments),
+                        UseShellExecute = true,
+                        CreateNoWindow = true,
+                    };
+
+                    var updaterProcess = Process.Start(info);
+                    if (updaterProcess == null)
+                        throw new Exception("Could not restart application.");
                 }
                 catch (Exception ex)
                 {

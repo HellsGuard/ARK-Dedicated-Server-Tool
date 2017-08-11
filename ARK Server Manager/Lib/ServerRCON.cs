@@ -149,11 +149,6 @@ namespace ARK_Server_Manager.Lib
             });
         }
 
-        public Task<bool> IssueCommand(string userCommand)
-        {
-            return this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = userCommand }));
-        }
-
         public async Task DisposeAsync()
         {
             await this.commandProcessor.DisposeAsync();
@@ -232,24 +227,6 @@ namespace ARK_Server_Manager.Lib
             //
             HandleCommand(command);
             NotifyCommand(command);
-        }
-
-        //
-        // This is bound to the UI thread
-        //
-        private void NotifyCommand(ConsoleCommand command)
-        {
-            foreach (var listener in commandListeners)
-            {
-                try
-                {
-                    listener.Callback(command);
-                }
-                catch (Exception ex)
-                {
-                    errorLogger.Error("Exception in command listener: {0}\n{1}", ex.Message, ex.StackTrace);
-                }
-            }
         }
 
         //
@@ -371,6 +348,67 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        //
+        // This is bound to the UI thread
+        //
+        private void NotifyCommand(ConsoleCommand command)
+        {
+            foreach (var listener in commandListeners)
+            {
+                try
+                {
+                    listener.Callback(command);
+                }
+                catch (Exception ex)
+                {
+                    errorLogger.Error("Exception in command listener: {0}\n{1}", ex.Message, ex.StackTrace);
+                }
+            }
+        }
+
+        public Task<bool> IssueCommand(string userCommand)
+        {
+            return this.commandProcessor.PostAction(() => ProcessInput(new ConsoleCommand() { rawCommand = userCommand }));
+        }
+
+        private string SendCommand(string command)
+        {
+            int retries = 0;
+            Exception lastException = null;
+            while (retries < MaxCommandRetries)
+            {
+                if (this.console != null)
+                {
+                    try
+                    {
+                        var result = this.console.SendCommand(command);
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Re will simply retry
+                        lastException = ex;
+                    }
+
+                    Task.Delay(RetryDelay).Wait();
+                }
+
+                try
+                {
+                    Reconnect();
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                }
+
+                retries++;
+            }
+
+            errorLogger.Error($"Failed to connect to RCON at {this.rconParams.RCONHostIP}:{this.rconParams.RCONPort} with {this.rconParams.AdminPassword}. {lastException.Message}");
+            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
+        }
+
         private async Task UpdatePlayerDetails()
         {
             if (updatingPlayerDetails)
@@ -454,44 +492,6 @@ namespace ARK_Server_Manager.Lib
                     }
                 }).DoNotWait();
             }
-        }
-
-        private string SendCommand(string command)
-        {
-            int retries = 0;
-            Exception lastException = null;
-            while (retries < MaxCommandRetries)
-            {
-                if (this.console != null)
-                {
-                    try
-                    {
-                        var result = this.console.SendCommand(command);
-                        return result;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Re will simply retry
-                        lastException = ex;
-                    }
-
-                    Task.Delay(RetryDelay).Wait();
-                }
-
-                try
-                {
-                    Reconnect();
-                }
-                catch (Exception ex)
-                {
-                    lastException = ex;
-                }
-
-                retries++;
-            }
-
-            errorLogger.Error($"Failed to connect to RCON at {this.rconParams.RCONHostIP}:{this.rconParams.RCONPort} with {this.rconParams.AdminPassword}. {lastException.Message}");
-            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
         }
 
         private bool Reconnect()

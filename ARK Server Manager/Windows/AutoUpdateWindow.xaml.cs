@@ -13,7 +13,7 @@ namespace ARK_Server_Manager
     {
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
-        private Updater updater = new Updater();
+        private SteamCmdUpdater updater = new SteamCmdUpdater();
         private CancellationTokenSource cancelSource;
 
         public AutoUpdateWindow()
@@ -25,7 +25,7 @@ namespace ARK_Server_Manager
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cancelSource = new CancellationTokenSource();
-            updater.UpdateSteamCmdAsync(new Progress<Updater.Update>(async u =>
+            updater.UpdateSteamCmdAsync(new Progress<SteamCmdUpdater.Update>(async u =>
                 {
                     var message = string.IsNullOrWhiteSpace(u.StatusKey) ? string.Empty : _globalizer.GetResourceString(u.StatusKey) ?? u.StatusKey;
                     this.StatusLabel.Content = message;
