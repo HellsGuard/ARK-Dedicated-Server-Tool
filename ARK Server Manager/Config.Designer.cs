@@ -1852,5 +1852,23 @@ namespace ARK_Server_Manager {
                 return ((string)(this["MapExtension"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASM_")]
+        public string UpdaterPrefix {
+            get {
+                return ((string)(this["UpdaterPrefix"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ServerManagerUpdater.exe")]
+        public string UpdaterFile {
+            get {
+                return ((string)(this["UpdaterFile"]));
+            }
+        }
     }
 }

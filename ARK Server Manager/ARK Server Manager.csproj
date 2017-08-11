@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.298.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -164,6 +164,7 @@
     <Compile Include="Common\Serialization\IniFile.cs" />
     <Compile Include="Common\Serialization\IniKey.cs" />
     <Compile Include="Common\Serialization\IniSection.cs" />
+    <Compile Include="Common\Utils\IOUtils.cs" />
     <Compile Include="Windows\AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
@@ -463,7 +464,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Config.settings</DependentUpon>
     </Compile>
-    <Compile Include="Common\Lib\Updater.cs" />
+    <Compile Include="Common\Lib\SteamCmdUpdater.cs" />
     <Compile Include="Lib\ServerManager.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -528,6 +529,10 @@
     <ProjectReference Include="..\QueryMaster\QueryMaster.csproj">
       <Project>{4ca9c894-518f-42d7-bbe2-cfdfe7a03f8a}</Project>
       <Name>QueryMaster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerManager.Updater\ServerManager.Updater.csproj">
+      <Project>{3e0c9ee6-780f-4fef-ba03-e38062a5fdb6}</Project>
+      <Name>ServerManager.Updater</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFSharp.Globalizer\WPFSharp.Globalizer.csproj">
       <Project>{715461e8-4e54-4993-80a8-8e72892135e0}</Project>

@@ -214,7 +214,7 @@ namespace ARK_Server_Manager
                     return;
                 }
 
-                var steamCmdFile = Updater.GetSteamCmdFile();
+                var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
                 if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
                 {
                     MessageBox.Show("Could not locate the SteamCMD executable. Try reinstalling SteamCMD.", "SteamCMD Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);

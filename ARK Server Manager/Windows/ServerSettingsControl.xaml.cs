@@ -554,9 +554,9 @@ namespace ARK_Server_Manager
 
         private void OpenLogFolder_Click(object sender, RoutedEventArgs e)
         {
-            var logFolder = Path.Combine(Updater.GetLogFolder(), this.Server.Profile.ProfileName);
+            var logFolder = Path.Combine(SteamCmdUpdater.GetLogFolder(), this.Server.Profile.ProfileName);
             if (!Directory.Exists(logFolder))
-                logFolder = Updater.GetLogFolder();
+                logFolder = SteamCmdUpdater.GetLogFolder();
             if (!Directory.Exists(logFolder))
                 logFolder = Config.Default.DataDir;
             Process.Start("explorer.exe", logFolder);

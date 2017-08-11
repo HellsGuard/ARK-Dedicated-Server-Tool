@@ -529,12 +529,12 @@ namespace ARK_Server_Manager.Lib
                 this.Status = ServerStatus.Updating;
 
                 // Run the SteamCMD to install the server
-                var steamCmdFile = Updater.GetSteamCmdFile();
+                var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
                 if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
                 {
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************");
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: SteamCMD could not be found. Expected location is {steamCmdFile}");
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************************");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: SteamCMD could not be found. Expected location is {steamCmdFile}");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************************");
                     return false;
                 }
 
@@ -551,7 +551,7 @@ namespace ARK_Server_Manager.Lib
                     // Server Update Section
                     // *********************
 
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting server update.");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Starting server update.");
 
                     // Check if this is a new server installation.
                     if (isNewInstallation)
@@ -560,7 +560,7 @@ namespace ARK_Server_Manager.Lib
                         if (!this.ProfileSnapshot.SotFServer && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir))
                         {
                             // Auto-Update enabled and cache foldler exists.
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
 
                             // Install the server files from the cache.
                             var installationFolder = this.ProfileSnapshot.InstallDirectory;
@@ -575,7 +575,7 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     progressCallback?.Invoke(0, "\r\n");
-                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Updating server from steam.\r\n");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Updating server from steam.\r\n");
 
                     downloadSuccessful = !Config.Default.SteamCmdRedirectOutput;
                     DataReceivedEventHandler serverOutputHandler = (s, e) =>
@@ -598,7 +598,7 @@ namespace ARK_Server_Manager.Lib
                     success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
                     if (success && downloadSuccessful)
                     {
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished server update.");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Finished server update.");
 
                         if (Directory.Exists(this.ProfileSnapshot.InstallDirectory))
                         {
@@ -606,7 +606,7 @@ namespace ARK_Server_Manager.Lib
                                 // check if any of the server files have changed.
                                 gotNewVersion = ServerApp.HasNewServerVersion(this.ProfileSnapshot.InstallDirectory, startTime);
 
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New server version - {gotNewVersion.ToString().ToUpperInvariant()}.");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} New server version - {gotNewVersion.ToString().ToUpperInvariant()}.");
                         }
 
                         progressCallback?.Invoke(0, "\r\n");
@@ -614,12 +614,12 @@ namespace ARK_Server_Manager.Lib
                     else
                     {
                         success = false;
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************");
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed server update.");
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************\r\n");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ****************************");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Failed server update.");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ****************************\r\n");
 
                         if (Config.Default.SteamCmdRedirectOutput)
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the server update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} If the server update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
                     }
                 }
                 else
@@ -672,15 +672,15 @@ namespace ARK_Server_Manager.Lib
                                 gotNewVersion = false;
                                 downloadSuccessful = false;
 
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started processing mod {index + 1} of {modIdList.Count}.");
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod {modId}.");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Started processing mod {index + 1} of {modIdList.Count}.");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Mod {modId}.");
 
                                 // check if the steam information was downloaded
                                 var modDetail = modDetails.publishedfiledetails?.FirstOrDefault(m => m.publishedfileid.Equals(modId, StringComparison.OrdinalIgnoreCase));
                                 modTitle = $"{modId} - {modDetail?.title ?? "<unknown>"}";
 
                                 if (modDetail != null)
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {modDetail.title}.\r\n");
+                                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} {modDetail.title}.\r\n");
 
                                 var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
                                 var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFServer);
@@ -697,22 +697,22 @@ namespace ARK_Server_Manager.Lib
                                     // check if the mod needs to be downloaded, or force the download.
                                     if (Config.Default.ServerUpdate_ForceUpdateMods)
                                     {
-                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
+                                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod download - ASM setting is TRUE.");
                                     }
                                     else if (modDetail == null)
                                     {
                                         if (Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - Mod details not available and ASM setting is TRUE.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod download - Mod details not available and ASM setting is TRUE.");
                                         }
                                         else
                                         {
                                             // no steam information downloaded, display an error, mod might no longer be available
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cannot be updated, unable to download steam information.");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} *******************************************************************");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} *******************************************************************");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Mod cannot be updated, unable to download steam information.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} *******************************************************************");
 
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
 
                                             downloadMod = false;
                                             copyMod = false;
@@ -724,21 +724,21 @@ namespace ARK_Server_Manager.Lib
                                         // check if the mod detail record is valid (private mod).
                                         if (modDetail.time_updated <= 0)
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod is private.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod download - mod is private.");
                                         }
                                         else
                                         {
                                             modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
                                             if (modCacheLastUpdated <= 0)
                                             {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod download - mod cache is not versioned.");
                                             }
                                             else
                                             {
                                                 var steamLastUpdated = modDetail.time_updated;
                                                 if (steamLastUpdated <= modCacheLastUpdated)
                                                 {
-                                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
+                                                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Skipping mod download - mod cache has the latest version.");
                                                     downloadMod = false;
                                                 }
                                             }
@@ -759,7 +759,7 @@ namespace ARK_Server_Manager.Lib
                                             }
                                         };
 
-                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Starting mod download.\r\n");
+                                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Starting mod download.\r\n");
 
                                         var steamCmdArgs = string.Empty;
                                         if (this.ProfileSnapshot.SotFServer)
@@ -780,7 +780,7 @@ namespace ARK_Server_Manager.Lib
                                         modSuccess = await ServerUpdater.UpgradeModsAsync(steamCmdFile, steamCmdArgs, Config.Default.SteamCmdRedirectOutput ? modOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
                                         if (modSuccess && downloadSuccessful)
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod download.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Finished mod download.");
                                             copyMod = true;
 
                                             if (Directory.Exists(modCachePath))
@@ -788,7 +788,7 @@ namespace ARK_Server_Manager.Lib
                                                 // check if any of the mod files have changed.
                                                 gotNewVersion = new DirectoryInfo(modCachePath).GetFiles("*.*", SearchOption.AllDirectories).Any(file => file.LastWriteTime >= startTime);
 
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} New mod version - {gotNewVersion.ToString().ToUpperInvariant()}.");
 
                                                 var steamLastUpdated = modDetail?.time_updated.ToString() ?? string.Empty;
                                                 if (modDetail == null || modDetail.time_updated <= 0)
@@ -800,18 +800,18 @@ namespace ARK_Server_Manager.Lib
                                                 // update the last updated file with the steam updated time.
                                                 File.WriteAllText(cacheTimeFile, steamLastUpdated);
 
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod Cache version: {steamLastUpdated}\r\n");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Mod Cache version: {steamLastUpdated}\r\n");
                                             }
                                         }
                                         else
                                         {
                                             modSuccess = false;
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod download failed.");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***************************\r\n");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***************************");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Mod download failed.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***************************\r\n");
 
                                             if (Config.Default.SteamCmdRedirectOutput)
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} If the mod update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the settings window.\r\n");
                                             copyMod = false;
                                         }
                                     }
@@ -826,7 +826,7 @@ namespace ARK_Server_Manager.Lib
                                     // check if the mod needs to be copied, or force the copy.
                                     if (Config.Default.ServerUpdate_ForceCopyMods)
                                     {
-                                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
+                                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod copy - ASM setting is TRUE.");
                                     }
                                     else
                                     {
@@ -834,15 +834,15 @@ namespace ARK_Server_Manager.Lib
                                         var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
                                         if (modLastUpdated <= 0)
                                         {
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Forcing mod copy - mod is not versioned.");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Forcing mod copy - mod is not versioned.");
                                         }
                                         else
                                         {
                                             modCacheLastUpdated = ModUtils.GetModLatestTime(cacheTimeFile);
                                             if (modCacheLastUpdated <= modLastUpdated)
                                             {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Skipping mod copy - mod has the latest version.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                                 copyMod = false;
                                             }
                                         }
@@ -854,7 +854,7 @@ namespace ARK_Server_Manager.Lib
                                         {
                                             if (Directory.Exists(modCachePath))
                                             {
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Started mod copy.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Started mod copy.");
                                                 int count = 0;
                                                 await Task.Run(() => ModUtils.CopyMod(modCachePath, modPath, modId, (p, m, n) =>
                                                                                                                     {
@@ -862,25 +862,25 @@ namespace ARK_Server_Manager.Lib
                                                                                                                         progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
                                                                                                                     }), cancellationToken);
                                                 progressCallback?.Invoke(0, "\r\n");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished mod copy.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Finished mod copy.");
 
                                                 var modLastUpdated = ModUtils.GetModLatestTime(modTimeFile);
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Mod version: {modLastUpdated}");
                                             }
                                             else
                                             {
                                                 modSuccess = false;
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
-                                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ****************************************************");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ****************************************************");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Mod cache was not found, mod was not updated.");
+                                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ****************************************************");
                                             }
                                         }
                                         catch (Exception ex)
                                         {
                                             modSuccess = false;
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
-                                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Failed mod copy.\r\n{ex.Message}");
+                                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************");
                                         }
                                     }
                                 }
@@ -891,28 +891,28 @@ namespace ARK_Server_Manager.Lib
                                     failedMods.Add($"{index + 1} of {modIdList.Count} - {modTitle}");
                                 }
 
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Finished processing mod {modId}.\r\n");
                             }
 
                             if (failedMods.Count > 0)
                             {
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} **************************************************************************");
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: The following mods failed the update, check above for more details.");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} **************************************************************************");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: The following mods failed the update, check above for more details.");
                                 foreach (var failedMod in failedMods)
-                                    progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} {failedMod}");
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} **************************************************************************\r\n");
+                                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} {failedMod}");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} **************************************************************************\r\n");
                             }
                         }
                         else
                         {
                             success = false;
                             // no steam information downloaded, display an error
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************");
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods cannot be updated, unable to download steam information.");
-                            progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ********************************************************************\r\n");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ********************************************************************");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Mods cannot be updated, unable to download steam information.");
+                            progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ********************************************************************\r\n");
 
                             if (!Config.Default.ServerUpdate_ForceUpdateModsIfNoSteamInfo)
-                                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
+                                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} If the mod update keeps failing try enabling the '{_globalizer.GetResourceString("GlobalSettings_ForceUpdateModsIfNoSteamInfoLabel")}' option in the settings window.\r\n");
                         }
                     }
                 }
@@ -920,13 +920,13 @@ namespace ARK_Server_Manager.Lib
                 {
                     if (updateServer && updateMods)
                     {
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************************************");
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ERROR: Mods were not processed as server update had errors.");
-                        progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} ***********************************************************\r\n");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************************************************");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ERROR: Mods were not processed as server update had errors.");
+                        progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} ***********************************************************\r\n");
                     }
                 }
 
-                progressCallback?.Invoke(0, $"{Updater.OUTPUT_PREFIX} Finished upgrade process.");
+                progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Finished upgrade process.");
                 return success;
             }
             catch (TaskCanceledException)

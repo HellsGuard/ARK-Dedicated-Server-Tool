@@ -51,16 +51,16 @@ namespace ARK_Server_Manager.Lib
 
             progressCallback?.Invoke(0, "Reading mod base information.");
 
-            var fileName = Updater.NormalizePath(Path.Combine(modSourceFolder, "mod.info"));
+            var fileName = IOUtils.NormalizePath(Path.Combine(modSourceFolder, "mod.info"));
             var list = new List<string>();
             ParseBaseInformation(fileName, list);
 
             progressCallback?.Invoke(0, "Reading mod meta information.");
 
-            fileName = Updater.NormalizePath(Path.Combine(modSourceFolder, "modmeta.info"));
+            fileName = IOUtils.NormalizePath(Path.Combine(modSourceFolder, "modmeta.info"));
             var metaInformation = new Dictionary<string, string>();
             if (ParseMetaInformation(fileName, metaInformation))
-                modSourceFolder = Updater.NormalizePath(Path.Combine(modSourceFolder, "WindowsNoEditor"));
+                modSourceFolder = IOUtils.NormalizePath(Path.Combine(modSourceFolder, "WindowsNoEditor"));
 
             var modFile = $"{destinationFolder}.mod";
 
@@ -86,12 +86,12 @@ namespace ARK_Server_Manager.Lib
             WriteModFile(modFile, modId, metaInformation, list);
 
             // copy the last updated file.
-            fileName = Updater.NormalizePath(Path.Combine(sourceFolder, Config.Default.LastUpdatedTimeFile));
+            fileName = IOUtils.NormalizePath(Path.Combine(sourceFolder, Config.Default.LastUpdatedTimeFile));
             if (File.Exists(fileName))
             {
                 progressCallback?.Invoke(0, "Copying mod version file.");
 
-                var tempFile = Updater.NormalizePath(fileName.Replace(sourceFolder, destinationFolder));
+                var tempFile = IOUtils.NormalizePath(fileName.Replace(sourceFolder, destinationFolder));
                 File.Copy(fileName, tempFile, true);
             }
         }
@@ -105,7 +105,7 @@ namespace ARK_Server_Manager.Lib
 
             foreach (var sourceFile in Directory.GetFiles(sourceFolder, "*.*", copySubFolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
             {
-                var modFile = Updater.NormalizePath(sourceFile.Replace(sourceFolder, destinationFolder));
+                var modFile = IOUtils.NormalizePath(sourceFile.Replace(sourceFolder, destinationFolder));
                 var modFilePath = Path.GetDirectoryName(modFile);
 
                 if (!Directory.Exists(modFilePath))
@@ -141,9 +141,9 @@ namespace ARK_Server_Manager.Lib
             return timespan.TotalSeconds;
         }
 
-        public static string GetLatestModCacheTimeFile(string modId, bool isSotF) => Updater.NormalizePath(Path.Combine(ModUtils.GetModCachePath(modId, isSotF), Config.Default.LastUpdatedTimeFile));
+        public static string GetLatestModCacheTimeFile(string modId, bool isSotF) => IOUtils.NormalizePath(Path.Combine(ModUtils.GetModCachePath(modId, isSotF), Config.Default.LastUpdatedTimeFile));
 
-        public static string GetLatestModTimeFile(string installDirectory, string modId) => Updater.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId, Config.Default.LastUpdatedTimeFile));
+        public static string GetLatestModTimeFile(string installDirectory, string modId) => IOUtils.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId, Config.Default.LastUpdatedTimeFile));
 
         public static string GetMapModId(string serverMap)
         {
@@ -212,9 +212,9 @@ namespace ARK_Server_Manager.Lib
         public static string GetModCachePath(string modId, bool isSotF)
         {
             if (isSotF)
-                return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath_SotF, modId));
+                return IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath_SotF, modId));
 
-            return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath, modId));
+            return IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.ArkSteamWorkshopFolderRelativePath, modId));
         }
 
         public static List<string> GetModIdList(string modIds)
@@ -243,7 +243,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static string GetModPath(string installDirectory, string modId) => Updater.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId));
+        public static string GetModPath(string installDirectory, string modId) => IOUtils.NormalizePath(Path.Combine(installDirectory, Config.Default.ServerModsRelativePath, modId));
 
         public static string GetModType(string installDirectory, string modId)
         {
@@ -263,9 +263,9 @@ namespace ARK_Server_Manager.Lib
         public static string GetSteamWorkshopFile(bool isSotF)
         {
             if (isSotF)
-                return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile_SotF));
+                return IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile_SotF));
 
-            return Updater.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile));
+            return IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.SteamCmdDir, Config.Default.SteamWorkshopFolderRelativePath, Config.Default.ArkSteamWorkshopFile));
         }
 
         public static int GetSteamWorkshopLatestTime(string workshopFile, string modId)
