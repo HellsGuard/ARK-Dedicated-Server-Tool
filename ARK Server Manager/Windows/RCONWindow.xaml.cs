@@ -271,6 +271,11 @@ namespace ARK_Server_Manager
             this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
             this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
             this.ServerRCON.DisposeAsync().DoNotWait();
+
+            RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
+            if (window != null)
+                RCONWindows.Remove(this.RCONParameters.Server);
+
             base.OnClosing(e);
         }
 
@@ -281,18 +286,18 @@ namespace ARK_Server_Manager
             {
                 window = new RCONWindow(new RCONParameters()
                 {
-                    AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
+                    Server = server,
+                    AdminPassword = server.Profile.AdminPassword,
                     InstallDirectory = server.Profile.InstallDirectory,
                     AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
                     PGM_Enabled = server.Profile.PGM_Enabled,
                     PGM_Name = server.Profile.PGM_Name,
                     ProfileName = server.Profile.ProfileName,
-                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
-                    RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
+                    MaxPlayers = server.Runtime.MaxPlayers,
+                    RCONHost = server.Profile.ServerIP,
+                    RCONPort = server.Profile.RCONPort,
                     RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Profile.ProfileName),
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
-                    MaxPlayers = server.Runtime.MaxPlayers,
-                    Server = server
                 });
                 RCONWindows[server] = window;
             }
