@@ -286,17 +286,19 @@ namespace ARK_Server_Manager
             {
                 window = new RCONWindow(new RCONParameters()
                 {
+                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
+
                     Server = server,
-                    AdminPassword = server.Profile.AdminPassword,
-                    InstallDirectory = server.Profile.InstallDirectory,
-                    AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
+                    AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
+                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    AltSaveDirectoryName = server.Runtime.ProfileSnapshot.AltSaveDirectoryName,
+                    ProfileName = server.Runtime.ProfileSnapshot.ProfileName,
+                    MaxPlayers = server.Runtime.MaxPlayers,
+                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
+                    RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
+
                     PGM_Enabled = server.Profile.PGM_Enabled,
                     PGM_Name = server.Profile.PGM_Name,
-                    ProfileName = server.Profile.ProfileName,
-                    MaxPlayers = server.Runtime.MaxPlayers,
-                    RCONHost = server.Profile.ServerIP,
-                    RCONPort = server.Profile.RCONPort,
-                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Profile.ProfileName),
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
                 });
                 RCONWindows[server] = window;
@@ -312,13 +314,13 @@ namespace ARK_Server_Manager
 
         public static void CloseAllWindows()
         {
-            foreach(var window in RCONWindows.Values)
+            var windows = RCONWindows.Values.ToList();
+            foreach (var window in windows)
             {
                 if(window.IsLoaded)
-                {
                     window.Close();
-                }
             }
+            windows.Clear();
         }
 
         public ICommand Button1Command
