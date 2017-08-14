@@ -15,10 +15,8 @@ namespace ARK_Server_Manager.Lib
     {
         public event EventHandler PlayersCollectionUpdated;
 
-        private const int ListPlayersPeriod = 5000;
-        private const int GetChatPeriod = 1000;
-        private const int MaxCommandRetries = 10;
-        private const int RetryDelay = 100;
+        private const int LIST_PLAYERS_INTERVAL = 5000;
+        private const int GET_CHAT_INTERVAL = 1000;
         private const string NoResponseMatch = "Server received, But no response!!";
         public const string NoResponseOutput = "NO_RESPONSE";
 
@@ -71,6 +69,7 @@ namespace ARK_Server_Manager.Lib
         private RCONParameters rconParams;
         private QueryMaster.Rcon console;
         private bool updatingPlayerDetails = false;
+        private int maxCommandRetries = 3;
 
         private Logger chatLogger;
         private Logger allLogger;
@@ -136,7 +135,7 @@ namespace ARK_Server_Manager.Lib
             return this.commandProcessor.PostAction(() =>
             {
                 ProcessInput(new ConsoleCommand() { rawCommand = "listplayers", suppressCommand = true, suppressOutput = true });
-                Task.Delay(ListPlayersPeriod).ContinueWith(t => commandProcessor.PostAction(AutoPlayerList)).DoNotWait();
+                Task.Delay(LIST_PLAYERS_INTERVAL).ContinueWith(t => commandProcessor.PostAction(AutoPlayerList)).DoNotWait();
             });
         }
 
@@ -145,7 +144,7 @@ namespace ARK_Server_Manager.Lib
             return this.commandProcessor.PostAction(() =>
             {
                 ProcessInput(new ConsoleCommand() { rawCommand = "getchat", suppressCommand = true, suppressOutput = true });
-                Task.Delay(GetChatPeriod).ContinueWith(t => commandProcessor.PostAction(AutoGetChat)).DoNotWait();
+                Task.Delay(GET_CHAT_INTERVAL).ContinueWith(t => commandProcessor.PostAction(AutoGetChat)).DoNotWait();
             });
         }
 
@@ -153,6 +152,11 @@ namespace ARK_Server_Manager.Lib
         {
             await this.commandProcessor.DisposeAsync();
             await this.outputProcessor.DisposeAsync();
+
+            foreach (var listener in this.commandListeners)
+            {
+                listener.Dispose();
+            }
         }
 
         public IDisposable RegisterCommandListener(Action<ConsoleCommand> callback)
@@ -373,9 +377,12 @@ namespace ARK_Server_Manager.Lib
 
         private string SendCommand(string command)
         {
-            int retries = 0;
+            const int RETRY_DELAY = 100;
+
             Exception lastException = null;
-            while (retries < MaxCommandRetries)
+            int retries = 0;
+
+            while (retries < maxCommandRetries)
             {
                 if (this.console != null)
                 {
@@ -386,11 +393,11 @@ namespace ARK_Server_Manager.Lib
                     }
                     catch (Exception ex)
                     {
-                        // Re will simply retry
+                        // we will simply retry
                         lastException = ex;
                     }
 
-                    Task.Delay(RetryDelay).Wait();
+                    Task.Delay(RETRY_DELAY).Wait();
                 }
 
                 try
@@ -405,8 +412,9 @@ namespace ARK_Server_Manager.Lib
                 retries++;
             }
 
+            this.maxCommandRetries = 10;
             errorLogger.Error($"Failed to connect to RCON at {this.rconParams.RCONHostIP}:{this.rconParams.RCONPort} with {this.rconParams.AdminPassword}. {lastException.Message}");
-            throw new Exception($"Command failed to send after {MaxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
+            throw new Exception($"Command failed to send after {maxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
         }
 
         private async Task UpdatePlayerDetails()
