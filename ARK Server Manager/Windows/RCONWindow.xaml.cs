@@ -271,6 +271,11 @@ namespace ARK_Server_Manager
             this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
             this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
             this.ServerRCON.DisposeAsync().DoNotWait();
+
+            RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
+            if (window != null)
+                RCONWindows.Remove(this.RCONParameters.Server);
+
             base.OnClosing(e);
         }
 
@@ -281,18 +286,20 @@ namespace ARK_Server_Manager
             {
                 window = new RCONWindow(new RCONParameters()
                 {
+                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
+
+                    Server = server,
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
-                    InstallDirectory = server.Profile.InstallDirectory,
-                    AltSaveDirectoryName = server.Profile.AltSaveDirectoryName,
-                    PGM_Enabled = server.Profile.PGM_Enabled,
-                    PGM_Name = server.Profile.PGM_Name,
-                    ProfileName = server.Profile.ProfileName,
+                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    AltSaveDirectoryName = server.Runtime.ProfileSnapshot.AltSaveDirectoryName,
+                    ProfileName = server.Runtime.ProfileSnapshot.ProfileName,
+                    MaxPlayers = server.Runtime.MaxPlayers,
                     RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
                     RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
-                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Profile.ProfileName),
+
+                    PGM_Enabled = server.Profile.PGM_Enabled,
+                    PGM_Name = server.Profile.PGM_Name,
                     RCONWindowExtents = server.Profile.RCONWindowExtents,
-                    MaxPlayers = server.Runtime.MaxPlayers,
-                    Server = server
                 });
                 RCONWindows[server] = window;
             }
@@ -307,13 +314,13 @@ namespace ARK_Server_Manager
 
         public static void CloseAllWindows()
         {
-            foreach(var window in RCONWindows.Values)
+            var windows = RCONWindows.Values.ToList();
+            foreach (var window in windows)
             {
                 if(window.IsLoaded)
-                {
                     window.Close();
-                }
             }
+            windows.Clear();
         }
 
         public ICommand Button1Command
