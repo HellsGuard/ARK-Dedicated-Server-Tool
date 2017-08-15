@@ -127,7 +127,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             set { SetValue(PlayerDataProperty, value); }
         }
 
-        internal async Task UpdateDataAsync(Player playerData)
+        internal async Task UpdateDataAsync(Player playerData, string imageSavePath)
         {
             if (!_dataUpdated)
                 return;
@@ -135,6 +135,11 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 
             try
             {
+                if (string.IsNullOrWhiteSpace(imageSavePath))
+                    imageSavePath = Path.GetTempPath();
+                if (!Directory.Exists(imageSavePath))
+                    Directory.CreateDirectory(imageSavePath);
+
                 this.PlayerData = playerData;
                 this.LastUpdated = playerData.FileUpdated;
                 this.TribeName = playerData.Tribe?.Name;
@@ -147,7 +152,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                 }
                 else
                 {
-                    var localImageFile = Path.Combine(Path.GetTempPath(), $"ASM.{this.SteamId}.tmp");
+                    var localImageFile = Path.Combine(imageSavePath, $"{this.SteamId}{Config.Default.PlayerImageFileExtension}");
 
                     // check for a valid URL.
                     if (!String.IsNullOrWhiteSpace(playerData.AvatarUrl))

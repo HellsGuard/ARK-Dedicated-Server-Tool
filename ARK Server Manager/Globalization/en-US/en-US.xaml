@@ -3065,7 +3065,7 @@
     <sys:String x:Key="PrimalItemDye_Cyan_C">Cyan Coloring</sys:String>
     <sys:String x:Key="PrimalItemDye_Forest_C">Forest Coloring</sys:String>
     <sys:String x:Key="PrimalItemDye_Green_C">Green Coloring</sys:String>
-    <sys:String x:Key="PrimalItemDye_Magenta_C">Purple Coloring</sys:String>
+    <sys:String x:Key="PrimalItemDye_Magenta_C">Magenta Coloring</sys:String>
     <sys:String x:Key="PrimalItemDye_Mud_C">Mud Coloring</sys:String>
     <sys:String x:Key="PrimalItemDye_Navy_C">Navy Coloring</sys:String>
     <sys:String x:Key="PrimalItemDye_Olive_C">Olive Coloring</sys:String>

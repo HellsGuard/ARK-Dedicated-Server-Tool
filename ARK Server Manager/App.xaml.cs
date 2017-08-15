@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Linq;
 using ArkServerManager.Plugin.Common;
+using System.Net;
 
 namespace ARK_Server_Manager
 {
@@ -185,6 +186,8 @@ namespace ARK_Server_Manager
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             _globalizer = GlobalizedApplication.Instance;
             try

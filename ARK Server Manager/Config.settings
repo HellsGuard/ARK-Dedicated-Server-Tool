@@ -527,5 +527,8 @@
     <Setting Name="UpdaterFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ServerManagerUpdater.exe</Value>
     </Setting>
+    <Setting Name="PlayerImageFileExtension" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.png</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
