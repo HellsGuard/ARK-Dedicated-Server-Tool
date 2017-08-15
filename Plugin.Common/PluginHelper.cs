@@ -213,9 +213,12 @@ namespace ArkServerManager.Plugin.Common
                 if (plugins.Count() == 0)
                     return false;
 
+                var message = alertMessage.Replace("\\r\\n", "\\n");
+                message = message.Replace("\\n", "\n");
+
                 foreach (var pluginItem in plugins)
                 {
-                    ((IAlertPlugin)pluginItem.Plugin).HandleAlert(alertType, profileName, alertMessage);
+                    ((IAlertPlugin)pluginItem.Plugin).HandleAlert(alertType, profileName, message);
                 }
             }
 
