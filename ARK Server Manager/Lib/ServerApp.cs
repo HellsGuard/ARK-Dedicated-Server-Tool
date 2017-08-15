@@ -247,7 +247,7 @@ namespace ARK_Server_Manager.Lib
                             SendCommand("saveworld", false);
                             emailMessage.AppendLine("sent saveworld command.");
 
-                            Task.Delay(10000).Wait();
+                            Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000).Wait();
                         }
                         catch (Exception ex)
                         {
@@ -590,7 +590,7 @@ namespace ARK_Server_Manager.Lib
 
                         SendCommand("saveworld", false);
 
-                        Task.Delay(10000, cancellationToken).Wait(cancellationToken);
+                        Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
                     }
                     catch (Exception ex)
                     {
