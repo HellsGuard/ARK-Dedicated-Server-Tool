@@ -247,7 +247,7 @@ namespace ARK_Server_Manager.Lib
                             SendCommand("saveworld", false);
                             emailMessage.AppendLine("sent saveworld command.");
 
-                            Task.Delay(10000).Wait();
+                            Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000).Wait();
                         }
                         catch (Exception ex)
                         {
@@ -590,7 +590,7 @@ namespace ARK_Server_Manager.Lib
 
                         SendCommand("saveworld", false);
 
-                        Task.Delay(10000, cancellationToken).Wait(cancellationToken);
+                        Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
                     }
                     catch (Exception ex)
                     {
@@ -1938,18 +1938,26 @@ namespace ARK_Server_Manager.Lib
                             var files = new List<string>();
                             files.Add(worldFile);
 
+                            var saveFolderInfo = new DirectoryInfo(saveFolder);
                             var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
-                            var playerFiles = new DirectoryInfo(saveFolder).GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
+                            var playerFiles = saveFolderInfo.GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
                             foreach (var playerFile in playerFiles)
                             {
                                 files.Add(playerFile.FullName);
                             }
 
                             var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
-                            var tribeFiles = new DirectoryInfo(saveFolder).GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
+                            var tribeFiles = saveFolderInfo.GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
                             foreach (var tribeFile in tribeFiles)
                             {
                                 files.Add(tribeFile.FullName);
+                            }
+
+                            var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
+                            var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
+                            foreach (var playerImageFile in playerImageFiles)
+                            {
+                                files.Add(playerImageFile.FullName);
                             }
 
                             var comment = new StringBuilder();

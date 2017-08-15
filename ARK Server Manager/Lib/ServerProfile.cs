@@ -3782,9 +3782,11 @@ namespace ARK_Server_Manager.Lib
 
                 if (restoreAll)
                 {
+                    var saveFolderInfo = new DirectoryInfo(saveFolder);
+
                     // get the player files
                     var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
-                    var playerFiles = new DirectoryInfo(saveFolder).GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
+                    var playerFiles = saveFolderInfo.GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
                     foreach (var playerFile in playerFiles)
                     {
                         files.Add(playerFile.FullName);
@@ -3792,10 +3794,18 @@ namespace ARK_Server_Manager.Lib
 
                     // get the tribe files
                     var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
-                    var tribeFiles = new DirectoryInfo(saveFolder).GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
+                    var tribeFiles = saveFolderInfo.GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
                     foreach (var tribeFile in tribeFiles)
                     {
                         files.Add(tribeFile.FullName);
+                    }
+
+                    // get the player images files
+                    var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
+                    var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
+                    foreach (var playerImageFile in playerImageFiles)
+                    {
+                        files.Add(playerImageFile.FullName);
                     }
                 }
 

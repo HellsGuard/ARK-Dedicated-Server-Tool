@@ -437,6 +437,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -455,8 +456,11 @@
                         <TextBox Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.ServerShutdown_GraceMessage3}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ShutdownMessage3Tooltip}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource GlobalSettings_ShutdownWorldSaveLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="6" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.ServerShutdown_WorldSaveMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ShutdownWorldSaveTooltip}"/>
-                        <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource GlobalSettings_ShutdownCancelLabel}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="7" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.ServerShutdown_CancelMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ShutdownCancelTooltip}"/>
+
+                        <local:AnnotatedSlider Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="1" Label="{DynamicResource GlobalSettings_WorldSaveDelayLabel}" Value="{Binding CurrentConfig.ServerShutdown_WorldSaveDelay, Converter={vm:IntRangeValueConverter 10, 300}}" Minimum="10" Maximum="300" SmallChange="10" LargeChange="50" TickFrequency="1" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Seconds}" ToolTip="{DynamicResource GlobalSettings_WorldSaveDelayTooltip}"/>
+
+                        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource GlobalSettings_ShutdownCancelLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.ServerShutdown_CancelMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ShutdownCancelTooltip}"/>
                     </Grid>
                 </GroupBox>
 

@@ -1870,5 +1870,26 @@ namespace ARK_Server_Manager {
                 return ((string)(this["UpdaterFile"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".png")]
+        public string PlayerImageFileExtension {
+            get {
+                return ((string)(this["PlayerImageFileExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int ServerShutdown_WorldSaveDelay {
+            get {
+                return ((int)(this["ServerShutdown_WorldSaveDelay"]));
+            }
+            set {
+                this["ServerShutdown_WorldSaveDelay"] = value;
+            }
+        }
     }
 }

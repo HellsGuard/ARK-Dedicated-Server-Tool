@@ -489,7 +489,7 @@ namespace ARK_Server_Manager.Lib
                             }
 
                             if (player != null)
-                                player.UpdateDataAsync(playerData).DoNotWait();
+                                player.UpdateDataAsync(playerData, savedPath).DoNotWait();
                         }
 
                         this.Players = new SortableObservableCollection<PlayerInfo>(players);
