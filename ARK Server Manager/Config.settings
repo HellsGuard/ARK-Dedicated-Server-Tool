@@ -533,5 +533,8 @@
     <Setting Name="ServerShutdown_WorldSaveDelay" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
     </Setting>
+    <Setting Name="ServerShutdown_UseDoExit" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

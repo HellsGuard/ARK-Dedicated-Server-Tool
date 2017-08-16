@@ -32,6 +32,8 @@ namespace ServerManagerTool.Updater
         {
             Console.Title = "Server Manager Updater";
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             var updaterArgs = args;
             ApplicationArgs = null;
             DownloadUrl = null;

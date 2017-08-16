@@ -308,8 +308,6 @@
     <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">This message will be displayed when the server is about to shutdown.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">WorldSave Message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">This message will be displayed upon shutdown when the world is about to be saved.</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">WorldSave Delay:</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">The number of seconds to wait for the worldsave command to complete before the server is shutdown.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Cancel Message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">This message will be displayed when the server shutdown has been cancelled.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Email Settings</sys:String>
@@ -339,6 +337,12 @@
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is shutdown/restarted during the auto-shutdown process.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Shutdown/Restart</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">If enabled, an email will be sent when the server is shutdown or restarted.</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsLabel">Advanced Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsInformationLabel">Do not touch these settings unless you know what you are doing, or have been instructed to change them by support staff.</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitLabel">Use DoExit for Server Shutdown</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitTooltip">If enabled, the doexit command will be used first to shutdown the server. If it fails or is disabled, then the ctrl+c method is used instead.</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">WorldSave Delay:</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">The number of seconds to wait for the worldsave command to complete before the server is shutdown.</sys:String>
 
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>
