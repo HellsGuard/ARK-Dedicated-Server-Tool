@@ -308,8 +308,6 @@
     <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">This message will be displayed when the server is about to shutdown.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">WorldSave Message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">This message will be displayed upon shutdown when the world is about to be saved.</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">WorldSave Delay:</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">The number of seconds to wait for the worldsave command to complete before the server is shutdown.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Cancel Message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">This message will be displayed when the server shutdown has been cancelled.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Email Settings</sys:String>
@@ -339,6 +337,12 @@
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">If enabled, an email will be sent when the server is shutdown/restarted during the auto-shutdown process.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Shutdown/Restart</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">If enabled, an email will be sent when the server is shutdown or restarted.</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsLabel">Advanced Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsInformationLabel">Do not touch these settings unless you know what you are doing, or have been instructed to change them by support staff.</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitLabel">Use DoExit for Server Shutdown</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitTooltip">If enabled, the doexit command will be used first to shutdown the server. If it fails or is disabled, then the ctrl+c method is used instead.</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">WorldSave Delay:</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">The number of seconds to wait for the worldsave command to complete before the server is shutdown.</sys:String>
 
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Confirm changing data directory</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Changing the data directory will move any existing profiles to the new location, but it will not move any server installations. Do you still want to change this directory?</sys:String>
@@ -611,6 +615,10 @@
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Sets the max length of RCON game log buffer (default 600).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force Respawn Dinos on Startup (Causes lag after 'Ready' while repopulating)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">If enabled, when the server is started ALL wild creatures will be wiped and respawned (this will only destroy wild creatures that are NOT currently being tamed).</sys:String>
+    <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel">Enable Auto Force Respawn Dinos</sys:String>
+    <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip">If enabled, will force respawn of wild dinos after the specified interval.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalLabel">Auto Force Respawn Dinos Interval</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalTooltip">The interval between the forced auto dino respawn.</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Alternate Save Directory Name:</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel2">(Optional)</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameTooltip">Sets the directory name (underneath the servers Saved folder) to store the world, player and tribe files.</sys:String>
@@ -852,6 +860,10 @@
     <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareTooltip">If enabled, tribes are able to cancel an agreed-upon war before it has actually started.</sys:String>
     <sys:String x:Key="ServerSettings_AllowTribeAlliancesLabel">Allow Tribe Alliances</sys:String>
     <sys:String x:Key="ServerSettings_AllowTribeAlliancesTooltip">If enabled, players are able to create alliances with other tribes.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxAlliancesPerTribeLabel">Max Alliances Per Tribe</sys:String>
+    <sys:String x:Key="ServerSettings_MaxAlliancesPerTribeTooltip">The maximum number of alliances allowed for each tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribesPerAllianceLabel">Max Tribes Per Alliance</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribesPerAllianceTooltip">The maximum number of tribes allowed in each alliance.</sys:String>
 
     <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Allow Custom Recipes</sys:String>
     <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">If enabled, players are able to use the Custom RP-oriented Recipe/Cooking System (including Skill-Based results).</sys:String>
@@ -994,6 +1006,8 @@
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Max Tamed Dinos (tribe):</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Set the maximum number of tamed dinos per tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Tamed Dinos Saddle Structure Cost:</sys:String>
+    <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">The number of tribe tamed dino slots each platform saddle (with structures) will cost.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Allow Raid Dino Feeding</sys:String>

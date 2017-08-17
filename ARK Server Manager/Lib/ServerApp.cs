@@ -659,7 +659,7 @@ namespace ARK_Server_Manager.Lib
                 process.Exited += handler;
 
                 // Method 1 - RCON Command
-                if (_profile.RCONEnabled)
+                if (_profile.RCONEnabled && Config.Default.ServerShutdown_UseDoExit)
                 {
                     try
                     {

@@ -432,6 +432,23 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ForceRespawnDinosProperty, value); }
         }
 
+        public static readonly DependencyProperty EnableServerAutoForceRespawnWildDinosIntervalProperty = DependencyProperty.Register(nameof(EnableServerAutoForceRespawnWildDinosInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool EnableServerAutoForceRespawnWildDinosInterval
+        {
+            get { return (bool)GetValue(EnableServerAutoForceRespawnWildDinosIntervalProperty); }
+            set { SetValue(EnableServerAutoForceRespawnWildDinosIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerAutoForceRespawnWildDinosIntervalProperty = DependencyProperty.Register(nameof(ServerAutoForceRespawnWildDinosInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableServerAutoForceRespawnWildDinosInterval))]
+        public int ServerAutoForceRespawnWildDinosInterval
+        {
+            get { return (int)GetValue(ServerAutoForceRespawnWildDinosIntervalProperty); }
+            set { SetValue(ServerAutoForceRespawnWildDinosIntervalProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableServerAdminLogsProperty = DependencyProperty.Register(nameof(EnableServerAdminLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool EnableServerAdminLogs
@@ -831,7 +848,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DifficultyOffsetProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        public static readonly DependencyProperty MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int MaxNumberOfPlayersInTribe
@@ -1122,6 +1139,24 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(AllowTribeAlliancesProperty); }
             set { SetValue(AllowTribeAlliancesProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxAlliancesPerTribeProperty = DependencyProperty.Register(nameof(MaxAlliancesPerTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(10));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AllowTribeAlliances))]
+        public int MaxAlliancesPerTribe
+        {
+            get { return (int)GetValue(MaxAlliancesPerTribeProperty); }
+            set { SetValue(MaxAlliancesPerTribeProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxTribesPerAllianceProperty = DependencyProperty.Register(nameof(MaxTribesPerAlliance), typeof(int), typeof(ServerProfile), new PropertyMetadata(10));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AllowTribeAlliances))]
+        public int MaxTribesPerAlliance
+        {
+            get { return (int)GetValue(MaxTribesPerAllianceProperty); }
+            set { SetValue(MaxTribesPerAllianceProperty, value); }
         }
 
         public static readonly DependencyProperty AllowCustomRecipesProperty = DependencyProperty.Register(nameof(AllowCustomRecipes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
@@ -1731,13 +1766,22 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DisableDinoTamingProperty, value); }
         }
 
-        public static readonly DependencyProperty MaxPersonalTamedDinosProperty = DependencyProperty.Register(nameof(MaxPersonalTamedDinos), typeof(float), typeof(ServerProfile), new PropertyMetadata(500.0f));
+        public static readonly DependencyProperty MaxPersonalTamedDinosProperty = DependencyProperty.Register(nameof(MaxPersonalTamedDinos), typeof(float), typeof(ServerProfile), new PropertyMetadata(40.0f));
         [DataMember]
         [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
         public float MaxPersonalTamedDinos
         {
             get { return (float)GetValue(MaxPersonalTamedDinosProperty); }
             set { SetValue(MaxPersonalTamedDinosProperty, value); }
+        }
+
+        public static readonly DependencyProperty PersonalTamedDinosSaddleStructureCostProperty = DependencyProperty.Register(nameof(PersonalTamedDinosSaddleStructureCost), typeof(int), typeof(ServerProfile), new PropertyMetadata(19));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int PersonalTamedDinosSaddleStructureCost
+        {
+            get { return (int)GetValue(PersonalTamedDinosSaddleStructureCostProperty); }
+            set { SetValue(PersonalTamedDinosSaddleStructureCostProperty, value); }
         }
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
@@ -4062,6 +4106,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(UseOldSaveFormatProperty);
 
             this.ClearValue(ForceRespawnDinosProperty);
+            this.ClearValue(EnableServerAutoForceRespawnWildDinosIntervalProperty);
+            this.ClearValue(ServerAutoForceRespawnWildDinosIntervalProperty);
             this.ClearValue(EnableServerAdminLogsProperty);
             this.ClearValue(MaxTribeLogsProperty);
             this.ClearValue(ForceDirectX10Property);
@@ -4167,6 +4213,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(TamedDinoResistanceMultiplierProperty);
             this.ClearValue(MaxTamedDinosProperty);
             this.ClearValue(MaxPersonalTamedDinosProperty);
+            this.ClearValue(PersonalTamedDinosSaddleStructureCostProperty);
             this.ClearValue(DinoCharacterFoodDrainMultiplierProperty);
             this.ClearValue(DinoCharacterStaminaDrainMultiplierProperty);
             this.ClearValue(DinoCharacterHealthRecoveryMultiplierProperty);
@@ -4339,6 +4386,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AllowTribeWarPvEProperty);
             this.ClearValue(AllowTribeWarCancelPvEProperty);
             this.ClearValue(AllowTribeAlliancesProperty);
+            this.ClearValue(MaxAlliancesPerTribeProperty);
+            this.ClearValue(MaxTribesPerAllianceProperty);
 
             this.ClearValue(AllowCustomRecipesProperty);
             this.ClearValue(CustomRecipeEffectivenessMultiplierProperty);
@@ -4536,6 +4585,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(SpeedHackBiasProperty, sourceProfile.SpeedHackBias);
             this.SetValue(UseBattlEyeProperty, sourceProfile.UseBattlEye);
             this.SetValue(ForceRespawnDinosProperty, sourceProfile.ForceRespawnDinos);
+            this.SetValue(EnableServerAutoForceRespawnWildDinosIntervalProperty, sourceProfile.EnableServerAutoForceRespawnWildDinosInterval);
+            this.SetValue(ServerAutoForceRespawnWildDinosIntervalProperty, sourceProfile.ServerAutoForceRespawnWildDinosInterval);
             this.SetValue(EnableServerAdminLogsProperty, sourceProfile.EnableServerAdminLogs);
             this.SetValue(ServerAdminLogsIncludeTribeLogsProperty, sourceProfile.ServerAdminLogsIncludeTribeLogs);
             this.SetValue(ServerRCONOutputTribeLogsProperty, sourceProfile.ServerRCONOutputTribeLogs);
@@ -4624,6 +4675,7 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(TamedDinoResistanceMultiplierProperty, sourceProfile.TamedDinoResistanceMultiplier);
             this.SetValue(MaxTamedDinosProperty, sourceProfile.MaxTamedDinos);
             this.SetValue(MaxPersonalTamedDinosProperty, sourceProfile.MaxPersonalTamedDinos);
+            this.SetValue(PersonalTamedDinosSaddleStructureCostProperty, sourceProfile.PersonalTamedDinosSaddleStructureCost);
             this.SetValue(DinoCharacterFoodDrainMultiplierProperty, sourceProfile.DinoCharacterFoodDrainMultiplier);
             this.SetValue(DinoCharacterStaminaDrainMultiplierProperty, sourceProfile.DinoCharacterStaminaDrainMultiplier);
             this.SetValue(DinoCharacterHealthRecoveryMultiplierProperty, sourceProfile.DinoCharacterHealthRecoveryMultiplier);
@@ -4856,6 +4908,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(AllowTribeWarPvEProperty, sourceProfile.AllowTribeWarPvE);
             this.SetValue(AllowTribeWarCancelPvEProperty, sourceProfile.AllowTribeWarCancelPvE);
             this.SetValue(AllowTribeAlliancesProperty, sourceProfile.AllowTribeAlliances);
+            this.SetValue(MaxAlliancesPerTribeProperty, sourceProfile.MaxAlliancesPerTribe);
+            this.SetValue(MaxTribesPerAllianceProperty, sourceProfile.MaxTribesPerAlliance);
 
             this.SetValue(AllowCustomRecipesProperty, sourceProfile.AllowCustomRecipes);
             this.SetValue(CustomRecipeEffectivenessMultiplierProperty, sourceProfile.CustomRecipeEffectivenessMultiplier);

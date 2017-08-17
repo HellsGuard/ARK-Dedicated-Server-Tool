@@ -272,9 +272,12 @@ namespace ARK_Server_Manager
             this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
             this.ServerRCON.DisposeAsync().DoNotWait();
 
-            RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
-            if (window != null)
-                RCONWindows.Remove(this.RCONParameters.Server);
+            if (this.RCONParameters?.Server != null)
+            {
+                RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
+                if (window != null)
+                    RCONWindows.Remove(this.RCONParameters.Server);
+            }
 
             base.OnClosing(e);
         }

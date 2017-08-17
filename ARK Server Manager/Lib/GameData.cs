@@ -269,7 +269,6 @@ namespace ARK_Server_Manager.Lib
             {
                 case "Ammonite_Character_C":
                 case "Ant_Character_BP_C":
-                case "BoaFrill_Character_BP_C":
                 case "Cnidaria_Character_BP_C":
                 case "Coel_Character_BP_C":
                 case "Dragonfly_Character_BP_C":

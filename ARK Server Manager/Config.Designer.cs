@@ -1891,5 +1891,17 @@ namespace ARK_Server_Manager {
                 this["ServerShutdown_WorldSaveDelay"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ServerShutdown_UseDoExit {
+            get {
+                return ((bool)(this["ServerShutdown_UseDoExit"]));
+            }
+            set {
+                this["ServerShutdown_UseDoExit"] = value;
+            }
+        }
     }
 }
