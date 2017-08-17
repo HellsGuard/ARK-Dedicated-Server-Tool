@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.303.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -160,6 +160,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Converters\SecondsToMinutesConverter.cs" />
+    <Compile Include="Common\Converters\SecondsToHoursConverter.cs" />
     <Compile Include="Common\Converters\IntRangeValueConverter.cs" />
     <Compile Include="Common\Model\PublishedFileDetail.cs" />
     <Compile Include="Common\Serialization\IniFile.cs" />
