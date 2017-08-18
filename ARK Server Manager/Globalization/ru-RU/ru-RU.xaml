@@ -308,8 +308,6 @@
     <sys:String x:Key="GlobalSettings_ShutdownMessage3Tooltip">Это сообщение будет отображаться при завершении работы сервера.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveLabel">Сообщение Сохранения мира:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">Это сообщение будет отображаться при завершении работы, когда мир будет сохранен.</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">Задержка Сохранения мира:</sys:String>
-    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">Количество секунд ожидания команды Сохранения мира до завершения работы сервера.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Сообщение при отмене:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">Это сообщение будет отображаться, когда выключение сервера было отменено.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Настройки Email</sys:String>
@@ -339,6 +337,12 @@
     <sys:String x:Key="GlobalSettings_EmailNotify_AutoRestartTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Авто-Выключение.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartLabel">Выключение/Перезагрузка</sys:String>
     <sys:String x:Key="GlobalSettings_EmailNotify_ShutdownRestartTooltip">Если включено, по Email будет отправлено письмо о том что сервер выполняет Выключение/Перезагрузку.</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsLabel">Расширенные настройки</sys:String>
+    <sys:String x:Key="GlobalSettings_AdvancedSettingsInformationLabel">Не прикасайтесь к этим настройкам, если вы не знаете, что делаете</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitLabel">Использовать DoExit для завершения работы сервера</sys:String>
+    <sys:String x:Key="GlobalSettings_UseDoExitTooltip">Если включено, команда DoExit будет использоваться сначала для выключения сервера. Если он терпит неудачу или отключен, вместо этого используется метод Сtrl+С.</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">Задержка Сохранения мира:</sys:String>
+    <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">Количество секунд ожидания команды Сохранения мира до завершения работы сервера.</sys:String>
 
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Подтвердить изменение каталога данных</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Изменение каталога данных приведет к перемещению любых существующих профилей в новое место, но оно не будет перемещать установки сервера. Вы все еще хотите изменить этот каталог?</sys:String>
@@ -611,6 +615,10 @@
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Устанавливает максимальную длину RCON игрового лог буфера (по умолчанию 600).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Перезаселить Мир во время Запуска сервера (Вызывает лаг после запуска Сервера)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">Если включено, при запуске сервера все дикие существа будут уничтожены и обновлены (это уничтожит только диких существ, которые в настоящее время не приручены).</sys:String>
+    <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel">Включить Авто Респаун Динозавров</sys:String>
+    <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip">Если включено, принудительное возрождение диких Динозавтров через указанный интервал.</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalLabel">Интервал Респауна Диких Дино</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalTooltip">Интервал между принудительным автоматическим респауном динозавров.</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel">Альтернативная папка Сохранения:</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameLabel2">(Необязательно)</sys:String>
     <sys:String x:Key="ServerSettings_AltSaveDirectoryNameTooltip">Устанавливает имя каталога (под серверами «Сохраненная папка») для хранения файлов мира, игрока и племени.</sys:String>
@@ -852,6 +860,10 @@
     <sys:String x:Key="ServerSettings_AllowCancelTribeWarfareTooltip">Если этот параметр включен, племена могут отменить согласованную войну, прежде чем она началась.</sys:String>
     <sys:String x:Key="ServerSettings_AllowTribeAlliancesLabel">Разрешить Альянсы Племён</sys:String>
     <sys:String x:Key="ServerSettings_AllowTribeAlliancesTooltip">Если включено, игроки могут создавать Альянсы с другими Племенами.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxAlliancesPerTribeLabel">Максимальное количество Альянсов в Трайбе</sys:String>
+    <sys:String x:Key="ServerSettings_MaxAlliancesPerTribeTooltip">Максимальное количество альянсов разрешено для каждого трайба.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribesPerAllianceLabel">Максимальное число Трайбов в Альянсе</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTribesPerAllianceTooltip">Максимальное количество трайба, разрешенных в каждом альянсе.</sys:String>
 
     <sys:String x:Key="ServerSettings_AllowCustomRecipesLabel">Разрешить пользовательские рецепты</sys:String>
     <sys:String x:Key="ServerSettings_AllowCustomRecipesTooltip">Если этот параметр включен, игроки могут использовать пользовательские RP-ориентированный Рецепт/Систему Кулинарии (в том числе на основе результатов навыка).</sys:String>
@@ -994,6 +1006,8 @@
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Установить максимальное количество домашних динозавров на сервере.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Максимально ручных: (Племя):</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Установить максимальное количество домашних динозавров в Племени.</sys:String>
+    <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Колличество Сёдел платформ в Трайбе</sys:String>
+    <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">Количество прирученных динозавров седлами платформами (со структурами) разрешено в Трайбе.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Появление Дино:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Определяет коэффициент для появления динозавров. Более высокие значения увеличивают колличество появляемых динозавров по всему ARК.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Разрешить на постоянной основе держать Рейд-Животных.</sys:String>

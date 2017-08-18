@@ -740,14 +740,6 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(AutoRestartIfShutdownProperty); }
             set { SetValue(AutoRestartIfShutdownProperty, value); }
         }
-
-        public static readonly DependencyProperty AutoManagedModsProperty = DependencyProperty.Register(nameof(AutoManagedMods), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [DataMember]
-        public bool AutoManagedMods
-        {
-            get { return (bool)GetValue(AutoManagedModsProperty); }
-            set { SetValue(AutoManagedModsProperty, value); }
-        }
         #endregion
 
         #region Rules
@@ -3016,11 +3008,6 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -webalarm");
             }
 
-            if (this.AutoManagedMods)
-            {
-                serverArgs.Append(" -automanagedmods");
-            }
-
             if (this.UseBattlEye)
             {
                 serverArgs.Append(" -UseBattlEye");
@@ -3314,10 +3301,6 @@ namespace ARK_Server_Manager.Lib
                 PGM_Enabled = false;
             }
 
-            // ensure that the ARK mod management is switched off for ASM controlled profiles
-            if (EnableAutoUpdate)
-                AutoManagedMods = false;
-
             if (!OverrideNamedEngramEntries.IsEnabled)
                 OnlyAllowSpecifiedEngrams = false;
             OverrideNamedEngramEntries.OnlyAllowSelectedEngrams = OnlyAllowSpecifiedEngrams;
@@ -3598,7 +3581,7 @@ namespace ARK_Server_Manager.Lib
 
             var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
 
-            if (forceValidate || (Config.Default.ValidateProfileOnServerStart && !AutoManagedMods))
+            if (forceValidate || Config.Default.ValidateProfileOnServerStart)
             {
                 // build a list of mods to be processed
                 var serverMapModId = GetProfileMapModId(this);
@@ -4158,7 +4141,6 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ServerMapProperty);
             this.ClearValue(TotalConversionModIdProperty);
             this.ClearValue(ServerModIdsProperty);
-            this.ClearValue(AutoManagedModsProperty);
 
             this.ClearValue(EnableExtinctionEventProperty);
             this.ClearValue(ExtinctionEventTimeIntervalProperty);
@@ -4630,8 +4612,6 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(RestartAfterShutdown2Property, sourceProfile.RestartAfterShutdown2);
             this.SetValue(UpdateAfterShutdown2Property, sourceProfile.UpdateAfterShutdown2);
             this.SetValue(AutoRestartIfShutdownProperty, sourceProfile.AutoRestartIfShutdown);
-
-            this.SetValue(AutoManagedModsProperty, sourceProfile.AutoManagedMods);
         }
 
         private void SyncChatAndNotificationsSection(ServerProfile sourceProfile)

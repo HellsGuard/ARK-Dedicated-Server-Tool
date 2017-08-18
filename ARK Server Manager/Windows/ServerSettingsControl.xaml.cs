@@ -421,7 +421,7 @@ namespace ARK_Server_Manager
                         {
                             this.Settings.Save(false, false, null);
 
-                            if (Config.Default.ServerUpdate_OnServerStart && !this.Server.Profile.AutoManagedMods)
+                            if (Config.Default.ServerUpdate_OnServerStart)
                             {
                                 if (!await UpdateServer(false, true, Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, true))
                                 {
