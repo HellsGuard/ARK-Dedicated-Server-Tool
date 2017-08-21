@@ -1251,6 +1251,9 @@ namespace ARK_Server_Manager
 
         private void Engrams_SelectAll(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_SelectAllConfirmLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_SelectAllConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             foreach (var engram in Settings.OverrideNamedEngramEntries)
             {
                 engram.SaveEngramOverride = true;
@@ -1259,6 +1262,9 @@ namespace ARK_Server_Manager
 
         private void Engrams_UnselectAll(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_EngramsOverride_UnselectAllConfirmLabel"), _globalizer.GetResourceString("ServerSettings_EngramsOverride_UnselectAllConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             foreach (var engram in Settings.OverrideNamedEngramEntries)
             {
                 engram.SaveEngramOverride = false;

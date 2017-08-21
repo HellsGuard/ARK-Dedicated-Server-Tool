@@ -1266,6 +1266,10 @@
 
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Click 'Yes' to confirm you want to reset all the current engram changes.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmTitle">Confirm Select All Action</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmLabel">Click 'Yes' to confirm you want to select all the engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmTitle">Confirm Unselect All Action</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmLabel">Click 'Yes' to confirm you want to unselect all the engrams.</sys:String>
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
