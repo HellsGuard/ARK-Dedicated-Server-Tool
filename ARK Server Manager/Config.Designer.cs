@@ -1903,5 +1903,41 @@ namespace ARK_Server_Manager {
                 this["ServerShutdown_UseDoExit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server Status:")]
+        public string Alert_ServerStatusChange {
+            get {
+                return ((string)(this["Alert_ServerStatusChange"]));
+            }
+            set {
+                this["Alert_ServerStatusChange"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Game Server Update")]
+        public string Alert_ServerUpdate {
+            get {
+                return ((string)(this["Alert_ServerUpdate"]));
+            }
+            set {
+                this["Alert_ServerUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Update performed, includes:")]
+        public string Alert_UpdateResults {
+            get {
+                return ((string)(this["Alert_UpdateResults"]));
+            }
+            set {
+                this["Alert_UpdateResults"] = value;
+            }
+        }
     }
 }

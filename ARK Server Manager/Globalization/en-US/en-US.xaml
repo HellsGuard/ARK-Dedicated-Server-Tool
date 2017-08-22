@@ -383,6 +383,12 @@
     <sys:String x:Key="GlobalSettings_Alerts_RestartProcessErrorTooltip">This message will be displayed when the auto-restart process encountered an error.</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorLabel">Update Process Error:</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorTooltip">This message will be displayed when the auto-update process encountered an error.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsLabel">Update Results:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsTooltip">This message will be displayed when the auto-update process finds something to update.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateLabel">Server Update Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateTooltip">This message will be displayed when the game server has been updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeLabel">Server Status Change:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeTooltip">This message will be displayed when the status of the server changes.</sys:String>
 
     <!-- 
     Main Window 

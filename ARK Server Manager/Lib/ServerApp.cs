@@ -1155,7 +1155,7 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server update...");
             LogProfileMessage("------------------------");
-            LogProfileMessage($"ASM version: {App.Version}");
+            LogProfileMessage($"Server Manager version: {App.Version}");
 
             // check if the server needs to be updated
             var serverCacheLastUpdated = GetServerLatestTime(GetServerCacheTimeFile());
@@ -1230,9 +1230,9 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                emailMessage.AppendLine("ASM Update Summary:");
+                emailMessage.AppendLine("Update Summary:");
                 emailMessage.AppendLine();
-                emailMessage.AppendLine($"ASM version: {App.Version}");
+                emailMessage.AppendLine($"Server Manager version: {App.Version}");
 
                 // make a backup of the current profile and config files.
                 CreateProfileBackupArchiveFile();
@@ -1253,7 +1253,8 @@ namespace ARK_Server_Manager.Lib
                 bool createdNew = false;
 
                 alertMessage.AppendLine();
-                alertMessage.AppendLine("Update performed, includes:");
+                if (!string.IsNullOrWhiteSpace(Config.Default.Alert_UpdateResults))
+                    alertMessage.AppendLine(Config.Default.Alert_UpdateResults);
 
                 // check if the server needs to be updated
                 if (updateServer)
@@ -1261,7 +1262,7 @@ namespace ARK_Server_Manager.Lib
                     LogProfileMessage("Updating server from cache...");
 
                     emailMessage.AppendLine();
-                    emailMessage.AppendLine("ARK Server Update:");
+                    emailMessage.AppendLine("Game Server Update:");
 
                     try
                     {
@@ -1275,7 +1276,8 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
-                            alertMessage.AppendLine("ARK Server Update");
+                            if (!string.IsNullOrWhiteSpace(Config.Default.Alert_ServerUpdate))
+                                alertMessage.AppendLine(Config.Default.Alert_ServerUpdate);
 
                             emailMessage.AppendLine();
                             emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");

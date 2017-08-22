@@ -90,8 +90,8 @@ namespace ArkData
             if (!Directory.Exists(directory))
                 throw new DirectoryNotFoundException("The ARK data directory couldn't be found.");
 
-            var playerFiles = Directory.GetFiles(directory).Where(p => p.ToLower().Contains(".arkprofile")).ToArray();
-            var tribeFiles = Directory.GetFiles(directory).Where(p => p.ToLower().Contains(".arktribe")).ToArray();
+            var playerFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arkprofile")).ToArray();
+            var tribeFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arktribe")).ToArray();
 
             if (playerFiles.Length == 0 && tribeFiles.Length == 0)
                 throw new FileLoadException("The directory did not contain any of the parseable files.");

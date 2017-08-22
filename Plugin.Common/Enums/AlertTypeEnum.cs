@@ -9,5 +9,6 @@
         Startup,
         Backup,
         UpdateResults,
+        ServerStatusChange,
     }
 }

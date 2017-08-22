@@ -1,13 +1,13 @@
 ﻿using ARK_Server_Manager.Lib.ViewModel.RCON;
+using ArkData;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Diagnostics;
-using System.IO;
 
 namespace ARK_Server_Manager.Lib
 {
@@ -424,29 +424,39 @@ namespace ARK_Server_Manager.Lib
                 return;
             updatingPlayerDetails = true;
 
-            if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
+            try
             {
-                var savedPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
-                var dataContainer = await ArkData.ArkDataContainer.CreateAsync(savedPath);
-
-                try
+                if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
                 {
-                    await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey);
-                    debugLogger.Debug($"{nameof(UpdatePlayerDetails)} - LoadSteamAsync called.\r\n{savedPath}");
-                }
-                catch (Exception ex)
-                {
-                    errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
-                }
-
-                TaskUtils.RunOnUIThreadAsync(() =>
-                {
-                    // create a new temporary list
-                    List<PlayerInfo> players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
-                    players.AddRange(this.Players);
+                    var savedPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
+                    ArkDataContainer dataContainer = null;
 
                     try
                     {
+                        dataContainer = await ArkDataContainer.CreateAsync(savedPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: CreateAsync. {ex.Message}\r\n{ex.StackTrace}");
+                        return;
+                    }
+
+                    try
+                    {
+                        await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
+                        return;
+                    }
+
+                    TaskUtils.RunOnUIThreadAsync(() =>
+                    {
+                        // create a new temporary list
+                        List<PlayerInfo> players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
+                        players.AddRange(this.Players);
+
                         foreach (var playerData in dataContainer.Players)
                         {
                             PlayerInfo player = null;
@@ -494,12 +504,12 @@ namespace ARK_Server_Manager.Lib
 
                         this.Players = new SortableObservableCollection<PlayerInfo>(players);
                         OnPlayerCollectionUpdated();
-                    }
-                    finally
-                    {
-                        updatingPlayerDetails = false;
-                    }
-                }).DoNotWait();
+                    }).DoNotWait();
+                }
+            }
+            finally
+            {
+                updatingPlayerDetails = false;
             }
         }
 
