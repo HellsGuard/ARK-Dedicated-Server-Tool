@@ -43,6 +43,7 @@ namespace ARK_Server_Manager.Lib
             public List<string> ServerModIds;
             public string LastInstalledVersion;
             public int MotDDuration;
+            public bool ForceRespawnDinos;
 
             public string SchedulerKey;
             public bool EnableAutoBackup;
@@ -80,6 +81,7 @@ namespace ARK_Server_Manager.Lib
                     ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                     LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
                     MotDDuration = Math.Max(profile.MOTDDuration, 10),
+                    ForceRespawnDinos = profile.ForceRespawnDinos,
 
                     SchedulerKey = profile.GetProfileKey(),
                     EnableAutoBackup = profile.EnableAutoBackup,
@@ -428,6 +430,8 @@ namespace ARK_Server_Manager.Lib
                     SendEmail($"{_profile.ProfileName} server started", Config.Default.Alert_ServerStartedMessage, false);
 
                 ProcessAlert(AlertType.Startup, Config.Default.Alert_ServerStartedMessage);
+                if (_profile.ForceRespawnDinos)
+                    ProcessAlert(AlertType.Startup, Config.Default.Alert_ForceRespawnDinos);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -2388,7 +2392,7 @@ namespace ARK_Server_Manager.Lib
 
         private void ProcessAlert(AlertType alertType, string alertMessage)
         {
-            if (_pluginHelper == null || !SendAlerts)
+            if (_pluginHelper == null || !SendAlerts || string.IsNullOrWhiteSpace(alertMessage))
                 return;
 
             if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))

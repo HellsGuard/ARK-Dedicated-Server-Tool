@@ -506,6 +506,8 @@
                         <TextBox Grid.Row="8" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerUpdate}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerUpdateTooltip}"/>
                         <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerStatusChangeLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="9" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerStatusChange}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerStatusChangeTooltip}"/>
+                        <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ForceRespawnDinosLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="10" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ForceRespawnDinos}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ForceRespawnDinosTooltip}"/>
                     </Grid>
                 </GroupBox>
 

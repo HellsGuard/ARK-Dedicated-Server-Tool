@@ -1939,5 +1939,18 @@ namespace ARK_Server_Manager {
                 this["Alert_UpdateResults"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A wild dino wipe is scheduled after the server starts and may delay login until i" +
+            "t is complete. Please be patient.")]
+        public string Alert_ForceRespawnDinos {
+            get {
+                return ((string)(this["Alert_ForceRespawnDinos"]));
+            }
+            set {
+                this["Alert_ForceRespawnDinos"] = value;
+            }
+        }
     }
 }

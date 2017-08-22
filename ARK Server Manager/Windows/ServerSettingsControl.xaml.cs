@@ -437,10 +437,12 @@ namespace ARK_Server_Manager
                                     return;
                             }
 
-                            PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, Config.Default.Alert_ServerStartedMessage);
-                            await Task.Delay(2000);
-
                             await this.Server.StartAsync();
+
+                            PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, Config.Default.Alert_ServerStartedMessage);
+                            if (this.Settings.ForceRespawnDinos)
+                                PluginHelper.Instance.ProcessAlert(AlertType.Startup, this.Settings.ProfileName, Config.Default.Alert_ForceRespawnDinos);
+                            await Task.Delay(2000);
                         }
                         else
                         {
