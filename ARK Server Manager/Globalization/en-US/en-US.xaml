@@ -383,6 +383,14 @@
     <sys:String x:Key="GlobalSettings_Alerts_RestartProcessErrorTooltip">This message will be displayed when the auto-restart process encountered an error.</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorLabel">Update Process Error:</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorTooltip">This message will be displayed when the auto-update process encountered an error.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsLabel">Update Results:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsTooltip">This message will be displayed when the auto-update process finds something to update.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateLabel">Server Update Message:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateTooltip">This message will be displayed when the game server has been updated.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeLabel">Server Status Change:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeTooltip">This message will be displayed when the status of the server changes.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ForceRespawnDinosLabel">Force Respawn Dinos Warning:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ForceRespawnDinosTooltip">This message will be displayed when the server is being started and a wild dino wipe is scheduled.</sys:String>
 
     <!-- 
     Main Window 
@@ -1266,6 +1274,10 @@
 
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Confirm Reset Action</sys:String>
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Click 'Yes' to confirm you want to reset all the current engram changes.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmTitle">Confirm Select All Action</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmLabel">Click 'Yes' to confirm you want to select all the engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmTitle">Confirm Unselect All Action</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmLabel">Click 'Yes' to confirm you want to unselect all the engrams.</sys:String>
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>

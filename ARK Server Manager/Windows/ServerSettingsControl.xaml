@@ -1534,43 +1534,6 @@
                                         <CheckBox Grid.Row="3" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" IsChecked="{Binding AutoRestartIfShutdown}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_RestartIfShutdownLabel}" ToolTip="{DynamicResource ServerSettings_RestartIfShutdownTooltip}" HorizontalAlignment="Left"/>
                                     </Grid>
                                 </GroupBox>
-
-                                <GroupBox Style="{StaticResource GroupBoxStyle}">
-                                    <GroupBox.Header>
-                                        <DockPanel>
-                                            <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left" TextWrapping="Wrap" Text="{DynamicResource ServerSettings_ARKSettingLabel}" VerticalAlignment="Center"/>
-                                            <Button Margin="10,0,0,1" DockPanel.Dock="Right" Content="{DynamicResource ServerSettings_NoAutoManagementButtonLabel}" Click="ArkAutoSettings_Click">
-                                                <Button.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="True">
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="False">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Button.Style>
-                                            </Button>
-                                        </DockPanel>
-                                    </GroupBox.Header>
-
-                                    <CheckBox Margin="5" IsChecked="{Binding AutoManagedMods}" Content="{DynamicResource ServerSettings_AutoManagedModsLabel}" ToolTip="{DynamicResource ServerSettings_AutoManagedModsTooltip}" HorizontalAlignment="Left">
-                                        <CheckBox.Style>
-                                            <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding EnableSOTFCheckbox}" Value="true">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding EnableAutoUpdate}" Value="true">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
-                                    </CheckBox>
-                                </GroupBox>
                             </StackPanel>
                         </Expander>
 

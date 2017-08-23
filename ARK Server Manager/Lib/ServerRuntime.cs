@@ -1,4 +1,5 @@
 ﻿using ARK_Server_Manager.Lib.Model;
+using ArkServerManager.Plugin.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -283,42 +284,35 @@ namespace ARK_Server_Manager.Lib
 
             TaskUtils.RunOnUIThreadAsync(() =>
             {
+                var oldStatus = this.Status;
                 switch (update.Status)
                 {
                     case ServerStatusWatcher.ServerStatus.NotInstalled:
-                        this.Status = ServerStatus.Uninstalled;
-                        this.Steam = SteamStatus.Unavailable;
+                        UpdateServerStatus(ServerStatus.Uninstalled, SteamStatus.Unavailable, false);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Initializing:
-                        this.Status = ServerStatus.Initializing;
-                        this.Steam = SteamStatus.Unavailable;
+                        UpdateServerStatus(ServerStatus.Initializing, SteamStatus.Unavailable, oldStatus != ServerStatus.Initializing && oldStatus != ServerStatus.Unknown);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Stopped:
-                        this.Status = ServerStatus.Stopped;
-                        this.Steam = SteamStatus.Unavailable;
+                        UpdateServerStatus(ServerStatus.Stopped, SteamStatus.Unavailable, oldStatus == ServerStatus.Initializing || oldStatus == ServerStatus.Running || oldStatus == ServerStatus.Stopping);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Unknown:
-                        this.Status = ServerStatus.Unknown;
-                        this.Steam = SteamStatus.Unknown;
+                        UpdateServerStatus(ServerStatus.Unknown, SteamStatus.Unknown, false);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.RunningLocalCheck:
-                        this.Status = ServerStatus.Running;
-                        if (this.Steam != SteamStatus.Available)
-                            this.Steam = SteamStatus.WaitingForPublication;
+                        UpdateServerStatus(ServerStatus.Running, this.Steam != SteamStatus.Available ? SteamStatus.WaitingForPublication : this.Steam, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.RunningExternalCheck:
-                        this.Status = ServerStatus.Running;
-                        this.Steam = SteamStatus.WaitingForPublication;
+                        UpdateServerStatus(ServerStatus.Running, SteamStatus.WaitingForPublication, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Published:
-                        this.Status = ServerStatus.Running;
-                        this.Steam = SteamStatus.Available;
+                        UpdateServerStatus(ServerStatus.Running, SteamStatus.Available, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
                         break;
                 }
 
@@ -407,7 +401,7 @@ namespace ARK_Server_Manager.Lib
 
         public Task StartAsync()
         {
-            if(!System.Environment.Is64BitOperatingSystem)
+            if(!Environment.Is64BitOperatingSystem)
             {
                 MessageBox.Show("ARK: Survival Evolved(tm) Server requires a 64-bit operating system to run.  Your operating system is 32-bit and therefore the Ark Server Manager cannot start the server.  You may still load and save profiles and settings files for use on other machines.", "64-bit OS Required", MessageBoxButton.OK, MessageBoxImage.Error);
                 return TaskUtils.FinishedTask;
@@ -423,7 +417,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             UnregisterForUpdates();
-            this.Status = ServerStatus.Initializing;
+            UpdateServerStatus(ServerStatus.Initializing, this.Steam, true);
 
             var serverExe = GetServerExe();
             var launcherExe = GetServerLauncherFile();
@@ -485,8 +479,7 @@ namespace ARK_Server_Manager.Lib
 
                         if (this.serverProcess != null)
                         {
-                            this.Status = ServerStatus.Stopping;
-                            this.Steam = SteamStatus.Unavailable;
+                            UpdateServerStatus(ServerStatus.Stopping, SteamStatus.Unavailable, false);
 
                             await ProcessUtils.SendStop(this.serverProcess);
                         }
@@ -496,8 +489,7 @@ namespace ARK_Server_Manager.Lib
                     }
                     finally
                     {
-                        this.Status = ServerStatus.Stopped;
-                        this.Steam = SteamStatus.Unavailable;
+                        UpdateServerStatus(ServerStatus.Stopped, SteamStatus.Unavailable, true);
                     }
                     break;
             }            
@@ -943,6 +935,15 @@ namespace ARK_Server_Manager.Lib
         public void ResetModCheckTimer()
         {
             this.lastModStatusQuery = DateTime.MinValue;
+        }
+
+        private void UpdateServerStatus(ServerStatus serverStatus, SteamStatus steamStatus, bool sendAlert)
+        {
+            this.Status = serverStatus;
+            this.Steam = steamStatus;
+
+            if (!string.IsNullOrWhiteSpace(Config.Default.Alert_ServerStatusChange) && sendAlert)
+                PluginHelper.Instance.ProcessAlert(AlertType.ServerStatusChange, this.ProfileSnapshot.ProfileName, $"{Config.Default.Alert_ServerStatusChange} {serverStatus}");
         }
     }
 }

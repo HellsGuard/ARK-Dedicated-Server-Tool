@@ -43,6 +43,7 @@ namespace ARK_Server_Manager.Lib
             public List<string> ServerModIds;
             public string LastInstalledVersion;
             public int MotDDuration;
+            public bool ForceRespawnDinos;
 
             public string SchedulerKey;
             public bool EnableAutoBackup;
@@ -80,6 +81,7 @@ namespace ARK_Server_Manager.Lib
                     ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                     LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
                     MotDDuration = Math.Max(profile.MOTDDuration, 10),
+                    ForceRespawnDinos = profile.ForceRespawnDinos,
 
                     SchedulerKey = profile.GetProfileKey(),
                     EnableAutoBackup = profile.EnableAutoBackup,
@@ -428,6 +430,8 @@ namespace ARK_Server_Manager.Lib
                     SendEmail($"{_profile.ProfileName} server started", Config.Default.Alert_ServerStartedMessage, false);
 
                 ProcessAlert(AlertType.Startup, Config.Default.Alert_ServerStartedMessage);
+                if (_profile.ForceRespawnDinos)
+                    ProcessAlert(AlertType.Startup, Config.Default.Alert_ForceRespawnDinos);
             }
             ExitCode = EXITCODE_NORMALEXIT;
         }
@@ -1155,7 +1159,7 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server update...");
             LogProfileMessage("------------------------");
-            LogProfileMessage($"ASM version: {App.Version}");
+            LogProfileMessage($"Server Manager version: {App.Version}");
 
             // check if the server needs to be updated
             var serverCacheLastUpdated = GetServerLatestTime(GetServerCacheTimeFile());
@@ -1230,9 +1234,9 @@ namespace ARK_Server_Manager.Lib
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
 
-                emailMessage.AppendLine("ASM Update Summary:");
+                emailMessage.AppendLine("Update Summary:");
                 emailMessage.AppendLine();
-                emailMessage.AppendLine($"ASM version: {App.Version}");
+                emailMessage.AppendLine($"Server Manager version: {App.Version}");
 
                 // make a backup of the current profile and config files.
                 CreateProfileBackupArchiveFile();
@@ -1253,7 +1257,8 @@ namespace ARK_Server_Manager.Lib
                 bool createdNew = false;
 
                 alertMessage.AppendLine();
-                alertMessage.AppendLine("Update performed, includes:");
+                if (!string.IsNullOrWhiteSpace(Config.Default.Alert_UpdateResults))
+                    alertMessage.AppendLine(Config.Default.Alert_UpdateResults);
 
                 // check if the server needs to be updated
                 if (updateServer)
@@ -1261,7 +1266,7 @@ namespace ARK_Server_Manager.Lib
                     LogProfileMessage("Updating server from cache...");
 
                     emailMessage.AppendLine();
-                    emailMessage.AppendLine("ARK Server Update:");
+                    emailMessage.AppendLine("Game Server Update:");
 
                     try
                     {
@@ -1275,7 +1280,8 @@ namespace ARK_Server_Manager.Lib
                             LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
 
-                            alertMessage.AppendLine("ARK Server Update");
+                            if (!string.IsNullOrWhiteSpace(Config.Default.Alert_ServerUpdate))
+                                alertMessage.AppendLine(Config.Default.Alert_ServerUpdate);
 
                             emailMessage.AppendLine();
                             emailMessage.AppendLine("Updated server from cache. See ARK patch notes.");
@@ -2386,7 +2392,7 @@ namespace ARK_Server_Manager.Lib
 
         private void ProcessAlert(AlertType alertType, string alertMessage)
         {
-            if (_pluginHelper == null || !SendAlerts)
+            if (_pluginHelper == null || !SendAlerts || string.IsNullOrWhiteSpace(alertMessage))
                 return;
 
             if (_pluginHelper.ProcessAlert(alertType, _profile?.ProfileName ?? String.Empty, alertMessage))

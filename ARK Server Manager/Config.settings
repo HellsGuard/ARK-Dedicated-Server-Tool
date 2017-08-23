@@ -536,5 +536,17 @@
     <Setting Name="ServerShutdown_UseDoExit" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Alert_ServerStatusChange" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server Status:</Value>
+    </Setting>
+    <Setting Name="Alert_ServerUpdate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Game Server Update</Value>
+    </Setting>
+    <Setting Name="Alert_UpdateResults" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Update performed, includes:</Value>
+    </Setting>
+    <Setting Name="Alert_ForceRespawnDinos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A wild dino wipe is scheduled after the server starts and may delay login until it is complete. Please be patient.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

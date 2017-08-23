@@ -477,6 +477,9 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -497,6 +500,14 @@
                         <TextBox Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_RestartProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_RestartProcessErrorTooltip}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_UpdateProcessErrorLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="6" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_UpdateProcessError}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_UpdateProcessErrorTooltip}"/>
+                        <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_UpdateResultsLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_UpdateResults}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_UpdateResultsTooltip}"/>
+                        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerUpdateLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerUpdate}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerUpdateTooltip}"/>
+                        <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ServerStatusChangeLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ServerStatusChange}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ServerStatusChangeTooltip}"/>
+                        <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource GlobalSettings_Alerts_ForceRespawnDinosLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="10" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.Alert_ForceRespawnDinos}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_Alerts_ForceRespawnDinosTooltip}"/>
                     </Grid>
                 </GroupBox>
 
