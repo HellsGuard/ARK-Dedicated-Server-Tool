@@ -85,10 +85,11 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <DockPanel Grid.Row="0" Grid.ColumnSpan="3" LastChildFill="False">
-                    <Label DockPanel.Dock="Left" Content="{DynamicResource GlobalSettings_Title}" FontSize="20" VerticalAlignment="Bottom" />
-                    <Label DockPanel.Dock="Right" Content="{Binding Version}" FontSize="15"  VerticalAlignment="Bottom"/>
-                    <Label DockPanel.Dock="Right" Content="{DynamicResource GlobalSettings_VersionLabel}" FontSize="15" VerticalAlignment="Bottom" />
+                <DockPanel Grid.Row="0" Grid.ColumnSpan="4" LastChildFill="False">
+                    <Label DockPanel.Dock="Left" Content="{DynamicResource GlobalSettings_Title}" FontSize="20" VerticalAlignment="Center" />
+                    <Button DockPanel.Dock="Right" Margin="10,0,0,0" Padding="5,2,5,2" Content="{DynamicResource GlobalSettings_ResetButtonLabel}" Click="ResetSettings_Click" VerticalAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ResetButtonTooltip}"/>
+                    <Label DockPanel.Dock="Right" Content="{Binding Version}" FontSize="15"  VerticalAlignment="Center"/>
+                    <Label DockPanel.Dock="Right" Content="{DynamicResource GlobalSettings_VersionLabel}" FontSize="15" VerticalAlignment="Center" />
                 </DockPanel>
 
                 <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="{DynamicResource GlobalSettings_RunAsAdministratorLabel}" IsChecked="{Binding CurrentConfig.RunAsAdministratorPrompt, Mode=TwoWay}" HorizontalAlignment="Left"/>

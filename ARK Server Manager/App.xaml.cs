@@ -83,16 +83,16 @@ namespace ARK_Server_Manager
         public static async Task DiscoverMachinePublicIP(bool forceOverride)
         {
             var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
-            if(publicIP != null)
+            if (string.IsNullOrWhiteSpace(publicIP))
+                return;
+
+            await App.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                await App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
                 {
-                    if(forceOverride || String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
-                    {
-                        Config.Default.MachinePublicIP = publicIP;
-                    }
-                }));
-            }
+                    Config.Default.MachinePublicIP = publicIP;
+                }
+            }));
         }
 
         private static string GetDeployedVersion()
@@ -361,10 +361,7 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
 
-            if (String.IsNullOrWhiteSpace(Config.Default.MachinePublicIP))
-            {
-                Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: false));
-            }
+            Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: true));
         }
 
         protected override void OnExit(ExitEventArgs e)

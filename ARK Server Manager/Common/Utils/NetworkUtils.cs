@@ -76,7 +76,7 @@ namespace ARK_Server_Manager.Lib
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(String.Format("Exception checking for ASM version: {0}\r\n{1}", ex.Message, ex.StackTrace));
+                    Logger.Debug(String.Format("Exception checking for ASM version: {0}", ex.Message));
                     return new Version();
                 }
             }
@@ -110,11 +110,17 @@ namespace ARK_Server_Manager.Lib
         {
             using (var webClient = new WebClient())
             {
-                var publicIP = await webClient.DownloadStringTaskAsync(Config.Default.PublicIPCheckUrl);
-                IPAddress address;
-                if(IPAddress.TryParse(publicIP, out address))
+                try
                 {
-                    return publicIP;
+                    var publicIP = await webClient.DownloadStringTaskAsync(Config.Default.PublicIPCheckUrl);
+                    if (IPAddress.TryParse(publicIP, out IPAddress address))
+                    {
+                        return publicIP;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug(String.Format("Exception checking for public ip: {0}", ex.Message));
                 }
 
                 return String.Empty;

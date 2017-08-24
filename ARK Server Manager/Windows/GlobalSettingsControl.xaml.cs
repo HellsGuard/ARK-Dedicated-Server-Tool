@@ -1,16 +1,17 @@
 ﻿using ARK_Server_Manager.Lib;
+using ARK_Server_Manager.Lib.Utils;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using NLog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using WPFSharp.Globalizer;
-using ARK_Server_Manager.Lib.Utils;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Diagnostics;
 
 namespace ARK_Server_Manager
 {
@@ -19,6 +20,7 @@ namespace ARK_Server_Manager
     /// </summary>
     public partial class GlobalSettingsControl : UserControl
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
 
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(GlobalSettingsControl), new PropertyMetadata(false));
@@ -293,6 +295,32 @@ namespace ARK_Server_Manager
                     textBox.Visibility = System.Windows.Visibility.Collapsed;
                 }
                 UpdateLayout();
+            }
+        }
+
+        private void ResetSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_ResetSettings_ConfirmLabel"), _globalizer.GetResourceString("GlobalSettings_ResetSettings_ConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            int exitCode = 0;
+
+            try
+            {
+                Config.Default.Reset();
+                Config.Default.UpgradeConfig = false;
+                Config.Default.Save();
+                Config.Default.Reload();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Exception while resettiing the settings: {0}\n{1}", ex.Message, ex.StackTrace);
+                MessageBox.Show(_globalizer.GetResourceString("GlobalSettings_ResetSettings_FailedLabel"), _globalizer.GetResourceString("GlobalSettings_ResetSettings_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                exitCode = 1;
+            }
+            finally
+            {
+                App.Current.Shutdown(exitCode);
             }
         }
     }

@@ -3284,6 +3284,9 @@ namespace ARK_Server_Manager.Lib
 
         public void Save(bool updateFolderPermissions, bool updateSchedules, ProgressDelegate progressCallback)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                return;
+
             progressCallback?.Invoke(0, "Saving...");
 
             if (SOTF_Enabled)
@@ -3371,7 +3374,7 @@ namespace ARK_Server_Manager.Lib
             //
             // If this was a rename, remove the old profile after writing the new one.
             //
-            if(!String.Equals(GetProfileFile(), this._lastSaveLocation))
+            if (!String.Equals(GetProfileFile(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {

@@ -546,8 +546,6 @@
     <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorLabel">Авто-перезагрузка включена, но не совместима с SotF. Отключение Авто-перезагрузки.</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF не совместим</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Авто-Обновление включено, но не совместима с SotF. Отключение Авто-Обновления.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Автоматически управляемые модами несовместимо</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">Автоматически управляемые моды ARK включены, но не совместимы с автоматическими обновлениями ASM. Отключение автоматическое управление модами ARK.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Обновить разрешения для каталога</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Не удалось обновить разрешения каталога. Убедитесь, что у вас есть права администратора на этом компьютере и повторите попытку. Если проблема не устранена, сообщите об этом как об ошибке.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Не удалось выполнить расписание обновления</sys:String>
@@ -752,8 +750,6 @@
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Перезапустить сервер при завершении работы</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">Если этот параметр включен, сервер будет перезагружен, даже если вы отключите Автозапуск и Авто-Обновление.</sys:String>
     <sys:String x:Key="ServerSettings_ARKSettingLabel">Официальные  настройки Ark (Ark Server Manager)</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Автоматическое управление Модами при запуске сервера</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">Если включено, добавлена поддержка автоматической загрузки/установки/обновления Модов при запуске сервера.</sys:String>
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Правила сервера</sys:String>
