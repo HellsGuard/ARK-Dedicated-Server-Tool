@@ -56,7 +56,7 @@ namespace ArkServerManager.Plugin.Common
             set;
         }
 
-        internal ObservableCollection<PluginItem> Plugins
+        public ObservableCollection<PluginItem> Plugins
         {
             get;
             private set;

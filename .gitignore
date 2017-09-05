@@ -5,6 +5,7 @@
 *~
 *.pdb
 
+.vs/
 packages/
 ARK Dedicated Server Tool/bin/
 ARK Dedicated Server Tool/obj/

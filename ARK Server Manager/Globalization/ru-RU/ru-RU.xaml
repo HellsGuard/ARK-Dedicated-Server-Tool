@@ -86,7 +86,7 @@
     <sys:String x:Key="ModDetails_TypeColumnLabel">Тип Мода</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Последняя загрузка</sys:String>
     <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Последнее обновление (Автор)</sys:String>
-    <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Размер</sys:String>
+    <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Размер папки</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Добавить в список.</sys:String>
     <sys:String x:Key="ModDetails_LoadModsTooltip">Загрузить список модов из папки сервера.</sys:String>
@@ -383,6 +383,14 @@
     <sys:String x:Key="GlobalSettings_Alerts_RestartProcessErrorTooltip">Это сообщение будет отображаться, если в процессе автоматического перезапуска произошла ошибка.</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorLabel">Ошибка процесса обновления:</sys:String>
     <sys:String x:Key="GlobalSettings_Alerts_UpdateProcessErrorTooltip">Это сообщение будет отображаться, если в процессе автоматического обновления возникла ошибка.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsLabel">Обновить результаты:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_UpdateResultsTooltip">Это сообщение будет отображаться, когда процесс автоматического обновления обнаружит что-то для обновления.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateLabel">Сообщение об обновлении сервера:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerUpdateTooltip">Это сообщение будет отображаться при обновлении игрового сервера.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeLabel">Изменение статуса сервера:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ServerStatusChangeTooltip">Это сообщение будет отображаться при изменении состояния сервера.</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ForceRespawnDinosLabel">Предупреждение о респавно динозавров:</sys:String>
+    <sys:String x:Key="GlobalSettings_Alerts_ForceRespawnDinosTooltip">Это сообщение будет отображаться при запуске сервера и оповещение о запланированном респе динозавров</sys:String>
 
     <!-- 
     Main Window 
@@ -546,6 +554,8 @@
     <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorLabel">Авто-перезагрузка включена, но не совместима с SotF. Отключение Авто-перезагрузки.</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF не совместим</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Авто-Обновление включено, но не совместима с SotF. Отключение Авто-Обновления.</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Автоматически управляемые модами несовместимо</sys:String>
+    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">Автоматически управляемые моды ARK включены, но не совместимы с автоматическими обновлениями ASM. Отключение автоматическое управление модами ARK.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Обновить разрешения для каталога</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Не удалось обновить разрешения каталога. Убедитесь, что у вас есть права администратора на этом компьютере и повторите попытку. Если проблема не устранена, сообщите об этом как об ошибке.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Не удалось выполнить расписание обновления</sys:String>
@@ -750,6 +760,8 @@
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Перезапустить сервер при завершении работы</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">Если этот параметр включен, сервер будет перезагружен, даже если вы отключите Автозапуск и Авто-Обновление.</sys:String>
     <sys:String x:Key="ServerSettings_ARKSettingLabel">Официальные  настройки Ark (Ark Server Manager)</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Автоматическое управление Модами при запуске сервера</sys:String>
+    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">Если включено, добавлена поддержка автоматической загрузки/установки/обновления Модов при запуске сервера.</sys:String>
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Правила сервера</sys:String>
@@ -1262,6 +1274,10 @@
 
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetTitle">Подтвердить сброс</sys:String>
     <sys:String x:Key="ServerSettings_EngramsOverride_ResetLabel">Нажмите «Да», чтобы подтвердить, сброс Энграммов на стандартные настройки.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmTitle">Подтвердить "Выбор всех действий"</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_SelectAllConfirmLabel">Нажмите «Да», чтобы подтвердить, что вы хотите выбрать все инграммы.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmTitle">Подтвердить "Отменить все действия"</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsOverride_UnselectAllConfirmLabel">Нажмите «Да», чтобы подтвердить, что вы хотите отменить выбор всех инграмм.</sys:String>
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Свои настройки уровня</sys:String>
