@@ -3830,13 +3830,13 @@ namespace ARK_Server_Manager.Lib
                         files.Add(tribeFile.FullName);
                     }
 
-                    // get the player images files
-                    var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
-                    var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
-                    foreach (var playerImageFile in playerImageFiles)
-                    {
-                        files.Add(playerImageFile.FullName);
-                    }
+                    //// get the player images files
+                    //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
+                    //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
+                    //foreach (var playerImageFile in playerImageFiles)
+                    //{
+                    //    files.Add(playerImageFile.FullName);
+                    //}
                 }
 
                 // delete the selected files
