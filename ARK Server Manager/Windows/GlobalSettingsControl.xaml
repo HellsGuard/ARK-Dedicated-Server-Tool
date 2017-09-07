@@ -334,21 +334,8 @@
 
                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource GlobalSettings_BackupIntervalLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="1" Width="100" HorizontalAlignment="Left"  VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_BackupIntervalTooltip}">
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <StackPanel>
-                                        <!-- Placeholder for the TextBox itself -->
-                                        <AdornedElementPlaceholder x:Name="textBox"/>
-                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                    </StackPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
                             <TextBox.Text>
-                                <Binding Path="CurrentConfig.AutoBackup_BackupPeriod" Converter="{StaticResource MinutesToTimeValueConverter}">
-                                    <Binding.ValidationRules>
-                                        <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                    </Binding.ValidationRules>
-                                </Binding>
+                                <Binding Path="CurrentConfig.AutoBackup_BackupPeriod" Converter="{StaticResource MinutesToTimeValueConverter}"/>
                             </TextBox.Text>
                         </TextBox>
 
@@ -389,21 +376,8 @@
 
                         <Label   Grid.Row="1" Grid.Column="0" Content="{DynamicResource GlobalSettings_UpdateIntervalLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Width="100" HorizontalAlignment="Left"  VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_UpdateIntervalTooltip}">
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <StackPanel>
-                                        <!-- Placeholder for the TextBox itself -->
-                                        <AdornedElementPlaceholder x:Name="textBox"/>
-                                        <TextBlock Text="{Binding [0].ErrorContent}" Background="Red" Foreground="White"/>
-                                    </StackPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
                             <TextBox.Text>
-                                <Binding Path="CurrentConfig.AutoUpdate_UpdatePeriod" Converter="{StaticResource MinutesToTimeValueConverter}">
-                                    <Binding.ValidationRules>
-                                        <lib:TimeValidationRule ValidatesOnTargetUpdated="true" />
-                                    </Binding.ValidationRules>
-                                </Binding>
+                                <Binding Path="CurrentConfig.AutoUpdate_UpdatePeriod" Converter="{StaticResource MinutesToTimeValueConverter}"/>
                             </TextBox.Text>
                         </TextBox>
 
