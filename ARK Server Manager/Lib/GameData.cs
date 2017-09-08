@@ -233,7 +233,7 @@ namespace ARK_Server_Manager.Lib
             // Ragnarok dinos
             new DinoSpawn { ClassName="Griffin_Character_BP_C",             DinoNameTag="Griffin",                  ArkApplication=ArkApplication.Ragnarok },
             new DinoSpawn { ClassName="Polar_Bear_C",                       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
-            new DinoSpawn { ClassName="Ragnarok_Wyvern_Override_Ice_C",     DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Ragnarok_Wyvern_Override_Ice_C",     DinoNameTag="Ice Wyvern",               ArkApplication=ArkApplication.Ragnarok },
 
             // Ragnarok Bosses
             new DinoSpawn { ClassName="Iceworm_Queen_Character_BP_C",       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
