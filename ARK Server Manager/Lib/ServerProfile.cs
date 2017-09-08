@@ -3126,6 +3126,9 @@ namespace ARK_Server_Manager.Lib
             if (Path.GetExtension(file) == Config.Default.ProfileExtension)
                 return LoadFromProfileFile(file);
 
+            if (Path.GetExtension(file) == Config.Default.ProfileExtensionNew)
+                return LoadFromProfileFileNew(file);
+
             var filePath = Path.GetDirectoryName(file);
             if (!filePath.EndsWith(Config.Default.ServerConfigRelativePath))
                 return null;
@@ -3374,16 +3377,16 @@ namespace ARK_Server_Manager.Lib
             //
             // If this was a rename, remove the old profile after writing the new one.
             //
-            if (!String.Equals(GetProfileFile(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(GetProfileFileNew(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
                     if (File.Exists(this._lastSaveLocation))
                         File.Delete(this._lastSaveLocation);
 
-                    var profileFileNew = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtensionNew);
-                    if (File.Exists(profileFileNew))
-                        File.Delete(profileFileNew);
+                    var profileFile = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtension);
+                    if (File.Exists(profileFile))
+                        File.Delete(profileFile);
 
                     var iniDir = Path.ChangeExtension(this._lastSaveLocation, null);
                     if (Directory.Exists(iniDir))
@@ -3394,7 +3397,7 @@ namespace ARK_Server_Manager.Lib
                     // We tried...
                 }
 
-                this._lastSaveLocation = GetProfileFile();
+                this._lastSaveLocation = GetProfileFileNew();
             }
 
             progressCallback?.Invoke(0, "Saving Launcher File...");

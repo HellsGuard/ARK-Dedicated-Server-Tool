@@ -2293,7 +2293,7 @@ namespace ARK_Server_Manager.Lib
 
             _profiles = new Dictionary<ProfileSnapshot, ServerProfile>();
 
-            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
+            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtensionNew))
             {
                 try
                 {

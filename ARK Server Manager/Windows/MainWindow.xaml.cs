@@ -113,7 +113,7 @@ namespace ARK_Server_Manager
             TaskUtils.RunOnUIThreadAsync(() =>
                 {
                     // We need to load the set of existing servers, or create a blank one if we don't have any...
-                    foreach (var profile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
+                    foreach (var profile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtensionNew))
                     {
                         try
                         {
