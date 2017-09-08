@@ -372,7 +372,27 @@ namespace ARK_Server_Manager.Lib
         public string MOTD
         {
             get { return (string)GetValue(MOTDProperty); }
-            set { SetValue(MOTDProperty, value); }
+            set
+            {
+                SetValue(MOTDProperty, value);
+                ValidateMOTD();
+            }
+        }
+
+        public static readonly DependencyProperty MOTDLengthProperty = DependencyProperty.Register(nameof(MOTDLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        [XmlIgnore]
+        public int MOTDLength
+        {
+            get { return (int)GetValue(MOTDLengthProperty); }
+            set { SetValue(MOTDLengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty MOTDLengthToLongProperty = DependencyProperty.Register(nameof(MOTDLengthToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [XmlIgnore]
+        public bool MOTDLengthToLong
+        {
+            get { return (bool)GetValue(MOTDLengthToLongProperty); }
+            set { SetValue(MOTDLengthToLongProperty, value); }
         }
 
         public static readonly DependencyProperty MOTDDurationProperty = DependencyProperty.Register(nameof(MOTDDuration), typeof(int), typeof(ServerProfile), new PropertyMetadata(20));
@@ -3883,6 +3903,12 @@ namespace ARK_Server_Manager.Lib
         {
             ServerNameLength = Encoding.UTF8.GetByteCount(ServerName);
             ServerNameLengthToLong = ServerNameLength > 50;
+        }
+
+        public void ValidateMOTD()
+        {
+            MOTDLength = Encoding.UTF8.GetByteCount(MOTD);
+            MOTDLengthToLong = MOTDLength > 1000;
         }
 
         #region Export Methods

@@ -1030,6 +1030,11 @@ namespace ARK_Server_Manager
             Settings.ValidateServerName();
         }
 
+        private void MOTD_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            Settings.ValidateMOTD();
+        }
+
         private void SyncProfile_Click(object sender, RoutedEventArgs e)
         {
             var window = new ProfileSyncWindow(ServerManager, Server.Profile);
