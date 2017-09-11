@@ -103,6 +103,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Monkey_Character_BP_C",              DinoNameTag="Monkey" },
             new DinoSpawn { ClassName="Mosa_Character_BP_C",                DinoNameTag="Mosasaur" },
             new DinoSpawn { ClassName="Moschops_Character_BP_C",            DinoNameTag="Moschops" },
+            new DinoSpawn { ClassName="Otter_Character_BP_C",               DinoNameTag="Otter" },
             new DinoSpawn { ClassName="Oviraptor_Character_BP_C",           DinoNameTag="Ovi" },
             new DinoSpawn { ClassName="Pachy_Character_BP_C",               DinoNameTag="Pachy" },
             new DinoSpawn { ClassName="Pachyrhino_Character_BP_C",          DinoNameTag="Pachyrhino" },
@@ -153,19 +154,19 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Yeti_Character_BP_C",                DinoNameTag=null },
 
             // Bosses
-            new DinoSpawn { ClassName="SpiderL_Character_BP_C",             DinoNameTag=null },
-            new DinoSpawn { ClassName="SpiderL_Character_BP_Easy_C",        DinoNameTag=null },
-            new DinoSpawn { ClassName="SpiderL_Character_BP_Medium_C",      DinoNameTag=null },
-            new DinoSpawn { ClassName="SpiderL_Character_BP_Hard_C",        DinoNameTag=null },
-            new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenter_C",   DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_C",                     DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_Easy_C",                DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_Medium_C",              DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_Hard_C",                DinoNameTag=null },
+            new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenter_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenterMedium_C",     DinoNameTag=null },
             new DinoSpawn { ClassName="SpiderL_Character_BP_TheCenterHard_C",       DinoNameTag=null },
 
-            new DinoSpawn { ClassName="Gorilla_Character_BP_C",             DinoNameTag=null },
-            new DinoSpawn { ClassName="Gorilla_Character_BP_Easy_C",        DinoNameTag=null },
-            new DinoSpawn { ClassName="Gorilla_Character_BP_Medium_C",      DinoNameTag=null },
-            new DinoSpawn { ClassName="Gorilla_Character_BP_Hard_C",        DinoNameTag=null },
-            new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_C",   DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_C",                     DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_Easy_C",                DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_Medium_C",              DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_Hard_C",                DinoNameTag=null },
+            new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_C",           DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Medium_C",    DinoNameTag=null },
             new DinoSpawn { ClassName="Gorilla_Character_BP_TheCenter_Hard_C",      DinoNameTag=null },
 
@@ -173,6 +174,34 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Easy_C",    DinoNameTag=null },
             new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Medium_C",  DinoNameTag=null },
             new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Hard_C",    DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndDrone_Character_BP_C",            DinoNameTag=null },
+            new DinoSpawn { ClassName="EndDrone_Character_BP_Med_C",        DinoNameTag=null },
+            new DinoSpawn { ClassName="EndDrone_Character_BP_Hard_C",       DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndTank_Character_BP_C",             DinoNameTag=null },
+            new DinoSpawn { ClassName="EndTank_Character_BP_Med_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="EndTank_Character_BP_Hard_C",        DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndBoss_Character_C",                DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBoss_Character_Easy_C",           DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBoss_Character_Medium_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBoss_Character_Hard_C",           DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndBossDragon_Character_BP_C",               DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossDragon_Character_BP_Easy_C",          DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossDragon_Character_BP_Medium_C",        DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossDragon_Character_BP_Hard_C",          DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndBossGorilla_Character_BP_C",              DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossGorilla_Character_BP_Easy_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossGorilla_Character_BP_Medium_C",       DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossGorilla_Character_BP_Hard_C",         DinoNameTag=null },
+
+            new DinoSpawn { ClassName="EndBossSpiderL_Character_BP_C",              DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossSpiderL_Character_BP_Easy_C",         DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossSpiderL_Character_BP_Medium_C",       DinoNameTag=null },
+            new DinoSpawn { ClassName="EndBossSpiderL_Character_BP_Hard_C",         DinoNameTag=null },
 
             // Scorched Earth dinos
             new DinoSpawn { ClassName="camelsaurus_Character_BP_C",         DinoNameTag="Camelsaurus",              ArkApplication=ArkApplication.ScorchedEarth },
@@ -182,6 +211,7 @@ namespace ARK_Server_Manager.Lib
             new DinoSpawn { ClassName="Manticore_Character_BP_C",           DinoNameTag="Manticore",                ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Mantis_Character_BP_C",              DinoNameTag="Mantis",                   ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Moth_Character_BP_C",                DinoNameTag="Moth",                     ArkApplication=ArkApplication.ScorchedEarth },
+            new DinoSpawn { ClassName="Phoenix_Character_BP_C",             DinoNameTag="Phoenix",                  ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="RockGolem_Character_BP_C",           DinoNameTag="RockElemental",            ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="SpineyLizard_Character_BP_C",        DinoNameTag="SpineyLizard",             ArkApplication=ArkApplication.ScorchedEarth },
             new DinoSpawn { ClassName="Vulture_Character_BP_C",             DinoNameTag="Vulture",                  ArkApplication=ArkApplication.ScorchedEarth },
@@ -203,11 +233,19 @@ namespace ARK_Server_Manager.Lib
             // Ragnarok dinos
             new DinoSpawn { ClassName="Griffin_Character_BP_C",             DinoNameTag="Griffin",                  ArkApplication=ArkApplication.Ragnarok },
             new DinoSpawn { ClassName="Polar_Bear_C",                       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
-            new DinoSpawn { ClassName="Ragnarok_Wyvern_Override_Ice_C",     DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Ragnarok_Wyvern_Override_Ice_C",     DinoNameTag="Ice Wyvern",               ArkApplication=ArkApplication.Ragnarok },
 
             // Ragnarok Bosses
             new DinoSpawn { ClassName="Iceworm_Queen_Character_BP_C",       DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
             new DinoSpawn { ClassName="LavaGolem_Character_BP_C",           DinoNameTag=null,                       ArkApplication=ArkApplication.Ragnarok },
+
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Easy_Ragnarok_C",       DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Medium_Ragnarok_C",     DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Dragon_Character_BP_Boss_Hard_Ragnarok_C",       DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
+
+            new DinoSpawn { ClassName="Manticore_Character_BP_Easy_Ragnarok_C",         DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Manticore_Character_BP_Medium_Ragnarok_C",       DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
+            new DinoSpawn { ClassName="Manticore_Character_BP_Hard_Ragnarok_C",         DinoNameTag=null,           ArkApplication=ArkApplication.Ragnarok },
         };
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
@@ -241,6 +279,29 @@ namespace ARK_Server_Manager.Lib
                 case "Dragon_Character_BP_Boss_Easy_C":
                 case "Dragon_Character_BP_Boss_Medium_C":
                 case "Dragon_Character_BP_Boss_Hard_C":
+
+                case "EndDrone_Character_BP_C":
+                case "EndDrone_Character_BP_Med_C":
+                case "EndDrone_Character_BP_Hard_C":
+
+                case "EndTank_Character_BP_C":
+                case "EndTank_Character_BP_Med_C":
+                case "EndTank_Character_BP_Hard_C":
+
+                case "EndBossDragon_Character_BP_C":
+                case "EndBossDragon_Character_BP_Easy_C":
+                case "EndBossDragon_Character_BP_Medium_C":
+                case "EndBossDragon_Character_BP_Hard_C":
+
+                case "EndBossGorilla_Character_BP_C":
+                case "EndBossGorilla_Character_BP_Easy_C":
+                case "EndBossGorilla_Character_BP_Medium_C":
+                case "EndBossGorilla_Character_BP_Hard_C":
+
+                case "EndBossSpiderL_Character_BP_C":
+                case "EndBossSpiderL_Character_BP_Easy_C":
+                case "EndBossSpiderL_Character_BP_Medium_C":
+                case "EndBossSpiderL_Character_BP_Hard_C":
                     return false;
 
                 // Scorched Earth
@@ -253,6 +314,14 @@ namespace ARK_Server_Manager.Lib
                 // Ragnarok
                 case "Iceworm_Queen_Character_BP_C":
                 case "LavaGolem_Character_BP_C":
+
+                case "Dragon_Character_BP_Boss_Easy_Ragnarok_C":
+                case "Dragon_Character_BP_Boss_Medium_Ragnarok_C":
+                case "Dragon_Character_BP_Boss_Hard_Ragnarok_C":
+
+                case "Manticore_Character_BP_Easy_Ragnarok_C":
+                case "Manticore_Character_BP_Medium_Ragnarok_C":
+                case "Manticore_Character_BP_Hard_Ragnarok_C":
                     return false;
 
                 default:
@@ -311,6 +380,29 @@ namespace ARK_Server_Manager.Lib
                 case "Dragon_Character_BP_Boss_Easy_C":
                 case "Dragon_Character_BP_Boss_Medium_C":
                 case "Dragon_Character_BP_Boss_Hard_C":
+
+                case "EndDrone_Character_BP_C":
+                case "EndDrone_Character_BP_Med_C":
+                case "EndDrone_Character_BP_Hard_C":
+
+                case "EndTank_Character_BP_C":
+                case "EndTank_Character_BP_Med_C":
+                case "EndTank_Character_BP_Hard_C":
+
+                case "EndBossDragon_Character_BP_C":
+                case "EndBossDragon_Character_BP_Easy_C":
+                case "EndBossDragon_Character_BP_Medium_C":
+                case "EndBossDragon_Character_BP_Hard_C":
+
+                case "EndBossGorilla_Character_BP_C":
+                case "EndBossGorilla_Character_BP_Easy_C":
+                case "EndBossGorilla_Character_BP_Medium_C":
+                case "EndBossGorilla_Character_BP_Hard_C":
+
+                case "EndBossSpiderL_Character_BP_C":
+                case "EndBossSpiderL_Character_BP_Easy_C":
+                case "EndBossSpiderL_Character_BP_Medium_C":
+                case "EndBossSpiderL_Character_BP_Hard_C":
                     return DinoTamable.False;
 
                 // Scorched Earth dinos
@@ -341,6 +433,14 @@ namespace ARK_Server_Manager.Lib
 
                 case "Iceworm_Queen_Character_BP_C":
                 case "LavaGolem_Character_BP_C":
+
+                case "Dragon_Character_BP_Boss_Easy_Ragnarok_C":
+                case "Dragon_Character_BP_Boss_Medium_Ragnarok_C":
+                case "Dragon_Character_BP_Boss_Hard_Ragnarok_C":
+
+                case "Manticore_Character_BP_Easy_Ragnarok_C":
+                case "Manticore_Character_BP_Medium_Ragnarok_C":
+                case "Manticore_Character_BP_Hard_Ragnarok_C":
                     return DinoTamable.False;
 
                 default:
@@ -450,6 +550,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Monkey_Character_BP_C" },
             new ClassMultiplier { ClassName="Mosa_Character_BP_C" },
             new ClassMultiplier { ClassName="Moschops_Character_BP_C" },
+            new ClassMultiplier { ClassName="Otter_Character_BP_C" },
             new ClassMultiplier { ClassName="Oviraptor_Character_BP_C" },
             new ClassMultiplier { ClassName="Pachy_Character_BP_C" },
             new ClassMultiplier { ClassName="Pachyrhino_Character_BP_C" },
@@ -506,6 +607,7 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="Jugbug_Oil_Character_BP_C" },
             new ClassMultiplier { ClassName="Mantis_Character_BP_C" },
             new ClassMultiplier { ClassName="Moth_Character_BP_C" },
+            new ClassMultiplier { ClassName="Phoenix_Character_BP_C" },
             new ClassMultiplier { ClassName="RockGolem_Character_BP_C" },
             new ClassMultiplier { ClassName="SpineyLizard_Character_BP_C" },
             new ClassMultiplier { ClassName="Vulture_Character_BP_C" },
@@ -1767,6 +1869,8 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemResource_Wood_C",                               Category="Resources" },
             new PrimalItem { ClassName="PrimalItemResource_Wool_C",                               Category="Resources" },
             new PrimalItem { ClassName="PrimalItemResourceGeneric_Curing_C",                      Category="Resources" },
+            new PrimalItem { ClassName="PrimalItemSkin_AberrationHelmet_C",                       Category="Skins" },
+            new PrimalItem { ClassName="PrimalItemSkin_AberrationSword_C",                        Category="Skins" },
             new PrimalItem { ClassName="PrimalItemSkin_BirthdayPants_C",                          Category="Skins" },
             new PrimalItem { ClassName="PrimalItemSkin_BirthdayShirt_C",                          Category="Skins" },
             new PrimalItem { ClassName="PrimalItemSkin_BoneHelmet_C",                             Category="Skins" },
@@ -2467,6 +2571,7 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntriesMountain_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesPelican_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesPenguins_C" },
+            new MapSpawner { ClassName="DinoSpawnEntriesPhoenix_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesQuetz_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesRedwoods_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesRex_C" },
@@ -2534,6 +2639,22 @@ namespace ARK_Server_Manager.Lib
             new MapSpawner { ClassName="DinoSpawnEntriesSnowMountain_PGM_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesSnowShoreline_PGM_C" },
             new MapSpawner { ClassName="DinoSpawnEntriesSwamp_PGM_C" },
+
+            // Ragnarok
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Bear_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Castle_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Center_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_CenterWater_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Golem_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Griffin_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Iceworm_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Jerboa_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_MonkeyIsland_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Mudslide_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_PolarBear_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_Scotland_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_SnowForest_C" },
+            new MapSpawner { ClassName="DinoSpawnEntries_Ragnarok_SnowPlains_C" },
         };
 
         public static IEnumerable<MapSpawner> GetStandardMapSpawners() => mapSpawners.Select(d => d.Duplicate());
@@ -2612,6 +2733,7 @@ namespace ARK_Server_Manager.Lib
             new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Easy_C" },
             new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Medium_C" },
             new SupplyCrate { ClassName="DinoDropInventoryComponent_BossDragon_Hard_C" },
+            new SupplyCrate { ClassName="DinoDropInventoryComponent_EndBossMinion_C" },
 
             // Bosses - Scorched Earth
             new SupplyCrate { ClassName="DinoDropInventoryComponent_BossManticore_Easy_C" },

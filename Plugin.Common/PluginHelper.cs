@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,19 +8,46 @@ using System.Windows;
 
 namespace ArkServerManager.Plugin.Common
 {
-    public sealed class PluginHelper
+    public sealed class PluginHelper : IDisposable
     {
         private const string PLUGINFILE_FOLDER = "Plugins";
         private const string PLUGINFILE_EXTENSION = "dll";
 
-        internal static PluginHelper Instance = new PluginHelper();
+        private static volatile PluginHelper _instance;
+        private static readonly object _syncLock = new object();
 
-        private Object lockObjectProcessAlert = new Object();
+        private readonly Object _syncLockProcessAlert = new Object();
+        private bool _disposed;
 
-        internal PluginHelper()
+        private PluginHelper()
         {
             BetaEnabled = false;
             Plugins = new ObservableCollection<PluginItem>();
+        }
+
+        public static PluginHelper Instance
+        {
+            get
+            {
+                if (_instance != null)
+                    return _instance;
+
+                lock (_syncLock)
+                {
+                    if (_instance == null)
+                        _instance = new PluginHelper();
+                }
+                return _instance;
+            }
+        }
+
+        public static string PluginFolder
+        {
+            get
+            {
+                var folder = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location ?? Environment.CurrentDirectory);
+                return Path.Combine(folder, PLUGINFILE_FOLDER);
+            }
         }
 
         internal bool BetaEnabled
@@ -207,12 +233,12 @@ namespace ArkServerManager.Plugin.Common
             if (Plugins == null || Plugins.Count == 0 || string.IsNullOrWhiteSpace(alertMessage))
                 return false;
 
-            lock (lockObjectProcessAlert)
-            {
-                var plugins = Plugins.Where(p => (p.PluginType is nameof(IAlertPlugin)) && (p.Plugin?.Enabled ?? false));
-                if (plugins.Count() == 0)
-                    return false;
+            var plugins = Plugins.Where(p => (p.PluginType is nameof(IAlertPlugin)) && (p.Plugin?.Enabled ?? false));
+            if (plugins.Count() == 0)
+                return false;
 
+            lock (_syncLockProcessAlert)
+            {
                 var message = alertMessage.Replace("\\r\\n", "\\n");
                 message = message.Replace("\\n", "\n");
 
@@ -225,13 +251,24 @@ namespace ArkServerManager.Plugin.Common
             return true;
         }
 
-        public static string PluginFolder
+        public void Dispose()
         {
-            get
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
             {
-                var folder = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location ?? Environment.CurrentDirectory);
-                return Path.Combine(folder, PLUGINFILE_FOLDER);
+                _instance = null;
             }
+
+            _disposed = true;
         }
     }
 }

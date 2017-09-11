@@ -372,7 +372,27 @@ namespace ARK_Server_Manager.Lib
         public string MOTD
         {
             get { return (string)GetValue(MOTDProperty); }
-            set { SetValue(MOTDProperty, value); }
+            set
+            {
+                SetValue(MOTDProperty, value);
+                ValidateMOTD();
+            }
+        }
+
+        public static readonly DependencyProperty MOTDLengthProperty = DependencyProperty.Register(nameof(MOTDLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        [XmlIgnore]
+        public int MOTDLength
+        {
+            get { return (int)GetValue(MOTDLengthProperty); }
+            set { SetValue(MOTDLengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty MOTDLengthToLongProperty = DependencyProperty.Register(nameof(MOTDLengthToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [XmlIgnore]
+        public bool MOTDLengthToLong
+        {
+            get { return (bool)GetValue(MOTDLengthToLongProperty); }
+            set { SetValue(MOTDLengthToLongProperty, value); }
         }
 
         public static readonly DependencyProperty MOTDDurationProperty = DependencyProperty.Register(nameof(MOTDDuration), typeof(int), typeof(ServerProfile), new PropertyMetadata(20));
@@ -3126,6 +3146,9 @@ namespace ARK_Server_Manager.Lib
             if (Path.GetExtension(file) == Config.Default.ProfileExtension)
                 return LoadFromProfileFile(file);
 
+            if (Path.GetExtension(file) == Config.Default.ProfileExtensionNew)
+                return LoadFromProfileFileNew(file);
+
             var filePath = Path.GetDirectoryName(file);
             if (!filePath.EndsWith(Config.Default.ServerConfigRelativePath))
                 return null;
@@ -3284,6 +3307,9 @@ namespace ARK_Server_Manager.Lib
 
         public void Save(bool updateFolderPermissions, bool updateSchedules, ProgressDelegate progressCallback)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.DataDir))
+                return;
+
             progressCallback?.Invoke(0, "Saving...");
 
             if (SOTF_Enabled)
@@ -3371,16 +3397,16 @@ namespace ARK_Server_Manager.Lib
             //
             // If this was a rename, remove the old profile after writing the new one.
             //
-            if(!String.Equals(GetProfileFile(), this._lastSaveLocation))
+            if (!String.Equals(GetProfileFileNew(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
                     if (File.Exists(this._lastSaveLocation))
                         File.Delete(this._lastSaveLocation);
 
-                    var profileFileNew = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtensionNew);
-                    if (File.Exists(profileFileNew))
-                        File.Delete(profileFileNew);
+                    var profileFile = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtension);
+                    if (File.Exists(profileFile))
+                        File.Delete(profileFile);
 
                     var iniDir = Path.ChangeExtension(this._lastSaveLocation, null);
                     if (Directory.Exists(iniDir))
@@ -3391,7 +3417,7 @@ namespace ARK_Server_Manager.Lib
                     // We tried...
                 }
 
-                this._lastSaveLocation = GetProfileFile();
+                this._lastSaveLocation = GetProfileFileNew();
             }
 
             progressCallback?.Invoke(0, "Saving Launcher File...");
@@ -3827,13 +3853,13 @@ namespace ARK_Server_Manager.Lib
                         files.Add(tribeFile.FullName);
                     }
 
-                    // get the player images files
-                    var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
-                    var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
-                    foreach (var playerImageFile in playerImageFiles)
-                    {
-                        files.Add(playerImageFile.FullName);
-                    }
+                    //// get the player images files
+                    //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
+                    //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
+                    //foreach (var playerImageFile in playerImageFiles)
+                    //{
+                    //    files.Add(playerImageFile.FullName);
+                    //}
                 }
 
                 // delete the selected files
@@ -3877,6 +3903,12 @@ namespace ARK_Server_Manager.Lib
         {
             ServerNameLength = Encoding.UTF8.GetByteCount(ServerName);
             ServerNameLengthToLong = ServerNameLength > 50;
+        }
+
+        public void ValidateMOTD()
+        {
+            MOTDLength = Encoding.UTF8.GetByteCount(MOTD);
+            MOTDLengthToLong = MOTDLength > 1000;
         }
 
         #region Export Methods

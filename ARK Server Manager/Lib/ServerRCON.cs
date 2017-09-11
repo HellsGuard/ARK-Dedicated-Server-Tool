@@ -68,6 +68,7 @@ namespace ARK_Server_Manager.Lib
         private readonly List<CommandListener> commandListeners = new List<CommandListener>();
         private RCONParameters rconParams;
         private QueryMaster.Rcon console;
+        private bool processingListplayers = false;
         private bool updatingPlayerDetails = false;
         private int maxCommandRetries = 3;
 
@@ -249,78 +250,93 @@ namespace ARK_Server_Manager.Lib
             //
             if (command.command.Equals("listplayers", StringComparison.OrdinalIgnoreCase))
             {
-                var output = new List<string>();
-                //
-                // Update the visible player list
-                //
-                var newPlayerList = new List<PlayerInfo>();
-                foreach (var line in command.lines)
+                if (processingListplayers)
                 {
-                    var elements = line.Split(',');
-                    if (elements.Length == 2)
+                    LogEvent(LogEventType.Event, "listplayers is already being processed.");
+                    command.suppressOutput = true;
+                    return;
+                }
+                processingListplayers = true;
+
+                try
+                {
+                    var output = new List<string>();
+                    //
+                    // Update the visible player list
+                    //
+                    var newPlayerList = new List<PlayerInfo>();
+                    foreach (var line in command.lines)
                     {
-                        var newPlayer = new PlayerInfo(this.debugLogger)
+                        var elements = line.Split(',');
+                        if (elements.Length == 2)
                         {
-                            SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
-                            SteamId = Int64.Parse(elements[1]),
-                            IsOnline = true
-                        };
+                            var newPlayer = new PlayerInfo(this.debugLogger)
+                            {
+                                SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
+                                SteamId = Int64.Parse(elements[1]),
+                                IsOnline = true
+                            };
 
-                        if (newPlayerList.FirstOrDefault(p => p.SteamId == newPlayer.SteamId) != null)
-                        {
-                            // We received a duplicate.  Ignore it.
-                            continue;
+                            if (newPlayerList.FirstOrDefault(p => p.SteamId == newPlayer.SteamId) != null)
+                            {
+                                // We received a duplicate.  Ignore it.
+                                continue;
+                            }
+
+                            newPlayerList.Add(newPlayer);
+
+                            var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
+                            bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
+
+                            if (existingPlayer == null)
+                            {
+                                this.Players.Add(newPlayer);
+                            }
+                            else
+                            {
+                                existingPlayer.IsOnline = true;
+                            }
+
+                            if (playerJoined)
+                            {
+                                var message = $"Player '{newPlayer.SteamName}' joined the game.";
+                                output.Add(message);
+                                LogEvent(LogEventType.Event, message);
+                                LogEvent(LogEventType.All, message);
+                            }
                         }
+                    }
 
-                        newPlayerList.Add(newPlayer);
-
-                        var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
-                        bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
-
-                        if (existingPlayer == null)
+                    var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
+                    foreach (var player in droppedPlayers)
+                    {
+                        if (player.IsOnline)
                         {
-                            this.Players.Add(newPlayer);
-                        }
-                        else
-                        {
-                            existingPlayer.IsOnline = true;
-                        }
-
-                        if (playerJoined)
-                        {
-                            var message = $"Player '{newPlayer.SteamName}' joined the game.";
+                            var message = $"Player '{player.SteamName}' left the game.";
                             output.Add(message);
                             LogEvent(LogEventType.Event, message);
                             LogEvent(LogEventType.All, message);
+                            player.IsOnline = false;
                         }
                     }
-                }
 
-                var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
-                foreach (var player in droppedPlayers)
-                {
-                    if (player.IsOnline)
+                    this.Players.Sort(p => !p.IsOnline);
+                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
+
+                    if (this.Players.Count == 0 || newPlayerList.Count > 0)
                     {
-                        var message = $"Player '{player.SteamName}' left the game.";
-                        output.Add(message);
-                        LogEvent(LogEventType.Event, message);
-                        LogEvent(LogEventType.All, message);
-                        player.IsOnline = false;
+                        commandProcessor.PostAction(UpdatePlayerDetails);
                     }
+
+                    this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
+
+                    command.suppressOutput = false;
+                    command.lines = output;
                 }
-
-                this.Players.Sort(p => !p.IsOnline);
-                this.CountPlayers = this.Players.Count(p => p.IsOnline);
-
-                if (this.Players.Count == 0 || newPlayerList.Count > 0)
+                finally
                 {
-                    commandProcessor.PostAction(UpdatePlayerDetails);
+                    processingListplayers = false;
                 }
-
-                this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
-
-                command.suppressOutput = false;
-                command.lines = output;
             }
             else if (command.command.Equals("getchat", StringComparison.OrdinalIgnoreCase))
             {

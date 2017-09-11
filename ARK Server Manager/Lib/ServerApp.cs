@@ -1959,12 +1959,12 @@ namespace ARK_Server_Manager.Lib
                                 files.Add(tribeFile.FullName);
                             }
 
-                            var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
-                            var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
-                            foreach (var playerImageFile in playerImageFiles)
-                            {
-                                files.Add(playerImageFile.FullName);
-                            }
+                            //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
+                            //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
+                            //foreach (var playerImageFile in playerImageFiles)
+                            //{
+                            //    files.Add(playerImageFile.FullName);
+                            //}
 
                             var comment = new StringBuilder();
                             comment.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
@@ -2293,7 +2293,7 @@ namespace ARK_Server_Manager.Lib
 
             _profiles = new Dictionary<ProfileSnapshot, ServerProfile>();
 
-            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
+            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtensionNew))
             {
                 try
                 {
