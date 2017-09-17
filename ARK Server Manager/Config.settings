@@ -381,7 +381,7 @@
       <Value Profile="(Default)">Server</Value>
     </Setting>
     <Setting Name="ServerStatusUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/{0}/{1}/</Value>
+      <Value Profile="(Default)">http://arksm.azurewebsites.net/api/server/{0}/{1}/</Value>
     </Setting>
     <Setting Name="DefaultServerMap_PGM" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PGARK</Value>
@@ -414,7 +414,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ServerCallUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://arkservermanager.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/</Value>
+      <Value Profile="(Default)">http://arksm.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/</Value>
     </Setting>
     <Setting Name="SteamAPIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
