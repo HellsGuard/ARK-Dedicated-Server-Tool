@@ -12,7 +12,7 @@ namespace ArkServerManager.Plugin.Discord {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
         
         private static Config defaultInstance = ((Config)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Config())));
@@ -25,7 +25,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/api/plugin/call/{0}/{1}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/plugin/call/{0}/{1}/")]
         public string PluginCallUrlFormat {
             get {
                 return ((string)(this["PluginCallUrlFormat"]));
@@ -43,8 +43,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServ" +
-            "erManager.Plugin.Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.P" +
+            "lugin.Discord.zip")]
         public string LatestDownloadUrl {
             get {
                 return ((string)(this["LatestDownloadUrl"]));
@@ -53,8 +53,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/release/ArkServ" +
-            "erManager.Plugin.Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.P" +
+            "lugin.Discord.txt")]
         public string LatestVersionUrl {
             get {
                 return ((string)(this["LatestVersionUrl"]));
@@ -63,8 +63,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerM" +
-            "anager.Plugin.Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plug" +
+            "in.Discord.zip")]
         public string LatestBetaDownloadUrl {
             get {
                 return ((string)(this["LatestBetaDownloadUrl"]));
@@ -73,8 +73,8 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arkservermanager.azurewebsites.net/downloads/discordplugin/beta/ArkServerM" +
-            "anager.Plugin.Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plug" +
+            "in.Discord.txt")]
         public string LatestBetaVersionUrl {
             get {
                 return ((string)(this["LatestBetaVersionUrl"]));
