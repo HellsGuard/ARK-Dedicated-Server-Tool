@@ -316,7 +316,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CF77278DB5C2AFA68F3972AFCFFEE81D")]
+        [global::System.Configuration.DefaultSettingValueAttribute("04149324FF1D918789B9BC55903A0665")]
         public string DefaultSteamAPIKey {
             get {
                 return ((string)(this["DefaultSteamAPIKey"]));

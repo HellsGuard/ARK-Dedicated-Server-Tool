@@ -96,7 +96,7 @@
       <Value Profile="(Default)">1440</Value>
     </Setting>
     <Setting Name="DefaultSteamAPIKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">CF77278DB5C2AFA68F3972AFCFFEE81D</Value>
+      <Value Profile="(Default)">04149324FF1D918789B9BC55903A0665</Value>
     </Setting>
     <Setting Name="SavedArksRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ShooterGame\Saved\SavedArks</Value>
