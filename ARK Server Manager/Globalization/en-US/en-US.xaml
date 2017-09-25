@@ -2765,6 +2765,7 @@
     <sys:String x:Key="PrimalItem_WeaponStoneHatchet_C">Stone Hatchet</sys:String>
     <sys:String x:Key="PrimalItem_WeaponStonePick_C">Stone Pick</sys:String>
     <sys:String x:Key="PrimalItem_WeaponSword_C">Sword</sys:String>
+    <sys:String x:Key="PrimalItem_WeaponTekSword_C">Tek Sword</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTorch_C">Torch</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTransGPS_C">Transponder Tracker</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTripwireC4_C">Improvised Explosive Device</sys:String>
@@ -2887,6 +2888,7 @@
     <sys:String x:Key="PrimalItemArmor_ScubaHelmet_Goggles_C">SCUBA Mask</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaPants_C">SCUBA Leggings</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaShirt_SuitWithTank_C">SCUBA Tank</sys:String>
+    <sys:String x:Key="PrimalItemArmor_ShieldTek_C">Tek Shield</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpiderSaddle_C">Araneo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpinoSaddle_C">Spino Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Megaloceros Saddle</sys:String>
@@ -3405,6 +3407,7 @@
     <sys:String x:Key="PrimalItemStructure_TekGateframe_Large_C">Behemoth Tek Gateway</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekGenerator_C">Tek Generator</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekLadder_C">Tek Ladder</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekLight_C">Tek Light</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekPillar_C">Tek Pillar</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRailing_C">Tek Railing</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRamp_C">Tek Ramp</sys:String>

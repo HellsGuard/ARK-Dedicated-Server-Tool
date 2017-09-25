@@ -3791,6 +3791,14 @@ namespace ARK_Server_Manager.Lib
             return result.ToString();
         }
 
+        public string ToOutputStringNew()
+        {
+            //
+            // serializes the profile to a string
+            //
+            return JsonUtils.Serialize<ServerProfile>(this);
+        }
+
         public int RestoreSaveFiles(string restoreFile, bool isArchiveFile, bool restoreAll)
         {
             if (string.IsNullOrWhiteSpace(restoreFile) || !File.Exists(restoreFile))

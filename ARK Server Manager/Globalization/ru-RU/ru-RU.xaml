@@ -224,6 +224,8 @@
     <!-- GlobalSettings Window -->
     <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
     <sys:String x:Key="GlobalSettings_VersionLabel">Версия:</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetButtonLabel">Сброс</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetButtonTooltip">Это приведет к сбросу всех глобальных параметров пользователя для диспетчера сервера. Менеджер сервера будет закрыт, если он будет успешным.</sys:String>
     <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Запускать программу в режиме Администратора</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Управление параметрами брандмауэра автоматически</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Каталог данных:</sys:String>
@@ -344,6 +346,10 @@
     <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">Задержка Сохранения мира:</sys:String>
     <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">Количество секунд ожидания команды Сохранения мира до завершения работы сервера.</sys:String>
 
+    <sys:String x:Key="GlobalSettings_ResetSettings_ConfirmTitle">Подтвердить сброс настроек</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetSettings_ConfirmLabel">Нажмите «Да», чтобы подтвердить, что вы хотите выполнить сброс настроек.</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetSettings_FailedTitle">Не удалось сбросить настройки</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetSettings_FailedLabel">При сбросе настроек произошла ошибка. Приложение будет закрыто.</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Подтвердить изменение каталога данных</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Изменение каталога данных приведет к перемещению любых существующих профилей в новое место, но оно не будет перемещать установки сервера. Вы все еще хотите изменить этот каталог?</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Не удалось изменить каталог данных</sys:String>
@@ -554,8 +560,6 @@
     <sys:String x:Key="ServerSettings_Save_AutoRestart_SotF_ErrorLabel">Авто-перезагрузка включена, но не совместима с SotF. Отключение Авто-перезагрузки.</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorTitle">SotF не совместим</sys:String>
     <sys:String x:Key="ServerSettings_Save_AutoUpdate_SotF_ErrorLabel">Авто-Обновление включено, но не совместима с SotF. Отключение Авто-Обновления.</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorTitle">Автоматически управляемые модами несовместимо</sys:String>
-    <sys:String x:Key="ServerSettings_Save_AutoUpdate_AutoManagedMods_ErrorLabel">Автоматически управляемые моды ARK включены, но не совместимы с автоматическими обновлениями ASM. Отключение автоматическое управление модами ARK.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorTitle">Обновить разрешения для каталога</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdatePermissions_ErrorLabel">Не удалось обновить разрешения каталога. Убедитесь, что у вас есть права администратора на этом компьютере и повторите попытку. Если проблема не устранена, сообщите об этом как об ошибке.</sys:String>
     <sys:String x:Key="ServerSettings_Save_UpdateSchedule_ErrorTitle">Не удалось выполнить расписание обновления</sys:String>
@@ -671,6 +675,7 @@
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Сообщение дня</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">Сообщение дня отображается пользователям при их подключении к серверу.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDLengthLabel">Длина:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Продолжительность:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">Время отображения Сообщения дня, когда пользователь подключается к серверу.</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationUnits">секунд</sys:String>
@@ -759,9 +764,6 @@
     <sys:String x:Key="ServerSettings_PeriodicUpdatesTooltip">Автоматически проверяет наличие обновлений сервера и модов. Если они присутствуют, запускает их установку. См. редактируется в "Глобальные настройки"</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownLabel">Перезапустить сервер при завершении работы</sys:String>
     <sys:String x:Key="ServerSettings_RestartIfShutdownTooltip">Если этот параметр включен, сервер будет перезагружен, даже если вы отключите Автозапуск и Авто-Обновление.</sys:String>
-    <sys:String x:Key="ServerSettings_ARKSettingLabel">Официальные  настройки Ark (Ark Server Manager)</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsLabel">Автоматическое управление Модами при запуске сервера</sys:String>
-    <sys:String x:Key="ServerSettings_AutoManagedModsTooltip">Если включено, добавлена поддержка автоматической загрузки/установки/обновления Модов при запуске сервера.</sys:String>
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Правила сервера</sys:String>
@@ -1952,6 +1954,7 @@
     <sys:String x:Key="Monkey_Character_BP_C">Мезопитек</sys:String>
     <sys:String x:Key="Mosa_Character_BP_C">Мозазавр</sys:String>
     <sys:String x:Key="Moschops_Character_BP_C">Мосхопс</sys:String>
+    <sys:String x:Key="Otter_Character_BP_C">Выдра</sys:String>
     <sys:String x:Key="Oviraptor_Character_BP_C">Овираптор</sys:String>
     <sys:String x:Key="Pachy_Character_BP_C">Пахицефалозавр</sys:String>
     <sys:String x:Key="Pachyrhino_Character_BP_C">Пахиринозавр</sys:String>
@@ -2024,6 +2027,34 @@
     <sys:String x:Key="Dragon_Character_BP_Boss_Medium_C">Дракон (Средний вариант)</sys:String>
     <sys:String x:Key="Dragon_Character_BP_Boss_Hard_C">Дракон (Сложный вариант)</sys:String>
 
+    <sys:String x:Key="EndDrone_Character_BP_C">Атакующий дрон</sys:String>
+    <sys:String x:Key="EndDrone_Character_BP_Med_C">Атакующий дрон (Medium Variant)</sys:String>
+    <sys:String x:Key="EndDrone_Character_BP_Hard_C">Атакующий дрон (Hard Variant)</sys:String>
+
+    <sys:String x:Key="EndTank_Character_BP_C">Защитный Юнит</sys:String>
+    <sys:String x:Key="EndTank_Character_BP_Med_C">Защитный Юнит (Medium Variant)</sys:String>
+    <sys:String x:Key="EndTank_Character_BP_Hard_C">Защитный Юнит (Hard Variant)</sys:String>
+
+    <sys:String x:Key="EndBoss_Character_C">Надсмотрщик</sys:String>
+    <sys:String x:Key="EndBoss_Character_Easy_C">Надсмотрщик (Easy Variant)</sys:String>
+    <sys:String x:Key="EndBoss_Character_Medium_C">Надсмотрщик (Medium Variant)</sys:String>
+    <sys:String x:Key="EndBoss_Character_Hard_C">Надсмотрщик (Hard Variant)</sys:String>
+
+    <sys:String x:Key="EndBossDragon_Character_BP_C">Хранитель Дракона</sys:String>
+    <sys:String x:Key="EndBossDragon_Character_BP_Easy_C">Хранитель Дракона (Easy Variant)</sys:String>
+    <sys:String x:Key="EndBossDragon_Character_BP_Medium_C">Хранитель Дракона (Medium Variant)</sys:String>
+    <sys:String x:Key="EndBossDragon_Character_BP_Hard_C">Хранитель Дракона (Hard Variant)</sys:String>
+
+    <sys:String x:Key="EndBossGorilla_Character_BP_C">Хранитель Мегапитека</sys:String>
+    <sys:String x:Key="EndBossGorilla_Character_BP_Easy_C">Хранитель Мегапитека (Easy Variant)</sys:String>
+    <sys:String x:Key="EndBossGorilla_Character_BP_Medium_C">Хранитель Мегапитека (Medium Variant)</sys:String>
+    <sys:String x:Key="EndBossGorilla_Character_BP_Hard_C">Хранитель Мегапитека (Hard Variant)</sys:String>
+
+    <sys:String x:Key="EndBossSpiderL_Character_BP_C">Хранитель Проматери</sys:String>
+    <sys:String x:Key="EndBossSpiderL_Character_BP_Easy_C">Хранитель Проматери (Easy Variant)</sys:String>
+    <sys:String x:Key="EndBossSpiderL_Character_BP_Medium_C">Хранитель Проматери (Medium Variant)</sys:String>
+    <sys:String x:Key="EndBossSpiderL_Character_BP_Hard_C">Хранитель Проматери (Hard Variant)</sys:String>
+
     <!-- Dino/Creature Class Names - Scorched Earth -->
     <sys:String x:Key="camelsaurus_Character_BP_C">Мореллатопс</sys:String>
     <sys:String x:Key="Deathworm_Character_BP_C">Червь смерти</sys:String>
@@ -2057,6 +2088,14 @@
     <!-- Dino/Creature Class Names - Ragnarok - Bosses -->
     <sys:String x:Key="Iceworm_Queen_Character_BP_C">Ледяной Червь смерти</sys:String>
     <sys:String x:Key="LavaGolem_Character_BP_C">Лавовый Голем</sys:String>
+
+    <sys:String x:Key="Dragon_Character_BP_Boss_Easy_Ragnarok_C">Дракон (Ragnarok Easy Variant)</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_Medium_Ragnarok_C">Дракон (Ragnarok Medium Variant)</sys:String>
+    <sys:String x:Key="Dragon_Character_BP_Boss_Hard_Ragnarok_C">Дракон (Ragnarok Hard Variant)</sys:String>
+
+    <sys:String x:Key="Manticore_Character_BP_Easy_Ragnarok_C">Мантикора (Ragnarok Easy Variant)</sys:String>
+    <sys:String x:Key="Manticore_Character_BP_Medium_Ragnarok_C">Мантикора (Ragnarok Medium Variant)</sys:String>
+    <sys:String x:Key="Manticore_Character_BP_Hard_Ragnarok_C">Мантикора (Ragnarok Hard Variant)</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Улучшенная пуля</sys:String>
@@ -3176,6 +3215,8 @@
     <sys:String x:Key="PrimalItemResource_Wood_C">Дерево</sys:String>
     <sys:String x:Key="PrimalItemResource_Wool_C">Шерсть</sys:String>
     <sys:String x:Key="PrimalItemResourceGeneric_Curing_C">Кровь пиявки или Рог</sys:String>
+    <sys:String x:Key="PrimalItemSkin_AberrationHelmet_C">Аберрант Шлем скин</sys:String>
+    <sys:String x:Key="PrimalItemSkin_AberrationSword_C">Аберрант Меч скин</sys:String>
     <sys:String x:Key="PrimalItemSkin_BirthdayPants_C">Костюмы штанов на день рождение скин</sys:String>
     <sys:String x:Key="PrimalItemSkin_BirthdayShirt_C">Костюмы нагрудника на день рождение скин</sys:String>
     <sys:String x:Key="PrimalItemSkin_BoneHelmet_C">Костяной шлем Рекса скин</sys:String>
@@ -3869,6 +3910,7 @@
     <sys:String x:Key="DinoSpawnEntriesMountain_C">(TheIsland) DinoSpawnEntriesMountain_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesPelican_C">(TheIsland) DinoSpawnEntriesPelican_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesPenguins_C">(TheIsland) DinoSpawnEntriesPenguins_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntriesPhoenix_C">(TheIsland) DinoSpawnEntriesPhoenix_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesQuetz_C">(TheIsland) DinoSpawnEntriesQuetz_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesRedwoods_C">(TheIsland) DinoSpawnEntriesRedwoods_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesRex_C">(TheIsland) DinoSpawnEntriesRex_C</sys:String>
@@ -3933,6 +3975,21 @@
     <sys:String x:Key="DinoSpawnEntriesSnowShoreline_PGM_C">(PGM) DinoSpawnEntriesSnowShoreline_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesSwamp_PGM_C">(PGM) DinoSpawnEntriesSwamp_PGM_C</sys:String>
     <sys:String x:Key="DinoSpawnEntriesRedwoodsPGM_C">(PGM) DinoSpawnEntriesRedwoodsPGM_C</sys:String>
+
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Bear_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Bear_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Castle_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Castle_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Center_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Center_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_CenterWater_C">(Ragnarok) DinoSpawnEntries_Ragnarok_CenterWater_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Golem_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Golem_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Griffin_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Griffin_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Iceworm_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Iceworm_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Jerboa_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Jerboa_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_MonkeyIsland_C">(Ragnarok) DinoSpawnEntries_Ragnarok_MonkeyIsland_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Mudslide_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Mudslide_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_PolarBear_C">(Ragnarok) DinoSpawnEntries_Ragnarok_PolarBear_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_Scotland_C">(Ragnarok) DinoSpawnEntries_Ragnarok_Scotland_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_SnowForest_C">(Ragnarok) DinoSpawnEntries_Ragnarok_SnowForest_C</sys:String>
+    <sys:String x:Key="DinoSpawnEntries_Ragnarok_SnowPlains_C">(Ragnarok) DinoSpawnEntries_Ragnarok_SnowPlains_C</sys:String>
 
     <!-- Supply Crate Class Names -->
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_C">(TheIsland) Пещерный маяк 1</sys:String>
@@ -4001,6 +4058,7 @@
     <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Easy_C">Инвентарь боса - Дракон (Легкая)</sys:String>
     <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Medium_C">Инвентарь боса - Дракон (Средняя)</sys:String>
     <sys:String x:Key="DinoDropInventoryComponent_BossDragon_Hard_C">Инвентарь боса - Дракон (Сложная)</sys:String>
+    <sys:String x:Key="DinoDropInventoryComponent_EndBossMinion_C">Инвентарь боса - Последний Босс-Миньон</sys:String>
 
     <sys:String x:Key="DinoDropInventoryComponent_BossManticore_Easy_C">Инвентарь боса - Мантикора (Легкая)</sys:String>
     <sys:String x:Key="DinoDropInventoryComponent_BossManticore_Medium_C">Инвентарь боса - Мантикора (Средняя)</sys:String>
