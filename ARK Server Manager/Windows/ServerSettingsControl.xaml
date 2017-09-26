@@ -2934,14 +2934,34 @@
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center"/>
+                                                                <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center">
+                                                                    <TextBox.Style>
+                                                                        <Style TargetType="{x:Type TextBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramPointsCost">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBox Text="{Binding EngramPointsCost}" VerticalContentAlignment="Center"/>
+                                                                <TextBox Text="{Binding EngramPointsCost}" VerticalContentAlignment="Center">
+                                                                    <TextBox.Style>
+                                                                        <Style TargetType="{x:Type TextBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
@@ -2955,7 +2975,17 @@
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="RemoveEngramPreReq">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
+                                                                <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center">
+                                                                    <CheckBox.Style>
+                                                                        <Style TargetType="{x:Type CheckBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </CheckBox.Style>
+                                                                </CheckBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
@@ -2990,9 +3020,13 @@
                                             <ListView.ItemContainerStyle>
                                                 <Style TargetType="{x:Type ListViewItem}" >
                                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="Foreground" Value="Black" />
                                                     <Setter Property="Background" Value="White" />
 
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                            <Setter Property="Foreground" Value="Blue" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding KnownEngram}" Value="False">
                                                             <Setter Property="Background" Value="Beige" />
                                                         </DataTrigger>

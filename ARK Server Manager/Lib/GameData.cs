@@ -1128,6 +1128,55 @@ namespace ARK_Server_Manager.Lib
             new EngramEntry { EngramClassName="EngramEntry_WoodWallWithWindow_C",            EngramLevelRequirement=14, EngramPointsCost=9 },
             new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=14, EngramPointsCost=6 },
 
+            // Tekgrams
+            new EngramEntry { EngramClassName="EngramEntry_Tek_Gate_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_Tek_Gate_Large_C",                EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_Tek_Gategrame_C",                 EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_Tek_Gategrame_Large_C",           EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekBoots_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekCatwalk_C",                    EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekCeiling_C",                    EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekCeilingWithTrapdoor_C",        EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekCloningChamber_C",             EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekDoor_C",                       EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekFenceFoundation_C",            EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekFloor_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekGenerator_C",                  EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekGloves_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekGrenade_C",                    EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekHelmet_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekLadder_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekLight_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekMegalodonSaddle_C",            EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekMosaSaddle_C",                 EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekPants_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekPillar_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekRailing_C",                    EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekRamp_C",                       EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekReplicator_C",                 EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekRexSaddle_C",                  EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekRifle_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekRoof_C",                       EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekShield_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekShieldArmor_C",                EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekShirt_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekSlopedWall_Left_C",            EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekSlopedWall_Right_C",           EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekStairs_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekSword_C",                      EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekTapejaraSaddle_C",             EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekTeleporter_C",                 EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekTransmitter_C",                EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekTrapdoor_C",                   EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekTrough_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekUnderwaterBase_C",             EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekUnderwaterBase_BottomEntry_C", EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekWall_C",                       EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekWallWithDoor_C",               EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekWallWithWindow_C",             EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TekWindow_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+            new EngramEntry { EngramClassName="EngramEntry_TurretTek_C",                     EngramLevelRequirement=0, EngramPointsCost=0, IsTekgram=true },
+
             // Primitive Plus
             new EngramEntry { EngramClassName="EngramEntry_AdobeCeiling_PP_C",               EngramLevelRequirement=35, EngramPointsCost=5    , ArkApplication=ArkApplication.PrimitivePlus },
             new EngramEntry { EngramClassName="EngramEntry_AdobeDoor_PP_C",                  EngramLevelRequirement=30, EngramPointsCost=4    , ArkApplication=ArkApplication.PrimitivePlus },
@@ -1352,6 +1401,8 @@ namespace ARK_Server_Manager.Lib
         public static EngramEntry GetEngramForClass(string className) => engrams.FirstOrDefault(e => e.EngramClassName.Equals(className));
 
         public static bool HasEngramForClass(string className) => engrams.Any(e => e.EngramClassName.Equals(className));
+
+        public static bool IsTekgram(string className) => engrams.Any(e => e.EngramClassName.Equals(className) && e.IsTekgram);
 
         private static readonly PrimalItem[] primalItems = new[]
         {

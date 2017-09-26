@@ -100,6 +100,12 @@ namespace ARK_Server_Manager.Lib
 
         public string DisplayName => GameData.FriendlyNameForClass(EngramClassName);
 
+        public bool IsTekgram
+        {
+            get;
+            set;
+        }
+
         public bool KnownEngram
         {
             get
@@ -132,7 +138,16 @@ namespace ARK_Server_Manager.Lib
 
             if (!KnownEngram)
                 ArkApplication = ArkApplication.Unknown;
-            SaveEngramOverride = true;
+            IsTekgram = GameData.IsTekgram(EngramClassName);
+            SaveEngramOverride = !IsTekgram;
+
+            if (IsTekgram)
+            {
+                // always make sure that the tekgrams have default values.
+                EngramLevelRequirement = 0;
+                EngramPointsCost = 0;
+                RemoveEngramPreReq = false;
+            }
         }
 
         public override bool IsEquivalent(AggregateIniValue other)
@@ -149,10 +164,15 @@ namespace ARK_Server_Manager.Lib
             if (engramEntry == null)
                 return true;
 
-            return (!engramEntry.EngramHidden.Equals(EngramHidden) ||
-                !engramEntry.EngramPointsCost.Equals(EngramPointsCost) ||
-                !engramEntry.EngramLevelRequirement.Equals(EngramLevelRequirement) ||
-                !engramEntry.RemoveEngramPreReq.Equals(RemoveEngramPreReq));
+            var engramLevelRequirement = IsTekgram ? 0 : EngramLevelRequirement;
+            var engramPointsCost = IsTekgram ? 0 : EngramPointsCost;
+            var engramHidden = EngramHidden;
+            var removeEngramPreReq = IsTekgram ? false : RemoveEngramPreReq;
+
+            return (!engramEntry.EngramHidden.Equals(engramHidden) ||
+                !engramEntry.EngramPointsCost.Equals(engramPointsCost) ||
+                !engramEntry.EngramLevelRequirement.Equals(engramLevelRequirement) ||
+                !engramEntry.RemoveEngramPreReq.Equals(removeEngramPreReq));
         }
 
         public EngramEntry Clone()
@@ -165,7 +185,21 @@ namespace ARK_Server_Manager.Lib
             engramEntry.EngramHidden = this.EngramHidden;
             engramEntry.RemoveEngramPreReq = this.RemoveEngramPreReq;
             engramEntry.SaveEngramOverride = this.SaveEngramOverride;
+            engramEntry.IsTekgram = this.IsTekgram;
             return engramEntry;
+        }
+
+        public override string ToINIValue()
+        {
+            if (IsTekgram)
+            {
+                // always make sure that the tekgrams have default values.
+                EngramLevelRequirement = 0;
+                EngramPointsCost = 0;
+                RemoveEngramPreReq = false;
+            }
+
+            return base.ToINIValue();
         }
     }
 }
