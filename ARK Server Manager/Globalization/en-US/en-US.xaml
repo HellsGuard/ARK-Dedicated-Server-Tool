@@ -602,6 +602,8 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingLabel">No Net Threading</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">If enabled, servers will only utilize a single thread for networking (useful to improve performance for machines with more servers than cpu cores).</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
@@ -1019,6 +1021,8 @@
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Set the maximum number of tamed dinos per tribe.</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Tamed Dinos Saddle Structure Cost:</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">The number of tribe tamed dino slots each platform saddle (with structures) will cost.</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Use Tame Limit for Structures Only</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyTooltip">if enabled, will make Tame Units only be applied and used for Platforms with Structures and Rafts.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Allow Raid Dino Feeding</sys:String>

@@ -227,6 +227,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseRawSocketsProperty, value); }
         }
 
+        public static readonly DependencyProperty NoNetThreadingProperty = DependencyProperty.Register(nameof(NoNetThreading), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool NoNetThreading
+        {
+            get { return (bool)GetValue(NoNetThreadingProperty); }
+            set { SetValue(NoNetThreadingProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableBanListURLProperty = DependencyProperty.Register(nameof(EnableBanListURL), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool EnableBanListURL
@@ -1796,6 +1804,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PersonalTamedDinosSaddleStructureCostProperty, value); }
         }
 
+        public static readonly DependencyProperty UseTameLimitForStructuresOnlyProperty = DependencyProperty.Register(nameof(UseTameLimitForStructuresOnly), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseTameLimitForStructuresOnly", ConditionedOn = nameof(UseTameLimitForStructuresOnly))]
+        public bool UseTameLimitForStructuresOnly
+        {
+            get { return (bool)GetValue(UseTameLimitForStructuresOnlyProperty); }
+            set { SetValue(UseTameLimitForStructuresOnlyProperty, value); }
+        }
+
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         public DinoSettingsList DinoSettings
@@ -2954,6 +2971,11 @@ namespace ARK_Server_Manager.Lib
             if (!string.IsNullOrWhiteSpace(this.TotalConversionModId))
             {
                 serverArgs.Append($" -TotalConversionMod={this.TotalConversionModId}");
+            }
+
+            if (this.UseRawSockets && this.NoNetThreading)
+            {
+                serverArgs.Append(" -nonetthreading");
             }
 
             if (this.EnableAllowCaveFlyers)
