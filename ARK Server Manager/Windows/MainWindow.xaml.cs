@@ -36,7 +36,9 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
         public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
         public static readonly DependencyProperty AutoBackupStateProperty = DependencyProperty.Register(nameof(AutoBackupState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty AutoBackupNextRunTimeProperty = DependencyProperty.Register(nameof(AutoBackupNextRunTime), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty AutoUpdateStateProperty = DependencyProperty.Register(nameof(AutoUpdateState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty AutoUpdateNextRunTimeProperty = DependencyProperty.Register(nameof(AutoUpdateNextRunTime), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
 
         public bool BetaVersion
         {
@@ -80,10 +82,22 @@ namespace ARK_Server_Manager
             set { SetValue(AutoBackupStateProperty, value); }
         }
 
+        public string AutoBackupNextRunTime
+        {
+            get { return (string)GetValue(AutoBackupNextRunTimeProperty); }
+            set { SetValue(AutoBackupNextRunTimeProperty, value); }
+        }
+
         public string AutoUpdateState
         {
             get { return (string)GetValue(AutoUpdateStateProperty); }
             set { SetValue(AutoUpdateStateProperty, value); }
+        }
+
+        public string AutoUpdateNextRunTime
+        {
+            get { return (string)GetValue(AutoUpdateNextRunTimeProperty); }
+            set { SetValue(AutoUpdateNextRunTimeProperty, value); }
         }
 
         public MainWindow()
@@ -388,11 +402,14 @@ namespace ARK_Server_Manager
             {
                 try
                 {
-                    var backupState = TaskSchedulerUtils.TaskStateAutoBackup(taskKey, null);
-                    var updateState = TaskSchedulerUtils.TaskStateAutoUpdate(taskKey, null);
+                    var backupState = TaskSchedulerUtils.TaskStateAutoBackup(taskKey, null, out DateTime backupnextRunTime);
+                    var updateState = TaskSchedulerUtils.TaskStateAutoUpdate(taskKey, null, out DateTime updatenextRunTime);
 
                     this.AutoBackupState = backupState.ToString();
                     this.AutoUpdateState = updateState.ToString();
+
+                    this.AutoBackupNextRunTime = backupnextRunTime == DateTime.MinValue ? string.Empty : $"{_globalizer.GetResourceString("MainWindow_TaskRunTimeLabel")} {backupnextRunTime.ToString("G")}";
+                    this.AutoUpdateNextRunTime = updatenextRunTime == DateTime.MinValue ? string.Empty : $"{_globalizer.GetResourceString("MainWindow_TaskRunTimeLabel")} {updatenextRunTime.ToString("G")}";
 
                     Logger.Debug("CheckForScheduledTasks performed");
                 }

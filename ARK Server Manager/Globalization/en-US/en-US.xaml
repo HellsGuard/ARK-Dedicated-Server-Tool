@@ -427,6 +427,7 @@
     <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Start the auto-backup scheduled task</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateLabel">Auto-Update:</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Start the auto-update scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_TaskRunTimeLabel">Next Run Time:</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>

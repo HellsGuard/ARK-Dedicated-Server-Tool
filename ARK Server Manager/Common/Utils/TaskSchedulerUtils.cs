@@ -584,8 +584,10 @@ namespace ARK_Server_Manager.Lib
             return false;
         }
 
-        public static TaskState TaskStateAutoBackup(string taskKey, string taskSuffix)
+        public static TaskState TaskStateAutoBackup(string taskKey, string taskSuffix, out DateTime nextRunTime)
         {
+            nextRunTime = DateTime.MinValue;
+
             var taskName = $"{PREFIX_BACKUP}_{taskKey}";
             if (!string.IsNullOrWhiteSpace(taskSuffix))
                 taskName += $"_{taskSuffix}";
@@ -598,11 +600,14 @@ namespace ARK_Server_Manager.Lib
             if (task == null)
                 return TaskState.Unknown;
 
+            nextRunTime = task.NextRunTime;
             return task.State;
         }
 
-        public static TaskState TaskStateAutoUpdate(string taskKey, string taskSuffix)
+        public static TaskState TaskStateAutoUpdate(string taskKey, string taskSuffix, out DateTime nextRunTime)
         {
+            nextRunTime = DateTime.MinValue;
+
             var taskName = $"{PREFIX_UPDATE}_{taskKey}";
             if (!string.IsNullOrWhiteSpace(taskSuffix))
                 taskName += $"_{taskSuffix}";
@@ -615,6 +620,7 @@ namespace ARK_Server_Manager.Lib
             if (task == null)
                 return TaskState.Unknown;
 
+            nextRunTime = task.NextRunTime;
             return task.State;
         }
     }

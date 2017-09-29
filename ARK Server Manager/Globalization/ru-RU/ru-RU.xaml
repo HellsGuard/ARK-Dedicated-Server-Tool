@@ -2062,6 +2062,7 @@
     <sys:String x:Key="Jugbug_Oil_Character_BP_C">Нефтяной Летающий жук</sys:String>
     <sys:String x:Key="Mantis_Character_BP_C">Богомол</sys:String>
     <sys:String x:Key="Moth_Character_BP_C">Шелкопряд</sys:String>
+    <sys:String x:Key="Phoenix_Character_BP_C">Феникс</sys:String>
     <sys:String x:Key="RockGolem_Character_BP_C">Горный элементаль</sys:String>
     <sys:String x:Key="SpineyLizard_Character_BP_C">Колючий дракон</sys:String>
     <sys:String x:Key="Vulture_Character_BP_C">Гриф</sys:String>
@@ -2414,15 +2415,6 @@
     <sys:String x:Key="EngramEntry_StorageBox_Small_C">Ящик</sys:String>
     <sys:String x:Key="EngramEntry_SubstrateAbsorbent_C">Абсорбент</sys:String>
     <sys:String x:Key="EngramEntry_Sword_C">Меч</sys:String>
-    <sys:String x:Key="EngramEntry_TekBoots_C">Тек ботинки</sys:String>
-    <sys:String x:Key="EngramEntry_TekGloves_C">Тек перчатки</sys:String>
-    <sys:String x:Key="EngramEntry_TekHelmet_C">Тек шлем</sys:String>
-    <sys:String x:Key="EngramEntry_TekPants_C">Тек штаны</sys:String>
-    <sys:String x:Key="EngramEntry_TekReplicator_C">Тек репликатор</sys:String>
-    <sys:String x:Key="EngramEntry_TekRexSaddle_C">Тек Седло для Рекса</sys:String>
-    <sys:String x:Key="EngramEntry_TekRifle_C">Тек винтовка</sys:String>
-    <sys:String x:Key="EngramEntry_TekShirt_C">Тек нагрудник</sys:String>
-    <sys:String x:Key="EngramEntry_TekTransmitter_C">Тек трансмиттер</sys:String>
     <sys:String x:Key="EngramEntry_ThatchCeiling_C">Соломенная крыша</sys:String>
     <sys:String x:Key="EngramEntry_ThatchDoor_C">Соломенная дверь</sys:String>
     <sys:String x:Key="EngramEntry_ThatchFloor_C">Соломенный фундамент</sys:String>
@@ -2482,6 +2474,55 @@
     <sys:String x:Key="EngramEntry_WoodWallWithDoor_C">Деревянный дверной проем</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithWindow_C">Деревянная оконная рама</sys:String>
     <sys:String x:Key="EngramEntry_WoodWindow_C">Деревянное окно</sys:String>
+
+    <!-- Tekgram Class Names -->
+    <sys:String x:Key="EngramEntry_Tek_Gate_C">Тек ворота</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gate_Large_C">Тек огромные ворота</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gategrame_C">Тек рама ворот</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gategrame_Large_C">Тек огромная рама ворот</sys:String>
+    <sys:String x:Key="EngramEntry_TekBoots_C">Тек ботинки</sys:String>
+    <sys:String x:Key="EngramEntry_TekCatwalk_C">Тек мостик</sys:String>
+    <sys:String x:Key="EngramEntry_TekCeiling_C">Тек перекрытие</sys:String>
+    <sys:String x:Key="EngramEntry_TekCeilingWithTrapdoor_C">Тек рама люка</sys:String>
+    <sys:String x:Key="EngramEntry_TekCloningChamber_C">Тек камера клонирования</sys:String>
+    <sys:String x:Key="EngramEntry_TekDoor_C">Тек дверь</sys:String>
+    <sys:String x:Key="EngramEntry_TekFenceFoundation_C">Тек основание для забора</sys:String>
+    <sys:String x:Key="EngramEntry_TekFloor_C">Тек фундамент</sys:String>
+    <sys:String x:Key="EngramEntry_TekGenerator_C">Тек генератор</sys:String>
+    <sys:String x:Key="EngramEntry_TekGloves_C">Тек перчатки</sys:String>
+    <sys:String x:Key="EngramEntry_TekGrenade_C">Тек граната</sys:String>
+    <sys:String x:Key="EngramEntry_TekHelmet_C">Тек шлем</sys:String>
+    <sys:String x:Key="EngramEntry_TekLadder_C">Тек лестница</sys:String>
+    <sys:String x:Key="EngramEntry_TekLight_C">Тек лампочка</sys:String>
+    <sys:String x:Key="EngramEntry_TekMegalodonSaddle_C">Тек седло - Мегалодона</sys:String>
+    <sys:String x:Key="EngramEntry_TekMosaSaddle_C">Тек седло - Мозазавра</sys:String>
+    <sys:String x:Key="EngramEntry_TekPants_C">Тек штаны</sys:String>
+    <sys:String x:Key="EngramEntry_TekPillar_C">Тек столб</sys:String>
+    <sys:String x:Key="EngramEntry_TekRailing_C">Тек перила</sys:String>
+    <sys:String x:Key="EngramEntry_TekRamp_C">Тек рампа</sys:String>
+    <sys:String x:Key="EngramEntry_TekReplicator_C">Тек репликатор</sys:String>
+    <sys:String x:Key="EngramEntry_TekRexSaddle_C">Тек Седло для Рекса</sys:String>
+    <sys:String x:Key="EngramEntry_TekRifle_C">Тек винтовка</sys:String>
+    <sys:String x:Key="EngramEntry_TekRoof_C">Наклоненная Tek крыша</sys:String>
+    <sys:String x:Key="EngramEntry_TekShield_C">Тек энергетический купол</sys:String>
+    <sys:String x:Key="EngramEntry_TekShieldArmor_C">Тек щит</sys:String>
+    <sys:String x:Key="EngramEntry_TekShirt_C">Тек нагрудник</sys:String>
+    <sys:String x:Key="EngramEntry_TekSlopedWall_Left_C">Наклоненная влево Tek стена</sys:String>
+    <sys:String x:Key="EngramEntry_TekSlopedWall_Right_C">Наклоненная вправо Tek стена</sys:String>
+    <sys:String x:Key="EngramEntry_TekStairs_C">Тек винтовая лестница</sys:String>
+    <sys:String x:Key="EngramEntry_TekSword_C">Тек меч</sys:String>
+    <sys:String x:Key="EngramEntry_TekTapejaraSaddle_C">Тек седло - Тапежары</sys:String>
+    <sys:String x:Key="EngramEntry_TekTeleporter_C">Тек телепортер</sys:String>
+    <sys:String x:Key="EngramEntry_TekTransmitter_C">Тек трансмиттер</sys:String>
+    <sys:String x:Key="EngramEntry_TekTrapdoor_C">Тек люк</sys:String>
+    <sys:String x:Key="EngramEntry_TekTrough_C">Тек кормушка</sys:String>
+    <sys:String x:Key="EngramEntry_TekUnderwaterBase_C">Тек Вакуумный отсек</sys:String>
+    <sys:String x:Key="EngramEntry_TekUnderwaterBase_BottomEntry_C">Тек Вакуумный отсек с люком</sys:String>
+    <sys:String x:Key="EngramEntry_TekWall_C">Тек стена</sys:String>
+    <sys:String x:Key="EngramEntry_TekWallWithDoor_C">Тек дверной проём</sys:String>
+    <sys:String x:Key="EngramEntry_TekWallWithWindow_C">Тек оконный проём</sys:String>
+    <sys:String x:Key="EngramEntry_TekWindow_C">Тек окно</sys:String>
+    <sys:String x:Key="EngramEntry_TurretTek_C">Тек пушка</sys:String>
 
     <!-- Engram Class Names - Primitive Plus -->
     <sys:String x:Key="EngramEntry_AdobeCeiling_PP_C">Adobe Ceiling</sys:String>
@@ -2764,6 +2805,7 @@
     <sys:String x:Key="PrimalItem_WeaponStoneHatchet_C">Каменный топор</sys:String>
     <sys:String x:Key="PrimalItem_WeaponStonePick_C">Каменная кирка</sys:String>
     <sys:String x:Key="PrimalItem_WeaponSword_C">Меч</sys:String>
+    <sys:String x:Key="PrimalItem_WeaponTekSword_C">Тек меч</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTorch_C">Факел</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTransGPS_C">Радиолокатор</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTripwireC4_C">Самодельное взрывное устройство</sys:String>
@@ -2886,6 +2928,7 @@
     <sys:String x:Key="PrimalItemArmor_ScubaHelmet_Goggles_C">SCUBA маска</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaPants_C">SCUBA штаны</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaShirt_SuitWithTank_C">SCUBA балон</sys:String>
+    <sys:String x:Key="PrimalItemArmor_ShieldTek_C">Тек щит</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpiderSaddle_C">Седло на Аранео</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpinoSaddle_C">Седло на Спинозавра</sys:String>
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Седло на Большерогого оленя</sys:String>
@@ -3404,6 +3447,7 @@
     <sys:String x:Key="PrimalItemStructure_TekGateframe_Large_C">Огромная Tek рама</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekGenerator_C">Tek генератор</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekLadder_C">Tek лестница</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekLight_C">Тек лампочка</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekPillar_C">Tek столб</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRailing_C">Tek перила</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRamp_C">Tek рампа</sys:String>
