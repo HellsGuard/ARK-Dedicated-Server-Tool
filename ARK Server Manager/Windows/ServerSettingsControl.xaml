@@ -1021,6 +1021,8 @@
                                         </ComboBox>
 
                                         <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_NoNetThreadingLabel}" IsChecked="{Binding NoNetThreading}" ToolTip="{DynamicResource ServerSettings_NoNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>
+
                                         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,0,5,0" Text="{DynamicResource ServerSettings_UseRawSocketsWarningLabel}" FontWeight="Bold" TextWrapping="WrapWithOverflow" IsEnabled="False"/>
                                     </Grid>
                                 </GroupBox>
@@ -2119,6 +2121,7 @@
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_MaxTamedDinosLabel}" Value="{Binding MaxTamedDinos}" Minimum="1" Maximum="20000" SmallChange="500" LargeChange="2000" TickFrequency="500" ToolTip="{DynamicResource ServerSettings_MaxTamedDinosTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_MaxPersonalTamedDinosLabel}" Value="{Binding MaxPersonalTamedDinos}" Minimum="1" Maximum="20000" SmallChange="50" LargeChange="100" TickFrequency="500" ToolTip="{DynamicResource ServerSettings_MaxPersonalTamedDinosTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_PersonalTamedDinosSaddleStructureCostLabel}" Value="{Binding PersonalTamedDinosSaddleStructureCost}" Minimum="1" Maximum="200" SmallChange="10" LargeChange="20" TickFrequency="50" ToolTip="{DynamicResource ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip}"/>
+                                    <CheckBox Margin="5,1,22,1" IsChecked="{Binding UseTameLimitForStructuresOnly}" Content="{DynamicResource ServerSettings_UseTameLimitForStructuresOnlyLabel}" ToolTip="{DynamicResource ServerSettings_UseTameLimitForStructuresOnlyTooltip}" HorizontalAlignment="Left"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_FoodDrainLabel}" Value="{Binding DinoCharacterFoodDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_FoodDrainTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_StaminaDrainLabel}" Value="{Binding DinoCharacterStaminaDrainMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_StaminaDrainTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_HealthRecoveryLabel}" Value="{Binding DinoCharacterHealthRecoveryMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" ToolTip="{DynamicResource ServerSettings_HealthRecoveryTooltip}"/>
@@ -2934,14 +2937,34 @@
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center"/>
+                                                                <TextBox Text="{Binding EngramLevelRequirement}" VerticalContentAlignment="Center">
+                                                                    <TextBox.Style>
+                                                                        <Style TargetType="{x:Type TextBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsCostColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramPointsCost">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBox Text="{Binding EngramPointsCost}" VerticalContentAlignment="Center"/>
+                                                                <TextBox Text="{Binding EngramPointsCost}" VerticalContentAlignment="Center">
+                                                                    <TextBox.Style>
+                                                                        <Style TargetType="{x:Type TextBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
@@ -2955,7 +2978,17 @@
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsRemovePrereqsColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="RemoveEngramPreReq">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center"/>
+                                                                <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center">
+                                                                    <CheckBox.Style>
+                                                                        <Style TargetType="{x:Type CheckBox}">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </CheckBox.Style>
+                                                                </CheckBox>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
@@ -2990,9 +3023,13 @@
                                             <ListView.ItemContainerStyle>
                                                 <Style TargetType="{x:Type ListViewItem}" >
                                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="Foreground" Value="Black" />
                                                     <Setter Property="Background" Value="White" />
 
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsTekgram}" Value="True">
+                                                            <Setter Property="Foreground" Value="Blue" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding KnownEngram}" Value="False">
                                                             <Setter Property="Background" Value="Beige" />
                                                         </DataTrigger>

@@ -693,7 +693,7 @@ namespace ARK_Server_Manager
                         profileFile.SpectatorPassword = "obfuscated";
                         profileFile.WebAlarmKey = "obfuscated";
                         profileFile.WebAlarmUrl = "obfuscated";
-                        obfuscateFiles.Add(file, profileFile.ToOutputString());
+                        obfuscateFiles.Add(file, profileFile.ToOutputStringNew());
                     }
                 }
 

@@ -427,6 +427,7 @@
     <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Start the auto-backup scheduled task</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateLabel">Auto-Update:</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Start the auto-update scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_TaskRunTimeLabel">Next Run Time:</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
@@ -601,6 +602,8 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Refresh the available local IPs.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Use Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingLabel">No Net Threading</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">If enabled, servers will only utilize a single thread for networking (useful to improve performance for machines with more servers than cpu cores).</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
@@ -1018,6 +1021,8 @@
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Set the maximum number of tamed dinos per tribe.</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Tamed Dinos Saddle Structure Cost:</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">The number of tribe tamed dino slots each platform saddle (with structures) will cost.</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Use Tame Limit for Structures Only</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyTooltip">if enabled, will make Tame Units only be applied and used for Platforms with Structures and Rafts.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Specifies the scaling factor for dino spawns. Higher values increase the number of dinos spawned throughout the Ark.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Allow Raid Dino Feeding</sys:String>
@@ -2415,15 +2420,6 @@
     <sys:String x:Key="EngramEntry_StorageBox_Small_C">Storage Box</sys:String>
     <sys:String x:Key="EngramEntry_SubstrateAbsorbent_C">Absorbent Substrate</sys:String>
     <sys:String x:Key="EngramEntry_Sword_C">Sword</sys:String>
-    <sys:String x:Key="EngramEntry_TekBoots_C">Tek Boots</sys:String>
-    <sys:String x:Key="EngramEntry_TekGloves_C">Tek Gauntlets</sys:String>
-    <sys:String x:Key="EngramEntry_TekHelmet_C">Tek Helmet</sys:String>
-    <sys:String x:Key="EngramEntry_TekPants_C">Tek Leggings</sys:String>
-    <sys:String x:Key="EngramEntry_TekReplicator_C">Tek Replicator</sys:String>
-    <sys:String x:Key="EngramEntry_TekRexSaddle_C">Rex Tek Saddle</sys:String>
-    <sys:String x:Key="EngramEntry_TekRifle_C">Tek Rifle</sys:String>
-    <sys:String x:Key="EngramEntry_TekShirt_C">Tek Chestpiece</sys:String>
-    <sys:String x:Key="EngramEntry_TekTransmitter_C">Tek Transmitter</sys:String>
     <sys:String x:Key="EngramEntry_ThatchCeiling_C">Thatch Roof</sys:String>
     <sys:String x:Key="EngramEntry_ThatchDoor_C">Thatch Door</sys:String>
     <sys:String x:Key="EngramEntry_ThatchFloor_C">Thatch Foundation</sys:String>
@@ -2483,6 +2479,55 @@
     <sys:String x:Key="EngramEntry_WoodWallWithDoor_C">Wooden Doorframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWallWithWindow_C">Wooden Windowframe</sys:String>
     <sys:String x:Key="EngramEntry_WoodWindow_C">Wooden Window</sys:String>
+
+    <!-- Tekgram Class Names -->
+    <sys:String x:Key="EngramEntry_Tek_Gate_C">Tek Dinosaur Gate</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gate_Large_C">Tek Behemoth Gate</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gategrame_C">Tek Dinosaur Gateway</sys:String>
+    <sys:String x:Key="EngramEntry_Tek_Gategrame_Large_C">Tek Behemoth Gateway</sys:String>
+    <sys:String x:Key="EngramEntry_TekBoots_C">Tek Boots</sys:String>
+    <sys:String x:Key="EngramEntry_TekCatwalk_C">Tek Catwalk</sys:String>
+    <sys:String x:Key="EngramEntry_TekCeiling_C">Tek Ceiling</sys:String>
+    <sys:String x:Key="EngramEntry_TekCeilingWithTrapdoor_C">Tek Hatchframe</sys:String>
+    <sys:String x:Key="EngramEntry_TekCloningChamber_C">Tek Cloning Chamber</sys:String>
+    <sys:String x:Key="EngramEntry_TekDoor_C">Tek Door</sys:String>
+    <sys:String x:Key="EngramEntry_TekFenceFoundation_C">Tek Fence Foundation</sys:String>
+    <sys:String x:Key="EngramEntry_TekFloor_C">Tek Foundation</sys:String>
+    <sys:String x:Key="EngramEntry_TekGenerator_C">Tek Generator</sys:String>
+    <sys:String x:Key="EngramEntry_TekGloves_C">Tek Gauntlets</sys:String>
+    <sys:String x:Key="EngramEntry_TekGrenade_C">Tek Grenade</sys:String>
+    <sys:String x:Key="EngramEntry_TekHelmet_C">Tek Helmet</sys:String>
+    <sys:String x:Key="EngramEntry_TekLadder_C">Tek Ladder</sys:String>
+    <sys:String x:Key="EngramEntry_TekLight_C">Tek Light</sys:String>
+    <sys:String x:Key="EngramEntry_TekMegalodonSaddle_C">Tek Saddle - Megalodon</sys:String>
+    <sys:String x:Key="EngramEntry_TekMosaSaddle_C">Tek Saddle - Mosasaur</sys:String>
+    <sys:String x:Key="EngramEntry_TekPants_C">Tek Leggings</sys:String>
+    <sys:String x:Key="EngramEntry_TekPillar_C">Tek Pillar</sys:String>
+    <sys:String x:Key="EngramEntry_TekRailing_C">Tek Railing</sys:String>
+    <sys:String x:Key="EngramEntry_TekRamp_C">Tek Ramp</sys:String>
+    <sys:String x:Key="EngramEntry_TekReplicator_C">Tek Replicator</sys:String>
+    <sys:String x:Key="EngramEntry_TekRexSaddle_C">Tek Saddle - Rex</sys:String>
+    <sys:String x:Key="EngramEntry_TekRifle_C">Tek Rifle</sys:String>
+    <sys:String x:Key="EngramEntry_TekRoof_C">Tek Sloped Roof</sys:String>
+    <sys:String x:Key="EngramEntry_TekShield_C">Tek Forcefield</sys:String>
+    <sys:String x:Key="EngramEntry_TekShieldArmor_C">Tek Shield</sys:String>
+    <sys:String x:Key="EngramEntry_TekShirt_C">Tek Chestpiece</sys:String>
+    <sys:String x:Key="EngramEntry_TekSlopedWall_Left_C">Tek Sloped Wall Left</sys:String>
+    <sys:String x:Key="EngramEntry_TekSlopedWall_Right_C">Tek Sloped Wall Right</sys:String>
+    <sys:String x:Key="EngramEntry_TekStairs_C">Tek Staircase</sys:String>
+    <sys:String x:Key="EngramEntry_TekSword_C">Tek Sword</sys:String>
+    <sys:String x:Key="EngramEntry_TekTapejaraSaddle_C">Tek Saddle - Tapejara</sys:String>
+    <sys:String x:Key="EngramEntry_TekTeleporter_C">Tek Teleporter</sys:String>
+    <sys:String x:Key="EngramEntry_TekTransmitter_C">Tek Transmitter</sys:String>
+    <sys:String x:Key="EngramEntry_TekTrapdoor_C">Tek Trapdoor</sys:String>
+    <sys:String x:Key="EngramEntry_TekTrough_C">Tek Trough</sys:String>
+    <sys:String x:Key="EngramEntry_TekUnderwaterBase_C">Tek Vacuum Compartment</sys:String>
+    <sys:String x:Key="EngramEntry_TekUnderwaterBase_BottomEntry_C">Tek Vacuum Compartment Moonpool</sys:String>
+    <sys:String x:Key="EngramEntry_TekWall_C">Tek Wall</sys:String>
+    <sys:String x:Key="EngramEntry_TekWallWithDoor_C">Tek Doorframe</sys:String>
+    <sys:String x:Key="EngramEntry_TekWallWithWindow_C">Tek Windowframe</sys:String>
+    <sys:String x:Key="EngramEntry_TekWindow_C">Tek Window</sys:String>
+    <sys:String x:Key="EngramEntry_TurretTek_C">Tek Turret</sys:String>
 
     <!-- Engram Class Names - Primitive Plus -->
     <sys:String x:Key="EngramEntry_AdobeCeiling_PP_C">Adobe Ceiling</sys:String>
@@ -2765,6 +2810,7 @@
     <sys:String x:Key="PrimalItem_WeaponStoneHatchet_C">Stone Hatchet</sys:String>
     <sys:String x:Key="PrimalItem_WeaponStonePick_C">Stone Pick</sys:String>
     <sys:String x:Key="PrimalItem_WeaponSword_C">Sword</sys:String>
+    <sys:String x:Key="PrimalItem_WeaponTekSword_C">Tek Sword</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTorch_C">Torch</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTransGPS_C">Transponder Tracker</sys:String>
     <sys:String x:Key="PrimalItem_WeaponTripwireC4_C">Improvised Explosive Device</sys:String>
@@ -2887,6 +2933,7 @@
     <sys:String x:Key="PrimalItemArmor_ScubaHelmet_Goggles_C">SCUBA Mask</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaPants_C">SCUBA Leggings</sys:String>
     <sys:String x:Key="PrimalItemArmor_ScubaShirt_SuitWithTank_C">SCUBA Tank</sys:String>
+    <sys:String x:Key="PrimalItemArmor_ShieldTek_C">Tek Shield</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpiderSaddle_C">Araneo Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_SpinoSaddle_C">Spino Saddle</sys:String>
     <sys:String x:Key="PrimalItemArmor_StagSaddle_C">Megaloceros Saddle</sys:String>
@@ -3405,6 +3452,7 @@
     <sys:String x:Key="PrimalItemStructure_TekGateframe_Large_C">Behemoth Tek Gateway</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekGenerator_C">Tek Generator</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekLadder_C">Tek Ladder</sys:String>
+    <sys:String x:Key="PrimalItemStructure_TekLight_C">Tek Light</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekPillar_C">Tek Pillar</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRailing_C">Tek Railing</sys:String>
     <sys:String x:Key="PrimalItemStructure_TekRamp_C">Tek Ramp</sys:String>
