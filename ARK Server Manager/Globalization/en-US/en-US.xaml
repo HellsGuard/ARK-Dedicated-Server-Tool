@@ -604,6 +604,8 @@
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
     <sys:String x:Key="ServerSettings_NoNetThreadingLabel">No Net Threading</sys:String>
     <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">If enabled, servers will only utilize a single thread for networking (useful to improve performance for machines with more servers than cpu cores).</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingLabel">Force Net Threading</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingTooltip">If enabled, servers will utilize multiple threads for networking.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
@@ -802,6 +804,8 @@
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">If enabled, this will allow the max level of creatures in the world to be changed.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Max Dino Level:</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyTooltip">Determines the maximum levels of creatures in the world. The higher the value, the higher the Maximum Creature Level.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetLabel">Difficulty Offset:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetTooltip">Determines the maximum levels of creatures in the world. The higher the value, the higher the Maximum Creature Level.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>

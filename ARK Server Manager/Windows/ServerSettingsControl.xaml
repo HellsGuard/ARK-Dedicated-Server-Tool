@@ -1021,7 +1021,8 @@
                                         </ComboBox>
 
                                         <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_NoNetThreadingLabel}" IsChecked="{Binding NoNetThreading}" ToolTip="{DynamicResource ServerSettings_NoNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>
+                                        <!--<CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_NoNetThreadingLabel}" IsChecked="{Binding NoNetThreading}" ToolTip="{DynamicResource ServerSettings_NoNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>-->
+                                        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_ForceNetThreadingLabel}" IsChecked="{Binding ForceNetThreading}" ToolTip="{DynamicResource ServerSettings_ForceNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>
 
                                         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,0,5,0" Text="{DynamicResource ServerSettings_UseRawSocketsWarningLabel}" FontWeight="Bold" TextWrapping="WrapWithOverflow" IsEnabled="False"/>
                                     </Grid>
@@ -1644,9 +1645,10 @@
                                             <CheckBox Name="EnableDifficultyOverrideCheckbox" IsChecked="{Binding EnableDifficultyOverride}" Content="{DynamicResource ServerSettings_EnableDifficultyOverrideLabel}" ToolTip="{DynamicResource ServerSettings_EnableDifficultyOverrideTooltip}"/>
                                         </GroupBox.Header>
 
-                                        <Grid IsEnabled="{Binding ElementName=EnableDifficultyOverrideCheckbox, Path=IsChecked}">
+                                        <StackPanel IsEnabled="{Binding ElementName=EnableDifficultyOverrideCheckbox, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OverrideOfficialDifficultyLabel}" Value="{Binding OverrideOfficialDifficulty, Converter={StaticResource OfficialDifficultyValueConverter}}" Suffix="{DynamicResource SliderUnits_Levels}" Minimum="30" Maximum="1200" SmallChange="1" LargeChange="5" TickFrequency="30" ToolTip="{DynamicResource ServerSettings_OverrideOfficialDifficultyTooltip}" />
-                                        </Grid>
+                                            <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_DifficultyOffsetLabel}" Value="{Binding DifficultyOffset, Converter={vm:DoubleRangeValueConverter 0.01, 1.0}}" Minimum="0.01" Maximum="1.0" SmallChange="0.01" LargeChange="0.1" TickFrequency="0.2" ToolTip="{DynamicResource ServerSettings_DifficultyOffsetTooltip}" />
+                                        </StackPanel>
                                     </GroupBox>
 
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">

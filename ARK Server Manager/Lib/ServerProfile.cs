@@ -235,6 +235,14 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(NoNetThreadingProperty, value); }
         }
 
+        public static readonly DependencyProperty ForceNetThreadingProperty = DependencyProperty.Register(nameof(ForceNetThreading), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool ForceNetThreading
+        {
+            get { return (bool)GetValue(ForceNetThreadingProperty); }
+            set { SetValue(ForceNetThreadingProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableBanListURLProperty = DependencyProperty.Register(nameof(EnableBanListURL), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool EnableBanListURL
@@ -861,7 +869,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register(nameof(DifficultyOffset), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDifficultyOverride))]
         public float DifficultyOffset
         {
             get { return (float)GetValue(DifficultyOffsetProperty); }
@@ -2978,6 +2986,11 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -nonetthreading");
             }
 
+            if (this.UseRawSockets && this.ForceNetThreading)
+            {
+                serverArgs.Append(" -forcenetthreading");
+            }
+
             if (this.EnableAllowCaveFlyers)
             {
                 serverArgs.Append(" -ForceAllowCaveFlyers");
@@ -3363,11 +3376,11 @@ namespace ARK_Server_Manager.Lib
                 ClearValue(ExtinctionEventUTCProperty);
             }
 
-            // ensure that the Difficulty Override is reset when override is enabled
-            if (EnableDifficultyOverride)
-            {
-                ClearValue(DifficultyOffsetProperty);
-            }
+            //// ensure that the Difficulty Override is reset when override is enabled
+            //if (EnableDifficultyOverride)
+            //{
+            //    ClearValue(DifficultyOffsetProperty);
+            //}
 
             // ensure that the MAX XP settings for player and dinos are set to the last custom level
             if (EnableLevelProgressions)
@@ -4189,6 +4202,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ServerPortProperty);
             this.ClearValue(ServerIPProperty);
             this.ClearValue(UseRawSocketsProperty);
+            this.ClearValue(NoNetThreadingProperty);
+            this.ClearValue(ForceNetThreadingProperty);
 
             this.ClearValue(EnableBanListURLProperty);
             this.ClearValue(BanListURLProperty);
@@ -4599,6 +4614,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(ServerPortProperty, sourceProfile.ServerPort);
             this.SetValue(ServerIPProperty, sourceProfile.ServerIP);
             this.SetValue(UseRawSocketsProperty, sourceProfile.UseRawSockets);
+            this.SetValue(NoNetThreadingProperty, sourceProfile.NoNetThreading);
+            this.SetValue(ForceNetThreadingProperty, sourceProfile.ForceNetThreading);
 
             this.SetValue(EnableBanListURLProperty, sourceProfile.EnableBanListURL);
             this.SetValue(BanListURLProperty, sourceProfile.BanListURL);
