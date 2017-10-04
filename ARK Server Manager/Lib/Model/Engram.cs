@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using ARK_Server_Manager.Lib.ViewModel;
 using System.Runtime.Serialization;
 
 namespace ARK_Server_Manager.Lib
@@ -38,6 +37,22 @@ namespace ARK_Server_Manager.Lib
             values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
             return values;
         }
+
+        //public override void AddRange(IEnumerable<T> values)
+        //{
+        //    if (values == null || values.Count() == 0)
+        //        return;
+
+        //    foreach (var value in values)
+        //    {
+        //        if (!(value is EngramEntry))
+        //            continue;
+
+        //        var item = base.Items.FirstOrDefault(i => i.EngramClassName.Equals(((EngramEntry)value).EngramClassName));
+        //        if (item == null)
+        //            base.Add(value);
+        //    }
+        //}
     }
 
     [DataContract]

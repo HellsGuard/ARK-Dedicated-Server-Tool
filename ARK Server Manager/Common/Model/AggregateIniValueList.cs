@@ -32,7 +32,7 @@ namespace ARK_Server_Manager.Lib
 
         public bool IsArray => false;
 
-        public void AddRange(IEnumerable<T> values)
+        public virtual void AddRange(IEnumerable<T> values)
         {
             if (values == null)
                 return;
