@@ -604,6 +604,8 @@
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Allow direct P2P connections instead of through steam. Open up both the Server Port and Server Port + 1 are open in the firewall and port forwarding.</sys:String>
     <sys:String x:Key="ServerSettings_NoNetThreadingLabel">No Net Threading</sys:String>
     <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">If enabled, servers will only utilize a single thread for networking (useful to improve performance for machines with more servers than cpu cores).</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingLabel">Force Net Threading</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingTooltip">If enabled, servers will utilize multiple threads for networking.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">NOTE: Enable the Raw Sockets option with caution. Using Raw Sockets could cause login issues and may not work on ALL maps.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Local IP invalid</sys:String>
@@ -716,6 +718,8 @@
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">If enabled, will use the old method, more RAM usage but no potential performance loss.</sys:String>
     <sys:String x:Key="ServerSettings_StasisKeepControllersLabel">Stasis Keep Controllers</sys:String>
     <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">If enabled, the server can gain performance by keeping the AI's in memory of statised creatures. NOTE: your server must have a lot of RAM otherwise your server will suffer with a large memory overhead.</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">No Hang Detection</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">If enabled, prevents some types of crashes causes by hanging (may appear as though the server is lagging while the server is hanging).</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -802,6 +806,8 @@
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">If enabled, this will allow the max level of creatures in the world to be changed.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Max Dino Level:</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyTooltip">Determines the maximum levels of creatures in the world. The higher the value, the higher the Maximum Creature Level.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetLabel">Difficulty Offset:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetTooltip">Determines the maximum levels of creatures in the world. The higher the value, the higher the Maximum Creature Level.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Enable Tribute Downloads</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">If enabled, this will allow downloading external survivors/items/dinos into your server.</sys:String>

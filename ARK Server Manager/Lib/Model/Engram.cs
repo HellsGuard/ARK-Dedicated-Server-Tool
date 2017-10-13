@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using ARK_Server_Manager.Lib.ViewModel;
 using System.Runtime.Serialization;
 
 namespace ARK_Server_Manager.Lib
@@ -37,6 +36,27 @@ namespace ARK_Server_Manager.Lib
             var values = new List<string>();
             values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
             return values;
+        }
+
+        //public override void AddRange(IEnumerable<T> values)
+        //{
+        //    if (values == null || values.Count() == 0)
+        //        return;
+
+        //    foreach (var value in values)
+        //    {
+        //        if (!(value is EngramEntry))
+        //            continue;
+
+        //        var item = base.Items.FirstOrDefault(i => i.EngramClassName.Equals(((EngramEntry)value).EngramClassName));
+        //        if (item == null)
+        //            base.Add(value);
+        //    }
+        //}
+
+        public override void FromIniValues(IEnumerable<string> iniValues)
+        {
+            base.FromIniValues(iniValues);
         }
     }
 
@@ -139,7 +159,7 @@ namespace ARK_Server_Manager.Lib
             if (!KnownEngram)
                 ArkApplication = ArkApplication.Unknown;
             IsTekgram = GameData.IsTekgram(EngramClassName);
-            SaveEngramOverride = !IsTekgram;
+            SaveEngramOverride = true; //!IsTekgram;
 
             if (IsTekgram)
             {

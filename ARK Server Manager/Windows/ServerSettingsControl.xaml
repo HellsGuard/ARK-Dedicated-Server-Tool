@@ -1021,7 +1021,8 @@
                                         </ComboBox>
 
                                         <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_UseRawSocketsLabel}" IsChecked="{Binding UseRawSockets}" ToolTip="{DynamicResource ServerSettings_UseRawSocketsTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
-                                        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_NoNetThreadingLabel}" IsChecked="{Binding NoNetThreading}" ToolTip="{DynamicResource ServerSettings_NoNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>
+                                        <!--<CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_NoNetThreadingLabel}" IsChecked="{Binding NoNetThreading}" ToolTip="{DynamicResource ServerSettings_NoNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>-->
+                                        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Content="{DynamicResource ServerSettings_ForceNetThreadingLabel}" IsChecked="{Binding ForceNetThreading}" ToolTip="{DynamicResource ServerSettings_ForceNetThreadingTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" IsEnabled="{Binding UseRawSockets, FallbackValue=false}"/>
 
                                         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,0,5,0" Text="{DynamicResource ServerSettings_UseRawSocketsWarningLabel}" FontWeight="Bold" TextWrapping="WrapWithOverflow" IsEnabled="False"/>
                                     </Grid>
@@ -1344,6 +1345,7 @@
                                         <CheckBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding ForceNoManSky}" Content="{DynamicResource ServerSettings_ForceNoManSkyLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceNoManSkyTooltip}"/>
                                         <CheckBox Grid.Row="5" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoMemoryBias}" Content="{DynamicResource ServerSettings_UseNoMemoryBiasLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseNoMemoryBiasTooltip}"/>
                                         <CheckBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding StasisKeepControllers}" Content="{DynamicResource ServerSettings_StasisKeepControllersLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_StasisKeepControllersTooltip}"/>
+                                        <CheckBox Grid.Row="8" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding UseNoHangDetection}" Content="{DynamicResource ServerSettings_UseNoHangDetectionLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_UseNoHangDetectionTooltip}"/>
 
                                         <CheckBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" IsChecked="{Binding ForceRespawnDinos}" Content="{DynamicResource ServerSettings_ForceRespawnDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_ForceRespawnDinosTooltip}"/>
                                         <CheckBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" IsChecked="{Binding EnableServerAutoForceRespawnWildDinosInterval}" Content="{DynamicResource ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip}"/>
@@ -1644,9 +1646,10 @@
                                             <CheckBox Name="EnableDifficultyOverrideCheckbox" IsChecked="{Binding EnableDifficultyOverride}" Content="{DynamicResource ServerSettings_EnableDifficultyOverrideLabel}" ToolTip="{DynamicResource ServerSettings_EnableDifficultyOverrideTooltip}"/>
                                         </GroupBox.Header>
 
-                                        <Grid IsEnabled="{Binding ElementName=EnableDifficultyOverrideCheckbox, Path=IsChecked}">
+                                        <StackPanel IsEnabled="{Binding ElementName=EnableDifficultyOverrideCheckbox, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OverrideOfficialDifficultyLabel}" Value="{Binding OverrideOfficialDifficulty, Converter={StaticResource OfficialDifficultyValueConverter}}" Suffix="{DynamicResource SliderUnits_Levels}" Minimum="30" Maximum="1200" SmallChange="1" LargeChange="5" TickFrequency="30" ToolTip="{DynamicResource ServerSettings_OverrideOfficialDifficultyTooltip}" />
-                                        </Grid>
+                                            <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_DifficultyOffsetLabel}" Value="{Binding DifficultyOffset, Converter={vm:DoubleRangeValueConverter 0.01, 1.0}}" Minimum="0.01" Maximum="1.0" SmallChange="0.01" LargeChange="0.1" TickFrequency="0.2" ToolTip="{DynamicResource ServerSettings_DifficultyOffsetTooltip}" />
+                                        </StackPanel>
                                     </GroupBox>
 
                                     <GroupBox Style="{StaticResource GroupBoxStyle}">
