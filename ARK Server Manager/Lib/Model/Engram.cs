@@ -53,6 +53,11 @@ namespace ARK_Server_Manager.Lib
         //            base.Add(value);
         //    }
         //}
+
+        public override void FromIniValues(IEnumerable<string> iniValues)
+        {
+            base.FromIniValues(iniValues);
+        }
     }
 
     [DataContract]
@@ -154,7 +159,7 @@ namespace ARK_Server_Manager.Lib
             if (!KnownEngram)
                 ArkApplication = ArkApplication.Unknown;
             IsTekgram = GameData.IsTekgram(EngramClassName);
-            SaveEngramOverride = !IsTekgram;
+            SaveEngramOverride = true; //!IsTekgram;
 
             if (IsTekgram)
             {
