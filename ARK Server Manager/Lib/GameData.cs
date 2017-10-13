@@ -473,7 +473,6 @@ namespace ARK_Server_Manager.Lib
 
                 // Ragnarok dinos
                 case "Polar_Bear_C":
-                case "Ragnarok_Wyvern_Override_Ice_C":
                 case "Iceworm_Queen_Character_BP_C":
                 case "LavaGolem_Character_BP_C":
                     return null;
