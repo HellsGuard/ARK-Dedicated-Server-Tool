@@ -120,9 +120,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0" Margin="0,-2,0,-3" Background="Transparent" Foreground="White" FontSize="11" Content="{DynamicResource MainWindow_TaskStatusLabel}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        
                         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
-                            <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoBackupLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
+                            <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoBackupTaskLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
                             <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoBackupState}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}">
                                 <Label.Style>
                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
@@ -141,7 +143,7 @@
                                     </Style>
                                 </Label.Style>
                             </Label>
-                            <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" Content="Run" BorderThickness="1" BorderBrush="White" Click="AutoBackupTask_Click" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow_AutoBackupRunTooltip}">
+                            <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" Content="{DynamicResource MainWindow_AutoBackupTaskRunLabel}" BorderThickness="1" BorderBrush="White" Click="AutoBackupTaskRun_Click" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow_AutoBackupTaskRunTooltip}">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -153,9 +155,37 @@
                                     </Style>
                                 </Button.Style>
                             </Button>
+                            <Button Margin="5,0,0,0" Background="#AA8A00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" Click="AutoBackupTaskState_Click" VerticalAlignment="Center">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskEnableLabel}"/>
+                                        <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskEnableTooltip}"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding AutoBackupState}" Value="Ready"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskDisableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskDisableTooltip}"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding AutoBackupState}" Value="Disabled"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskEnableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskEnableTooltip}"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </StackPanel>
+                        
                         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
-                            <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoUpdateLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
+                            <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoUpdateTaskLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
                             <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoUpdateState}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}">
                                 <Label.Style>
                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
@@ -174,7 +204,7 @@
                                     </Style>
                                 </Label.Style>
                             </Label>
-                            <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" Content="Run" BorderThickness="1" BorderBrush="White" Click="AutoUpdateTask_Click" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow_AutoUpdateRunTooltip}">
+                            <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" Content="{DynamicResource MainWindow_AutoUpdateTaskRunLabel}" BorderThickness="1" BorderBrush="White" Click="AutoUpdateTaskRun_Click" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow_AutoUpdateTaskRunTooltip}">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -182,6 +212,33 @@
                                             <DataTrigger Binding="{Binding AutoUpdateState}" Value="Ready">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Margin="5,0,0,0" Background="#AA8A00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" Click="AutoUpdateTaskState_Click" VerticalAlignment="Center">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableLabel}"/>
+                                        <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableTooltip}"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding AutoUpdateState}" Value="Ready"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableTooltip}"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding AutoUpdateState}" Value="Disabled"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableTooltip}"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>

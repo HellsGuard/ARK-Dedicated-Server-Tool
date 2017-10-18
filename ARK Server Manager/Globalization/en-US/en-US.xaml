@@ -423,10 +423,22 @@
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Open Help</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Upgrade to {0} now!</sys:String>
     <sys:String x:Key="MainWindow_TaskStatusLabel">Task Status</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupLabel">Auto-Backup:</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Start the auto-backup scheduled task</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateLabel">Auto-Update:</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Start the auto-update scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorTitle">Requires Administration Permissions</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorLabel">This function cannot be performed as it requires administration permissions.</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskLabel">Auto-Backup:</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunLabel">Run</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunTooltip">Start the auto-backup scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableLabel">Disable</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableTooltip">Disable the auto-backup scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableLabel">Enable</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableTooltip">Enable the auto-backup scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskLabel">Auto-Update:</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunLabel">Run</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunTooltip">Start the auto-update scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableLabel">Disable</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableTooltip">Disable the auto-update scheduled task</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableLabel">Enable</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableTooltip">Enable the auto-update scheduled task</sys:String>
     <sys:String x:Key="MainWindow_TaskRunTimeLabel">Next Run Time:</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
