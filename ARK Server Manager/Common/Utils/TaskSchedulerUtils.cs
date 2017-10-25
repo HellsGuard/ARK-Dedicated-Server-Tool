@@ -584,6 +584,48 @@ namespace ARK_Server_Manager.Lib
             return false;
         }
 
+        public static void SetAutoBackupState(string taskKey, string taskSuffix, bool? enable)
+        {
+            var taskName = $"{PREFIX_BACKUP}_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TaskFolder) ? TaskService.Instance.RootFolder.SubFolders[TaskFolder] : null;
+            if (taskFolder == null)
+                return;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return;
+
+            if (task.State == TaskState.Disabled || task.State == TaskState.Ready)
+            {
+                task.Definition.Settings.Enabled = enable ?? !task.Enabled;
+                task.RegisterChanges();
+            }
+        }
+
+        public static void SetAutoUpdateState(string taskKey, string taskSuffix, bool? enable)
+        {
+            var taskName = $"{PREFIX_UPDATE}_{taskKey}";
+            if (!string.IsNullOrWhiteSpace(taskSuffix))
+                taskName += $"_{taskSuffix}";
+
+            var taskFolder = TaskService.Instance.RootFolder.SubFolders.Exists(TaskFolder) ? TaskService.Instance.RootFolder.SubFolders[TaskFolder] : null;
+            if (taskFolder == null)
+                return;
+
+            var task = taskFolder.Tasks.Exists(taskName) ? taskFolder.Tasks[taskName] : null;
+            if (task == null)
+                return;
+
+            if (task.State == TaskState.Disabled || task.State == TaskState.Ready)
+            {
+                task.Definition.Settings.Enabled = enable ?? !task.Enabled;
+                task.RegisterChanges();
+            }
+        }
+
         public static TaskState TaskStateAutoBackup(string taskKey, string taskSuffix, out DateTime nextRunTime)
         {
             nextRunTime = DateTime.MinValue;

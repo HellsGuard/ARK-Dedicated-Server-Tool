@@ -100,6 +100,12 @@ namespace ARK_Server_Manager
             set { SetValue(AutoUpdateNextRunTimeProperty, value); }
         }
 
+        public bool IsAdministrator
+        {
+            get;
+            set;
+        }
+
         public MainWindow()
         {
             BetaVersion = App.Instance.BetaVersion;
@@ -115,7 +121,8 @@ namespace ARK_Server_Manager
             this.versionChecker = new ActionQueue();
             this.scheduledTaskChecker = new ActionQueue();
 
-            if (SecurityUtils.IsAdministrator())
+            IsAdministrator = SecurityUtils.IsAdministrator();
+            if (IsAdministrator)
                 this.Title = _globalizer.GetResourceString("MainWindow_TitleWithAdmin");
         }
 
@@ -341,7 +348,7 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void AutoBackupTask_Click(object sender, RoutedEventArgs e)
+        private void AutoBackupTaskRun_Click(object sender, RoutedEventArgs e)
         {
             var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
 
@@ -355,13 +362,53 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void AutoUpdateTask_Click(object sender, RoutedEventArgs e)
+        private void AutoBackupTaskState_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsAdministrator)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("MainWindow_TaskAdminErrorLabel"), _globalizer.GetResourceString("MainWindow_TaskAdminErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
+            try
+            {
+                TaskSchedulerUtils.SetAutoBackupState(taskKey, null, null);
+            }
+            catch (Exception)
+            {
+                // Ignore.
+            }
+        }
+
+        private void AutoUpdateTaskRun_Click(object sender, RoutedEventArgs e)
         {
             var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
 
             try
             {
                 TaskSchedulerUtils.RunAutoUpdate(taskKey, null);
+            }
+            catch (Exception)
+            {
+                // Ignore.
+            }
+        }
+
+        private void AutoUpdateTaskState_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsAdministrator)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("MainWindow_TaskAdminErrorLabel"), _globalizer.GetResourceString("MainWindow_TaskAdminErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var taskKey = TaskSchedulerUtils.ComputeKey(Config.Default.DataDir);
+
+            try
+            {
+                TaskSchedulerUtils.SetAutoUpdateState(taskKey, null, null);
             }
             catch (Exception)
             {

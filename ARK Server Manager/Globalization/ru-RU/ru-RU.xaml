@@ -225,7 +225,7 @@
     <sys:String x:Key="GlobalSettings_Title">Ark Server Manager</sys:String>
     <sys:String x:Key="GlobalSettings_VersionLabel">Версия:</sys:String>
     <sys:String x:Key="GlobalSettings_ResetButtonLabel">Сброс</sys:String>
-    <sys:String x:Key="GlobalSettings_ResetButtonTooltip">Это приведет к сбросу всех глобальных параметров пользователя для диспетчера сервера. Менеджер сервера будет закрыт, если он будет успешным.</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetButtonTooltip">Это приведет к сбросу всех глобальных параметров пользователя в диспетчере сервера. Менеджер сервера будет закрыт, если сброс будет успешным.</sys:String>
     <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Запускать программу в режиме Администратора</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Управление параметрами брандмауэра автоматически</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Каталог данных:</sys:String>
@@ -347,8 +347,8 @@
     <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">Количество секунд ожидания команды Сохранения мира до завершения работы сервера.</sys:String>
 
     <sys:String x:Key="GlobalSettings_ResetSettings_ConfirmTitle">Подтвердить сброс настроек</sys:String>
-    <sys:String x:Key="GlobalSettings_ResetSettings_ConfirmLabel">Нажмите «Да», чтобы подтвердить, что вы хотите выполнить сброс настроек.</sys:String>
-    <sys:String x:Key="GlobalSettings_ResetSettings_FailedTitle">Не удалось сбросить настройки</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetSettings_ConfirmLabel">Нажмите «Да», для подтверждения, что вы хотите выполнить сброс настроек.</sys:String>
+    <sys:String x:Key="GlobalSettings_ResetSettings_FailedTitle">Не удалось выполнить сброс настроек</sys:String>
     <sys:String x:Key="GlobalSettings_ResetSettings_FailedLabel">При сбросе настроек произошла ошибка. Приложение будет закрыто.</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmTitle">Подтвердить изменение каталога данных</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_ConfirmLabel">Изменение каталога данных приведет к перемещению любых существующих профилей в новое место, но оно не будет перемещать установки сервера. Вы все еще хотите изменить этот каталог?</sys:String>
@@ -427,6 +427,7 @@
     <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Запуск Авто-Сохранения</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateLabel">Авто-Обновление:</sys:String>
     <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Запуск Авто-Обновления</sys:String>
+    <sys:String x:Key="MainWindow_TaskRunTimeLabel">Следующее время выполнения:</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Профиль не загружен</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">Не удалось загрузить профиль в {0}. Ошибка: {1}\r\n{2}</sys:String>
@@ -599,8 +600,12 @@
     <sys:String x:Key="ServerSettings_LocalIPArkChooseLabel">Разрешить ARK выбрать самому</sys:String>
     <sys:String x:Key="ServerSettings_LocalIPRecommendedLabel">(Рекомендуемые)</sys:String>
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Обновит доступные локальные IP-адреса.</sys:String>
-    <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Использовать Сырые сокеты</sys:String>
+    <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Использовать RAW сокеты</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Разрешено прямое подключение через P2P, а не через Steam. Открыть в брандмауэре и переадресации портов, как Порт сервера и Порт сервера + 1.</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingLabel">Нет многопоточного соединения</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">Если включено, серверы будут использовать только один поток для сетевых нужд сервера (целесообразно использовать для улучшения производительности серверных машин с количеством игровых серверов большим, чем число процессорных ядер, в частности, работающих на Linux).</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingLabel">Активировать Многопоточные Соединения</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNetThreadingTooltip">Если включено, серверы будут использовать несколько потоков для работы в сети.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsWarningLabel">ПРИМЕЧАНИЕ: Используйте опцию Сырые сокеты с осторожностью. Использование Сырые сокеты может привести к проблемам входа в систему и может не работать на всех картах.</sys:String>
 
     <sys:String x:Key="ServerSettings_LocalIP_ErrorTitle">Локальный IP недействителен</sys:String>
@@ -713,6 +718,8 @@
     <sys:String x:Key="ServerSettings_UseNoMemoryBiasTooltip">Если включено, будет использоваться старый метод, больше использования ОЗУ, но нет потенциальной потери производительности.</sys:String>
     <sys:String x:Key="ServerSettings_StasisKeepControllersLabel">Stasis Keep Controllers</sys:String>
     <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">Если это разрешено, сервер может получить производительность, сохранив AI в памяти о статусных существах. ПРИМЕЧАНИЕ. На вашем сервере должно быть много ОЗУ, иначе ваш сервер будет страдать с большими издержками памяти.</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">Нет Hang Detection</sys:String>
+    <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">Если включено, предотвращает появление некоторых типов сбоев путем зависания (может показаться, что сервер отстает, пока сервер висит).</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">Ключ, который необязательно использовать в скрипте прослушивания, но должен быть в текстовом файле.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -799,6 +806,8 @@
     <sys:String x:Key="ServerSettings_EnableDifficultyOverrideTooltip">Если включено, это позволит изменить максимальный уровень существ в мире.</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyLabel">Максимальный уровень Динозавров:</sys:String>
     <sys:String x:Key="ServerSettings_OverrideOfficialDifficultyTooltip">Определяет максимальные уровни существ в мире. Чем выше значение, тем выше максимальный уровень существа.</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetLabel">Максимальные уровни существ:</sys:String>
+    <sys:String x:Key="ServerSettings_DifficultyOffsetTooltip">Определяет максимальные уровни существ в мире. Чем выше значение, тем выше максимальный уровень существа.</sys:String>
 
     <sys:String x:Key="ServerSettings_EnableTributeLabel">Включить загрузку данных</sys:String>
     <sys:String x:Key="ServerSettings_EnableTributeTooltip">Если этот параметр включен, это позволит загружать Выживших/Предметов/Динозавров на ваш сервер.</sys:String>
@@ -1018,6 +1027,8 @@
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Установить максимальное количество домашних динозавров в Племени.</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Колличество Сёдел платформ в Трайбе</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">Количество прирученных динозавров седлами платформами (со структурами) разрешено в Трайбе.</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Использовать ограничитель только для структур</sys:String>
+    <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyTooltip">если это разрешено, лимит на прирученных существ будет распространяться только на дино с постройками на седлах-платформах и плоты.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Появление Дино:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Определяет коэффициент для появления динозавров. Более высокие значения увеличивают колличество появляемых динозавров по всему ARК.</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Разрешить на постоянной основе держать Рейд-Животных.</sys:String>
