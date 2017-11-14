@@ -521,6 +521,7 @@
     <sys:String x:Key="ServerSettings_PlayersLabel">Игроки:</sys:String>
     <sys:String x:Key="ServerSettings_PlayersTooltip">Число игроков подключенные к серверу ARK в настоящее время.</sys:String>
 
+
     <!-- Server Settings - General Buttons -->
     <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Создать Zip файл в поддержку</sys:String>
     <sys:String x:Key="ServerSettings_SupportZipButtonTooltip">Создать zip-файл, содержащий все файлы, необходимые для использования службой поддержки ASM для диагностики проблемы.</sys:String>

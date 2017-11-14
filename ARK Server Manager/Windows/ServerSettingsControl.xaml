@@ -774,7 +774,7 @@
                         <Border Grid.Column="0" Margin="2" ToolTip="{DynamicResource ServerSettings_StatusTooltip}" Style="{DynamicResource BorderFillLightStyle}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Label FontSize="15" Content="{DynamicResource ServerSettings_StatusLabel}"/>
-                                <Label FontSize="15" Content="{Binding Status}" MinWidth="100"/>
+                                <Label FontSize="15" Content="{Binding StatusString}" MinWidth="100"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" Margin="2" ToolTip="{DynamicResource ServerSettings_AvailabilityTooltip}" Style="{DynamicResource BorderFillLightStyle}">

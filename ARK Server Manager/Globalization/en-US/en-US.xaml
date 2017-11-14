@@ -521,6 +521,14 @@
     <sys:String x:Key="ServerSettings_PlayersLabel">Players:</sys:String>
     <sys:String x:Key="ServerSettings_PlayersTooltip">The current number of players connected to the Ark server.</sys:String>
 
+    <sys:String x:Key="ServerSettings_RuntimeStatusInitializingLabel">Initializing</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusRunningLabel">Running</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppedLabel">Stopped</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppingLabel">Stopping</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUninstalledLabel">Uninstalled</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUnknownLabel">Unknown</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUpdatingLabel">Updating</sys:String>
+
     <!-- Server Settings - General Buttons -->
     <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Create Support Zip</sys:String>
     <sys:String x:Key="ServerSettings_SupportZipButtonTooltip">Create a zip file that contains all the files necessary for use by the ASM support team to diagnose a problem.</sys:String>

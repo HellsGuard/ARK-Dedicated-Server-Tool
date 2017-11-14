@@ -77,6 +77,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SteamProperty = DependencyProperty.Register(nameof(Steam), typeof(SteamStatus), typeof(ServerRuntime), new PropertyMetadata(SteamStatus.Unknown));
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(nameof(Status), typeof(ServerStatus), typeof(ServerRuntime), new PropertyMetadata(ServerStatus.Unknown));
+        public static readonly DependencyProperty StatusStringProperty = DependencyProperty.Register(nameof(StatusString), typeof(string), typeof(ServerRuntime), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty VersionProperty = DependencyProperty.Register(nameof(Version), typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
@@ -94,6 +95,12 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (ServerStatus)GetValue(StatusProperty); }
             protected set { SetValue(StatusProperty, value); }
+        }
+
+        public string StatusString
+        {
+            get { return (string)GetValue(StatusStringProperty); }
+            protected set { SetValue(StatusStringProperty, value); }
         }
 
         public int MaxPlayers
@@ -518,7 +525,7 @@ namespace ARK_Server_Manager.Lib
 
                 bool isNewInstallation = this.Status == ServerStatus.Uninstalled;
 
-                this.Status = ServerStatus.Updating;
+                UpdateServerStatus(ServerStatus.Updating, Steam, false);
 
                 // Run the SteamCMD to install the server
                 var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
@@ -928,7 +935,7 @@ namespace ARK_Server_Manager.Lib
             finally
             {
                 this.lastModStatusQuery = DateTime.MinValue;
-                this.Status = ServerStatus.Stopped;
+                UpdateServerStatus(ServerStatus.Stopped, Steam, false);
             }
         }
 
@@ -942,8 +949,41 @@ namespace ARK_Server_Manager.Lib
             this.Status = serverStatus;
             this.Steam = steamStatus;
 
+            UpdateServerStatusString();
+
             if (!string.IsNullOrWhiteSpace(Config.Default.Alert_ServerStatusChange) && sendAlert)
-                PluginHelper.Instance.ProcessAlert(AlertType.ServerStatusChange, this.ProfileSnapshot.ProfileName, $"{Config.Default.Alert_ServerStatusChange} {serverStatus}");
+                PluginHelper.Instance.ProcessAlert(AlertType.ServerStatusChange, this.ProfileSnapshot.ProfileName, $"{Config.Default.Alert_ServerStatusChange} {StatusString}");
+        }
+
+        public void UpdateServerStatusString()
+        {
+            switch (Status)
+            {
+                case ServerStatus.Initializing:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusInitializingLabel");
+                    break;
+                case ServerStatus.Running:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusRunningLabel");
+                    break;
+                case ServerStatus.Stopped:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusStoppedLabel");
+                    break;
+                case ServerStatus.Stopping:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusStoppingLabel");
+                    break;
+                case ServerStatus.Uninstalled:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusUninstalledLabel");
+                    break;
+                case ServerStatus.Unknown:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusUnknownLabel");
+                    break;
+                case ServerStatus.Updating:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusUpdatingLabel");
+                    break;
+                default:
+                    StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusUnknownLabel");
+                    break;
+            }
         }
     }
 }
