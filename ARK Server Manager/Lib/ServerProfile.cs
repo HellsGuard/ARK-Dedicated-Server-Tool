@@ -3813,12 +3813,12 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                // check for cluster settings
-                if (!string.IsNullOrWhiteSpace(CrossArkClusterId) && !string.IsNullOrWhiteSpace(ServerPassword))
-                {
-                    // cluster server configured, and server has a password
-                    result.AppendLine("This server is setup in a cluster, but has a server password defined, this will prevent your players transfers. To setup correctly, remove the password and use the exclusive join option in the Server File Details.");
-                }
+                //// check for cluster settings
+                //if (!string.IsNullOrWhiteSpace(CrossArkClusterId) && !string.IsNullOrWhiteSpace(ServerPassword))
+                //{
+                //    // cluster server configured, and server has a password
+                //    result.AppendLine("This server is setup in a cluster, but has a server password defined, this will prevent your players transfers. To setup correctly, remove the password and use the exclusive join option in the Server File Details.");
+                //}
             }
 
             validationMessage = result.ToString();
