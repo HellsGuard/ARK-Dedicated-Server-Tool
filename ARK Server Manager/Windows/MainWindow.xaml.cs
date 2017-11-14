@@ -35,9 +35,11 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerManagerProperty = DependencyProperty.Register(nameof(ServerManager), typeof(ServerManager), typeof(MainWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty LatestASMVersionProperty = DependencyProperty.Register(nameof(LatestASMVersion), typeof(Version), typeof(MainWindow), new PropertyMetadata(new Version()));
         public static readonly DependencyProperty NewASMAvailableProperty = DependencyProperty.Register(nameof(NewASMAvailable), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-        public static readonly DependencyProperty AutoBackupStateProperty = DependencyProperty.Register(nameof(AutoBackupState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty AutoBackupStateProperty = DependencyProperty.Register(nameof(AutoBackupState), typeof(Microsoft.Win32.TaskScheduler.TaskState), typeof(MainWindow), new PropertyMetadata(Microsoft.Win32.TaskScheduler.TaskState.Unknown));
+        public static readonly DependencyProperty AutoBackupStateStringProperty = DependencyProperty.Register(nameof(AutoBackupStateString), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty AutoBackupNextRunTimeProperty = DependencyProperty.Register(nameof(AutoBackupNextRunTime), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty AutoUpdateStateProperty = DependencyProperty.Register(nameof(AutoUpdateState), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty AutoUpdateStateProperty = DependencyProperty.Register(nameof(AutoUpdateState), typeof(Microsoft.Win32.TaskScheduler.TaskState), typeof(MainWindow), new PropertyMetadata(Microsoft.Win32.TaskScheduler.TaskState.Unknown));
+        public static readonly DependencyProperty AutoUpdateStateStringProperty = DependencyProperty.Register(nameof(AutoUpdateStateString), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty AutoUpdateNextRunTimeProperty = DependencyProperty.Register(nameof(AutoUpdateNextRunTime), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
 
         public bool BetaVersion
@@ -76,10 +78,16 @@ namespace ARK_Server_Manager
             set { SetValue(NewASMAvailableProperty, value); }
         }
 
-        public string AutoBackupState
+        public Microsoft.Win32.TaskScheduler.TaskState AutoBackupState
         {
-            get { return (string)GetValue(AutoBackupStateProperty); }
+            get { return (Microsoft.Win32.TaskScheduler.TaskState)GetValue(AutoBackupStateProperty); }
             set { SetValue(AutoBackupStateProperty, value); }
+        }
+
+        public string AutoBackupStateString
+        {
+            get { return (string)GetValue(AutoBackupStateStringProperty); }
+            set { SetValue(AutoBackupStateStringProperty, value); }
         }
 
         public string AutoBackupNextRunTime
@@ -88,10 +96,16 @@ namespace ARK_Server_Manager
             set { SetValue(AutoBackupNextRunTimeProperty, value); }
         }
 
-        public string AutoUpdateState
+        public Microsoft.Win32.TaskScheduler.TaskState AutoUpdateState
         {
-            get { return (string)GetValue(AutoUpdateStateProperty); }
+            get { return (Microsoft.Win32.TaskScheduler.TaskState)GetValue(AutoUpdateStateProperty); }
             set { SetValue(AutoUpdateStateProperty, value); }
+        }
+
+        public string AutoUpdateStateString
+        {
+            get { return (string)GetValue(AutoUpdateStateStringProperty); }
+            set { SetValue(AutoUpdateStateStringProperty, value); }
         }
 
         public string AutoUpdateNextRunTime
@@ -124,6 +138,9 @@ namespace ARK_Server_Manager
             IsAdministrator = SecurityUtils.IsAdministrator();
             if (IsAdministrator)
                 this.Title = _globalizer.GetResourceString("MainWindow_TitleWithAdmin");
+
+            // hook into the language change event
+            GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += ResourceDictionaryChangedEvent;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -160,6 +177,11 @@ namespace ARK_Server_Manager
             base.OnClosing(e);
             RCONWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
+        }
+
+        private void ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)
+        {
+            this.scheduledTaskChecker.PostAction(CheckForScheduledTasks).DoNotWait();
         }
 
         private void ASMPatchNotes_Click(object sender, RoutedEventArgs e)
@@ -452,8 +474,11 @@ namespace ARK_Server_Manager
                     var backupState = TaskSchedulerUtils.TaskStateAutoBackup(taskKey, null, out DateTime backupnextRunTime);
                     var updateState = TaskSchedulerUtils.TaskStateAutoUpdate(taskKey, null, out DateTime updatenextRunTime);
 
-                    this.AutoBackupState = backupState.ToString();
-                    this.AutoUpdateState = updateState.ToString();
+                    this.AutoBackupState = backupState;
+                    this.AutoUpdateState = updateState;
+
+                    this.AutoBackupStateString = GetTaskStateString(AutoBackupState);
+                    this.AutoUpdateStateString = GetTaskStateString(AutoUpdateState);
 
                     this.AutoBackupNextRunTime = backupnextRunTime == DateTime.MinValue ? string.Empty : $"{_globalizer.GetResourceString("MainWindow_TaskRunTimeLabel")} {backupnextRunTime.ToString("G")}";
                     this.AutoUpdateNextRunTime = updatenextRunTime == DateTime.MinValue ? string.Empty : $"{_globalizer.GetResourceString("MainWindow_TaskRunTimeLabel")} {updatenextRunTime.ToString("G")}";
@@ -468,6 +493,25 @@ namespace ARK_Server_Manager
 
             await Task.Delay(Config.Default.ScheduledTasksCheckTime * 1 * 1000);
             this.scheduledTaskChecker.PostAction(CheckForScheduledTasks).DoNotWait();
+        }
+
+        private string GetTaskStateString(Microsoft.Win32.TaskScheduler.TaskState taskState)
+        {
+            switch (taskState)
+            {
+                case Microsoft.Win32.TaskScheduler.TaskState.Disabled:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateDisabledLabel");
+                case Microsoft.Win32.TaskScheduler.TaskState.Queued:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateQueuedLabel");
+                case Microsoft.Win32.TaskScheduler.TaskState.Ready:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateReadyLabel");
+                case Microsoft.Win32.TaskScheduler.TaskState.Running:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateRunningLabel");
+                case Microsoft.Win32.TaskScheduler.TaskState.Unknown:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateUnknownLabel");
+                default:
+                    return _globalizer.GetResourceString("MainWindow_TaskStateUnknownLabel");
+            }
         }
     }
 }

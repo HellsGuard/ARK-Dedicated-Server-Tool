@@ -423,11 +423,29 @@
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Открыть Помощь</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Обновить до {0} сейчас!</sys:String>
     <sys:String x:Key="MainWindow_TaskStatusLabel">Статус задач</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupLabel">Авто-Сохранение:</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Запуск Авто-Сохранения</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateLabel">Авто-Обновление:</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Запуск Авто-Обновления</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorTitle">Требуется разрешение администратора</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorLabel">Эта функция не может быть выполнена, так как она требует права администратора.</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskLabel">Авто-Сохранение:</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunLabel">Запустить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunTooltip">Запустить Авто-Сохранение</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableLabel">Отключить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableTooltip">Отключить Авто-Сохранение по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableLabel">Включить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableTooltip">Включить Авто-Сохранение по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskLabel">Авто-Обновлени:</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunLabel">Запустить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunTooltip">Запустить Авто-Обновленя</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableLabel">Отключить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableTooltip">Отключить Авто-Обновленя по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableLabel">Включить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableTooltip">Включить Авто-Обновленя по заданному времени</sys:String>
     <sys:String x:Key="MainWindow_TaskRunTimeLabel">Следующее время выполнения:</sys:String>
+
+    <sys:String x:Key="MainWindow_TaskStateUnknownLabel">Отключено</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateDisabledLabel">Выключено</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateQueuedLabel">В очереди</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateReadyLabel">Активно</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateRunningLabel">Запущено</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Профиль не загружен</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">Не удалось загрузить профиль в {0}. Ошибка: {1}\r\n{2}</sys:String>
