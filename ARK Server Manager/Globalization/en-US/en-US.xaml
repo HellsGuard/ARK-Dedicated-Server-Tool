@@ -1284,9 +1284,13 @@
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">If enabled, spike walls will damage wild/riderless Dinos.</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Limit Turrets In Range</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">If enabled, will implemented a Turret Counter on HUD in preparation for Turret Count Limiting (clamping how many Turrets can be built in an area on servers).</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Auto Unlock All Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsTooltip">If enabled, engrams will be automatically unlocked as the player levels.</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>

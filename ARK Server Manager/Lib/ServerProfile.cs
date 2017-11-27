@@ -2349,7 +2349,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty FlyerPlatformAllowUnalignedDinoBasingProperty = DependencyProperty.Register(nameof(FlyerPlatformAllowUnalignedDinoBasing), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bFlyerPlatformAllowUnalignedDinoBasing")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bFlyerPlatformAllowUnalignedDinoBasing")]
         public bool FlyerPlatformAllowUnalignedDinoBasing
         {
             get { return (bool)GetValue(FlyerPlatformAllowUnalignedDinoBasingProperty); }
@@ -2488,6 +2488,15 @@ namespace ARK_Server_Manager.Lib
             get { return (int)GetValue(FastDecayIntervalProperty); }
             set { SetValue(FastDecayIntervalProperty, value); }
         }
+
+        public static readonly DependencyProperty LimitTurretsInRangeProperty = DependencyProperty.Register(nameof(LimitTurretsInRange), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bLimitTurretsInRange", ConditionedOn = nameof(LimitTurretsInRange))]
+        public bool LimitTurretsInRange
+        {
+            get { return (bool)GetValue(LimitTurretsInRangeProperty); }
+            set { SetValue(LimitTurretsInRangeProperty, value); }
+        }
         #endregion
 
         #region Engrams
@@ -2507,6 +2516,15 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (EngramEntryList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
             set { SetValue(OverrideNamedEngramEntriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoUnlockAllEngramsProperty = DependencyProperty.Register(nameof(AutoUnlockAllEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAutoUnlockAllEngrams", ConditionedOn = nameof(AutoUnlockAllEngrams))]
+        public bool AutoUnlockAllEngrams
+        {
+            get { return (bool)GetValue(AutoUnlockAllEngramsProperty); }
+            set { SetValue(AutoUnlockAllEngramsProperty, value); }
         }
         #endregion
 
@@ -4334,6 +4352,7 @@ namespace ARK_Server_Manager.Lib
 
         public void ResetEngramsSection()
         {
+            this.ClearValue(AutoUnlockAllEngramsProperty);
             this.ClearValue(OnlyAllowSpecifiedEngramsProperty);
 
             this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
@@ -4530,6 +4549,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(DestroyUnconnectedWaterPipesProperty);
             this.ClearValue(EnableFastDecayIntervalProperty);
             this.ClearValue(FastDecayIntervalProperty);
+            this.ClearValue(LimitTurretsInRangeProperty);
         }
 
         public void ResetSupplyCreateOverridesSection()
@@ -4826,6 +4846,7 @@ namespace ARK_Server_Manager.Lib
 
         private void SyncEngramsSection(ServerProfile sourceProfile)
         {
+            this.SetValue(AutoUnlockAllEngramsProperty, sourceProfile.AutoUnlockAllEngrams);
             this.SetValue(OnlyAllowSpecifiedEngramsProperty, sourceProfile.OnlyAllowSpecifiedEngrams);
 
             this.OverrideNamedEngramEntries.Clear();
@@ -5054,6 +5075,7 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(DestroyUnconnectedWaterPipesProperty, sourceProfile.DestroyUnconnectedWaterPipes);
             this.SetValue(EnableFastDecayIntervalProperty, sourceProfile.EnableFastDecayInterval);
             this.SetValue(FastDecayIntervalProperty, sourceProfile.FastDecayInterval);
+            this.SetValue(LimitTurretsInRangeProperty, sourceProfile.LimitTurretsInRange);
         }
 
         private void SyncSupplyCrateOverridesSection(ServerProfile sourceProfile)

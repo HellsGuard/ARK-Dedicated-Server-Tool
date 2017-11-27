@@ -2835,6 +2835,7 @@
 
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_ForceAllStructureLockingLabel}" IsChecked="{Binding ForceAllStructureLocking}" ToolTip="{DynamicResource ServerSettings_ForceAllStructureLockingTooltip}" HorizontalAlignment="Left"/>
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PassiveDefensesDamageDinosLabel}" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" ToolTip="{DynamicResource ServerSettings_PassiveDefensesDamageDinosTooltip}" HorizontalAlignment="Left"/>
+                                    <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_LimitTurretsInRangeLabel}" IsChecked="{Binding LimitTurretsInRange}" ToolTip="{DynamicResource ServerSettings_LimitTurretsInRangeTooltip}" HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Grid>
                         </Expander>
@@ -2866,7 +2867,14 @@
                             </Expander.Style>
 
                             <Grid Margin="-8,0,2,0">
-                                <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                
+                                <CheckBox Grid.Row="0" Margin="5" Content="{DynamicResource ServerSettings_AutoUnlockAllEngramsLabel}" IsChecked="{Binding AutoUnlockAllEngrams}" ToolTip="{DynamicResource ServerSettings_AutoUnlockAllEngramsTooltip}" HorizontalAlignment="Left"/>
+
+                                <GroupBox Grid.Row="1" Style="{StaticResource GroupBoxStyle}">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox x:Name="EnableEngramOverridesCheckbox" IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="{DynamicResource ServerSettings_EnableEngramsOverrideLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableEngramsOverrideTooltip}"/>
