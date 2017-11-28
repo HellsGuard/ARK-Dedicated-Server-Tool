@@ -1284,8 +1284,12 @@
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">Если этот параметр включен, позволит замыкать все контейнеры.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Пассивный урон структурами</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">Если этот параметр включен, стены с шипами наносят урон диким/ручным динозаврам.</sys:String>
-
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Ограничить кол-во Турелей в радиусе</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">Если включено, будет реализован ограничение на 100 турелей в определенном радиусе</sys:String>
+    
     <!-- Server Settings - Engrams -->
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Авто открытие всех Энграмм</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsTooltip">Если включено, энграммы автоматически разблокируются по мере того, какой уровень игрока.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLabel">Энграммы</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Включить перерасчет Энграмм</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">Если параметр включен, позволит настраивать Энграммы.</sys:String>
@@ -1695,6 +1699,10 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip">This is a multiplier to modify the item set quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnLabel">Добавление Предметов в группу Контейнеров</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnTooltip">Если включено, вы можете изменить лут целой группы контейнеров с припасами, использовав только часть названия (а не полное название контейнера, как раньше)</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnLabel">Динамическое увеличение</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnTooltip">Если включено, динамически увеличивать допустимое количество предметов, несмотря на то сколько дополнительных предметов вы добавили (применяется только при Включеной "Добавление Предметов в группу Контейнеров").</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnLabel">Description</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip">A description to identify the item set.</sys:String>
