@@ -1699,6 +1699,10 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip">This is a multiplier to modify the item set quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnLabel">Append Item Sets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnTooltip">If enabled, will add item sets to supply crates, rather than totally overriding all their items.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnLabel">Prevent Increasing</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnTooltip">If enabled, will dynamically increase the amount of items dropped by however many additional itemsets you add (only applies when AppendItemSets=true).</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnLabel">Description</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip">A description to identify the item set.</sys:String>
