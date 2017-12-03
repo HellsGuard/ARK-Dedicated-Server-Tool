@@ -441,6 +441,12 @@
     <sys:String x:Key="MainWindow_AutoUpdateTaskEnableTooltip">Enable the auto-update scheduled task</sys:String>
     <sys:String x:Key="MainWindow_TaskRunTimeLabel">Next Run Time:</sys:String>
 
+    <sys:String x:Key="MainWindow_TaskStateUnknownLabel">Unknown</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateDisabledLabel">Disabled</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateQueuedLabel">Queued</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateReadyLabel">Ready</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateRunningLabel">Running</sys:String>
+
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Profile failed to load</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">The profile at {0} failed to load. The error was: {1}\r\n{2}</sys:String>
     <sys:String x:Key="MainWindow_ProfileDelete_Title">Delete Profile {0}?</sys:String>
@@ -514,6 +520,14 @@
     <sys:String x:Key="ServerSettings_Availability_Available">Available</sys:String>
     <sys:String x:Key="ServerSettings_PlayersLabel">Players:</sys:String>
     <sys:String x:Key="ServerSettings_PlayersTooltip">The current number of players connected to the Ark server.</sys:String>
+
+    <sys:String x:Key="ServerSettings_RuntimeStatusInitializingLabel">Initializing</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusRunningLabel">Running</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppedLabel">Stopped</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppingLabel">Stopping</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUninstalledLabel">Uninstalled</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUnknownLabel">Unknown</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUpdatingLabel">Updating</sys:String>
 
     <!-- Server Settings - General Buttons -->
     <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Create Support Zip</sys:String>
@@ -1270,9 +1284,13 @@
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">If enabled, allow Locking all item containers.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Passive Defenses Damage Riderless Dinos</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">If enabled, spike walls will damage wild/riderless Dinos.</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Limit Turrets In Range</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">If enabled, will implemented a Turret Counter on HUD in preparation for Turret Count Limiting (clamping how many Turrets can be built in an area on servers).</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Auto Unlock All Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsTooltip">If enabled, engrams will be automatically unlocked as the player levels.</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Enable Engram Overrides</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">If enabled, enables engram customizations.</sys:String>
     <sys:String x:Key="ServerSettings_ResetEngramsLabel">Reset all engram customizations back to defaults.</sys:String>
@@ -1681,6 +1699,10 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip">This is a multiplier to modify the item set quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnLabel">Append Item Sets</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnTooltip">If enabled, will add item sets to supply crates, rather than totally overriding all their items.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnLabel">Prevent Increasing</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnTooltip">If enabled, will dynamically increase the amount of items dropped by however many additional itemsets you add (only applies when AppendItemSets=true).</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnLabel">Description</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip">A description to identify the item set.</sys:String>

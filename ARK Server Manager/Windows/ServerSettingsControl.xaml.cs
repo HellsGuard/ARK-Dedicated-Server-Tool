@@ -329,6 +329,8 @@ namespace ARK_Server_Manager
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
+
+            Runtime.UpdateServerStatusString();
         }
 
         private void Window_Closed(object sender, EventArgs e)

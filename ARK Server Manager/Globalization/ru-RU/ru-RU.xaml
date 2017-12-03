@@ -423,11 +423,29 @@
     <sys:String x:Key="MainWindow_OpenHelpTooltip">Открыть Помощь</sys:String>
     <sys:String x:Key="MainWindow_UpdateToLabelFormat">Обновить до {0} сейчас!</sys:String>
     <sys:String x:Key="MainWindow_TaskStatusLabel">Статус задач</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupLabel">Авто-Сохранение:</sys:String>
-    <sys:String x:Key="MainWindow_AutoBackupRunTooltip">Запуск Авто-Сохранения</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateLabel">Авто-Обновление:</sys:String>
-    <sys:String x:Key="MainWindow_AutoUpdateRunTooltip">Запуск Авто-Обновления</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorTitle">Требуется разрешение администратора</sys:String>
+    <sys:String x:Key="MainWindow_TaskAdminErrorLabel">Эта функция не может быть выполнена, так как она требует права администратора.</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskLabel">Авто-Сохранение:</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunLabel">Запустить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskRunTooltip">Запустить Авто-Сохранение</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableLabel">Отключить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskDisableTooltip">Отключить Авто-Сохранение по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableLabel">Включить</sys:String>
+    <sys:String x:Key="MainWindow_AutoBackupTaskEnableTooltip">Включить Авто-Сохранение по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskLabel">Авто-Обновлени:</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunLabel">Запустить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskRunTooltip">Запустить Авто-Обновленя</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableLabel">Отключить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskDisableTooltip">Отключить Авто-Обновленя по заданному времени</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableLabel">Включить</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateTaskEnableTooltip">Включить Авто-Обновленя по заданному времени</sys:String>
     <sys:String x:Key="MainWindow_TaskRunTimeLabel">Следующее время выполнения:</sys:String>
+
+    <sys:String x:Key="MainWindow_TaskStateUnknownLabel">Отключено</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateDisabledLabel">Выключено</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateQueuedLabel">В очереди</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateReadyLabel">Активно</sys:String>
+    <sys:String x:Key="MainWindow_TaskStateRunningLabel">Запущено</sys:String>
 
     <sys:String x:Key="MainWindow_ProfileLoad_FailedTitle">Профиль не загружен</sys:String>
     <sys:String x:Key="MainWindow_ProfileLoad_FailedLabel">Не удалось загрузить профиль в {0}. Ошибка: {1}\r\n{2}</sys:String>
@@ -502,6 +520,14 @@
     <sys:String x:Key="ServerSettings_Availability_Available">Доступно</sys:String>
     <sys:String x:Key="ServerSettings_PlayersLabel">Игроки:</sys:String>
     <sys:String x:Key="ServerSettings_PlayersTooltip">Число игроков подключенные к серверу ARK в настоящее время.</sys:String>
+
+    <sys:String x:Key="ServerSettings_RuntimeStatusInitializingLabel">Инициализация</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusRunningLabel">Запущен</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppedLabel">Остановлен</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusStoppingLabel">Остановка</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUninstalledLabel">Удаление</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUnknownLabel">Неизвестно</sys:String>
+    <sys:String x:Key="ServerSettings_RuntimeStatusUpdatingLabel">Обновление</sys:String>
 
     <!-- Server Settings - General Buttons -->
     <sys:String x:Key="ServerSettings_SupportZipButtonLabel">Создать Zip файл в поддержку</sys:String>
@@ -1258,8 +1284,12 @@
     <sys:String x:Key="ServerSettings_ForceAllStructureLockingTooltip">Если этот параметр включен, позволит замыкать все контейнеры.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosLabel">Пассивный урон структурами</sys:String>
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">Если этот параметр включен, стены с шипами наносят урон диким/ручным динозаврам.</sys:String>
-
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Ограничить кол-во Турелей в радиусе</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">Если включено, будет реализован ограничение на 100 турелей в определенном радиусе</sys:String>
+    
     <!-- Server Settings - Engrams -->
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Авто открытие всех Энграмм</sys:String>
+    <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsTooltip">Если включено, энграммы автоматически разблокируются по мере того, какой уровень игрока.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsLabel">Энграммы</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideLabel">Включить перерасчет Энграмм</sys:String>
     <sys:String x:Key="ServerSettings_EnableEngramsOverrideTooltip">Если параметр включен, позволит настраивать Энграммы.</sys:String>
@@ -1669,6 +1699,10 @@
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_NumItemSetsPowerColumnTooltip">This is a multiplier to modify the item set quality. A value of 1.0 will result in a good mix of all quality levels (Wildcard recommends to keep it at 1.0).</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnLabel">Prevent Duplicates</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_Crate_SetsRandomWithoutReplacementColumnTooltip">If enabled, will ensure that only one item will be added to the same loot crate, if it was added to two different sets.</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnLabel">Добавление Предметов в группу Контейнеров</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendItemSetsColumnTooltip">Если включено, вы можете изменить лут целой группы контейнеров с припасами, использовав только часть названия (а не полное название контейнера, как раньше)</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnLabel">Динамическое увеличение</sys:String>
+    <sys:String x:Key="ServerSettings_SupplyCrate_Crate_AppendPreventIncreasingMinMaxItemSetsColumnTooltip">Если включено, динамически увеличивать допустимое количество предметов, несмотря на то сколько дополнительных предметов вы добавили (применяется только при Включеной "Добавление Предметов в группу Контейнеров").</sys:String>
 
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnLabel">Description</sys:String>
     <sys:String x:Key="ServerSettings_SupplyCrate_ItemSet_NameColumnTooltip">A description to identify the item set.</sys:String>

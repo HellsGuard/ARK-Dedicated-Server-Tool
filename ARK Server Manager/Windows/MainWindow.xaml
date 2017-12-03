@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
         xmlns:vm="clr-namespace:ARK_Server_Manager.Lib.ViewModel"
+        xmlns:tsk="clr-namespace:Microsoft.Win32.TaskScheduler;assembly=Microsoft.Win32.TaskScheduler"
         xmlns:eo="http://schemas.essentialobjects.com/wpf/"
         MinWidth="800" MinHeight="600" Width="1100" Height="900" 
         Loaded="Window_Loaded"
@@ -125,18 +126,18 @@
                         
                         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
                             <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoBackupTaskLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
-                            <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoBackupState}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}">
+                            <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoBackupStateString}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoBackupNextRunTime}" ToolTipService.IsEnabled="{Binding AutoBackupNextRunTime, Converter={StaticResource HasStringValueConverter}}">
                                 <Label.Style>
                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
                                         <Setter Property="Foreground" Value="White"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="Disabled">
+                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Disabled}">
                                                 <Setter Property="Foreground" Value="DarkRed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="Ready">
+                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Ready}">
                                                 <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="Running">
+                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Running}">
                                                 <Setter Property="Foreground" Value="LightGreen"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -148,7 +149,7 @@
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="Ready">
+                                            <DataTrigger Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Ready}">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -164,18 +165,18 @@
                                         <Style.Triggers>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding AutoBackupState}" Value="Ready"/>
+                                                    <Condition Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Disabled}"/>
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskDisableLabel}"/>
-                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskDisableTooltip}"/>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskEnableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskEnableTooltip}"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding AutoBackupState}" Value="Disabled"/>
+                                                    <Condition Binding="{Binding AutoBackupState}" Value="{x:Static tsk:TaskState.Ready}"/>
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskEnableLabel}"/>
-                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskEnableTooltip}"/>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoBackupTaskDisableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoBackupTaskDisableTooltip}"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </MultiDataTrigger>
                                         </Style.Triggers>
@@ -186,18 +187,18 @@
                         
                         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
                             <Label Margin="0" Background="Transparent" Foreground="White" FontSize="10" Content="{DynamicResource MainWindow_AutoUpdateTaskLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}"/>
-                            <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoUpdateState}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}">
+                            <Label Margin="0" Background="Transparent" FontSize="10" Content="{Binding AutoUpdateStateString}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{Binding AutoUpdateNextRunTime}" ToolTipService.IsEnabled="{Binding AutoUpdateNextRunTime, Converter={StaticResource HasStringValueConverter}}">
                                 <Label.Style>
                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
                                         <Setter Property="Foreground" Value="White"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="Disabled">
+                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Disabled}">
                                                 <Setter Property="Foreground" Value="DarkRed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="Ready">
+                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Ready}">
                                                 <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="Running">
+                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Running}">
                                                 <Setter Property="Foreground" Value="LightGreen"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -209,7 +210,7 @@
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="Ready">
+                                            <DataTrigger Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Ready}">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -225,18 +226,18 @@
                                         <Style.Triggers>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding AutoUpdateState}" Value="Ready"/>
+                                                    <Condition Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Disabled}"/>
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableLabel}"/>
-                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableTooltip}"/>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableTooltip}"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding AutoUpdateState}" Value="Disabled"/>
+                                                    <Condition Binding="{Binding AutoUpdateState}" Value="{x:Static tsk:TaskState.Ready}"/>
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableLabel}"/>
-                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskEnableTooltip}"/>
+                                                <Setter Property="Content" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableLabel}"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource MainWindow_AutoUpdateTaskDisableTooltip}"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </MultiDataTrigger>
                                         </Style.Triggers>

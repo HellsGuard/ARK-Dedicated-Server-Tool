@@ -125,6 +125,24 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SetsRandomWithoutReplacementProperty, value); }
         }
 
+        public static readonly DependencyProperty AppendItemSetsProperty = DependencyProperty.Register(nameof(AppendItemSets), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(false));
+        [DataMember]
+        [AggregateIniValueEntry(Key = "bAppendItemSets", ExcludeIfFalse = true)]
+        public bool AppendItemSets
+        {
+            get { return (bool)GetValue(AppendItemSetsProperty); }
+            set { SetValue(AppendItemSetsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AppendPreventIncreasingMinMaxItemSetsProperty = DependencyProperty.Register(nameof(AppendPreventIncreasingMinMaxItemSets), typeof(bool), typeof(SupplyCrateOverride), new PropertyMetadata(false));
+        [DataMember]
+        [AggregateIniValueEntry(Key = "bAppendPreventIncreasingMinMaxItemSets", ExcludeIfFalse = true)]
+        public bool AppendPreventIncreasingMinMaxItemSets
+        {
+            get { return (bool)GetValue(AppendPreventIncreasingMinMaxItemSetsProperty); }
+            set { SetValue(AppendPreventIncreasingMinMaxItemSetsProperty, value); }
+        }
+
         public static readonly DependencyProperty ItemSetsProperty = DependencyProperty.Register(nameof(ItemSets), typeof(AggregateIniValueList<SupplyCrateItemSet>), typeof(SupplyCrateOverride), new PropertyMetadata(null));
         [DataMember]
         [AggregateIniValueEntry(ValueWithinBrackets = true, ListValueWithinBrackets = true, BracketsAroundValueDelimiter = 2)]
