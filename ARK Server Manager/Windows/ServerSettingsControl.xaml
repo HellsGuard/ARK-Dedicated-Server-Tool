@@ -2829,13 +2829,23 @@
                                         </GroupBox.Header>
 
                                         <StackPanel Orientation="Vertical">
-                                            <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=FastDecayIntervalCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_FastDecayIntervalLabel}" Value="{Binding FastDecayInterval}" Minimum="0" Maximum="100000" LargeChange="1000" SmallChange="100" TickFrequency="10000" LabelRelativeWidth="Auto" Suffix="{DynamicResource SliderUnits_Seconds}" ToolTip="{DynamicResource ServerSettings_FastDecayIntervalTooltip}"/>
+                                            <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=FastDecayIntervalCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_FastDecayIntervalLabel}" Value="{Binding FastDecayInterval}" Minimum="0" Maximum="100000" LargeChange="1000" SmallChange="100" TickFrequency="10000" Suffix="{DynamicResource SliderUnits_Seconds}" ToolTip="{DynamicResource ServerSettings_FastDecayIntervalTooltip}"/>
                                         </StackPanel>
                                     </GroupBox>
 
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_ForceAllStructureLockingLabel}" IsChecked="{Binding ForceAllStructureLocking}" ToolTip="{DynamicResource ServerSettings_ForceAllStructureLockingTooltip}" HorizontalAlignment="Left"/>
                                     <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_PassiveDefensesDamageDinosLabel}" IsChecked="{Binding PassiveDefensesDamageRiderlessDinos}" ToolTip="{DynamicResource ServerSettings_PassiveDefensesDamageDinosTooltip}" HorizontalAlignment="Left"/>
-                                    <CheckBox              Margin="5" Content="{DynamicResource ServerSettings_LimitTurretsInRangeLabel}" IsChecked="{Binding LimitTurretsInRange}" ToolTip="{DynamicResource ServerSettings_LimitTurretsInRangeTooltip}" HorizontalAlignment="Left"/>
+
+                                    <GroupBox Style="{StaticResource GroupBoxStyle}">
+                                        <GroupBox.Header>
+                                            <CheckBox x:Name="LimitTurretsInRangeCheckbox" IsChecked="{Binding LimitTurretsInRange}" Content="{DynamicResource ServerSettings_LimitTurretsInRangeLabel}" ToolTip="{DynamicResource ServerSettings_LimitTurretsInRangeTooltip}"/>
+                                        </GroupBox.Header>
+
+                                        <StackPanel Orientation="Vertical">
+                                            <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=LimitTurretsInRangeCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_LimitTurretsRangeLabel}" Value="{Binding LimitTurretsRange}" Minimum="1" Maximum="1000000" LargeChange="1000" SmallChange="100" TickFrequency="10000" Suffix="{DynamicResource SliderUnits_Units}" ToolTip="{DynamicResource ServerSettings_LimitTurretsRangeTooltip}"/>
+                                            <local:AnnotatedSlider Margin="1" IsEnabled="{Binding ElementName=LimitTurretsInRangeCheckbox, Path=IsChecked}" Label="{DynamicResource ServerSettings_LimitTurretsNumLabel}" Value="{Binding LimitTurretsNum}" Minimum="1" Maximum="1000" LargeChange="100" SmallChange="10" TickFrequency="100" ToolTip="{DynamicResource ServerSettings_LimitTurretsNumTooltip}"/>
+                                        </StackPanel>
+                                    </GroupBox>
                                 </StackPanel>
                             </Grid>
                         </Expander>

@@ -2376,7 +2376,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEStructureDecayDestructionPeriodProperty = DependencyProperty.Register(nameof(PvEStructureDecayDestructionPeriod), typeof(float), typeof(ServerProfile), new PropertyMetadata(0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableStructureDecayPvE))]
         public float PvEStructureDecayDestructionPeriod
         {
             get { return (float)GetValue(PvEStructureDecayDestructionPeriodProperty); }
@@ -2385,7 +2385,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEStructureDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEStructureDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableStructureDecayPvE))]
         public float PvEStructureDecayPeriodMultiplier
         {
             get { return (float)GetValue(PvEStructureDecayPeriodMultiplierProperty); }
@@ -2496,6 +2496,24 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(LimitTurretsInRangeProperty); }
             set { SetValue(LimitTurretsInRangeProperty, value); }
+        }
+
+        public static readonly DependencyProperty LimitTurretsRangeProperty = DependencyProperty.Register(nameof(LimitTurretsRange), typeof(int), typeof(ServerProfile), new PropertyMetadata(10000));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(LimitTurretsInRange))]
+        public int LimitTurretsRange
+        {
+            get { return (int)GetValue(LimitTurretsRangeProperty); }
+            set { SetValue(LimitTurretsRangeProperty, value); }
+        }
+
+        public static readonly DependencyProperty LimitTurretsNumProperty = DependencyProperty.Register(nameof(LimitTurretsNum), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(LimitTurretsInRange))]
+        public int LimitTurretsNum
+        {
+            get { return (int)GetValue(LimitTurretsNumProperty); }
+            set { SetValue(LimitTurretsNumProperty, value); }
         }
         #endregion
 
@@ -4550,6 +4568,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableFastDecayIntervalProperty);
             this.ClearValue(FastDecayIntervalProperty);
             this.ClearValue(LimitTurretsInRangeProperty);
+            this.ClearValue(LimitTurretsRangeProperty);
+            this.ClearValue(LimitTurretsNumProperty);
         }
 
         public void ResetSupplyCreateOverridesSection()
@@ -5076,6 +5096,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(EnableFastDecayIntervalProperty, sourceProfile.EnableFastDecayInterval);
             this.SetValue(FastDecayIntervalProperty, sourceProfile.FastDecayInterval);
             this.SetValue(LimitTurretsInRangeProperty, sourceProfile.LimitTurretsInRange);
+            this.SetValue(LimitTurretsRangeProperty, sourceProfile.LimitTurretsRange);
+            this.SetValue(LimitTurretsNumProperty, sourceProfile.LimitTurretsNum);
         }
 
         private void SyncSupplyCrateOverridesSection(ServerProfile sourceProfile)

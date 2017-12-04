@@ -485,6 +485,7 @@
     <sys:String x:Key="SliderUnits_Players">players</sys:String>
     <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
     <sys:String x:Key="SliderUnits_Levels">levels</sys:String>
+    <sys:String x:Key="SliderUnits_Units">units</sys:String>
 
     <!--
     Server Settings
@@ -1286,6 +1287,10 @@
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">If enabled, spike walls will damage wild/riderless Dinos.</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Limit Turrets In Range</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">If enabled, will implemented a Turret Counter on HUD in preparation for Turret Count Limiting (clamping how many Turrets can be built in an area on servers).</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsRangeLabel">Limit Range</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsRangeTooltip">Sets the limit range for ALL auto turrets and plant turrets.</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsNumLabel">Limit Number</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsNumTooltip">Sets the maximum number of turrets that can be placed within the limit range.</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
