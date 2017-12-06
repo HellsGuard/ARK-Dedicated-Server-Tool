@@ -154,21 +154,28 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                 {
                     var localImageFile = Path.Combine(imageSavePath, $"{this.SteamId}{Config.Default.PlayerImageFileExtension}");
 
-                    // check for a valid URL.
-                    if (!String.IsNullOrWhiteSpace(playerData.AvatarUrl))
+                    if (Config.Default.RCON_DownloadPlayerAvatars)
                     {
-                        try
+                        // check for a valid URL.
+                        if (!String.IsNullOrWhiteSpace(playerData.AvatarUrl))
                         {
-                            using (var client = new WebClient())
+                            try
                             {
-                                await client.DownloadFileTaskAsync(playerData.AvatarUrl, localImageFile);
+                                using (var client = new WebClient())
+                                {
+                                    await client.DownloadFileTaskAsync(playerData.AvatarUrl, localImageFile);
+                                }
+                                _logger.Debug($"{nameof(UpdateDataAsync)} - downloaded avatar image for {this.SteamId} from {playerData.AvatarUrl}.");
                             }
-                            _logger.Debug($"{nameof(UpdateDataAsync)} - downloaded avatar image for {this.SteamId} from {playerData.AvatarUrl}.");
+                            catch (Exception ex)
+                            {
+                                _logger.Debug($"{nameof(UpdateDataAsync)} - failed to download avatar image for {this.SteamId} from {playerData.AvatarUrl}. {ex.Message}\r\n{ex.StackTrace}");
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            _logger.Debug($"{nameof(UpdateDataAsync)} - failed to download avatar image for {this.SteamId} from {playerData.AvatarUrl}. {ex.Message}\r\n{ex.StackTrace}");
-                        }
+                    }
+                    else
+                    {
+                        _logger?.Debug($"Avatar image download for {this.SteamId} skipped due to global setting.");
                     }
 
                     if (File.Exists(localImageFile))

@@ -234,6 +234,9 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Получить WebApi Ключ...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Помощь...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Языки</sys:String>
+    <sys:String x:Key="GlobalSettings_RconOptionsLabel">RCON Настройки</sys:String>
+    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsLabel">Загрузить Аватар игрока</sys:String>
+    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsTooltip">Если включено, изображения аватара игрока будут загружен из Steam, которые будут отображаться в списке игроков RCON.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Настройка перераспределения Настроек</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Включить Crafting Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">Если включено, Crafting Overrides будут использовать настройки ASM.</sys:String>
@@ -485,6 +488,7 @@
     <sys:String x:Key="SliderUnits_Players">игроки</sys:String>
     <sys:String x:Key="SliderUnits_Tribes">племя</sys:String>
     <sys:String x:Key="SliderUnits_Levels">уровни</sys:String>
+    <sys:String x:Key="SliderUnits_Units">единицы</sys:String>
 
     <!--
     Server Settings
