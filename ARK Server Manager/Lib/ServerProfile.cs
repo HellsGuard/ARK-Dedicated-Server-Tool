@@ -2491,7 +2491,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty LimitTurretsInRangeProperty = DependencyProperty.Register(nameof(LimitTurretsInRange), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bLimitTurretsInRange", ConditionedOn = nameof(LimitTurretsInRange))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bLimitTurretsInRange")]
         public bool LimitTurretsInRange
         {
             get { return (bool)GetValue(LimitTurretsInRangeProperty); }

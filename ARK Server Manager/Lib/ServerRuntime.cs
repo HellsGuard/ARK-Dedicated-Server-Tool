@@ -952,7 +952,7 @@ namespace ARK_Server_Manager.Lib
             UpdateServerStatusString();
 
             if (!string.IsNullOrWhiteSpace(Config.Default.Alert_ServerStatusChange) && sendAlert)
-                PluginHelper.Instance.ProcessAlert(AlertType.ServerStatusChange, this.ProfileSnapshot.ProfileName, $"{Config.Default.Alert_ServerStatusChange} {StatusString}");
+                PluginHelper.Instance.ProcessAlert(AlertType.ServerStatusChange, this.ProfileSnapshot.ProfileName, $"{Config.Default.Alert_ServerStatusChange} {Status}");
         }
 
         public void UpdateServerStatusString()
