@@ -548,5 +548,8 @@
     <Setting Name="Alert_ForceRespawnDinos" Type="System.String" Scope="User">
       <Value Profile="(Default)">A wild dino wipe is scheduled after the server starts and may delay login until it is complete. Please be patient.</Value>
     </Setting>
+    <Setting Name="RCON_DownloadPlayerAvatars" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

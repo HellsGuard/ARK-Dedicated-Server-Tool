@@ -1952,5 +1952,17 @@ namespace ARK_Server_Manager {
                 this["Alert_ForceRespawnDinos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RCON_DownloadPlayerAvatars {
+            get {
+                return ((bool)(this["RCON_DownloadPlayerAvatars"]));
+            }
+            set {
+                this["RCON_DownloadPlayerAvatars"] = value;
+            }
+        }
     }
 }
