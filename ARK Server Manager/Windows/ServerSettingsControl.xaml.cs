@@ -2901,54 +2901,61 @@ namespace ARK_Server_Manager
                             await Task.Delay(500);
 
                             // NOTE: This parameter is of type object and must be cast in most cases before use.
-                            var settings = (Server)parameter;
-                            if (settings.Profile.EnableAutoShutdown1 || settings.Profile.EnableAutoShutdown2)
+                            var server = parameter as Server;
+                            if (server != null)
                             {
-                                if (settings.Profile.SOTF_Enabled)
+                                if (server.Profile.EnableAutoShutdown1 || server.Profile.EnableAutoShutdown2)
                                 {
-                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                    settings.Profile.EnableAutoShutdown1 = false;
-                                    settings.Profile.RestartAfterShutdown1 = true;
-                                    settings.Profile.EnableAutoShutdown2 = false;
-                                    settings.Profile.RestartAfterShutdown2 = true;
-                                    settings.Profile.AutoRestartIfShutdown = false;
+                                    if (server.Profile.SOTF_Enabled)
+                                    {
+                                        MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoRestart_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        server.Profile.EnableAutoShutdown1 = false;
+                                        server.Profile.RestartAfterShutdown1 = true;
+                                        server.Profile.EnableAutoShutdown2 = false;
+                                        server.Profile.RestartAfterShutdown2 = true;
+                                        server.Profile.AutoRestartIfShutdown = false;
+                                    }
+                                }
+
+                                if (server.Profile.EnableAutoUpdate)
+                                {
+                                    if (server.Profile.SOTF_Enabled)
+                                    {
+                                        MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        server.Profile.EnableAutoUpdate = false;
+                                        server.Profile.AutoRestartIfShutdown = false;
+                                    }
+                                }
+
+                                server.Profile.Save(false, false, (p, m, n) => { OverlayMessage.Content = m; });
+
+                                RefreshBaseDinoList();
+                                RefreshBaseMapSpawnerList();
+                                RefreshBasePrimalItemList();
+                                RefreshBaseSupplyCrateList();
+                                RefreshBaseGameMapsList();
+                                RefreshBaseTotalConversionsList();
+
+                                OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
+                                await Task.Delay(500);
+
+                                if (!server.Profile.UpdateDirectoryPermissions())
+                                {
+                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+
+                                OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_SchedulesLabel");
+                                await Task.Delay(500);
+
+                                if (!server.Profile.UpdateSchedules())
+                                {
+                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
                             }
-
-                            if (settings.Profile.EnableAutoUpdate)
-                            {
-                                if (settings.Profile.SOTF_Enabled)
-                                {
-                                    MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_AutoUpdate_SotF_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                                    settings.Profile.EnableAutoUpdate = false;
-                                    settings.Profile.AutoRestartIfShutdown = false;
-                                }
-                            }
-
-                            settings.Profile.Save(false, false, (p, m, n) => { OverlayMessage.Content = m; });
-
-                            RefreshBaseDinoList();
-                            RefreshBaseMapSpawnerList();
-                            RefreshBasePrimalItemList();
-                            RefreshBaseSupplyCrateList();
-                            RefreshBaseGameMapsList();
-                            RefreshBaseTotalConversionsList();
-
-                            OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
-                            await Task.Delay(500);
-
-                            if (!settings.Profile.UpdateDirectoryPermissions())
-                            {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdatePermissions_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
-
-                            OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_SchedulesLabel");
-                            await Task.Delay(500);
-
-                            if (!settings.Profile.UpdateSchedules())
-                            {
-                                MessageBox.Show(_globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorLabel"), _globalizer.GetResourceString("ServerSettings_Save_UpdateSchedule_ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         finally
                         {
@@ -2958,11 +2965,7 @@ namespace ARK_Server_Manager
                     },
                     canExecute: (parameter) =>
                     {
-                        bool canSave = true;
-
-                        // NOTE: Some logic if necessary.  If this return's false, the associated object to which this command is bound (like the Save button in this case) will be automatically disabled,
-                        // eliminating any extra Xaml binding for the IsEnabled property.
-                        return canSave;
+                        return (parameter as Server) != null;
                     }
                 );
             }
