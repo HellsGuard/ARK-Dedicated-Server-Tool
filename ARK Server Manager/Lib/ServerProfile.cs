@@ -1060,6 +1060,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MinimumDinoReuploadIntervalProperty, value); }
         }
 
+        public static readonly DependencyProperty CrossARKAllowForeignDinoDownloadsProperty = DependencyProperty.Register(nameof(CrossARKAllowForeignDinoDownloads), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool CrossARKAllowForeignDinoDownloads
+        {
+            get { return (bool)GetValue(CrossARKAllowForeignDinoDownloadsProperty); }
+            set { SetValue(CrossARKAllowForeignDinoDownloadsProperty, value); }
+        }
+
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bIncreasePvPRespawnInterval")]
@@ -1344,6 +1353,24 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(EnableNoFishLootProperty); }
             set { SetValue(EnableNoFishLootProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseCorpseLifeSpanMultiplierProperty = DependencyProperty.Register(nameof(UseCorpseLifeSpanMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float UseCorpseLifeSpanMultiplier
+        {
+            get { return (float)GetValue(UseCorpseLifeSpanMultiplierProperty); }
+            set { SetValue(UseCorpseLifeSpanMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty GlobalPoweredBatteryDurabilityDecreasePerSecondProperty = DependencyProperty.Register(nameof(GlobalPoweredBatteryDurabilityDecreasePerSecond), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float GlobalPoweredBatteryDurabilityDecreasePerSecond
+        {
+            get { return (float)GetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty); }
+            set { SetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty, value); }
         }
         #endregion
 
@@ -4480,6 +4507,17 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(PreventUploadItemsProperty);
             this.ClearValue(PreventUploadDinosProperty);
 
+            this.ClearValue(NoTransferFromFilteringProperty);
+            this.ClearValue(OverrideTributeCharacterExpirationSecondsProperty);
+            this.ClearValue(OverrideTributeItemExpirationSecondsProperty);
+            this.ClearValue(OverrideTributeDinoExpirationSecondsProperty);
+            this.ClearValue(OverrideMinimumDinoReuploadIntervalProperty);
+            this.ClearValue(TributeCharacterExpirationSecondsProperty);
+            this.ClearValue(TributeItemExpirationSecondsProperty);
+            this.ClearValue(TributeDinoExpirationSecondsProperty);
+            this.ClearValue(MinimumDinoReuploadIntervalProperty);
+            this.ClearValue(CrossARKAllowForeignDinoDownloadsProperty);
+
             this.ClearValue(IncreasePvPRespawnIntervalProperty);
             this.ClearValue(IncreasePvPRespawnIntervalCheckPeriodProperty);
             this.ClearValue(IncreasePvPRespawnIntervalMultiplierProperty);
@@ -4518,6 +4556,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(SupplyCrateLootQualityMultiplierProperty);
             this.ClearValue(FishingLootQualityMultiplierProperty);
             this.ClearValue(EnableNoFishLootProperty);
+            this.ClearValue(UseCorpseLifeSpanMultiplierProperty);
+            this.ClearValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty);
         }
 
         public void ResetSOTFSection()
@@ -5006,6 +5046,7 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(TributeItemExpirationSecondsProperty, sourceProfile.TributeItemExpirationSeconds);
             this.SetValue(TributeDinoExpirationSecondsProperty, sourceProfile.TributeDinoExpirationSeconds);
             this.SetValue(MinimumDinoReuploadIntervalProperty, sourceProfile.MinimumDinoReuploadInterval);
+            this.SetValue(CrossARKAllowForeignDinoDownloadsProperty, sourceProfile.CrossARKAllowForeignDinoDownloads);
 
             this.SetValue(IncreasePvPRespawnIntervalProperty, sourceProfile.IncreasePvPRespawnInterval);
             this.SetValue(IncreasePvPRespawnIntervalCheckPeriodProperty, sourceProfile.IncreasePvPRespawnIntervalCheckPeriod);
@@ -5046,6 +5087,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(FishingLootQualityMultiplierProperty, sourceProfile.FishingLootQualityMultiplier);
             this.SetValue(EnableNoFishLootProperty, sourceProfile.EnableNoFishLoot);
             this.SetValue(OxygenSwimSpeedStatMultiplierProperty, sourceProfile.OxygenSwimSpeedStatMultiplier);
+            this.SetValue(UseCorpseLifeSpanMultiplierProperty, sourceProfile.UseCorpseLifeSpanMultiplier);
+            this.SetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty, sourceProfile.GlobalPoweredBatteryDurabilityDecreasePerSecond);
         }
 
         private void SyncSOTFSection(ServerProfile sourceProfile)

@@ -2810,6 +2810,7 @@ namespace ARK_Server_Manager.Lib
             new ComboBoxItem { ValueMember="TheCenter", DisplayMember=FriendlyNameForClass("TheCenter") },
             new ComboBoxItem { ValueMember="ScorchedEarth_P", DisplayMember=FriendlyNameForClass("ScorchedEarth_P") },
             new ComboBoxItem { ValueMember="Ragnarok", DisplayMember=FriendlyNameForClass("Ragnarok") },
+            new ComboBoxItem { ValueMember="Aberration_P", DisplayMember=FriendlyNameForClass("Aberration_P") },
         };
 
         public static IEnumerable<ComboBoxItem> GetGameMaps() => gameMaps.Select(d => d.Duplicate());

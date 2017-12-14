@@ -875,6 +875,8 @@
     <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip">If enabled, will allow you to override the re-upload interval.</sys:String>
     <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalLabel">Minimum Dino Re-upload Interval</sys:String>
     <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalTooltip">Set the cooldown between allowed Dino re-uploads. Remaining cooldown time is displayed on the Dino Upload UI.</sys:String>
+    <sys:String x:Key="ServerSettings_CrossARKAllowForeignDinoDownloadsLabel">Allow Foreign Dino Downloads</sys:String>
+    <sys:String x:Key="ServerSettings_CrossARKAllowForeignDinoDownloadsTooltip">If enabled, will allow you to download foreign Dinos to the map.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Increase PvP Respawn Interval</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">If enabled, enables the increase PvP respawn interval settings.</sys:String>
@@ -943,6 +945,10 @@
     <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierTooltip">Specifies the multiplier for the fishing loot quality.</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Disable Non-Meat Fish Loot</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">If enabled, disables harvesting non-meat fish loot.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLifeSpanMultiplierLabel">Use Corpse Life Span Multiplier</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLifeSpanMultiplierTooltip">Specifies the multiplier for corpse and dropped box lifespan.</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondLabel">Global Powered Battery Durability</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondTooltip">Specifies the multiplier for the rate at which charge batteries are used in electrical objects (decrease per second).</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Chat and Notifications</sys:String>
@@ -1938,6 +1944,7 @@
     <sys:String x:Key="TheCenter">The Center</sys:String>
     <sys:String x:Key="ScorchedEarth_P">Scorched Earth</sys:String>
     <sys:String x:Key="Ragnarok">Ragnarok</sys:String>
+    <sys:String x:Key="Aberration_P">Aberration</sys:String>
 
     <!-- Total Conversion Names -->
     <sys:String x:Key="111111111">Primitive Plus</sys:String>
