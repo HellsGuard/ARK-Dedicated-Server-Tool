@@ -1700,6 +1700,7 @@
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
+                                                <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
@@ -1717,6 +1718,8 @@
 
                                             <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideMinimumDinoReuploadInterval}"  Content="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip}"/>
                                             <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Margin="1" IsEnabled="{Binding OverrideMinimumDinoReuploadInterval}" Label="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalLabel}" Value="{Binding MinimumDinoReuploadInterval, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalTooltip}" />
+
+                                            <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding CrossARKAllowForeignDinoDownloads}"  Content="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsTooltip}"/>
                                         </Grid>
                                     </GroupBox>
 
@@ -1863,6 +1866,8 @@
                                     </GroupBox>
 
                                     <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_OxygenSwimSpeedStatMultiplierLabel}" Value="{Binding OxygenSwimSpeedStatMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_OxygenSwimSpeedStatMultiplierTooltip}" />
+                                    <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_UseCorpseLifeSpanMultiplierLabel}" Value="{Binding UseCorpseLifeSpanMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_UseCorpseLifeSpanMultiplierTooltip}" />
+                                    <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondLabel}" Value="{Binding GlobalPoweredBatteryDurabilityDecreasePerSecond}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondTooltip}" />
                                 </StackPanel>
                             </Grid>
                         </Expander>

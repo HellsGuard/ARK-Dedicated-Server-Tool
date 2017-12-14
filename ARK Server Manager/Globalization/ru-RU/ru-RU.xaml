@@ -875,6 +875,8 @@
     <sys:String x:Key="ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip">Если включено, вы сможете указать интервал повторной выгрузки Динозавров.</sys:String>
     <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalLabel">Минимальный интервал выгрузки.</sys:String>
     <sys:String x:Key="ServerSettings_MinimumDinoReuploadIntervalTooltip">Установите время между разрешенными выгрузами Dino. Оставшееся время перезарядки отображается в пользовательском интерфейсе загрузки Dino.</sys:String>
+    <sys:String x:Key="ServerSettings_CrossARKAllowForeignDinoDownloadsLabel">Разрешить загрузку дино на Aberration</sys:String>
+    <sys:String x:Key="ServerSettings_CrossARKAllowForeignDinoDownloadsTooltip">Если включено,  позволит вам загружать на карту Aberration дино с других карт</sys:String>
 
     <sys:String x:Key="ServerSettings_PvPRespawnLabel">Увеличить интервал респауна в PvP</sys:String>
     <sys:String x:Key="ServerSettings_PvPRespawnTooltip">Если этот параметр включен, позволяет увеличить интервал респауна в PvP.</sys:String>
@@ -943,6 +945,10 @@
     <sys:String x:Key="ServerSettings_FishingLootQualityMultiplierTooltip">Множитель для качества добычи с рыбалки (принимают значения от 1 до 5)</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootLabel">Отключить Non-Meat Fish Loot</sys:String>
     <sys:String x:Key="ServerSettings_EnableNoFishLootTooltip">Если включено, отключает сбор дропа кроме мяса с рыбы.</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLifeSpanMultiplierLabel">Множитель удаления трупа и дропа</sys:String>
+    <sys:String x:Key="ServerSettings_UseCorpseLifeSpanMultiplierTooltip">Множитель времени до удаления трупов и выброшенных предметов</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondLabel">Долговечность заряда батареи</sys:String>
+    <sys:String x:Key="ServerSettings_GlobalPoweredBatteryDurabilityDecreasePerSecondTooltip">Определяет множитель скорости, с которой зарядные батареи расходуются в электрических приборах</sys:String>
 
     <!-- Server Settings - Chat and Notifications -->
     <sys:String x:Key="ServerSettings_ChatAndNotificationsLabel">Чат и уведомления</sys:String>
@@ -1290,7 +1296,11 @@
     <sys:String x:Key="ServerSettings_PassiveDefensesDamageDinosTooltip">Если этот параметр включен, стены с шипами наносят урон диким/ручным динозаврам.</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsInRangeLabel">Ограничить кол-во Турелей в радиусе</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsInRangeTooltip">Если включено, будет реализован ограничение на 100 турелей в определенном радиусе</sys:String>
-    
+    <sys:String x:Key="ServerSettings_LimitTurretsRangeLabel">Радиус ограничения Турелей</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsRangeTooltip">Устанавливает предельный радиус для всех АвтоТурелей и Живых Турелей.</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsNumLabel">Ограничение количества Турелей</sys:String>
+    <sys:String x:Key="ServerSettings_LimitTurretsNumTooltip">Устанавливает максимальное количество Турелей, которые могут быть размещены в пределах определьного радиуса.</sys:String>
+
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Авто открытие всех Энграмм</sys:String>
     <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsTooltip">Если включено, энграммы автоматически разблокируются по мере того, какой уровень игрока.</sys:String>
