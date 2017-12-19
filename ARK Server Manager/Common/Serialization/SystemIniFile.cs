@@ -30,6 +30,8 @@ namespace ARK_Server_Manager.Lib
         GameMode,
         ModInstaller,
 
+        Ragnarok,
+
         Custom,
     }
 
@@ -128,6 +130,8 @@ namespace ARK_Server_Manager.Lib
 
             { IniFileSections.GameMode, "/script/shootergame.shootergamemode" },
             { IniFileSections.ModInstaller, "ModInstaller" },
+
+            { IniFileSections.Ragnarok, "Ragnarok" },
         };
 
         public static readonly Dictionary<IniFiles, string> FileNames = new Dictionary<IniFiles, string>()

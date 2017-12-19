@@ -2713,7 +2713,6 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Survival of the Fittest
-        // ReSharper disable InconsistentNaming
         public static readonly DependencyProperty SOTF_EnabledProperty = DependencyProperty.Register(nameof(SOTF_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool SOTF_Enabled
@@ -2847,7 +2846,70 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(SOTF_RingStartTimeProperty); }
             set { SetValue(SOTF_RingStartTimeProperty, value); }
         }
-        // ReSharper restore InconsistentNaming
+        #endregion
+
+        #region Ragnarok
+        public static readonly DependencyProperty Ragnarok_EnabledProperty = DependencyProperty.Register(nameof(Ragnarok_Enabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool Ragnarok_Enabled
+        {
+            get { return (bool)GetValue(Ragnarok_EnabledProperty); }
+            set { SetValue(Ragnarok_EnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_AllowMultipleTamedUnicornsProperty = DependencyProperty.Register(nameof(Ragnarok_AllowMultipleTamedUnicorns), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "AllowMultipleTamedUnicorns", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public bool Ragnarok_AllowMultipleTamedUnicorns
+        {
+            get { return (bool)GetValue(Ragnarok_AllowMultipleTamedUnicornsProperty); }
+            set { SetValue(Ragnarok_AllowMultipleTamedUnicornsProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_UnicornSpawnIntervalProperty = DependencyProperty.Register(nameof(Ragnarok_UnicornSpawnInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(24));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "UnicornSpawnInterval", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public int Ragnarok_UnicornSpawnInterval
+        {
+            get { return (int)GetValue(Ragnarok_UnicornSpawnIntervalProperty); }
+            set { SetValue(Ragnarok_UnicornSpawnIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_DisableVolcanoProperty = DependencyProperty.Register(nameof(Ragnarok_DisableVolcano), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "DisableVolcano", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public bool Ragnarok_DisableVolcano
+        {
+            get { return (bool)GetValue(Ragnarok_DisableVolcanoProperty); }
+            set { SetValue(Ragnarok_DisableVolcanoProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_VolcanoIntensityProperty = DependencyProperty.Register(nameof(Ragnarok_VolcanoIntensity), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "VolcanoIntensity", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public float Ragnarok_VolcanoIntensity
+        {
+            get { return (float)GetValue(Ragnarok_VolcanoIntensityProperty); }
+            set { SetValue(Ragnarok_VolcanoIntensityProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_VolcanoIntervalProperty = DependencyProperty.Register(nameof(Ragnarok_VolcanoInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "VolcanoInterval", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public int Ragnarok_VolcanoInterval
+        {
+            get { return (int)GetValue(Ragnarok_VolcanoIntervalProperty); }
+            set { SetValue(Ragnarok_VolcanoIntervalProperty, value); }
+        }
+
+        public static readonly DependencyProperty Ragnarok_EnableDevelopmentZonesProperty = DependencyProperty.Register(nameof(Ragnarok_EnableDevelopmentZones), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        //[IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Ragnarok, Key = "EnableDevelopmentZones", ConditionedOn = nameof(Ragnarok_Enabled))]
+        public bool Ragnarok_EnableDevelopmentZones
+        {
+            get { return (bool)GetValue(Ragnarok_EnableDevelopmentZonesProperty); }
+            set { SetValue(Ragnarok_EnableDevelopmentZonesProperty, value); }
+        }
         #endregion
 
         #region RCON
@@ -4484,6 +4546,17 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_Player = new StatsMultiplierArray(nameof(PerLevelStatsMultiplier_Player), GameData.GetPerLevelStatsMultipliers_Player, GameData.GetStatMultiplierInclusions_PlayerPerLevel());
         }
 
+        public void ResetRagnarokSection()
+        {
+            this.ClearValue(Ragnarok_EnabledProperty);
+            this.ClearValue(Ragnarok_AllowMultipleTamedUnicornsProperty);
+            this.ClearValue(Ragnarok_UnicornSpawnIntervalProperty);
+            this.ClearValue(Ragnarok_DisableVolcanoProperty);
+            this.ClearValue(Ragnarok_VolcanoIntensityProperty);
+            this.ClearValue(Ragnarok_VolcanoIntervalProperty);
+            this.ClearValue(Ragnarok_EnableDevelopmentZonesProperty);
+        }
+
         public void ResetRulesSection()
         {
             this.ClearValue(EnableHardcoreProperty);
@@ -5011,6 +5084,17 @@ namespace ARK_Server_Manager.Lib
             this.PerLevelStatsMultiplier_Player.Clear();
             this.PerLevelStatsMultiplier_Player.FromIniValues(sourceProfile.PerLevelStatsMultiplier_Player.ToIniValues());
             this.PerLevelStatsMultiplier_Player.IsEnabled = sourceProfile.PerLevelStatsMultiplier_Player.IsEnabled;
+        }
+
+        private void SyncRagnarokSection(ServerProfile sourceProfile)
+        {
+            this.SetValue(Ragnarok_EnabledProperty, sourceProfile.Ragnarok_Enabled);
+            this.SetValue(Ragnarok_AllowMultipleTamedUnicornsProperty, sourceProfile.Ragnarok_AllowMultipleTamedUnicorns);
+            this.SetValue(Ragnarok_UnicornSpawnIntervalProperty, sourceProfile.Ragnarok_UnicornSpawnInterval);
+            this.SetValue(Ragnarok_DisableVolcanoProperty, sourceProfile.Ragnarok_DisableVolcano);
+            this.SetValue(Ragnarok_VolcanoIntensityProperty, sourceProfile.Ragnarok_VolcanoIntensity);
+            this.SetValue(Ragnarok_VolcanoIntervalProperty, sourceProfile.Ragnarok_VolcanoInterval);
+            this.SetValue(Ragnarok_EnableDevelopmentZonesProperty, sourceProfile.Ragnarok_EnableDevelopmentZones);
         }
 
         private void SyncRulesSection(ServerProfile sourceProfile)
