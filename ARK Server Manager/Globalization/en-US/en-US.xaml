@@ -1338,7 +1338,7 @@
 
     <!-- Server Settings - Custom Level Progressions -->
     <sys:String x:Key="ServerSettings_CustomLevelProgressionsLabel">Custom Level Progressions</sys:String>
-    <sys:String x:Key="ServerSettings_CustomLevelProgressions_InformationLabel">NOTE: The last 15 player levels are used for Ascension and are shown with a coloured background. If you customize your own player levels, make sure you add an additional 15 levels for Ascension.</sys:String>
+    <sys:String x:Key="ServerSettings_CustomLevelProgressions_InformationLabel">NOTE: The last 30 player levels are used for Ascension and are shown with a coloured background. If you customize your own player levels, make sure you add an additional 30 levels for Ascension.</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsLabel">Enable Custom Level Progressions</sys:String>
     <sys:String x:Key="ServerSettings_EnableCustomLevelProgressionsTooltip">If enabled, enables player and dino level customizations.</sys:String>
     <sys:String x:Key="ServerSettings_CustomPlayerLevelsLabel">Custom Player Levels</sys:String>
@@ -1355,6 +1355,7 @@
     <sys:String x:Key="ServerSettings_ProgressionXPRequiredColumnLabel">XP Required</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionEngramPointsColumnLabel">Engram Points</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionEngramTotalColumnLabel">Engram Total</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionAscensionLevelColumnLabel">Ascension Level</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionAddLevelTooltip">Add a new level after this one.</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">Remove this level</sys:String>
 
@@ -2235,6 +2236,10 @@
     <sys:String x:Key="Rockwell_Character_BP_Easy_C">Rockwell (Easy Variant)</sys:String>
     <sys:String x:Key="Rockwell_Character_BP_Medium_C">Rockwell (Medium Variant)</sys:String>
     <sys:String x:Key="Rockwell_Character_BP_Hard_C">Rockwell (Hard Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_C">Rockwell Tentacle</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Alpha_C">Rockwell Tentacle (Hard Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Beta_C">Rockwell Tentacle (Medium Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Gamma_C">Rockwell Tentacle (Easy Variant)</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Advanced Bullet</sys:String>

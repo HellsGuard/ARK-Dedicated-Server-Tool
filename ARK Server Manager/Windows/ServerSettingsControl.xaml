@@ -3556,6 +3556,7 @@
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionEngramTotalColumnLabel}" Width="75" DisplayMemberBinding="{Binding EngramTotal}"/>
+                                                <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionAscensionLevelColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ShowColored}"/>
                                             </GridView>
                                         </ListView.View>
 

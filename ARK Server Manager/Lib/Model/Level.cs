@@ -15,7 +15,7 @@ namespace ARK_Server_Manager.Lib
     public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
-        const int ASCENSION_LEVELS = 15;
+        const int ASCENSION_LEVELS = 30;
 
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
