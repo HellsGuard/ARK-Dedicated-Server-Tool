@@ -4352,8 +4352,8 @@
     <sys:String x:Key="ArtifactCrate_7_C">(TheIsland) Artifact Container Devourer</sys:String>
     <sys:String x:Key="ArtifactCrate_8_C">(TheIsland) Artifact Container Immune</sys:String>
     <sys:String x:Key="ArtifactCrate_9_C">(TheIsland) Artifact Container Strong</sys:String>
-    <sys:String x:Key="ArtifactCrate_10_C">(TheIsland) Artifact Container Flamekeeper</sys:String>
-    <sys:String x:Key="ArtifactCrate_11_C">(TheIsland) Artifact Container Cunning</sys:String>
+    <sys:String x:Key="ArtifactCrate_10_C">(TheIsland) Artifact Container Cunning</sys:String>
+    <sys:String x:Key="ArtifactCrate_11_C">(TheIsland) Artifact Container Brute</sys:String>
 
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_ScorchedEarth_C">(ScorchedEarth) Cave Loot Crate 1</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier2_ScorchedEarth_C">(ScorchedEarth) Cave Loot Crate 2</sys:String>
