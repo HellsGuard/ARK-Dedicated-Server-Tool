@@ -22,31 +22,6 @@ namespace ARK_Server_Manager.Lib
 
         public event EventHandler StatusUpdate;
 
-
-        public struct RuntimeProfileSnapshot
-        {
-            public string ProfileId;
-            public string ProfileName;            
-            public string InstallDirectory;
-            public string AltSaveDirectoryName;
-            public string AdminPassword;
-            public string ServerName;
-            public string ServerArgs;
-            public string ServerIP;
-            public int ServerConnectionPort;
-            public int QueryPort;
-            public bool UseRawSockets;
-            public bool RCONEnabled;
-            public int RCONPort;
-            public bool SotFServer;
-            public string ServerMap;
-            public string ServerMapModId;
-            public string TotalConversionModId;
-            public List<string> ServerModIds;
-            public string LastInstalledVersion;
-            public int MaxPlayerCount;
-        };
-
         public enum ServerStatus
         {
             Unknown,
@@ -81,7 +56,7 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty VersionProperty = DependencyProperty.Register(nameof(Version), typeof(Version), typeof(ServerRuntime), new PropertyMetadata(new Version()));
-        public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register(nameof(ProfileSnapshot), typeof(RuntimeProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
+        public static readonly DependencyProperty ProfileSnapshotProperty = DependencyProperty.Register(nameof(ProfileSnapshot), typeof(ServerProfileSnapshot), typeof(ServerRuntime), new PropertyMetadata(null));
         public static readonly DependencyProperty TotalModCountProperty = DependencyProperty.Register(nameof(TotalModCount), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
         public static readonly DependencyProperty OutOfDateModCountProperty = DependencyProperty.Register(nameof(OutOfDateModCount), typeof(int), typeof(ServerRuntime), new PropertyMetadata(0));
 
@@ -121,9 +96,9 @@ namespace ARK_Server_Manager.Lib
             protected set { SetValue(VersionProperty, value); }
         }
 
-        public RuntimeProfileSnapshot ProfileSnapshot
+        public ServerProfileSnapshot ProfileSnapshot
         {
-            get { return (RuntimeProfileSnapshot)GetValue(ProfileSnapshotProperty); }
+            get { return (ServerProfileSnapshot)GetValue(ProfileSnapshotProperty); }
             set { SetValue(ProfileSnapshotProperty, value); }
         }
 
@@ -157,29 +132,7 @@ namespace ARK_Server_Manager.Lib
         {
             UnregisterForUpdates();
 
-            this.ProfileSnapshot = new RuntimeProfileSnapshot
-            {
-                ProfileId = profile.ProfileID,
-                ProfileName = profile.ProfileName,
-                InstallDirectory = profile.InstallDirectory,
-                AltSaveDirectoryName = profile.AltSaveDirectoryName,
-                AdminPassword = profile.AdminPassword,
-                ServerName = profile.ServerName,
-                ServerArgs = profile.GetServerArgs(),
-                ServerIP = String.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP,
-                ServerConnectionPort = profile.ServerConnectionPort,
-                QueryPort = profile.ServerPort,
-                UseRawSockets = profile.UseRawSockets,
-                RCONEnabled = profile.RCONEnabled,
-                RCONPort = profile.RCONPort,
-                SotFServer = profile.SOTF_Enabled,
-                ServerMap = ServerProfile.GetProfileMapName(profile),
-                ServerMapModId = ServerProfile.GetProfileMapModId(profile),
-                TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
-                ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
-                LastInstalledVersion =  string.IsNullOrWhiteSpace(profile.LastInstalledVersion) ? new Version(0, 0).ToString() : profile.LastInstalledVersion,
-                MaxPlayerCount = profile.MaxPlayers,
-            };
+            this.ProfileSnapshot = ServerProfileSnapshot.Create(profile);
 
             Version lastInstalled;
             if (Version.TryParse(profile.LastInstalledVersion, out lastInstalled))
@@ -406,6 +359,19 @@ namespace ARK_Server_Manager.Lib
         }
         
 
+        private void CheckServerWorldFileExists()
+        {
+            var serverApp = new ServerApp()
+            {
+                BackupWorldFile = false,
+                DeleteOldServerBackupFiles = false,
+                SendAlerts = false,
+                SendEmails = false,
+                OutputLogs = false
+            };
+            serverApp.CheckServerWorldFileExists(ProfileSnapshot);
+        }
+
         public Task StartAsync()
         {
             if(!Environment.Is64BitOperatingSystem)
@@ -431,15 +397,14 @@ namespace ARK_Server_Manager.Lib
 
             if (Config.Default.ManageFirewallAutomatically)
             {
-                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerConnectionPort };
+                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerPort };
+                if(this.ProfileSnapshot.UseRawSockets)
+                {
+                    ports.Add(this.ProfileSnapshot.ServerPort + 1);
+                }
                 if (this.ProfileSnapshot.RCONEnabled)
                 {
                     ports.Add(this.ProfileSnapshot.RCONPort);
-                }
-
-                if(this.ProfileSnapshot.UseRawSockets)
-                {
-                    ports.Add(this.ProfileSnapshot.ServerConnectionPort + 1);
                 }
 
                 if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))
@@ -451,6 +416,8 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
             }
+
+            CheckServerWorldFileExists();
 
             try
             {
@@ -489,6 +456,11 @@ namespace ARK_Server_Manager.Lib
                             UpdateServerStatus(ServerStatus.Stopping, SteamStatus.Unavailable, false);
 
                             await ProcessUtils.SendStop(this.serverProcess);
+                        }
+
+                        if (this.serverProcess.HasExited)
+                        {
+                            CheckServerWorldFileExists();
                         }
                     }
                     catch(InvalidOperationException)
@@ -556,7 +528,7 @@ namespace ARK_Server_Manager.Lib
                     if (isNewInstallation)
                     {
                         // check if the auto-update facility is enabled and the cache folder defined.
-                        if (!this.ProfileSnapshot.SotFServer && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir))
+                        if (!this.ProfileSnapshot.SotFEnabled && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir))
                         {
                             // Auto-Update enabled and cache foldler exists.
                             progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
@@ -591,7 +563,7 @@ namespace ARK_Server_Manager.Lib
                         }
                     };
 
-                    var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFServer ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
+                    var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFEnabled ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
                     var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : string.Empty);
 
                     success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
@@ -681,8 +653,8 @@ namespace ARK_Server_Manager.Lib
                                 if (modDetail != null)
                                     progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} {modDetail.title}.\r\n");
 
-                                var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFServer);
-                                var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFServer);
+                                var modCachePath = ModUtils.GetModCachePath(modId, this.ProfileSnapshot.SotFEnabled);
+                                var cacheTimeFile = ModUtils.GetLatestModCacheTimeFile(modId, this.ProfileSnapshot.SotFEnabled);
                                 var modPath = ModUtils.GetModPath(this.ProfileSnapshot.InstallDirectory, modId);
                                 var modTimeFile = ModUtils.GetLatestModTimeFile(this.ProfileSnapshot.InstallDirectory, modId);
 
@@ -761,7 +733,7 @@ namespace ARK_Server_Manager.Lib
                                         progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Starting mod download.\r\n");
 
                                         var steamCmdArgs = string.Empty;
-                                        if (this.ProfileSnapshot.SotFServer)
+                                        if (this.ProfileSnapshot.SotFEnabled)
                                         {
                                             if (Config.Default.SteamCmd_UseAnonymousCredentials)
                                                 steamCmdArgs = string.Format(Config.Default.SteamCmdInstallModArgsFormat_SotF, Config.Default.SteamCmd_AnonymousUsername, modId);
@@ -793,7 +765,7 @@ namespace ARK_Server_Manager.Lib
                                                 if (modDetail == null || modDetail.time_updated <= 0)
                                                 {
                                                     // get the version number from the steamcmd workshop file.
-                                                    steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(this.ProfileSnapshot.SotFServer), modId).ToString();
+                                                    steamLastUpdated = ModUtils.GetSteamWorkshopLatestTime(ModUtils.GetSteamWorkshopFile(this.ProfileSnapshot.SotFEnabled), modId).ToString();
                                                 }
 
                                                 // update the last updated file with the steam updated time.

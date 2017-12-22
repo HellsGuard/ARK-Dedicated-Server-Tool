@@ -4002,7 +4002,7 @@ namespace ARK_Server_Manager.Lib
                 SendEmails = false,
                 OutputLogs = false
             };
-            app.CreateServerBackupArchiveFile(null, ServerApp.ProfileSnapshot.Create(this));
+            app.CreateServerBackupArchiveFile(null, ServerProfileSnapshot.Create(this));
 
             var worldFile = IOUtils.NormalizePath(Path.Combine(saveFolder, worldFileName));
             var restoreFileInfo = new FileInfo(restoreFile);

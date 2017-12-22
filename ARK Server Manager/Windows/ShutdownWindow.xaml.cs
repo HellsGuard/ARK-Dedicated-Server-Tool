@@ -148,7 +148,7 @@ namespace ARK_Server_Manager
                     ProgressCallback = (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { this.AddMessage(m, n); }).DoNotWait(); },
                 };
 
-                var profile = ProfileSnapshot.Create(Server.Profile);
+                var profile = ServerProfileSnapshot.Create(Server.Profile);
                 var restartServer = RestartServer;
                 var updateServer = UpdateServer;
 
