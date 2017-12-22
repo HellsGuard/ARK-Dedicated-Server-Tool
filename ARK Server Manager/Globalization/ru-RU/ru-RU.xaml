@@ -4347,8 +4347,8 @@
     <sys:String x:Key="ArtifactCrate_7_C">(TheIsland) Артефакт Пожирателя</sys:String>
     <sys:String x:Key="ArtifactCrate_8_C">(TheIsland) Артефакт Неуязвимости</sys:String>
     <sys:String x:Key="ArtifactCrate_9_C">(TheIsland) Артефакт Силы</sys:String>
-    <sys:String x:Key="ArtifactCrate_10_C">(TheIsland) Артефакт Хранителя Огня</sys:String>
-    <sys:String x:Key="ArtifactCrate_11_C">(TheIsland) Артефакт Хитрости</sys:String>
+    <sys:String x:Key="ArtifactCrate_10_C">(TheIsland) Артефакт Хитрости</sys:String>
+    <sys:String x:Key="ArtifactCrate_11_C">(TheIsland) Артефакт Брут</sys:String>
 
     <sys:String x:Key="SupplyCrate_Cave_QualityTier1_ScorchedEarth_C">(ScorchedEarth) Пещерный маяк 1</sys:String>
     <sys:String x:Key="SupplyCrate_Cave_QualityTier2_ScorchedEarth_C">(ScorchedEarth) Пещерный маяк 2</sys:String>
