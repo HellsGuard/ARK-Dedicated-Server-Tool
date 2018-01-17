@@ -294,24 +294,24 @@ namespace ARK_Server_Manager.Lib
 
             new DinoSpawn { ClassName="Basilisk_Character_BP_C",                        DinoNameTag="Basilisk",     ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="CaveWolf_Character_BP_C",                        DinoNameTag="CaveWolf",     ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="ChupaCabra_Character_BP_C",                      DinoNameTag="ChupaCabra",   ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="Crab_Character_BP_C",                            DinoNameTag="Crab",         ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="ChupaCabra_Character_BP_C",                      DinoNameTag="Chupacabra",   ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="Crab_Character_BP_C",                            DinoNameTag="CaveCrab",     ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Lamprey_Character_C",                            DinoNameTag="Lamprey",      ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="LanternBird_Character_BP_C",                     DinoNameTag="LanternBird",  ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="LanternGoat_Character_BP_C",                     DinoNameTag="LanternGoat",  ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="LanternLizard_Character_BP_C",                   DinoNameTag="LanternLizard",ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="LanternPug_Character_BP_C",                      DinoNameTag="LanternPug",   ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="LanternBird_Character_BP_C",                     DinoNameTag="Lantern Bird",     ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="LanternGoat_Character_BP_C",                     DinoNameTag="Lantern Goat",     ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="LanternLizard_Character_BP_C",                   DinoNameTag="Lantern Lizard",   ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="LanternPug_Character_BP_C",                      DinoNameTag="Pug",          ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Lightbug_Character_BaseBP_C",                    DinoNameTag="Lightbug",     ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="MegaBasilisk_Character_BP_C",                    DinoNameTag="Elite Basilisk",   ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="MegaCrab_Character_BP_C",                        DinoNameTag="Elite CaveCrab",   ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="MegaXenomorph_Character_BP_Male_Surface_C",      DinoNameTag="Elite Xenomorph",  ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="MoleRat_Character_BP_C",                         DinoNameTag="MoleRat",      ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="Pteroteuthis_Char_BP_C",                         DinoNameTag="Pteroteuthis", ArkApplication=ArkApplication.Aberration },
+            new DinoSpawn { ClassName="Pteroteuthis_Char_BP_C",                         DinoNameTag="Bat",          ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="RockDrake_Character_BP_C",                       DinoNameTag="RockDrake",    ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Xenomorph_Character_BP_C",                       DinoNameTag="Xenomorph",    ArkApplication=ArkApplication.Aberration },
 
             new DinoSpawn { ClassName="ChupaCabra_Character_BP_Minion_C",               DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="ChupaCabra_Character_BP_Surface_C",              DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="MegaBasilisk_Character_BP_C",                    DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="MegaCrab_Character_BP_C",                        DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
-            new DinoSpawn { ClassName="MegaXenomorph_Character_BP_Male_Surface_C",      DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Pteroteuthis_Char_BP_Surface_C",                 DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Xenomorph_Character_BP_Female_C",                DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
             new DinoSpawn { ClassName="Xenomorph_Character_BP_Male_C",                  DinoNameTag=null,           ArkApplication=ArkApplication.Aberration },
@@ -616,9 +616,6 @@ namespace ARK_Server_Manager.Lib
                 // Aberration
                 case "ChupaCabra_Character_BP_Minion_C":
                 case "ChupaCabra_Character_BP_Surface_C":
-                case "MegaBasilisk_Character_BP_C":
-                case "MegaCrab_Character_BP_C":
-                case "MegaXenomorph_Character_BP_Male_Surface_C":
                 case "Pteroteuthis_Char_BP_Surface_C":
                 case "Xenomorph_Character_BP_Female_C":
                 case "Xenomorph_Character_BP_Male_C":
@@ -829,6 +826,9 @@ namespace ARK_Server_Manager.Lib
             new ClassMultiplier { ClassName="LanternLizard_Character_BP_C" },
             new ClassMultiplier { ClassName="LanternPug_Character_BP_C" },
             new ClassMultiplier { ClassName="Lightbug_Character_BaseBP_C" },
+            new ClassMultiplier { ClassName="MegaBasilisk_Character_BP_C" },
+            new ClassMultiplier { ClassName="MegaCrab_Character_BP_C" },
+            new ClassMultiplier { ClassName="MegaXenomorph_Character_BP_Male_Surface_C" },
             new ClassMultiplier { ClassName="MoleRat_Character_BP_C" },
             new ClassMultiplier { ClassName="Pteroteuthis_Char_BP_C" },
             new ClassMultiplier { ClassName="RockDrake_Character_BP_C" },
@@ -836,9 +836,6 @@ namespace ARK_Server_Manager.Lib
 
             new ClassMultiplier { ClassName="ChupaCabra_Character_BP_Minion_C" },
             new ClassMultiplier { ClassName="ChupaCabra_Character_BP_Surface_C" },
-            new ClassMultiplier { ClassName="MegaBasilisk_Character_BP_C" },
-            new ClassMultiplier { ClassName="MegaCrab_Character_BP_C" },
-            new ClassMultiplier { ClassName="MegaXenomorph_Character_BP_Male_Surface_C" },
             new ClassMultiplier { ClassName="Pteroteuthis_Char_BP_Surface_C" },
             new ClassMultiplier { ClassName="Xenomorph_Character_BP_Female_C" },
             new ClassMultiplier { ClassName="Xenomorph_Character_BP_Male_C" },

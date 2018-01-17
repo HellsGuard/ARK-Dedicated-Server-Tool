@@ -1658,15 +1658,20 @@
                                         </GroupBox.Header>
 
                                         <Grid IsEnabled="{Binding EnableTributeDownloads}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <CheckBox Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
-                                            <CheckBox Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
-                                            <CheckBox Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                            <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadSurvivors}"  Content="{DynamicResource ServerSettings_NoSurvivorDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoSurvivorDownloadsTooltip}"/>
+                                            <CheckBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadItems}" Content="{DynamicResource ServerSettings_NoItemDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoItemDownloadsTooltip}"/>
+                                            <CheckBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding PreventDownloadDinos}" Content="{DynamicResource ServerSettings_NoDinoDownloadsLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinoDownloadsTooltip}"/>
+                                            <CheckBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,0" IsChecked="{Binding CrossARKAllowForeignDinoDownloads}"  Content="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsTooltip}"/>
                                         </Grid>
                                     </GroupBox>
 
@@ -1718,8 +1723,6 @@
 
                                             <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding OverrideMinimumDinoReuploadInterval}"  Content="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_OverrideMinimumDinoReuploadIntervalTooltip}"/>
                                             <local:AnnotatedSlider Grid.Row="4" Grid.Column="1" Margin="1" IsEnabled="{Binding OverrideMinimumDinoReuploadInterval}" Label="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalLabel}" Value="{Binding MinimumDinoReuploadInterval, Converter={StaticResource TributeExpirationConverter}}" Suffix="{DynamicResource SliderUnits_Minutes}" Minimum="1" Maximum="20000" SmallChange="1" LargeChange="5" TickFrequency="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" ValueRelativeWidth="50" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MinimumDinoReuploadIntervalTooltip}" />
-
-                                            <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,5" IsChecked="{Binding CrossARKAllowForeignDinoDownloads}"  Content="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsLabel}" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_CrossARKAllowForeignDinoDownloadsTooltip}"/>
                                         </Grid>
                                     </GroupBox>
 

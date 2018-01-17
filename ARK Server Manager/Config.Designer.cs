@@ -1341,7 +1341,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/{0}/{1}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/{0}/{1}/{2}/")]
         public string ServerStatusUrlFormat {
             get {
                 return ((string)(this["ServerStatusUrlFormat"]));
@@ -1455,7 +1455,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/{4}/")]
         public string ServerCallUrlFormat {
             get {
                 return ((string)(this["ServerCallUrlFormat"]));
@@ -1962,6 +1962,15 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["RCON_DownloadPlayerAvatars"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E")]
+        public string ServerManagerCode {
+            get {
+                return ((string)(this["ServerManagerCode"]));
             }
         }
     }

@@ -147,14 +147,14 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static async Task<bool> CheckServerStatusViaAPI(IPEndPoint endpoint)
+        public static async Task<bool> CheckServerStatusViaAPI(Uri uri, IPEndPoint endpoint)
         {
             try
             {
                 string jsonString;
                 using (var client = new WebClient())
                 {
-                    jsonString = await client.DownloadStringTaskAsync(string.Format(Config.Default.ServerStatusUrlFormat, endpoint.Address, endpoint.Port));
+                    jsonString = await client.DownloadStringTaskAsync(uri);
                 }
 
                 if (jsonString == null)
@@ -181,24 +181,23 @@ namespace ARK_Server_Manager.Lib
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Failed checking status via API for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
+                Logger.Debug($"{nameof(CheckServerStatusViaAPI)} - Failed checking status via API for: {endpoint.Address}:{endpoint.Port}. {ex.Message}");
                 return false;
             }
         }
 
-        public static async Task PerformServerCallToAPI(IPEndPoint endpoint, string asmId, string profileId)
+        public static async Task PerformServerCallToAPI(Uri uri, IPEndPoint endpoint)
         {
             try
             {
                 using (var client = new WebClient())
                 {
-                    var url = string.Format(Config.Default.ServerCallUrlFormat, endpoint.Address, endpoint.Port, asmId, profileId);
-                    await client.DownloadStringTaskAsync(url);
+                    await client.DownloadStringTaskAsync(uri);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Debug($"Failed calling API for: {endpoint.Address}:{endpoint.Port} {ex.Message}");
+                Logger.Debug($"{nameof(PerformServerCallToAPI)} - Failed calling API for: {endpoint.Address}:{endpoint.Port}. {ex.Message}");
             }
         }
     }

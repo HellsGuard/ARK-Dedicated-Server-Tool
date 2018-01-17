@@ -21,7 +21,6 @@ namespace ARK_Server_Manager.Lib
 
         private const int LOCAL_STATUS_QUERY_DELAY = 5000; // milliseconds
         private const int REMOTE_STATUS_QUERY_DELAY = 60000; // milliseconds
-        private const int REMOTE_CALL_QUERY_DELAY = 3600000; // milliseconds
 
         private enum ServerProcessStatus
         {
@@ -355,20 +354,22 @@ namespace ARK_Server_Manager.Lib
                         currentStatus = ServerStatus.RunningExternalCheck;
 
                         // get the server information direct from the server using external connection.
-                        serverStatus = await NetworkUtils.CheckServerStatusViaAPI(registration.SteamEndpoint);
+                        var uri = new Uri(string.Format(Config.Default.ServerStatusUrlFormat, Config.Default.ServerManagerCode, registration.SteamEndpoint.Address, registration.SteamEndpoint.Port));
+                        serverStatus = await NetworkUtils.CheckServerStatusViaAPI(uri, registration.SteamEndpoint);
 
                         _lastExternalStatusQuery[registrationKey] = DateTime.Now;
                     }
                 }
 
-                var lastExternalCallQuery = _lastExternalCallQuery.ContainsKey(registrationKey) ? _lastExternalCallQuery[registrationKey] : DateTime.MinValue;
-                if (lastExternalCallQuery == DateTime.MinValue)
-                {
-                    // perform a server call to the web api.
-                    await NetworkUtils.PerformServerCallToAPI(registration.SteamEndpoint, registration.AsmId, registration.ProfileId);
+                //var lastExternalCallQuery = _lastExternalCallQuery.ContainsKey(registrationKey) ? _lastExternalCallQuery[registrationKey] : DateTime.MinValue;
+                //if (lastExternalCallQuery == DateTime.MinValue)
+                //{
+                //    // perform a server call to the web api.
+                //    var uri = new Uri(string.Format(Config.Default.ServerCallUrlFormat, Config.Default.ServerManagerCode, registration.SteamEndpoint.Address, registration.SteamEndpoint.Port, Config.Default.ServerManagerUniqueKey, registration.ProfileId));
+                //    await NetworkUtils.PerformServerCallToAPI(uri, registration.SteamEndpoint);
 
-                    _lastExternalCallQuery[registrationKey] = DateTime.Now;
-                }
+                //    _lastExternalCallQuery[registrationKey] = DateTime.Now;
+                //}
 
                 // check if the server returned the information.
                 if (serverStatus)

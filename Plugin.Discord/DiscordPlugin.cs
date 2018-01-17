@@ -63,7 +63,7 @@ namespace ArkServerManager.Plugin.Discord
             try
             {
                 var publicIP = await NetworkUtils.DiscoverPublicIPAsync();
-                await NetworkUtils.PerformCallToAPIAsync(publicIP, PluginCode);
+                await NetworkUtils.PerformCallToAPIAsync(PluginCode, publicIP);
 #if DEBUG
                 var logFile = Path.Combine(PluginHelper.PluginFolder, "DiscordApiCalls.log");
                 File.AppendAllLines(logFile, new[] { "CallHomeAsync successful" }, Encoding.Unicode);
@@ -178,13 +178,13 @@ namespace ArkServerManager.Plugin.Discord
         {
             LoadConfig();
 
-            if (PluginConfig.LastCallHome.AddHours(Config.Default.CallHomeDelay) < DateTime.Now)
-            {
-                CallHomeAsync().DoNotWait();
+            //if (PluginConfig.LastCallHome.AddHours(Config.Default.CallHomeDelay) < DateTime.Now)
+            //{
+            //    CallHomeAsync().DoNotWait();
 
-                PluginConfig.LastCallHome = DateTime.Now;
-                SaveConfig();
-            }
+            //    PluginConfig.LastCallHome = DateTime.Now;
+            //    SaveConfig();
+            //}
         }
 
         private void LoadConfig()

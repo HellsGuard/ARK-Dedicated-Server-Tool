@@ -187,7 +187,7 @@ namespace ARK_Server_Manager
         {
             base.OnStartup(e);
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             _globalizer = GlobalizedApplication.Instance;
             try
