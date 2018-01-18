@@ -45,7 +45,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 NameTag = nameTag,
 
                 CanSpawn = true,
-                CanTame = isTameable == DinoTamable.True,
+                CanTame = isTameable == DinoTamable.True || isTameable == DinoTamable.ByBreeding,
                 ReplacementClass = className,
 
                 SpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
@@ -235,7 +235,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
                 if (entry.HasClassName && !string.IsNullOrWhiteSpace(entry.ClassName))
                 {
-                    if (entry.IsTameable == DinoTamable.True && !entry.CanTame)
+                    if ((entry.IsTameable == DinoTamable.True || entry.IsTameable == DinoTamable.ByBreeding) && !entry.CanTame)
                     {
                         this.PreventDinoTameClassNames.Add(entry.ClassName);
                     }

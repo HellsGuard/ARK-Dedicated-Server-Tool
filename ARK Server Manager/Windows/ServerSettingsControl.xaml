@@ -2264,9 +2264,6 @@
                                                                     <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.False}">
                                                                         <Setter Property="Visibility" Value="Hidden" />
                                                                     </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsTameable}" Value="{x:Static lib:DinoTamable.ByBreeding}">
-                                                                        <Setter Property="Visibility" Value="Hidden" />
-                                                                    </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </DataGridCheckBoxColumn.CellStyle>
