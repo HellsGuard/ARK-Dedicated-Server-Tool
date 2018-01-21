@@ -903,7 +903,7 @@ namespace ARK_Server_Manager
                     ServerProcess = ServerProcessType.Backup,
                 };
 
-                var profile = ProfileSnapshot.Create(Server.Profile);
+                var profile = ServerProfileSnapshot.Create(Server.Profile);
 
                 var exitCode = await Task.Run(() => app.PerformProfileBackup(profile));
                 if (exitCode != ServerApp.EXITCODE_NORMALEXIT && exitCode != ServerApp.EXITCODE_CANCELLED)
@@ -2097,7 +2097,7 @@ namespace ARK_Server_Manager
             var window = new CommandLineWindow(iniValue);
             window.OutputTextWrapping = TextWrapping.Wrap;
             window.Height = 500;
-            window.Title = _globalizer.GetResourceString("ServerSettings_CraftingOverrides_SaveTitle");
+            window.Title = _globalizer.GetResourceString("ServerSettings_MapSpawnerOverrides_SaveTitle");
             window.Owner = Window.GetWindow(this);
             window.ShowDialog();
         }

@@ -71,13 +71,13 @@ namespace ArkServerManager.Plugin.Discord
             }
         }
 
-        public static async Task PerformCallToAPIAsync(IPAddress ipAddress, string pluginId)
+        public static async Task PerformCallToAPIAsync(string pluginCode, IPAddress ipAddress)
         {
             try
             {
                 using (var client = new WebClient())
                 {
-                    var url = string.Format(Config.Default.PluginCallUrlFormat, ipAddress, pluginId);
+                    var url = string.Format(Config.Default.PluginCallUrlFormat, pluginCode, ipAddress);
                     await client.DownloadStringTaskAsync(url);
                 }
             }

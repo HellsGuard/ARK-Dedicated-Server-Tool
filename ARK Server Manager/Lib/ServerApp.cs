@@ -24,83 +24,6 @@ namespace ARK_Server_Manager.Lib
         private readonly GlobalizedApplication _globalizer = GlobalizedApplication.Instance;
         private readonly PluginHelper _pluginHelper = PluginHelper.Instance;
 
-        internal class ProfileSnapshot
-        {
-            public string ProfileId;
-            public string ProfileName;
-            public string InstallDirectory;
-            public string AltSaveDirectoryName;
-            public bool PGM_Enabled;
-            public string PGM_Name;
-            public string AdminPassword;
-            public string ServerIP;
-            public int ServerPort;
-            public bool RCONEnabled;
-            public int RCONPort;
-            public string ServerMap;
-            public string ServerMapModId;
-            public string TotalConversionModId;
-            public List<string> ServerModIds;
-            public string LastInstalledVersion;
-            public int MotDDuration;
-            public bool ForceRespawnDinos;
-
-            public string SchedulerKey;
-            public bool EnableAutoBackup;
-            public bool EnableAutoUpdate;
-            public bool EnableAutoShutdown1;
-            public bool RestartAfterShutdown1;
-            public bool UpdateAfterShutdown1;
-            public bool EnableAutoShutdown2;
-            public bool RestartAfterShutdown2;
-            public bool UpdateAfterShutdown2;
-            public bool AutoRestartIfShutdown;
-
-            public bool SotFEnabled;
-
-            public bool ServerUpdated;
-
-            public static ProfileSnapshot Create(ServerProfile profile)
-            {
-                return new ProfileSnapshot
-                {
-                    ProfileId = profile.ProfileID,
-                    ProfileName = profile.ProfileName,
-                    InstallDirectory = profile.InstallDirectory,
-                    AltSaveDirectoryName = profile.AltSaveDirectoryName,
-                    PGM_Enabled = profile.PGM_Enabled,
-                    PGM_Name = profile.PGM_Name,
-                    AdminPassword = profile.AdminPassword,
-                    ServerIP = string.IsNullOrWhiteSpace(profile.ServerIP) ? IPAddress.Loopback.ToString() : profile.ServerIP.Trim(),
-                    ServerPort = profile.ServerPort,
-                    RCONEnabled = profile.RCONEnabled,
-                    RCONPort = profile.RCONPort,
-                    ServerMap = ServerProfile.GetProfileMapName(profile),
-                    ServerMapModId = ServerProfile.GetProfileMapModId(profile),
-                    TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
-                    ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
-                    LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
-                    MotDDuration = Math.Max(profile.MOTDDuration, 10),
-                    ForceRespawnDinos = profile.ForceRespawnDinos,
-
-                    SchedulerKey = profile.GetProfileKey(),
-                    EnableAutoBackup = profile.EnableAutoBackup,
-                    EnableAutoUpdate = profile.EnableAutoUpdate,
-                    EnableAutoShutdown1 = profile.EnableAutoShutdown1,
-                    RestartAfterShutdown1 = profile.RestartAfterShutdown1,
-                    UpdateAfterShutdown1 = profile.UpdateAfterShutdown1,
-                    EnableAutoShutdown2 = profile.EnableAutoShutdown2,
-                    RestartAfterShutdown2 = profile.RestartAfterShutdown2,
-                    UpdateAfterShutdown2 = profile.UpdateAfterShutdown2,
-                    AutoRestartIfShutdown = profile.AutoRestartIfShutdown,
-
-                    SotFEnabled = profile.SOTF_Enabled,
-
-                    ServerUpdated = false,
-                };
-            }
-        }
-
         public enum ServerProcessType
         {
             Unknown = 0,
@@ -167,9 +90,9 @@ namespace ARK_Server_Manager.Lib
         private static readonly object LockObjectProfileMessage = new object();
         private static DateTime _startTime = DateTime.Now;
         private static string _logPrefix = "";
-        private static Dictionary<ProfileSnapshot, ServerProfile> _profiles = null;
+        private static Dictionary<ServerProfileSnapshot, ServerProfile> _profiles = null;
 
-        private ProfileSnapshot _profile = null;
+        private ServerProfileSnapshot _profile = null;
         private Rcon _rconConsole = null;
         private bool _serverRunning = false;
 
@@ -229,7 +152,7 @@ namespace ARK_Server_Manager.Lib
                     try
                     {
                         // create a connection to the server
-                        var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
+                        var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.QueryPort);
                         gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
 
                         try
@@ -409,6 +332,8 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("");
                 LogProfileMessage("Starting server...");
 
+                CheckServerWorldFileExists(_profile);
+
                 var startInfo = new ProcessStartInfo()
                 {
                     FileName = GetLauncherFile(),
@@ -473,7 +398,7 @@ namespace ARK_Server_Manager.Lib
             try
             {
                 // create a connection to the server
-                var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.ServerPort);
+                var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.QueryPort);
                 gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
 
                 // check if there is a shutdown reason
@@ -751,6 +676,8 @@ namespace ARK_Server_Manager.Lib
             {
                 if (process.HasExited)
                 {
+                    CheckServerWorldFileExists(_profile);
+
                     if (Config.Default.EmailNotify_ShutdownRestart)
                         SendEmail($"{_profile.ProfileName} server shutdown", $"The server has been shutdown to perform the {ServerProcess.ToString()} process.", false);
                 }
@@ -1773,20 +1700,57 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public void CreateProfileBackupArchiveFile(ProfileSnapshot profile = null)
+        public void CheckServerWorldFileExists(ServerProfileSnapshot profile = null)
         {
+            // do nothing if profile is null or SotF
+            if (profile == null || profile.SotFEnabled)
+                return;
+
             var oldProfile = _profile;
 
             try
             {
-                if (profile != null)
-                    _profile = profile;
+                _profile = profile;
 
-                if (_profile == null)
-                {
-                    ExitCode = EXITCODE_BADPROFILE;
+                // check if the server save folder exists
+                var saveFolder = GetServerSaveFolder();
+                if (!Directory.Exists(saveFolder))
+                    // save folder does not exist, exit
                     return;
-                }
+
+                // check if the server save file exists
+                var worldFile = GetServerWorldFile();
+                if (File.Exists(worldFile))
+                    // save file exists, exit
+                    return;
+
+                // save file does not exist, check for temp save file
+                var tempWorldFile = Path.ChangeExtension(worldFile, ".tmp");
+                if (!File.Exists(tempWorldFile))
+                    // temp save file does not exist, exit
+                    return;
+
+                // temp save file exists, rename temp file to server save file
+                File.Move(tempWorldFile, worldFile);
+                LogProfileMessage("Server save file restored from temporary file (.tmp).");
+            }
+            finally
+            {
+                _profile = oldProfile;
+            }
+        }
+
+        public void CreateProfileBackupArchiveFile(ServerProfileSnapshot profile = null)
+        {
+            // do nothing if profile is null
+            if (profile == null)
+                return;
+
+            var oldProfile = _profile;
+
+            try
+            {
+                _profile = profile;
 
                 // create the backup file.
                 try
@@ -1903,20 +1867,17 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public void CreateServerBackupArchiveFile(StringBuilder emailMessage, ProfileSnapshot profile = null)
+        public void CreateServerBackupArchiveFile(StringBuilder emailMessage, ServerProfileSnapshot profile = null)
         {
+            // do nothing if profile is null or SotF
+            if (profile == null || profile.SotFEnabled)
+                return;
+
             var oldProfile = _profile;
 
             try
             {
-                if (profile != null)
-                    _profile = profile;
-
-                if (_profile == null || _profile.SotFEnabled)
-                {
-                    ExitCode = EXITCODE_BADPROFILE;
-                    return;
-                }
+                _profile = profile;
 
                 // check if the servers save folder exists
                 var saveFolder = GetServerSaveFolder();
@@ -2291,14 +2252,14 @@ namespace ARK_Server_Manager.Lib
                 _profiles = null;
             }
 
-            _profiles = new Dictionary<ProfileSnapshot, ServerProfile>();
+            _profiles = new Dictionary<ServerProfileSnapshot, ServerProfile>();
 
             foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtensionNew))
             {
                 try
                 {
                     var profile = ServerProfile.LoadFrom(profileFile);
-                    _profiles.Add(ProfileSnapshot.Create(profile), profile);
+                    _profiles.Add(ServerProfileSnapshot.Create(profile), profile);
                 }
                 catch (Exception ex)
                 {
@@ -2536,7 +2497,7 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public int PerformProfileBackup(ProfileSnapshot profile)
+        public int PerformProfileBackup(ServerProfileSnapshot profile)
         {
             _profile = profile;
 
@@ -2605,7 +2566,7 @@ namespace ARK_Server_Manager.Lib
             return ExitCode;
         }
 
-        public int PerformProfileShutdown(ProfileSnapshot profile, bool performRestart, bool performUpdate, CancellationToken cancellationToken)
+        public int PerformProfileShutdown(ServerProfileSnapshot profile, bool performRestart, bool performUpdate, CancellationToken cancellationToken)
         {
             _profile = profile;
 
@@ -2690,7 +2651,7 @@ namespace ARK_Server_Manager.Lib
             return ExitCode;
         }
 
-        public int PerformProfileUpdate(ProfileSnapshot profile)
+        public int PerformProfileUpdate(ServerProfileSnapshot profile)
         {
             _profile = profile;
 
@@ -2782,7 +2743,7 @@ namespace ARK_Server_Manager.Lib
                 // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                 LoadProfiles();
 
-                var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
+                var exitCodes = new ConcurrentDictionary<ServerProfileSnapshot, int>();
 
                 Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoBackup), profile => {
                     var app = new ServerApp();
@@ -2921,7 +2882,7 @@ namespace ARK_Server_Manager.Lib
 
                     if (exitCode == EXITCODE_NORMALEXIT)
                     {
-                        var exitCodes = new ConcurrentDictionary<ProfileSnapshot, int>();
+                        var exitCodes = new ConcurrentDictionary<ServerProfileSnapshot, int>();
 
                         if (Config.Default.AutoUpdate_ParallelUpdate)
                         {
