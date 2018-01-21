@@ -2846,6 +2846,9 @@ namespace ARK_Server_Manager.Lib
             new PrimalItem { ClassName="PrimalItemTrophy_AlphaWorm_C",                              Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemTrophy_AlphaWyvern_C",                            Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
             new PrimalItem { ClassName="PrimalItemTrophy_Manticore_C",                              Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_Manticore_Alpha_C",                        Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_Manticore_Beta_C",                         Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
+            new PrimalItem { ClassName="PrimalItemTrophy_Manticore_Gamma_C",                        Category="Trophy",      ArkApplication=ArkApplication.ScorchedEarth },
 
             // Aberration
             new PrimalItem { ClassName="PrimalItem_ChargeBattery_C",                                Category="Resources",   ArkApplication=ArkApplication.Aberration },

@@ -1355,6 +1355,7 @@
     <sys:String x:Key="ServerSettings_ProgressionXPRequiredColumnLabel">Требуется XP</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionEngramPointsColumnLabel">Очков Энграмм</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionEngramTotalColumnLabel">Общее Энграмм</sys:String>
+    <sys:String x:Key="ServerSettings_ProgressionAscensionLevelColumnLabel">Ascension Level</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionAddLevelTooltip">Добавить ещё один уровень.</sys:String>
     <sys:String x:Key="ServerSettings_ProgressionRemoveLevelTooltip">Удалить этот уровень.</sys:String>
 
@@ -2235,6 +2236,10 @@
     <sys:String x:Key="Rockwell_Character_BP_Easy_C">Роквелл (Easy Variant)</sys:String>
     <sys:String x:Key="Rockwell_Character_BP_Medium_C">Роквелл (Medium Variant)</sys:String>
     <sys:String x:Key="Rockwell_Character_BP_Hard_C">Роквелл (Hard Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_C">Роквелл щупальце</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Alpha_C">Роквелл щупальце (Hard Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Beta_C">Роквелл щупальце (Medium Variant)</sys:String>
+    <sys:String x:Key="RockwellTentacle_Character_BP_Gamma_C">Роквелл щупальце (Easy Variant)</sys:String>
 
     <!-- Engram Class Names -->
     <sys:String x:Key="EngramEntry_AdvancedBullet_C">Улучшенная пуля</sys:String>
@@ -3715,17 +3720,17 @@
     <sys:String x:Key="PrimalItemTransGPSAmmo_C">Радио-маячок</sys:String>
     <sys:String x:Key="PrimalItemTrophy_AlphaRex_C">Трофей Альфа Тираннозавра</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Broodmother_C">Голова Праматери</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Broodmother_Alpha_C">Альфа Голова Праматери</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Broodmother_Beta_C">Бета Голова Праматери</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Broodmother_Gamma_C">Гамма Голова Праматери</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Alpha_C">Голова Праматери (Альфа)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Beta_C">Голова Праматери (Бета)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Broodmother_Gamma_C">Голова Праматери (Гамма)</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Dragon_C">Голова Дракона</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Dragon_Alpha_C">Альфа Голова Дракона</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Dragon_Beta_C">Бета Голова Дракона</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Dragon_Gamma_C">Гамма Голова Дракона</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Alpha_C">Голова Дракона (Альфа)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Beta_C">Голова Дракона (Бета)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Dragon_Gamma_C">Голова Дракона (Гамма)</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Gorilla_C">Голова Мегапитека</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Gorilla_Alpha_C">Альфа Голова Мегапитека</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Gorilla_Beta_C">Бета Голова Мегапитека</sys:String>
-    <sys:String x:Key="PrimalItemTrophy_Gorilla_Gamma_C">Гамма Голова Мегапитека</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Alpha_C">Голова Мегапитека (Альфа)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Beta_C">Голова Мегапитека (Бета)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Gorilla_Gamma_C">Голова Мегапитека (Гамма)</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_Flashlight_C">Подствольный фонарик</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_HoloScope_C">Коллиматорный прицел</sys:String>
     <sys:String x:Key="PrimalItemWeaponAttachment_Laser_C">Лазерный прицел</sys:String>
@@ -3813,6 +3818,9 @@
     <sys:String x:Key="PrimalItemTrophy_AlphaWorm_C">Трофей Альфа Червя смерти</sys:String>
     <sys:String x:Key="PrimalItemTrophy_AlphaWyvern_C">Трофей Альфа Виверны</sys:String>
     <sys:String x:Key="PrimalItemTrophy_Manticore_C">Трофей Мантикоры</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Manticore_Alpha_C">Трофей Мантикоры (Альфа)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Manticore_Beta_C">Трофей Мантикоры (Бета)</sys:String>
+    <sys:String x:Key="PrimalItemTrophy_Manticore_Gamma_C">Трофей Мантикоры (Гамма)</sys:String>
 
     <!-- Item Class Names - Primitive Plus -->
     <sys:String x:Key="PrimalItem_Mail_C">Mail</sys:String>
