@@ -182,6 +182,28 @@ namespace ARK_Server_Manager
             }
         }
 
+        private void SetBackupDir_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            dialog.Title = _globalizer.GetResourceString("GlobalSettings_DataDirectoryTitle");
+            dialog.InitialDirectory = Config.Default.BackupPath;
+            var result = dialog.ShowDialog();
+
+            if (result == CommonFileDialogResult.Ok)
+            {
+                if (!String.Equals(dialog.FileName, Config.Default.BackupPath))
+                {
+                    Config.Default.BackupPath = dialog.FileName;
+                }
+            }
+        }
+
+        private void ClearBackupDir_Click(object sender, RoutedEventArgs e)
+        {
+            Config.Default.BackupPath = string.Empty;
+        }
+
         private void SetCacheDir_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new CommonOpenFileDialog();

@@ -315,7 +315,19 @@ namespace ARK_Server_Manager
                     else if (_profile.ServerMap.Contains('/'))
                         _profile.ServerMap = string.Empty;
 
-                    _profile.TotalConversionModId = totalConversionString ?? string.Empty;
+                    // check if a total conversion mod was found in the mod list
+                    if (string.IsNullOrWhiteSpace(totalConversionString))
+                    {
+                        // total conversion mod not found, was it previously set to an official mod?
+                        if (!ModUtils.IsOfficialMod(_profile.TotalConversionModId))
+                            // total conversion was not previoulsly set to an official mod, clear total conversion mod id
+                            _profile.TotalConversionModId = string.Empty;
+                    }
+                    else
+                    {
+                        // total conversion mod found, set the found mod id
+                        _profile.TotalConversionModId = totalConversionString;
+                    }
                     _profile.ServerModIds = modIdString ?? string.Empty;
                 }
 

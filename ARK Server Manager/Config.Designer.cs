@@ -1973,5 +1973,17 @@ namespace ARK_Server_Manager {
                 return ((string)(this["ServerManagerCode"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupPath {
+            get {
+                return ((string)(this["BackupPath"]));
+            }
+            set {
+                this["BackupPath"] = value;
+            }
+        }
     }
 }

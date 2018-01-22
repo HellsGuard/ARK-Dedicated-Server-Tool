@@ -200,13 +200,13 @@ namespace ARK_Server_Manager.Lib
                 return;
 
             // make a backup of the current profile and config files.
-            CreateProfileBackupArchiveFile();
+            CreateProfileBackupArchiveFile(_profile);
 
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
 
             // make a backup of the current world file.
-            CreateServerBackupArchiveFile(emailMessage);
+            CreateServerBackupArchiveFile(emailMessage, _profile);
 
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
@@ -259,7 +259,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             // make a backup of the current profile and config files.
-            CreateProfileBackupArchiveFile();
+            CreateProfileBackupArchiveFile(_profile);
 
             if (ExitCode != EXITCODE_NORMALEXIT)
                 return;
@@ -267,7 +267,7 @@ namespace ARK_Server_Manager.Lib
             if (BackupWorldFile)
             {
                 // make a backup of the current world file.
-                CreateServerBackupArchiveFile(null);
+                CreateServerBackupArchiveFile(null, _profile);
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
@@ -1166,7 +1166,7 @@ namespace ARK_Server_Manager.Lib
                 emailMessage.AppendLine($"Server Manager version: {App.Version}");
 
                 // make a backup of the current profile and config files.
-                CreateProfileBackupArchiveFile();
+                CreateProfileBackupArchiveFile(_profile);
 
                 if (ExitCode != EXITCODE_NORMALEXIT)
                     return;
@@ -1174,7 +1174,7 @@ namespace ARK_Server_Manager.Lib
                 if (BackupWorldFile)
                 {
                     // make a backup of the current world file.
-                    CreateServerBackupArchiveFile(emailMessage);
+                    CreateServerBackupArchiveFile(emailMessage, _profile);
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                         return;
@@ -1757,7 +1757,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage("Back up profile and config files started...");
 
-                    var backupFolder = GetProfileBackupFolder();
+                    var backupFolder = GetProfileBackupFolder(_profile.ProfileName);
                     var backupFileName = $"{_startTime.ToString("yyyyMMdd_HHmmss")}{Config.Default.BackupExtension}";
                     var backupFile = IOUtils.NormalizePath(Path.Combine(backupFolder, backupFileName));
 
@@ -1818,7 +1818,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     LogProfileMessage("Delete old profile backup files started...");
 
-                    var backupFolder = GetProfileBackupFolder();
+                    var backupFolder = GetProfileBackupFolder(_profile.ProfileName);
                     var backupFileFilter = $"*{Config.Default.BackupExtension}";
                     var backupDateFilter = DateTime.Now.AddDays(-BACKUP_DELETEINTERVAL);
 
@@ -1848,7 +1848,7 @@ namespace ARK_Server_Manager.Lib
                 // cleanup any backup folders from old backup process
                 try
                 {
-                    var backupFolder = GetProfileBackupFolder();
+                    var backupFolder = GetProfileBackupFolder(_profile.ProfileName);
 
                     var oldBackupFolders = new DirectoryInfo(backupFolder).GetDirectories();
                     foreach (var oldBackupFolder in oldBackupFolders)
@@ -2142,7 +2142,13 @@ namespace ARK_Server_Manager.Lib
             return ModUtils.ValidateModList(modIdList);
         }
 
-        private string GetProfileBackupFolder() => IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, _profile.ProfileName));
+        private static string GetProfileBackupFolder(string profileName)
+        {
+            if (string.IsNullOrWhiteSpace(Config.Default.BackupPath))
+                return IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, Config.Default.BackupDir, profileName));
+
+            return IOUtils.NormalizePath(Path.Combine(Config.Default.BackupPath, Config.Default.ProfilesDir, profileName));
+        }
 
         private string GetProfileLogFile() => _profile != null ? IOUtils.NormalizePath(Path.Combine(SteamCmdUpdater.GetLogFolder(), _profile.ProfileName, _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log")) : GetLogFile();
 
@@ -2165,7 +2171,13 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public static string GetServerBackupFolder(string profileName) => IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.BackupDir, profileName));
+        public static string GetServerBackupFolder(string profileName)
+        {
+            if (string.IsNullOrWhiteSpace(Config.Default.BackupPath))
+                return IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.ServersInstallDir, Config.Default.BackupDir, profileName));
+
+            return IOUtils.NormalizePath(Path.Combine(Config.Default.BackupPath, Config.Default.ServersInstallDir, profileName));
+        }
 
         private static string GetServerCacheTimeFile() => IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
 
