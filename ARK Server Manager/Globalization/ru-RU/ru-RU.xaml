@@ -228,9 +228,11 @@
     <sys:String x:Key="GlobalSettings_ResetButtonTooltip">Это приведет к сбросу всех глобальных параметров пользователя в диспетчере сервера. Менеджер сервера будет закрыт, если сброс будет успешным.</sys:String>
     <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Запускать программу в режиме Администратора</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Управление параметрами брандмауэра автоматически</sys:String>
-    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Каталог данных:</sys:String>
+    <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Каталог Данных:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupDirectoryLabel">Каталог Бекапов:</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyLabel">Steam WebApi Key:</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Указать папку...</sys:String>
+    <sys:String x:Key="GlobalSettings_ClearButtonLabel">Очистить</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Получить WebApi Ключ...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Помощь...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Языки</sys:String>
@@ -358,6 +360,7 @@
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Не удалось изменить каталог данных</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">При изменении каталога данных произошла ошибка: {0}\r\nПожалуйста, исправьте ошибку и повторите попытку или обратитесь в службу технической поддержки.</sys:String>
 
+    <sys:String x:Key="GlobalSettings_DataDirectoryTitle">Выбрать Каталок Бекапов</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Выберете директорию Авто-Обновления кеша</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Недопустимый каталог кеша Авто-Обновления</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorLabel">Каталог кеша должен указывать допустимое расположение или период Авто-Обновления кеша должен быть 0.</sys:String>
