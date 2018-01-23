@@ -229,8 +229,10 @@
     <sys:String x:Key="GlobalSettings_RunAsAdministratorLabel">Enable Run as Administrator Prompt on Startup</sys:String>
     <sys:String x:Key="GlobalSettings_ManageFirewallLabel">Manage firewall settings automatically</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryLabel">Data Directory:</sys:String>
+    <sys:String x:Key="GlobalSettings_BackupDirectoryLabel">Backup Directory:</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyLabel">Steam WebApi Key:</sys:String>
     <sys:String x:Key="GlobalSettings_SetLocationButtonLabel">Set Location...</sys:String>
+    <sys:String x:Key="GlobalSettings_ClearButtonLabel">Clear</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Get WebApi Key...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Help...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
@@ -358,6 +360,7 @@
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedTitle">Failed to change data directory</sys:String>
     <sys:String x:Key="GlobalSettings_DataDirectoryChange_FailedLabel">There was an error changing the data directory: {0}\r\nPlease correct the error and try again, or contact technical support for assistance.</sys:String>
 
+    <sys:String x:Key="GlobalSettings_DataDirectoryTitle">Select Backup Directory</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectoryTitle">Select Cache Directory</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorTitle">Invalid cache directory</sys:String>
     <sys:String x:Key="GlobalSettings_CacheDirectory_ErrorLabel">The cache directory must specify a valid location or the cache update period must be 0.</sys:String>

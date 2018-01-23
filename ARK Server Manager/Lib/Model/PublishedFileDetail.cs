@@ -284,6 +284,8 @@ namespace ARK_Server_Manager.Lib.Model
         }
 
 
+        public bool IsOfficialMod => ModUtils.IsOfficialMod(ModId);
+
         public bool IsValidModType => !ModTypeString.Equals(ModUtils.MODTYPENAME_UNKNOWN) && !ModTypeString.Equals(ModUtils.MODTYPENAME_NOTDOWNLOADED);
 
         public string LastWriteTimeString => LastWriteTime == DateTime.MinValue ? string.Empty : LastWriteTime.ToString();

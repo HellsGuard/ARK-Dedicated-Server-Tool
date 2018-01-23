@@ -554,5 +554,8 @@
     <Setting Name="ServerManagerCode" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E</Value>
     </Setting>
+    <Setting Name="BackupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
