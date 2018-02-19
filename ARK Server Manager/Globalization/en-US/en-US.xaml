@@ -753,6 +753,8 @@
     <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">If enabled, the server can gain performance by keeping the AI's in memory of statised creatures. NOTE: your server must have a lot of RAM otherwise your server will suffer with a large memory overhead.</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">No Hang Detection</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">If enabled, prevents some types of crashes causes by hanging (may appear as though the server is lagging while the server is hanging).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselLabel">Server Allow Ansel</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselTooltip">If enabled, will enable NVIDIA Ansel on Servers.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">A key which is optional to use in the listening script, but required to have it in the text file.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -769,6 +771,8 @@
     <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">If enabled, it will write all tribe log entries (for all tribes) into the Shootergame log files.</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Server RCON Output Tribe Logs</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">If enabled, it will write all tribe log entries (for all tribes) to the RCON window.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsLabel">Allow Hide Damage Source from Logs</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsTooltip">If enabled, makes the Silencer hide the name of the player who has killed you from the kill message and tribe log.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Log Admin Commands to Chat (public)</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">If enabled, admin commands will be echoed to chat for everyone to see.</sys:String>
     <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatLabel">Log Admin Commands to Chat (admins only)</sys:String>
@@ -807,6 +811,8 @@
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Rules</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownLabel">Tribe Name Change Cooldown</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownTooltip">Cooldown added to tribe's changing their name.</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreLabel">Enable Hardcore Mode</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Enables hardcore mode (players can not respawn, a new character must be created).</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPLabel">Enable PvP</sys:String>
@@ -819,6 +825,8 @@
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">If enabled, will prevent spawning of Loot crates (artifact crates will still spawn).</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Allow Crate Spawns on top of Structures</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">If enabled, will allow from-the-air Supply Crates to appear on top of Structures, rather than being prevented by Structures.</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsLabel">Random Supply Crate Points</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsTooltip">If enabled, will make Supply Crates random.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Prevent Building in Resource Rich Areas</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">If enabled, completely disables building in specific resource-rich areas, in particular setup on TheIsland around the major mountains.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Disable PvP Friendly Fire</sys:String>
@@ -1057,13 +1065,24 @@
     <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Specifies the multiplier for the crafting skill bonus.</sys:String>
 
     <!-- Server Settings - Dino Settings -->
-    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
-    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
     <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Tamed Dinos (server):</sys:String>
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Set the maximum number of tamed dinos of the server.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Max Tamed Dinos (tribe):</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Set the maximum number of tamed dinos per tribe.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Dino Settings</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageLabel">Tamed Damage:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Tamed Resistance:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierLabel">Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of wild dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Tamed Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of tamed dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Torpor Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of wild dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Tamed Torpor Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of tamed dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Passive Tame Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Specifies the scaling factor for the time between passive tame feedings. Higher values increase the time interval between feedings. Lower values decrease it.</sys:String>
+
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Tamed Dinos Saddle Structure Cost:</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">The number of tribe tamed dino slots each platform saddle (with structures) will cost.</sys:String>
     <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Use Tame Limit for Structures Only</sys:String>
@@ -1203,12 +1222,16 @@
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordTitle">Remove Resource</sys:String>
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordLabel">Click 'Yes' to confirm you want to delete the resource record.</sys:String>
 
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierLabel">Base Temperature:</sys:String>
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierTooltip">Specifies the scaling factor for the base temperature of the map. Lower values decrease the base temperature (makes it colder); higher values increase the base temperature (makes it hotter).</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Day Cycle Speed:</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark, controlling how often day changes to night and night changes to day. Values lower than 1 slow down the cycle; higher values accelerate it.</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">Day Time Speed:</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during the day. This value determines the length of each day, relative to the length of each night. Lowering this value increases the length of each day.</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">Night Time Speed:</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Specifies the scaling factor for the passage of time in the Ark during night time. This value determines the length of each night, relative to the length of each day. Lowering this value increases the length of each night.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogLabel">Disable Weather - Fog</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogTooltip">If enabled, will disable fog.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Global Spoiling Time:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Scales the spoiling time of perishables globally. Higher values prolong the time.</sys:String>
     <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesLabel">Clamp Item Spoiling Times</sys:String>
@@ -1303,6 +1326,8 @@
     <sys:String x:Key="ServerSettings_LimitTurretsRangeTooltip">Sets the limit range for ALL auto turrets and plant turrets.</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumLabel">Limit Number</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumTooltip">Sets the maximum number of turrets that can be placed within the limit range.</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeLabel">Hard Limit Turrets In Range</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeTooltip">If enabled, will implement a retroactive turret hard limit. This will work on autoturrets, heavy turrets, tek turrets, plant turrets and is no longer map specific. The hard limit calculation is done on start-up, so if your turrets are ever over the limit, they will be randomly shut-off until you're under the limit. In order to restore shut off turrets, you must pick up any which exceed the number, as well as shut-off turrets and replace them in order for them to work.</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrams</sys:String>
