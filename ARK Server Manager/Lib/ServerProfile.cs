@@ -1140,6 +1140,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PreventOfflinePvPIntervalProperty, value); }
         }
 
+        public static readonly DependencyProperty PreventOfflinePvPConnectionInvincibleIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPConnectionInvincibleInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(PreventOfflinePvP))]
+        public int PreventOfflinePvPConnectionInvincibleInterval
+        {
+            get { return (int)GetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty); }
+            set { SetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty, value); }
+        }
+
         public static readonly DependencyProperty AutoPvETimerProperty = DependencyProperty.Register(nameof(AutoPvETimer), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bAutoPvETimer")]
@@ -4715,6 +4724,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(PreventOfflinePvPProperty);
             this.ClearValue(PreventOfflinePvPIntervalProperty);
+            this.ClearValue(PreventOfflinePvPConnectionInvincibleIntervalProperty);
 
             this.ClearValue(AutoPvETimerProperty);
             this.ClearValue(AutoPvEUseSystemTimeProperty);
@@ -5268,6 +5278,7 @@ namespace ARK_Server_Manager.Lib
 
             this.SetValue(PreventOfflinePvPProperty, sourceProfile.PreventOfflinePvP);
             this.SetValue(PreventOfflinePvPIntervalProperty, sourceProfile.PreventOfflinePvPInterval);
+            this.SetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty, sourceProfile.PreventOfflinePvPConnectionInvincibleInterval);
 
             this.SetValue(AutoPvETimerProperty, sourceProfile.AutoPvETimer);
             this.SetValue(AutoPvEUseSystemTimeProperty, sourceProfile.AutoPvEUseSystemTime);

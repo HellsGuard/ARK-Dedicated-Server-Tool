@@ -905,6 +905,8 @@
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Logout Interval</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">The time period before a tribe/players dinos/structures become invulnerable/inactive after they log off (if tribe, requires ALL tribe members to be logged off).</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalLabel">Connection Invincible Interval</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalTooltip">The time period after login that the player is given the No Damage buff to prevent character killing immediately after login.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvEScheduleLabel">PvE Schedule</sys:String>
     <sys:String x:Key="ServerSettings_PvEScheduleTooltip">If enabled, allows switching between PvE and PvP at pre-specified in-game times or pre-specified real-world times.</sys:String>

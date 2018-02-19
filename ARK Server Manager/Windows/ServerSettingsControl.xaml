@@ -1751,6 +1751,7 @@
 
                                         <StackPanel IsEnabled="{Binding ElementName=EnablePreventOfflinePvP, Path=IsChecked}">
                                             <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_PreventOfflinePvPIntervalLabel}" Value="{Binding PreventOfflinePvPInterval}" Suffix="{DynamicResource ServerSettings_PreventOfflinePvPIntervalUnits}" Minimum="0" Maximum="3600" SmallChange="60" LargeChange="300" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPIntervalTooltip}" />
+                                            <local:AnnotatedSlider Margin="1" Label="{DynamicResource ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalLabel}" Value="{Binding PreventOfflinePvPConnectionInvincibleInterval}" Suffix="{DynamicResource SliderUnits_Seconds}" Minimum="1" Maximum="3600" SmallChange="5" LargeChange="60" TickFrequency="60" ToolTip="{DynamicResource ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalTooltip}" />
                                         </StackPanel>
                                     </GroupBox>
 

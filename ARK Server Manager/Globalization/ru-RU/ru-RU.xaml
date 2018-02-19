@@ -753,6 +753,8 @@
     <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">Если это разрешено, сервер может получить производительность, сохранив AI в памяти о статусных существах. ПРИМЕЧАНИЕ. На вашем сервере должно быть много ОЗУ, иначе ваш сервер будет страдать с большими издержками памяти.</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">Нет Hang Detection</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">Если включено, предотвращает появление некоторых типов сбоев путем зависания (может показаться, что сервер отстает, пока сервер висит).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselLabel">Разрешить Ansel</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselTooltip">Если включено, разрешает NVIDIA Ansel на серверах.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Web Key</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">Ключ, который необязательно использовать в скрипте прослушивания, но должен быть в текстовом файле.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">Web URL</sys:String>
@@ -769,6 +771,8 @@
     <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">Если включено, он будет записывать все Логи племени (для всех племен) в файлы Логов Shootergame.</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Вывод в RCON логов Племени.</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">Если включено, он будет записывать все Логи Племени (для всех Племен) в окно RCON.</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsLabel">Разрешить скрывать источник повреждений в логах</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsTooltip">Если включено, заставит Silencer скрыть имя игрока, который убил вас из сообщения об убийстве в журнале племени.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Лог Админа в чат</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">Если включен, команды администратора будут отображаться в чате</sys:String>
     <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatLabel">Лог Админ команд в чате (только Админ)</sys:String>
@@ -807,6 +811,8 @@
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Правила сервера</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownLabel">Сменить название Трайба после перезагрузки</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownTooltip">Изменения названия Трайба вступят в силу, после перезагрузки Сервера.</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreLabel">Включить Хардкор режим</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Включает Хардкор режим (игроки не могут возрождаться после смерти, должен быть создан новый персонаж).</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPLabel">Включить PvP</sys:String>
@@ -819,6 +825,8 @@
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">Если этот параметр включен из разграбленных ящиков не будет появляться лут (контейнеры артефактов по-прежнему работают).</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Лучи дропа, останавливаются на крыше строений </sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">Если включено, лучи останавливаются на верхней части строения, а не проходят сквозь него до земли.</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsLabel">Рандомный респ Снабжения</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsTooltip">Если это разрешено, ящики снабжения респаются случайными образом.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Запрещает строительство в зонах респа ресурсов.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">Если включено, полностью запрещает строительство в зонах с богатыми ресурсами, в частности настройка на карте TheIsland вокруг основных гор.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Отключить огонь по своим в PvP</sys:String>
@@ -1057,13 +1065,24 @@
     <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Определяет множитель для бонуса навыка Крафтинг.</sys:String>
 
     <!-- Server Settings - Dino Settings -->
-    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Параметры Дино</sys:String>
-    <sys:String x:Key="ServerSettings_TamedDamageLabel">Урон домашними:</sys:String>
-    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Сопротивление домашними:</sys:String>
     <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Максимально ручных:</sys:String>
     <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Установить максимальное количество домашних динозавров на сервере.</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Максимально ручных: (Племя):</sys:String>
     <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Установить максимальное количество домашних динозавров в Племени.</sys:String>
+    <sys:String x:Key="ServerSettings_DinoSettingsLabel">Параметры Дино</sys:String>
+    <sys:String x:Key="ServerSettings_TamedDamageLabel">Урон домашними:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedResistanceLabel">Сопротивление домашними:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierLabel">Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of wild dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Tamed Food Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of tamed dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Torpor Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of wild dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Tamed Torpor Drain:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of tamed dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Passive Tame Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Specifies the scaling factor for the time between passive tame feedings. Higher values increase the time interval between feedings. Lower values decrease it.</sys:String>
+
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Колличество Сёдел платформ в Трайбе</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">Количество прирученных динозавров седлами платформами (со структурами) разрешено в Трайбе.</sys:String>
     <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Использовать ограничитель только для структур</sys:String>
@@ -1203,12 +1222,16 @@
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordTitle">Удалить ресурс</sys:String>
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordLabel">Нажмите «Да», для подтверждения, чтобы удалить запись ресурса.</sys:String>
 
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierLabel">Базовая температура:</sys:String>
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierTooltip">Определяет коэффициент масштабирования для базовой температуры карты. Более низкие значения уменьшают базовую температуру (делает ее холоднее); более высокие значения увеличивают базовую температуру (делает ее более горячей).</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Скорость суточного цикла:</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Позволяет изменять скорость смены суток в ARK, контролирует как быстро  день сменится в ночь, а ночь сменится в день. Значения ниже 1 замедлит цикл, более высокие значения ускорят.</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">Скорость дневного время:</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">Позволяет изменять скорость течения дня в ARK. Это значение определяет длину каждого дня, по отношению к длине каждой ночи. Уменьшение этого значения увеличивает длину каждого дня.</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">Скорость ночного время:</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Позволяет изменять скорость течения ночи в ARK. Это значение определяет длину каждой ночи, по отношению к длине каждого дня. Уменьшение этого значения увеличивает длину каждой ночи.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogLabel">Отключить туман</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogTooltip">Если включено, отключит туман.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Время порчи продуктов:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Позволяет изменить глобальные настройки время порчи продуктов. Более высокие значения увеличивают время.</sys:String>
     <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesLabel">Объединить время порчи продуктов</sys:String>
@@ -1303,6 +1326,8 @@
     <sys:String x:Key="ServerSettings_LimitTurretsRangeTooltip">Устанавливает предельный радиус для всех АвтоТурелей и Живых Турелей.</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumLabel">Ограничение количества Турелей</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumTooltip">Устанавливает максимальное количество Турелей, которые могут быть размещены в пределах определьного радиуса.</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeLabel">Строгий лимит Башен в радиусе</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeTooltip">Если включено, будет реализован жесткий контроль за башнями. Это будет работать на Автотурелях, Тяжёлые башни, ТЕК башни, Башни растений и больше не зависит от карты. Расчет жестких пределов выполняется при запуске, поэтому, если ваши башенки когда-либо превышают лимит, они будут случайным образом отключены, пока не достигнет предела. Чтобы восстановить отключенные башни, вы должны забрать всё, что превышает количество, а также запорные башни и заменить их, чтобы они работали.</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_AutoUnlockAllEngramsLabel">Авто открытие всех Энграмм</sys:String>
