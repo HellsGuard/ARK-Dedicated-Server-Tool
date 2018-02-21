@@ -703,6 +703,14 @@ namespace ARK_Server_Manager.Lib
             get { return (bool)GetValue(ServerAllowAnselProperty); }
             set { SetValue(ServerAllowAnselProperty, value); }
         }
+
+        public static readonly DependencyProperty NoDinosProperty = DependencyProperty.Register(nameof(NoDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool NoDinos
+        {
+            get { return (bool)GetValue(NoDinosProperty); }
+            set { SetValue(NoDinosProperty, value); }
+        }
         #endregion
 
         #region Automatic Management
@@ -3426,6 +3434,11 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -ServerAllowAnsel");
             }
 
+            if (this.NoDinos)
+            {
+                serverArgs.Append(" -NoDinos");
+            }
+
             serverArgs.Append(' ');
             serverArgs.Append(Config.Default.ServerCommandLineStandardArgs);
 
@@ -4434,6 +4447,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(UseNoMemoryBiasProperty);
             this.ClearValue(UseNoHangDetectionProperty);
             this.ClearValue(ServerAllowAnselProperty);
+            this.ClearValue(NoDinosProperty);
 
             this.ClearValue(AltSaveDirectoryNameProperty);
             this.ClearValue(CrossArkClusterIdProperty);
@@ -4963,6 +4977,7 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(UseNoHangDetectionProperty, sourceProfile.UseNoHangDetection);
             this.SetValue(ServerAllowAnselProperty, sourceProfile.ServerAllowAnsel);
             this.SetValue(AllowHideDamageSourceFromLogsProperty, sourceProfile.AllowHideDamageSourceFromLogs);
+            this.SetValue(NoDinosProperty, sourceProfile.NoDinos);
 
             this.SetValue(AltSaveDirectoryNameProperty, sourceProfile.AltSaveDirectoryName);
             this.SetValue(EnableWebAlarmProperty, sourceProfile.EnableWebAlarm);
