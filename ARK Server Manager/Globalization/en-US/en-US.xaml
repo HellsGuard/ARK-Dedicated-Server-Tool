@@ -1079,9 +1079,9 @@
     <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Tamed Food Drain:</sys:String>
     <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of tamed dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Torpor Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of wild dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Specifies the scaling factor for the torpor drain of wild dinos. Higher values increase torpor drain. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Tamed Torpor Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of tamed dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Specifies the scaling factor for the torpor drain of tamed dinos. Higher values increase torpor drain. Lower values decrease it.</sys:String>
     <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Passive Tame Interval:</sys:String>
     <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Specifies the scaling factor for the time between passive tame feedings. Higher values increase the time interval between feedings. Lower values decrease it.</sys:String>
 

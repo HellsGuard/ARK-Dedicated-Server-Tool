@@ -905,6 +905,8 @@
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Время до активации защиты</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">Период времени до того, как Выжившие / Динозавры / Структуры становятся неуязвимыми (ВСЕ игроки Племени должны быть оффлайн).</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">секунд</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalLabel">Баф бесмертия при входе в игру</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalTooltip">На сколько секунд при входе в игру, дается бафф бесмертия. Для предотвращения убийство персонажа сразу после входа.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvEScheduleLabel">Расписание PvE</sys:String>
     <sys:String x:Key="ServerSettings_PvEScheduleTooltip">Если этот параметр включен, позволяет переключаться между PvE и PvP в заранее определенное время в игре или предварительно заданные промежутки времени в реальном мире.</sys:String>
@@ -1072,16 +1074,16 @@
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Параметры Дино</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Урон домашними:</sys:String>
     <sys:String x:Key="ServerSettings_TamedResistanceLabel">Сопротивление домашними:</sys:String>
-    <sys:String x:Key="ServerSettings_FoodDrainMultiplierLabel">Food Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_FoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of wild dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
-    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Tamed Food Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Specifies the scaling factor for the food drain of tamed dinos. Higher values increase food drain. Lower values decrease it.</sys:String>
-    <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Torpor Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of wild dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
-    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Tamed Torpor Drain:</sys:String>
-    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Specifies the scaling factor for the topor drain of tamed dinos. Higher values increase topor drain. Lower values decrease it.</sys:String>
-    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Passive Tame Interval:</sys:String>
-    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Specifies the scaling factor for the time between passive tame feedings. Higher values increase the time interval between feedings. Lower values decrease it.</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierLabel">Испражнения диких Дино:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierTooltip">Определяет интервал испражнений диких динозавров. Более высокие значения увеличивают колличество испражнений. Более низкие значения уменьшают его.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Испражнения прирученных Дино:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Определяет интервал испражнений прирученных динозавров. Более высокие значения увеличивают колличество испражнений. Более низкие значения уменьшают его.</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Испражнение оглушенных диких Дино:</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Определяет интервал испражнений оглушенных диких Дино. Более высокие значения увеличивают колличество испражнений. Более низкие значения уменьшают его.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Испражнение оглушенных прирученных Дино:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Определяет интервал испражнений оглушенных прирученных Дино. Более высокие значения увеличивают колличество испражнений. Более низкие значения уменьшают его.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Пассивный интервал испражнений:</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Определяет интервал испражнений между пассивными и по активации. Более высокие значения увеличивают колличество испражнений. Более низкие значения уменьшают его.</sys:String>
 
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Колличество Сёдел платформ в Трайбе</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">Количество прирученных динозавров седлами платформами (со структурами) разрешено в Трайбе.</sys:String>
