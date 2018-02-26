@@ -686,6 +686,31 @@ namespace ARK_Server_Manager.Lib
             get { return (string)GetValue(LauncherArgsProperty); }
             set { SetValue(LauncherArgsProperty, value); }
         }
+
+        public static readonly DependencyProperty AllowHideDamageSourceFromLogsProperty = DependencyProperty.Register(nameof(AllowHideDamageSourceFromLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AllowHideDamageSourceFromLogs
+        {
+            get { return (bool)GetValue(AllowHideDamageSourceFromLogsProperty); }
+            set { SetValue(AllowHideDamageSourceFromLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerAllowAnselProperty = DependencyProperty.Register(nameof(ServerAllowAnsel), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool ServerAllowAnsel
+        {
+            get { return (bool)GetValue(ServerAllowAnselProperty); }
+            set { SetValue(ServerAllowAnselProperty, value); }
+        }
+
+        public static readonly DependencyProperty NoDinosProperty = DependencyProperty.Register(nameof(NoDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool NoDinos
+        {
+            get { return (bool)GetValue(NoDinosProperty); }
+            set { SetValue(NoDinosProperty, value); }
+        }
         #endregion
 
         #region Automatic Management
@@ -1123,6 +1148,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(PreventOfflinePvPIntervalProperty, value); }
         }
 
+        public static readonly DependencyProperty PreventOfflinePvPConnectionInvincibleIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPConnectionInvincibleInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(PreventOfflinePvP))]
+        public int PreventOfflinePvPConnectionInvincibleInterval
+        {
+            get { return (int)GetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty); }
+            set { SetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty, value); }
+        }
+
         public static readonly DependencyProperty AutoPvETimerProperty = DependencyProperty.Register(nameof(AutoPvETimer), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bAutoPvETimer")]
@@ -1371,6 +1405,24 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty); }
             set { SetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty, value); }
+        }
+
+        public static readonly DependencyProperty TribeNameChangeCooldownProperty = DependencyProperty.Register(nameof(TribeNameChangeCooldown), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public int TribeNameChangeCooldown
+        {
+            get { return (int)GetValue(TribeNameChangeCooldownProperty); }
+            set { SetValue(TribeNameChangeCooldownProperty, value); }
+        }
+
+        public static readonly DependencyProperty RandomSupplyCratePointsProperty = DependencyProperty.Register(nameof(RandomSupplyCratePoints), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public bool RandomSupplyCratePoints
+        {
+            get { return (bool)GetValue(RandomSupplyCratePointsProperty); }
+            set { SetValue(RandomSupplyCratePointsProperty, value); }
         }
         #endregion
 
@@ -2054,6 +2106,51 @@ namespace ARK_Server_Manager.Lib
             get { return (StringIniValueList)GetValue(PreventDinoTameClassNamesProperty); }
             set { SetValue(PreventDinoTameClassNamesProperty, value); }
         }
+
+        public static readonly DependencyProperty WildDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(WildDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float WildDinoCharacterFoodDrainMultiplier
+        {
+            get { return (float)GetValue(WildDinoCharacterFoodDrainMultiplierProperty); }
+            set { SetValue(WildDinoCharacterFoodDrainMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float TamedDinoCharacterFoodDrainMultiplier
+        {
+            get { return (float)GetValue(TamedDinoCharacterFoodDrainMultiplierProperty); }
+            set { SetValue(TamedDinoCharacterFoodDrainMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty WildDinoTorporDrainMultiplierProperty = DependencyProperty.Register(nameof(WildDinoTorporDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float WildDinoTorporDrainMultiplier
+        {
+            get { return (float)GetValue(WildDinoTorporDrainMultiplierProperty); }
+            set { SetValue(WildDinoTorporDrainMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty TamedDinoTorporDrainMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoTorporDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float TamedDinoTorporDrainMultiplier
+        {
+            get { return (float)GetValue(TamedDinoTorporDrainMultiplierProperty); }
+            set { SetValue(TamedDinoTorporDrainMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty PassiveTameIntervalMultiplierProperty = DependencyProperty.Register(nameof(PassiveTameIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float PassiveTameIntervalMultiplier
+        {
+            get { return (float)GetValue(PassiveTameIntervalMultiplierProperty); }
+            set { SetValue(PassiveTameIntervalMultiplierProperty, value); }
+        }
         #endregion
 
         #region Environment
@@ -2145,6 +2242,15 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (AggregateIniValueList<ResourceClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
+        }
+
+        public static readonly DependencyProperty BaseTemperatureMultiplierProperty = DependencyProperty.Register(nameof(BaseTemperatureMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        public float BaseTemperatureMultiplier
+        {
+            get { return (float)GetValue(BaseTemperatureMultiplierProperty); }
+            set { SetValue(BaseTemperatureMultiplierProperty, value); }
         }
 
         public static readonly DependencyProperty DayCycleSpeedScaleProperty = DependencyProperty.Register(nameof(DayCycleSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
@@ -2289,6 +2395,15 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (float)GetValue(SpecialXPMultiplierProperty); }
             set { SetValue(SpecialXPMultiplierProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableWeatherFogProperty = DependencyProperty.Register(nameof(DisableWeatherFog), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool DisableWeatherFog
+        {
+            get { return (bool)GetValue(DisableWeatherFogProperty); }
+            set { SetValue(DisableWeatherFogProperty, value); }
         }
         #endregion
 
@@ -2541,6 +2656,15 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (int)GetValue(LimitTurretsNumProperty); }
             set { SetValue(LimitTurretsNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty HardLimitTurretsInRangeProperty = DependencyProperty.Register(nameof(HardLimitTurretsInRange), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bHardLimitTurretsInRange")]
+        public bool HardLimitTurretsInRange
+        {
+            get { return (bool)GetValue(HardLimitTurretsInRangeProperty); }
+            set { SetValue(HardLimitTurretsInRangeProperty, value); }
         }
         #endregion
 
@@ -3303,6 +3427,16 @@ namespace ARK_Server_Manager.Lib
             if (this.EnableExclusiveJoin)
             {
                 serverArgs.Append(" -exclusivejoin");
+            }
+
+            if (this.ServerAllowAnsel)
+            {
+                serverArgs.Append(" -ServerAllowAnsel");
+            }
+
+            if (this.NoDinos)
+            {
+                serverArgs.Append(" -NoDinos");
             }
 
             serverArgs.Append(' ');
@@ -4312,6 +4446,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ForceNoManSkyProperty);
             this.ClearValue(UseNoMemoryBiasProperty);
             this.ClearValue(UseNoHangDetectionProperty);
+            this.ClearValue(ServerAllowAnselProperty);
+            this.ClearValue(NoDinosProperty);
 
             this.ClearValue(AltSaveDirectoryNameProperty);
             this.ClearValue(CrossArkClusterIdProperty);
@@ -4327,6 +4463,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(NotifyAdminCommandsInChatProperty);
             this.ClearValue(TribeLogDestroyedEnemyStructuresProperty);
             this.ClearValue(AdminLoggingProperty);
+            this.ClearValue(AllowHideDamageSourceFromLogsProperty);
         }
 
         // section reset methods
@@ -4479,9 +4616,12 @@ namespace ARK_Server_Manager.Lib
             this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             this.HarvestResourceItemAmountClassMultipliers.Reset();
 
+            this.ClearValue(BaseTemperatureMultiplierProperty);
             this.ClearValue(DayCycleSpeedScaleProperty);
             this.ClearValue(DayTimeSpeedScaleProperty);
             this.ClearValue(NightTimeSpeedScaleProperty);
+            this.ClearValue(DisableWeatherFogProperty);
+
             this.ClearValue(GlobalSpoilingTimeMultiplierProperty);
             this.ClearValue(GlobalItemDecompositionTimeMultiplierProperty);
             this.ClearValue(GlobalCorpseDecompositionTimeMultiplierProperty);
@@ -4598,6 +4738,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(PreventOfflinePvPProperty);
             this.ClearValue(PreventOfflinePvPIntervalProperty);
+            this.ClearValue(PreventOfflinePvPConnectionInvincibleIntervalProperty);
 
             this.ClearValue(AutoPvETimerProperty);
             this.ClearValue(AutoPvEUseSystemTimeProperty);
@@ -4631,6 +4772,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(EnableNoFishLootProperty);
             this.ClearValue(UseCorpseLifeSpanMultiplierProperty);
             this.ClearValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty);
+            this.ClearValue(TribeNameChangeCooldownProperty);
+            this.ClearValue(RandomSupplyCratePointsProperty);
         }
 
         public void ResetSOTFSection()
@@ -4683,6 +4826,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(LimitTurretsInRangeProperty);
             this.ClearValue(LimitTurretsRangeProperty);
             this.ClearValue(LimitTurretsNumProperty);
+            this.ClearValue(HardLimitTurretsInRangeProperty);
         }
 
         public void ResetSupplyCreateOverridesSection()
@@ -4831,6 +4975,9 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(UseNoMemoryBiasProperty, sourceProfile.UseNoMemoryBias);
             this.SetValue(StasisKeepControllersProperty, sourceProfile.StasisKeepControllers);
             this.SetValue(UseNoHangDetectionProperty, sourceProfile.UseNoHangDetection);
+            this.SetValue(ServerAllowAnselProperty, sourceProfile.ServerAllowAnsel);
+            this.SetValue(AllowHideDamageSourceFromLogsProperty, sourceProfile.AllowHideDamageSourceFromLogs);
+            this.SetValue(NoDinosProperty, sourceProfile.NoDinos);
 
             this.SetValue(AltSaveDirectoryNameProperty, sourceProfile.AltSaveDirectoryName);
             this.SetValue(EnableWebAlarmProperty, sourceProfile.EnableWebAlarm);
@@ -4896,12 +5043,16 @@ namespace ARK_Server_Manager.Lib
         private void SyncDinoSettingsSection(ServerProfile sourceProfile)
         {
             this.SetValue(OverrideMaxExperiencePointsDinoProperty, sourceProfile.OverrideMaxExperiencePointsDino);
-            this.SetValue(DinoDamageMultiplierProperty, sourceProfile.DinoDamageMultiplier);
-            this.SetValue(TamedDinoDamageMultiplierProperty, sourceProfile.TamedDinoDamageMultiplier);
-            this.SetValue(DinoResistanceMultiplierProperty, sourceProfile.DinoResistanceMultiplier);
-            this.SetValue(TamedDinoResistanceMultiplierProperty, sourceProfile.TamedDinoResistanceMultiplier);
             this.SetValue(MaxTamedDinosProperty, sourceProfile.MaxTamedDinos);
             this.SetValue(MaxPersonalTamedDinosProperty, sourceProfile.MaxPersonalTamedDinos);
+            this.SetValue(DinoDamageMultiplierProperty, sourceProfile.DinoDamageMultiplier);
+            this.SetValue(TamedDinoDamageMultiplierProperty, sourceProfile.TamedDinoDamageMultiplier);
+            this.SetValue(TamedDinoResistanceMultiplierProperty, sourceProfile.TamedDinoResistanceMultiplier);
+            this.SetValue(WildDinoCharacterFoodDrainMultiplierProperty, sourceProfile.WildDinoCharacterFoodDrainMultiplier);
+            this.SetValue(TamedDinoCharacterFoodDrainMultiplierProperty, sourceProfile.TamedDinoCharacterFoodDrainMultiplier);
+            this.SetValue(WildDinoTorporDrainMultiplierProperty, sourceProfile.WildDinoTorporDrainMultiplier);
+            this.SetValue(TamedDinoTorporDrainMultiplierProperty, sourceProfile.TamedDinoTorporDrainMultiplier);
+            this.SetValue(PassiveTameIntervalMultiplierProperty, sourceProfile.PassiveTameIntervalMultiplier);
             this.SetValue(PersonalTamedDinosSaddleStructureCostProperty, sourceProfile.PersonalTamedDinosSaddleStructureCost);
             this.SetValue(DinoCharacterFoodDrainMultiplierProperty, sourceProfile.DinoCharacterFoodDrainMultiplier);
             this.SetValue(DinoCharacterStaminaDrainMultiplierProperty, sourceProfile.DinoCharacterStaminaDrainMultiplier);
@@ -5005,9 +5156,12 @@ namespace ARK_Server_Manager.Lib
             this.HarvestResourceItemAmountClassMultipliers.FromIniValues(sourceProfile.HarvestResourceItemAmountClassMultipliers.ToIniValues());
             this.HarvestResourceItemAmountClassMultipliers.IsEnabled = sourceProfile.HarvestResourceItemAmountClassMultipliers.IsEnabled;
             
+            this.SetValue(BaseTemperatureMultiplierProperty, sourceProfile.BaseTemperatureMultiplier);
             this.SetValue(DayCycleSpeedScaleProperty, sourceProfile.DayCycleSpeedScale);
             this.SetValue(DayTimeSpeedScaleProperty, sourceProfile.DayTimeSpeedScale);
             this.SetValue(NightTimeSpeedScaleProperty, sourceProfile.NightTimeSpeedScale);
+            this.SetValue(DisableWeatherFogProperty, sourceProfile.DisableWeatherFog);
+
             this.SetValue(GlobalSpoilingTimeMultiplierProperty, sourceProfile.GlobalSpoilingTimeMultiplier);
             this.SetValue(ClampItemSpoilingTimesProperty, sourceProfile.ClampItemSpoilingTimes);
             this.SetValue(GlobalItemDecompositionTimeMultiplierProperty, sourceProfile.GlobalItemDecompositionTimeMultiplier);
@@ -5139,6 +5293,7 @@ namespace ARK_Server_Manager.Lib
 
             this.SetValue(PreventOfflinePvPProperty, sourceProfile.PreventOfflinePvP);
             this.SetValue(PreventOfflinePvPIntervalProperty, sourceProfile.PreventOfflinePvPInterval);
+            this.SetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty, sourceProfile.PreventOfflinePvPConnectionInvincibleInterval);
 
             this.SetValue(AutoPvETimerProperty, sourceProfile.AutoPvETimer);
             this.SetValue(AutoPvEUseSystemTimeProperty, sourceProfile.AutoPvEUseSystemTime);
@@ -5173,6 +5328,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(OxygenSwimSpeedStatMultiplierProperty, sourceProfile.OxygenSwimSpeedStatMultiplier);
             this.SetValue(UseCorpseLifeSpanMultiplierProperty, sourceProfile.UseCorpseLifeSpanMultiplier);
             this.SetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty, sourceProfile.GlobalPoweredBatteryDurabilityDecreasePerSecond);
+            this.SetValue(TribeNameChangeCooldownProperty, sourceProfile.TribeNameChangeCooldown);
+            this.SetValue(RandomSupplyCratePointsProperty, sourceProfile.RandomSupplyCratePoints);
         }
 
         private void SyncSOTFSection(ServerProfile sourceProfile)
@@ -5225,6 +5382,7 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(LimitTurretsInRangeProperty, sourceProfile.LimitTurretsInRange);
             this.SetValue(LimitTurretsRangeProperty, sourceProfile.LimitTurretsRange);
             this.SetValue(LimitTurretsNumProperty, sourceProfile.LimitTurretsNum);
+            this.SetValue(HardLimitTurretsInRangeProperty, sourceProfile.HardLimitTurretsInRange);
         }
 
         private void SyncSupplyCrateOverridesSection(ServerProfile sourceProfile)
