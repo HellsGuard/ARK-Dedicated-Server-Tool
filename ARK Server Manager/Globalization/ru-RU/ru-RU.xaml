@@ -2195,6 +2195,7 @@
     <sys:String x:Key="Ankylo_Character_BP_Aberrant_C">Aberrant Анкилозавр</sys:String>
     <sys:String x:Key="Arthro_Character_BP_Aberrant_C">Aberrant Артроплевра</sys:String>
     <sys:String x:Key="Baryonyx_Character_BP_Aberrant_C">Aberrant Барионикс</sys:String>
+    <sys:String x:Key="BigFoot_Character_BP_Aberrant_C">Aberrant Гигантопитек</sys:String>
     <sys:String x:Key="BoaFrill_Character_BP_Aberrant_C">Aberrant Титанобоа</sys:String>
     <sys:String x:Key="Carno_Character_BP_Aberrant_C">Aberrant Карнотавр</sys:String>
     <sys:String x:Key="Cnidaria_Character_BP_Aberrant_C">Aberrant Книдария</sys:String>
@@ -2203,6 +2204,7 @@
     <sys:String x:Key="Dimorph_Character_BP_Aberrant_C">Aberrant Диморфодон</sys:String>
     <sys:String x:Key="Diplocaulus_Character_BP_Aberrant_C">Aberrant Диплокаулус</sys:String>
     <sys:String x:Key="Diplodocus_Character_BP_Aberrant_C">Aberrant Диплодокус</sys:String>
+    <sys:String x:Key="Direbear_Character_BP_Aberrant_C">Aberrant Свирепый медведь</sys:String>
     <sys:String x:Key="Dodo_Character_BP_Aberrant_C">Aberrant Додо</sys:String>
     <sys:String x:Key="Doed_Character_BP_Aberrant_C">Aberrant Дедикурус</sys:String>
     <sys:String x:Key="Dragonfly_Character_BP_Aberrant_C">Aberrant Стрекоза</sys:String>
@@ -2808,7 +2810,7 @@
     <sys:String x:Key="EngramEntry_LumberWallWithWindow_C">Оконный проём из досок</sys:String>
     <sys:String x:Key="EngramEntry_Mailbox_C">Стоячий почновый ящик</sys:String>
     <sys:String x:Key="EngramEntry_Malt_C">Чашка солода</sys:String>
-    <sys:String x:Key="EngramEntry_MarketStall_C">Раночная палатка</sys:String>
+    <sys:String x:Key="EngramEntry_MarketStall_C">Раночный шатер</sys:String>
     <sys:String x:Key="EngramEntry_MetalHammer_C">Металлический молот</sys:String>
     <sys:String x:Key="EngramEntry_MetalMachete_C">Металлический мачете</sys:String>
     <sys:String x:Key="EngramEntry_Milk_C">Молоко</sys:String>
@@ -2911,7 +2913,7 @@
     <sys:String x:Key="EngramEntry_Saddle_Moth_C">Седло для Шелкопряда</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_RockGolem_C">Седло для Каменного Голема</sys:String>
     <sys:String x:Key="EngramEntry_Saddle_SpineyLizard_C">Седло для Колючего дракона</sys:String>
-    <sys:String x:Key="EngramEntry_Tent_C">Палатка</sys:String>
+    <sys:String x:Key="EngramEntry_Tent_C">Шатер</sys:String>
     <sys:String x:Key="EngramEntry_Vessel_C">Кувшин</sys:String>
     <sys:String x:Key="EngramEntry_WaterWell_C">Колодец</sys:String>
     <sys:String x:Key="EngramEntry_WeaponWhip_C">Кнут</sys:String>
@@ -3841,7 +3843,7 @@
     <sys:String x:Key="PrimalItemStructure_Mirror_C">Зеркало</sys:String>
     <sys:String x:Key="PrimalItemStructure_oilPump_C">Нефтяная вышка</sys:String>
     <sys:String x:Key="PrimalItemStructure_PlantSpeciesYTrap_C">Ловушка Растения Y</sys:String>
-    <sys:String x:Key="PrimalItemStructure_Tent_C">Палатка</sys:String>
+    <sys:String x:Key="PrimalItemStructure_Tent_C">Шатер</sys:String>
     <sys:String x:Key="PrimalItemStructure_Vessel_C">Горшок</sys:String>
     <sys:String x:Key="PrimalItemStructure_WaterWell_C">Колодец</sys:String>
     <sys:String x:Key="PrimalItemStructure_WindTurbine_C">Ветряная турбина</sys:String>
@@ -4105,7 +4107,7 @@
     <sys:String x:Key="PrimalItemStructure_StorageShed_Weapon_C">Стойка оружия</sys:String>
     <sys:String x:Key="PrimalItemStructure_StorageShed_Wood_C">Хранение древесины</sys:String>
     <sys:String x:Key="PrimalItemStructure_TanningRack_C">Сушилка кожи</sys:String>
-    <sys:String x:Key="PrimalItemStructure_Teepee_C">Треугольная палатка</sys:String>
+    <sys:String x:Key="PrimalItemStructure_Teepee_C">Треугольный шатер</sys:String>
     <sys:String x:Key="PrimalItemStructure_TradingCrate_Bread_C">Торговый ящик (Хлеб)</sys:String>
     <sys:String x:Key="PrimalItemStructure_TradingCrate_Eggs_C">Торговый ящик (Яйца)</sys:String>
     <sys:String x:Key="PrimalItemStructure_TradingCrate_FruitsVeggies_C">Торговый ящик (Фрукты, Овощи)</sys:String>
