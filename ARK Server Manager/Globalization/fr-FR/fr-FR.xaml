@@ -482,16 +482,16 @@
 
     <sys:String x:Key="SliderUnits_Multiplier">x</sys:String>
     <sys:String x:Key="SliderUnits_Percentage">%</sys:String>
-    <sys:String x:Key="SliderUnits_Seconds">secondes</sys:String>
-    <sys:String x:Key="SliderUnits_Minutes">minutes</sys:String>
-    <sys:String x:Key="SliderUnits_Hours">heures</sys:String>
+    <sys:String x:Key="SliderUnits_Seconds">Secondes</sys:String>
+    <sys:String x:Key="SliderUnits_Minutes">Minutes</sys:String>
+    <sys:String x:Key="SliderUnits_Hours">Heures</sys:String>
     <sys:String x:Key="SliderUnits_Days">Jours</sys:String>
-    <sys:String x:Key="SliderUnits_Items">articles</sys:String>
-    <sys:String x:Key="SliderUnits_XP">xp</sys:String>
-    <sys:String x:Key="SliderUnits_Players">joueurs</sys:String>
-    <sys:String x:Key="SliderUnits_Tribes">tribes</sys:String>
+    <sys:String x:Key="SliderUnits_Items">Articles</sys:String>
+    <sys:String x:Key="SliderUnits_XP">XP</sys:String>
+    <sys:String x:Key="SliderUnits_Players">Joueurs</sys:String>
+    <sys:String x:Key="SliderUnits_Tribes">Tribus</sys:String>
     <sys:String x:Key="SliderUnits_Levels">Niveaux</sys:String>
-    <sys:String x:Key="SliderUnits_Units">unités</sys:String>
+    <sys:String x:Key="SliderUnits_Units">Unités</sys:String>
 
     <!--
     Server Settings
@@ -635,7 +635,7 @@
     <sys:String x:Key="ServerSettings_RefreshLocalIPTooltip">Actualiser les adresses IP locales disponibles.</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsLabel">Forcer Raw Sockets</sys:String>
     <sys:String x:Key="ServerSettings_UseRawSocketsTooltip">Autoriser les connexions P2P directes au lieu de la vapeur. Ouvrez à la fois le port du serveur et le port du serveur + 1 sont ouverts dans le pare-feu et le transfert de port.</sys:String>
-    <sys:String x:Key="ServerSettings_NoNetThreadingLabel">No Net Threading</sys:String>
+    <sys:String x:Key="ServerSettings_NoNetThreadingLabel">Pas de Net Threading</sys:String>
     <sys:String x:Key="ServerSettings_NoNetThreadingTooltip">Si cette option est activée, les serveurs n'utiliseront qu'un seul thread pour la mise en réseau (utile pour améliorer les performances des machines avec plus de serveurs que les cœurs de processeurs).</sys:String>
     <sys:String x:Key="ServerSettings_ForceNetThreadingLabel">Forcer Net Threading</sys:String>
     <sys:String x:Key="ServerSettings_ForceNetThreadingTooltip">Si activé, les serveurs utiliseront plusieurs threads pour la mise en réseau.</sys:String>
@@ -665,6 +665,8 @@
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Définit la longueur maximale du tampon du Log du jeu RCON (600 par défaut).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Force le Respawn Dinos au démarrage (provoque un décalage après 'Prêt' lors du repeuplement)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">Si activé, quand le serveur est démarré, toutes les créatures sauvages seront effacées et régénérées (ceci ne détruira que les créatures sauvages qui ne sont pas actuellement en train d'être apprivoisées).</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinosLabel">Pas de Dinos</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinosTooltip">Si activé, aucun dinosaure n'apparaîtra sur la carte.</sys:String>
     <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel">Activer Forcer automatique le Respawn dinos</sys:String>
     <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip">Si activé, forcera la réapparition des dinos sauvages après l'intervalle spécifié.</sys:String>
     <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalLabel">Forcer automatiquement à Intervalle le Respawn Dinos</sys:String>
@@ -675,7 +677,7 @@
     <sys:String x:Key="ServerSettings_CrossArkClusterIdLabel">Cross-ClusterId de transfert de données ARK:</sys:String>
     <sys:String x:Key="ServerSettings_CrossArkClusterIdTooltip">Définit un ID de cluster pour ce serveur qui regroupera les serveurs ARK via le transfert de données Cross-ARK.</sys:String>
     <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonLabel">Créer SymLink</sys:String>
-    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonTooltip">Creates a cluster symbolic link for this server to the ASM clusters folder.</sys:String>
+    <sys:String x:Key="ServerSettings_CreateSymbolicLinkButtonTooltip">Crée un lien symbolique de cluster pour ce serveur vers le dossier clusters ASM.</sys:String>
     <sys:String x:Key="ServerSettings_ClusterDirOverrideLabel">Remplacement du répertoire de cluster</sys:String>
     <sys:String x:Key="ServerSettings_ClusterDirOverrideTooltip">Si cette option est activée, vous pouvez utiliser un emplacement de stockage multi-serveur commun fonctionnant entre plusieurs serveurs s'exécutant sur la même machine. Utilise le répertoire clusters dans le répertoire de données ASM.</sys:String>
 
@@ -743,7 +745,7 @@
     <sys:String x:Key="ServerSettings_ForceShaderModel4Tooltip">Si activé, le jeu est forcé d'utiliser Shader Model 4 au lieu du Shader Model 5.</sys:String>
     <sys:String x:Key="ServerSettings_ForceLowMemoryLabel">Forcer faible mémoire</sys:String>
     <sys:String x:Key="ServerSettings_ForceLowMemoryTooltip">Si activé, réduit les effets graphiques et audio pour économiser environ 800 Mo de RAM, permettant probablement aux lecteurs de 4 Go de RAM de dépasser les écrans à chargement infini.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceNoManSkyLabel">Forcer No Man Sky</sys:String>
+    <sys:String x:Key="ServerSettings_ForceNoManSkyLabel">Désactiver effects du ciel</sys:String>
     <sys:String x:Key="ServerSettings_ForceNoManSkyTooltip">Si activé, de nombreuses fonctionnalités détaillées du ciel sont désactivées, telles que les nuages et le ciel nocturne étoilé. Vous voyez toujours les étoiles, le soleil et la lune.</sys:String>
     <sys:String x:Key="ServerSettings_EnableWebAlarmLabel">Activer les alarmes Web</sys:String>
     <sys:String x:Key="ServerSettings_EnableWebAlarmTooltip">Si cette option est activée, les serveurs peuvent désormais afficher des notifications Web quelque part lorsque des événements importants se produisent dans une tribu.</sys:String>
@@ -753,6 +755,8 @@
     <sys:String x:Key="ServerSettings_StasisKeepControllersTooltip">Si activé, le serveur peut gagner en performance en gardant les IA en mémoire des créatures classées. NOTE: votre serveur doit avoir beaucoup de RAM sinon votre serveur souffrira d'une surcharge de mémoire importante.</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">Aucune détection de blocage</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">Si elle est activée, empêche certains types de plantages causes par la suspension (peut sembler comme si le serveur est en retard pendant que le serveur est suspendu).</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselLabel">Autoriser Ansel sur le Serveur</sys:String>
+    <sys:String x:Key="ServerSettings_ServerAllowAnselTooltip">Si activé, activera NVIDIA Ansel sur les serveurs.</sys:String>    
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Clé Web</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">Une clé facultative à utiliser dans le script d'écoute, mais nécessaire pour l'avoir dans le fichier texte.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">URL Web</sys:String>
@@ -768,6 +772,8 @@
     <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsLabel">Les Logs d'administration du serveur incluent les Logs de tribu</sys:String>
     <sys:String x:Key="ServerSettings_ServerAdminLogsIncludeTribeLogsTooltip">Si activé, il écrira toutes les entrées du Log tribu (pour toutes les tribus) dans les fichiers Logs Shootergame.</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsLabel">Serveur RCON Sortie Logs d'une tribu</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsLabel">Toujours masquer la source de dommages à partir des Logs</sys:String>
+    <sys:String x:Key="ServerSettings_AllowHideDamageSourceFromLogsTooltip">Si cette option est activée, le Serveur cache le nom du joueur qui vous a tué à partir du message "Tué" et du journal de tribu.</sys:String>
     <sys:String x:Key="ServerSettings_ServerRCONOutputTribeLogsTooltip">Si activé, il écrira toutes les entrées du Log tribu (pour toutes les tribus) à la fenêtre RCON.</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatLabel">Logs des commandes d'administration pour discuter (public)</sys:String>
     <sys:String x:Key="ServerSettings_LogAdminChatTooltip">Si activé, les commandes d'administration seront répercutées pour que tout le monde puisse les voir.</sys:String>
@@ -807,6 +813,8 @@
 
     <!-- Server Settings - Rules -->
     <sys:String x:Key="ServerSettings_RulesLabel">Règles</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownLabel">Changement de nom de tribu</sys:String>
+    <sys:String x:Key="ServerSettings_TribeNameChangeCooldownTooltip">Temps D'attente avant la modification du nom de la tribu.</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreLabel">Activer le mode Hardcore</sys:String>
     <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Active le mode hardcore (les joueurs ne peuvent pas réapparaître, un nouveau personnage doit être créé).</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPLabel">Activer PvP</sys:String>
@@ -819,6 +827,8 @@
     <sys:String x:Key="ServerSettings_DisableLootCratesTooltip">Si activé, empêchera le Spawns des caisses de butin (les caisses d'artefact apparaîtront toujours).</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresLabel">Permettre les Spawns de caisse sur les structures</sys:String>
     <sys:String x:Key="ServerSettings_AllowCrateSpawnsOnTopOfStructuresTooltip">Si activé, permettra aux caisses de ravitaillement de l'air d'apparaître au-dessus des structures, plutôt que d'être empêchées par des structures.</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsLabel">Points aléatoires de caisse d'approvisionnement</sys:String>
+    <sys:String x:Key="ServerSettings_RandomSupplyCratePointsTooltip">Si activé, rendra les caisses de ravitaillement aléatoires.</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesLabel">Empêcher la construction dans les zones riches en ressources</sys:String>
     <sys:String x:Key="ServerSettings_EnableExtraStructurePreventionVolumesTooltip">Si activé, désactive complètement la construction dans des zones spécifiques riches en ressources, en particulier la configuration sur TheIsland autour des principales montagnes.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvPFriendlyFireLabel">Désactiver le tire ami PvP</sys:String>
@@ -897,6 +907,8 @@
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalLabel">Intervalle de déconnexion</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalTooltip">La période de temps avant qu'une tribut/joueurs/dinos/structures devienne invulnérable/inactive après leur déconnexion (si tribu, tous les membres de la tribu doivent être déconnectés).</sys:String>
     <sys:String x:Key="ServerSettings_PreventOfflinePvPIntervalUnits">Secondes</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalLabel">Temps d'invisibilité lors du respawn</sys:String>
+    <sys:String x:Key="ServerSettings_PreventOfflinePvPConnectionInvincibleIntervalTooltip">La période de temps après la connexion que le joueur est donné le buff sans dégâts pour empêcher le meurtre de personnage immédiatement après la connexion.</sys:String>
 
     <sys:String x:Key="ServerSettings_PvEScheduleLabel">Horaire PVE</sys:String>
     <sys:String x:Key="ServerSettings_PvEScheduleTooltip">Si activé, permet de basculer entre le PvE et le PvP à des heures de jeu prédéfinies ou à des temps pré-spécifiés dans le monde réel.</sys:String>
@@ -1057,13 +1069,24 @@
     <sys:String x:Key="ServerSettings_CraftingSkillBonusMultiplierTooltip">Spécifie le multiplicateur pour le bonus de compétence d'artisanat.</sys:String>
 
     <!-- Server Settings - Dino Settings -->
+    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Dinos apprivoisés (serveur):</sys:String>
+    <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Définir le nombre maximum de dinos apprivoisés du serveur.</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Max Dinos apprivoisés  (tribu):</sys:String>
+    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Définir le nombre maximum de dinosaures apprivoisés par une tribu.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSettingsLabel">Paramètres Dino</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageLabel">Dommages apprivoisés:</sys:String>
     <sys:String x:Key="ServerSettings_TamedResistanceLabel">Résistance apprivoisée:</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTamedDinosLabel">Max Dinos apprivoisés (server):</sys:String>
-    <sys:String x:Key="ServerSettings_MaxTamedDinosTooltip">Définir le nombre maximum de dinos apprivoisés du serveur.</sys:String>
-    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosLabel">Max Dinos apprivoisés (tribe):</sys:String>
-    <sys:String x:Key="ServerSettings_MaxPersonalTamedDinosTooltip">Définir le nombre maximum de dinosaures apprivoisés par tribu.</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierLabel">Consommation de Nourriture:</sys:String>
+    <sys:String x:Key="ServerSettings_FoodDrainMultiplierTooltip">Spécifie la Consommation de Nourriture des dinosaures sauvages. Des valeurs plus élevées augmentent le drainage des aliments. Des valeurs inférieures le diminuent.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierLabel">Consommation de Nourriture apprivoisée:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedFoodDrainMultiplierTooltip">Spécifie la Consommation de Nourriture des dinosaures apprivoisés. Des valeurs plus élevées augmentent le drainage des aliments. Des valeurs inférieures le diminuent.</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierLabel">Vitesse de Torpeur:</sys:String>
+    <sys:String x:Key="ServerSettings_TorporDrainMultiplierTooltip">Spécifie le facteur d'échelle pour le drain de torpeure des dinosaures sauvages. Des valeurs plus élevées augmentent le drain de torpeur. Des valeurs inférieures le diminuent.</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierLabel">Vitesse de Torpeur apprivoisée:</sys:String>
+    <sys:String x:Key="ServerSettings_TamedTorporDrainMultiplierTooltip">Spécifie le facteur d'échelle pour le drain de torpeure des dinosaures apprivoisée. Des valeurs plus élevées augmentent le drain de torpeur. Des valeurs inférieures le diminuent.</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierLabel">Durée entre les alimentations passives:</sys:String>
+    <sys:String x:Key="ServerSettings_PassiveTameIntervalMultiplierTooltip">Spécifie le facteur de mise à l'échelle pour la durée entre les alimentations passives. Des valeurs plus élevées augmentent l'intervalle de temps entre les tétées. Des valeurs inférieures le diminuent.</sys:String>
+
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostLabel">Coût de la selle Dinos apprivoisé:</sys:String>
     <sys:String x:Key="ServerSettings_PersonalTamedDinosSaddleStructureCostTooltip">Le nombre de slots du dino apprivoisés  par la tribu chaque plate-forme selle (avec des structures) coûtera.</sys:String>
     <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyLabel">Utiliser seulement la limite d'apprivoisement pour les structures</sys:String>
@@ -1080,7 +1103,7 @@
     <sys:String x:Key="ServerSettings_AllowFlyingStaminaRecoveryTooltip">Si activé, récupère l'endurance en se tenant debout en vole.</sys:String>
     <sys:String x:Key="ServerSettings_PreventMateBoostLabel">Empêchez le bonus de couple dino</sys:String>
     <sys:String x:Key="ServerSettings_PreventMateBoostTooltip">Si cette option est activée, le le bonus de couple dino sera désactivé.</sys:String>
-    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Disable le bloquage des dinos volants au sol avec des explosifs</sys:String>
+    <sys:String x:Key="ServerSettings_ForceFlyerExplosivesLabel">Désactive le bloquage des dinos volants au sol avec des explosifs</sys:String>
     <sys:String x:Key="ServerSettings_ForceFlyerExplosivesTooltip">Si activé, désactivera le bloquage des dinos volants au sol lorsque des explosifs sont placés dessus.</sys:String>
     <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Label">Autoriser plusieurs C4 attachés</sys:String>
     <sys:String x:Key="ServerSettings_AllowMultipleAttachedC4Tooltip">Si activé, permettra plus d'un C4 attaché par dino.</sys:String>
@@ -1203,15 +1226,19 @@
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordTitle">Supprimer la ressource</sys:String>
     <sys:String x:Key="ServerSettings_Harvest_HarvestRemoveRecordLabel">Cliquez sur "Oui" pour confirmer que vous voulez supprimer l'enregistrement de ressource.</sys:String>
 
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierLabel">Température de base:</sys:String>
+    <sys:String x:Key="ServerSettings_BaseTemperatureMultiplierTooltip">Spécifie la température de base de la carte. Des valeurs inférieures diminuent la température de base (la rend plus froide); des valeurs plus élevées augmentent la température de base (le rend plus chaud).</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedLabel">Vitesse du cycle d'une journée:</sys:String>
     <sys:String x:Key="ServerSettings_DayCycleSpeedTooltip">Spécifie le facteur de mise à l'échelle pour le passage du temps dans l'Arche, contrôlant à quelle fréquence les changements de jour à la nuit et à la nuit changent en jour. Les valeurs inférieures à 1 ralentissent le cycle; des valeurs plus élevées l'accélèrent.</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedLabel">Vitesse du jour:</sys:String>
     <sys:String x:Key="ServerSettings_DayTimeSpeedTooltip">Spécifie le facteur d'échelle pour le passage du temps dans l'Arche au cours de la journée. Cette valeur détermine la longueur de chaque jour, par rapport à la durée de chaque nuit. Abaisser cette valeur augmente la longueur de chaque jour.</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedLabel">Vitesse de La nuit:</sys:String>
     <sys:String x:Key="ServerSettings_NightTimeSpeedTooltip">Spécifie le facteur d'échelle pour le passage du temps dans l'Arche pendant la nuit. Cette valeur détermine la longueur de chaque nuit, par rapport à la longueur de chaque jour. Abaisser cette valeur augmente la longueur de chaque nuit.</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogLabel">Désactiver Météo - Brouillard</sys:String>
+    <sys:String x:Key="ServerSettings_DisableWeatherFogTooltip">Si activé, désactivera le brouillard.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeLabel">Temps Global avant que les denrées soit périssables:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalSpoilingTimeTooltip">Échelle le temps avantde gâcher des denrées périssables globalement. Des valeurs plus élevées prolongent le temps.</sys:String>
-    <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesLabel">Clamp Item Spoiling Times</sys:String>
+    <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesLabel">Temps avant gâchis d'article au maximum</sys:String>
     <sys:String x:Key="ServerSettings_ClampItemSpoilingTimesTooltip">Si cette option est activée, tous les temps de détérioration sont limités aux temps de détérioration maximum des éléments. Utile si des exploits à perte infinie ont été utilisés sur le serveur et que vous souhaitez les nettoyer. Pourrait potentiellement causer des problèmes avec Mods qui modifient le temps de gâcher.</sys:String>
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeLabel">Temps Global Article se décompose:</sys:String>
     <sys:String x:Key="ServerSettings_GlobalItemDecompTimeTooltip">Met à l'échelle le temps de décomposition des objets déposés, des sacs de butin, etc. globalement. Des valeurs plus élevées prolongent le temps.</sys:String>
@@ -1303,6 +1330,8 @@
     <sys:String x:Key="ServerSettings_LimitTurretsRangeTooltip">Définit la plage de limites pour TOUTES les tourelles automatiques et les tourelles d'usine.</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumLabel">Nombre limites</sys:String>
     <sys:String x:Key="ServerSettings_LimitTurretsNumTooltip">Définit le nombre maximal de tourelles pouvant être placées dans une zone de limites.</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeLabel">Limite fixe de tourelles rétroactives</sys:String>
+    <sys:String x:Key="ServerSettings_HardLimitTurretsInRangeTooltip">Si activé, implémentera une limite dure rétroactive de la tourelle. Ceci fonctionnera sur les tourelles automatiques, les tourelles lourdes, les tourelles de tek, les tourelles d'usine et n'est plus spécifique de carte. Le calcul de la limite dure est fait au démarrage, donc si vos tourelles dépassent la limite, elles seront arrêtées aléatoirement jusqu'à ce que vous soyez sous la limite. Afin de restaurer les tourelles d'arrêt, vous devez ramasser tout ce qui dépasse le nombre, ainsi que les tourelles d'arrêt et les remplacer pour qu'ils fonctionnent.</sys:String>
 
     <!-- Server Settings - Engrams -->
     <sys:String x:Key="ServerSettings_EngramsLabel">Engrammes</sys:String>
