@@ -178,13 +178,13 @@ namespace ArkServerManager.Plugin.Discord
         {
             LoadConfig();
 
-            //if (PluginConfig.LastCallHome.AddHours(Config.Default.CallHomeDelay) < DateTime.Now)
-            //{
-            //    CallHomeAsync().DoNotWait();
+            if (PluginConfig.LastCallHome.AddHours(Config.Default.CallHomeDelay) < DateTime.Now)
+            {
+                //CallHomeAsync().DoNotWait();
 
-            //    PluginConfig.LastCallHome = DateTime.Now;
-            //    SaveConfig();
-            //}
+                PluginConfig.LastCallHome = DateTime.Now;
+                SaveConfig();
+            }
         }
 
         private void LoadConfig()

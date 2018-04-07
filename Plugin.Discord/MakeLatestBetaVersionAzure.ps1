@@ -16,7 +16,7 @@
     [string]$destLatestFilename = "latestbeta.txt",
 
     [Parameter()]
-    [string]$filenamePrefix = "ArkServerManager.Plugin.Discord_",
+    [string]$filenamePrefix = "ArkServerManager.Plugin.Discord",
 
     [Parameter()]
     [string]$ftpHost = $env:ASM_FTPHOST,
@@ -64,7 +64,7 @@ Write-Host "LatestVersion $($AppVersionShort) ($($AppVersion))"
 
 # test if the publish directory exists
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
-$publishPath = "$($rootPath)\$($publishDir)\$($filenamePrefix)$($versionWithUnderscores)"
+$publishPath = "$($rootPath)\$($publishDir)\$($filenamePrefix)_$($versionWithUnderscores)"
 if(!(Test-Path -Path ($publishPath)))
 {
   Write-Host "Creating folder $($publishPath)"
@@ -83,7 +83,7 @@ $txtDestFile = "$($rootPath)\$($publishDir)\$($txtDestFileName)"
 $AppVersionShort | Set-Content "$($txtDestFile)"
 
 # create the zip file
-$zipDestFileName = "$($filenamePrefix)$($AppVersionShort).zip"
+$zipDestFileName = "$($filenamePrefix)_$($AppVersionShort).zip"
 $zipDestFile = "$($rootPath)\$($publishDir)\$($zipDestFileName)"
 Create-Zip $publishPath $zipDestFile
 
@@ -92,19 +92,19 @@ open $($ftpHost) $($ftpPort)
 $($ftpUsername)
 $($ftpPassword)
 cd "$($ftpPath)"
-put "$($zipDestFile)" "latest.zip"
-put "$($txtDestFile)" "latest.txt"
+put "$($zipDestFile)" "$($filenamePrefix).zip"
+put "$($txtDestFile)" "$($filenamePrefix).txt"
 quit
 "@
 
-$ftpFile = "$env:TEMP\$($filenamePrefix)BetaPublishToFtp.ftp"
+$ftpFile = "$env:TEMP\$($filenamePrefix)_BetaPublishToFtp.ftp"
 $ftpFileContent | Out-File -LiteralPath:$ftpFile -Force -Encoding ascii
 
 $batchFileContent = @"
 ftp -s:"$($ftpFile)"
 "@
 
-$batchFile = "$env:TEMP\$($filenamePrefix)BetaPublishToFtp.cmd"
+$batchFile = "$env:TEMP\$($filenamePrefix)_BetaPublishToFtp.cmd"
 $batchFileContent | Out-File -LiteralPath:$batchFile -Force -Encoding ascii
 
 Invoke-Expression -Command:$batchFile
