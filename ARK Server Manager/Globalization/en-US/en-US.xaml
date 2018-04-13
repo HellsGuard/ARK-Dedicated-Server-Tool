@@ -76,7 +76,9 @@
     <sys:String x:Key="ModDetails_Save_UnknownLabel">There are one or more mods that have not been downloaded, this could prevent the map mods and total conversion mods being detected properly. Do you want to continue?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Unsaved Changed</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">You have made changes that have not been saved to the profile, if you continue your changes will be discarded. Do you want to continue?</sys:String>
-    
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedTitle">Write Timestamp Error</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedLabel">The mod folder could not be found or does not exist. Try downloading the mod and trying again.</sys:String>
+
     <sys:String x:Key="ModDetails_TotalCountLabel">Total Count:</sys:String>
     <sys:String x:Key="ModDetails_FilterLabel">Filter:</sys:String>
 
@@ -86,6 +88,7 @@
     <sys:String x:Key="ModDetails_TypeColumnLabel">Mod Type</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Last Downloaded</sys:String>
     <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Last Updated (Author)</sys:String>
+    <sys:String x:Key="ModDetails_TimestampColumnLabel">Timestamp</sys:String>
     <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Folder Size</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Add mods to the list.</sys:String>
@@ -96,6 +99,7 @@
     <sys:String x:Key="ModDetails_RefreshModsTooltip">Refresh mod list information.</sys:String>
     <sys:String x:Key="ModDetails_ReloadModsTooltip">Reload mod list from profile.</sys:String>
     <sys:String x:Key="ModDetails_RemoveModTooltip">Remove mod from the list.</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestampModTooltip">Write timestamp to LastUpdatedASM.txt file. Only use this if you manually update the mod.</sys:String>
     <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Remove all mods from the list.</sys:String>
     <sys:String x:Key="ModDetails_SaveModsTooltip">Save mods back to the profile.</sys:String>
     <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Save formatted mod details.</sys:String>

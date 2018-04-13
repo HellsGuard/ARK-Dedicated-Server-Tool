@@ -362,6 +362,40 @@ namespace ARK_Server_Manager
             window.ShowDialog();
         }
 
+        private async void WriteTimestampMod_Click(object sender, RoutedEventArgs e)
+        {
+            var mod = ((ModDetail)((Button)e.Source).DataContext);
+            if (mod == null)
+                return;
+
+            var cursor = this.Cursor;
+
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                await Task.Delay(500);
+
+                var file = ModUtils.GetLatestModTimeFile(_profile?.InstallDirectory, mod.ModId);
+                var steamLastUpdated = mod?.TimeUpdated.ToString() ?? string.Empty;
+                File.WriteAllText(file, steamLastUpdated);
+
+                mod.PopulateExtended(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
+                ModDetailsView?.Refresh();
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                MessageBox.Show(_globalizer.GetResourceString("ModDetails_WriteTimestamp_FailedLabel"), _globalizer.GetResourceString("ModDetails_WriteTimestamp_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, _globalizer.GetResourceString("ModDetails_WriteTimestamp_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Application.Current.Dispatcher.Invoke(() => this.Cursor = cursor);
+            }
+        }
+
         public bool Filter(object obj)
         {
             var data = obj as ModDetail;

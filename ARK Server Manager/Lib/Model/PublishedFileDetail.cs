@@ -160,6 +160,7 @@ namespace ARK_Server_Manager.Lib.Model
                         ModId = modId,
                         TimeUpdated = 0,
                         Title = "Mod details not available",
+                        IsValid = false,
                     });
                 }
             }
@@ -177,6 +178,7 @@ namespace ARK_Server_Manager.Lib.Model
                         temp.ModId = detail.publishedfileid;
                         temp.TimeUpdated = detail.time_updated;
                         temp.Title = detail.title;
+                        temp.IsValid = true;
                     }
                 }
             }
@@ -206,6 +208,7 @@ namespace ARK_Server_Manager.Lib.Model
         public static readonly DependencyProperty ModUrlProperty = DependencyProperty.Register(nameof(ModUrl), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty TimeUpdatedProperty = DependencyProperty.Register(nameof(TimeUpdated), typeof(int), typeof(ModDetail), new PropertyMetadata(0));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(ModDetail), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(ModDetail), new PropertyMetadata(false));
 
 
         public string AppId
@@ -283,6 +286,12 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+        }
+
 
         public bool IsOfficialMod => ModUtils.IsOfficialMod(ModId);
 
@@ -333,6 +342,13 @@ namespace ARK_Server_Manager.Lib.Model
             }
         }
 
+        public void PopulateExtended(string modsRootFolder)
+        {
+            var modExtended = new ModDetailExtended(ModId);
+            modExtended.PopulateExtended(modsRootFolder);
+            PopulateExtended(modExtended);
+        }
+
         public void PopulateExtended(ModDetailExtended extended)
         {
             LastTimeUpdated = extended.LastTimeUpdated;
@@ -378,6 +394,7 @@ namespace ARK_Server_Manager.Lib.Model
             result.ModId = detail.publishedfileid;
             result.TimeUpdated = detail.time_updated;
             result.Title = detail.title;
+            result.IsValid = true;
             return result;
         }
 
@@ -388,6 +405,7 @@ namespace ARK_Server_Manager.Lib.Model
             result.ModId = detail.publishedfileid;
             result.TimeUpdated = detail.time_updated;
             result.Title = detail.title;
+            result.IsValid = true;
             return result;
         }
 
@@ -398,6 +416,7 @@ namespace ARK_Server_Manager.Lib.Model
             result.ModId = detail.WorkshopId;
             result.TimeUpdated = detail.TimeUpdated;
             result.Title = detail.Title;
+            result.IsValid = true;
             return result;
         }
 
