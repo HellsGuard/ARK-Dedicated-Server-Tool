@@ -498,7 +498,7 @@ namespace ARK_Server_Manager.Lib
                         // check if there is a shutdown reason
                         if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
                         {
-                            message = $"{ShutdownReason}\r\n{message}";
+                            message = $"{message}\r\n{ShutdownReason}";
                             ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
                         }
 
@@ -556,7 +556,7 @@ namespace ARK_Server_Manager.Lib
                     // check if there is a shutdown reason
                     if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
                     {
-                        message = $"{ShutdownReason}\r\n{message}";
+                        message = $"{message}\r\n{ShutdownReason}";
                         ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
                     }
 
