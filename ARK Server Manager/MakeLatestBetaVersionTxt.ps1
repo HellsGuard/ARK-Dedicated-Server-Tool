@@ -1,13 +1,31 @@
 ﻿Param
 (
     [Parameter()]
-    [string]$rootDir = "E:\Development\Projects\GitHub\ARK-Dedicated-Server-Tool\ARK Server Manager",
+    [string]$rootPath = "E:\Development\Projects\GitHub\ARK-Dedicated-Server-Tool\ARK Server Manager",
 
     [Parameter()]
-    [string]$srcXml = "publish\ARK Server Manager.application",
+    [string]$publishDir = "publish",
 
     [Parameter()]
-    [string]$destFile = "publish\latestbeta.txt"
+    [string]$srcXmlFilename = "ARK Server Manager.application",
+
+    [Parameter()]
+    [string]$destLatestFilename = "latestbeta.txt",
+
+    [Parameter()]
+    [string]$filenamePrefix = "Ark Server Manager_",
+
+    [Parameter()]
+    [string]$signTool = "C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\SignTool.exe",
+
+    [Parameter()]
+    [string]$signFile = "ARK Server Manager.exe",
+
+    [Parameter()]
+    [string]$signNFlag = "${env:SIGN_NFLAG}",
+
+    [Parameter()]
+    [string]$signTFlag = "http://timestamp.verisign.com/scripts/timstamp.dll"
 )
 
 [string] $AppVersion = ""
@@ -15,41 +33,61 @@
 
 function Get-LatestVersion()
 {    
-    $xml = [xml](Get-Content $srcXml)
+    $xmlFile = "$($rootPath)\$($publishDir)\$($srcXmlFilename)"
+    $xml = [xml](Get-Content $xmlFile)
     $version = $xml.assembly.assemblyIdentity | Select version
     return $version.version;
 }
 
-function Create-Zip( $zipfilename, $sourcedir )
+function Sign-Application ( $sourcePath )
 {
-    if(Test-Path $zipfilename)
+	if(Test-Path $signTool)
+	{
+		if(($signFile -ne "") -and ($signNFlag -ne "") -and ($signTFlag -ne ""))
+		{
+			Write-Host "Signing $($signFile)"
+			& $signTool sign /n "$($signNFlag)" /t $signTFlag "$($sourcePath)\$($signFile)"
+		}
+	}
+}
+
+function Create-Zip( $sourcePath , $zipFile )
+{
+    if(Test-Path $zipFile)
     {
-        Remove-Item -LiteralPath:$zipfilename -Force
+        Remove-Item -LiteralPath:$zipFile -Force
     }
 	Add-Type -Assembly System.IO.Compression.FileSystem
-	Write-Host "Zipping $($sourcedir) into $($zipfilename)"
+	Write-Host "Zipping $($sourcePath) into $($zipFile)"
 	$compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-	[System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $false)
+	[System.IO.Compression.ZipFile]::CreateFromDirectory($sourcePath, $zipFile, $compressionLevel, $false)
 }
+
+$txtDestFile = "$($rootPath)\$($publishDir)\$($destLatestFilename)"
 
 $AppVersion = Get-LatestVersion
 $AppVersionShort = $AppVersion
-$AppVersionShort | Set-Content $destFile
+$AppVersionShort | Set-Content "$($txtDestFile)"
 Write-Host "LatestVersion $($AppVersionShort) ($($AppVersion))"
+
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
-$publishSrcDir = "$($rootDir)\publish\Application Files\Ark Server Manager_$($versionWithUnderscores)"
-Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application" -ErrorAction Ignore
-$publishDestFileName = "ArkServerManager_$($AppVersionShort).zip"
-$publishDestFile = "$($rootDir)\publish\$($publishDestFileName)"
-Create-Zip $publishDestFile $publishSrcDir
+$publishSrcDir = "$($rootPath)\$($publishDir)\Application Files\$($filenamePrefix)$($versionWithUnderscores)"
+Remove-Item -Path "$($publishSrcDir)\$($srcXmlFilename)" -ErrorAction Ignore
+
+Sign-Application $publishSrcDir
+
+$filenamePrefixStripped = $filenamePrefix.Replace(' ', '')
+$zipDestFileName = "$($filenamePrefixStripped)$($AppVersionShort).zip"
+$zipDestFile = "$($rootPath)\$($publishDir)\$($zipDestFileName)"
+Create-Zip $publishSrcDir $zipDestFile
 
 $batchFileContent = @"
 set AWS_DEFAULT_PROFILE=ASMPublish
-aws s3 cp "$($publishDestFile)" s3://arkservermanager/beta/latest.zip
-aws s3 cp "$($destFile)" s3://arkservermanager/beta/latest.txt
+aws s3 cp "$($zipDestFile)" s3://arkservermanager/beta/latest.zip
+aws s3 cp "$($txtDestFile)" s3://arkservermanager/beta/latest.txt
 "@
 
-$batchFile = "$env:TEMP\ASMBetaPublishToAWS.cmd"
+$batchFile = "$env:TEMP\$($filenamePrefixStripped)BetaPublishToFtp.cmd"
 $batchFileContent | Out-File -LiteralPath:$batchFile -Force -Encoding ascii
 
 Invoke-Expression -Command:$batchFile
