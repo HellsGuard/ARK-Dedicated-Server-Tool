@@ -76,7 +76,9 @@
     <sys:String x:Key="ModDetails_Save_UnknownLabel">Есть один или несколько модов, которые не были загружены, это может помешать корректной работе модов и карт. Вы хотите продолжить?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Без изменений</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">Вы внесли изменения, которые не были сохранены в профиле, если вы продолжите изменения, вы будете отброшены. Вы хотите продолжить?</sys:String>
-    
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedTitle">Ошибка записи отметки времени</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedLabel">Папка мод не найдена или не существует. Попробуйте загрузить мод и повторить попытку.</sys:String>
+
     <sys:String x:Key="ModDetails_TotalCountLabel">Общее колличество:</sys:String>
     <sys:String x:Key="ModDetails_FilterLabel">Фильтр:</sys:String>
 
@@ -86,6 +88,7 @@
     <sys:String x:Key="ModDetails_TypeColumnLabel">Тип Мода</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Последняя загрузка</sys:String>
     <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Последнее обновление (Автор)</sys:String>
+    <sys:String x:Key="ModDetails_TimestampColumnLabel">Временная Отметка</sys:String>
     <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Размер папки</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Добавить в список.</sys:String>
@@ -96,6 +99,7 @@
     <sys:String x:Key="ModDetails_RefreshModsTooltip">Обновить информацию Модов.</sys:String>
     <sys:String x:Key="ModDetails_ReloadModsTooltip">Обновить список Мод из профиля.</sys:String>
     <sys:String x:Key="ModDetails_RemoveModTooltip">Удалите Мод из списка.</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestampModTooltip">Запсь Отметки времени в файл LastUpdatedASM.txt Используйте это только в том случае, если вы вручную обновляете мод.</sys:String>
     <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Удалите все Моды из списка.</sys:String>
     <sys:String x:Key="ModDetails_SaveModsTooltip">Сохраните Моды в профиль.</sys:String>
     <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Сохраните данные мод по модам.</sys:String>
@@ -317,6 +321,8 @@
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">Это сообщение будет отображаться при завершении работы, когда мир будет сохранен.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Сообщение при отмене:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">Это сообщение будет отображаться, когда выключение сервера было отменено.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownAllMessagesShowReasonLabel">Показывать причину отключения со всеми сообщениями о завершении работы.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownAllMessagesShowReasonTooltip">Если включено, причина отключения будет показана со всем сообщением о завершении работы; в противном случае это будет отображаться только в начале выключения сервера.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">SMTP Настройки Email</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostLabel">Хост:</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostTooltip">Имя или IP-адрес хоста, используемого для передач SMTP.</sys:String>
@@ -665,6 +671,8 @@
     <sys:String x:Key="ServerSettings_RCONLogBufferTooltip">Устанавливает максимальную длину RCON игрового лог буфера (по умолчанию 600).</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosLabel">Перезаселить Мир во время Запуска сервера (Вызывает лаг после запуска Сервера)</sys:String>
     <sys:String x:Key="ServerSettings_ForceRespawnDinosTooltip">Если включено, при запуске сервера все дикие существа будут уничтожены и обновлены (это уничтожит только диких существ, которые в настоящее время не приручены).</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinosLabel">Нет Динозавров</sys:String>
+    <sys:String x:Key="ServerSettings_NoDinosTooltip">Если включено, на карте не появятся динозавры.</sys:String>
     <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel">Включить Авто Респаун Динозавров</sys:String>
     <sys:String x:Key="ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip">Если включено, принудительное возрождение диких Динозавтров через указанный интервал.</sys:String>
     <sys:String x:Key="ServerSettings_ServerAutoForceRespawnWildDinosIntervalLabel">Интервал Респауна Диких Дино</sys:String>
