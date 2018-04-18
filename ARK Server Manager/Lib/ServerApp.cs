@@ -394,6 +394,7 @@ namespace ARK_Server_Manager.Lib
             }
 
             QueryMaster.Server gameServer = null;
+            bool sent = false;
 
             try
             {
@@ -411,7 +412,7 @@ namespace ARK_Server_Manager.Lib
 
                     try
                     {
-                        Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
+                        Task.Delay(10000, cancellationToken).Wait(cancellationToken);
                     }
                     catch { }
                 }
@@ -499,6 +500,8 @@ namespace ARK_Server_Manager.Lib
 
                     if (!string.IsNullOrWhiteSpace(message))
                     {
+                        LogProfileMessage(message);
+
                         // check if there is a shutdown reason
                         if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
                         {
@@ -526,19 +529,21 @@ namespace ARK_Server_Manager.Lib
                         // perform a world save
                         if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_WorldSaveMessage))
                         {
+                            LogProfileMessage(Config.Default.ServerShutdown_WorldSaveMessage);
                             SendMessage(Config.Default.ServerShutdown_WorldSaveMessage);
                             ProcessAlert(AlertType.ShutdownMessage, Config.Default.ServerShutdown_WorldSaveMessage);
 
                             Task.Delay(2000).Wait();
                         }
 
-                        SendCommand("saveworld", false);
-
-                        try
+                        if (SendCommand("saveworld", false))
                         {
-                            Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
+                            try
+                            {
+                                Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
                     catch (Exception ex)
                     {
@@ -564,6 +569,7 @@ namespace ARK_Server_Manager.Lib
                 if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
                 {
                     var message = Config.Default.ServerShutdown_GraceMessage3;
+                    LogProfileMessage(message);
 
                     // check if there is a shutdown reason
                     if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
@@ -620,16 +626,18 @@ namespace ARK_Server_Manager.Lib
                 {
                     try
                     {
-                        SendCommand("doexit", false);
-
-                        Task.Delay(10000).Wait();
+                        sent = SendCommand("doexit", false);
+                        if (sent)
+                        {
+                            Task.Delay(10000).Wait();
+                        }
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine($"RCON> doexit command.\r\n{ex.Message}");
                     }
 
-                    if (!process.HasExited)
+                    if (sent && !process.HasExited)
                     {
                         ts.Task.Wait(60000);   // 1 minute
                     }
@@ -648,9 +656,9 @@ namespace ARK_Server_Manager.Lib
                 CloseRconConsole();
 
                 // Method 2 - Close the process
-                process.CloseMainWindow();
+                sent = process.CloseMainWindow();
 
-                if (!process.HasExited)
+                if (sent && !process.HasExited)
                 {
                     ts.Task.Wait(60000);   // 1 minute
                 }
@@ -2055,25 +2063,6 @@ namespace ARK_Server_Manager.Lib
                         LogProfileMessage("Delete old server backup files finished.");
                     }
                 }
-
-                // slowly cleanup any backup files from old backup process
-                try
-                {
-                    var backupFolder = ServerProfile.GetProfileSavePath(_profile.InstallDirectory, _profile.AltSaveDirectoryName, _profile.PGM_Enabled, _profile.PGM_Name);
-                    var backupFileFilter = $"*{Config.Default.BackupServerExtension}";
-                    var backupDateFilter = DateTime.Now.AddDays(-BACKUP_DELETEINTERVAL);
-
-                    var oldBackupFiles = new DirectoryInfo(backupFolder).GetFiles(backupFileFilter).Where(f => f.LastWriteTime < backupDateFilter);
-                    foreach (var oldBackupFile in oldBackupFiles)
-                    {
-                        LogProfileMessage($"{oldBackupFile.Name} was deleted, last updated {oldBackupFile.CreationTime.ToString()}.");
-                        oldBackupFile.Delete();
-                    }
-                }
-                catch
-                {
-                    // if unable to delete, do not bother
-                }
             }
             finally
             {
@@ -2402,12 +2391,12 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private void SendCommand(string command, bool retryIfFailed)
+        private bool SendCommand(string command, bool retryIfFailed)
         {
             if (_profile == null || !_profile.RCONEnabled)
-                return;
+                return false;
             if (string.IsNullOrWhiteSpace(command))
-                return;
+                return false;
 
             int retries = 0;
             int rconRetries = 0;
@@ -2433,7 +2422,7 @@ namespace ARK_Server_Manager.Lib
                         _rconConsole.SendCommand(command);
                         LogProfileMessage($"RCON> {command}");
 
-                        return;
+                        return true;
                     }
                     catch (Exception ex)
                     {
@@ -2446,6 +2435,8 @@ namespace ARK_Server_Manager.Lib
                     retries++;
                 }
             }
+
+            return false;
         }
 
         private void SendMessage(string message)
