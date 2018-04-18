@@ -409,7 +409,11 @@ namespace ARK_Server_Manager.Lib
                     SendMessage(ShutdownReason);
                     ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
 
-                    Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
+                    try
+                    {
+                        Task.Delay(_profile.MotDDuration * 1000, cancellationToken).Wait(cancellationToken);
+                    }
+                    catch { }
                 }
 
                 LogProfileMessage("Starting shutdown timer...");
@@ -507,7 +511,11 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     minutesLeft--;
-                    Task.Delay(60000, cancellationToken).Wait(cancellationToken);
+                    try
+                    {
+                        Task.Delay(60000, cancellationToken).Wait(cancellationToken);
+                    }
+                    catch {}
                 }
 
                 // check if we need to perform a world save (not required for SotF servers)
@@ -526,7 +534,11 @@ namespace ARK_Server_Manager.Lib
 
                         SendCommand("saveworld", false);
 
-                        Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
+                        try
+                        {
+                            Task.Delay(Config.Default.ServerShutdown_WorldSaveDelay * 1000, cancellationToken).Wait(cancellationToken);
+                        }
+                        catch { }
                     }
                     catch (Exception ex)
                     {
