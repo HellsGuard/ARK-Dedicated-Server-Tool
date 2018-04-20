@@ -2015,5 +2015,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["GameDataExtension"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ARK Server:")]
+        public string FirewallRulePrefix {
+            get {
+                return ((string)(this["FirewallRulePrefix"]));
+            }
+        }
     }
 }

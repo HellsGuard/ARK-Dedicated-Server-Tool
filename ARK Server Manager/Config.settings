@@ -566,5 +566,8 @@
     <Setting Name="GameDataExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.gamedata</Value>
     </Setting>
+    <Setting Name="FirewallRulePrefix" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ARK Server:</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
