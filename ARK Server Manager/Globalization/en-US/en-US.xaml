@@ -8,6 +8,15 @@
     >
 
     <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
+
+    <!-- ArkApplication enum -->
+    <sys:String x:Key="ArkApplication_All">All</sys:String>
+    <sys:String x:Key="ArkApplication_SurvivalEvolved">Survival Evolved</sys:String>
+    <sys:String x:Key="ArkApplication_PrimitivePlus">Primitive Plus</sys:String>
+    <sys:String x:Key="ArkApplication_ScorchedEarth">Scorched Earth</sys:String>
+    <sys:String x:Key="ArkApplication_Ragnarok">Ragnarok</sys:String>
+    <sys:String x:Key="ArkApplication_Aberration">Aberration</sys:String>
+    <sys:String x:Key="ArkApplication_Unknown">Unknown</sys:String>
     
     <!-- Application -->
     <sys:String x:Key="Application_RunAsAdministratorTitle">Run as Administrator</sys:String>

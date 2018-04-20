@@ -79,6 +79,7 @@ namespace ARK_Server_Manager
         private CancellationTokenSource _upgradeCancellationSource = null;
 
         // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BaseArkApplicationListProperty = DependencyProperty.Register(nameof(BaseArkApplicationList), typeof(ArkApplicationComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseDinoSettingsDinoListProperty = DependencyProperty.Register(nameof(BaseDinoSettingsDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerDinoListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
@@ -107,6 +108,12 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
 
         #region Properties
+        public ArkApplicationComboBoxItemList BaseArkApplicationList
+        {
+            get { return (ArkApplicationComboBoxItemList)GetValue(BaseArkApplicationListProperty); }
+            set { SetValue(BaseArkApplicationListProperty, value); }
+        }
+
         public ComboBoxItemList BaseDinoSettingsDinoList
         {
             get { return (ComboBoxItemList)GetValue(BaseDinoSettingsDinoListProperty); }
@@ -273,6 +280,7 @@ namespace ARK_Server_Manager
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
 
+            RefreshBaseArkApplicationList();
             this.BaseDinoSettingsDinoList = new ComboBoxItemList();
             this.BaseMapSpawnerList = new ComboBoxItemList();
             this.BaseMapSpawnerDinoList = new ComboBoxItemList();
@@ -320,6 +328,7 @@ namespace ARK_Server_Manager
             this.Settings.NPCSpawnSettings.UpdateForLocalization();
             this.Settings.ConfigOverrideSupplyCrateItems.UpdateForLocalization();
 
+            this.RefreshBaseArkApplicationList();
             this.RefreshBaseDinoList();
             this.RefreshBaseMapSpawnerList();
             this.RefreshBasePrimalItemList();
@@ -2379,6 +2388,27 @@ namespace ARK_Server_Manager
                     canExecute: (action) => true
                 );
             }
+        }
+
+        public void RefreshBaseArkApplicationList()
+        {
+            var newList = new ArkApplicationComboBoxItemList();
+
+            var values = Enum.GetValues(typeof(ArkApplication)).Cast<ArkApplication>();
+            foreach (var value in values)
+            {
+                var name = _globalizer.GetResourceString($"{nameof(ArkApplication)}_{value}");
+                if (string.IsNullOrWhiteSpace(name) && (value == ArkApplication.All || value == ArkApplication.Unknown))
+                    name = value.ToString();
+
+                if (!string.IsNullOrWhiteSpace(name))
+                    newList.Add(new ArkApplicationComboBoxItem(value, name));
+            }
+
+            this.BaseArkApplicationList = newList;
+            this.ArkApplicationsDinoComboBox.SelectedValue = SelectedArkApplicationDino;
+            this.ArkApplicationsResourceComboBox.SelectedValue = SelectedArkApplicationResource;
+            this.ArkApplicationsEngramComboBox.SelectedValue = SelectedArkApplicationEngram;
         }
 
         public void RefreshBaseDinoList()

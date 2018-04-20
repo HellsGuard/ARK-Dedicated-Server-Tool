@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.323.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -168,6 +168,7 @@
     <Compile Include="Common\Serialization\IniKey.cs" />
     <Compile Include="Common\Serialization\IniSection.cs" />
     <Compile Include="Common\Utils\IOUtils.cs" />
+    <Compile Include="Lib\Model\ArkApplicationComboBoxItem.cs" />
     <Compile Include="Lib\ServerProfileSnapshot.cs" />
     <Compile Include="Lib\Utils\GameDataUtils.cs" />
     <Compile Include="Windows\AddSteamUserWindow.xaml.cs">
