@@ -182,7 +182,7 @@ namespace ARK_Server_Manager.Lib
             return base.ToComplexINIValue(true);
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(SupplyCrateClassString);
+        public string DisplayName => GameData.FriendlySupplyCrateNameForClass(SupplyCrateClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(SupplyCrateClassString) && ItemSets.Count > 0;
     }

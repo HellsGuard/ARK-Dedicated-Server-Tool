@@ -2392,7 +2392,7 @@ namespace ARK_Server_Manager
 
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
+                    DisplayMember = string.IsNullOrWhiteSpace(dino.Mod) ? $"{dino.DisplayName}" : $"{dino.DisplayName} ({dino.Mod})",
                     ValueMember = dino.ClassName,
                 });
             }
@@ -2408,7 +2408,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
+                        DisplayMember = dinoSetting.ReplacementClass,
                         ValueMember = dinoSetting.ReplacementClass,
                     });
                 }
@@ -2425,7 +2425,7 @@ namespace ARK_Server_Manager
                     {
                         newList.Add(new Lib.ViewModel.ComboBoxItem
                         {
-                            DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
+                            DisplayMember = spawnEntry.NPCClassString,
                             ValueMember = spawnEntry.NPCClassString,
                         });
                     }
@@ -2455,7 +2455,7 @@ namespace ARK_Server_Manager
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = mapSpawner.DisplayName,
+                    DisplayMember = string.IsNullOrWhiteSpace(mapSpawner.Mod) ? $"{mapSpawner.DisplayName}" : $"{mapSpawner.DisplayName} ({mapSpawner.Mod})",
                     ValueMember = mapSpawner.ClassName,
                 });
             }
@@ -2499,7 +2499,7 @@ namespace ARK_Server_Manager
 
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = $"{primalItem.DisplayName}{categoryName}",
+                    DisplayMember = string.IsNullOrWhiteSpace(primalItem.Mod) ? $"{primalItem.DisplayName}" : $"{primalItem.DisplayName} ({primalItem.Mod})",
                     ValueMember = primalItem.ClassName,
                 });
             }
@@ -2584,7 +2584,7 @@ namespace ARK_Server_Manager
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = primalItem.DisplayName,
+                    DisplayMember = string.IsNullOrWhiteSpace(primalItem.Mod) ? $"{primalItem.DisplayName}" : $"{primalItem.DisplayName} ({primalItem.Mod})",
                     ValueMember = primalItem.ClassName,
                 });
             }
@@ -2643,7 +2643,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = this.Settings.ServerMap,
+                        DisplayMember = this.Settings.SOTF_Enabled ? GameData.FriendlyMapSotFNameForClass(this.Settings.ServerMap) : GameData.FriendlyMapNameForClass(this.Settings.ServerMap),
                         ValueMember = this.Settings.ServerMap,
                     });
                 }
@@ -2678,7 +2678,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = this.Settings.TotalConversionModId,
+                        DisplayMember = this.Settings.SOTF_Enabled ? GameData.FriendlyTotalConversionSotFNameForClass(this.Settings.TotalConversionModId) : GameData.FriendlyTotalConversionNameForClass(this.Settings.TotalConversionModId),
                         ValueMember = this.Settings.TotalConversionModId,
                     });
                 }

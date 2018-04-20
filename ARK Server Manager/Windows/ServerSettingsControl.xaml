@@ -2243,9 +2243,9 @@
                                                         </DataGridTextColumn.Header>
                                                     </DataGridTextColumn>
 
-                                                    <DataGridTextColumn     Binding="{Binding ArkApplication, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
+                                                    <DataGridTextColumn     Binding="{Binding Mod, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
                                                         <DataGridTextColumn.Header>
-                                                            <TextBlock Text="{DynamicResource ServerSettings_ArkAppColumnLabel}"/>
+                                                            <TextBlock Text="{DynamicResource ServerSettings_ModColumnLabel}"/>
                                                         </DataGridTextColumn.Header>
                                                     </DataGridTextColumn>
 
@@ -2445,14 +2445,17 @@
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                                 <Setter Property="Background" Value="Beige" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                                <Setter Property="Background" Value="#F4E2DB" />
-                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                                 <Setter Property="Background" Value="#E7F4DB" />
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                                 <Setter Property="Background" Value="#F4E9DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                                <Setter Property="Background" Value="#F4E2DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                                <Setter Property="Background" Value="#EFDAF5" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2705,8 +2708,8 @@
                                                                     <ColumnDefinition Width="Auto" MinWidth="20"/>
                                                                 </Grid.ColumnDefinitions>
 
-                                                                <Label  Grid.Row="0" Grid.Column="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                                <Label  Grid.Row="0" Grid.Column="1" Content="{Binding ArkApplication}" VerticalAlignment="Center"/>
+                                                                <Label  Grid.Row="0" Grid.Column="0" Content="{Binding DisplayName}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                                <Label  Grid.Row="0" Grid.Column="1" Content="{Binding Mod}" VerticalAlignment="Center"/>
                                                                 <local:AnnotatedSlider Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="120" ValueRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                                 <Button Grid.Row="0" Grid.Column="3" Click="RemoveHarvestResource_Click" ToolTip="{DynamicResource ServerSettings_HarvestRemoveRecordTooltip}">
                                                                     <Button.Style>
@@ -2734,14 +2737,17 @@
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                                 <Setter Property="Background" Value="Beige" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                                <Setter Property="Background" Value="#F4E2DB" />
-                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                                 <Setter Property="Background" Value="#E7F4DB" />
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                                 <Setter Property="Background" Value="#F4E9DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                                <Setter Property="Background" Value="#F4E2DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                                <Setter Property="Background" Value="#EFDAF5" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2978,7 +2984,7 @@
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True"/>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsArkAppColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkApplication}" lvs:SortBehavior.CanUseSort="True"/>
+                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsModColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding Mod}" lvs:SortBehavior.CanUseSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
@@ -3037,13 +3043,6 @@
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsKnownColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="KnownEngram">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding KnownEngram, Mode=OneWay}" HorizontalAlignment="Center" IsEnabled="False"/>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
                                                     <GridViewColumn Width="Auto" lvs:SortBehavior.CanUseSort="False">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
@@ -3081,14 +3080,17 @@
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                             <Setter Property="Background" Value="Beige" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                            <Setter Property="Background" Value="#F4E2DB" />
-                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                             <Setter Property="Background" Value="#E7F4DB" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                             <Setter Property="Background" Value="#F4E9DB" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                            <Setter Property="Background" Value="#F4E2DB" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                            <Setter Property="Background" Value="#EFDAF5" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>

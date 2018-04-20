@@ -160,7 +160,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 };
                 spawnContainer.NPCSpawnEntries.AddRange(entry.NPCSpawnEntrySettings.Where(s => s.IsValid).Select(s => new NPCSpawnEntry
                 {
-                    AnEntryName = string.IsNullOrWhiteSpace(s.AnEntryName) ? s.NPCClassString : s.AnEntryName,
+                    AnEntryName = string.IsNullOrWhiteSpace(s.AnEntryName) ? string.Empty : s.AnEntryName,
                     EntryWeight = s.EntryWeight,
                     NPCsToSpawnStrings = s.NPCClassString
                 }));
@@ -229,7 +229,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(NPCSpawnEntrySettingsProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(NPCSpawnEntriesContainerClassString);
+        public string DisplayName => GameData.FriendlyMapSpawnerNameForClass(NPCSpawnEntriesContainerClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCSpawnEntriesContainerClassString);
 
@@ -310,7 +310,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(MaxPercentageOfDesiredNumToAllowProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(NPCClassString);
+        public string DisplayName => GameData.FriendlyCreatureNameForClass(NPCClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(NPCClassString);
     }

@@ -560,5 +560,11 @@
     <Setting Name="ServerShutdown_AllMessagesShowReason" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="GameDataDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">GameData</Value>
+    </Setting>
+    <Setting Name="GameDataExtension" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.gamedata</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

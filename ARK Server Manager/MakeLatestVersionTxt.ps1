@@ -91,6 +91,6 @@ aws s3 cp "$($txtDestFile)" s3://arkservermanager/release/
 $batchFile = "$env:TEMP\$($filenamePrefixStripped)PublishToFtp.cmd"
 $batchFileContent | Out-File -LiteralPath:$batchFile -Force -Encoding ascii
 
-#Invoke-Expression -Command:$batchFile
+Invoke-Expression -Command:$batchFile
 
 Remove-Item -LiteralPath:$batchFile -Force

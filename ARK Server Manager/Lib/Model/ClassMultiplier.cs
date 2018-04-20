@@ -27,7 +27,9 @@ namespace ARK_Server_Manager.Lib
             get { return (float)GetValue(MultiplierProperty); }
             set { SetValue(MultiplierProperty, value); }
         }
-        
+
+        public virtual string DisplayName => GameData.FriendlyNameForClass(ClassName);
+
         public static ClassMultiplier FromINIValue(string iniValue)
         {
             var newSpawn = new ClassMultiplier();
@@ -35,14 +37,8 @@ namespace ARK_Server_Manager.Lib
             return newSpawn;
         }
 
-        public override string GetSortKey()
-        {
-            return GameData.FriendlyNameForClass(this.ClassName);
-        }
+        public override string GetSortKey() => GameData.FriendlyNameForClass(this.ClassName);
 
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.ClassName, ((ClassMultiplier)other).ClassName, StringComparison.OrdinalIgnoreCase);
-        }
+        public override bool IsEquivalent(AggregateIniValue other) => String.Equals(this.ClassName, ((ClassMultiplier)other).ClassName, StringComparison.OrdinalIgnoreCase);
     }
 }

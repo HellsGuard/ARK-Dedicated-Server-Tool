@@ -361,6 +361,12 @@ namespace ARK_Server_Manager
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
 
+            // initialize all the game data
+            GameData.Initialize();
+#if DEBUG
+            //ARK_Server_Manager.Lib.Utils.GameDataUtils.WriteAllData(System.IO.Path.Combine(Config.Default.DataDir, Config.Default.GameDataDir));
+#endif
+
             Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: true));
         }
 

@@ -65,8 +65,8 @@ namespace ARK_Server_Manager.Lib
             this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
-            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.HarvestResourceItemAmountClassMultipliers = new ResourceClassMultiplierList(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.OverrideNamedEngramEntries = new EngramEntryList(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
@@ -1557,7 +1557,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(XPMultiplierProperty, value); }
         }
 
-        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsPlayer));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int OverrideMaxExperiencePointsPlayer
@@ -1658,7 +1658,7 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Dino Settings
-        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_DINO));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsDino));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int OverrideMaxExperiencePointsDino
@@ -2235,12 +2235,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ClampItemSpoilingTimesProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ResourceClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(ResourceClassMultiplierList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<ResourceClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        public ResourceClassMultiplierList HarvestResourceItemAmountClassMultipliers
         {
-            get { return (AggregateIniValueList<ResourceClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            get { return (ResourceClassMultiplierList)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
         }
 
@@ -2678,12 +2678,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OnlyAllowSpecifiedEngramsProperty, value); }
         }
 
-        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList<EngramEntry>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public EngramEntryList<EngramEntry> OverrideNamedEngramEntries
+        public EngramEntryList OverrideNamedEngramEntries
         {
-            get { return (EngramEntryList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
+            get { return (EngramEntryList)GetValue(OverrideNamedEngramEntriesProperty); }
             set { SetValue(OverrideNamedEngramEntriesProperty, value); }
         }
 
@@ -4599,7 +4599,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AutoUnlockAllEngramsProperty);
             this.ClearValue(OnlyAllowSpecifiedEngramsProperty);
 
-            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.OverrideNamedEngramEntries = new EngramEntryList(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
             this.OverrideNamedEngramEntries.Reset();
         }
 
@@ -4613,7 +4613,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ClampResourceHarvestDamageProperty);
             this.ClearValue(HarvestHealthMultiplierProperty);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new ResourceClassMultiplierList(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
             this.HarvestResourceItemAmountClassMultipliers.Reset();
 
             this.ClearValue(BaseTemperatureMultiplierProperty);

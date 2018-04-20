@@ -59,7 +59,7 @@ namespace ARK_Server_Manager.Lib
             return base.ToComplexINIValue(true);
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ItemClassString);
+        public string DisplayName => GameData.FriendlyItemNameForClass(ItemClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(ItemClassString) && BaseCraftingResourceRequirements.Count > 0;
     }
@@ -114,7 +114,7 @@ namespace ARK_Server_Manager.Lib
             return base.ToComplexINIValue(false);
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ResourceItemTypeString);
+        public string DisplayName => GameData.FriendlyItemNameForClass(ResourceItemTypeString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(ResourceItemTypeString);
     }

@@ -1997,5 +1997,23 @@ namespace ARK_Server_Manager {
                 this["ServerShutdown_AllMessagesShowReason"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GameData")]
+        public string GameDataDir {
+            get {
+                return ((string)(this["GameDataDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".gamedata")]
+        public string GameDataExtension {
+            get {
+                return ((string)(this["GameDataExtension"]));
+            }
+        }
     }
 }

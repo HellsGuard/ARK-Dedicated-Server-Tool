@@ -31,8 +31,8 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>1.0.322.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.323.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -169,6 +169,7 @@
     <Compile Include="Common\Serialization\IniSection.cs" />
     <Compile Include="Common\Utils\IOUtils.cs" />
     <Compile Include="Lib\ServerProfileSnapshot.cs" />
+    <Compile Include="Lib\Utils\GameDataUtils.cs" />
     <Compile Include="Windows\AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
@@ -498,6 +499,27 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="GameData\Aberration.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\PGM.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\PrimitivePlus.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\Ragnarok.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\ScorchedEarth.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\SurvivalEvolved.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameData\TheCenter.gamedata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <AppDesigner Include="Properties\" />
