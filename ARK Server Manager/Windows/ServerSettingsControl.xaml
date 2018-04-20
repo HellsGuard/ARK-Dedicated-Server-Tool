@@ -3151,7 +3151,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding ServerFilesAdmins}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3219,7 +3219,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding ServerFilesWhitelisted}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3282,7 +3282,7 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesExclusive, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding ServerFilesExclusive}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>

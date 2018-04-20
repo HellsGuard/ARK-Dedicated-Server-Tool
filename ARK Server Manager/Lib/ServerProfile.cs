@@ -56,6 +56,10 @@ namespace ARK_Server_Manager.Lib
             ServerPassword = SecurityUtils.GeneratePassword(16);
             AdminPassword = SecurityUtils.GeneratePassword(16);
 
+            ServerFilesAdmins = new SteamUserList();
+            ServerFilesExclusive = new SteamUserList();
+            ServerFilesWhitelisted = new SteamUserList();
+
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0] );
             this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
@@ -2749,12 +2753,33 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Server Files
+        public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        public SteamUserList ServerFilesAdmins
+        {
+            get { return (SteamUserList)GetValue(ServerFilesAdminsProperty); }
+            set { SetValue(ServerFilesAdminsProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableExclusiveJoinProperty = DependencyProperty.Register(nameof(EnableExclusiveJoin), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool EnableExclusiveJoin
         {
             get { return (bool)GetValue(EnableExclusiveJoinProperty); }
             set { SetValue(EnableExclusiveJoinProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        public SteamUserList ServerFilesExclusive
+        {
+            get { return (SteamUserList)GetValue(ServerFilesExclusiveProperty); }
+            set { SetValue(ServerFilesExclusiveProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        public SteamUserList ServerFilesWhitelisted
+        {
+            get { return (SteamUserList)GetValue(ServerFilesWhitelistedProperty); }
+            set { SetValue(ServerFilesWhitelistedProperty, value); }
         }
         #endregion
 
@@ -3499,6 +3524,10 @@ namespace ARK_Server_Manager.Lib
             settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings, exclusions);
 
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+
             var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
 
             var levelRampOverrides = values.Where(s => s.StartsWith("LevelExperienceRampOverrides=")).ToArray();
@@ -3562,6 +3591,10 @@ namespace ARK_Server_Manager.Lib
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
                 settings.ConfigOverrideSupplyCrateItems.RenderToView();
 
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
             return settings;
@@ -3606,6 +3639,10 @@ namespace ARK_Server_Manager.Lib
                 settings.NPCSpawnSettings.RenderToView();
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
                 settings.ConfigOverrideSupplyCrateItems.RenderToView();
+
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
 
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
@@ -3694,6 +3731,10 @@ namespace ARK_Server_Manager.Lib
             //
             progressCallback?.Invoke(0, "Saving Profile File...");
             SaveProfile();
+
+            SaveServerFileAdministrators();
+            SaveServerFileExclusive();
+            SaveServerFileWhitelisted();
 
             //
             // Write the INI files
@@ -5393,6 +5434,131 @@ namespace ARK_Server_Manager.Lib
             this.ConfigOverrideSupplyCrateItems.FromIniValues(sourceProfile.ConfigOverrideSupplyCrateItems.ToIniValues());
             this.ConfigOverrideSupplyCrateItems.IsEnabled = this.ConfigOverrideSupplyCrateItems.Count > 0;
             this.ConfigOverrideSupplyCrateItems.RenderToView();
+        }
+        #endregion
+
+        #region Server Files
+        public void LoadServerFileAdministrators()
+        {
+            try
+            {
+                var list = new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkAdminFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesAdmins = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesAdmins = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void LoadServerFileExclusive()
+        {
+            try
+            {
+                var list = new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesExclusive = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesExclusive = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void LoadServerFileWhitelisted()
+        {
+            try
+            {
+                var list = new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesWhitelisted = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesWhitelisted = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileAdministrators()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkAdminFile);
+                File.WriteAllLines(file, this.ServerFilesAdmins.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileExclusive()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkExclusiveFile);
+                File.WriteAllLines(file, this.ServerFilesExclusive.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileWhitelisted()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkWhitelistFile);
+                File.WriteAllLines(file, this.ServerFilesWhitelisted.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
 

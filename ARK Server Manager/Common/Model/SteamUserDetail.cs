@@ -86,9 +86,23 @@ namespace ARK_Server_Manager.Lib.Model
             return result;
         }
 
+        public void Remove(string steamId)
+        {
+            var items = this.Where(i => i.SteamId.Equals(steamId, System.StringComparison.OrdinalIgnoreCase)).ToArray();
+            foreach (var item in items)
+            {
+                this.Remove(item);
+            }
+        }
+
         public string[] ToArray()
         {
             return this.Select(i => i.SteamId).ToArray();
+        }
+
+        public string ToDelimitedString(string delimiter)
+        {
+            return string.Join(delimiter, this.Select(i => i.SteamId));
         }
 
         public override string ToString()
