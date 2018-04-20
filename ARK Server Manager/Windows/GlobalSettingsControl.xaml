@@ -454,6 +454,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -475,6 +476,8 @@
 
                         <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource GlobalSettings_ShutdownCancelLabel}" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="8" Grid.Column="1" Margin="1" Text="{Binding CurrentConfig.ServerShutdown_CancelMessage}" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" ToolTip="{DynamicResource GlobalSettings_ShutdownCancelTooltip}"/>
+
+                        <CheckBox Grid.Row="9" Grid.Column="0" Margin="0,2,20,2" Grid.ColumnSpan="2" Content="{DynamicResource GlobalSettings_ShutdownAllMessagesShowReasonLabel}" IsChecked="{Binding CurrentConfig.ServerShutdown_AllMessagesShowReason, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_ShutdownAllMessagesShowReasonTooltip}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </Grid>
                 </GroupBox>
 
