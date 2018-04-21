@@ -99,7 +99,7 @@ namespace ARK_Server_Manager.Lib
             if (!KnownResource)
                 return true;
 
-            var resource = GameData.GetResourceForClass(ClassName);
+            var resource = GameData.GetResourceMultiplierForClass(ClassName);
             if (resource == null)
                 return true;
 

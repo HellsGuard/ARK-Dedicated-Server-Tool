@@ -50,7 +50,7 @@ namespace ARK_Server_Manager.Lib
             gameData.Creatures.AddRange(userGameData.Creatures);
 
             dinoSpawns = gameData.Creatures.ConvertAll(item => new DinoSpawn { ClassName = item.ClassName, Mod = item.Mod, KnownDino = true, DinoNameTag = item.NameTag, ArkApplication = item.ArkApplication }).ToArray();
-            standardDinoMultipliers = gameData.Creatures.ConvertAll(item => new ClassMultiplier { ClassName = item.ClassName }).ToArray();
+            dinoMultipliers = gameData.Creatures.ConvertAll(item => new ClassMultiplier { ClassName = item.ClassName }).ToArray();
 
             // engrams
             gameData.Engrams.AddRange(userGameData.Engrams);
@@ -60,10 +60,10 @@ namespace ARK_Server_Manager.Lib
             // items
             gameData.Items.AddRange(userGameData.Items);
 
-            primalItems = gameData.Items.ConvertAll(item => new PrimalItem { ClassName = item.ClassName, Mod = item.Mod, KnownItem = true, Category = item.Category, ArkApplication = item.ArkApplication }).ToArray();
+            items = gameData.Items.ConvertAll(item => new PrimalItem { ClassName = item.ClassName, Mod = item.Mod, KnownItem = true, Category = item.Category, ArkApplication = item.ArkApplication }).ToArray();
 
             // resources
-            standardResourceMultipliers = gameData.Items.Where(item => item.IsHarvestable).ToList().ConvertAll(item => new ResourceClassMultiplier { ClassName = item.ClassName, Mod = item.Mod, KnownResource = true, ArkApplication = item.ArkApplication }).ToArray();
+            resourceMultipliers = gameData.Items.Where(item => item.IsHarvestable).ToList().ConvertAll(item => new ResourceClassMultiplier { ClassName = item.ClassName, Mod = item.Mod, KnownResource = true, ArkApplication = item.ArkApplication }).ToArray();
 
             // map spawners
             gameData.MapSpawners.AddRange(userGameData.MapSpawners);
@@ -116,8 +116,8 @@ namespace ARK_Server_Manager.Lib
 
             if (gameData.CreatureLevels.Count > 0)
             {
-                levelProgressionDinoOfficial = gameData.CreatureLevels.ConvertAll(item => new Level { XPRequired = item.XPRequired }).ToArray();
-                DefaultMaxExperiencePointsDino = levelProgressionDinoOfficial.Max(l => l.XPRequired) + 1;
+                levelsDino = gameData.CreatureLevels.ConvertAll(item => new Level { XPRequired = item.XPRequired }).ToArray();
+                DefaultMaxExperiencePointsDino = levelsDino.Max(l => l.XPRequired) + 1;
             }
 
             // player levels
@@ -126,8 +126,8 @@ namespace ARK_Server_Manager.Lib
 
             if (gameData.PlayerLevels.Count > 0)
             {
-                levelProgressionPlayerOfficial = gameData.PlayerLevels.ConvertAll(item => new Level { EngramPoints = item.EngramPoints, XPRequired = item.XPRequired }).ToArray();
-                DefaultMaxExperiencePointsPlayer = levelProgressionPlayerOfficial.Max(l => l.XPRequired) + 1;
+                levelsPlayer = gameData.PlayerLevels.ConvertAll(item => new Level { EngramPoints = item.EngramPoints, XPRequired = item.XPRequired }).ToArray();
+                DefaultMaxExperiencePointsPlayer = levelsPlayer.Max(l => l.XPRequired) + 1;
             }
         }
 
@@ -148,15 +148,15 @@ namespace ARK_Server_Manager.Lib
 
         public static string FriendlyCreatureNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Creatures?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
 
-        private static ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[0];
+        private static ClassMultiplier[] dinoMultipliers = new ClassMultiplier[0];
 
-        public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+        public static IEnumerable<ClassMultiplier> GetDinoMultipliers() => dinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
         #endregion
 
         #region Engrams
         private static EngramEntry[] engrams = new EngramEntry[0];
 
-        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
+        public static IEnumerable<EngramEntry> GetEngrams() => engrams.Select(d => d.Duplicate<EngramEntry>());
 
         public static EngramEntry GetEngramForClass(string className) => engrams.FirstOrDefault(e => e.EngramClassName.Equals(className));
 
@@ -168,25 +168,25 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Items
-        private static PrimalItem[] primalItems = new PrimalItem[0];
+        private static PrimalItem[] items = new PrimalItem[0];
 
-        public static IEnumerable<PrimalItem> GetStandardPrimalItems() => primalItems.Select(d => d.Duplicate());
+        public static IEnumerable<PrimalItem> GetItems() => items.Select(d => d.Duplicate());
 
-        public static PrimalItem GetPrimalItemForClass(string className) => primalItems.FirstOrDefault(e => e.ClassName.Equals(className));
+        public static PrimalItem GetItemForClass(string className) => items.FirstOrDefault(e => e.ClassName.Equals(className));
 
-        public static bool HasPrimalItemForClass(string className) => primalItems.Any(e => e.ClassName.Equals(className));
+        public static bool HasItemForClass(string className) => items.Any(e => e.ClassName.Equals(className));
 
         public static string FriendlyItemNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Items?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
         #endregion
 
         #region Resources
-        private static ResourceClassMultiplier[] standardResourceMultipliers = new ResourceClassMultiplier[0];
+        private static ResourceClassMultiplier[] resourceMultipliers = new ResourceClassMultiplier[0];
 
-        public static IEnumerable<ResourceClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
+        public static IEnumerable<ResourceClassMultiplier> GetResourceMultipliers() => resourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
 
-        public static ResourceClassMultiplier GetResourceForClass(string className) => standardResourceMultipliers.FirstOrDefault(e => e.ClassName.Equals(className));
+        public static ResourceClassMultiplier GetResourceMultiplierForClass(string className) => resourceMultipliers.FirstOrDefault(e => e.ClassName.Equals(className));
 
-        public static bool HasResourceForClass(string className) => standardResourceMultipliers.Any(e => e.ClassName.Equals(className));
+        public static bool HasResourceMultiplierForClass(string className) => resourceMultipliers.Any(e => e.ClassName.Equals(className));
 
         public static string FriendlyResourceNameForClass(string className) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Items?.FirstOrDefault(i => i.ClassName.Equals(className) && i.IsHarvestable)?.Description ?? className;
         #endregion
@@ -194,7 +194,7 @@ namespace ARK_Server_Manager.Lib
         #region Map Spawners
         private static MapSpawner[] mapSpawners = new MapSpawner[0];
 
-        public static IEnumerable<MapSpawner> GetStandardMapSpawners() => mapSpawners.Select(d => d.Duplicate());
+        public static IEnumerable<MapSpawner> GetMapSpawners() => mapSpawners.Select(d => d.Duplicate());
 
         public static MapSpawner GetMapSpawnerForClass(string className) => mapSpawners.FirstOrDefault(e => e.ClassName.Equals(className));
 
@@ -206,7 +206,7 @@ namespace ARK_Server_Manager.Lib
         #region Supply Crates
         private static SupplyCrate[] supplyCrates = new SupplyCrate[0];
 
-        public static IEnumerable<SupplyCrate> GetStandardSupplyCrates() => supplyCrates.Select(d => d.Duplicate());
+        public static IEnumerable<SupplyCrate> GetSupplyCrates() => supplyCrates.Select(d => d.Duplicate());
 
         public static SupplyCrate GetSupplyCrateForClass(string className) => supplyCrates.FirstOrDefault(e => e.ClassName.Equals(className));
 
@@ -334,19 +334,19 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Levels
-        private static Level[] levelProgressionDinoOfficial = new[]
+        private static Level[] levelsDino = new[]
         {
             new Level { XPRequired=10 },
         };
 
-        private static Level[] levelProgressionPlayerOfficial = new[]
+        private static Level[] levelsPlayer = new[]
         {
             new Level { XPRequired=5, EngramPoints=8 },
         };
 
-        public static IEnumerable<Level> LevelProgressionDinoOfficial => levelProgressionDinoOfficial.Select(l => l.Duplicate());
+        public static IEnumerable<Level> LevelsDino => levelsDino.Select(l => l.Duplicate());
 
-        public static IEnumerable<Level> LevelProgressionPlayerOfficial => levelProgressionPlayerOfficial.Select(l => l.Duplicate());
+        public static IEnumerable<Level> LevelsPlayer => levelsPlayer.Select(l => l.Duplicate());
         #endregion
     }
 }

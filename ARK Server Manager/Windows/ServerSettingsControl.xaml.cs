@@ -2457,7 +2457,7 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var mapSpawner in GameData.GetStandardMapSpawners())
+            foreach (var mapSpawner in GameData.GetMapSpawners())
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
@@ -2499,7 +2499,7 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardPrimalItems())
+            foreach (var primalItem in GameData.GetItems())
             {
                 var categoryName = primalItem.ArkApplication == ArkApplication.SurvivalEvolved ? string.Empty : $" ({primalItem.ArkApplication.ToString()})";
 
@@ -2586,7 +2586,7 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardSupplyCrates())
+            foreach (var primalItem in GameData.GetSupplyCrates())
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {

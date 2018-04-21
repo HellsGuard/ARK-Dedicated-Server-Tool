@@ -368,6 +368,9 @@ namespace ARK_Server_Manager
             if (mod == null)
                 return;
 
+            if (MessageBox.Show(_globalizer.GetResourceString("ModDetails_WriteTimestamp_ConfirmLabel"), _globalizer.GetResourceString("ModDetails_WriteTimestamp_ConfirmTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
             var cursor = this.Cursor;
 
             try
@@ -382,7 +385,7 @@ namespace ARK_Server_Manager
                 mod.PopulateExtended(Path.Combine(_profile.InstallDirectory, Config.Default.ServerModsRelativePath));
                 ModDetailsView?.Refresh();
             }
-            catch (DirectoryNotFoundException ex)
+            catch (DirectoryNotFoundException)
             {
                 MessageBox.Show(_globalizer.GetResourceString("ModDetails_WriteTimestamp_FailedLabel"), _globalizer.GetResourceString("ModDetails_WriteTimestamp_FailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
