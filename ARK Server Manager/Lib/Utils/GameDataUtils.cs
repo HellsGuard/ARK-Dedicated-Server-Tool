@@ -22,6 +22,9 @@ namespace ARK_Server_Manager.Lib.Utils
             foreach (var file in Directory.GetFiles(DataFolder, $"*{Config.Default.GameDataExtension}", SearchOption.TopDirectoryOnly))
             {
                 var fileData = BaseGameData.Load(file, isUserData);
+                if (!fileData.Application.Equals(Config.Default.GameDataApplication, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
                 data.Creatures.AddRange(fileData.Creatures);
                 data.Engrams.AddRange(fileData.Engrams);
                 data.Items.AddRange(fileData.Items);
@@ -59,6 +62,7 @@ namespace ARK_Server_Manager.Lib.Utils
             foreach (var kvp in data)
             {
                 var dataFile = Path.Combine(DataFolder, $"{kvp.Key}{Config.Default.GameDataExtension}");
+                kvp.Value.Application = Config.Default.GameDataApplication;
                 kvp.Value.Save(dataFile);
             }
         }
@@ -373,6 +377,8 @@ namespace ARK_Server_Manager.Lib.Utils
     [DataContract]
     public class BaseGameData
     {
+        [DataMember]
+        public string Application = string.Empty;
         [DataMember]
         public string Version = "1.0.0";
         [DataMember]

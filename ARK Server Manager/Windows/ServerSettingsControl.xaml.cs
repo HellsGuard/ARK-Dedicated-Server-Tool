@@ -520,15 +520,24 @@ namespace ARK_Server_Manager
 
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.ArkSotfUrl))
+                return;
+
             Process.Start(Config.Default.ArkSotfUrl);
         }
 
         private void PatchNotes_Click(object sender, RoutedEventArgs e)
         {
+            var url = string.Empty;
             if (Settings.SOTF_Enabled)
-                Process.Start(Config.Default.ArkSotF_PatchNotesUrl);
+                url =Config.Default.ArkSotF_PatchNotesUrl;
             else
-                Process.Start(Config.Default.ArkSE_PatchNotesUrl);
+                url = Config.Default.ArkSE_PatchNotesUrl;
+
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            Process.Start(url);
         }
 
         private void NeedAdmin_Click(object sender, RoutedEventArgs e)

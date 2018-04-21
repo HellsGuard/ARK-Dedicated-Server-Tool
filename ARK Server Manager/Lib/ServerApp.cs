@@ -2785,6 +2785,15 @@ namespace ARK_Server_Manager.Lib
                     exitCodes.TryAdd(profile, app.PerformProfileBackup(profile));
                 });
 
+                foreach (var profile in _profiles.Keys)
+                {
+                    if (profile.ServerUpdated)
+                    {
+                        profile.Update(_profiles[profile]);
+                        _profiles[profile].SaveProfile();
+                    }
+                }
+
                 if (exitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
                     exitCode = EXITCODE_EXITWITHERRORS;
             }
@@ -2859,6 +2868,12 @@ namespace ARK_Server_Manager.Lib
                 app.ServerProcess = type;
                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
                 exitCode = app.PerformProfileShutdown(profile, performRestart, performUpdate, CancellationToken.None);
+
+                if (profile.ServerUpdated)
+                {
+                    profile.Update(_profiles[profile]);
+                    _profiles[profile].SaveProfile();
+                }
             }
             catch (Exception)
             {
@@ -2936,6 +2951,15 @@ namespace ARK_Server_Manager.Lib
                                 app.ServerProcess = ServerProcessType.AutoUpdate;
                                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
                                 exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                            }
+                        }
+
+                        foreach (var profile in _profiles.Keys)
+                        {
+                            if (profile.ServerUpdated)
+                            {
+                                profile.Update(_profiles[profile]);
+                                _profiles[profile].SaveProfile();
                             }
                         }
 

@@ -2024,5 +2024,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["FirewallRulePrefix"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ark")]
+        public string GameDataApplication {
+            get {
+                return ((string)(this["GameDataApplication"]));
+            }
+        }
     }
 }

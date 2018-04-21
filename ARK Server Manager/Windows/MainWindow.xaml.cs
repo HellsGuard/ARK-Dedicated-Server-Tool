@@ -186,10 +186,16 @@ namespace ARK_Server_Manager
 
         private void ASMPatchNotes_Click(object sender, RoutedEventArgs e)
         {
+            var url = string.Empty;
             if (BetaVersion)
-                Process.Start(Config.Default.LatestASMBetaPatchNotesUrl);
+                url = Config.Default.LatestASMBetaPatchNotesUrl;
             else
-                Process.Start(Config.Default.LatestASMPatchNotesUrl);
+                url = Config.Default.LatestASMPatchNotesUrl;
+
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            Process.Start(url);
         }
 
         private void Donate_Click(object sender, RoutedEventArgs e)
@@ -203,6 +209,9 @@ namespace ARK_Server_Manager
 
         private void Help_Click(object sender, RoutedEventArgs args)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.HelpUrl))
+                return;
+
             Process.Start(Config.Default.HelpUrl);
         }
 

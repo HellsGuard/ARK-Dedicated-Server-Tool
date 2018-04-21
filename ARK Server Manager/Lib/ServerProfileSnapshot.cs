@@ -91,5 +91,10 @@ namespace ARK_Server_Manager.Lib
                 ServerUpdated = false,
             };
         }
+
+        public void Update(ServerProfile profile)
+        {
+            profile.LastInstalledVersion = LastInstalledVersion;
+        }
     }
 }
