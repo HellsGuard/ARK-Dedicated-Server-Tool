@@ -2037,9 +2037,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".arktributetribe")]
-        public string PlayerTributeTribeFileExtension {
+        public string TributeTribeFileExtension {
             get {
-                return ((string)(this["PlayerTributeTribeFileExtension"]));
+                return ((string)(this["TributeTribeFileExtension"]));
             }
         }
     }

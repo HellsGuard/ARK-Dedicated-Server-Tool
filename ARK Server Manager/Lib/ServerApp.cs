@@ -1945,32 +1945,32 @@ namespace ARK_Server_Manager.Lib
                             var saveFolderInfo = new DirectoryInfo(saveFolder);
                             var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
                             var playerFiles = saveFolderInfo.GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
-                            foreach (var playerFile in playerFiles)
+                            foreach (var file in playerFiles)
                             {
-                                files.Add(playerFile.FullName);
+                                files.Add(file.FullName);
                             }
 
                             // get the tribe files
                             var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
                             var tribeFiles = saveFolderInfo.GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
-                            foreach (var tribeFile in tribeFiles)
+                            foreach (var file in tribeFiles)
                             {
-                                files.Add(tribeFile.FullName);
+                                files.Add(file.FullName);
                             }
 
-                            // get the player tribute tribe files
-                            var playertributetribeFileFilter = $"*{Config.Default.PlayerTributeTribeFileExtension}";
-                            var playertributetribefiles = saveFolderInfo.GetFiles(playertributetribeFileFilter, SearchOption.TopDirectoryOnly);
-                            foreach (var playertributetribeFile in playertributetribefiles)
+                            // get the tribute tribe files
+                            var tributeTribeFileFilter = $"*{Config.Default.TributeTribeFileExtension}";
+                            var tributeTribeFiles = saveFolderInfo.GetFiles(tributeTribeFileFilter, SearchOption.TopDirectoryOnly);
+                            foreach (var file in tributeTribeFiles)
                             {
-                                files.Add(playertributetribeFile.FullName);
+                                files.Add(file.FullName);
                             }
 
                             //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
                             //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
-                            //foreach (var playerImageFile in playerImageFiles)
+                            //foreach (var file in playerImageFiles)
                             //{
-                            //    files.Add(playerImageFile.FullName);
+                            //    files.Add(file.FullName);
                             //}
 
                             var comment = new StringBuilder();
