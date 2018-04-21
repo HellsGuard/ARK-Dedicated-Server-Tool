@@ -178,9 +178,17 @@ namespace ARK_Server_Manager.Lib
 
         private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
         {
+            localServerQueryEndPoint = null;
+            steamServerQueryEndPoint = null;
+
             //
             // Get the local endpoint for querying the local network
             //
+            if (!ushort.TryParse(this.ProfileSnapshot.QueryPort.ToString(), out ushort port))
+            {
+                Debug.WriteLine($"Port is out of range ({this.ProfileSnapshot.QueryPort})");
+                return;
+            }
 
             IPAddress localServerIpAddress;
             if (!String.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerIP) && IPAddress.TryParse(this.ProfileSnapshot.ServerIP, out localServerIpAddress))
@@ -342,9 +350,10 @@ namespace ARK_Server_Manager.Lib
         {
             if (this.updateRegistration == null)
             {
-                IPEndPoint localServerQueryEndPoint;
-                IPEndPoint steamServerQueryEndPoint;
-                GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
+                GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint);
+                if (localServerQueryEndPoint == null || steamServerQueryEndPoint == null)
+                    return;
+
                 this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, this.ProfileSnapshot.ProfileId, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }

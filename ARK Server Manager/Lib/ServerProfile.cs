@@ -3955,6 +3955,14 @@ namespace ARK_Server_Manager.Lib
 
             var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
 
+            // checking the port values are within the valid range
+            if (ServerConnectionPort < ushort.MinValue || ServerConnectionPort > ushort.MaxValue)
+                result.AppendLine($"The server port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+            if (ServerPort < ushort.MinValue || ServerPort > ushort.MaxValue)
+                result.AppendLine($"The query port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+            if (RCONPort < ushort.MinValue || RCONPort > ushort.MaxValue)
+                result.AppendLine($"The rcon port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+
             if (forceValidate || Config.Default.ValidateProfileOnServerStart)
             {
                 // build a list of mods to be processed
