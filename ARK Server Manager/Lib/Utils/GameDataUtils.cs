@@ -90,7 +90,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteEngramData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.GetStandardEngramOverrides();
+            var list = GameData.GetEngrams();
             foreach (var item in list)
             {
                 if (!data.ContainsKey(item.ArkApplication.ToString()))
@@ -115,7 +115,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteItemData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.GetStandardPrimalItems();
+            var list = GameData.GetItems();
             foreach (var item in list)
             {
                 if (!data.ContainsKey(item.ArkApplication.ToString()))
@@ -129,7 +129,7 @@ namespace ARK_Server_Manager.Lib.Utils
                     Description = item.DisplayName,
                     Mod = item.ArkApplication.ToString(),
                     Category = item.Category,
-                    IsHarvestable = GameData.HasResourceForClass(item.ClassName),
+                    IsHarvestable = GameData.HasResourceMultiplierForClass(item.ClassName),
                     ArkApplication = item.ArkApplication,
                 };
 
@@ -139,7 +139,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteMapSpawnerData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.GetStandardMapSpawners();
+            var list = GameData.GetMapSpawners();
             foreach (var item in list)
             {
                 var arkApplication = ArkApplication.SurvivalEvolved.ToString();
@@ -172,7 +172,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteSupplyCrateData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.GetStandardSupplyCrates();
+            var list = GameData.GetSupplyCrates();
             foreach (var item in list)
             {
                 if (item.ClassName.StartsWith("DinoDropInventoryComponent_"))
@@ -208,7 +208,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteInventoryData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.GetStandardSupplyCrates();
+            var list = GameData.GetSupplyCrates();
             foreach (var item in list)
             {
                 if (!item.ClassName.StartsWith("DinoDropInventoryComponent_"))
@@ -328,7 +328,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WritePlayerLevelData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.LevelProgressionPlayerOfficial;
+            var list = GameData.LevelsPlayer;
             foreach (var item in list)
             {
                 var arkApplication = ArkApplication.SurvivalEvolved.ToString();
@@ -350,7 +350,7 @@ namespace ARK_Server_Manager.Lib.Utils
 
         private static void WriteCreatureLevelData(Dictionary<string, BaseGameData> data)
         {
-            var list = GameData.LevelProgressionDinoOfficial;
+            var list = GameData.LevelsDino;
             foreach (var item in list)
             {
                 var arkApplication = ArkApplication.SurvivalEvolved.ToString();
@@ -462,7 +462,7 @@ namespace ARK_Server_Manager.Lib.Utils
         {
             get
             {
-                return ArkApplication.ToString();
+                return IsTameable.ToString();
             }
             set
             {
