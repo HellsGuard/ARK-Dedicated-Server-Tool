@@ -2033,5 +2033,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["GameDataApplication"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".arktributetribe")]
+        public string PlayerTributeTribeFileExtension {
+            get {
+                return ((string)(this["PlayerTributeTribeFileExtension"]));
+            }
+        }
     }
 }

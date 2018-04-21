@@ -4209,6 +4209,14 @@ namespace ARK_Server_Manager.Lib
                         files.Add(tribeFile.FullName);
                     }
 
+                    // get the player tribute tribe files
+                    var playertributetribeFileFilter = $"*{Config.Default.PlayerTributeTribeFileExtension}";
+                    var playertributetribefiles = saveFolderInfo.GetFiles(playertributetribeFileFilter, SearchOption.TopDirectoryOnly);
+                    foreach (var playertributetribeFile in playertributetribefiles)
+                    {
+                        files.Add(playertributetribeFile.FullName);
+                    }
+
                     //// get the player images files
                     //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
                     //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);

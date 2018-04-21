@@ -572,5 +572,8 @@
     <Setting Name="GameDataApplication" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ark</Value>
     </Setting>
+    <Setting Name="PlayerTributeTribeFileExtension" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.arktributetribe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

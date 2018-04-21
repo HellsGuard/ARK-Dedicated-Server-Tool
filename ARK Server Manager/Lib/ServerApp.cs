@@ -1941,6 +1941,7 @@ namespace ARK_Server_Manager.Lib
                             var files = new List<string>();
                             files.Add(worldFile);
 
+                            // get the player files
                             var saveFolderInfo = new DirectoryInfo(saveFolder);
                             var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
                             var playerFiles = saveFolderInfo.GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
@@ -1949,11 +1950,20 @@ namespace ARK_Server_Manager.Lib
                                 files.Add(playerFile.FullName);
                             }
 
+                            // get the tribe files
                             var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
                             var tribeFiles = saveFolderInfo.GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
                             foreach (var tribeFile in tribeFiles)
                             {
                                 files.Add(tribeFile.FullName);
+                            }
+
+                            // get the player tribute tribe files
+                            var playertributetribeFileFilter = $"*{Config.Default.PlayerTributeTribeFileExtension}";
+                            var playertributetribefiles = saveFolderInfo.GetFiles(playertributetribeFileFilter, SearchOption.TopDirectoryOnly);
+                            foreach (var playertributetribeFile in playertributetribefiles)
+                            {
+                                files.Add(playertributetribeFile.FullName);
                             }
 
                             //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
