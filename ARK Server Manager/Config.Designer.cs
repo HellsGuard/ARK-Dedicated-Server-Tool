@@ -2042,5 +2042,14 @@ namespace ARK_Server_Manager {
                 return ((string)(this["TributeTribeFileExtension"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int SendMessageDelay {
+            get {
+                return ((int)(this["SendMessageDelay"]));
+            }
+        }
     }
 }

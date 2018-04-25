@@ -575,5 +575,8 @@
     <Setting Name="TributeTribeFileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.arktributetribe</Value>
     </Setting>
+    <Setting Name="SendMessageDelay" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

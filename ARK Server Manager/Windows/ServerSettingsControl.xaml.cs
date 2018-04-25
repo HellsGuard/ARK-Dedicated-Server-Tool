@@ -353,8 +353,8 @@ namespace ARK_Server_Manager
             {
                 case ServerRuntime.ServerStatus.Initializing:
                 case ServerRuntime.ServerStatus.Running:
-                    // check if the server is initialising, or if RCON is not enabled.
-                    if (this.Runtime.Status == ServerRuntime.ServerStatus.Initializing || !this.Server.Profile.RCONEnabled)
+                    // check if the server is initialising.
+                    if (this.Runtime.Status == ServerRuntime.ServerStatus.Initializing)
                     {
                         result = MessageBox.Show(_globalizer.GetResourceString("ServerSettings_StartServer_StartingLabel"), _globalizer.GetResourceString("ServerSettings_StartServer_StartingTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                         if (result == MessageBoxResult.No)
@@ -836,7 +836,7 @@ namespace ARK_Server_Manager
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                Settings.InstallDirectory = dialog.FileName;
+                Settings.ChangeInstallationFolder(dialog.FileName);
             }
         }
 

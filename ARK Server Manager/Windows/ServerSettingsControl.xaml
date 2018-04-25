@@ -3135,7 +3135,7 @@
 
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Content="{DynamicResource ServerSettings_ServerFilesWarningLabel}"/>
 
-                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesAdminLabel}"/>
@@ -3150,6 +3150,37 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
+                                    
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
 
                                     <DataGrid ItemsSource="{Binding ServerFilesAdmins}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
@@ -3203,7 +3234,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesWhitelistLabel}"/>
@@ -3218,6 +3249,37 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
+
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
 
                                     <DataGrid ItemsSource="{Binding ServerFilesWhitelisted}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
@@ -3266,7 +3328,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
@@ -3281,6 +3343,37 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
+
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
 
                                     <DataGrid ItemsSource="{Binding ServerFilesExclusive}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>

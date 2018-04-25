@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib.Model
@@ -38,6 +39,7 @@ namespace ARK_Server_Manager.Lib.Model
         public int personastate { get; set; }
     }
 
+    [DataContract]
     public class SteamUserList : ObservableCollection<SteamUserItem>
     {
         public void AddRange(SteamUserList list)
@@ -111,18 +113,21 @@ namespace ARK_Server_Manager.Lib.Model
         }
     }
 
+    [DataContract]
     public class SteamUserItem : DependencyObject
     {
         public static readonly DependencyProperty SteamIdProperty = DependencyProperty.Register(nameof(SteamId), typeof(string), typeof(SteamUserItem), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty SteamNameProperty = DependencyProperty.Register(nameof(SteamName), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty ProfileUrlProperty = DependencyProperty.Register(nameof(ProfileUrl), typeof(string), typeof(WorkshopFileItem), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty SteamNameProperty = DependencyProperty.Register(nameof(SteamName), typeof(string), typeof(SteamUserItem), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ProfileUrlProperty = DependencyProperty.Register(nameof(ProfileUrl), typeof(string), typeof(SteamUserItem), new PropertyMetadata(string.Empty));
 
+        [DataMember]
         public string SteamId
         {
             get { return (string)GetValue(SteamIdProperty); }
             set { SetValue(SteamIdProperty, value); }
         }
 
+        [DataMember]
         public string SteamName
         {
             get { return (string)GetValue(SteamNameProperty); }

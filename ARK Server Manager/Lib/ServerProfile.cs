@@ -30,6 +30,7 @@ namespace ARK_Server_Manager.Lib
             EnvironmentSection,
             StructuresSection,
             EngramsSection,
+            ServerFiles,
             CustomSettingsSection,
             CustomLevelsSection,
             MapSpawnerOverridesSection,
@@ -50,6 +51,9 @@ namespace ARK_Server_Manager.Lib
         [XmlIgnore]
         private string _lastSaveLocation = String.Empty;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private FileSystemWatcher _serverFilesWatcherSaved = null;
+        private FileSystemWatcher _serverFilesWatcherBinary = null;
 
         private ServerProfile()
         {
@@ -2754,6 +2758,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Server Files
         public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
         public SteamUserList ServerFilesAdmins
         {
             get { return (SteamUserList)GetValue(ServerFilesAdminsProperty); }
@@ -2769,6 +2774,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
         public SteamUserList ServerFilesExclusive
         {
             get { return (SteamUserList)GetValue(ServerFilesExclusiveProperty); }
@@ -2776,6 +2782,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
         public SteamUserList ServerFilesWhitelisted
         {
             get { return (SteamUserList)GetValue(ServerFilesWhitelistedProperty); }
@@ -3074,6 +3081,16 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Methods
+        public void ChangeInstallationFolder(string folder)
+        {
+            InstallDirectory = folder;
+
+            LoadServerFileAdministrators();
+            LoadServerFileExclusive();
+            LoadServerFileWhitelisted();
+            SetupServerFilesWatcher();
+        }
+
         internal static ServerProfile FromDefaults()
         {
             var settings = new ServerProfile();
@@ -3091,6 +3108,10 @@ namespace ARK_Server_Manager.Lib
             settings.PerLevelStatsMultiplier_DinoWild.Reset();
             settings.PerLevelStatsMultiplier_Player.Reset();
             settings.PlayerBaseStatMultipliers.Reset();
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
             return settings;
         }
 
@@ -3487,7 +3508,9 @@ namespace ARK_Server_Manager.Lib
 
             ServerProfile settings = null;
             settings = LoadFromINIFiles(file, settings);
-            settings.InstallDirectory = filePath.Replace(Config.Default.ServerConfigRelativePath, string.Empty).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            var installDirectory = filePath.Replace(Config.Default.ServerConfigRelativePath, string.Empty).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            settings.ChangeInstallationFolder(installDirectory);
 
             if (settings.PlayerLevels.Count == 0)
             {
@@ -3523,10 +3546,6 @@ namespace ARK_Server_Manager.Lib
             var iniFile = new SystemIniFile(iniPath);
             settings = settings ?? new ServerProfile();
             iniFile.Deserialize(settings, exclusions);
-
-            settings.LoadServerFileAdministrators();
-            settings.LoadServerFileExclusive();
-            settings.LoadServerFileWhitelisted();
 
             var values = iniFile.ReadSection(IniFiles.Game, IniFileSections.GameMode);
 
@@ -3594,6 +3613,7 @@ namespace ARK_Server_Manager.Lib
             settings.LoadServerFileAdministrators();
             settings.LoadServerFileExclusive();
             settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
 
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
@@ -3643,6 +3663,7 @@ namespace ARK_Server_Manager.Lib
             settings.LoadServerFileAdministrators();
             settings.LoadServerFileExclusive();
             settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
 
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
@@ -4949,6 +4970,9 @@ namespace ARK_Server_Manager.Lib
                 case ServerProfileSection.EngramsSection:
                     SyncEngramsSection(sourceProfile);
                     break;
+                case ServerProfileSection.ServerFiles:
+                    SyncServerFiles(sourceProfile);
+                    break;
                 case ServerProfileSection.CustomSettingsSection:
                     SyncCustomSettingsSection(sourceProfile);
                     break;
@@ -5389,6 +5413,18 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(RandomSupplyCratePointsProperty, sourceProfile.RandomSupplyCratePoints);
         }
 
+        private void SyncServerFiles(ServerProfile sourceProfile)
+        {
+            this.SetValue(ServerFilesAdminsProperty, sourceProfile.ServerFilesAdmins);
+            this.SetValue(EnableExclusiveJoinProperty, sourceProfile.EnableExclusiveJoin);
+            this.SetValue(ServerFilesExclusiveProperty, sourceProfile.ServerFilesExclusive);
+            this.SetValue(ServerFilesWhitelistedProperty, sourceProfile.ServerFilesWhitelisted);
+
+            SaveServerFileAdministrators();
+            SaveServerFileExclusive();
+            SaveServerFileWhitelisted();
+        }
+
         private void SyncSOTFSection(ServerProfile sourceProfile)
         {
             this.SetValue(SOTF_EnabledProperty, sourceProfile.SOTF_Enabled);
@@ -5454,11 +5490,93 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Server Files
+        private void ServerFilesWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (e.Name.Equals(Config.Default.ArkAdminFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileAdministrators()).DoNotWait();
+            }
+            else if (e.Name.Equals(Config.Default.ArkExclusiveFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileExclusive()).DoNotWait();
+            }
+            else if (e.Name.Equals(Config.Default.ArkWhitelistFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileWhitelisted()).DoNotWait();
+            }
+        }
+
+        private void ServerFilesWatcher_Error(object sender, ErrorEventArgs e)
+        {
+            SetupServerFilesWatcher();
+        }
+
+        public void DestroyServerFilesWatcher()
+        {
+            if (_serverFilesWatcherBinary != null)
+            {
+                _serverFilesWatcherBinary.EnableRaisingEvents = false;
+                _serverFilesWatcherBinary.Changed -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Created -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Deleted -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Error -= ServerFilesWatcher_Error;
+                _serverFilesWatcherBinary = null;
+            }
+
+            if (_serverFilesWatcherSaved != null)
+            {
+                _serverFilesWatcherSaved.EnableRaisingEvents = false;
+                _serverFilesWatcherSaved.Changed -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Created -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Deleted -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Error -= ServerFilesWatcher_Error;
+                _serverFilesWatcherSaved = null;
+            }
+        }
+
+        public void SetupServerFilesWatcher()
+        {
+            if (_serverFilesWatcherBinary != null || _serverFilesWatcherSaved != null)
+                DestroyServerFilesWatcher();
+
+            var path = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+                return;
+
+            _serverFilesWatcherBinary = new FileSystemWatcher
+            {
+                Path = path,
+                NotifyFilter = NotifyFilters.LastWrite,
+            };
+
+            _serverFilesWatcherBinary.Changed += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Created += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Deleted += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Error += ServerFilesWatcher_Error;
+            _serverFilesWatcherBinary.EnableRaisingEvents = true;
+
+            path = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath);
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+                return;
+
+            _serverFilesWatcherSaved = new FileSystemWatcher
+            {
+                Path = path,
+                NotifyFilter = NotifyFilters.LastWrite,
+            };
+
+            _serverFilesWatcherSaved.Changed += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Created += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Deleted += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Error += ServerFilesWatcher_Error;
+            _serverFilesWatcherSaved.EnableRaisingEvents = true;
+        }
+
         public void LoadServerFileAdministrators()
         {
             try
             {
-                var list = new SteamUserList();
+                var list = this.ServerFilesAdmins ?? new SteamUserList();
 
                 var file = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkAdminFile);
                 if (File.Exists(file))
@@ -5482,7 +5600,7 @@ namespace ARK_Server_Manager.Lib
         {
             try
             {
-                var list = new SteamUserList();
+                var list = this.ServerFilesExclusive ?? new SteamUserList();
 
                 var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
                 if (File.Exists(file))
@@ -5506,7 +5624,7 @@ namespace ARK_Server_Manager.Lib
         {
             try
             {
-                var list = new SteamUserList();
+                var list = this.ServerFilesWhitelisted ?? new SteamUserList();
 
                 var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
                 if (File.Exists(file))
