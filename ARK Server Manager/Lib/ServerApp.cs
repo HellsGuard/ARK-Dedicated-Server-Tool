@@ -500,16 +500,16 @@ namespace ARK_Server_Manager.Lib
                     sent = false;
                     if (!string.IsNullOrWhiteSpace(message))
                     {
-                        LogProfileMessage(message);
+                        ProcessAlert(AlertType.ShutdownMessage, message);
 
                         // check if there is a shutdown reason
                         if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
                         {
-                            message = $"{message}\r\n{ShutdownReason}";
                             ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
+
+                            message = $"{message}\r\n{ShutdownReason}";
                         }
 
-                        ProcessAlert(AlertType.ShutdownMessage, message);
                         sent = SendMessage(message, cancellationToken);
                     }
 
@@ -568,16 +568,16 @@ namespace ARK_Server_Manager.Lib
                 if (!string.IsNullOrWhiteSpace(Config.Default.ServerShutdown_GraceMessage3))
                 {
                     var message = Config.Default.ServerShutdown_GraceMessage3;
-                    LogProfileMessage(message);
+                    ProcessAlert(AlertType.ShutdownMessage, message);
 
                     // check if there is a shutdown reason
                     if (!string.IsNullOrWhiteSpace(ShutdownReason) && Config.Default.ServerShutdown_AllMessagesShowReason)
                     {
-                        message = $"{message}\r\n{ShutdownReason}";
                         ProcessAlert(AlertType.ShutdownReason, ShutdownReason);
+
+                        message = $"{message}\r\n{ShutdownReason}";
                     }
 
-                    ProcessAlert(AlertType.ShutdownMessage, Config.Default.ServerShutdown_GraceMessage3);
                     SendMessage(message, cancellationToken);
                 }
             }
