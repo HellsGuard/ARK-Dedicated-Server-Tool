@@ -2051,5 +2051,17 @@ namespace ARK_Server_Manager {
                 return ((int)(this["SendMessageDelay"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CloseShutdownWindowWhenFinished {
+            get {
+                return ((bool)(this["CloseShutdownWindowWhenFinished"]));
+            }
+            set {
+                this["CloseShutdownWindowWhenFinished"] = value;
+            }
+        }
     }
 }

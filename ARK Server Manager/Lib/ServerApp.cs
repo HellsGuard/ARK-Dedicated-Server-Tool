@@ -408,7 +408,7 @@ namespace ARK_Server_Manager.Lib
                 gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
 
                 // check if there is a shutdown reason
-                if (!string.IsNullOrWhiteSpace(ShutdownReason))
+                if (!string.IsNullOrWhiteSpace(ShutdownReason) && !Config.Default.ServerShutdown_AllMessagesShowReason)
                 {
                     LogProfileMessage("Sending shutdown reason...");
 

@@ -163,7 +163,8 @@ namespace ARK_Server_Manager
                 if (restartServer || updateServer)
                     await Task.Delay(5000);
 
-                this.Close();
+                if (Config.Default.CloseShutdownWindowWhenFinished)
+                    this.Close();
             }
             catch (Exception ex)
             {

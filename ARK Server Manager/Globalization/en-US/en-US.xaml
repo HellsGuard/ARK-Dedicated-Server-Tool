@@ -365,6 +365,8 @@
     <sys:String x:Key="GlobalSettings_AdvancedSettingsInformationLabel">Do not touch these settings unless you know what you are doing, or have been instructed to change them by support staff.</sys:String>
     <sys:String x:Key="GlobalSettings_UseDoExitLabel">Use DoExit for Server Shutdown</sys:String>
     <sys:String x:Key="GlobalSettings_UseDoExitTooltip">If enabled, the doexit command will be used first to shutdown the server. If it fails or is disabled, then the ctrl+c method is used instead.</sys:String>
+    <sys:String x:Key="GlobalSettings_CloseShutdownWindowWhenFinishedLabel">Close Shutdown Window When Finished</sys:String>
+    <sys:String x:Key="GlobalSettings_CloseShutdownWindowWhenFinishedTooltip">If enabled, the doexit command will be used first to shutdown the server. If it fails or is disabled, then the ctrl+c method is used instead.</sys:String>
     <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">WorldSave Delay:</sys:String>
     <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">The number of seconds to wait for the worldsave command to complete before the server is shutdown.</sys:String>
 
