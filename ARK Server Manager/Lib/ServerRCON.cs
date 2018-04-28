@@ -445,11 +445,13 @@ namespace ARK_Server_Manager.Lib
                 if (!String.IsNullOrEmpty(rconParams.InstallDirectory))
                 {
                     var savedPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
-                    ArkDataContainer dataContainer = null;
+                    DataContainer dataContainer = null;
 
                     try
                     {
-                        dataContainer = await ArkDataContainer.CreateAsync(savedPath);
+                        DataFileDetails.PlayerFileFolder = savedPath;
+                        DataFileDetails.TribeFileFolder = savedPath;
+                        dataContainer = await DataContainer.CreateAsync();
                     }
                     catch (Exception ex)
                     {

@@ -27,14 +27,14 @@ namespace ArkData
             return Encoding.Default.GetString(bytes2);
         }
 
-        public static Player ParsePlayer(string fileName)
+        public static PlayerData ParsePlayer(string fileName)
         {
             FileInfo fileInfo = new FileInfo(fileName);
             if (!fileInfo.Exists)
                 return null;
             byte[] data = File.ReadAllBytes(fileName);
 
-            return new Player()
+            return new PlayerData()
             {
                 Id = Convert.ToInt64(GetId(data)),
                 SteamId = GetSteamId(data),
@@ -49,9 +49,9 @@ namespace ArkData
             };
         }
 
-        public static Task<Player> ParsePlayerAsync(string fileName)
+        public static Task<PlayerData> ParsePlayerAsync(string fileName)
         {
-            return Task.Run<Player>(() =>
+            return Task.Run<PlayerData>(() =>
             {
                 return ParsePlayer(fileName);
             });

@@ -6,9 +6,9 @@ using System.Net.Http.Headers;
 namespace ArkData
 {
     /// <summary>
-    /// The container for the ARK data.
+    /// The container for the data.
     /// </summary>
-    public partial class ArkDataContainer
+    public partial class DataContainer
     {
         /// <summary>
         /// Loads the profile data for all users from the steam service
@@ -78,27 +78,36 @@ namespace ArkData
         }
 
         /// <summary>
-        /// Instantiates the ArkDataContainer and parses all the user data files
+        /// Instantiates the DataContainer and parses all the user data files
         /// </summary>
-        /// <param name="directory">The directory containing the profile and tribe files.</param>
-        public static ArkDataContainer Create(string directory)
+        public static DataContainer Create(string directory)
         {
-            if (!Directory.Exists(directory))
-                throw new DirectoryNotFoundException("The ARK data directory couldn't be found.");
+            var playerFiles = new string[0];
+            var tribeFiles = new string[0];
 
-            var playerFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arkprofile")).ToArray();
-            var tribeFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arktribe")).ToArray();
+            if (Directory.Exists(DataFileDetails.PlayerFileFolder))
+            {
+                playerFiles = Directory.GetFiles(DataFileDetails.PlayerFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.PlayerFilePrefix)
+                                                                                            && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.PlayerFileSuffix)
+                                                                                            && Path.GetExtension(f).Equals(DataFileDetails.PlayerFileExtension)).ToArray();
+            }
+            if (Directory.Exists(DataFileDetails.TribeFileFolder))
+            {
+                tribeFiles = Directory.GetFiles(DataFileDetails.TribeFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.TribeFilePrefix)
+                                                                                        && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.TribeFileSuffix)
+                                                                                        && Path.GetExtension(f).Equals(DataFileDetails.TribeFileExtension)).ToArray();
+            }
 
             if (playerFiles.Length == 0 && tribeFiles.Length == 0)
                 throw new FileLoadException("The directory did not contain any of the parseable files.");
 
-            var container = new ArkDataContainer();
+            var container = new DataContainer();
 
-            for (var i = 0; i < playerFiles.Length; i++)
-                container.Players.Add(Parser.ParsePlayer(playerFiles[i]));
+            foreach (var file in playerFiles)
+                container.Players.Add(Parser.ParsePlayer(file));
 
-            for (var i = 0; i < tribeFiles.Length; i++)
-                container.Tribes.Add(Parser.ParseTribe(tribeFiles[i]));
+            foreach (var file in tribeFiles)
+                container.Tribes.Add(Parser.ParseTribe(file));
 
             container.LinkPlayerTribe();
 

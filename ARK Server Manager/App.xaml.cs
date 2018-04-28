@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using ArkServerManager.Plugin.Common;
 using System.Net;
+using ArkData;
 
 namespace ARK_Server_Manager
 {
@@ -363,9 +364,9 @@ namespace ARK_Server_Manager
 
             // initialize all the game data
             GameData.Initialize();
-#if DEBUG
-            //ARK_Server_Manager.Lib.Utils.GameDataUtils.WriteAllData(System.IO.Path.Combine(Config.Default.DataDir, Config.Default.GameDataDir));
-#endif
+
+            DataFileDetails.PlayerFileExtension = Config.Default.PlayerFileExtension;
+            DataFileDetails.TribeFileExtension = Config.Default.TribeFileExtension;
 
             Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: true));
         }

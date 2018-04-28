@@ -34,7 +34,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         public static readonly DependencyProperty LastUpdatedProperty = DependencyProperty.Register(nameof(LastUpdated), typeof(DateTime), typeof(PlayerInfo), new PropertyMetadata(DateTime.MinValue));
         public static readonly DependencyProperty HasBanProperty = DependencyProperty.Register(nameof(HasBan), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
         public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(true));
-        public static readonly DependencyProperty PlayerDataProperty = DependencyProperty.Register(nameof(PlayerData), typeof(Player), typeof(PlayerInfo), new PropertyMetadata(null));
+        public static readonly DependencyProperty PlayerDataProperty = DependencyProperty.Register(nameof(PlayerData), typeof(PlayerData), typeof(PlayerInfo), new PropertyMetadata(null));
 
         public long SteamId
         {
@@ -121,13 +121,13 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             get { return (bool)GetValue(IsValidProperty); }
             set { SetValue(IsValidProperty, value); }
         }
-        public Player PlayerData
+        public PlayerData PlayerData
         {
-            get { return (Player)GetValue(PlayerDataProperty); }
+            get { return (PlayerData)GetValue(PlayerDataProperty); }
             set { SetValue(PlayerDataProperty, value); }
         }
 
-        internal async Task UpdateDataAsync(Player playerData, string imageSavePath)
+        internal async Task UpdateDataAsync(PlayerData playerData, string imageSavePath)
         {
             if (!_dataUpdated)
                 return;

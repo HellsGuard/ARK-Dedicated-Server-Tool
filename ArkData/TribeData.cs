@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArkData
 {
-    public class Tribe
+    public class TribeData
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,12 +11,12 @@ namespace ArkData
         public DateTime FileCreated { get; set; }
         public DateTime FileUpdated { get; set; }
         public int? OwnerId { get; set; }
-        public virtual ICollection<Player> Players { get; set; }
-        public virtual Player Owner { get; set; }
+        public virtual ICollection<PlayerData> Players { get; set; }
+        public virtual PlayerData Owner { get; set; }
 
-        public Tribe()
+        public TribeData()
         {
-            this.Players = (ICollection<Player>)new HashSet<Player>();
+            this.Players = (ICollection<PlayerData>)new HashSet<PlayerData>();
         }
     }
 }

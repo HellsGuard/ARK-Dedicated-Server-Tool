@@ -6,37 +6,37 @@ using Newtonsoft.Json;
 using System.Runtime.Remoting;
 
 /// <summary>
-/// The container for the ARK data.
+/// The container for the data.
 /// </summary>
 namespace ArkData
 {
-    public partial class ArkDataContainer
+    public partial class DataContainer
     {
         /// <summary>
         /// A list of all players registered on the server.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerData> Players { get; set; }
         /// <summary>
         /// A list of all tribes registered on the server.
         /// </summary>
-        public List<Tribe> Tribes { get; set; }
+        public List<TribeData> Tribes { get; set; }
         /// <summary>
         /// Indicates whether the steam user data has been loaded.
         /// </summary>
         private bool SteamLoaded { get; set; }
 
         /// <summary>
-        /// Constructs the ArkDataContainer.
+        /// Constructs the DataContainer.
         /// </summary>
-        public ArkDataContainer()
+        public DataContainer()
         {
-            Players = new List<Player>();
-            Tribes = new List<Tribe>();
+            Players = new List<PlayerData>();
+            Tribes = new List<TribeData>();
             SteamLoaded = false;
         }
 
         /// <summary>
-        /// Links the online players, to the ARK player profiles.
+        /// Links the online players, to the player profiles.
         /// </summary>
         /// <param name="ipString">The server ip address.</param>
         /// <param name="port">The Steam query port.</param>
@@ -54,9 +54,10 @@ namespace ArkData
                     else
                         Players[i].Online = false;
                 }
-            } catch(SSQLServerException)
+            }
+            catch (SSQLServerException)
             {
-                throw new ServerException("The connection to the ARK server failed. Please check the configured IP address and port.");
+                throw new ServerException("The connection to the server failed. Please check the configured IP address and port.");
             }
         }
 
@@ -81,7 +82,7 @@ namespace ArkData
         }
 
         /// <summary>
-        /// Deserializes JSON from Steam API and links Steam profile to ARK profile.
+        /// Deserializes JSON from Steam API and links Steam profile to player profile.
         /// </summary>
         /// <param name="jsonString">The JSON data string.</param>
         private void LinkSteamProfiles(string jsonString)
@@ -98,7 +99,7 @@ namespace ArkData
         }
 
         /// <summary>
-        /// Deserializes JSON from Steam API and links Steam ban data to ARK profile.
+        /// Deserializes JSON from Steam API and links Steam ban data to player profile.
         /// </summary>
         /// <param name="jsonString">The JSON data string.</param>
         private void LinkSteamBans(string jsonString)
