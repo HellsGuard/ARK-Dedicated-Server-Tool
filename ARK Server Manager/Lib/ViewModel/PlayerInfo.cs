@@ -3,6 +3,7 @@ using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,7 +14,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
 {
     public class PlayerInfo : DependencyObject
     {
-        private static readonly ConcurrentDictionary<long, BitmapImage> avatarImages = new ConcurrentDictionary<long, BitmapImage>();
+        private readonly ConcurrentDictionary<long, BitmapImage> avatarImages = new ConcurrentDictionary<long, BitmapImage>();
 
         private Logger _logger;
         private bool _dataUpdated = true;
@@ -28,6 +29,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         public static readonly DependencyProperty CharacterNameProperty = DependencyProperty.Register(nameof(CharacterName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty AvatarImageProperty = DependencyProperty.Register(nameof(AvatarImage), typeof(ImageSource), typeof(PlayerInfo), new PropertyMetadata(null));
         public static readonly DependencyProperty IsOnlineProperty = DependencyProperty.Register(nameof(IsOnline), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsAdminProperty = DependencyProperty.Register(nameof(IsAdmin), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
         public static readonly DependencyProperty IsBannedProperty = DependencyProperty.Register(nameof(IsBanned), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
         public static readonly DependencyProperty IsWhitelistedProperty = DependencyProperty.Register(nameof(IsWhitelisted), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
         public static readonly DependencyProperty TribeNameProperty = DependencyProperty.Register(nameof(TribeName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
@@ -81,6 +83,11 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             get { return (bool)GetValue(IsOnlineProperty); }
             set { SetValue(IsOnlineProperty, value); }
         }
+        public bool IsAdmin
+        {
+            get { return (bool)GetValue(IsAdminProperty); }
+            set { SetValue(IsAdminProperty, value); }
+        }
         public bool IsBanned
         {
             get { return (bool)GetValue(IsBannedProperty); }
@@ -127,7 +134,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             set { SetValue(PlayerDataProperty, value); }
         }
 
-        internal async Task UpdateDataAsync(PlayerData playerData, string imageSavePath)
+        internal async Task UpdateDataAsync(ServerProfile profile, PlayerData playerData, string imageSavePath)
         {
             if (!_dataUpdated)
                 return;
@@ -141,12 +148,15 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                     Directory.CreateDirectory(imageSavePath);
 
                 this.PlayerData = playerData;
-                this.LastUpdated = playerData.FileUpdated;
-                this.TribeName = playerData.Tribe?.Name;
                 this.CharacterName = playerData.CharacterName;
+                this.TribeName = playerData.Tribe?.Name;
+                this.LastUpdated = playerData.FileUpdated;
                 this.HasBan = playerData.CommunityBanned || playerData.VACBanned;
 
-                if (PlayerInfo.avatarImages.TryGetValue(this.SteamId, out BitmapImage avatarImage))
+                this.IsAdmin = profile?.ServerFilesAdmins?.Any(u => u.SteamId.Equals(this.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
+                this.IsWhitelisted = profile?.ServerFilesWhitelisted?.Any(u => u.SteamId.Equals(this.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
+
+                if (avatarImages.TryGetValue(this.SteamId, out BitmapImage avatarImage))
                 {
                     _logger?.Debug($"Avatar image for {this.SteamId} found.");
                 }
@@ -181,7 +191,7 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                     if (File.Exists(localImageFile))
                     {
                         avatarImage = new BitmapImage(new Uri(localImageFile, UriKind.Absolute));
-                        PlayerInfo.avatarImages[this.SteamId] = avatarImage;
+                        avatarImages[this.SteamId] = avatarImage;
                         _logger.Debug($"Avatar image for {this.SteamId} found and added.");
                     }
                     else

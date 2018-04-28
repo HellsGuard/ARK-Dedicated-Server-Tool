@@ -34,7 +34,8 @@ namespace ARK_Server_Manager
         Online = 0x2,
         Banned = 0x4,
         Whitelisted = 0x8,
-        Invalid = 0x10
+        Invalid = 0x10,
+        Admin = 0x20,
     }
 
     public enum InputMode
@@ -963,6 +964,7 @@ namespace ARK_Server_Manager
 
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Admin) && player.IsAdmin) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);

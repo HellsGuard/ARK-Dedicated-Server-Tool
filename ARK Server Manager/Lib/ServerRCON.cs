@@ -320,14 +320,12 @@ namespace ARK_Server_Manager.Lib
                         }
                     }
 
-                    this.Players.Sort(p => !p.IsOnline);
-                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
-
                     if (this.Players.Count == 0 || newPlayerList.Count > 0)
                     {
                         commandProcessor.PostAction(UpdatePlayerDetails);
                     }
 
+                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
                     this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
 
                     command.suppressOutput = false;
@@ -517,7 +515,7 @@ namespace ARK_Server_Manager.Lib
                             }
 
                             if (player != null)
-                                player.UpdateDataAsync(playerData, savedPath).DoNotWait();
+                                player.UpdateDataAsync(rconParams?.Server?.Profile, playerData, savedPath).DoNotWait();
                         }
 
                         this.Players = new SortableObservableCollection<PlayerInfo>(players);

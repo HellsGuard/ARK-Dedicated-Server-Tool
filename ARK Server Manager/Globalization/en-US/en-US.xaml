@@ -1877,6 +1877,7 @@
     <sys:String x:Key="RCON_Menu_Filter">_Filter</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOnline">Show Online</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOffline">Show Offline</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterAdmin">Show Admin</sys:String>
     <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
     <sys:String x:Key="RCON_Menu_FilterInvalid">Show Invalid</sys:String>
