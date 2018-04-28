@@ -176,6 +176,7 @@ namespace ARK_Server_Manager
         {
             base.OnClosing(e);
             RCONWindow.CloseAllWindows();
+            PlayerListWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
         }
 

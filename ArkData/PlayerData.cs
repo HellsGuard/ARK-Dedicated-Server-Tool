@@ -11,6 +11,7 @@ namespace ArkData
         public string AvatarUrl { get; set; }
         public string CharacterName { get; set; }
         public bool Online { get; set; }
+        public string File { get; set; }
         public string Filename { get; set; }
         public DateTime FileCreated { get; set; }
         public DateTime FileUpdated { get; set; }

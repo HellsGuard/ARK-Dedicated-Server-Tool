@@ -2063,5 +2063,29 @@ namespace ARK_Server_Manager {
                 this["CloseShutdownWindowWhenFinished"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("63")]
+        public int PlayerListFilter {
+            get {
+                return ((int)(this["PlayerListFilter"]));
+            }
+            set {
+                this["PlayerListFilter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PlayerListSort {
+            get {
+                return ((int)(this["PlayerListSort"]));
+            }
+            set {
+                this["PlayerListSort"] = value;
+            }
+        }
     }
 }

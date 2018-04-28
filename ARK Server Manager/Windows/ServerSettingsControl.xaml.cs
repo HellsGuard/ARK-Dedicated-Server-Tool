@@ -508,6 +508,19 @@ namespace ARK_Server_Manager
             window.Focus();
         }
 
+        private void OpenPlayerList_Click(object sender, RoutedEventArgs e)
+        {
+            var window = PlayerListWindow.GetWindowForServer(this.Server);
+            window.Closed += Window_Closed;
+            window.Show();
+            if (window.WindowState == WindowState.Minimized)
+            {
+                window.WindowState = WindowState.Normal;
+            }
+
+            window.Focus();
+        }
+
         private void OpenModDetails_Click(object sender, RoutedEventArgs e)
         {
             var window = new ModDetailsWindow(this.Server.Profile);

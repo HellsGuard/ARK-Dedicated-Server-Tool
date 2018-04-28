@@ -371,6 +371,12 @@
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
+            <ContentControl x:Key="PlayerListButtonContent">
+                <StackPanel Orientation="Horizontal"  Height="27">
+                    <Image Source="../Art/Players.png" Width="16" Margin="5,0,5,0"  VerticalAlignment="Center"/>
+                    <Label Content="{DynamicResource ServerSettings_PlayerListButtonLabel}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ContentControl>
             <ContentControl x:Key="ResetRCONButtonContent">
                 <StackPanel Orientation="Horizontal" Height="20">
                     <Image Source="../Art/Refresh.png" Width="16" Height="16" VerticalAlignment="Center" Margin="5,0,5,0"/>
@@ -858,7 +864,30 @@
                             </Style>
                         </Button.Style>
                     </Button>
-                    <Button Grid.Row="3" Grid.Column="2" Margin="2" Content="{StaticResource OpenRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}" Click="OpenRCON_Click" IsEnabled="{Binding ElementName=EnableRCONCheckbox, Path=IsChecked}"/>
+                    <Button Grid.Row="3" Grid.Column="2" Margin="2" DataContext="{Binding Profile}" Content="{StaticResource OpenRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}" Click="OpenRCON_Click">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RCONEnabled}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Grid.Row="3" Grid.Column="2" Margin="2" DataContext="{Binding Profile}" Content="{StaticResource PlayerListButtonContent}" ToolTip="{DynamicResource ServerSettings_PlayerListButtonTooltip}" Click="OpenPlayerList_Click">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RCONEnabled}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
             </Border>
 

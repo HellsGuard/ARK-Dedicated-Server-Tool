@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>15</ApplicationRevision>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.323.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -169,12 +169,17 @@
     <Compile Include="Common\Serialization\IniSection.cs" />
     <Compile Include="Common\Utils\IOUtils.cs" />
     <Compile Include="Lib\Model\ArkApplicationComboBoxItem.cs" />
+    <Compile Include="Lib\Model\PlayerListParameters.cs" />
+    <Compile Include="Lib\ServerPlayers.cs" />
     <Compile Include="Lib\ServerProfileSnapshot.cs" />
     <Compile Include="Lib\Utils\GameDataUtils.cs" />
     <Compile Include="Windows\AddSteamUserWindow.xaml.cs">
       <DependentUpon>AddSteamUserWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lib\Model\StatsMultiplierArray.cs" />
+    <Compile Include="Windows\PlayerListWindow.xaml.cs">
+      <DependentUpon>PlayerListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ProfileSyncWindow.xaml.cs">
       <DependentUpon>ProfileSyncWindow.xaml</DependentUpon>
     </Compile>
@@ -342,6 +347,7 @@
     <Resource Include="Art\Cancel.png" />
     <Resource Include="Art\Plugins.png" />
     <Resource Include="Art\Edit.png" />
+    <Resource Include="Art\Players.png" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -363,6 +369,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Page Include="Windows\AddSteamUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PlayerListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

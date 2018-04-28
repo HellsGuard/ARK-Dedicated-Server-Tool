@@ -71,6 +71,34 @@
     <sys:String x:Key="AddSteamUser_ProcessButtonLabel">OK</sys:String>
     <sys:String x:Key="AddSteamUser_CancelButtonLabel">Cancel</sys:String>
 
+    <!-- PlayerListWindow Window -->
+    <sys:String x:Key="PlayerList_CloseButtonLabel">Close</sys:String>
+
+    <sys:String x:Key="PlayerList_TitleLabel">Player List: {0}</sys:String>
+    <sys:String x:Key="PlayerList_FilterLabel">Filter:</sys:String>
+    <sys:String x:Key="PlayerList_ProfileCountLabel">Profiles:</sys:String>
+    <sys:String x:Key="PlayerList_ProfileInvalidCountLabel">Invalid:</sys:String>
+
+    <sys:String x:Key="PlayerList_Menu_ViewSteamProfile">View Steam Profile...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ViewProfile">View Profile...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ViewTribe">View Tribe...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_CopySteamId">Copy Steam ID...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_CopyPlayerId">Copy Player ID...</sys:String>
+
+    <sys:String x:Key="PlayerList_Menu_Players">_Players</sys:String>
+    <sys:String x:Key="PlayerList_Menu_Sort">Sort</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortOnline">By Online</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortName">By Name</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortTribe">By Team</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortLastUpdated">By Last Updated</sys:String>
+    <sys:String x:Key="PlayerList_Menu_Filter">_Filter</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterOnline">Show Online</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterOffline">Show All</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterAdmin">Show Admin</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterBanned">Show Banned</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterInvalid">Show Invalid</sys:String>
+
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Mod Details - {0}</sys:String>
@@ -570,6 +598,8 @@
     <sys:String x:Key="ServerSettings_StartButtonTooltip">Start the Ark server.</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonTooltip">Open the RCON window.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonLabel">Players</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonTooltip">Open the Player List window.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Upgrade / Verify</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Upgrade to the latest version of the Ark server that is currently available to download. If there is no update then it will verify your server files</sys:String>
     <sys:String x:Key="ServerSettings_InstallButtonLabel">Install</sys:String>

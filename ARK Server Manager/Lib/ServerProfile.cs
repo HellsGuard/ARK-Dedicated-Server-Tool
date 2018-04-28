@@ -3078,6 +3078,16 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Player List
+        public static readonly DependencyProperty PlayerListWindowExtentsProperty = DependencyProperty.Register(nameof(PlayerListWindowExtents), typeof(Rect), typeof(ServerProfile), new PropertyMetadata(new Rect(0f, 0f, 0f, 0f)));
+        [DataMember]
+        public Rect PlayerListWindowExtents
+        {
+            get { return (Rect)GetValue(PlayerListWindowExtentsProperty); }
+            set { SetValue(PlayerListWindowExtentsProperty, value); }
+        }
+        #endregion
+
         #endregion
 
         #region Methods
