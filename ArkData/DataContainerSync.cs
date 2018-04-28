@@ -98,9 +98,6 @@ namespace ArkData
                                                                                         && Path.GetExtension(f).Equals(DataFileDetails.TribeFileExtension)).ToArray();
             }
 
-            if (playerFiles.Length == 0 && tribeFiles.Length == 0)
-                throw new FileLoadException("The directory did not contain any of the parseable files.");
-
             var container = new DataContainer();
 
             foreach (var file in playerFiles)
