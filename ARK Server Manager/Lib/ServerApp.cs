@@ -149,14 +149,8 @@ namespace ARK_Server_Manager.Lib
                 // check if RCON is enabled
                 if (_profile.RCONEnabled)
                 {
-                    QueryMaster.Server gameServer = null;
-
                     try
                     {
-                        // create a connection to the server
-                        var endPoint = new IPEndPoint(IPAddress.Parse(_profile.ServerIP), _profile.QueryPort);
-                        gameServer = ServerQuery.GetServerInstance(EngineType.Source, endPoint);
-
                         try
                         {
                             emailMessage.AppendLine();
@@ -186,12 +180,6 @@ namespace ARK_Server_Manager.Lib
                     }
                     finally
                     {
-                        if (gameServer != null)
-                        {
-                            gameServer.Dispose();
-                            gameServer = null;
-                        }
-
                         CloseRconConsole();
                     }
                 }
@@ -391,12 +379,6 @@ namespace ARK_Server_Manager.Lib
 
             _serverRunning = true;
             LogProfileMessage($"Server process found PID {process.Id}.");
-
-            // check if RCON is enabled
-            if (!_profile.RCONEnabled)
-            {
-                LogProfileMessage("RCON not enabled.");
-            }
 
             QueryMaster.Server gameServer = null;
             bool sent = false;
