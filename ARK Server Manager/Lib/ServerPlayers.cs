@@ -2,7 +2,9 @@
 using ArkData;
 using NLog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +12,11 @@ using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class ServerPlayers : DependencyObject, IAsyncDisposable
+    public class ServerPlayers : DependencyObject
     {
+        private const int PLAYER_LIST_INTERVAL = 5000;
+        private const int STEAM_UPDATE_INTERVAL = 60;
+
         private enum LogEventType
         {
             All,
@@ -20,17 +25,12 @@ namespace ARK_Server_Manager.Lib
 
         public event EventHandler PlayersCollectionUpdated;
 
-        private const int PLAYER_LIST_INTERVAL = 5000;
-
         public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register(nameof(Players), typeof(SortableObservableCollection<PlayerInfo>), typeof(ServerPlayers), new PropertyMetadata(null));
         public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerPlayers), new PropertyMetadata(0));
         public static readonly DependencyProperty CountInvalidPlayersProperty = DependencyProperty.Register(nameof(CountInvalidPlayers), typeof(int), typeof(ServerPlayers), new PropertyMetadata(0));
 
-        private readonly ActionQueue _commandProcessor = new ActionQueue(TaskScheduler.Default);
-        private readonly ActionQueue _outputProcessor = new ActionQueue(TaskScheduler.FromCurrentSynchronizationContext());
+        private static readonly ConcurrentDictionary<string, bool> _locks = new ConcurrentDictionary<string, bool>();
         private PlayerListParameters _playerListParameters;
-        private bool _processingListplayers = false;
-        private bool _updatingPlayerDetails = false;
 
         private Logger _allLogger;
         private Logger _eventLogger;
@@ -48,7 +48,7 @@ namespace ARK_Server_Manager.Lib
             _debugLogger = App.GetProfileLogger(_playerListParameters.ProfileName, "PlayerList_Debug", LogLevel.Trace, LogLevel.Debug);
             _errorLogger = App.GetProfileLogger(_playerListParameters.ProfileName, "PlayerList_Error", LogLevel.Error, LogLevel.Fatal);
 
-            _commandProcessor.PostAction(UpdatePlayerList);
+            UpdatePlayerListAsync().DoNotWait();
         }
 
         public SortableObservableCollection<PlayerInfo> Players
@@ -69,12 +69,6 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(CountInvalidPlayersProperty, value); }
         }
 
-        public async Task DisposeAsync()
-        {
-            await _commandProcessor.DisposeAsync();
-            await _outputProcessor.DisposeAsync();
-        }
-
         private void LogEvent(LogEventType eventType, string message)
         {
             switch (eventType)
@@ -89,57 +83,107 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        internal void OnPlayerCollectionUpdated()
+        protected void OnPlayerCollectionUpdated()
         {
             PlayersCollectionUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        private async Task UpdatePlayerDetails()
+        private async Task UpdatePlayerListAsync()
         {
-            if (_updatingPlayerDetails)
-                return;
-            _updatingPlayerDetails = true;
-
-            try
+            lock (_locks)
             {
-                if (!string.IsNullOrWhiteSpace(_playerListParameters.InstallDirectory) && !string.IsNullOrWhiteSpace(_playerListParameters.ServerMap))
+                if (_locks.TryGetValue($"{this.GetHashCode()}|PlayerList", out bool value) && value || !_locks.TryAdd($"{this.GetHashCode()}|PlayerList", true))
                 {
-                    var savedPath = ServerProfile.GetProfileSavePath(_playerListParameters.InstallDirectory, _playerListParameters.AltSaveDirectoryName, _playerListParameters.PGM_Enabled, _playerListParameters.PGM_Name);
-                    DataContainer dataContainer = null;
+                    Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t => UpdatePlayerListAsync());
+                    return;
+                }
+            }
 
-                    try
-                    {
-                        DataFileDetails.PlayerFileFolder = savedPath;
-                        DataFileDetails.TribeFileFolder = savedPath;
-                        dataContainer = await DataContainer.CreateAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: CreateAsync. {ex.Message}\r\n{ex.StackTrace}");
-                        return;
-                    }
+            await UpdatePlayersAsync();
+            await Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t => UpdatePlayerListAsync());
+        }
 
-                    try
-                    {
-                        await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        _errorLogger.Error($"{nameof(UpdatePlayerDetails)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
-                        return;
-                    }
+        private async Task UpdatePlayersAsync()
+        {
+            await UpdatePlayerDetailsAsync().ContinueWith(t =>
+            {
+                TaskUtils.RunOnUIThreadAsync(() => {
+                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
+                    this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
+                }).Wait();
 
-                    TaskUtils.RunOnUIThreadAsync(() =>
-                    {
-                        // create a new temporary list
-                        List<PlayerInfo> players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
-                        players.AddRange(this.Players);
+                _locks.TryRemove($"{this.GetHashCode()}|PlayerList", out bool value);
+            });
+        }
 
-                        foreach (var playerData in dataContainer.Players)
+        private async Task UpdatePlayerDetailsAsync()
+        {
+            List<PlayerInfo> players = null;
+
+            if (!string.IsNullOrWhiteSpace(_playerListParameters.InstallDirectory))
+            {
+                var savedPath = ServerProfile.GetProfileSavePath(_playerListParameters.InstallDirectory, _playerListParameters.AltSaveDirectoryName, _playerListParameters.PGM_Enabled, _playerListParameters.PGM_Name);
+                DataContainer dataContainer = null;
+                DateTime lastSteamUpdateUtc = DateTime.MinValue;
+
+                try
+                {
+                    DataFileDetails.PlayerFileFolder = savedPath;
+                    DataFileDetails.TribeFileFolder = savedPath;
+                    dataContainer = await DataContainer.CreateAsync();
+                }
+                catch (Exception ex)
+                {
+                    _errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: CreateAsync. {ex.Message}\r\n{ex.StackTrace}");
+                    return;
+                }
+
+                await TaskUtils.RunOnUIThreadAsync(() => {
+                    foreach (var playerData in dataContainer.Players)
+                    {
+                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => p.PlayerData.SteamId.Equals(playerData.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
+                    }
+                });
+
+                try
+                {
+                    lastSteamUpdateUtc = await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey, STEAM_UPDATE_INTERVAL);
+                }
+                catch (Exception ex)
+                {
+                    _errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
+                    return;
+                }
+
+                await TaskUtils.RunOnUIThreadAsync(() => {
+                    // create a new temporary list
+                    players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
+                    players.AddRange(this.Players);
+                });
+
+                await Task.Run(async () => {
+                    foreach (var playerData in dataContainer.Players)
+                    {
+                        PlayerInfo player = null;
+
+                        if (Int64.TryParse(playerData.SteamId, out long steamId))
                         {
-                            PlayerInfo player = null;
-
-                            if (Int64.TryParse(playerData.SteamId, out long steamId))
+                            player = players.FirstOrDefault(p => p.SteamId == steamId);
+                            if (player == null)
+                            {
+                                player = new PlayerInfo(_debugLogger)
+                                {
+                                    SteamId = steamId,
+                                    SteamName = playerData.SteamName
+                                };
+                                players.Add(player);
+                            }
+                            player.IsValid = true;
+                        }
+                        else
+                        {
+                            var filename = Path.GetFileNameWithoutExtension(playerData.Filename);
+                            if (Int64.TryParse(filename, out steamId))
                             {
                                 player = players.FirstOrDefault(p => p.SteamId == steamId);
                                 if (player == null)
@@ -147,85 +191,40 @@ namespace ARK_Server_Manager.Lib
                                     player = new PlayerInfo(_debugLogger)
                                     {
                                         SteamId = steamId,
-                                        SteamName = playerData.SteamName
+                                        SteamName = "< corrupted profile >"
                                     };
                                     players.Add(player);
                                 }
-                                player.IsValid = true;
+                                player.IsValid = false;
                             }
                             else
                             {
-                                var filename = Path.GetFileNameWithoutExtension(playerData.Filename);
-                                if (Int64.TryParse(filename, out steamId))
-                                {
-                                    player = players.FirstOrDefault(p => p.SteamId == steamId);
-                                    if (player == null)
-                                    {
-                                        player = new PlayerInfo(_debugLogger)
-                                        {
-                                            SteamId = steamId,
-                                            SteamName = "< corrupted profile >"
-                                        };
-                                        players.Add(player);
-                                    }
-                                    player.IsValid = false;
-                                }
-                                else
-                                {
-                                    _debugLogger.Debug($"{nameof(UpdatePlayerDetails)} - Error: corrupted profile.\r\n{playerData.Filename}.");
-                                }
+                                _debugLogger.Debug($"{nameof(UpdatePlayerDetailsAsync)} - Error: corrupted profile.\r\n{playerData.Filename}.");
                             }
-
-                            if (player != null)
-                                player.UpdateDataAsync(_playerListParameters?.Server?.Profile, playerData, savedPath).DoNotWait();
                         }
 
-                        this.Players = new SortableObservableCollection<PlayerInfo>(players);
-                        OnPlayerCollectionUpdated();
-                    }).DoNotWait();
-                }
-            }
-            finally
-            {
-                _updatingPlayerDetails = false;
-            }
-        }
+                        if (player != null)
+                        {
+                            player.UpdateData(playerData, playerData.LastSteamUpdateUtc.Equals(lastSteamUpdateUtc));
 
-        private Task UpdatePlayerList()
-        {
-            return _commandProcessor.PostAction(() =>
+                            await TaskUtils.RunOnUIThreadAsync(() => {
+                                player.IsAdmin = _playerListParameters?.Server?.Profile?.ServerFilesAdmins?.Any(u => u.SteamId.Equals(player.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
+                                player.IsWhitelisted = _playerListParameters?.Server?.Profile?.ServerFilesWhitelisted?.Any(u => u.SteamId.Equals(player.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
+
+                                player.UpdateAvatarImageAsync(savedPath).DoNotWait();
+                            });
+                        }
+                    }
+
+                    players.TrimExcess();
+                });
+            }
+
+            await TaskUtils.RunOnUIThreadAsync(() =>
             {
-                _outputProcessor.PostAction(() => UpdatePlayers());
-                Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t => _commandProcessor.PostAction(UpdatePlayerList)).DoNotWait();
+                this.Players = new SortableObservableCollection<PlayerInfo>(players);
+                OnPlayerCollectionUpdated();
             });
-        }
-
-        //
-        // This is bound to the UI thread
-        //
-        private void UpdatePlayers()
-        {
-            if (_processingListplayers)
-            {
-                var message = "Player list is already being processed.";
-                LogEvent(LogEventType.Event, message);
-                LogEvent(LogEventType.All, message);
-                return;
-            }
-
-            _processingListplayers = true;
-
-            try
-            {
-                _commandProcessor.PostAction(UpdatePlayerDetails);
-
-                this.CountPlayers = this.Players.Count(p => p.IsOnline);
-                this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
-            }
-            finally
-            {
-                _processingListplayers = false;
-            }
         }
     }
 }

@@ -2,9 +2,12 @@
 using NLog;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -12,43 +15,28 @@ using System.Windows.Media.Imaging;
 
 namespace ARK_Server_Manager.Lib.ViewModel.RCON
 {
-    public class PlayerInfo : DependencyObject
+    public class PlayerInfo : INotifyPropertyChanged
     {
-        private readonly ConcurrentDictionary<long, BitmapImage> avatarImages = new ConcurrentDictionary<long, BitmapImage>();
+        private readonly ConcurrentDictionary<long, BitmapImage> _avatarImages = new ConcurrentDictionary<long, BitmapImage>();
 
         private Logger _logger;
-        private bool _dataUpdated = true;
 
         public PlayerInfo(Logger logger)
         {
             _logger = logger;
         }
 
-        public static readonly DependencyProperty SteamIDProperty = DependencyProperty.Register(nameof(SteamId), typeof(long), typeof(PlayerInfo), new PropertyMetadata(0L));
-        public static readonly DependencyProperty SteamNameProperty = DependencyProperty.Register(nameof(SteamName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty CharacterNameProperty = DependencyProperty.Register(nameof(CharacterName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty AvatarImageProperty = DependencyProperty.Register(nameof(AvatarImage), typeof(ImageSource), typeof(PlayerInfo), new PropertyMetadata(null));
-        public static readonly DependencyProperty IsOnlineProperty = DependencyProperty.Register(nameof(IsOnline), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsAdminProperty = DependencyProperty.Register(nameof(IsAdmin), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsBannedProperty = DependencyProperty.Register(nameof(IsBanned), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsWhitelistedProperty = DependencyProperty.Register(nameof(IsWhitelisted), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
-        public static readonly DependencyProperty TribeNameProperty = DependencyProperty.Register(nameof(TribeName), typeof(string), typeof(PlayerInfo), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty LastUpdatedProperty = DependencyProperty.Register(nameof(LastUpdated), typeof(DateTime), typeof(PlayerInfo), new PropertyMetadata(DateTime.MinValue));
-        public static readonly DependencyProperty HasBanProperty = DependencyProperty.Register(nameof(HasBan), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsValidProperty = DependencyProperty.Register(nameof(IsValid), typeof(bool), typeof(PlayerInfo), new PropertyMetadata(true));
-        public static readonly DependencyProperty PlayerDataProperty = DependencyProperty.Register(nameof(PlayerData), typeof(PlayerData), typeof(PlayerInfo), new PropertyMetadata(null));
-
         public long SteamId
         {
-            get { return (long)GetValue(SteamIDProperty); }
-            set { SetValue(SteamIDProperty, value); }
+            get { return Get<long>(); }
+            set { Set(value); }
         }
         public string SteamName
         {
-            get { return (string)GetValue(SteamNameProperty); }
+            get { return Get<string>(); }
             set
             {
-                SetValue(SteamNameProperty, value);
+                Set(value);
 
                 SteamNameFilterString = value?.ToLower();
             }
@@ -60,10 +48,10 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         }
         public string CharacterName
         {
-            get { return (string)GetValue(CharacterNameProperty); }
+            get { return Get<string>(); }
             set
             {
-                SetValue(CharacterNameProperty, value);
+                Set(value);
 
                 CharacterNameFilterString = value?.ToLower();
             }
@@ -75,35 +63,35 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         }
         public ImageSource AvatarImage
         {
-            get { return (ImageSource)GetValue(AvatarImageProperty); }
-            set { SetValue(AvatarImageProperty, value); }
+            get { return Get<ImageSource>(); }
+            set { Set(value); }
         }
         public bool IsOnline
         {
-            get { return (bool)GetValue(IsOnlineProperty); }
-            set { SetValue(IsOnlineProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public bool IsAdmin
         {
-            get { return (bool)GetValue(IsAdminProperty); }
-            set { SetValue(IsAdminProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public bool IsBanned
         {
-            get { return (bool)GetValue(IsBannedProperty); }
-            set { SetValue(IsBannedProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public bool IsWhitelisted
         {
-            get { return (bool)GetValue(IsWhitelistedProperty); }
-            set { SetValue(IsWhitelistedProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public string TribeName
         {
-            get { return (string)GetValue(TribeNameProperty); }
+            get { return Get<string>(); }
             set
             {
-                SetValue(TribeNameProperty, value);
+                Set(value);
 
                 TribeNameFilterString = value?.ToLower();
             }
@@ -115,71 +103,69 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         }
         public DateTime LastUpdated
         {
-            get { return (DateTime)GetValue(LastUpdatedProperty); }
-            set { SetValue(LastUpdatedProperty, value); }
+            get { return Get<DateTime>(); }
+            set { Set(value); }
         }
         public bool HasBan
         {
-            get { return (bool)GetValue(HasBanProperty); }
-            set { SetValue(HasBanProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public bool IsValid
         {
-            get { return (bool)GetValue(IsValidProperty); }
-            set { SetValue(IsValidProperty, value); }
+            get { return Get<bool>(); }
+            set { Set(value); }
         }
         public PlayerData PlayerData
         {
-            get { return (PlayerData)GetValue(PlayerDataProperty); }
-            set { SetValue(PlayerDataProperty, value); }
+            get { return Get<PlayerData>(); }
+            set { Set(value); }
         }
 
-        internal async Task UpdateDataAsync(ServerProfile profile, PlayerData playerData, string imageSavePath)
+        public async Task UpdateAvatarImageAsync(string imageSavePath)
         {
-            if (!_dataUpdated)
-                return;
-            _dataUpdated = false;
-
-            try
+            // check if an image path was passed in
+            if (string.IsNullOrWhiteSpace(imageSavePath))
             {
-                if (string.IsNullOrWhiteSpace(imageSavePath))
-                    imageSavePath = Path.GetTempPath();
-                if (!Directory.Exists(imageSavePath))
-                    Directory.CreateDirectory(imageSavePath);
+                // no image path, use the default temporary path
+                imageSavePath = Path.GetTempPath();
+            }
+            // check if the image path exists
+            if (!Directory.Exists(imageSavePath))
+            {
+                // create the image path
+                Directory.CreateDirectory(imageSavePath);
+            }
 
-                this.PlayerData = playerData;
-                this.CharacterName = playerData.CharacterName;
-                this.TribeName = playerData.Tribe?.Name;
-                this.LastUpdated = playerData.FileUpdated;
-                this.HasBan = playerData.CommunityBanned || playerData.VACBanned;
+            // check if the avatar image exists in the collection
+            if (_avatarImages.TryGetValue(this.SteamId, out BitmapImage avatarImage))
+            {
+                _logger.Debug($"Avatar image for {this.SteamId} found.");
+            }
+            else
+            {
+                var localImageFile = Path.Combine(imageSavePath, $"{this.SteamId}{Config.Default.PlayerImageFileExtension}");
+                var localImageFileInfo = new FileInfo(localImageFile);
 
-                this.IsAdmin = profile?.ServerFilesAdmins?.Any(u => u.SteamId.Equals(this.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
-                this.IsWhitelisted = profile?.ServerFilesWhitelisted?.Any(u => u.SteamId.Equals(this.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
-
-                if (avatarImages.TryGetValue(this.SteamId, out BitmapImage avatarImage))
+                // check if the image file does not exists or is older than a day
+                if (!localImageFileInfo.Exists || localImageFileInfo.LastWriteTimeUtc.AddDays(1) <= DateTime.UtcNow)
                 {
-                    _logger?.Debug($"Avatar image for {this.SteamId} found.");
-                }
-                else
-                {
-                    var localImageFile = Path.Combine(imageSavePath, $"{this.SteamId}{Config.Default.PlayerImageFileExtension}");
-
                     if (Config.Default.RCON_DownloadPlayerAvatars)
                     {
                         // check for a valid URL.
-                        if (!String.IsNullOrWhiteSpace(playerData.AvatarUrl))
+                        if (!String.IsNullOrWhiteSpace(PlayerData?.AvatarUrl))
                         {
                             try
                             {
                                 using (var client = new WebClient())
                                 {
-                                    await client.DownloadFileTaskAsync(playerData.AvatarUrl, localImageFile);
+                                    await client.DownloadFileTaskAsync(PlayerData.AvatarUrl, localImageFile);
                                 }
-                                _logger.Debug($"{nameof(UpdateDataAsync)} - downloaded avatar image for {this.SteamId} from {playerData.AvatarUrl}.");
+                                _logger.Debug($"{nameof(UpdateAvatarImageAsync)} - downloaded avatar image for {this.SteamId} from {PlayerData.AvatarUrl}.");
                             }
                             catch (Exception ex)
                             {
-                                _logger.Debug($"{nameof(UpdateDataAsync)} - failed to download avatar image for {this.SteamId} from {playerData.AvatarUrl}. {ex.Message}\r\n{ex.StackTrace}");
+                                _logger.Debug($"{nameof(UpdateAvatarImageAsync)} - failed to download avatar image for {this.SteamId} from {PlayerData.AvatarUrl}. {ex.Message}\r\n{ex.StackTrace}");
                             }
                         }
                     }
@@ -187,25 +173,63 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
                     {
                         _logger?.Debug($"Avatar image download for {this.SteamId} skipped due to global setting.");
                     }
-
-                    if (File.Exists(localImageFile))
-                    {
-                        avatarImage = new BitmapImage(new Uri(localImageFile, UriKind.Absolute));
-                        avatarImages[this.SteamId] = avatarImage;
-                        _logger.Debug($"Avatar image for {this.SteamId} found and added.");
-                    }
-                    else
-                    {
-                        _logger.Debug($"Avatar image for {this.SteamId} not found.");
-                    }
                 }
 
-                this.AvatarImage = avatarImage;
+                if (localImageFileInfo.Exists)
+                {
+                    avatarImage = new BitmapImage(new Uri(localImageFile, UriKind.Absolute));
+                    _avatarImages.TryAdd(this.SteamId, avatarImage);
+                    _logger.Debug($"Avatar image for {this.SteamId} found and added.");
+                }
+                else
+                {
+                    _logger.Debug($"Avatar image for {this.SteamId} not found.");
+                }
             }
-            finally
+
+            this.AvatarImage = avatarImage;            
+        }
+
+        public void UpdateData(PlayerData playerData, bool updateSteamInformation = true)
+        {
+            this.PlayerData = playerData;
+            this.CharacterName = playerData.CharacterName;
+            this.TribeName = playerData.Tribe?.Name;
+            this.LastUpdated = playerData.FileUpdated;
+
+            if (updateSteamInformation)
             {
-                _dataUpdated = true;
+                this.HasBan = playerData.CommunityBanned || playerData.VACBanned;
             }
         }
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Dictionary<string, object> _properties = new Dictionary<string, object>();
+
+        protected T Get<T>([CallerMemberName] string name = null)
+        {
+            object value = null;
+            if (_properties?.TryGetValue(name, out value) ?? false)
+                return value == null ? default(T) : (T)value;
+            return default(T);
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void Set<T>(T value, [CallerMemberName] string name = null)
+        {
+            if (Equals(value, Get<T>(name)))
+                return;
+            if (_properties == null)
+                _properties = new Dictionary<string, object>();
+            _properties[name] = value;
+            OnPropertyChanged(name);
+        }
+        #endregion
     }
 }

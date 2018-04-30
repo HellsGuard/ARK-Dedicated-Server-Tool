@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Runtime.Remoting;
+using System;
 
 /// <summary>
 /// The container for the data.
@@ -85,7 +86,7 @@ namespace ArkData
         /// Deserializes JSON from Steam API and links Steam profile to player profile.
         /// </summary>
         /// <param name="jsonString">The JSON data string.</param>
-        private void LinkSteamProfiles(string jsonString)
+        private void LinkSteamProfiles(string jsonString, DateTime lastSteamUpdateUtc)
         {
             var profiles = JsonConvert.DeserializeObject<Models.SteamResponse<Models.SteamProfile>>(jsonString).response.players;
 
@@ -95,6 +96,7 @@ namespace ArkData
                 player.SteamName = profiles[i].personaname;
                 player.ProfileUrl = profiles[i].profileurl;
                 player.AvatarUrl = profiles[i].avatar;
+                player.LastSteamUpdateUtc = lastSteamUpdateUtc;
             }
         }
 

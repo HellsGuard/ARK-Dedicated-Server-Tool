@@ -9,7 +9,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Width="1024" Height="768" ResizeMode="CanResizeWithGrip"
         SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"
-        Name="RCON" Icon="../Art/Command.png" Title="{Binding RCONParameters.RCONWindowTitle}">
+        Name="RCON" Icon="../Art/Command.png" Title="{Binding RCONParameters.WindowTitle}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

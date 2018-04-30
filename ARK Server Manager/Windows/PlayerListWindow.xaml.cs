@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -309,21 +310,10 @@ namespace ARK_Server_Manager
             return window;
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            //if (this.RCONParameters?.Server?.Runtime != null)
-            //{
-            //    this.RCONParameters.Server.Runtime.StatusUpdate -= Runtime_StatusUpdate;
-            //}
-
-            base.OnClosed(e);
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
-            //this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
-            //this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
-            //this.ServerRCON.DisposeAsync().DoNotWait();
+            this.ServerPlayers.PlayersCollectionUpdated -= Players_CollectionUpdated;
+            this.ServerPlayers.Players.CollectionChanged -= Players_CollectionChanged;
 
             if (this.PlayerListParameters?.Server != null)
             {

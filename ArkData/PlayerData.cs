@@ -25,5 +25,7 @@ namespace ArkData
         public int NumberOfGameBans { get; set; }
         public virtual TribeData Tribe { get; set; }
         public virtual List<TribeData> OwnedTribes { get; set; }
+
+        public DateTime LastSteamUpdateUtc { get; set; }
     }
 }

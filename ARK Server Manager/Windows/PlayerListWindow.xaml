@@ -58,7 +58,7 @@
             <Style x:Key="TribeName" TargetType="Label">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding TribeName, Converter={StaticResource IsNullOrWhiteSpaceValueConverter}}" Value="True">
-                        <Setter Property="Content" Value="No faction"/>
+                        <Setter Property="Content" Value="No team"/>
                         <Setter Property="FontStyle" Value="Italic"/>
                         <Setter Property="Foreground" Value="LightGray"/>
                     </DataTrigger>
@@ -171,7 +171,7 @@
                                         <Label Padding="0,-1,0,-1" Style="{DynamicResource SteamName}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0" >
                                             <Label Content="{Binding CharacterName}" Padding="0,-1,0,-1"/>
-                                            <TextBlock Text="{Binding PlayerData.MemberRank, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
+                                            <TextBlock Text="{Binding PlayerData.Level, StringFormat=({0})}" Margin="5,0,0,0" Padding="0,-1,0,-1" />
                                         </StackPanel>
                                         <Label Padding="0,-1,0,-1" Style="{DynamicResource TribeName}"/>
                                     </StackPanel>
