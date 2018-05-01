@@ -204,6 +204,13 @@
     <sys:String x:Key="ProfileSyncWindow_SelectedColumnLabel">Copy</sys:String>
     <sys:String x:Key="ProfileSyncWindow_SectionNameColumnLabel">Section</sys:String>
 
+    <!-- Version Feed Window -->
+    <sys:String x:Key="VersionFeedWindow_Title">ASM Version Details</sys:String>
+    <sys:String x:Key="VersionFeedWindow_Load_FailedTitle">Load Feed Error</sys:String>
+
+    <sys:String x:Key="VersionFeedWindow_VersionFilterLabel">Version:</sys:String>
+    <sys:String x:Key="VersionFeedWindow_VersionFilterTooltip">Select the version to view details.</sys:String>
+
     <!-- Progress Window -->
     <sys:String x:Key="Progress_Title">Progress</sys:String>
     <sys:String x:Key="Progress_UpgradeServer_WindowTitle">Update Progress - {0}</sys:String>

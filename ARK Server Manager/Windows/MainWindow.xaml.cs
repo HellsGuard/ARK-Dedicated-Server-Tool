@@ -189,14 +189,29 @@ namespace ARK_Server_Manager
         {
             var url = string.Empty;
             if (BetaVersion)
-                url = Config.Default.LatestASMBetaPatchNotesUrl;
+                url = Config.Default.ServerManagerVersionBetaFeedUrl;
             else
-                url = Config.Default.LatestASMPatchNotesUrl;
+                url = Config.Default.ServerManagerVersionFeedUrl;
 
-            if (string.IsNullOrWhiteSpace(url))
-                return;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                var window = new VersionFeedWindow(url);
+                window.Closed += Window_Closed;
+                window.Owner = this;
+                window.ShowDialog();
+            }
+            else
+            {
+                if (BetaVersion)
+                    url = Config.Default.LatestASMBetaPatchNotesUrl;
+                else
+                    url = Config.Default.LatestASMPatchNotesUrl;
 
-            Process.Start(url);
+                if (string.IsNullOrWhiteSpace(url))
+                    return;
+
+                Process.Start(url);
+            }
         }
 
         private void Donate_Click(object sender, RoutedEventArgs e)

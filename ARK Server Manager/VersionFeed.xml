@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <id>urn:uuid:ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E</id>
+  <title>Ark Server Manager Version Feed</title>
+  <subtitle>This is the Ark Server Manager release version feed.</subtitle>
+  <link href="http://servermanagers.freeforums.net/" />
+  <updated>2018-05-01T00:00:00Z</updated>
+
+  <entry>
+    <id>urn:uuid:C5C0521B-3CE8-4DA7-BE03-B57378A78966</id>
+    <title>1.0.322 (1.0.322.7)</title>
+    <summary>1.0.322.7</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
+    <updated>2018-04-30T00:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+          <u>NEW</u>
+          <ul>
+            <li>Mod Details Window - A new 'Timestamp' column has been added to shows the timestamp of the last time the mod was updated. This value is returned from the steam servers.</li>
+            <li>Mod Details Window - A new button has been added to each row. This button will allow you to manually set the value in the LastUpdatedASM.txt files. This should only be used if you MUST update a mod by manually copying the files.</li>
+            <li>Shutdown Reason Broadcast - A new option has been added to the global settings, that will broadcast the shutdown reason with every shutdown message. If disabled, the shutdown reason is only broadcast at the start of the shutdown.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:81419AF8-3047-456D-B94E-74BEC336D660</id>
+    <title>1.0.321 (1.0.321.2)</title>
+    <summary>1.0.321.2</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
+    <updated>2018-04-30T00:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+          <u>NEW</u>
+          <ul>
+            <li>Added Aberrant Direbear and Bigfoot versions. (thanks @spikeydragoon)</li>
+            <li>Updated Ban Url.</li>
+          </ul>
+          <u>CHANGED</u>
+          <ul>
+            <li>RU Translation file updated. (thanks @varlonec)</li>
+            <li>FR Translation file updated. (thanks @angemymy)</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:CCE2F68C-3F1C-45F7-A234-34F09C892402</id>
+    <title>1.0.320 (1.0.320.8)</title>
+    <summary>1.0.320.8</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
+    <updated>2018-04-30T00:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+          <u>NEW</u>
+          <ul>
+            <li>FR Translation file added. (thanks @angemymy)</li>
+          </ul>
+          <u>CHANGED</u>
+          <ul>
+            <li>RU Translation file updated. (thanks @varlonec)</li>
+            <li>CN Translation file updated. (thanks @acme)</li>
+            <li>
+              <font color="#1979e6">ARK 278.0 options added.</font><br/>
+              ServerAllowAnsel -> Administration section<br/>
+              AllowHideDamageSourceFromLogs -> Administration section<br/>
+              TribeNameChangeCooldown -> Rules section<br/>
+              RandomSupplyCratePoints -> Rules section<br/>
+              DisableWeatherFog -> Environment section<br/>
+              bHardLimitTurretsInRange -> Structures section<br/>
+              TamedDinoCharacterFoodDrainMultiplier -> Dino section<br/>
+              TamedDinoTorporDrainMultiplier -> Dino section<br/>
+              WildDinoCharacterFoodDrainMultiplier -> Dino section<br/>
+              WildDinoTorporDrainMultiplier -> Dino section<br/>
+              PassiveTameIntervalMultiplier -> Dino section<br/>
+              PreventOfflinePvPConnectionInvincibleInterval -> Rules section<br/>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+</feed>

@@ -2087,5 +2087,25 @@ namespace ARK_Server_Manager {
                 this["PlayerListSort"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://servermanager.azurewebsites.net/downloads/arkservermanager/release/version" +
+            "feed.xml")]
+        public string ServerManagerVersionFeedUrl {
+            get {
+                return ((string)(this["ServerManagerVersionFeedUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://servermanager.azurewebsites.net/downloads/arkservermanager/beta/versionfee" +
+            "d.xml")]
+        public string ServerManagerVersionBetaFeedUrl {
+            get {
+                return ((string)(this["ServerManagerVersionBetaFeedUrl"]));
+            }
+        }
     }
 }

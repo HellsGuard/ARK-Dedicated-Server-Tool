@@ -65,7 +65,7 @@
                             </Label>
                             <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             <Button Margin="5" Click="ASMPatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
-                                <Image Source="../Art/Help.png" Height="16" Margin="0" />
+                                <Image Source="../Art/Website.png" Height="16" Margin="0" />
                             </Button>
                             <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="{DynamicResource MainWindow_UpdateToLabelFormat}" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
                                 <Button.Style>
