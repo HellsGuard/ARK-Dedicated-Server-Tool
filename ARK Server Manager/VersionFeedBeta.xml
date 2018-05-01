@@ -8,6 +8,29 @@
   <updated>2018-05-01T00:00:00Z</updated>
 
   <entry>
+    <id>urn:uuid:184273B2-C41D-4CED-9082-A3E75B8A84C9</id>
+    <title>1.0.323 (1.0.323.19)</title>
+    <summary>1.0.323.19</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-05-01T11:10:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+          <u>NEW</u>
+          <br/>
+          <ul>
+            <li>Version Details Window - defaults to the latest version, based on date.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
     <id>urn:uuid:21FB8DD4-DDD1-4147-ADDC-04820F925132</id>
     <title>1.0.323 (1.0.323.18)</title>
     <summary>1.0.323.18</summary>

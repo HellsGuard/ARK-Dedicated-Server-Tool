@@ -3,6 +3,7 @@ using ARK_Server_Manager.Lib;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using WPFSharp.Globalizer;
 
@@ -95,6 +96,8 @@ namespace ARK_Server_Manager
 
                 FeedEntries.Add(entry);
             }
+
+            SelectedFeedEntry = FeedEntries.OrderByDescending(e => e.Updated).FirstOrDefault();
         }
     }
 }
