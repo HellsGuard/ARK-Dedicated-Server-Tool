@@ -8,6 +8,53 @@
   <updated>2018-05-01T00:00:00Z</updated>
 
   <entry>
+    <id>urn:uuid:0B85C4D7-991C-4954-9B39-E30146B8CA33</id>
+    <title>1.0.323 (1.0.323.19)</title>
+    <summary>1.0.323.19</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2017-09-01T11:30:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+          <u>BUGFIX</u><br/>
+          <ul>
+            <li>This version fixes a few duplicate shutdown messages introduced with the Always Show Shutdown Reason in last release (322).</li>
+          </ul>
+          <u>NEW</u><br/>
+          <ul>
+            <li>Version Details Window - a new window to show the version updates.</li>
+            <li>This version adds a very basic Player List. This player list is only available when RCON is disabled, replaces the RCON button with a Players button.<br/><br/>
+            The player list only reads the ARK player and tribe files and displays them in a list. Without RCON I am unable to determine which player is online, so Online status is never shown here.<br/><br/>
+            Right-click on a player to get a few options.<br/><br/>
+            This list is only designed to give server owners WITHOUT RCON, the ability to see who is connecting to their server.</li>
+            <li>This version adds a global setting to shutdown or keep open the Server Shutdown window after it is finished - used for testing.</li>
+            <li>Gamedata storage changes</li>
+          </ul>
+          <u>CHANGE</u><br/>
+          <ul>
+            <li>Completely re-written the RCON player profile load.<br/>
+            It should now only call the update one at a time - should remove the ListPlayers spam.<br/>
+            It should not freeze ASM when the profiles are now loading.</li>
+            <li>This version updates the French translation file.</li>
+            <li>The auto-update now has a file copy failure retry. If the file fails to copy, it will try 3 times with a 5 second delay in between.</li>
+            <li>The Server Files section is now read-only when the server is running.</li>
+            <li>The Server Files section is now an option in the Profile Sync.</li>
+            <li>The Shutdown window will now always open regardless of if RCON is enabled/disabled.</li>
+            <li>Added Server, Query and RCON port validation to the profile validation. Valid range is 0 - 65535.</li>
+            <li>This version adds the .arktributetribe files to the backup and restore functions.</li>
+            <li>A confirmation dialog has been added when using the Write Timestamp button in the Mod Details window.</li>
+            <li>The ArkApplication filter comboboxes have been changed, so that the display values can be globalized.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
     <id>urn:uuid:C5C0521B-3CE8-4DA7-BE03-B57378A78966</id>
     <title>1.0.322 (1.0.322.7)</title>
     <summary>1.0.322.7</summary>
