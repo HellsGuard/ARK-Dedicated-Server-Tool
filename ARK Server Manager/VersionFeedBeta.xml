@@ -15,8 +15,8 @@
     <updated>2018-05-01T11:10:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>NEW</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
           <br/>
           <ul>
             <li>Version Details Window - defaults to the latest version, based on date.</li>
@@ -38,8 +38,8 @@
     <updated>2018-05-01T07:40:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>NEW</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
           <br/>
           <ul>
             <li>Version Details Window - a new window to show the version updates.</li>
@@ -61,8 +61,8 @@
     <updated>2018-04-30T06:30:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           Completely re-written the RCON and Player List player profile load.<br/>
           <ul>
@@ -86,8 +86,8 @@
     <updated>2018-04-28T05:25:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>NEW</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
           <br/>
           This version adds a very basic Player List. This player list is only available when RCON is disabled, replaces the RCON button with a Players button.<br/><br/>
           The player list only reads the ARK player and tribe files and displays them in a list. Without RCON I am unable to determine which player is online, so Online status is never shown here.<br/><br/>
@@ -110,19 +110,23 @@
     <updated>2018-04-28T00:30:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           RCON window player list
           <ul>
-            <li>Border Colors around each player<br/>
-            Online - Green<br/>
-            Invalid - Orange<br/>
-            Banned - Red<br/>
-            Whitelisted - Blue (this is new and relates to your Whitelist in the Server Files section)</li>
-            <li>Steam Name of the player<br/>
-            Normal player - Black<br/>
-            Admin player - Blue/Bold (this is new and relates to your Admin List in the Server Files section)</li>
+            <li>
+              Border Colors around each player<br/>
+              Online - Green<br/>
+              Invalid - Orange<br/>
+              Banned - Red<br/>
+              Whitelisted - Blue (this is new and relates to your Whitelist in the Server Files section)
+            </li>
+            <li>
+              Steam Name of the player<br/>
+              Normal player - Black<br/>
+              Admin player - Blue/Bold (this is new and relates to your Admin List in the Server Files section)
+            </li>
           </ul>
           There is also a new filter menu item - Show Admin.
         </p>
@@ -142,8 +146,8 @@
     <updated>2018-04-27T11:40:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>Code cleanup for the ArkData library.</li>
@@ -165,8 +169,8 @@
     <updated>2018-04-27T11:40:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>This version updates the French translation file.</li>
@@ -188,8 +192,8 @@
     <updated>2018-04-27T02:00:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>NEW</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
           <br/>
           <ul>
             <li>This version adds a global setting to shutdown or keep open the Server Shutdown window after it is finished - used for testing.</li>
@@ -211,8 +215,8 @@
     <updated>2018-04-26T11:20:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>BUGFIX</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">BUGFIX</u>
           <br/>
           <ul>
             <li>This version fixes a few duplicate shutdown messages introduced with the Always Show Shutdown Reason in last release (322).</li>
@@ -234,8 +238,8 @@
     <updated>2018-04-25T07:00:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>The auto-update now has a file copy failure retry. If the file fails to copy, it will try 3 times with a 5 second delay in between.</li>
@@ -260,8 +264,8 @@
     <updated>2018-04-21T12:00:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>Added Server, Query and RCON port validation to the profile validation. Valid range is 0 - 65535.</li>
@@ -283,8 +287,8 @@
     <updated>2018-04-21T09:40:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>This version adds the .arktributetribe files to the backup and restore functions.</li>
@@ -306,8 +310,8 @@
     <updated>2018-04-21T06:45:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>A small change to the GameData files. Each file now has an 'Application' tag at the top. If this value does not match the value stored in the .config file of ASM, it will not read it.</li>
@@ -329,8 +333,8 @@
     <updated>2018-04-21T02:50:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>Code cleanup with the gamedata.</li>
@@ -353,8 +357,8 @@
     <updated>2018-04-20T06:20:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>CHANGE</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
             <li>The ArkApplication filter comboboxes have been changed, so that the display values can be globalized.</li>
@@ -376,8 +380,8 @@
     <updated>2018-04-20T05:00:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
-          <u>NEW</u>
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
           <br/>
           <ul>
             <li>Gamedata storage changes</li>

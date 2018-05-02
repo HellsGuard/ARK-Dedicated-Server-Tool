@@ -2090,8 +2090,8 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://servermanager.azurewebsites.net/downloads/arkservermanager/release/version" +
-            "feed.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/release/versionfeed.xml" +
+            "")]
         public string ServerManagerVersionFeedUrl {
             get {
                 return ((string)(this["ServerManagerVersionFeedUrl"]));
@@ -2100,8 +2100,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://servermanager.azurewebsites.net/downloads/arkservermanager/beta/versionfee" +
-            "d.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/beta/versionfeed.xml")]
         public string ServerManagerVersionBetaFeedUrl {
             get {
                 return ((string)(this["ServerManagerVersionBetaFeedUrl"]));
