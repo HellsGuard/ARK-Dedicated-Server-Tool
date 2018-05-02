@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ARK_Server_Manager.Lib
 {
     public class AggregateIniValueList<T> : SortableObservableCollection<T>, IIniValuesCollection
          where T : AggregateIniValue, new()
     {
+        protected readonly Func<IEnumerable<T>> _resetFunc;
         private bool _isEnabled;
-        private readonly Func<IEnumerable<T>> _resetFunc;
 
         public AggregateIniValueList(string aggregateValueName, Func<IEnumerable<T>> resetFunc)
         {

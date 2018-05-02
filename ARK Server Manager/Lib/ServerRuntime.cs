@@ -178,9 +178,17 @@ namespace ARK_Server_Manager.Lib
 
         private void GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint)
         {
+            localServerQueryEndPoint = null;
+            steamServerQueryEndPoint = null;
+
             //
             // Get the local endpoint for querying the local network
             //
+            if (!ushort.TryParse(this.ProfileSnapshot.QueryPort.ToString(), out ushort port))
+            {
+                Debug.WriteLine($"Port is out of range ({this.ProfileSnapshot.QueryPort})");
+                return;
+            }
 
             IPAddress localServerIpAddress;
             if (!String.IsNullOrWhiteSpace(this.ProfileSnapshot.ServerIP) && IPAddress.TryParse(this.ProfileSnapshot.ServerIP, out localServerIpAddress))
@@ -342,9 +350,10 @@ namespace ARK_Server_Manager.Lib
         {
             if (this.updateRegistration == null)
             {
-                IPEndPoint localServerQueryEndPoint;
-                IPEndPoint steamServerQueryEndPoint;
-                GetServerEndpoints(out localServerQueryEndPoint, out steamServerQueryEndPoint);
+                GetServerEndpoints(out IPEndPoint localServerQueryEndPoint, out IPEndPoint steamServerQueryEndPoint);
+                if (localServerQueryEndPoint == null || steamServerQueryEndPoint == null)
+                    return;
+
                 this.updateRegistration = ServerStatusWatcher.Instance.RegisterForUpdates(this.ProfileSnapshot.InstallDirectory, this.ProfileSnapshot.ProfileId, localServerQueryEndPoint, steamServerQueryEndPoint, ProcessStatusUpdate);
             }
         }
@@ -397,7 +406,7 @@ namespace ARK_Server_Manager.Lib
 
             if (Config.Default.ManageFirewallAutomatically)
             {
-                var ports = new List<int>() { this.ProfileSnapshot.QueryPort, this.ProfileSnapshot.ServerPort };
+                var ports = new List<int>() { this.ProfileSnapshot.ServerPort , this.ProfileSnapshot.QueryPort };
                 if(this.ProfileSnapshot.UseRawSockets)
                 {
                     ports.Add(this.ProfileSnapshot.ServerPort + 1);
@@ -407,7 +416,7 @@ namespace ARK_Server_Manager.Lib
                     ports.Add(this.ProfileSnapshot.RCONPort);
                 }
 
-                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), "ARK Server: " + this.ProfileSnapshot.ServerName))
+                if (!FirewallUtils.EnsurePortsOpen(serverExe, ports.ToArray(), $"{Config.Default.FirewallRulePrefix} {this.ProfileSnapshot.ServerName}"))
                 {
                     var result = MessageBox.Show("Failed to automatically set firewall rules.  If you are running custom firewall software, you may need to set your firewall rules manually.  You may turn off automatic firewall management in Settings.\r\n\r\nWould you like to continue running the server anyway?", "Automatic Firewall Management Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.No)

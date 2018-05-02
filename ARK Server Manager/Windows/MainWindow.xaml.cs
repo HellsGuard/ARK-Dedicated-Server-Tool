@@ -176,6 +176,7 @@ namespace ARK_Server_Manager
         {
             base.OnClosing(e);
             RCONWindow.CloseAllWindows();
+            PlayerListWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
         }
 
@@ -186,10 +187,31 @@ namespace ARK_Server_Manager
 
         private void ASMPatchNotes_Click(object sender, RoutedEventArgs e)
         {
+            var url = string.Empty;
             if (BetaVersion)
-                Process.Start(Config.Default.LatestASMBetaPatchNotesUrl);
+                url = Config.Default.ServerManagerVersionBetaFeedUrl;
             else
-                Process.Start(Config.Default.LatestASMPatchNotesUrl);
+                url = Config.Default.ServerManagerVersionFeedUrl;
+
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                var window = new VersionFeedWindow(url);
+                window.Closed += Window_Closed;
+                window.Owner = this;
+                window.ShowDialog();
+            }
+            else
+            {
+                if (BetaVersion)
+                    url = Config.Default.LatestASMBetaPatchNotesUrl;
+                else
+                    url = Config.Default.LatestASMPatchNotesUrl;
+
+                if (string.IsNullOrWhiteSpace(url))
+                    return;
+
+                Process.Start(url);
+            }
         }
 
         private void Donate_Click(object sender, RoutedEventArgs e)
@@ -203,6 +225,9 @@ namespace ARK_Server_Manager
 
         private void Help_Click(object sender, RoutedEventArgs args)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.HelpUrl))
+                return;
+
             Process.Start(Config.Default.HelpUrl);
         }
 

@@ -7,8 +7,8 @@
     LinkedStyle="fr-FR-style"
     >
 
-    <sys:String x:Key="Generic_ErrorLabel">Error</sys:String>
-    
+    <sys:String x:Key="Generic_ErrorLabel">Erreur</sys:String>
+
     <!-- Application -->
     <sys:String x:Key="Application_RunAsAdministratorTitle">Exécuter en tant qu'administrateur</sys:String>
     <sys:String x:Key="Application_RunAsAdministratorLabel">Cette application nécessite des privilèges d'administrateur pour accéder à toutes les fonctionnalités. Souhaitez-vous exécuter en tant qu'administrateur?</sys:String>
@@ -76,7 +76,9 @@
     <sys:String x:Key="ModDetails_Save_UnknownLabel">Il y a un ou plusieurs mods qui n'ont pas été téléchargés, cela pourrait empêcher les mods de carte et les mods de conversion totale d'être détectés correctement. Voulez-vous continuer?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Non sauvegardé</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">Vous avez effectué des modifications qui n'ont pas été enregistrées dans le profil. Si vous continuez, vos modifications seront supprimées. Voulez-vous continuer?</sys:String>
-    
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedTitle">Ecrire l'erreur d'horodatage</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestamp_FailedLabel">Le dossier mod n'a pas pu être trouvé ou n'existe pas. Essayez de télécharger le mod et essayez à nouveau.</sys:String>
+
     <sys:String x:Key="ModDetails_TotalCountLabel">Mods total:</sys:String>
     <sys:String x:Key="ModDetails_FilterLabel">Filtre:</sys:String>
 
@@ -86,6 +88,7 @@
     <sys:String x:Key="ModDetails_TypeColumnLabel">Type de Mod</sys:String>
     <sys:String x:Key="ModDetails_LastUpdatedColumnLabel">Dernier téléchargement</sys:String>
     <sys:String x:Key="ModDetails_TimeUpdatedColumnLabel">Dernière mise à jour (Auteur)</sys:String>
+    <sys:String x:Key="ModDetails_TimestampColumnLabel">Horodatage</sys:String>
     <sys:String x:Key="ModDetails_FolderSizeColumnLabel">Taille du dossier</sys:String>
 
     <sys:String x:Key="ModDetails_AddModsTooltip">Ajouter des mods à la liste.</sys:String>
@@ -96,6 +99,7 @@
     <sys:String x:Key="ModDetails_RefreshModsTooltip">Actualiser les informations de la liste de mod.</sys:String>
     <sys:String x:Key="ModDetails_ReloadModsTooltip">Recharger la liste des mods a du profil.</sys:String>
     <sys:String x:Key="ModDetails_RemoveModTooltip">Supprimer le mod de la liste.</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestampModTooltip">Écrivez l'horodatage au fichier LastUpdatedASM.txt. N'utilisez ceci que si vous mettez à jour manuellement le mod.</sys:String>
     <sys:String x:Key="ModDetails_RemoveAllModsTooltip">Supprimer tous les mods de la liste.</sys:String>
     <sys:String x:Key="ModDetails_SaveModsTooltip">Enregistrer les mods dans le profil.</sys:String>
     <sys:String x:Key="ModDetails_SaveModDetailsTooltip">Enregistrer les détails du mod dans une mis en forme.</sys:String>
@@ -317,6 +321,8 @@
     <sys:String x:Key="GlobalSettings_ShutdownWorldSaveTooltip">Ce message sera affiché lors de l'arrêt lorsque le monde est sur le point d'être sauvé.</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelLabel">Annuler le message:</sys:String>
     <sys:String x:Key="GlobalSettings_ShutdownCancelTooltip">Ce message sera affiché lorsque la fermeture du serveur a été annulée.</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownAllMessagesShowReasonLabel">Afficher le motif d'arrêt avec TOUS les messages d'arrêt</sys:String>
+    <sys:String x:Key="GlobalSettings_ShutdownAllMessagesShowReasonTooltip">Si elle est activée, la raison de l'arrêt s'affichera avec tous les messages d'arrêt; sinon, il ne sera affiché qu'au début de l'arrêt du serveur.</sys:String>
     <sys:String x:Key="GlobalSettings_EmailSettingsLabel">Paramètres de messagerie SMTP</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostLabel">Host:</sys:String>
     <sys:String x:Key="GlobalSettings_EmailHostTooltip">Le nom ou l'adresse IP de l'hôte utilisé pour la transmission SMTPs.</sys:String>
@@ -408,7 +414,7 @@
     Main Window 
     
     C'est la partie de la fenêtre principale en haut - la partie qui ne fait partie d'aucun profil.
-    -->   
+    -->
     <sys:String x:Key="MainWindow_Title">ARK Server Manager</sys:String>
     <sys:String x:Key="MainWindow_TitleWithAdmin">Gestionnaire de serveur ARK (Administrateur)</sys:String>
     <sys:String x:Key="MainWindow_ArkNameLabel">ARK Server Manager</sys:String>
@@ -497,7 +503,7 @@
     Server Settings
     
     These are the profile settings, grouped by section.
-    -->   
+    -->
 
     <!-- Server Settings - General -->
     <sys:String x:Key="ServerSettings_ProfileLabel">Profile:</sys:String>
@@ -756,7 +762,7 @@
     <sys:String x:Key="ServerSettings_UseNoHangDetectionLabel">Aucune détection de blocage</sys:String>
     <sys:String x:Key="ServerSettings_UseNoHangDetectionTooltip">Si elle est activée, empêche certains types de plantages causes par la suspension (peut sembler comme si le serveur est en retard pendant que le serveur est suspendu).</sys:String>
     <sys:String x:Key="ServerSettings_ServerAllowAnselLabel">Autoriser Ansel sur le Serveur</sys:String>
-    <sys:String x:Key="ServerSettings_ServerAllowAnselTooltip">Si activé, activera NVIDIA Ansel sur les serveurs.</sys:String>    
+    <sys:String x:Key="ServerSettings_ServerAllowAnselTooltip">Si activé, activera NVIDIA Ansel sur les serveurs.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyLabel">Clé Web</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmKeyTooltip">Une clé facultative à utiliser dans le script d'écoute, mais nécessaire pour l'avoir dans le fichier texte.</sys:String>
     <sys:String x:Key="ServerSettings_WebAlarmUrlLabel">URL Web</sys:String>
@@ -819,7 +825,7 @@
     <sys:String x:Key="ServerSettings_EnableHardcoreTooltip">Active le mode hardcore (les joueurs ne peuvent pas réapparaître, un nouveau personnage doit être créé).</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPLabel">Activer PvP</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvPTooltip">Active le mode Joueur contre Joueur (les joueurs peuvent infliger des dégâts ou s'entraider). En PvP, les joueurs peuvent aussi endommager ou détruire les bâtiments d'une autre tribu ou tuer leurs dinosaures..</sys:String>
-    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingLabel">Activer Construction dans les grottes en PvE </sys:String>
+    <sys:String x:Key="ServerSettings_EnablePvECaveBuildingLabel">Activer Construction dans les grottes en PvE</sys:String>
     <sys:String x:Key="ServerSettings_EnablePvECaveBuildingTooltip">Si activé, permet de construire dans des grottes lorsque le mode PvE est activé.</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireLabel">Désactiver le tire ami PvE</sys:String>
     <sys:String x:Key="ServerSettings_DisablePvEFriendlyFireTooltip">Si activé, les joueurs ne peuvent infliger de dégâts ou tuer les autres membres de la tribu, les dinosaures et les structures lorsque le mode PvE est activé.</sys:String>
@@ -984,20 +990,20 @@
     <sys:String x:Key="ServerSettings_AllowHUDTooltip">Si activé, permet au joueur de voir le HUD.</sys:String>
     <sys:String x:Key="ServerSettings_AllowThirdPersonViewLabel">Autoriser la vue de la troisième personne</sys:String>
     <sys:String x:Key="ServerSettings_AllowThirdPersonViewTooltip">Si activé, permet aux joueurs de se voir à la troisième personne.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">Afficher les joueurs sur la carte </sys:String>
+    <sys:String x:Key="ServerSettings_AllowMapPlayerLocationLabel">Afficher les joueurs sur la carte</sys:String>
     <sys:String x:Key="ServerSettings_AllowMapPlayerLocationTooltip">Si activé, montre à chaque joueur sa position sur la carte.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Modifier Gamma en PVP </sys:String>
+    <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPLabel">Modifier Gamma en PVP</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvPTooltip">Si activé, permet les changements de gamma en mode PvP.</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvELabel">Modifier Gamma en PvE</sys:String>
     <sys:String x:Key="ServerSettings_AllowPlayerGammaInPvETooltip">Si activé, permet les changements de gamma en mode PvE.</sys:String>
-    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Affiche les dégâts en texte flottant </sys:String>
+    <sys:String x:Key="ServerSettings_ShowFloatingDamageTextLabel">Affiche les dégâts en texte flottant</sys:String>
     <sys:String x:Key="ServerSettings_ShowFloatingDamageTextTooltip">Si cette option est activée, active le mode statistique du texte contextuel RPG.</sys:String>
     <sys:String x:Key="ServerSettings_AllowHitMarkersLabel">Autoriser les marqueurs Hit</sys:String>
     <sys:String x:Key="ServerSettings_AllowHitMarkersTooltip">Si activé, affiche les marqueurs de succès pour les attaques à distance.</sys:String>
 
     <!-- Server Settings - Player Settings -->
     <sys:String x:Key="ServerSettings_PlayerSettingsLabel">Paramètres du joueur</sys:String>
-    <sys:String x:Key="ServerSettings_EnableFlyerCarryLabel">Permet de voler à l'intérieur des grottes. </sys:String>
+    <sys:String x:Key="ServerSettings_EnableFlyerCarryLabel">Permet de voler à l'intérieur des grottes.</sys:String>
     <sys:String x:Key="ServerSettings_EnableFlyerCarryTooltip">Si activé, permettre aux dinosaures volants de ramasser d'autres dinosaures et joueurs lorsqu'ils sont montés par un joueur en PvE.</sys:String>
     <sys:String x:Key="ServerSettings_XPMultiplierLabel">XP Multiplicateur XP:</sys:String>
     <sys:String x:Key="ServerSettings_XPMultiplierTooltip">Spécifie le facteur d'échelle pour l'expérience reçue par les joueurs. Des valeurs plus élevées augmentent les montants d'XP attribués pour diverses actions; les valeurs inférieures le diminuent.</sys:String>
@@ -1024,7 +1030,7 @@
 
     <sys:String x:Key="ServerSettings_PlayerBaseStatMultipliersLabel">Multiplicateurs de base de stat</sys:String>
     <sys:String x:Key="ServerSettings_PlayerPerLevelStatMultipliersLabel">Multiplicateurs de statistiques par niveau</sys:String>
-    
+
     <sys:String x:Key="ServerSettings_StatHealthLabel">Santé:</sys:String>
     <sys:String x:Key="ServerSettings_StatHealthTooltip">Spécifie le multiplicateur pour le gain de santé par niveau. Des valeurs plus élevées augmentent la santé plus rapidement; des valeurs inférieures augmentent la santé plus lentement.</sys:String>
     <sys:String x:Key="ServerSettings_BaseStatHealthTooltip">Spécifie le multiplicateur pour l'état de santé de base. Des valeurs plus élevées augmentent la santé de base; les valeurs inférieures diminuent la santé de base.</sys:String>
@@ -1093,7 +1099,7 @@
     <sys:String x:Key="ServerSettings_UseTameLimitForStructuresOnlyTooltip">si activé, les unités de contrôle ne seront appliquées et utilisées que pour les plates-formes avec structures et radeaux.</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsLabel">Dino Spawns:</sys:String>
     <sys:String x:Key="ServerSettings_DinoSpawnsTooltip">Spécifie le facteur de mise à l'échelle pour les spins Dino. Des valeurs plus élevées augmentent le nombre de dinosaures engendrés dans l'Arche.</sys:String>
-    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Autorise l'alimentation en nourriture pour les dinos de Raid </sys:String>
+    <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingLabel">Autorise l'alimentation en nourriture pour les dinos de Raid</sys:String>
     <sys:String x:Key="ServerSettings_AllowRaidDinoFeedingTooltip">Si activé, permet aux Titanosaures de votre serveur d'être apprivoisés en permanence (c'est-à-dire leur permet d'être nourris).</sys:String>
     <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierLabel">Multiplicateur de consommation de nourriture</sys:String>
     <sys:String x:Key="ServerSettings_RaidDinoCharacterFoodDrainMultiplierTooltip">Spécifie le multiplicateur pour la consommation des aliments des raid dinos. Des valeurs plus élevées augmentent le drainage des aliments; les valeurs inférieures diminuent la vidange de la nourriture.</sys:String>
@@ -1121,11 +1127,11 @@
     <sys:String x:Key="ServerSettings_AutoDestroyDecayedDinosTooltip">Si cette option est activée, tous les dinosaures abandonnés seront automatiquement détruits au chargement, plutôt que de les laisser en vie comme pouvant être réclamés..</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoRidingLabel">Désactiver le pilotage Dino</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoRidingTooltip">Si activé, tous les dinos apprivoisés ne pourront pas être montés.</sys:String>
-    <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Désactiver apprivoisement Dino </sys:String>
+    <sys:String x:Key="ServerSettings_DisableDinoTamingLabel">Désactiver apprivoisement Dino</sys:String>
     <sys:String x:Key="ServerSettings_DisableDinoTamingTooltip">Si activé, tous les dinos sauvages ne pourront pas être apprivoisés.</sys:String>
 
     <sys:String x:Key="ServerSettings_DinoCustomizationLabel">Personnalisation de Dino</sys:String>
-    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Multiplicateur de Spawn </sys:String>
+    <sys:String x:Key="ServerSettings_SpawnMultipliersOptionLabel">Multiplicateur de Spawn</sys:String>
     <sys:String x:Key="ServerSettings_SpawnMultipliersOptionTooltip">Afficher/Masquer les colonnes du multiplicateur de spawn.</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageOptionLabel">Dommages apprivoisés</sys:String>
     <sys:String x:Key="ServerSettings_TamedDamageOptionTooltip">Afficher/Masquer la colonne de multiplicateur de dégâts de dino apprivoisée.</sys:String>
@@ -1622,7 +1628,7 @@
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion1StartTooltip">Emplacement de départ de la région du Nord 1 (X, Y de 0 à 1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion1EndLabel">Fin de la région nord 1</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion1EndTooltip">Emplacement final de la région du Nord 1 (X, Y de 0 à 1).</sys:String>
-    <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion2StartLabel">Début Région Nord 2 </sys:String>
+    <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion2StartLabel">Début Région Nord 2</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion2StartTooltip">Emplacement de départ de la région du Nord  2 (X, Y de 0 à 1).</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion2EndLabel">Fin de la région nord 2</sys:String>
     <sys:String x:Key="ServerSettings_PGM_Map_NorthRegion2EndTooltip">L'emplacement final de la région du Nord 2 (X, Y de 0 à 1).</sys:String>
@@ -1808,7 +1814,7 @@
     <sys:String x:Key="ServerSettings_OverlayMessage_SchedulesLabel">Vérification des tâches planifiées...</sys:String>
 
     <!-- Player/Tribe Profile Window -->
-    <sys:String x:Key="Profile_SteamSectionLabel">Details Steam </sys:String>
+    <sys:String x:Key="Profile_SteamSectionLabel">Details Steam</sys:String>
     <sys:String x:Key="Profile_PlayerSectionLabel">Détails du joueur</sys:String>
     <sys:String x:Key="Profile_TribeSectionLabel">Détails de la tribu</sys:String>
     <sys:String x:Key="Profile_TribeMembersSectionLabel">Membres de la tribu</sys:String>
@@ -2089,7 +2095,7 @@
     <sys:String x:Key="Yutyrannus_Character_BP_C">Yutyrannus</sys:String>
 
     <sys:String x:Key="Alpha_Leedsichthys_Character_BP_C">Alpha Leedsichthys</sys:String>
-    <sys:String x:Key="Bee_Queen_Character_BP_C">Reine des abeilles </sys:String>
+    <sys:String x:Key="Bee_Queen_Character_BP_C">Reine des abeilles</sys:String>
     <sys:String x:Key="Equus_Character_BP_Unicorn_C">Licorne</sys:String>
     <sys:String x:Key="FlyingAnt_Character_BP_C">Titanomyrma Soldier</sys:String>
     <sys:String x:Key="Leech_Character_Diseased_C">Diseased Leech</sys:String>
@@ -2152,7 +2158,7 @@
     <sys:String x:Key="camelsaurus_Character_BP_C">Morellatops</sys:String>
     <sys:String x:Key="Deathworm_Character_BP_C">Ver des sables</sys:String>
     <sys:String x:Key="Jerboa_Character_BP_C">Jerboa</sys:String>
-    <sys:String x:Key="Jugbug_Oil_Character_BP_C">OInsecte à pétrole</sys:String>
+    <sys:String x:Key="Jugbug_Oil_Character_BP_C">Insecte à pétrole</sys:String>
     <sys:String x:Key="Mantis_Character_BP_C">Mantis</sys:String>
     <sys:String x:Key="Moth_Character_BP_C">Lymantria</sys:String>
     <sys:String x:Key="Phoenix_Character_BP_C">Phoenix</sys:String>
@@ -2194,9 +2200,10 @@
     <!-- Dino/Creature Class Names - Aberration -->
     <sys:String x:Key="Achatina_Character_BP_Aberrant_C">Achatina Irradié</sys:String>
     <sys:String x:Key="Angler_Character_BP_Aberrant_C">Anglerfish Irradié</sys:String>
-    <sys:String x:Key="Ankylo_Character_BP_Aberrant_C">nkylosaurus Irradié</sys:String>
+    <sys:String x:Key="Ankylo_Character_BP_Aberrant_C">Ankylosaurus Irradié</sys:String>
     <sys:String x:Key="Arthro_Character_BP_Aberrant_C">Arthropluera Irradié</sys:String>
     <sys:String x:Key="Baryonyx_Character_BP_Aberrant_C">Baryonyx Irradié</sys:String>
+    <sys:String x:Key="BigFoot_Character_BP_Aberrant_C">Aberrant Gigantopithecus</sys:String>
     <sys:String x:Key="BoaFrill_Character_BP_Aberrant_C">Titanoboa Irradié</sys:String>
     <sys:String x:Key="Carno_Character_BP_Aberrant_C">Carnotaurus Irradié</sys:String>
     <sys:String x:Key="Cnidaria_Character_BP_Aberrant_C">Cnidaria Irradié</sys:String>
@@ -2205,6 +2212,7 @@
     <sys:String x:Key="Dimorph_Character_BP_Aberrant_C">Dimorphodon Irradié</sys:String>
     <sys:String x:Key="Diplocaulus_Character_BP_Aberrant_C">Diplocaulus Irradié</sys:String>
     <sys:String x:Key="Diplodocus_Character_BP_Aberrant_C">Diplodocus Irradié</sys:String>
+    <sys:String x:Key="Direbear_Character_BP_Aberrant_C">Aberrant Direbear</sys:String>
     <sys:String x:Key="Dodo_Character_BP_Aberrant_C">Dodo Irradié</sys:String>
     <sys:String x:Key="Doed_Character_BP_Aberrant_C">Doedicurus Irradié</sys:String>
     <sys:String x:Key="Dragonfly_Character_BP_Aberrant_C">Meganeura Irradié</sys:String>
@@ -4263,7 +4271,7 @@
     <sys:String x:Key="DinoSpawnEntriesTitano_C">(TheIsland) Titano</sys:String>
     <sys:String x:Key="DinoSpawnEntriesUnicorn_C">(TheIsland) Unicorn</sys:String>
     <sys:String x:Key="DinoSpawnEntriesWater_C">(TheIsland) Water</sys:String>
-    
+
     <sys:String x:Key="CustomAnglerSpawner_C">(TheCenter) Angler</sys:String>
     <sys:String x:Key="CustomPenguinSpawner_C">(TheCenter) Penguin</sys:String>
     <sys:String x:Key="DunkEurSpawn_C">(TheCenter) DunkEur</sys:String>
@@ -4282,7 +4290,7 @@
     <sys:String x:Key="SpiderCaveSpawner_C">(TheCenter) SpiderCave</sys:String>
     <sys:String x:Key="UnderwaterCaveSpawn_C">(TheCenter) UnderwaterCave</sys:String>
     <sys:String x:Key="DinoSpawnEntries_OceanUnderworld_C">(TheCenter) OceanUnderworld</sys:String>
-    
+
     <sys:String x:Key="SE_DinoSpawnEntries_DeathWorm_C">(ScorchedEarth) DeathWorm</sys:String>
     <sys:String x:Key="SE_DinoSpawnEntries_RexSolo_C">(ScorchedEarth) RexSolo</sys:String>
     <sys:String x:Key="SE_DinoSpawnEntriesBadlands_C">(ScorchedEarth) Badlands</sys:String>

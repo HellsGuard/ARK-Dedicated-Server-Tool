@@ -18,7 +18,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ItemWeightProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ItemClassString);
+        public string DisplayName => GameData.FriendlySupplyCrateNameForClass(ItemClassString);
 
         public bool IsValid => !string.IsNullOrWhiteSpace(ItemClassString);
     }

@@ -1,10 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace ARK_Server_Manager.Lib.ViewModel
 {
     public class SupplyCrate : DependencyObject
     {
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(SupplyCrate), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(SupplyCrate), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownSupplyCrateProperty = DependencyProperty.Register(nameof(KnownSupplyCrate), typeof(bool), typeof(SupplyCrate), new PropertyMetadata(false));
 
         public string ClassName
         {
@@ -12,9 +15,19 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ClassNameProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
 
-        public bool KnownSpawner => GameData.HasSupplyCrateForClass(ClassName);
+        public bool KnownSupplyCrate
+        {
+            get { return (bool)GetValue(KnownSupplyCrateProperty); }
+            set { SetValue(KnownSupplyCrateProperty, value); }
+        }
+
+        public string DisplayName => GameData.FriendlySupplyCrateNameForClass(ClassName);
 
         public SupplyCrate Duplicate()
         {

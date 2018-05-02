@@ -49,9 +49,9 @@ namespace ARK_Server_Manager
             private set;
         }
 
-        public Player PlayerData => Player?.PlayerData;
+        public PlayerData PlayerData => Player?.PlayerData;
 
-        public Tribe TribeData => Player?.PlayerData?.Tribe;
+        public TribeData TribeData => Player?.PlayerData?.Tribe;
 
         public String CreatedDate => TribeData?.FileCreated.ToString("G");
 

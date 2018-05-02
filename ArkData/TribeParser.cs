@@ -16,7 +16,7 @@ namespace ArkData
             return BitConverter.ToUInt32(data, num + bytes2.Length + 9);
         }
 
-        public static Tribe ParseTribe(string fileName)
+        public static TribeData ParseTribe(string fileName)
         {
             FileInfo fileInfo = new FileInfo(fileName);
             if (!fileInfo.Exists)
@@ -24,21 +24,22 @@ namespace ArkData
 
             byte[] data = File.ReadAllBytes(fileName);
 
-            return new Tribe()
+            return new TribeData()
             {
                 Id = Helpers.GetInt(data, "TribeID"),
                 Name = Helpers.GetString(data, "TribeName"),
                 OwnerId = (int?)GetOwnerId(data),
 
+                File = fileName,
                 Filename = fileInfo.Name,
                 FileCreated = fileInfo.CreationTime,
                 FileUpdated = fileInfo.LastWriteTime
             };
         }
 
-        public static Task<Tribe> ParseTribeAsync(string fileName)
+        public static Task<TribeData> ParseTribeAsync(string fileName)
         {
-            return Task.Run<Tribe>(() =>
+            return Task.Run<TribeData>(() =>
             {
                 return ParseTribe(fileName);
             });

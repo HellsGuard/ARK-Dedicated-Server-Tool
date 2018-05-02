@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArkData
 {
-    public class Player
+    public class PlayerData
     {
         public long Id { get; set; }
         public string SteamId { get; set; }
@@ -11,6 +11,7 @@ namespace ArkData
         public string AvatarUrl { get; set; }
         public string CharacterName { get; set; }
         public bool Online { get; set; }
+        public string File { get; set; }
         public string Filename { get; set; }
         public DateTime FileCreated { get; set; }
         public DateTime FileUpdated { get; set; }
@@ -22,7 +23,9 @@ namespace ArkData
         public int NumberOfVACBans { get; set; }
         public int DaysSinceLastBan { get; set; }
         public int NumberOfGameBans { get; set; }
-        public virtual Tribe Tribe { get; set; }
-        public virtual List<Tribe> OwnedTribes { get; set; }
+        public virtual TribeData Tribe { get; set; }
+        public virtual List<TribeData> OwnedTribes { get; set; }
+
+        public DateTime LastSteamUpdateUtc { get; set; }
     }
 }

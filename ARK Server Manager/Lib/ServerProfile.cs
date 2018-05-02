@@ -30,6 +30,7 @@ namespace ARK_Server_Manager.Lib
             EnvironmentSection,
             StructuresSection,
             EngramsSection,
+            ServerFiles,
             CustomSettingsSection,
             CustomLevelsSection,
             MapSpawnerOverridesSection,
@@ -51,22 +52,29 @@ namespace ARK_Server_Manager.Lib
         private string _lastSaveLocation = String.Empty;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private FileSystemWatcher _serverFilesWatcherSaved = null;
+        private FileSystemWatcher _serverFilesWatcherBinary = null;
+
         private ServerProfile()
         {
             ServerPassword = SecurityUtils.GeneratePassword(16);
             AdminPassword = SecurityUtils.GeneratePassword(16);
 
+            ServerFilesAdmins = new SteamUserList();
+            ServerFilesExclusive = new SteamUserList();
+            ServerFilesWhitelisted = new SteamUserList();
+
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0] );
             this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
-            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
-            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
-            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
-            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetDinoMultipliers);
+            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetDinoMultipliers);
+            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetDinoMultipliers);
+            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetDinoMultipliers);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
-            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.HarvestResourceItemAmountClassMultipliers = new ResourceClassMultiplierList(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetResourceMultipliers);
+            this.OverrideNamedEngramEntries = new EngramEntryList(nameof(OverrideNamedEngramEntries), GameData.GetEngrams);
 
             this.DinoLevels = new LevelList();
             this.PlayerLevels = new LevelList();
@@ -1557,7 +1565,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(XPMultiplierProperty, value); }
         }
 
-        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsPlayer));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int OverrideMaxExperiencePointsPlayer
@@ -1658,7 +1666,7 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Dino Settings
-        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DEFAULT_MAX_EXPERIENCE_POINTS_DINO));
+        public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsDino));
         [DataMember]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
         public int OverrideMaxExperiencePointsDino
@@ -2235,12 +2243,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(ClampItemSpoilingTimesProperty, value); }
         }
 
-        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(AggregateIniValueList<ResourceClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(ResourceClassMultiplierList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public AggregateIniValueList<ResourceClassMultiplier> HarvestResourceItemAmountClassMultipliers
+        public ResourceClassMultiplierList HarvestResourceItemAmountClassMultipliers
         {
-            get { return (AggregateIniValueList<ResourceClassMultiplier>)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
+            get { return (ResourceClassMultiplierList)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
             set { SetValue(HarvestResourceItemAmountClassMultipliersProperty, value); }
         }
 
@@ -2678,12 +2686,12 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OnlyAllowSpecifiedEngramsProperty, value); }
         }
 
-        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList<EngramEntry>), typeof(ServerProfile), new PropertyMetadata(null));
+        public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList), typeof(ServerProfile), new PropertyMetadata(null));
         [XmlIgnore]
         [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
-        public EngramEntryList<EngramEntry> OverrideNamedEngramEntries
+        public EngramEntryList OverrideNamedEngramEntries
         {
-            get { return (EngramEntryList<EngramEntry>)GetValue(OverrideNamedEngramEntriesProperty); }
+            get { return (EngramEntryList)GetValue(OverrideNamedEngramEntriesProperty); }
             set { SetValue(OverrideNamedEngramEntriesProperty, value); }
         }
 
@@ -2749,12 +2757,36 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Server Files
+        public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
+        public SteamUserList ServerFilesAdmins
+        {
+            get { return (SteamUserList)GetValue(ServerFilesAdminsProperty); }
+            set { SetValue(ServerFilesAdminsProperty, value); }
+        }
+
         public static readonly DependencyProperty EnableExclusiveJoinProperty = DependencyProperty.Register(nameof(EnableExclusiveJoin), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool EnableExclusiveJoin
         {
             get { return (bool)GetValue(EnableExclusiveJoinProperty); }
             set { SetValue(EnableExclusiveJoinProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
+        public SteamUserList ServerFilesExclusive
+        {
+            get { return (SteamUserList)GetValue(ServerFilesExclusiveProperty); }
+            set { SetValue(ServerFilesExclusiveProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerProfile), new PropertyMetadata(null));
+        [DataMember]
+        public SteamUserList ServerFilesWhitelisted
+        {
+            get { return (SteamUserList)GetValue(ServerFilesWhitelistedProperty); }
+            set { SetValue(ServerFilesWhitelistedProperty, value); }
         }
         #endregion
 
@@ -3046,9 +3078,29 @@ namespace ARK_Server_Manager.Lib
         }
         #endregion
 
+        #region Player List
+        public static readonly DependencyProperty PlayerListWindowExtentsProperty = DependencyProperty.Register(nameof(PlayerListWindowExtents), typeof(Rect), typeof(ServerProfile), new PropertyMetadata(new Rect(0f, 0f, 0f, 0f)));
+        [DataMember]
+        public Rect PlayerListWindowExtents
+        {
+            get { return (Rect)GetValue(PlayerListWindowExtentsProperty); }
+            set { SetValue(PlayerListWindowExtentsProperty, value); }
+        }
+        #endregion
+
         #endregion
 
         #region Methods
+        public void ChangeInstallationFolder(string folder)
+        {
+            InstallDirectory = folder;
+
+            LoadServerFileAdministrators();
+            LoadServerFileExclusive();
+            LoadServerFileWhitelisted();
+            SetupServerFilesWatcher();
+        }
+
         internal static ServerProfile FromDefaults()
         {
             var settings = new ServerProfile();
@@ -3066,6 +3118,10 @@ namespace ARK_Server_Manager.Lib
             settings.PerLevelStatsMultiplier_DinoWild.Reset();
             settings.PerLevelStatsMultiplier_Player.Reset();
             settings.PlayerBaseStatMultipliers.Reset();
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
             return settings;
         }
 
@@ -3462,7 +3518,9 @@ namespace ARK_Server_Manager.Lib
 
             ServerProfile settings = null;
             settings = LoadFromINIFiles(file, settings);
-            settings.InstallDirectory = filePath.Replace(Config.Default.ServerConfigRelativePath, string.Empty).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            var installDirectory = filePath.Replace(Config.Default.ServerConfigRelativePath, string.Empty).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            settings.ChangeInstallationFolder(installDirectory);
 
             if (settings.PlayerLevels.Count == 0)
             {
@@ -3562,6 +3620,11 @@ namespace ARK_Server_Manager.Lib
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
                 settings.ConfigOverrideSupplyCrateItems.RenderToView();
 
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
+
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
             return settings;
@@ -3606,6 +3669,11 @@ namespace ARK_Server_Manager.Lib
                 settings.NPCSpawnSettings.RenderToView();
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
                 settings.ConfigOverrideSupplyCrateItems.RenderToView();
+
+            settings.LoadServerFileAdministrators();
+            settings.LoadServerFileExclusive();
+            settings.LoadServerFileWhitelisted();
+            settings.SetupServerFilesWatcher();
 
             settings._lastSaveLocation = file;
             settings.IsDirty = false;
@@ -3694,6 +3762,10 @@ namespace ARK_Server_Manager.Lib
             //
             progressCallback?.Invoke(0, "Saving Profile File...");
             SaveProfile();
+
+            SaveServerFileAdministrators();
+            SaveServerFileExclusive();
+            SaveServerFileWhitelisted();
 
             //
             // Write the INI files
@@ -3913,6 +3985,14 @@ namespace ARK_Server_Manager.Lib
             StringBuilder result = new StringBuilder();
 
             var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
+
+            // checking the port values are within the valid range
+            if (ServerConnectionPort < ushort.MinValue || ServerConnectionPort > ushort.MaxValue)
+                result.AppendLine($"The server port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+            if (ServerPort < ushort.MinValue || ServerPort > ushort.MaxValue)
+                result.AppendLine($"The query port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+            if (RCONPort < ushort.MinValue || RCONPort > ushort.MaxValue)
+                result.AppendLine($"The rcon port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
 
             if (forceValidate || Config.Default.ValidateProfileOnServerStart)
             {
@@ -4155,25 +4235,33 @@ namespace ARK_Server_Manager.Lib
                     // get the player files
                     var playerFileFilter = $"*{Config.Default.PlayerFileExtension}";
                     var playerFiles = saveFolderInfo.GetFiles(playerFileFilter, SearchOption.TopDirectoryOnly);
-                    foreach (var playerFile in playerFiles)
+                    foreach (var file in playerFiles)
                     {
-                        files.Add(playerFile.FullName);
+                        files.Add(file.FullName);
                     }
 
                     // get the tribe files
                     var tribeFileFilter = $"*{Config.Default.TribeFileExtension}";
                     var tribeFiles = saveFolderInfo.GetFiles(tribeFileFilter, SearchOption.TopDirectoryOnly);
-                    foreach (var tribeFile in tribeFiles)
+                    foreach (var file in tribeFiles)
                     {
-                        files.Add(tribeFile.FullName);
+                        files.Add(file.FullName);
+                    }
+
+                    // get the tribute tribe files
+                    var tributeTribeFileFilter = $"*{Config.Default.TributeTribeFileExtension}";
+                    var tributeTribeFiles = saveFolderInfo.GetFiles(tributeTribeFileFilter, SearchOption.TopDirectoryOnly);
+                    foreach (var file in tributeTribeFiles)
+                    {
+                        files.Add(file.FullName);
                     }
 
                     //// get the player images files
                     //var playerImageFileFilter = $"*{Config.Default.PlayerImageFileExtension}";
                     //var playerImageFiles = saveFolderInfo.GetFiles(playerImageFileFilter, SearchOption.TopDirectoryOnly);
-                    //foreach (var playerImageFile in playerImageFiles)
+                    //foreach (var file in playerImageFiles)
                     //{
-                    //    files.Add(playerImageFile.FullName);
+                    //    files.Add(file.FullName);
                     //}
                 }
 
@@ -4338,10 +4426,10 @@ namespace ARK_Server_Manager.Lib
             switch (levelProgression)
             {
                 case LevelProgression.Player:
-                    list.AddRange(GameData.LevelProgressionPlayerOfficial);
+                    list.AddRange(GameData.LevelsPlayer);
                     break;
                 case LevelProgression.Dino:
-                    list.AddRange(GameData.LevelProgressionDinoOfficial);
+                    list.AddRange(GameData.LevelsDino);
                     break;
             }
         }
@@ -4569,10 +4657,10 @@ namespace ARK_Server_Manager.Lib
             this.DinoSpawnWeightMultipliers = new AggregateIniValueList<DinoSpawn>(nameof(DinoSpawnWeightMultipliers), GameData.GetDinoSpawns);
             this.PreventDinoTameClassNames = new StringIniValueList(nameof(PreventDinoTameClassNames), () => new string[0]);
             this.NPCReplacements = new AggregateIniValueList<NPCReplacement>(nameof(NPCReplacements), GameData.GetNPCReplacements);
-            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
-            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
-            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetStandardDinoMultipliers);
-            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetStandardDinoMultipliers);
+            this.TamedDinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassDamageMultipliers), GameData.GetDinoMultipliers);
+            this.TamedDinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(TamedDinoClassResistanceMultipliers), GameData.GetDinoMultipliers);
+            this.DinoClassDamageMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassDamageMultipliers), GameData.GetDinoMultipliers);
+            this.DinoClassResistanceMultipliers = new AggregateIniValueList<ClassMultiplier>(nameof(DinoClassResistanceMultipliers), GameData.GetDinoMultipliers);
             this.DinoSettings = new DinoSettingsList(this.DinoSpawnWeightMultipliers, this.PreventDinoTameClassNames, this.NPCReplacements, this.TamedDinoClassDamageMultipliers, this.TamedDinoClassResistanceMultipliers, this.DinoClassDamageMultipliers, this.DinoClassResistanceMultipliers);
             this.DinoSettings.RenderToView();
 
@@ -4599,7 +4687,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AutoUnlockAllEngramsProperty);
             this.ClearValue(OnlyAllowSpecifiedEngramsProperty);
 
-            this.OverrideNamedEngramEntries = new EngramEntryList<EngramEntry>(nameof(OverrideNamedEngramEntries), GameData.GetStandardEngramOverrides);
+            this.OverrideNamedEngramEntries = new EngramEntryList(nameof(OverrideNamedEngramEntries), GameData.GetEngrams);
             this.OverrideNamedEngramEntries.Reset();
         }
 
@@ -4613,7 +4701,7 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(ClampResourceHarvestDamageProperty);
             this.ClearValue(HarvestHealthMultiplierProperty);
 
-            this.HarvestResourceItemAmountClassMultipliers = new AggregateIniValueList<ResourceClassMultiplier>(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetStandardResourceMultipliers);
+            this.HarvestResourceItemAmountClassMultipliers = new ResourceClassMultiplierList(nameof(HarvestResourceItemAmountClassMultipliers), GameData.GetResourceMultipliers);
             this.HarvestResourceItemAmountClassMultipliers.Reset();
 
             this.ClearValue(BaseTemperatureMultiplierProperty);
@@ -4891,6 +4979,9 @@ namespace ARK_Server_Manager.Lib
                     break;
                 case ServerProfileSection.EngramsSection:
                     SyncEngramsSection(sourceProfile);
+                    break;
+                case ServerProfileSection.ServerFiles:
+                    SyncServerFiles(sourceProfile);
                     break;
                 case ServerProfileSection.CustomSettingsSection:
                     SyncCustomSettingsSection(sourceProfile);
@@ -5332,6 +5423,18 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(RandomSupplyCratePointsProperty, sourceProfile.RandomSupplyCratePoints);
         }
 
+        private void SyncServerFiles(ServerProfile sourceProfile)
+        {
+            this.SetValue(ServerFilesAdminsProperty, sourceProfile.ServerFilesAdmins);
+            this.SetValue(EnableExclusiveJoinProperty, sourceProfile.EnableExclusiveJoin);
+            this.SetValue(ServerFilesExclusiveProperty, sourceProfile.ServerFilesExclusive);
+            this.SetValue(ServerFilesWhitelistedProperty, sourceProfile.ServerFilesWhitelisted);
+
+            SaveServerFileAdministrators();
+            SaveServerFileExclusive();
+            SaveServerFileWhitelisted();
+        }
+
         private void SyncSOTFSection(ServerProfile sourceProfile)
         {
             this.SetValue(SOTF_EnabledProperty, sourceProfile.SOTF_Enabled);
@@ -5393,6 +5496,213 @@ namespace ARK_Server_Manager.Lib
             this.ConfigOverrideSupplyCrateItems.FromIniValues(sourceProfile.ConfigOverrideSupplyCrateItems.ToIniValues());
             this.ConfigOverrideSupplyCrateItems.IsEnabled = this.ConfigOverrideSupplyCrateItems.Count > 0;
             this.ConfigOverrideSupplyCrateItems.RenderToView();
+        }
+        #endregion
+
+        #region Server Files
+        private void ServerFilesWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (e.Name.Equals(Config.Default.ArkAdminFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileAdministrators()).DoNotWait();
+            }
+            else if (e.Name.Equals(Config.Default.ArkExclusiveFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileExclusive()).DoNotWait();
+            }
+            else if (e.Name.Equals(Config.Default.ArkWhitelistFile, StringComparison.OrdinalIgnoreCase))
+            {
+                TaskUtils.RunOnUIThreadAsync(() => LoadServerFileWhitelisted()).DoNotWait();
+            }
+        }
+
+        private void ServerFilesWatcher_Error(object sender, ErrorEventArgs e)
+        {
+            SetupServerFilesWatcher();
+        }
+
+        public void DestroyServerFilesWatcher()
+        {
+            if (_serverFilesWatcherBinary != null)
+            {
+                _serverFilesWatcherBinary.EnableRaisingEvents = false;
+                _serverFilesWatcherBinary.Changed -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Created -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Deleted -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherBinary.Error -= ServerFilesWatcher_Error;
+                _serverFilesWatcherBinary = null;
+            }
+
+            if (_serverFilesWatcherSaved != null)
+            {
+                _serverFilesWatcherSaved.EnableRaisingEvents = false;
+                _serverFilesWatcherSaved.Changed -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Created -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Deleted -= ServerFilesWatcher_Changed;
+                _serverFilesWatcherSaved.Error -= ServerFilesWatcher_Error;
+                _serverFilesWatcherSaved = null;
+            }
+        }
+
+        public void SetupServerFilesWatcher()
+        {
+            if (_serverFilesWatcherBinary != null || _serverFilesWatcherSaved != null)
+                DestroyServerFilesWatcher();
+
+            var path = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+                return;
+
+            _serverFilesWatcherBinary = new FileSystemWatcher
+            {
+                Path = path,
+                NotifyFilter = NotifyFilters.LastWrite,
+            };
+
+            _serverFilesWatcherBinary.Changed += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Created += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Deleted += ServerFilesWatcher_Changed;
+            _serverFilesWatcherBinary.Error += ServerFilesWatcher_Error;
+            _serverFilesWatcherBinary.EnableRaisingEvents = true;
+
+            path = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath);
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+                return;
+
+            _serverFilesWatcherSaved = new FileSystemWatcher
+            {
+                Path = path,
+                NotifyFilter = NotifyFilters.LastWrite,
+            };
+
+            _serverFilesWatcherSaved.Changed += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Created += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Deleted += ServerFilesWatcher_Changed;
+            _serverFilesWatcherSaved.Error += ServerFilesWatcher_Error;
+            _serverFilesWatcherSaved.EnableRaisingEvents = true;
+        }
+
+        public void LoadServerFileAdministrators()
+        {
+            try
+            {
+                var list = this.ServerFilesAdmins ?? new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkAdminFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesAdmins = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesAdmins = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void LoadServerFileExclusive()
+        {
+            try
+            {
+                var list = this.ServerFilesExclusive ?? new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesExclusive = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesExclusive = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void LoadServerFileWhitelisted()
+        {
+            try
+            {
+                var list = this.ServerFilesWhitelisted ?? new SteamUserList();
+
+                var file = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
+                if (File.Exists(file))
+                {
+                    var steamIds = File.ReadAllLines(file);
+                    var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
+
+                    list = SteamUserList.GetList(steamUsers, steamIds);
+                }
+
+                this.ServerFilesWhitelisted = list;
+            }
+            catch (Exception ex)
+            {
+                this.ServerFilesWhitelisted = new SteamUserList();
+                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileAdministrators()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.SavedRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkAdminFile);
+                File.WriteAllLines(file, this.ServerFilesAdmins.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileExclusive()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkExclusiveFile);
+                File.WriteAllLines(file, this.ServerFilesExclusive.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveServerFileWhitelisted()
+        {
+            try
+            {
+                var folder = Path.Combine(InstallDirectory, Config.Default.ServerBinaryRelativePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var file = Path.Combine(folder, Config.Default.ArkWhitelistFile);
+                File.WriteAllLines(file, this.ServerFilesWhitelisted.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
 

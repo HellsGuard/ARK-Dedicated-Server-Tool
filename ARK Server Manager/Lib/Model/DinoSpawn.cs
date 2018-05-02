@@ -14,6 +14,8 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSpawn), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownDinoProperty = DependencyProperty.Register(nameof(KnownDino), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
         public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE));
         public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_SPAWN_LIMIT_PERCENTAGE));
@@ -31,6 +33,20 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (string)GetValue(ClassNameProperty); }
             set { SetValue(ClassNameProperty, value); }
+        }
+
+        [DataMember]
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
+
+        [DataMember]
+        public bool KnownDino
+        {
+            get { return (bool)GetValue(KnownDinoProperty); }
+            set { SetValue(KnownDinoProperty, value); }
         }
 
         [XmlElement(ElementName="Name")]
@@ -66,8 +82,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnWeightMultiplierProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
-
+        public string DisplayName => GameData.FriendlyCreatureNameForClass(ClassName);
 
         public static DinoSpawn FromINIValue(string iniValue)
         {

@@ -371,6 +371,12 @@
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
+            <ContentControl x:Key="PlayerListButtonContent">
+                <StackPanel Orientation="Horizontal"  Height="27">
+                    <Image Source="../Art/Players.png" Width="16" Margin="5,0,5,0"  VerticalAlignment="Center"/>
+                    <Label Content="{DynamicResource ServerSettings_PlayerListButtonLabel}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ContentControl>
             <ContentControl x:Key="ResetRCONButtonContent">
                 <StackPanel Orientation="Horizontal" Height="20">
                     <Image Source="../Art/Refresh.png" Width="16" Height="16" VerticalAlignment="Center" Margin="5,0,5,0"/>
@@ -629,7 +635,7 @@
                             <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
                             <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
                             <Button Grid.Column="2" Margin="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
-                                <Image Source="../Art/Help.png" Height="16" Width="16"/>
+                                <Image Source="../Art/Website.png" Height="16" Width="16"/>
                             </Button>
 
                             <StackPanel Grid.Column="4" DataContext="{Binding Runtime, ElementName=SettingsControl}" Orientation="Horizontal" VerticalAlignment="Center">
@@ -858,7 +864,30 @@
                             </Style>
                         </Button.Style>
                     </Button>
-                    <Button Grid.Row="3" Grid.Column="2" Margin="2" Content="{StaticResource OpenRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}" Click="OpenRCON_Click" IsEnabled="{Binding ElementName=EnableRCONCheckbox, Path=IsChecked}"/>
+                    <Button Grid.Row="3" Grid.Column="2" Margin="2" DataContext="{Binding Profile}" Content="{StaticResource OpenRCONButtonContent}" ToolTip="{DynamicResource ServerSettings_RCONButtonTooltip}" Click="OpenRCON_Click">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RCONEnabled}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Grid.Row="3" Grid.Column="2" Margin="2" DataContext="{Binding Profile}" Content="{StaticResource PlayerListButtonContent}" ToolTip="{DynamicResource ServerSettings_PlayerListButtonTooltip}" Click="OpenPlayerList_Click">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RCONEnabled}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
             </Border>
 
@@ -2232,7 +2261,7 @@
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="DinoArkApplications_SourceUpdated">
                                                 <Label Content="{DynamicResource ServerSettings_DinoFilterLabel}"/>
-                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationDino, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                                <ComboBox Name="ArkApplicationsDinoComboBox" ItemsSource="{Binding BaseArkApplicationList, ElementName=SettingsControl}" SelectedValue="{Binding SelectedArkApplicationDino, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" Margin="0,0,2,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                             </StackPanel>
 
                                             <DataGrid Margin="0,5,0,0" Name="DinoSettingsGrid" ItemsSource="{Binding Source={StaticResource DinosViewSource}}" Height="400" FrozenColumnCount="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeRows="False" RowHeaderWidth="25">
@@ -2243,9 +2272,9 @@
                                                         </DataGridTextColumn.Header>
                                                     </DataGridTextColumn>
 
-                                                    <DataGridTextColumn     Binding="{Binding ArkApplication, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
+                                                    <DataGridTextColumn     Binding="{Binding Mod, Mode=TwoWay}" ElementStyle="{StaticResource CenteredTextBlockStyle}" IsReadOnly="True">
                                                         <DataGridTextColumn.Header>
-                                                            <TextBlock Text="{DynamicResource ServerSettings_ArkAppColumnLabel}"/>
+                                                            <TextBlock Text="{DynamicResource ServerSettings_ModColumnLabel}"/>
                                                         </DataGridTextColumn.Header>
                                                     </DataGridTextColumn>
 
@@ -2445,14 +2474,17 @@
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                                 <Setter Property="Background" Value="Beige" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                                <Setter Property="Background" Value="#F4E2DB" />
-                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                                 <Setter Property="Background" Value="#E7F4DB" />
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                                 <Setter Property="Background" Value="#F4E9DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                                <Setter Property="Background" Value="#F4E2DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                                <Setter Property="Background" Value="#EFDAF5" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2686,7 +2718,7 @@
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="ResourceArkApplications_SourceUpdated">
                                                 <Label Content="{DynamicResource ServerSettings_ResourcesFilterLabel}"/>
-                                                <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationResource, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                                <ComboBox Name="ArkApplicationsResourceComboBox" ItemsSource="{Binding BaseArkApplicationList, ElementName=SettingsControl}" SelectedValue="{Binding SelectedArkApplicationResource, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                             </StackPanel>
 
                                             <ListBox Margin="0,5,0,0" Name="HarvestResourceItemAmountClassMultipliersListBox" ItemsSource="{Binding Source={StaticResource ResourcesViewSource}}" Height="200" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch">
@@ -2705,8 +2737,8 @@
                                                                     <ColumnDefinition Width="Auto" MinWidth="20"/>
                                                                 </Grid.ColumnDefinitions>
 
-                                                                <Label  Grid.Row="0" Grid.Column="0" Content="{Binding ClassName, Converter={StaticResource ResourceNameValueConverter}}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                                <Label  Grid.Row="0" Grid.Column="1" Content="{Binding ArkApplication}" VerticalAlignment="Center"/>
+                                                                <Label  Grid.Row="0" Grid.Column="0" Content="{Binding DisplayName}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                                <Label  Grid.Row="0" Grid.Column="1" Content="{Binding Mod}" VerticalAlignment="Center"/>
                                                                 <local:AnnotatedSlider Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="120" ValueRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                                                 <Button Grid.Row="0" Grid.Column="3" Click="RemoveHarvestResource_Click" ToolTip="{DynamicResource ServerSettings_HarvestRemoveRecordTooltip}">
                                                                     <Button.Style>
@@ -2734,14 +2766,17 @@
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                                 <Setter Property="Background" Value="Beige" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                                <Setter Property="Background" Value="#F4E2DB" />
-                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                                 <Setter Property="Background" Value="#E7F4DB" />
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                                 <Setter Property="Background" Value="#F4E9DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                                <Setter Property="Background" Value="#F4E2DB" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                                <Setter Property="Background" Value="#EFDAF5" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2961,7 +2996,7 @@
 
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <Label Content="{DynamicResource ServerSettings_EngramsFilterLabel}"/>
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource ArkApplications}}" SelectedItem="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                            <ComboBox Name="ArkApplicationsEngramComboBox" ItemsSource="{Binding BaseArkApplicationList, ElementName=SettingsControl}" SelectedValue="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" Margin="0,0,2,0" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                         </StackPanel>
 
                                         <ListView Margin="0,5,0,0" Name="EngramsOverrideListView" ItemsSource="{Binding Source={StaticResource EngramsViewSource}}" Height="400" IsEnabled="{Binding ElementName=EnableEngramOverridesCheckbox, Path=IsChecked}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
@@ -2978,7 +3013,7 @@
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsNameColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding DisplayName}" lvs:SortBehavior.CanUseSort="True"/>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsArkAppColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding ArkApplication}" lvs:SortBehavior.CanUseSort="True"/>
+                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsModColumnLabel}" Width="Auto" DisplayMemberBinding="{Binding Mod}" lvs:SortBehavior.CanUseSort="True"/>
                                                     <GridViewColumn Header="{DynamicResource ServerSettings_EngramsLevelColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="EngramLevelRequirement">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
@@ -3037,13 +3072,6 @@
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
-                                                    <GridViewColumn Header="{DynamicResource ServerSettings_EngramsKnownColumnLabel}" Width="Auto" lvs:SortBehavior.SortExpression="KnownEngram">
-                                                        <GridViewColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding KnownEngram, Mode=OneWay}" HorizontalAlignment="Center" IsEnabled="False"/>
-                                                            </DataTemplate>
-                                                        </GridViewColumn.CellTemplate>
-                                                    </GridViewColumn>
                                                     <GridViewColumn Width="Auto" lvs:SortBehavior.CanUseSort="False">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
@@ -3081,14 +3109,17 @@
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Unknown}">
                                                             <Setter Property="Background" Value="Beige" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.SurvivalOfTheFittest}">
-                                                            <Setter Property="Background" Value="#F4E2DB" />
-                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.PrimitivePlus}">
                                                             <Setter Property="Background" Value="#E7F4DB" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.ScorchedEarth}">
                                                             <Setter Property="Background" Value="#F4E9DB" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Ragnarok}">
+                                                            <Setter Property="Background" Value="#F4E2DB" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ArkApplication}" Value="{x:Static lib:ArkApplication.Aberration}">
+                                                            <Setter Property="Background" Value="#EFDAF5" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -3133,7 +3164,7 @@
 
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Content="{DynamicResource ServerSettings_ServerFilesWarningLabel}"/>
 
-                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesAdminLabel}"/>
@@ -3148,8 +3179,39 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
+                                    
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesAdmins, ElementName=SettingsControl}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <DataGrid ItemsSource="{Binding ServerFilesAdmins}"  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3201,7 +3263,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesWhitelistLabel}"/>
@@ -3217,7 +3279,38 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesWhitelisted, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
+
+                                    <DataGrid ItemsSource="{Binding ServerFilesWhitelisted}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>
@@ -3264,7 +3357,7 @@
                                     </DataGrid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="250" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Height="250">
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
@@ -3280,7 +3373,38 @@
                                         </StackPanel>
                                     </GroupBox.Header>
 
-                                    <DataGrid ItemsSource="{Binding Path=ServerFilesExclusive, ElementName=SettingsControl}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Runtime.Status, ElementName=SettingsControl}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
+
+                                    <DataGrid ItemsSource="{Binding ServerFilesExclusive}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="true" SelectionMode="Single" CanUserResizeColumns="False" CanUserResizeRows="False" RowHeaderWidth="25" IsReadOnly="True">
                                         <DataGrid.Resources>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Style.Resources>

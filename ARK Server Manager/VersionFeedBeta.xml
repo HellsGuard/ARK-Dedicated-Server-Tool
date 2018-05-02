@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <id>urn:uuid:ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E</id>
+  <title>Ark Server Manager Version Feed</title>
+  <subtitle>This is the Ark Server Manager beta version feed.</subtitle>
+  <link href="http://arkservermanager.freeforums.net/" />
+  <updated>2018-05-01T00:00:00Z</updated>
+
+  <entry>
+    <id>urn:uuid:184273B2-C41D-4CED-9082-A3E75B8A84C9</id>
+    <title>1.0.323 (1.0.323.19)</title>
+    <summary>1.0.323.19</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-05-01T11:10:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          <ul>
+            <li>Version Details Window - defaults to the latest version, based on date.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:21FB8DD4-DDD1-4147-ADDC-04820F925132</id>
+    <title>1.0.323 (1.0.323.18)</title>
+    <summary>1.0.323.18</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-05-01T07:40:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          <ul>
+            <li>Version Details Window - a new window to show the version updates.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:81E9EAE5-78C6-4EBB-9A2D-D4C238276E2C</id>
+    <title>1.0.323 (1.0.323.17)</title>
+    <summary>1.0.323.17</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-30T06:30:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          Completely re-written the RCON and Player List player profile load.<br/>
+          <ul>
+            <li>It should now only call the update one at a time - should remove the ListPlayers spam.</li>
+            <li>It should not freeze ASM when the profiles are now loading.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:EB925786-DCB0-4FF6-84FE-594E13F9E829</id>
+    <title>1.0.323 (1.0.323.15)</title>
+    <summary>1.0.323.15</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-28T05:25:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          This version adds a very basic Player List. This player list is only available when RCON is disabled, replaces the RCON button with a Players button.<br/><br/>
+          The player list only reads the ARK player and tribe files and displays them in a list. Without RCON I am unable to determine which player is online, so Online status is never shown here.<br/><br/>
+          Right-click on a player to get a few options.<br/><br/>
+          This list is only designed to give server owners WITHOUT RCON, the ability to see who is connecting to their server.<br/><br/>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:FF1216E0-68F2-42DE-A082-29D1E7C39675</id>
+    <title>1.0.323 (1.0.323.14)</title>
+    <summary>1.0.323.14</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-28T00:30:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          RCON window player list
+          <ul>
+            <li>
+              Border Colors around each player<br/>
+              Online - Green<br/>
+              Invalid - Orange<br/>
+              Banned - Red<br/>
+              Whitelisted - Blue (this is new and relates to your Whitelist in the Server Files section)
+            </li>
+            <li>
+              Steam Name of the player<br/>
+              Normal player - Black<br/>
+              Admin player - Blue/Bold (this is new and relates to your Admin List in the Server Files section)
+            </li>
+          </ul>
+          There is also a new filter menu item - Show Admin.
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:4B0138F2-CEE7-4488-91AE-E6F6BFF55A06</id>
+    <title>1.0.323 (1.0.323.13)</title>
+    <summary>1.0.323.13</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-27T11:40:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>Code cleanup for the ArkData library.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:DE14D148-BE81-495F-B9EA-27AFF08442D8</id>
+    <title>1.0.323 (1.0.323.12)</title>
+    <summary>1.0.323.12</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-27T11:40:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>This version updates the French translation file.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:CC197DCC-77AD-46F9-8224-A44EC8C96BA1</id>
+    <title>1.0.323 (1.0.323.10)</title>
+    <summary>1.0.323.10</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-27T02:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          <ul>
+            <li>This version adds a global setting to shutdown or keep open the Server Shutdown window after it is finished - used for testing.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:7198117F-F39E-4CB3-8CED-493270941FB9</id>
+    <title>1.0.323 (1.0.323.9)</title>
+    <summary>1.0.323.9</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-26T11:20:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">BUGFIX</u>
+          <br/>
+          <ul>
+            <li>This version fixes a few duplicate shutdown messages introduced with the Always Show Shutdown Reason in last release (322).</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:16FD7285-1B25-411A-A737-673EBD75FDBB</id>
+    <title>1.0.323 (1.0.323.8)</title>
+    <summary>1.0.323.8</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-25T07:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>The auto-update now has a file copy failure retry. If the file fails to copy, it will try 3 times with a 5 second delay in between.</li>
+            <li>The Server Files section is now read-only when the server is running.</li>
+            <li>The Server Files section is now an option in the Profile Sync.</li>
+            <li>The Shutdown window will now always open regardless of if RCON is enabled/disabled.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:FEB2BFF9-7589-44C0-9C17-D1A73F49C05B</id>
+    <title>1.0.323 (1.0.323.7)</title>
+    <summary>1.0.323.7</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-21T12:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>Added Server, Query and RCON port validation to the profile validation. Valid range is 0 - 65535.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:A3487CCB-1EB5-4FD4-8540-54139C1F697C</id>
+    <title>1.0.323 (1.0.323.6)</title>
+    <summary>1.0.323.6</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-21T09:40:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>This version adds the .arktributetribe files to the backup and restore functions.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:BC0C1745-CB3F-40D1-A798-9EDB804BBD17</id>
+    <title>1.0.323 (1.0.323.5)</title>
+    <summary>1.0.323.5</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-21T06:45:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>A small change to the GameData files. Each file now has an 'Application' tag at the top. If this value does not match the value stored in the .config file of ASM, it will not read it.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:92800BD0-486D-4E1E-B306-185D2214FF27</id>
+    <title>1.0.323 (1.0.323.4)</title>
+    <summary>1.0.323.4</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-21T02:50:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>Code cleanup with the gamedata.</li>
+            <li>A confirmation dialog has been added when using the Write Timestamp button in the Mod Details window.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:5A7C63A4-D4B8-4032-A9D7-093B198EC5E2</id>
+    <title>1.0.323 (1.0.323.2)</title>
+    <summary>1.0.323.2</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-20T06:20:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>The ArkApplication filter comboboxes have been changed, so that the display values can be globalized.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:E5A153CC-83BF-4E97-915B-09F0CEDE177E</id>
+    <title>1.0.323 (1.0.323.1)</title>
+    <summary>1.0.323.1</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5103/1-323-test-build" />
+    <updated>2018-04-20T05:00:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          <ul>
+            <li>Gamedata storage changes</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+</feed>

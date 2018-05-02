@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using ArkServerManager.Plugin.Common;
 using System.Net;
+using ArkData;
 
 namespace ARK_Server_Manager
 {
@@ -360,6 +361,12 @@ namespace ARK_Server_Manager
             Config.Default.ConfigDirectory = Path.Combine(Config.Default.DataDir, Config.Default.ProfilesDir);            
             System.IO.Directory.CreateDirectory(Config.Default.ConfigDirectory);
             Config.Default.Save();
+
+            // initialize all the game data
+            GameData.Initialize();
+
+            DataFileDetails.PlayerFileExtension = Config.Default.PlayerFileExtension;
+            DataFileDetails.TribeFileExtension = Config.Default.TribeFileExtension;
 
             Task.Factory.StartNew(async () => await App.DiscoverMachinePublicIP(forceOverride: true));
         }

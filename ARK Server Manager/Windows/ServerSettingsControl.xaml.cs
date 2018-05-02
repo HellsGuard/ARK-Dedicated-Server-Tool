@@ -79,6 +79,7 @@ namespace ARK_Server_Manager
         private CancellationTokenSource _upgradeCancellationSource = null;
 
         // Using a DependencyProperty as the backing store for ServerManager.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BaseArkApplicationListProperty = DependencyProperty.Register(nameof(BaseArkApplicationList), typeof(ArkApplicationComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseDinoSettingsDinoListProperty = DependencyProperty.Register(nameof(BaseDinoSettingsDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseMapSpawnerDinoListProperty = DependencyProperty.Register(nameof(BaseMapSpawnerDinoList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
@@ -102,11 +103,14 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedSupplyCrateOverrideProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateOverride), typeof(SupplyCrateOverride), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSet), typeof(SupplyCrateItemSet), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetEntryProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSetEntry), typeof(SupplyCrateItemSetEntry), typeof(ServerSettingsControl));
-        public static readonly DependencyProperty ServerFilesAdminsProperty = DependencyProperty.Register(nameof(ServerFilesAdmins), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty ServerFilesExclusiveProperty = DependencyProperty.Register(nameof(ServerFilesExclusive), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty ServerFilesWhitelistedProperty = DependencyProperty.Register(nameof(ServerFilesWhitelisted), typeof(SteamUserList), typeof(ServerSettingsControl), new PropertyMetadata(null));
 
         #region Properties
+        public ArkApplicationComboBoxItemList BaseArkApplicationList
+        {
+            get { return (ArkApplicationComboBoxItemList)GetValue(BaseArkApplicationListProperty); }
+            set { SetValue(BaseArkApplicationListProperty, value); }
+        }
+
         public ComboBoxItemList BaseDinoSettingsDinoList
         {
             get { return (ComboBoxItemList)GetValue(BaseDinoSettingsDinoListProperty); }
@@ -244,24 +248,6 @@ namespace ARK_Server_Manager
             get { return GetValue(SelectedSupplyCrateItemSetEntryProperty) as SupplyCrateItemSetEntry; }
             set { SetValue(SelectedSupplyCrateItemSetEntryProperty, value); }
         }
-
-        public SteamUserList ServerFilesAdmins
-        {
-            get { return (SteamUserList)GetValue(ServerFilesAdminsProperty); }
-            set { SetValue(ServerFilesAdminsProperty, value); }
-        }
-
-        public SteamUserList ServerFilesExclusive
-        {
-            get { return (SteamUserList)GetValue(ServerFilesExclusiveProperty); }
-            set { SetValue(ServerFilesExclusiveProperty, value); }
-        }
-
-        public SteamUserList ServerFilesWhitelisted
-        {
-            get { return (SteamUserList)GetValue(ServerFilesWhitelistedProperty); }
-            set { SetValue(ServerFilesWhitelistedProperty, value); }
-        }
         #endregion
 
         public ServerSettingsControl()
@@ -273,6 +259,7 @@ namespace ARK_Server_Manager
             this.ServerManager = ServerManager.Instance;
             this.IsAdministrator = SecurityUtils.IsAdministrator();
 
+            RefreshBaseArkApplicationList();
             this.BaseDinoSettingsDinoList = new ComboBoxItemList();
             this.BaseMapSpawnerList = new ComboBoxItemList();
             this.BaseMapSpawnerDinoList = new ComboBoxItemList();
@@ -280,9 +267,6 @@ namespace ARK_Server_Manager
             this.BaseSupplyCrateList = new ComboBoxItemList();
             this.BaseGameMaps = new ComboBoxItemList();
             this.BaseTotalConversions = new ComboBoxItemList();
-
-            this.ServerFilesAdmins = new SteamUserList();
-            this.ServerFilesWhitelisted = new SteamUserList();
 
             // hook into the language change event
             GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += ResourceDictionaryChangedEvent;
@@ -320,6 +304,7 @@ namespace ARK_Server_Manager
             this.Settings.NPCSpawnSettings.UpdateForLocalization();
             this.Settings.ConfigOverrideSupplyCrateItems.UpdateForLocalization();
 
+            this.RefreshBaseArkApplicationList();
             this.RefreshBaseDinoList();
             this.RefreshBaseMapSpawnerList();
             this.RefreshBasePrimalItemList();
@@ -368,8 +353,8 @@ namespace ARK_Server_Manager
             {
                 case ServerRuntime.ServerStatus.Initializing:
                 case ServerRuntime.ServerStatus.Running:
-                    // check if the server is initialising, or if RCON is not enabled.
-                    if (this.Runtime.Status == ServerRuntime.ServerStatus.Initializing || !this.Server.Profile.RCONEnabled)
+                    // check if the server is initialising.
+                    if (this.Runtime.Status == ServerRuntime.ServerStatus.Initializing)
                     {
                         result = MessageBox.Show(_globalizer.GetResourceString("ServerSettings_StartServer_StartingLabel"), _globalizer.GetResourceString("ServerSettings_StartServer_StartingTitle"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                         if (result == MessageBoxResult.No)
@@ -523,6 +508,19 @@ namespace ARK_Server_Manager
             window.Focus();
         }
 
+        private void OpenPlayerList_Click(object sender, RoutedEventArgs e)
+        {
+            var window = PlayerListWindow.GetWindowForServer(this.Server);
+            window.Closed += Window_Closed;
+            window.Show();
+            if (window.WindowState == WindowState.Minimized)
+            {
+                window.WindowState = WindowState.Normal;
+            }
+
+            window.Focus();
+        }
+
         private void OpenModDetails_Click(object sender, RoutedEventArgs e)
         {
             var window = new ModDetailsWindow(this.Server.Profile);
@@ -535,15 +533,24 @@ namespace ARK_Server_Manager
 
         private void HelpSOTF_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(Config.Default.ArkSotfUrl))
+                return;
+
             Process.Start(Config.Default.ArkSotfUrl);
         }
 
         private void PatchNotes_Click(object sender, RoutedEventArgs e)
         {
+            var url = string.Empty;
             if (Settings.SOTF_Enabled)
-                Process.Start(Config.Default.ArkSotF_PatchNotesUrl);
+                url =Config.Default.ArkSotF_PatchNotesUrl;
             else
-                Process.Start(Config.Default.ArkSE_PatchNotesUrl);
+                url = Config.Default.ArkSE_PatchNotesUrl;
+
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            Process.Start(url);
         }
 
         private void NeedAdmin_Click(object sender, RoutedEventArgs e)
@@ -842,7 +849,7 @@ namespace ARK_Server_Manager
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                Settings.InstallDirectory = dialog.FileName;
+                Settings.ChangeInstallationFolder(dialog.FileName);
             }
         }
 
@@ -1700,9 +1707,9 @@ namespace ARK_Server_Manager
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
                     var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
-                    this.ServerFilesAdmins.AddRange(steamUserList);
+                    Settings.ServerFilesAdmins.AddRange(steamUserList);
 
-                    SaveServerFileAdministrators();
+                    Settings.SaveServerFileAdministrators();
                 }
                 catch (Exception ex)
                 {
@@ -1726,9 +1733,9 @@ namespace ARK_Server_Manager
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
                     var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
-                    this.ServerFilesExclusive.AddRange(steamUserList);
+                    Settings.ServerFilesExclusive.AddRange(steamUserList);
 
-                    SaveServerFileExclusive();
+                    Settings.SaveServerFileExclusive();
                 }
                 catch (Exception ex)
                 {
@@ -1752,9 +1759,9 @@ namespace ARK_Server_Manager
                     var steamIds = steamIdsString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
                     var steamUserList = SteamUserList.GetList(steamUsers, steamIds);
-                    this.ServerFilesWhitelisted.AddRange(steamUserList);
+                    Settings.ServerFilesWhitelisted.AddRange(steamUserList);
 
-                    SaveServerFileWhitelisted();
+                    Settings.SaveServerFileWhitelisted();
                 }
                 catch (Exception ex)
                 {
@@ -1768,9 +1775,9 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            ServerFilesAdmins.Clear();
+            Settings.ServerFilesAdmins.Clear();
 
-            SaveServerFileAdministrators();
+            Settings.SaveServerFileAdministrators();
         }
 
         private void ClearExclusivePlayers_Click(object sender, RoutedEventArgs e)
@@ -1778,9 +1785,9 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            ServerFilesExclusive.Clear();
+            Settings.ServerFilesExclusive.Clear();
 
-            SaveServerFileExclusive();
+            Settings.SaveServerFileExclusive();
         }
 
         private void ClearWhitelistPlayers_Click(object sender, RoutedEventArgs e)
@@ -1788,9 +1795,9 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_ClearLabel"), _globalizer.GetResourceString("ServerSettings_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            ServerFilesWhitelisted.Clear();
+            Settings.ServerFilesWhitelisted.Clear();
 
-            SaveServerFileWhitelisted();
+            Settings.SaveServerFileWhitelisted();
         }
 
         private async void ReloadAdminPlayers_Click(object sender, RoutedEventArgs e)
@@ -1802,7 +1809,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
                 await Task.Delay(500);
 
-                LoadServerFileAdministrators();
+                Settings.LoadServerFileAdministrators();
             }
             catch (Exception ex)
             {
@@ -1823,7 +1830,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
                 await Task.Delay(500);
 
-                LoadServerFileExclusive();
+                Settings.LoadServerFileExclusive();
             }
             catch (Exception ex)
             {
@@ -1844,7 +1851,7 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = Cursors.Wait);
                 await Task.Delay(500);
 
-                LoadServerFileWhitelisted();
+                Settings.LoadServerFileWhitelisted();
             }
             catch (Exception ex)
             {
@@ -1862,9 +1869,9 @@ namespace ARK_Server_Manager
                 return;
 
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
-            ServerFilesAdmins.Remove(mod);
+            Settings.ServerFilesAdmins.Remove(mod.SteamId);
 
-            SaveServerFileAdministrators();
+            Settings.SaveServerFileAdministrators();
         }
 
         private void RemoveExclusivePlayer_Click(object sender, RoutedEventArgs e)
@@ -1873,9 +1880,9 @@ namespace ARK_Server_Manager
                 return;
 
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
-            ServerFilesExclusive.Remove(mod);
+            Settings.ServerFilesExclusive.Remove(mod.SteamId);
 
-            SaveServerFileExclusive();
+            Settings.SaveServerFileExclusive();
         }
 
         private void RemoveWhitelistPlayer_Click(object sender, RoutedEventArgs e)
@@ -1884,9 +1891,9 @@ namespace ARK_Server_Manager
                 return;
 
             var mod = ((SteamUserItem)((Button)e.Source).DataContext);
-            ServerFilesWhitelisted.Remove(mod);
+            Settings.ServerFilesWhitelisted.Remove(mod.SteamId);
 
-            SaveServerFileWhitelisted();
+            Settings.SaveServerFileWhitelisted();
         }
 
         private void SteamProfileNavigate_Click(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -2381,6 +2388,27 @@ namespace ARK_Server_Manager
             }
         }
 
+        public void RefreshBaseArkApplicationList()
+        {
+            var newList = new ArkApplicationComboBoxItemList();
+
+            var values = Enum.GetValues(typeof(ArkApplication)).Cast<ArkApplication>();
+            foreach (var value in values)
+            {
+                var name = _globalizer.GetResourceString($"{nameof(ArkApplication)}_{value}");
+                if (string.IsNullOrWhiteSpace(name) && (value == ArkApplication.All || value == ArkApplication.Unknown))
+                    name = value.ToString();
+
+                if (!string.IsNullOrWhiteSpace(name))
+                    newList.Add(new ArkApplicationComboBoxItem(value, name));
+            }
+
+            this.BaseArkApplicationList = newList;
+            this.ArkApplicationsDinoComboBox.SelectedValue = SelectedArkApplicationDino;
+            this.ArkApplicationsResourceComboBox.SelectedValue = SelectedArkApplicationResource;
+            this.ArkApplicationsEngramComboBox.SelectedValue = SelectedArkApplicationEngram;
+        }
+
         public void RefreshBaseDinoList()
         {
             var newList = new ComboBoxItemList();
@@ -2392,7 +2420,7 @@ namespace ARK_Server_Manager
 
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = GameData.FriendlyNameForClass(dino.ClassName),
+                    DisplayMember = string.IsNullOrWhiteSpace(dino.Mod) ? $"{dino.DisplayName}" : $"{dino.DisplayName} ({dino.Mod})",
                     ValueMember = dino.ClassName,
                 });
             }
@@ -2408,7 +2436,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = GameData.FriendlyNameForClass(dinoSetting.ReplacementClass),
+                        DisplayMember = dinoSetting.ReplacementClass,
                         ValueMember = dinoSetting.ReplacementClass,
                     });
                 }
@@ -2425,7 +2453,7 @@ namespace ARK_Server_Manager
                     {
                         newList.Add(new Lib.ViewModel.ComboBoxItem
                         {
-                            DisplayMember = GameData.FriendlyNameForClass(spawnEntry.NPCClassString),
+                            DisplayMember = spawnEntry.NPCClassString,
                             ValueMember = spawnEntry.NPCClassString,
                         });
                     }
@@ -2451,11 +2479,11 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var mapSpawner in GameData.GetStandardMapSpawners())
+            foreach (var mapSpawner in GameData.GetMapSpawners())
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = mapSpawner.DisplayName,
+                    DisplayMember = string.IsNullOrWhiteSpace(mapSpawner.Mod) ? $"{mapSpawner.DisplayName}" : $"{mapSpawner.DisplayName} ({mapSpawner.Mod})",
                     ValueMember = mapSpawner.ClassName,
                 });
             }
@@ -2493,13 +2521,13 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardPrimalItems())
+            foreach (var primalItem in GameData.GetItems())
             {
                 var categoryName = primalItem.ArkApplication == ArkApplication.SurvivalEvolved ? string.Empty : $" ({primalItem.ArkApplication.ToString()})";
 
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = $"{primalItem.DisplayName}{categoryName}",
+                    DisplayMember = string.IsNullOrWhiteSpace(primalItem.Mod) ? $"{primalItem.DisplayName}" : $"{primalItem.DisplayName} ({primalItem.Mod})",
                     ValueMember = primalItem.ClassName,
                 });
             }
@@ -2580,11 +2608,11 @@ namespace ARK_Server_Manager
         {
             var newList = new ComboBoxItemList();
 
-            foreach (var primalItem in GameData.GetStandardSupplyCrates())
+            foreach (var primalItem in GameData.GetSupplyCrates())
             {
                 newList.Add(new Lib.ViewModel.ComboBoxItem
                 {
-                    DisplayMember = primalItem.DisplayName,
+                    DisplayMember = string.IsNullOrWhiteSpace(primalItem.Mod) ? $"{primalItem.DisplayName}" : $"{primalItem.DisplayName} ({primalItem.Mod})",
                     ValueMember = primalItem.ClassName,
                 });
             }
@@ -2643,7 +2671,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = this.Settings.ServerMap,
+                        DisplayMember = this.Settings.SOTF_Enabled ? GameData.FriendlyMapSotFNameForClass(this.Settings.ServerMap) : GameData.FriendlyMapNameForClass(this.Settings.ServerMap),
                         ValueMember = this.Settings.ServerMap,
                     });
                 }
@@ -2678,7 +2706,7 @@ namespace ARK_Server_Manager
                 {
                     newList.Add(new Lib.ViewModel.ComboBoxItem
                     {
-                        DisplayMember = this.Settings.TotalConversionModId,
+                        DisplayMember = this.Settings.SOTF_Enabled ? GameData.FriendlyTotalConversionSotFNameForClass(this.Settings.TotalConversionModId) : GameData.FriendlyTotalConversionNameForClass(this.Settings.TotalConversionModId),
                         ValueMember = this.Settings.TotalConversionModId,
                     });
                 }
@@ -3043,126 +3071,9 @@ namespace ARK_Server_Manager
 
         private void LoadServerFiles()
         {
-            LoadServerFileAdministrators();
-            LoadServerFileExclusive();
-            LoadServerFileWhitelisted();
-        }
-
-        private void LoadServerFileAdministrators()
-        {
-            try
-            {
-                this.ServerFilesAdmins = new SteamUserList();
-
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath, Config.Default.ArkAdminFile);
-                if (!File.Exists(file))
-                    return;
-
-                var steamIds = File.ReadAllLines(file);
-                var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-
-                this.ServerFilesAdmins = SteamUserList.GetList(steamUsers, steamIds);
-            }
-            catch (Exception ex)
-            {
-                this.ServerFilesAdmins = new SteamUserList();
-                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void LoadServerFileExclusive()
-        {
-            try
-            {
-                this.ServerFilesExclusive = new SteamUserList();
-
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkExclusiveFile);
-                if (!File.Exists(file))
-                    return;
-
-                var steamIds = File.ReadAllLines(file);
-                var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-
-                this.ServerFilesExclusive = SteamUserList.GetList(steamUsers, steamIds);
-            }
-            catch (Exception ex)
-            {
-                this.ServerFilesExclusive = new SteamUserList();
-                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void LoadServerFileWhitelisted()
-        {
-            try
-            {
-                this.ServerFilesWhitelisted = new SteamUserList();
-
-                var file = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ArkWhitelistFile);
-                if (!File.Exists(file))
-                    return;
-
-                var steamIds = File.ReadAllLines(file);
-                var steamUsers = SteamUtils.GetSteamUserDetails(steamIds.ToList());
-
-                this.ServerFilesWhitelisted = SteamUserList.GetList(steamUsers, steamIds);
-            }
-            catch (Exception ex)
-            {
-                this.ServerFilesWhitelisted = new SteamUserList();
-                MessageBox.Show(ex.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void SaveServerFileAdministrators()
-        {
-            try
-            {
-                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.SavedRelativePath);
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
-
-                var file = Path.Combine(folder, Config.Default.ArkAdminFile);
-                File.WriteAllLines(file, this.ServerFilesAdmins.ToArray());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void SaveServerFileExclusive()
-        {
-            try
-            {
-                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath);
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
-
-                var file = Path.Combine(folder, Config.Default.ArkExclusiveFile);
-                File.WriteAllLines(file, this.ServerFilesExclusive.ToArray());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void SaveServerFileWhitelisted()
-        {
-            try
-            {
-                var folder = Path.Combine(Settings.InstallDirectory, Config.Default.ServerBinaryRelativePath);
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
-
-                var file = Path.Combine(folder, Config.Default.ArkWhitelistFile);
-                File.WriteAllLines(file, this.ServerFilesWhitelisted.ToArray());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            Settings.LoadServerFileAdministrators();
+            Settings.LoadServerFileExclusive();
+            Settings.LoadServerFileWhitelisted();
         }
         #endregion
     }

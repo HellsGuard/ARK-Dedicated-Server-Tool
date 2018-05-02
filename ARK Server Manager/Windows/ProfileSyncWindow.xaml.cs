@@ -182,6 +182,7 @@ namespace ARK_Server_Manager
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.EnvironmentSection, SectionName = _globalizer.GetResourceString("ServerSettings_EnvironmentLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.StructuresSection, SectionName = _globalizer.GetResourceString("ServerSettings_StructuresLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.EngramsSection, SectionName = _globalizer.GetResourceString("ServerSettings_EngramsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.ServerFiles, SectionName = _globalizer.GetResourceString("ServerSettings_ServerFilesLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.CustomSettingsSection, SectionName = _globalizer.GetResourceString("ServerSettings_CustomSettingsLabel") });
             ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.CustomLevelsSection, SectionName = _globalizer.GetResourceString("ServerSettings_CustomLevelProgressionsLabel") });
             if (Config.Default.SectionCraftingOverridesEnabled)

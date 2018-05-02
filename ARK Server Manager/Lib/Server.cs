@@ -29,6 +29,8 @@ namespace ARK_Server_Manager.Lib
 
         public void Dispose()
         {
+            this.Profile.DestroyServerFilesWatcher();
+
             this.Runtime.StatusUpdate -= Runtime_StatusUpdate;
             this.Runtime.Dispose();
         }

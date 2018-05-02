@@ -1997,5 +1997,114 @@ namespace ARK_Server_Manager {
                 this["ServerShutdown_AllMessagesShowReason"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GameData")]
+        public string GameDataDir {
+            get {
+                return ((string)(this["GameDataDir"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".gamedata")]
+        public string GameDataExtension {
+            get {
+                return ((string)(this["GameDataExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ARK Server:")]
+        public string FirewallRulePrefix {
+            get {
+                return ((string)(this["FirewallRulePrefix"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ark")]
+        public string GameDataApplication {
+            get {
+                return ((string)(this["GameDataApplication"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".arktributetribe")]
+        public string TributeTribeFileExtension {
+            get {
+                return ((string)(this["TributeTribeFileExtension"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int SendMessageDelay {
+            get {
+                return ((int)(this["SendMessageDelay"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CloseShutdownWindowWhenFinished {
+            get {
+                return ((bool)(this["CloseShutdownWindowWhenFinished"]));
+            }
+            set {
+                this["CloseShutdownWindowWhenFinished"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("63")]
+        public int PlayerListFilter {
+            get {
+                return ((int)(this["PlayerListFilter"]));
+            }
+            set {
+                this["PlayerListFilter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PlayerListSort {
+            get {
+                return ((int)(this["PlayerListSort"]));
+            }
+            set {
+                this["PlayerListSort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/release/versionfeed.xml" +
+            "")]
+        public string ServerManagerVersionFeedUrl {
+            get {
+                return ((string)(this["ServerManagerVersionFeedUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/beta/versionfeed.xml")]
+        public string ServerManagerVersionBetaFeedUrl {
+            get {
+                return ((string)(this["ServerManagerVersionBetaFeedUrl"]));
+            }
+        }
     }
 }

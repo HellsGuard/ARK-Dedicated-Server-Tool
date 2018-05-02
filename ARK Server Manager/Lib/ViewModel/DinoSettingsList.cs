@@ -32,7 +32,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             Reset();
         }
 
-        private DinoSettings CreateDinoSetting(string className, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
+        private DinoSettings CreateDinoSetting(string className, string mod, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
         {
             var nameTag = GameData.NameTagForClass(className);
             var isSpawnable = GameData.IsSpawnableForClass(className);
@@ -42,6 +42,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 ArkApplication = arkApplication,
                 ClassName = className,
+                Mod = mod,
+                KnownDino = knownDino,
                 NameTag = nameTag,
 
                 CanSpawn = true,
@@ -57,7 +59,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 WildDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
                 WildResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
 
-                KnownDino = knownDino,
                 HasClassName = hasClassName,
                 HasNameTag = hasNameTag,
                 IsSpawnable = isSpawnable,
@@ -85,7 +86,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
             var dinoSpawns = GameData.GetDinoSpawns();
             foreach (var entry in dinoSpawns)
             {
-                this.Add(CreateDinoSetting(entry.ClassName, true, entry.DinoNameTag != null, true, entry.ArkApplication));
+                this.Add(CreateDinoSetting(entry.ClassName, entry.Mod, entry.KnownDino, entry.DinoNameTag != null, true, entry.ArkApplication));
             }
         }
 
@@ -98,7 +99,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.DinoNameTag, false, true, false, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.DinoNameTag, entry.Mod, entry.KnownDino, true, false, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
@@ -115,7 +116,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
@@ -130,7 +131,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.FromClassName, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.FromClassName, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
@@ -146,7 +147,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -161,7 +162,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -176,7 +177,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
@@ -191,7 +192,7 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
-                    this.Add(CreateDinoSetting(entry.ClassName, false, false, true, ArkApplication.Unknown));
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
                 }
 
                 dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);

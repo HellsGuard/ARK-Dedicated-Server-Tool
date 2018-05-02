@@ -63,8 +63,8 @@ namespace ARK_Server_Manager
                     AltSaveDirectoryName = String.Empty,
                     PGM_Enabled = false,
                     PGM_Name = string.Empty,
-                    RCONWindowTitle = String.Format(_globalizer.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
-                    RCONWindowExtents = Rect.Empty
+                    WindowTitle = String.Format(_globalizer.GetResourceString("OpenRCON_WindowTitle"), ServerIP, RCONPort),
+                    WindowExtents = Rect.Empty
                 });
 
                 SaveDefaults();

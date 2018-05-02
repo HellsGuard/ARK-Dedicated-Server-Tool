@@ -34,7 +34,8 @@ namespace ARK_Server_Manager
         Online = 0x2,
         Banned = 0x4,
         Whitelisted = 0x8,
-        Invalid = 0x10
+        Invalid = 0x10,
+        Admin = 0x20,
     }
 
     public enum InputMode
@@ -180,12 +181,12 @@ namespace ARK_Server_Manager
                 String.Format(_globalizer.GetResourceString("RCON_Comments_Line6"), 
                 _globalizer.GetResourceString("RCON_Help_Keyword")));
 
-            if (this.RCONParameters.RCONWindowExtents.Width > 50 && this.RCONParameters.RCONWindowExtents.Height > 50)
+            if (this.RCONParameters.WindowExtents.Width > 50 && this.RCONParameters.WindowExtents.Height > 50)
             {
-                this.Left = this.RCONParameters.RCONWindowExtents.Left;
-                this.Top = this.RCONParameters.RCONWindowExtents.Top;
-                this.Width = this.RCONParameters.RCONWindowExtents.Width;
-                this.Height = this.RCONParameters.RCONWindowExtents.Height;
+                this.Left = this.RCONParameters.WindowExtents.Left;
+                this.Top = this.RCONParameters.WindowExtents.Top;
+                this.Width = this.RCONParameters.WindowExtents.Width;
+                this.Height = this.RCONParameters.WindowExtents.Height;
 
                 //
                 // Fix issues where the console was saved while offscreen.
@@ -289,7 +290,7 @@ namespace ARK_Server_Manager
             {
                 window = new RCONWindow(new RCONParameters()
                 {
-                    RCONWindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
+                    WindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
 
                     Server = server,
                     AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
@@ -302,7 +303,7 @@ namespace ARK_Server_Manager
 
                     PGM_Enabled = server.Profile.PGM_Enabled,
                     PGM_Name = server.Profile.PGM_Name,
-                    RCONWindowExtents = server.Profile.RCONWindowExtents,
+                    WindowExtents = server.Profile.RCONWindowExtents,
                 });
                 RCONWindows[server] = window;
             }
@@ -926,8 +927,8 @@ namespace ARK_Server_Manager
         {
             if (this.WindowState != WindowState.Minimized)
             {
-                Rect savedRect = this.RCONParameters.RCONWindowExtents;
-                this.RCONParameters.RCONWindowExtents = new Rect(savedRect.Location, e.NewSize);
+                Rect savedRect = this.RCONParameters.WindowExtents;
+                this.RCONParameters.WindowExtents = new Rect(savedRect.Location, e.NewSize);
             }
         }
 
@@ -935,11 +936,11 @@ namespace ARK_Server_Manager
         {
             if (this.WindowState != WindowState.Minimized && this.Left != -32000 && this.Top != -32000)
             {
-                Rect savedRect = this.RCONParameters.RCONWindowExtents;
-                this.RCONParameters.RCONWindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+                Rect savedRect = this.RCONParameters.WindowExtents;
+                this.RCONParameters.WindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
                 if (this.RCONParameters.Server != null)
                 {
-                    this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.RCONWindowExtents;
+                    this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.WindowExtents;
                 }
             }
         }
@@ -963,6 +964,7 @@ namespace ARK_Server_Manager
 
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Admin) && player.IsAdmin) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);

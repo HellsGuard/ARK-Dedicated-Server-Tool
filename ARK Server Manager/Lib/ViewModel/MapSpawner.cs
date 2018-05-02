@@ -6,6 +6,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
     public class MapSpawner : DependencyObject
     {
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(MapSpawner), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(MapSpawner), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownSpawnerProperty = DependencyProperty.Register(nameof(KnownSpawner), typeof(bool), typeof(MapSpawner), new PropertyMetadata(false));
 
         public string ClassName
         {
@@ -13,9 +15,19 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(ClassNameProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
 
-        public bool KnownSpawner => GameData.HasMapSpawnerForClass(ClassName);
+        public bool KnownSpawner
+        {
+            get { return (bool)GetValue(KnownSpawnerProperty); }
+            set { SetValue(KnownSpawnerProperty, value); }
+        }
+
+        public string DisplayName => GameData.FriendlyMapSpawnerNameForClass(ClassName);
 
         public MapSpawner Duplicate()
         {

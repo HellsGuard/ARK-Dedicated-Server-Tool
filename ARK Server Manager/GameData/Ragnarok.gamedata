@@ -1,0 +1,186 @@
+{
+  "Application": "ark",
+  "Version": "1.0.0",
+  "Created": "2018-04-21T11:00:00.0000000Z",
+  "Creatures": [
+    {
+      "NameTag": "Griffin",
+      "IsSpawnable": true,
+      "IsTameable": "True",
+      "ClassName": "Griffin_Character_BP_C",
+      "Description": "Griffin",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": true,
+      "IsTameable": "True",
+      "ClassName": "Polar_Bear_C",
+      "Description": "Polar Bear",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": "Ice Wyvern",
+      "IsSpawnable": true,
+      "IsTameable": "ByBreeding",
+      "ClassName": "Ragnarok_Wyvern_Override_Ice_C",
+      "Description": "Ice Wyvern",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Iceworm_Queen_Character_BP_C",
+      "Description": "Ice Worm",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "LavaGolem_Character_BP_C",
+      "Description": "Lava Golem",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Dragon_Character_BP_Boss_Easy_Ragnarok_C",
+      "Description": "Dragon (Easy Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Dragon_Character_BP_Boss_Medium_Ragnarok_C",
+      "Description": "Dragon (Medium Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Dragon_Character_BP_Boss_Hard_Ragnarok_C",
+      "Description": "Dragon (Hard Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Manticore_Character_BP_Easy_Ragnarok_C",
+      "Description": "Manticore (Easy Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Manticore_Character_BP_Medium_Ragnarok_C",
+      "Description": "Manticore (Medium Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    },
+    {
+      "NameTag": null,
+      "IsSpawnable": false,
+      "IsTameable": "False",
+      "ClassName": "Manticore_Character_BP_Hard_Ragnarok_C",
+      "Description": "Manticore (Hard Variant)",
+      "Mod": "Ragnarok",
+      "ArkApplication": "Ragnarok"
+    }
+  ],
+  "MapSpawners": [
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Bear_C",
+      "Description": "Bear",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Castle_C",
+      "Description": "Castle",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Center_C",
+      "Description": "Center",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_CenterWater_C",
+      "Description": "CenterWater",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Golem_C",
+      "Description": "Golem",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Griffin_C",
+      "Description": "Griffin",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Iceworm_C",
+      "Description": "Iceworm",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Jerboa_C",
+      "Description": "Jerboa",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_MonkeyIsland_C",
+      "Description": "MonkeyIsland",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Mudslide_C",
+      "Description": "Mudslide",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_PolarBear_C",
+      "Description": "PolarBear",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Scotland_C",
+      "Description": "Scotland",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_SnowForest_C",
+      "Description": "SnowForest",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_SnowPlains_C",
+      "Description": "SnowPlains",
+      "Mod": "Ragnarok"
+    }
+  ],
+  "GameMaps": [
+    {
+      "IsSotF": false,
+      "ClassName": "Ragnarok",
+      "Description": "Ragnarok",
+      "Mod": "SurvivalEvolved"
+    }
+  ]
+}

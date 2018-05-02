@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,21 +8,57 @@ using System.Threading.Tasks;
 namespace ArkData
 {
     /// <summary>
-    /// The container for the ARK data.
+    /// The container for the data.
     /// </summary>
-    public partial class ArkDataContainer
+    public partial class DataContainer
     {
+        /// <summary>
+        /// Instantiates the DataContainer and parses all the user-data files
+        /// </summary>
+        /// <returns>The async task context containing the resulting container.</returns>
+        public static async Task<DataContainer> CreateAsync()
+        {
+            var playerFiles = new string[0];
+            var tribeFiles = new string[0];
+
+            if (Directory.Exists(DataFileDetails.PlayerFileFolder))
+            {
+                playerFiles = Directory.GetFiles(DataFileDetails.PlayerFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.PlayerFilePrefix)
+                                                                                            && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.PlayerFileSuffix)
+                                                                                            && Path.GetExtension(f).Equals(DataFileDetails.PlayerFileExtension)).ToArray();
+            }
+            if (Directory.Exists(DataFileDetails.TribeFileFolder))
+            {
+                tribeFiles = Directory.GetFiles(DataFileDetails.TribeFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.TribeFilePrefix)
+                                                                                        && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.TribeFileSuffix)
+                                                                                        && Path.GetExtension(f).Equals(DataFileDetails.TribeFileExtension)).ToArray();
+            }
+
+            var container = new DataContainer();
+
+            foreach (var file in playerFiles)
+                container.Players.Add(await Parser.ParsePlayerAsync(file));
+
+            foreach (var file in tribeFiles)
+                container.Tribes.Add(await Parser.ParseTribeAsync(file));
+
+            container.LinkPlayerTribe();
+
+            return container;
+        }
+
         /// <summary>
         /// Loads the profile data for all users from the steam service
         /// </summary>
         /// <returns>The async task context.</returns>
-        public async Task LoadSteamAsync(string apiKey)
+        public async Task<DateTime> LoadSteamAsync(string apiKey, int steamUpdateInterval = 0)
         {
             const int MAX_STEAM_IDS = 100;
 
             // need to make multiple calls of 100 steam id's.
+            var lastSteamUpdateUtc = DateTime.UtcNow;
             var startIndex = 0;
-            var playerSteamIds = Players.Select(p => p.SteamId).ToArray();
+            var playerSteamIds = Players.Where(p => p.LastSteamUpdateUtc.AddMinutes(steamUpdateInterval) < DateTime.UtcNow).Select(p => p.SteamId).ToArray();
 
             while (true)
             {
@@ -42,7 +79,7 @@ namespace ArkData
                     if (response.IsSuccessStatusCode)
                         using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                         {
-                            LinkSteamProfiles(await reader.ReadToEndAsync());
+                            LinkSteamProfiles(await reader.ReadToEndAsync(), lastSteamUpdateUtc);
                         }
                     else
                         throw new System.Net.WebException("The Steam API request was unsuccessful. Are you using a valid key?");
@@ -61,6 +98,7 @@ namespace ArkData
             }
 
             SteamLoaded = true;
+            return lastSteamUpdateUtc;
         }
 
         /// <summary>
@@ -78,35 +116,6 @@ namespace ArkData
                 });
             else
                 throw new System.Exception("The Steam user data should be loaded before the server status can be checked.");
-        }
-
-        /// <summary>
-        /// Instantiates the ArkDataContainer and parses all the user-data files
-        /// </summary>
-        /// <param name="directory">The directory containing the profile and tribe files.</param>
-        /// <returns>The async task context containing the resulting container.</returns>
-        public static async Task<ArkDataContainer> CreateAsync(string directory)
-        {
-            if (!Directory.Exists(directory))
-                throw new DirectoryNotFoundException("The ARK data directory couldn't be found.");
-
-            var playerFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arkprofile")).ToArray();
-            var tribeFiles = Directory.GetFiles(directory).Where(p => Path.GetExtension(p).Equals(".arktribe")).ToArray();
-
-            if (playerFiles.Length == 0 && tribeFiles.Length == 0)
-                throw new FileLoadException("The directory did not contain any of the parseable files.");
-
-            var container = new ArkDataContainer();
-
-            for (var i = 0; i < playerFiles.Length; i++)
-                container.Players.Add(await Parser.ParsePlayerAsync(playerFiles[i]));
-
-            for (var i = 0; i < tribeFiles.Length; i++)
-                container.Tribes.Add(await Parser.ParseTribeAsync(tribeFiles[i]));
-
-            container.LinkPlayerTribe();
-
-            return container;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
     {
         public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSettings), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownDinoProperty = DependencyProperty.Register(nameof(KnownDino), typeof(bool), typeof(DinoSettings), new PropertyMetadata(false));
         public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty CanSpawnProperty = DependencyProperty.Register(nameof(CanSpawn), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty ReplacementClassProperty = DependencyProperty.Register(nameof(ReplacementClass), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
@@ -31,6 +33,18 @@ namespace ARK_Server_Manager.Lib.ViewModel
         {
             get { return (string)GetValue(ClassNameProperty); }
             set { SetValue(ClassNameProperty, value); }
+        }
+
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
+
+        public bool KnownDino
+        {
+            get { return (bool)GetValue(KnownDinoProperty); }
+            set { SetValue(KnownDinoProperty, value); }
         }
 
         public bool CanTame
@@ -93,9 +107,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(WildResistanceMultiplierProperty, value); }
         }
 
-        public string DisplayName => GameData.FriendlyNameForClass(ClassName);
+        public string DisplayName => GameData.FriendlyCreatureNameForClass(ClassName);
         public string NameTag { get; internal set; }
-        public bool KnownDino { get; internal set; }
         public bool HasNameTag { get; internal set; }
         public bool HasClassName { get; internal set; }
         public bool IsSpawnable { get; internal set; }
@@ -107,6 +120,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 ArkApplication = ArkApplication,
                 ClassName = ClassName,
+                Mod = Mod,
+                KnownDino = KnownDino,
                 NameTag = NameTag,
 
                 CanSpawn = CanSpawn,
@@ -122,7 +137,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 WildDamageMultiplier = WildDamageMultiplier,
                 WildResistanceMultiplier = WildResistanceMultiplier,
 
-                KnownDino = KnownDino,
                 HasNameTag = HasNameTag,
                 HasClassName = HasClassName,
                 IsSpawnable = IsSpawnable,
