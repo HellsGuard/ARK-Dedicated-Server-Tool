@@ -105,7 +105,9 @@ namespace ARK_Server_Manager.Lib
 
         private async Task UpdatePlayersAsync()
         {
-            await UpdatePlayerDetailsAsync().ContinueWith(t =>
+            var players = new List<PlayerInfo>(this.Players);
+
+            await UpdatePlayerDetailsAsync(players).ContinueWith(t =>
             {
                 TaskUtils.RunOnUIThreadAsync(() => {
                     this.CountPlayers = this.Players.Count(p => p.IsOnline);
@@ -116,10 +118,8 @@ namespace ARK_Server_Manager.Lib
             });
         }
 
-        private async Task UpdatePlayerDetailsAsync()
+        private async Task UpdatePlayerDetailsAsync(List<PlayerInfo> players)
         {
-            List<PlayerInfo> players = null;
-
             if (!string.IsNullOrWhiteSpace(_playerListParameters.InstallDirectory))
             {
                 var savedPath = ServerProfile.GetProfileSavePath(_playerListParameters.InstallDirectory, _playerListParameters.AltSaveDirectoryName, _playerListParameters.PGM_Enabled, _playerListParameters.PGM_Name);
@@ -141,7 +141,7 @@ namespace ARK_Server_Manager.Lib
                 await TaskUtils.RunOnUIThreadAsync(() => {
                     foreach (var playerData in dataContainer.Players)
                     {
-                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => p.PlayerData.SteamId.Equals(playerData.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
+                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => playerData.SteamId.Equals(p.PlayerData?.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
                     }
                 });
 
@@ -154,12 +154,6 @@ namespace ARK_Server_Manager.Lib
                     _errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
                     return;
                 }
-
-                await TaskUtils.RunOnUIThreadAsync(() => {
-                    // create a new temporary list
-                    players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
-                    players.AddRange(this.Players);
-                });
 
                 await Task.Run(async () => {
                     foreach (var playerData in dataContainer.Players)

@@ -71,6 +71,34 @@
     <sys:String x:Key="AddSteamUser_ProcessButtonLabel">OK</sys:String>
     <sys:String x:Key="AddSteamUser_CancelButtonLabel">Отмена</sys:String>
 
+    <!-- PlayerListWindow Window -->
+    <sys:String x:Key="PlayerList_CloseButtonLabel">Закрыть</sys:String>
+
+    <sys:String x:Key="PlayerList_TitleLabel">Список игроков: {0}</sys:String>
+    <sys:String x:Key="PlayerList_FilterLabel">Фильтр:</sys:String>
+    <sys:String x:Key="PlayerList_ProfileCountLabel">Профили:</sys:String>
+    <sys:String x:Key="PlayerList_ProfileInvalidCountLabel">Ошибки:</sys:String>
+
+    <sys:String x:Key="PlayerList_Menu_ViewSteamProfile">Посмотреть Steam Профиль...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ViewProfile">Посмотреть Профиль...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ViewTribe">Посмотреть Трайб...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_CopySteamId">Копировать Steam ID...</sys:String>
+    <sys:String x:Key="PlayerList_Menu_CopyPlayerId">Копировать Player ID...</sys:String>
+
+    <sys:String x:Key="PlayerList_Menu_Players">_Игроки</sys:String>
+    <sys:String x:Key="PlayerList_Menu_Sort">Сортировка</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortOnline">В сети</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortName">По имени</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortTribe">По команде</sys:String>
+    <sys:String x:Key="PlayerList_Menu_SortLastUpdated">По последнему обновленному</sys:String>
+    <sys:String x:Key="PlayerList_Menu_Filter">_Фильтр</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterOnline">Показать онлайн</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterOffline">Показать Всех</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterAdmin">Показать Админов</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterBanned">Показать Забаненных</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterWhitelisted">Показать Белый лист</sys:String>
+    <sys:String x:Key="PlayerList_Menu_FilterInvalid">Показать Ошибочные</sys:String>
+
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Детали Модов</sys:String>
     <sys:String x:Key="ModDetails_ProfileTitle">Детали Модов - {0}</sys:String>
@@ -85,6 +113,8 @@
     <sys:String x:Key="ModDetails_Save_UnknownLabel">Есть один или несколько модов, которые не были загружены, это может помешать корректной работе модов и карт. Вы хотите продолжить?</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Title">Без изменений</sys:String>
     <sys:String x:Key="ModDetails_Unsaved_Label">Вы внесли изменения, которые не были сохранены в профиле, если вы продолжите изменения, вы будете отброшены. Вы хотите продолжить?</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestamp_ConfirmTitle">Подтверждение отметки времени</sys:String>
+    <sys:String x:Key="ModDetails_WriteTimestamp_ConfirmLabel">Вы собираетесь обновить версию мод в последнем обновленном файле ASM. Вы хотите продолжить?</sys:String>
     <sys:String x:Key="ModDetails_WriteTimestamp_FailedTitle">Ошибка записи отметки времени</sys:String>
     <sys:String x:Key="ModDetails_WriteTimestamp_FailedLabel">Папка мод не найдена или не существует. Попробуйте загрузить мод и повторить попытку.</sys:String>
 
@@ -173,6 +203,13 @@
 
     <sys:String x:Key="ProfileSyncWindow_SelectedColumnLabel">Копировать</sys:String>
     <sys:String x:Key="ProfileSyncWindow_SectionNameColumnLabel">Раздел</sys:String>
+
+    <!-- Version Feed Window -->
+    <sys:String x:Key="VersionFeedWindow_Title">Детали ASM версии</sys:String>
+    <sys:String x:Key="VersionFeedWindow_Load_FailedTitle">Ошибка загрузки</sys:String>
+
+    <sys:String x:Key="VersionFeedWindow_VersionFilterLabel">Версия:</sys:String>
+    <sys:String x:Key="VersionFeedWindow_VersionFilterTooltip">Выберите версию для просмотра деталей.</sys:String>
 
     <!-- Progress Window -->
     <sys:String x:Key="Progress_Title">Процесс</sys:String>
@@ -363,6 +400,8 @@
     <sys:String x:Key="GlobalSettings_AdvancedSettingsInformationLabel">Не прикасайтесь к этим настройкам, если вы не знаете, что делаете</sys:String>
     <sys:String x:Key="GlobalSettings_UseDoExitLabel">Использовать DoExit для завершения работы сервера</sys:String>
     <sys:String x:Key="GlobalSettings_UseDoExitTooltip">Если включено, команда DoExit будет использоваться сначала для выключения сервера. Если он терпит неудачу или отключен, вместо этого используется метод Сtrl+С.</sys:String>
+    <sys:String x:Key="GlobalSettings_CloseShutdownWindowWhenFinishedLabel">Закрытие окна после завершения работы</sys:String>
+    <sys:String x:Key="GlobalSettings_CloseShutdownWindowWhenFinishedTooltip">Если включено, окно завершения работы сервера закроется после его завершения; иначе он останется открытым.</sys:String>
     <sys:String x:Key="GlobalSettings_WorldSaveDelayLabel">Задержка Сохранения мира:</sys:String>
     <sys:String x:Key="GlobalSettings_WorldSaveDelayTooltip">Количество секунд ожидания команды Сохранения мира до завершения работы сервера.</sys:String>
 
@@ -566,6 +605,8 @@
     <sys:String x:Key="ServerSettings_StartButtonTooltip">Запустить ARK сервер.</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonTooltip">Открыть окно RCON.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonLabel">Players</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonTooltip">Open the Player List window.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Обновить / Проверить</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Обновление до последней версии ARK сервера, который в настоящее время доступен для загрузки.</sys:String>
     <sys:String x:Key="ServerSettings_InstallButtonLabel">Установить</sys:String>
@@ -1873,6 +1914,7 @@
     <sys:String x:Key="RCON_Menu_Filter">_Фильтр</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOnline">Показать онлайн</sys:String>
     <sys:String x:Key="RCON_Menu_FilterOffline">Показать оффлайн</sys:String>
+    <sys:String x:Key="RCON_Menu_FilterAdmin">Показать Админа</sys:String>
     <sys:String x:Key="RCON_Menu_FilterBanned">Показать забаненных</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Показать белый список</sys:String>
     <sys:String x:Key="RCON_Menu_FilterInvalid">Показать проблемных</sys:String>

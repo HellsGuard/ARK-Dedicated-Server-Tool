@@ -336,7 +336,7 @@ namespace ARK_Server_Manager
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Admin) && player.IsAdmin) ||
-                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.HasBan) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);
             if (!result)

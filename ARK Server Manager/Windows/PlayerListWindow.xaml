@@ -26,18 +26,30 @@
             <Style x:Key="PlayerStatus" TargetType="Border">
                 <Setter Property="BorderBrush" Value="Gray"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                    <DataTrigger Binding="{Binding IsOnline}"            Value="True">
                         <Setter Property="BorderBrush" Value="LightGreen"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsValid}" Value="False">
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsOnline}"      Value="False" />
+                            <Condition Binding="{Binding IsValid}"       Value="False" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="BorderBrush" Value="Orange"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsBanned}" Value="True">
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsOnline}"      Value="False" />
+                            <Condition Binding="{Binding HasBan}"        Value="True" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="BorderBrush" Value="Red"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsWhitelisted}" Value="True">
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsOnline}"      Value="False" />
+                            <Condition Binding="{Binding IsWhitelisted}" Value="True" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="BorderBrush" Value="#0066CC"/>
-                    </DataTrigger>
+                    </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
             <Style x:Key="SteamName" TargetType="Label">

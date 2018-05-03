@@ -24,6 +24,20 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
         public PlayerInfo(Logger logger)
         {
             _logger = logger;
+
+            SteamId = 0L;
+            SteamName = string.Empty;
+            CharacterName = string.Empty;
+            AvatarImage = null;
+            IsOnline = false;
+            IsAdmin = false;
+            IsBanned = false;
+            IsWhitelisted = false;
+            TribeName = string.Empty;
+            LastUpdated = DateTime.MinValue;
+            HasBan = false;
+            IsValid = true;
+            PlayerData = null;
         }
 
         public long SteamId

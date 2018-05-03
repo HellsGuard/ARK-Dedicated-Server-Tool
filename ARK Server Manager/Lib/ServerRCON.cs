@@ -264,50 +264,50 @@ namespace ARK_Server_Manager.Lib
                 //
                 // Update the visible player list
                 //
-                var newPlayerList = new List<PlayerInfo>();
+                var players = new List<PlayerInfo>(this.Players);
+                var newPlayers = new List<PlayerInfo>();
                 foreach (var line in command.lines)
                 {
                     var elements = line.Split(',');
-                    if (elements.Length == 2)
+                    if (elements.Length != 2)
+                        // Invalid data. Ignore it.
+                        continue;
+
+                    var steamId = Int64.Parse(elements[1]);
+                    if (newPlayers.FirstOrDefault(p => p.SteamId == steamId) != null)
+                        // Duplicate data. Ignore it.
+                        continue;
+
+                    var newPlayer = new PlayerInfo(this.debugLogger)
                     {
-                        var newPlayer = new PlayerInfo(this.debugLogger)
-                        {
-                            SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
-                            SteamId = Int64.Parse(elements[1]),
-                            IsOnline = true
-                        };
+                        SteamName = elements[0].Substring(elements[0].IndexOf('.') + 1).Trim(),
+                        SteamId = steamId,
+                        IsOnline = true,
+                    };
+                    newPlayers.Add(newPlayer);
 
-                        if (newPlayerList.FirstOrDefault(p => p.SteamId == newPlayer.SteamId) != null)
-                        {
-                            // We received a duplicate.  Ignore it.
-                            continue;
-                        }
+                    var existingPlayer = players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
+                    bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
 
-                        newPlayerList.Add(newPlayer);
+                    if (existingPlayer == null)
+                    {
+                        players.Add(newPlayer);
+                    }
+                    else
+                    {
+                        existingPlayer.IsOnline = true;
+                    }
 
-                        var existingPlayer = this.Players.FirstOrDefault(p => p.SteamId == newPlayer.SteamId);
-                        bool playerJoined = existingPlayer == null || existingPlayer.IsOnline == false;
-
-                        if (existingPlayer == null)
-                        {
-                            this.Players.Add(newPlayer);
-                        }
-                        else
-                        {
-                            existingPlayer.IsOnline = true;
-                        }
-
-                        if (playerJoined)
-                        {
-                            var message = $"Player '{newPlayer.SteamName}' joined the game.";
-                            output.Add(message);
-                            LogEvent(LogEventType.Event, message);
-                            LogEvent(LogEventType.All, message);
-                        }
+                    if (playerJoined)
+                    {
+                        var message = $"Player '{newPlayer.SteamName}' joined the game.";
+                        output.Add(message);
+                        LogEvent(LogEventType.Event, message);
+                        LogEvent(LogEventType.All, message);
                     }
                 }
 
-                var droppedPlayers = this.Players.Where(p => newPlayerList.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
+                var droppedPlayers = players.Where(p => newPlayers.FirstOrDefault(np => np.SteamId == p.SteamId) == null).ToArray();
                 foreach (var player in droppedPlayers)
                 {
                     if (player.IsOnline)
@@ -320,14 +320,13 @@ namespace ARK_Server_Manager.Lib
                     }
                 }
 
-                if (this.Players.Count == 0 || newPlayerList.Count > 0)
+                UpdatePlayerDetailsAsync(players).ContinueWith(t =>
                 {
-                    commandProcessor.PostAction(UpdatePlayerDetailsAsync)
-                        .ContinueWith(t => locks.TryRemove($"{this.GetHashCode()}|PlayerList", out bool value));
-                }
+                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
+                    this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
 
-                this.CountPlayers = this.Players.Count(p => p.IsOnline);
-                this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
+                    locks.TryRemove($"{this.GetHashCode()}|PlayerList", out bool value);
+                }).DoNotWait();
 
                 command.suppressOutput = false;
                 command.lines = output;
@@ -428,10 +427,8 @@ namespace ARK_Server_Manager.Lib
             throw new Exception($"Command failed to send after {maxCommandRetries} attempts.  Last exception: {lastException.Message}", lastException);
         }
 
-        private async Task UpdatePlayerDetailsAsync()
+        private async Task UpdatePlayerDetailsAsync(List<PlayerInfo> players)
         {
-            List<PlayerInfo> players = null;
-
             if (!string.IsNullOrWhiteSpace(rconParams.InstallDirectory))
             {
                 var savedPath = ServerProfile.GetProfileSavePath(rconParams.InstallDirectory, rconParams.AltSaveDirectoryName, rconParams.PGM_Enabled, rconParams.PGM_Name);
@@ -453,7 +450,7 @@ namespace ARK_Server_Manager.Lib
                 await TaskUtils.RunOnUIThreadAsync(() => {
                     foreach (var playerData in dataContainer.Players)
                     {
-                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => p.PlayerData.SteamId.Equals(playerData.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
+                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => playerData.SteamId.Equals(p.PlayerData?.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
                     }
                 });
 
@@ -466,12 +463,6 @@ namespace ARK_Server_Manager.Lib
                     errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
                     return;
                 }
-
-                await TaskUtils.RunOnUIThreadAsync(() => {
-                    // create a new temporary list
-                    players = new List<PlayerInfo>(this.Players.Count + dataContainer.Players.Count);
-                    players.AddRange(this.Players);
-                });
 
                 await Task.Run(async () => {
                     foreach (var playerData in dataContainer.Players)
