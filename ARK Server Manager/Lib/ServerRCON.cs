@@ -519,6 +519,14 @@ namespace ARK_Server_Manager.Lib
                         }
                     }
 
+                    // remove any players that do not have a player file.
+                    for (var index = players.Count - 1; index >= 0; index--)
+                    {
+                        if (dataContainer.Players.Any(p => p.SteamId.Equals(players[index].SteamId.ToString())))
+                            continue;
+                        players.RemoveAt(index);
+                    }
+
                     players.TrimExcess();
                 });
             }

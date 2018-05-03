@@ -105,14 +105,15 @@ namespace ARK_Server_Manager.Lib
 
         private async Task UpdatePlayersAsync()
         {
-            var players = new List<PlayerInfo>(this.Players);
-
-            await UpdatePlayerDetailsAsync(players).ContinueWith(t =>
+            var players = new List<PlayerInfo>();
+            await TaskUtils.RunOnUIThreadAsync(() => players.AddRange(this.Players));
+            
+            await UpdatePlayerDetailsAsync(players).ContinueWith(async t =>
             {
-                TaskUtils.RunOnUIThreadAsync(() => {
+                await TaskUtils.RunOnUIThreadAsync(() => {
                     this.CountPlayers = this.Players.Count(p => p.IsOnline);
                     this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
-                }).Wait();
+                });
 
                 _locks.TryRemove($"{this.GetHashCode()}|PlayerList", out bool value);
             });
@@ -208,6 +209,14 @@ namespace ARK_Server_Manager.Lib
                                 player.UpdateAvatarImageAsync(savedPath).DoNotWait();
                             });
                         }
+                    }
+
+                    // remove any players that do not have a player file.
+                    for (var index = players.Count - 1; index >= 0; index--)
+                    {
+                        if (dataContainer.Players.Any(p => p.SteamId.Equals(players[index].SteamId.ToString())))
+                            continue;
+                        players.RemoveAt(index);
                     }
 
                     players.TrimExcess();

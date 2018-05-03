@@ -5,14 +5,14 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager release version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-03T03:40:00Z</updated>
+  <updated>2018-05-03T05:30:00Z</updated>
 
   <entry>
     <id>urn:uuid:43CF5187-4C93-4FE7-A1CD-58F0D08A09E7</id>
-    <title>1.0.324 (1.0.324.1)</title>
-    <summary>1.0.324.1</summary>
-    <link href="http://arkservermanager.freeforums.net/thread/5124/1-324-test-build" />
-    <updated>2018-05-03T03:40:00Z</updated>
+    <title>1.0.324 (1.0.324.2)</title>
+    <summary>1.0.324.2</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
+    <updated>2018-05-03T05:30:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
@@ -26,6 +26,8 @@
           <br/>
           <ul>
             <li>RU Translation file updated. (thanks @varlonec)</li>
+            <li>RCON Player List - removed players from list when the player profile no longer exists (eg. cluster transfer).</li>
+            <li>Player List - removed players from list when the player profile no longer exists (eg. cluster transfer).</li>
           </ul>
         </p>
       </div>
