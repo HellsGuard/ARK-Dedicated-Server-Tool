@@ -9,7 +9,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Width="1024" Height="768" ResizeMode="CanResizeWithGrip"
         SizeChanged="RCON_SizeChanged" LocationChanged="RCON_LocationChanged"
-        Name="RCON" Icon="../Art/Command.png" Title="{Binding RCONParameters.WindowTitle}">
+        Name="RCON" Icon="../Art/favicon.ico" Title="{Binding RCONParameters.WindowTitle}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -106,6 +106,7 @@
             </ObjectDataProvider>
         </ResourceDictionary>
     </Window.Resources>
+    
     <Grid>
         <DockPanel x:Name="dockPanel">
             <Grid DockPanel.Dock="Bottom" Margin="2,1,2,2">
@@ -156,7 +157,7 @@
                                     <MenuItem Header="{DynamicResource RCON_Menu_SortTribe}"          IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.Tribe}"          IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=Tribe}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_SortLastUpdated}"    IsCheckable="True" Command="{Binding SortPlayersCommand}"   CommandParameter="{x:Static local:PlayerSortType.LastUpdated}"    IsChecked="{Binding PlayerSorting, Converter={StaticResource EnumConverter}, ConverterParameter=LastUpdated}"/>
                                 </MenuItem>
-                                <MenuItem Header="{DynamicResource RCON_Menu_Filter}" HorizontalAlignment="Left" Width="111">
+                                <MenuItem Header="{DynamicResource RCON_Menu_Filter}">
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterOnline}"       IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Online}"       IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Online, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterOffline}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Offline}"      IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Offline, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterAdmin}"        IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Admin}"        IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Admin, Mode=OneWay}"/>
@@ -164,18 +165,20 @@
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterWhitelisted}"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}"  IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource RCON_Menu_FilterInvalid}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Invalid}"      IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Invalid, Mode=OneWay}"/>
                                 </MenuItem>
+                                <MenuItem Header="{DynamicResource RCON_Menu_ShowAvatars}"            IsCheckable="True" Command="{Binding ShowAvatarsCommand}" IsChecked="{Binding CurrentConfig.RCON_ShowPlayerAvatars}"/>
                             </MenuItem>
                         </Menu>
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                         <Label Content="{DynamicResource RCON_AdminNameLabel}"/>
                         <TextBox Text="{Binding CurrentConfig.RCON_AdminName}" Width="100" ToolTip="{DynamicResource RCON_AdminNameTooltip}"/>
                         <Label Content="{DynamicResource RCON_StatusLabel}" Margin="10,0,0,0"/>
                         <Label Content="{Binding ServerRCON.Status}" Style="{DynamicResource ServerStatus}"/>
                         <Label Content="{DynamicResource RCON_PlayersLabel}" Margin="5,0,0,0"/>
-                        <Label Content="{Binding ServerRCON.CountPlayers}"/>
+                        <Label Content="{Binding ServerRCON.CountOnlinePlayers, FallbackValue=0}"/>
                         <Label Content="{DynamicResource RCON_PlayersSeparatorLabel}" Name="PlayerCountSeparator"/>
-                        <Label Content="{Binding RCONParameters.MaxPlayers}" Name="MaxPlayerLabel"/>
+                        <Label Content="{Binding RCONParameters.MaxPlayers, FallbackValue=0}" Name="MaxPlayerLabel"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -188,7 +191,7 @@
 
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="{DynamicResource RCON_ProfileCountLabel}" HorizontalAlignment="Center"/>
-                    <Label Content="{Binding ServerRCON.Players.Count, FallbackValue=0}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding ServerRCON.CountPlayers, FallbackValue=0}" HorizontalAlignment="Center"/>
                     <Label Content="{DynamicResource RCON_ProfileInvalidCountLabel}" HorizontalAlignment="Center">
                         <Label.Style>
                             <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
@@ -255,7 +258,7 @@
                             <Border BorderThickness="2" Padding="1" Style="{DynamicResource PlayerStatus}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="{Binding PlayerAvatarWidth, ElementName=RCON}"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     
@@ -290,7 +293,6 @@
                     </Style>
                     <Style TargetType="{x:Type local:RCONOutput_NoResponse}">
                         <Setter Property="FontStyle" Value="Italic"/>
-                        <Setter Property="Foreground" Value="LightGray"/>
                     </Style>
                     <Style TargetType="{x:Type local:RCONOutput_CommandOutput}">
                         <Setter Property="FontStyle" Value="Normal"/>
@@ -303,17 +305,14 @@
                     <Style TargetType="{x:Type local:RCONOutput_ConnectionChanged}">
                         <Setter Property="FontStyle" Value="Italic"/>
                         <Setter Property="FontWeight" Value="Normal"/>
-                        <Setter Property="Foreground" Value="Red"/>
                     </Style>
                     <Style TargetType="{x:Type local:RCONOutput_Broadcast}">
                         <Setter Property="FontStyle" Value="Normal"/>
                         <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="Foreground" Value="Orange"/>
                     </Style>
                     <Style TargetType="{x:Type local:RCONOutput_Comment}">
                         <Setter Property="FontStyle" Value="Italic"/>
                         <Setter Property="FontWeight" Value="Normal"/>
-                        <Setter Property="Foreground" Value="Green"/>
                     </Style>
                 </RichTextBox.Resources>
                 <FlowDocument Name="ConsoleContent"/>

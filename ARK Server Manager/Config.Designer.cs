@@ -1953,18 +1953,6 @@ namespace ARK_Server_Manager {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool RCON_DownloadPlayerAvatars {
-            get {
-                return ((bool)(this["RCON_DownloadPlayerAvatars"]));
-            }
-            set {
-                this["RCON_DownloadPlayerAvatars"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E")]
@@ -2104,6 +2092,30 @@ namespace ARK_Server_Manager {
         public string ServerManagerVersionBetaFeedUrl {
             get {
                 return ((string)(this["ServerManagerVersionBetaFeedUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public int RCON_MaximumPlayerAvatars {
+            get {
+                return ((int)(this["RCON_MaximumPlayerAvatars"]));
+            }
+            set {
+                this["RCON_MaximumPlayerAvatars"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RCON_ShowPlayerAvatars {
+            get {
+                return ((bool)(this["RCON_ShowPlayerAvatars"]));
+            }
+            set {
+                this["RCON_ShowPlayerAvatars"] = value;
             }
         }
     }

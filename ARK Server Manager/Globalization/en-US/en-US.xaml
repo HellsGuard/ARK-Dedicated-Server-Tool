@@ -98,6 +98,7 @@
     <sys:String x:Key="PlayerList_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterInvalid">Show Invalid</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ShowAvatars">Show Player Avatars</sys:String>
 
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Mod Details</sys:String>
@@ -286,9 +287,6 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Get WebApi Key...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Help...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Language</sys:String>
-    <sys:String x:Key="GlobalSettings_RconOptionsLabel">RCON Options</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsLabel">Download Player Avatars</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsTooltip">If enabled, the player avatar images will be downloaded from steam to be displayed in the RCON player list.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Custom Override Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Enable Crafting Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">If enabled, the crafting overrides will be managed by ASM.</sys:String>
@@ -1918,6 +1916,7 @@
     <sys:String x:Key="RCON_Menu_FilterBanned">Show Banned</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Show Whitelisted</sys:String>
     <sys:String x:Key="RCON_Menu_FilterInvalid">Show Invalid</sys:String>
+    <sys:String x:Key="RCON_Menu_ShowAvatars">Show Player Avatars</sys:String>
 
     <sys:String x:Key="RCON_Menu_ChatPlayer">Chat to Player...</sys:String>
     <sys:String x:Key="RCON_Menu_RenamePlayer">Rename Player...</sys:String>

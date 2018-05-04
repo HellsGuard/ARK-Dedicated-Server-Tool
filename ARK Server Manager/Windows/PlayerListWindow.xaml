@@ -105,6 +105,7 @@
                                     <MenuItem Header="{DynamicResource PlayerList_Menu_FilterWhitelisted}"  IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Whitelisted}"  IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Whitelisted, Mode=OneWay}"/>
                                     <MenuItem Header="{DynamicResource PlayerList_Menu_FilterInvalid}"      IsCheckable="True" Command="{Binding FilterPlayersCommand}" CommandParameter="{x:Static local:PlayerFilterType.Invalid}"      IsChecked="{Binding PlayerFiltering, Converter={StaticResource EnumFlagsConverter}, ConverterParameter=Invalid, Mode=OneWay}"/>
                                 </MenuItem>
+                                <MenuItem Header="{DynamicResource PlayerList_Menu_ShowAvatars}"            IsCheckable="True" Command="{Binding ShowAvatarsCommand}" IsChecked="{Binding Config.RCON_ShowPlayerAvatars}"/>
                             </MenuItem>
                         </Menu>
                     </StackPanel>
@@ -174,7 +175,7 @@
                             <Border BorderThickness="2" Padding="1" Style="{DynamicResource PlayerStatus}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="{Binding PlayerAvatarWidth, ElementName=PlayerList}"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
 

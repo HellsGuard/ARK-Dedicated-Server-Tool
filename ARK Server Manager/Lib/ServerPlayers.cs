@@ -3,10 +3,9 @@ using ArkData;
 using NLog;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -29,13 +28,16 @@ namespace ARK_Server_Manager.Lib
         public static readonly DependencyProperty CountPlayersProperty = DependencyProperty.Register(nameof(CountPlayers), typeof(int), typeof(ServerPlayers), new PropertyMetadata(0));
         public static readonly DependencyProperty CountInvalidPlayersProperty = DependencyProperty.Register(nameof(CountInvalidPlayers), typeof(int), typeof(ServerPlayers), new PropertyMetadata(0));
 
-        private static readonly ConcurrentDictionary<string, bool> _locks = new ConcurrentDictionary<string, bool>();
+        private readonly ConcurrentDictionary<long, PlayerInfo> _players = new ConcurrentDictionary<long, PlayerInfo>();
+        private readonly object _updatePlayerCollectionLock = new object();
+        private CancellationTokenSource _cancellationTokenSource = null;
         private PlayerListParameters _playerListParameters;
 
         private Logger _allLogger;
         private Logger _eventLogger;
         private Logger _debugLogger;
         private Logger _errorLogger;
+        private bool _disposed = false;
 
         public ServerPlayers(PlayerListParameters parameters)
         {
@@ -48,7 +50,16 @@ namespace ARK_Server_Manager.Lib
             _debugLogger = App.GetProfileLogger(_playerListParameters.ProfileName, "PlayerList_Debug", LogLevel.Trace, LogLevel.Debug);
             _errorLogger = App.GetProfileLogger(_playerListParameters.ProfileName, "PlayerList_Error", LogLevel.Error, LogLevel.Fatal);
 
-            UpdatePlayerListAsync().DoNotWait();
+            UpdatePlayersAsync().DoNotWait();
+        }
+
+        public void Dispose()
+        {
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+            }
+            _disposed = true;
         }
 
         public SortableObservableCollection<PlayerInfo> Players
@@ -88,38 +99,34 @@ namespace ARK_Server_Manager.Lib
             PlayersCollectionUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        private async Task UpdatePlayerListAsync()
-        {
-            lock (_locks)
-            {
-                if (_locks.TryGetValue($"{this.GetHashCode()}|PlayerList", out bool value) && value || !_locks.TryAdd($"{this.GetHashCode()}|PlayerList", true))
-                {
-                    Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t => UpdatePlayerListAsync());
-                    return;
-                }
-            }
-
-            await UpdatePlayersAsync();
-            await Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t => UpdatePlayerListAsync());
-        }
-
         private async Task UpdatePlayersAsync()
         {
-            var players = new List<PlayerInfo>();
-            await TaskUtils.RunOnUIThreadAsync(() => players.AddRange(this.Players));
-            
-            await UpdatePlayerDetailsAsync(players).ContinueWith(async t =>
-            {
-                await TaskUtils.RunOnUIThreadAsync(() => {
-                    this.CountPlayers = this.Players.Count(p => p.IsOnline);
-                    this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
-                });
+            if (_disposed)
+                return;
 
-                _locks.TryRemove($"{this.GetHashCode()}|PlayerList", out bool value);
-            });
+            _cancellationTokenSource = new CancellationTokenSource();
+            var token = _cancellationTokenSource.Token;
+
+            await UpdatePlayerDetailsAsync(_cancellationTokenSource.Token)
+                .ContinueWith(async t1 =>
+                {
+                    await TaskUtils.RunOnUIThreadAsync(() =>
+                    {
+                        UpdatePlayerCollection();
+                    });
+                }, TaskContinuationOptions.NotOnCanceled)
+                .ContinueWith(t2 =>
+                {
+                    var cancelled = _cancellationTokenSource.IsCancellationRequested;
+                    _cancellationTokenSource.Dispose();
+                    _cancellationTokenSource = null;
+
+                    if (!cancelled)
+                        Task.Delay(PLAYER_LIST_INTERVAL).ContinueWith(t3 => UpdatePlayersAsync());
+                });
         }
 
-        private async Task UpdatePlayerDetailsAsync(List<PlayerInfo> players)
+        private async Task UpdatePlayerDetailsAsync(CancellationToken token)
         {
             if (!string.IsNullOrWhiteSpace(_playerListParameters.InstallDirectory))
             {
@@ -131,6 +138,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     DataFileDetails.PlayerFileFolder = savedPath;
                     DataFileDetails.TribeFileFolder = savedPath;
+                    // load the player data from the files.
                     dataContainer = await DataContainer.CreateAsync();
                 }
                 catch (Exception ex)
@@ -139,15 +147,23 @@ namespace ARK_Server_Manager.Lib
                     return;
                 }
 
-                await TaskUtils.RunOnUIThreadAsync(() => {
+                token.ThrowIfCancellationRequested();
+                await Task.Run(() =>
+                {
+                    // update the player data with the latest steam update value from the players collection
                     foreach (var playerData in dataContainer.Players)
                     {
-                        playerData.LastSteamUpdateUtc = this.Players.FirstOrDefault(p => playerData.SteamId.Equals(p.PlayerData?.SteamId))?.PlayerData?.LastSteamUpdateUtc ?? DateTime.MinValue;
+                        if (!long.TryParse(playerData.SteamId, out long steamId))
+                            continue;
+
+                        _players.TryGetValue(steamId, out PlayerInfo player);
+                        player?.UpdateSteamData(playerData);
                     }
-                });
+                }, token);
 
                 try
                 {
+                    // load the player data from steam
                     lastSteamUpdateUtc = await dataContainer.LoadSteamAsync(SteamUtils.SteamWebApiKey, STEAM_UPDATE_INTERVAL);
                 }
                 catch (Exception ex)
@@ -156,41 +172,38 @@ namespace ARK_Server_Manager.Lib
                     return;
                 }
 
-                await Task.Run(async () => {
-                    foreach (var playerData in dataContainer.Players)
-                    {
-                        PlayerInfo player = null;
+                token.ThrowIfCancellationRequested();
 
-                        if (Int64.TryParse(playerData.SteamId, out long steamId))
+                var totalPlayers = dataContainer.Players.Count;
+                foreach (var playerData in dataContainer.Players)
+                {
+                    token.ThrowIfCancellationRequested();
+                    await Task.Run(async () =>
+                    {
+                        if (long.TryParse(playerData.SteamId, out long steamId))
                         {
-                            player = players.FirstOrDefault(p => p.SteamId == steamId);
-                            if (player == null)
+                            var validPlayer = new PlayerInfo(_debugLogger)
                             {
-                                player = new PlayerInfo(_debugLogger)
-                                {
-                                    SteamId = steamId,
-                                    SteamName = playerData.SteamName
-                                };
-                                players.Add(player);
-                            }
-                            player.IsValid = true;
+                                SteamId = steamId,
+                                SteamName = playerData.SteamName,
+                                IsValid = true,
+                            };
+
+                            _players.AddOrUpdate(steamId, validPlayer, (k, v) => { v.SteamName = playerData.SteamName; v.IsValid = true; return v; });
                         }
                         else
                         {
                             var filename = Path.GetFileNameWithoutExtension(playerData.Filename);
-                            if (Int64.TryParse(filename, out steamId))
+                            if (long.TryParse(filename, out steamId))
                             {
-                                player = players.FirstOrDefault(p => p.SteamId == steamId);
-                                if (player == null)
+                                var invalidPlayer = new PlayerInfo(_debugLogger)
                                 {
-                                    player = new PlayerInfo(_debugLogger)
-                                    {
-                                        SteamId = steamId,
-                                        SteamName = "< corrupted profile >"
-                                    };
-                                    players.Add(player);
-                                }
-                                player.IsValid = false;
+                                    SteamId = steamId,
+                                    SteamName = "< corrupted profile >",
+                                    IsValid = false,
+                                };
+
+                                _players.AddOrUpdate(steamId, invalidPlayer, (k, v) => { v.SteamName = "< corrupted profile >"; v.IsValid = false; return v; });
                             }
                             else
                             {
@@ -198,36 +211,43 @@ namespace ARK_Server_Manager.Lib
                             }
                         }
 
-                        if (player != null)
+                        if (_players.TryGetValue(steamId, out PlayerInfo player) && player != null)
                         {
-                            player.UpdateData(playerData, playerData.LastSteamUpdateUtc.Equals(lastSteamUpdateUtc));
+                            player.UpdateData(playerData, lastSteamUpdateUtc);
 
-                            await TaskUtils.RunOnUIThreadAsync(() => {
+                            await TaskUtils.RunOnUIThreadAsync(() =>
+                            {
                                 player.IsAdmin = _playerListParameters?.Server?.Profile?.ServerFilesAdmins?.Any(u => u.SteamId.Equals(player.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
                                 player.IsWhitelisted = _playerListParameters?.Server?.Profile?.ServerFilesWhitelisted?.Any(u => u.SteamId.Equals(player.SteamId.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
 
-                                player.UpdateAvatarImageAsync(savedPath).DoNotWait();
+                                if (totalPlayers <= Config.Default.RCON_MaximumPlayerAvatars && Config.Default.RCON_ShowPlayerAvatars)
+                                    player.UpdateAvatarImageAsync(savedPath).DoNotWait();
                             });
                         }
-                    }
+                    }, token);
+                }
 
-                    // remove any players that do not have a player file.
-                    for (var index = players.Count - 1; index >= 0; index--)
-                    {
-                        if (dataContainer.Players.Any(p => p.SteamId.Equals(players[index].SteamId.ToString())))
-                            continue;
-                        players.RemoveAt(index);
-                    }
+                token.ThrowIfCancellationRequested();
 
-                    players.TrimExcess();
-                });
+                // remove any players that do not have a player file.
+                var droppedPlayers = _players.Values.Where(p => dataContainer.Players.FirstOrDefault(pd => pd.SteamId == p.SteamId.ToString()) == null).ToArray();
+                foreach (var droppedPlayer in droppedPlayers)
+                {
+                    _players.TryRemove(droppedPlayer.SteamId, out PlayerInfo player);
+                }
             }
+        }
 
-            await TaskUtils.RunOnUIThreadAsync(() =>
+        private void UpdatePlayerCollection()
+        {
+            lock (_updatePlayerCollectionLock)
             {
-                this.Players = new SortableObservableCollection<PlayerInfo>(players);
+                this.Players = new SortableObservableCollection<PlayerInfo>(_players.Values);
+                this.CountPlayers = this.Players.Count;
+                this.CountInvalidPlayers = this.Players.Count(p => !p.IsValid);
+
                 OnPlayerCollectionUpdated();
-            });
+            }
         }
     }
 }
