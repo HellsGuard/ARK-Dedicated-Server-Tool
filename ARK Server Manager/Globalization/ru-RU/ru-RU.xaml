@@ -98,6 +98,7 @@
     <sys:String x:Key="PlayerList_Menu_FilterBanned">Показать Забаненных</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterWhitelisted">Показать Белый лист</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterInvalid">Показать Ошибочные</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ShowAvatars">Показать Аватарки Игроков</sys:String>
 
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Детали Модов</sys:String>
@@ -286,9 +287,6 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Получить WebApi Ключ...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Помощь...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Языки</sys:String>
-    <sys:String x:Key="GlobalSettings_RconOptionsLabel">RCON Настройки</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsLabel">Загрузить Аватар игрока</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsTooltip">Если включено, изображения аватара игрока будут загружен из Steam, которые будут отображаться в списке игроков RCON.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Настройка перераспределения Настроек</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Включить Crafting Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">Если включено, Crafting Overrides будут использовать настройки ASM.</sys:String>
@@ -1918,6 +1916,7 @@
     <sys:String x:Key="RCON_Menu_FilterBanned">Показать забаненных</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Показать белый список</sys:String>
     <sys:String x:Key="RCON_Menu_FilterInvalid">Показать проблемных</sys:String>
+    <sys:String x:Key="RCON_Menu_ShowAvatars">Показать Аватарки Игроков</sys:String>
 
     <sys:String x:Key="RCON_Menu_ChatPlayer">Чат для игрока...</sys:String>
     <sys:String x:Key="RCON_Menu_RenamePlayer">Переименовать игрока...</sys:String>

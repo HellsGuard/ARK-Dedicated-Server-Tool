@@ -220,7 +220,6 @@ namespace ARK_Server_Manager.Lib.ViewModel.RCON
             playerData.NumberOfGameBans = PlayerData?.NumberOfGameBans ?? 0;
             playerData.NumberOfVACBans = PlayerData?.NumberOfVACBans ?? 0;
             playerData.ProfileUrl = PlayerData?.ProfileUrl;
-            playerData.SteamId = PlayerData?.SteamId;
             playerData.SteamName = PlayerData?.SteamName;
             playerData.VACBanned = PlayerData?.VACBanned ?? false;
         }
