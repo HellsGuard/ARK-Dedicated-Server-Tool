@@ -3,6 +3,7 @@ using ARK_Server_Manager.Lib.ViewModel;
 using ARK_Server_Manager.Lib.ViewModel.RCON;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -13,8 +14,8 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using System.Windows.Media;
 using WPFSharp.Globalizer;
-using System.Collections.Specialized;
 
 namespace ARK_Server_Manager
 {
@@ -63,59 +64,113 @@ namespace ARK_Server_Manager
 
     public class RCONOutput_CommandTime : Run
     {
-        public RCONOutput_CommandTime() : this(DateTime.Now) { }
-        public RCONOutput_CommandTime(DateTime time) : base($"[{time.ToString("g")}] ") { }
+        public RCONOutput_CommandTime() 
+            : this(DateTime.Now)
+        {
+        }
+
+        public RCONOutput_CommandTime(DateTime time) 
+            : base($"[{time.ToString("g")}] ")
+        {
+        }
     }
 
     public class RCONOutput_TimedCommand : Span
     {
-        protected RCONOutput_TimedCommand() : base()
+        protected RCONOutput_TimedCommand() 
+            : base()
         {
             base.Inlines.Add(new RCONOutput_CommandTime());
         }
 
-        public RCONOutput_TimedCommand(Inline output) : this()
+        public RCONOutput_TimedCommand(Inline output) 
+            : this()
         {            
             base.Inlines.Add(output);
         }
 
-        public RCONOutput_TimedCommand(string output) : this(new Run(output)) { }
-
+        public RCONOutput_TimedCommand(string output) 
+            : this(new Run(output))
+        {
+        }
     }
 
     public class RCONOutput_Comment : Run
     {
-        public RCONOutput_Comment(string value) : base(value) { }
+        public RCONOutput_Comment(string value) 
+            : base(value)
+        {
+            Foreground = Brushes.Green;
+        }
     }
 
     public class RCONOutput_ChatSend : RCONOutput_TimedCommand
     {
-        public RCONOutput_ChatSend(string target, string output) : base($"[{target}] {output}") { }
+        public RCONOutput_ChatSend(string target, string output) 
+            : base($"[{target}] {output}")
+        {
+        }
     }
 
     public class RCONOutput_Broadcast : RCONOutput_ChatSend
     {
-        public RCONOutput_Broadcast(string output) : base("ALL", output) { }
+        public RCONOutput_Broadcast(string output) 
+            : base("ALL", output)
+        {
+            Foreground = Brushes.Orange;
+        }
     }
 
     public class RCONOutput_ConnectionChanged : RCONOutput_TimedCommand
     {
-        public RCONOutput_ConnectionChanged(bool isConnected) : base(isConnected ? GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionEstablishedLabel") : GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionLostLabel")) { }
+        public RCONOutput_ConnectionChanged(bool isConnected) 
+            : base(isConnected ? GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionEstablishedLabel") : GlobalizedApplication.Instance.GetResourceString("RCON_ConnectionLostLabel"))
+        {
+            Foreground = Brushes.Orange;
+        }
     }
 
     public class RCONOutput_Command : RCONOutput_TimedCommand
     {
-        public RCONOutput_Command(string text) : base(text) { }
+        public RCONOutput_Command(string text) 
+            : base(text)
+        {
+        }
     };
 
     public class RCONOutput_NoResponse : RCONOutput_TimedCommand
     {
-        public RCONOutput_NoResponse() : base(GlobalizedApplication.Instance.GetResourceString("RCON_NoCommandResponseLabel")) { }
+        public RCONOutput_NoResponse() 
+            : base(GlobalizedApplication.Instance.GetResourceString("RCON_NoCommandResponseLabel"))
+        {
+            Foreground = Brushes.LightGray;
+        }
     };
 
     public class RCONOutput_CommandOutput : RCONOutput_TimedCommand
     {
-        public RCONOutput_CommandOutput(string text) : base(text) { }
+        public RCONOutput_CommandOutput(string text) 
+            : base(text)
+        {
+        }
+    };
+
+    public class RCONOutput_PlayerJoined : RCONOutput_TimedCommand
+    {
+        public RCONOutput_PlayerJoined(string text)
+            : base(text)
+        {
+            Foreground = Brushes.SteelBlue;
+        }
+    };
+
+    public class RCONOutput_PlayerLeft : RCONOutput_TimedCommand
+    {
+        public RCONOutput_PlayerLeft(string text)
+            : base(text)
+        {
+            Foreground = Brushes.Red;
+        }
     };
 
     /// <summary>
@@ -136,6 +191,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty RCONParametersProperty = DependencyProperty.Register(nameof(RCONParameters), typeof(RCONParameters), typeof(RCONWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty ScrollOnNewInputProperty = DependencyProperty.Register(nameof(ScrollOnNewInput), typeof(bool), typeof(RCONWindow), new PropertyMetadata(true));
         public static readonly DependencyProperty ServerRCONProperty = DependencyProperty.Register(nameof(ServerRCON), typeof(ServerRCON), typeof(RCONWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty PlayerAvatarWidthProperty = DependencyProperty.Register(nameof(PlayerAvatarWidth), typeof(int), typeof(RCONWindow), new PropertyMetadata(50));
 
         public RCONWindow(RCONParameters parameters)
         {
@@ -170,9 +226,11 @@ namespace ARK_Server_Manager
                 this.MaxPlayerLabel.Visibility = Visibility.Collapsed;
             }
 
+            this.PlayerAvatarWidth = CurrentConfig.RCON_ShowPlayerAvatars ? 50 : 0;
+
             this.DataContext = this;
 
-            AddCommentsBlock(
+            RenderCommentsBlock(
                 _globalizer.GetResourceString("RCON_Comments_Line1"),
                 _globalizer.GetResourceString("RCON_Comments_Line2"),
                 _globalizer.GetResourceString("RCON_Comments_Line3"),
@@ -204,7 +262,7 @@ namespace ARK_Server_Manager
             this.ConsoleInput.Focus();
         }
 
-
+        #region Properties
         public Config CurrentConfig
         {
             get { return (Config)GetValue(CurrentConfigProperty); }
@@ -259,72 +317,18 @@ namespace ARK_Server_Manager
             set { SetValue(ServerRCONProperty, value); }
         }
 
+        public int PlayerAvatarWidth
+        {
+            get { return (int)GetValue(PlayerAvatarWidthProperty); }
+            set { SetValue(PlayerAvatarWidthProperty, value); }
+        }
+        #endregion
 
+        #region Commands
         private InputWindowMode CurrentInputWindowMode
         {
             get;
             set;
-        }
-
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
-            this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
-            this.ServerRCON.DisposeAsync().DoNotWait();
-
-            if (this.RCONParameters?.Server != null)
-            {
-                RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
-                if (window != null)
-                    RCONWindows.Remove(this.RCONParameters.Server);
-            }
-
-            base.OnClosing(e);
-        }
-
-        public static RCONWindow GetRCONForServer(Server server)
-        {
-            RCONWindow window;
-            if(!RCONWindows.TryGetValue(server, out window) || !window.IsLoaded)
-            {
-                window = new RCONWindow(new RCONParameters()
-                {
-                    WindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
-
-                    Server = server,
-                    AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
-                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
-                    AltSaveDirectoryName = server.Runtime.ProfileSnapshot.AltSaveDirectoryName,
-                    ProfileName = server.Runtime.ProfileSnapshot.ProfileName,
-                    MaxPlayers = server.Runtime.MaxPlayers,
-                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
-                    RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
-
-                    PGM_Enabled = server.Profile.PGM_Enabled,
-                    PGM_Name = server.Profile.PGM_Name,
-                    WindowExtents = server.Profile.RCONWindowExtents,
-                });
-                RCONWindows[server] = window;
-            }
-
-            return window;
-        }
-
-        public static RCONWindow GetRCON(RCONParameters parameters)
-        {
-            return new RCONWindow(parameters);
-        }
-
-        public static void CloseAllWindows()
-        {
-            var windows = RCONWindows.Values.ToList();
-            foreach (var window in windows)
-            {
-                if(window.IsLoaded)
-                    window.Close();
-            }
-            windows.Clear();
         }
 
         public ICommand Button1Command
@@ -719,121 +723,99 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void RenderConnectionStateChange(DependencyPropertyChangedEventArgs a)
+        public ICommand ShowAvatarsCommand
         {
-            var oldStatus = (ServerRCON.ConsoleStatus)a.OldValue;
-            var newStatus = (ServerRCON.ConsoleStatus)a.NewValue;
-            if(oldStatus != newStatus)
+            get
             {
-                Paragraph p = new Paragraph();
-                if (newStatus == ServerRCON.ConsoleStatus.Connected)
-                {
-                    p.Inlines.Add(new RCONOutput_ConnectionChanged(true));
-                }
-                else
-                {
-                    p.Inlines.Add(new RCONOutput_ConnectionChanged(false));
-                }
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        PlayerAvatarWidth = CurrentConfig.RCON_ShowPlayerAvatars ? 50 : 0;
+                    },
+                    canExecute: (_) => true
+                );
+            }
+        }
+        #endregion
 
-                AddBlockContent(p);
+        #region Events
+        public static RCONWindow GetRCONForServer(Server server)
+        {
+            RCONWindow window;
+            if (!RCONWindows.TryGetValue(server, out window) || !window.IsLoaded)
+            {
+                window = new RCONWindow(new RCONParameters()
+                {
+                    WindowTitle = String.Format(GlobalizedApplication.Instance.GetResourceString("RCON_TitleLabel"), server.Runtime.ProfileSnapshot.ProfileName),
+
+                    Server = server,
+                    AdminPassword = server.Runtime.ProfileSnapshot.AdminPassword,
+                    InstallDirectory = server.Runtime.ProfileSnapshot.InstallDirectory,
+                    AltSaveDirectoryName = server.Runtime.ProfileSnapshot.AltSaveDirectoryName,
+                    ProfileName = server.Runtime.ProfileSnapshot.ProfileName,
+                    MaxPlayers = server.Runtime.MaxPlayers,
+                    RCONHost = server.Runtime.ProfileSnapshot.ServerIP,
+                    RCONPort = server.Runtime.ProfileSnapshot.RCONPort,
+
+                    PGM_Enabled = server.Profile.PGM_Enabled,
+                    PGM_Name = server.Profile.PGM_Name,
+                    WindowExtents = server.Profile.RCONWindowExtents,
+                });
+                RCONWindows[server] = window;
+            }
+
+            return window;
+        }
+
+        public static RCONWindow GetRCON(RCONParameters parameters)
+        {
+            return new RCONWindow(parameters);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (this.RCONParameters?.Server?.Runtime != null)
+            {
+                this.RCONParameters.Server.Runtime.StatusUpdate -= Runtime_StatusUpdate;
+            }
+
+            base.OnClosed(e);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.ServerRCON.PlayersCollectionUpdated -= Players_CollectionUpdated;
+            this.ServerRCON.Players.CollectionChanged -= Players_CollectionChanged;
+            this.ServerRCON.DisposeAsync().DoNotWait();
+
+            if (this.RCONParameters?.Server != null)
+            {
+                RCONWindows.TryGetValue(this.RCONParameters.Server, out RCONWindow window);
+                if (window != null)
+                    RCONWindows.Remove(this.RCONParameters.Server);
+            }
+
+            base.OnClosing(e);
+        }
+
+        private void RCON_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (this.WindowState != WindowState.Minimized)
+            {
+                Rect savedRect = this.RCONParameters.WindowExtents;
+                this.RCONParameters.WindowExtents = new Rect(savedRect.Location, e.NewSize);
             }
         }
 
-        private void RenderRCONCommandOutput(ServerRCON.ConsoleCommand command)
+        private void RCON_LocationChanged(object sender, EventArgs e)
         {
-            //
-            // Format output
-            //
-            Paragraph p = new Paragraph();
-
-            if (!command.suppressCommand)
+            if (this.WindowState != WindowState.Minimized && this.Left != -32000 && this.Top != -32000)
             {
-                foreach (var element in FormatCommandInput(command))
+                Rect savedRect = this.RCONParameters.WindowExtents;
+                this.RCONParameters.WindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
+                if (this.RCONParameters.Server != null)
                 {
-                    p.Inlines.Add(element);
-                }
-            }
-
-            if (!command.suppressOutput)
-            {
-                foreach (var element in FormatCommandOutput(command))
-                {
-                    p.Inlines.Add(element);
-                }
-            }
-
-            if (!(command.suppressCommand && command.suppressOutput))
-            {
-                if (p.Inlines.Count > 0)
-                {
-                    AddBlockContent(p);
-                }
-            }
-        }
-
-        private void AddBlockContent(Block b)
-        {
-            ConsoleContent.Blocks.Add(b);            
-        }
-
-        private IEnumerable<Inline> FormatCommandInput(ServerRCON.ConsoleCommand command)
-        {
-            if (command.command.Equals("broadcast", StringComparison.OrdinalIgnoreCase))
-            {
-                yield return new RCONOutput_Broadcast(command.args);
-            }
-            else
-            {
-                yield return new RCONOutput_Command($"> {command.rawCommand}");
-            }
-
-            if(!command.suppressOutput && command.lines.Count() > 0)
-            {
-                yield return new LineBreak();
-            }
-        }
-
-        private void AddCommentsBlock(params string[] lines)
-        {
-            var p = new Paragraph();
-            bool firstLine = true;
-
-            foreach (var output in lines)
-            {
-                var trimmed = output.TrimEnd();
-                if (!firstLine)
-                {
-                    p.Inlines.Add(new LineBreak());                    
-                }
-
-                firstLine = false;
-
-                p.Inlines.Add(new RCONOutput_Comment(output));
-            }
-
-            AddBlockContent(p);
-        }
-
-        private IEnumerable<Inline> FormatCommandOutput(ServerRCON.ConsoleCommand command)
-        {
-            bool firstLine = true;
-            
-            foreach (var output in command.lines)
-            {
-                var trimmed = output.TrimEnd();
-                if(!firstLine)
-                {
-                    yield return new LineBreak();
-                }
-                firstLine = false;
-
-                if (output == ServerRCON.NoResponseOutput)
-                {
-                    yield return new RCONOutput_NoResponse();
-                }
-                else
-                {
-                    yield return new RCONOutput_CommandOutput(trimmed);
+                    this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.WindowExtents;
                 }
             }
         }
@@ -847,7 +829,7 @@ namespace ARK_Server_Manager
                 var commandText = textBox.Text.Trim();
                 if (commandText.StartsWith(_globalizer.GetResourceString("RCON_Help_Keyword")))
                 {
-                    AddCommentsBlock(
+                    RenderCommentsBlock(
                         _globalizer.GetResourceString("RCON_Help_Line1"),
                         "   " + _globalizer.GetResourceString("RCON_Help_Line2"),
                         "   " + _globalizer.GetResourceString("RCON_Help_Line3"),
@@ -923,37 +905,43 @@ namespace ARK_Server_Manager
             }
         }
 
-        private void RCON_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (this.WindowState != WindowState.Minimized)
-            {
-                Rect savedRect = this.RCONParameters.WindowExtents;
-                this.RCONParameters.WindowExtents = new Rect(savedRect.Location, e.NewSize);
-            }
-        }
-
-        private void RCON_LocationChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState != WindowState.Minimized && this.Left != -32000 && this.Top != -32000)
-            {
-                Rect savedRect = this.RCONParameters.WindowExtents;
-                this.RCONParameters.WindowExtents = new Rect(new Point(this.Left, this.Top), savedRect.Size);
-                if (this.RCONParameters.Server != null)
-                {
-                    this.RCONParameters.Server.Profile.RCONWindowExtents = this.RCONParameters.WindowExtents;
-                }
-            }
-        }
-
         private void Players_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             SortPlayers();
-            PlayersView?.Refresh();
+            this.PlayersView?.Refresh();
+        }
+
+        private void Players_CollectionUpdated(object sender, EventArgs e)
+        {
+            this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
+            this.PlayersView.Filter = new Predicate<object>(PlayerFilter);
+
+            SortPlayers();
+            this.PlayersView?.Refresh();
         }
 
         private void PlayerFilter_SourceUpdated(object sender, DataTransferEventArgs e)
         {
-            PlayersView?.Refresh();
+            this.PlayersView?.Refresh();
+        }
+
+        private void Runtime_StatusUpdate(object sender, EventArgs e)
+        {
+            this.RCONParameters.ProfileName = this.RCONParameters?.Server?.Runtime?.ProfileSnapshot.ProfileName ?? "<unknown>";
+            this.RCONParameters.MaxPlayers = this.RCONParameters?.Server?.Runtime?.MaxPlayers ?? 0;
+        }
+        #endregion
+
+        #region Methods
+        public static void CloseAllWindows()
+        {
+            var windows = RCONWindows.Values.ToList();
+            foreach (var window in windows)
+            {
+                if (window.IsLoaded)
+                    window.Close();
+            }
+            windows.Clear();
         }
 
         public bool PlayerFilter(object obj)
@@ -965,7 +953,7 @@ namespace ARK_Server_Manager
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Admin) && player.IsAdmin) ||
-                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.HasBan) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);
             if (!result)
@@ -1009,30 +997,162 @@ namespace ARK_Server_Manager
                     break;
             }
         }
+        #endregion
 
-        private void Players_CollectionUpdated(object sender, EventArgs e)
+        #region Command Methods
+        private void AddBlockContent(Block b)
         {
-            this.PlayersView = CollectionViewSource.GetDefaultView(this.ServerRCON.Players);
-            this.PlayersView.Filter = new Predicate<object>(PlayerFilter);
-
-            SortPlayers();
-            PlayersView?.Refresh();
+            ConsoleContent.Blocks.Add(b);            
         }
 
-        private void Runtime_StatusUpdate(object sender, EventArgs eventArgs)
+        private IEnumerable<Inline> FormatCommandInput(ServerRCON.ConsoleCommand command)
         {
-            this.RCONParameters.ProfileName = this.RCONParameters?.Server?.Runtime?.ProfileSnapshot.ProfileName ?? "<unknown>";
-            this.RCONParameters.MaxPlayers = this.RCONParameters?.Server?.Runtime?.MaxPlayers ?? 0;
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            if (this.RCONParameters?.Server?.Runtime != null)
+            if (command.command.Equals("broadcast", StringComparison.OrdinalIgnoreCase))
             {
-                this.RCONParameters.Server.Runtime.StatusUpdate -= Runtime_StatusUpdate;
+                yield return new RCONOutput_Broadcast(command.args);
+            }
+            else
+            {
+                yield return new RCONOutput_Command($"> {command.rawCommand}");
             }
 
-            base.OnClosed(e);
+            if(!command.suppressOutput && command.lines.Count() > 0)
+            {
+                yield return new LineBreak();
+            }
         }
+
+        private IEnumerable<Inline> FormatCommandOutput(ServerRCON.ConsoleCommand command)
+        {
+            bool firstLine = true;
+
+            if (command.command.Equals("listplayers", StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var output in command.lines)
+                {
+                    var trimmed = output.TrimEnd();
+
+                    if (!firstLine)
+                    {
+                        yield return new LineBreak();
+                    }
+                    firstLine = false;
+
+                    if (trimmed == ServerRCON.NoResponseOutput)
+                    {
+                        yield return new RCONOutput_NoResponse();
+                    }
+                    else if (trimmed.EndsWith("joined the game."))
+                    {
+                        yield return new RCONOutput_PlayerJoined(trimmed);
+                    }
+                    else if (trimmed.EndsWith("left the game."))
+                    {
+                        yield return new RCONOutput_PlayerLeft(trimmed);
+                    }
+                    else
+                    {
+                        yield return new RCONOutput_CommandOutput(trimmed);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var output in command.lines)
+                {
+                    var trimmed = output.TrimEnd();
+
+                    if (!firstLine)
+                    {
+                        yield return new LineBreak();
+                    }
+                    firstLine = false;
+
+                    if (trimmed == ServerRCON.NoResponseOutput)
+                    {
+                        yield return new RCONOutput_NoResponse();
+                    }
+                    else
+                    {
+                        yield return new RCONOutput_CommandOutput(trimmed);
+                    }
+                }
+            }
+        }
+
+        private void RenderCommentsBlock(params string[] lines)
+        {
+            var p = new Paragraph();
+            bool firstLine = true;
+
+            foreach (var output in lines)
+            {
+                var trimmed = output.TrimEnd();
+
+                if (!firstLine)
+                {
+                    p.Inlines.Add(new LineBreak());                    
+                }
+                firstLine = false;
+
+                p.Inlines.Add(new RCONOutput_Comment(trimmed));
+            }
+
+            AddBlockContent(p);
+        }
+
+        private void RenderConnectionStateChange(DependencyPropertyChangedEventArgs e)
+        {
+            var oldStatus = (ServerRCON.ConsoleStatus)e.OldValue;
+            var newStatus = (ServerRCON.ConsoleStatus)e.NewValue;
+
+            if(oldStatus != newStatus)
+            {
+                var p = new Paragraph();
+                if (newStatus == ServerRCON.ConsoleStatus.Connected)
+                {
+                    p.Inlines.Add(new RCONOutput_ConnectionChanged(true));
+                }
+                else
+                {
+                    p.Inlines.Add(new RCONOutput_ConnectionChanged(false));
+                }
+
+                AddBlockContent(p);
+            }
+        }
+
+        private void RenderRCONCommandOutput(ServerRCON.ConsoleCommand command)
+        {
+            //
+            // Format output
+            //
+            var p = new Paragraph();
+
+            if (!command.suppressCommand)
+            {
+                foreach (var element in FormatCommandInput(command))
+                {
+                    p.Inlines.Add(element);
+                }
+            }
+
+            if (!command.suppressOutput)
+            {
+                foreach (var element in FormatCommandOutput(command))
+                {
+                    p.Inlines.Add(element);
+                }
+            }
+
+            if (!(command.suppressCommand && command.suppressOutput))
+            {
+                if (p.Inlines.Count > 0)
+                {
+                    AddBlockContent(p);
+                }
+            }
+        }
+        #endregion
     }
 }

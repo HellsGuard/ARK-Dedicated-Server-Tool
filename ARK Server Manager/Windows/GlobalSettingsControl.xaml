@@ -152,26 +152,6 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
-                    <GroupBox.Header>
-                        <Label Content="{DynamicResource GlobalSettings_RconOptionsLabel}"/>
-                    </GroupBox.Header>
-
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" Content="{DynamicResource GlobalSettings_Rcon_DownloadPlayerAvatarsLabel}" IsChecked="{Binding CurrentConfig.RCON_DownloadPlayerAvatars, Mode=TwoWay}" ToolTip="{DynamicResource GlobalSettings_Rcon_DownloadPlayerAvatarsTooltip}" HorizontalAlignment="Left"/>
-                    </Grid>
-                </GroupBox>
-
                 <GroupBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <Label Content="{DynamicResource GlobalSettings_CustomOverrideOptionsLabel}"/>

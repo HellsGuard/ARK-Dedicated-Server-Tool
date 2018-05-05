@@ -31,6 +31,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty PlayerListViewProperty = DependencyProperty.Register(nameof(PlayerListView), typeof(ICollectionView), typeof(PlayerListWindow), new PropertyMetadata(null));
         public static readonly DependencyProperty PlayerSortingProperty = DependencyProperty.Register(nameof(PlayerSorting), typeof(PlayerSortType), typeof(PlayerListWindow), new PropertyMetadata(PlayerSortType.Name));
         public static readonly DependencyProperty ServerPlayersProperty = DependencyProperty.Register(nameof(ServerPlayers), typeof(ServerPlayers), typeof(PlayerListWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty PlayerAvatarWidthProperty = DependencyProperty.Register(nameof(PlayerAvatarWidth), typeof(int), typeof(PlayerListWindow), new PropertyMetadata(50));
 
         public PlayerListWindow(PlayerListParameters parameters)
         {
@@ -47,6 +48,8 @@ namespace ARK_Server_Manager
 
             this.PlayerListView = CollectionViewSource.GetDefaultView(this.ServerPlayers.Players);
             this.PlayerListView.Filter = new Predicate<object>(PlayerListFilter);
+
+            this.PlayerAvatarWidth = Config.RCON_ShowPlayerAvatars ? 50 : 0;
 
             this.DataContext = this;
 
@@ -110,6 +113,12 @@ namespace ARK_Server_Manager
         {
             get { return (ServerPlayers)GetValue(ServerPlayersProperty); }
             set { SetValue(ServerPlayersProperty, value); }
+        }
+
+        public int PlayerAvatarWidth
+        {
+            get { return (int)GetValue(PlayerAvatarWidthProperty); }
+            set { SetValue(PlayerAvatarWidthProperty, value); }
         }
 
         public ICommand CopyPlayerIDCommand
@@ -238,6 +247,20 @@ namespace ARK_Server_Manager
             }
         }
 
+        public ICommand ShowAvatarsCommand
+        {
+            get
+            {
+                return new RelayCommand<object>(
+                    execute: (_) =>
+                    {
+                        PlayerAvatarWidth = Config.RCON_ShowPlayerAvatars ? 50 : 0;
+                    },
+                    canExecute: (_) => true
+                );
+            }
+        }
+
         private void Players_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             PlayerListView?.Refresh();
@@ -314,6 +337,7 @@ namespace ARK_Server_Manager
         {
             this.ServerPlayers.PlayersCollectionUpdated -= Players_CollectionUpdated;
             this.ServerPlayers.Players.CollectionChanged -= Players_CollectionChanged;
+            this.ServerPlayers.Dispose();
 
             if (this.PlayerListParameters?.Server != null)
             {
@@ -336,7 +360,7 @@ namespace ARK_Server_Manager
             var result = (this.PlayerFiltering.HasFlag(PlayerFilterType.Online) && player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Offline) && !player.IsOnline) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Admin) && player.IsAdmin) ||
-                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.IsBanned) ||
+                         (this.PlayerFiltering.HasFlag(PlayerFilterType.Banned) && player.HasBan) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Whitelisted) && player.IsWhitelisted) ||
                          (this.PlayerFiltering.HasFlag(PlayerFilterType.Invalid) && !player.IsValid);
             if (!result)

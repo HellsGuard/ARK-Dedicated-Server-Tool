@@ -548,9 +548,6 @@
     <Setting Name="Alert_ForceRespawnDinos" Type="System.String" Scope="User">
       <Value Profile="(Default)">A wild dino wipe is scheduled after the server starts and may delay login until it is complete. Please be patient.</Value>
     </Setting>
-    <Setting Name="RCON_DownloadPlayerAvatars" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="ServerManagerCode" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E</Value>
     </Setting>
@@ -592,6 +589,12 @@
     </Setting>
     <Setting Name="ServerManagerVersionBetaFeedUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arksm.azurewebsites.net/downloads/arkservermanager/beta/versionfeed.xml</Value>
+    </Setting>
+    <Setting Name="RCON_MaximumPlayerAvatars" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="RCON_ShowPlayerAvatars" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

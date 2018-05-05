@@ -63,9 +63,9 @@ namespace ArkData
             while (true)
             {
                 // check if the start index has exceeded the Players list count.
-                if (startIndex >= Players.Count) break;
+                if (startIndex >= playerSteamIds.Length) break;
                 // get the number of steam ids to read.
-                int steamIdsCount = System.Math.Min(MAX_STEAM_IDS, Players.Count - startIndex);
+                int steamIdsCount = System.Math.Min(MAX_STEAM_IDS, playerSteamIds.Length - startIndex);
                 // get a comma delimited list of the steam ids to process
                 var builder = string.Join(",", playerSteamIds, startIndex, steamIdsCount);
 
