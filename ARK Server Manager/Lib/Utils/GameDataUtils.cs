@@ -35,6 +35,7 @@ namespace ARK_Server_Manager.Lib.Utils
                 data.Mods.AddRange(fileData.Mods);
                 data.PlayerLevels.AddRange(fileData.PlayerLevels);
                 data.CreatureLevels.AddRange(fileData.CreatureLevels);
+                data.Branches.AddRange(fileData.Branches);
             }
         }
 
@@ -416,6 +417,9 @@ namespace ARK_Server_Manager.Lib.Utils
         [DataMember(IsRequired = false)]
         public List<CreatureLevelDataItem> CreatureLevels = new List<CreatureLevelDataItem>();
 
+        [DataMember(IsRequired = false)]
+        public List<BranchDataItem> Branches = new List<BranchDataItem>();
+
         public static BaseGameData Load(string file, bool isUserData)
         {
             if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
@@ -430,6 +434,7 @@ namespace ARK_Server_Manager.Lib.Utils
             data.Inventories.ForEach(c => c.IsUserData = isUserData);
             data.GameMaps.ForEach(c => c.IsUserData = isUserData);
             data.Mods.ForEach(c => c.IsUserData = isUserData);
+            data.Branches.ForEach(c => c.IsUserData = isUserData);
             return data;
         }
 
@@ -587,5 +592,18 @@ namespace ARK_Server_Manager.Lib.Utils
     {
         [DataMember]
         public int XPRequired = 0;
+    }
+
+    [DataContract]
+    public class BranchDataItem
+    {
+        [DataMember]
+        public bool IsSotF = false;
+        [DataMember]
+        public string BranchName = string.Empty;
+        [DataMember]
+        public string Description = string.Empty;
+
+        public bool IsUserData = false;
     }
 }

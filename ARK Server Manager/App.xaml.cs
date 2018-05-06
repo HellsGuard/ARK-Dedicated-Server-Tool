@@ -164,22 +164,6 @@ namespace ARK_Server_Manager
                 Config.Default.Reload();
                 Config.Default.UpgradeConfig = false;
 
-#if false
-                object previousEnableSettingsCache = null;
-                try { previousEnableSettingsCache = Config.Default.GetPreviousVersion(nameof(Config.Default.GLOBAL_EnableServerCache)); }
-                catch (SettingsPropertyNotFoundException) { /* this would get thrown if we were renaming a property, see http://www.codeproject.com/Articles/247333/Renaming-User-Settings-properties-between-software */ }
-
-                if (previousEnableSettingsCache == null)
-                {
-                    int serverupdatePeriod = 0;
-                    Int32.TryParse(Config.Default.GetPreviousVersion(nameof(Config.Default.AutoUpdate_UpdatePeriod)).ToString(), out serverupdatePeriod);
-                    if (!String.IsNullOrWhiteSpace(Config.Default.GetPreviousVersion(nameof(Config.Default.AutoUpdate_CacheDir)).ToString()) &&
-                       serverupdatePeriod > 0)
-                    {
-                        Config.Default.GLOBAL_EnableServerCache = true;
-                    }
-                }
-#endif
                 Config.Default.Save();
             }
         }

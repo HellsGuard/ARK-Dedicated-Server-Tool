@@ -836,6 +836,12 @@
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
 
+    <sys:String x:Key="ServerSettings_BranchLabel">Branch Details</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameLabel">Branch Name:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameTooltip">The name of the branch to download (leave blank to use the release branch).</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordLabel">Branch Password:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordTooltip">The password that is used to access the branch download.</sys:String>
+
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_LauncherArgsLabel">Launcher Args:</sys:String>
     <sys:String x:Key="ServerSettings_LauncherArgsTooltip">Additional command-line args for the server launcher. Use this with caution! For more information search 'Microsoft Start Command' on the internet.</sys:String>

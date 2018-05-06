@@ -12972,5 +12972,17 @@
     {
       "XPRequired": 2525000
     }
+  ],
+  "Branches": [
+    {
+      "IsSotF": false,
+      "BranchName": "halloween",
+      "Description": "Halloween Event"
+    },
+    {
+      "IsSotF": false,
+      "BranchName": "holidayevent",
+      "Description": "Christmas Event"
+    }
   ]
 }

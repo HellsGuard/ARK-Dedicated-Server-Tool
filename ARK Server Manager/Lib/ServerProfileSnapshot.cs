@@ -25,9 +25,11 @@ namespace ARK_Server_Manager.Lib
         public string ServerMapModId;
         public string TotalConversionModId;
         public List<string> ServerModIds;
-        public string LastInstalledVersion;
         public int MotDDuration;
         public bool ForceRespawnDinos;
+
+        public string BranchName;
+        public string BranchPassword;
 
         public string SchedulerKey;
         public bool EnableAutoBackup;
@@ -45,6 +47,7 @@ namespace ARK_Server_Manager.Lib
         public int MaxPlayerCount;
 
         public bool ServerUpdated;
+        public string LastInstalledVersion;
 
         public static ServerProfileSnapshot Create(ServerProfile profile)
         {
@@ -72,6 +75,9 @@ namespace ARK_Server_Manager.Lib
                 MotDDuration = Math.Max(profile.MOTDDuration, 10),
                 ForceRespawnDinos = profile.ForceRespawnDinos,
 
+                BranchName = profile.BranchName,
+                BranchPassword = profile.BranchPassword,
+
                 SchedulerKey = profile.GetProfileKey(),
                 EnableAutoBackup = profile.EnableAutoBackup,
                 EnableAutoUpdate = profile.EnableAutoUpdate,
@@ -85,10 +91,10 @@ namespace ARK_Server_Manager.Lib
 
                 SotFEnabled = profile.SOTF_Enabled,
 
-                LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
                 MaxPlayerCount = profile.MaxPlayers,
 
                 ServerUpdated = false,
+                LastInstalledVersion = profile.LastInstalledVersion ?? new Version(0, 0).ToString(),
             };
         }
 

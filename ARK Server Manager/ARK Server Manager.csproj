@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.326.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -161,11 +161,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\Converters\DoubleRangeValueConverter.cs" />
+    <Compile Include="Common\Converters\InvertBooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\SecondsToMinutesConverter.cs" />
     <Compile Include="Common\Converters\SecondsToHoursConverter.cs" />
     <Compile Include="Common\Converters\IntRangeValueConverter.cs" />
     <Compile Include="Common\Lib\BrowserBehavior.cs" />
     <Compile Include="Common\Model\PublishedFileDetail.cs" />
+    <Compile Include="Common\Model\SteamCmdManifestDetails.cs" />
     <Compile Include="Common\Model\VersionFeed.cs" />
     <Compile Include="Common\Model\VersionFeedEntry.cs" />
     <Compile Include="Common\Serialization\IniFile.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Common\Utils\VersionFeedUtils.cs" />
     <Compile Include="Lib\Model\ArkApplicationComboBoxItem.cs" />
     <Compile Include="Lib\Model\PlayerListParameters.cs" />
+    <Compile Include="Lib\ServerBranchSnapshot.cs" />
     <Compile Include="Lib\ServerPlayers.cs" />
     <Compile Include="Lib\ServerProfileSnapshot.cs" />
     <Compile Include="Lib\Utils\GameDataUtils.cs" />

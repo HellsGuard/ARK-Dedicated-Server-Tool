@@ -21,7 +21,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SteamCmdInstallServerArgsFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 376030 {1}" +quit</Value>
+      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 376030 {1} {2}" +quit</Value>
     </Setting>
     <Setting Name="ServersInstallDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Servers</Value>
@@ -168,7 +168,7 @@
       <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="SteamCmdInstallServerArgsFormat_SotF" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 445400 {1}" +quit</Value>
+      <Value Profile="(Default)">+login anonymous +force_install_dir "{0}"  "+app_update 445400 {1} {2}" +quit</Value>
     </Setting>
     <Setting Name="ArkSE_PatchNotesUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://survivetheark.com/index.php?/forums/forum/5-changelog-patch-notes/</Value>
@@ -595,6 +595,27 @@
     </Setting>
     <Setting Name="RCON_ShowPlayerAvatars" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultServerBranchName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">release</Value>
+    </Setting>
+    <Setting Name="SteamCmdInstallServerBetaNameArgsFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-beta {0}</Value>
+    </Setting>
+    <Setting Name="SteamCmdInstallServerBetaPasswordArgsFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-betapassword {0}</Value>
+    </Setting>
+    <Setting Name="ServerBranchFolderPrefix" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">__</Value>
+    </Setting>
+    <Setting Name="ArkSteamManifestFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">appmanifest_376030.acf</Value>
+    </Setting>
+    <Setting Name="ArkSteamManifestFile_SotF" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">appmanifest_407530.acf</Value>
+    </Setting>
+    <Setting Name="SteamManifestFolderRelativePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">steamapps</Value>
     </Setting>
   </Settings>
 </SettingsFile>

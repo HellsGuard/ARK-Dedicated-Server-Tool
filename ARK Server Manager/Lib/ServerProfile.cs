@@ -1,6 +1,7 @@
 ﻿using ARK_Server_Manager.Lib.Model;
 using ARK_Server_Manager.Lib.Utils;
 using ARK_Server_Manager.Lib.ViewModel;
+using NeXt.Vdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -655,6 +656,31 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(UseNoHangDetectionProperty, value); }
         }
 
+        public static readonly DependencyProperty AllowHideDamageSourceFromLogsProperty = DependencyProperty.Register(nameof(AllowHideDamageSourceFromLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        public bool AllowHideDamageSourceFromLogs
+        {
+            get { return (bool)GetValue(AllowHideDamageSourceFromLogsProperty); }
+            set { SetValue(AllowHideDamageSourceFromLogsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerAllowAnselProperty = DependencyProperty.Register(nameof(ServerAllowAnsel), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool ServerAllowAnsel
+        {
+            get { return (bool)GetValue(ServerAllowAnselProperty); }
+            set { SetValue(ServerAllowAnselProperty, value); }
+        }
+
+        public static readonly DependencyProperty NoDinosProperty = DependencyProperty.Register(nameof(NoDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool NoDinos
+        {
+            get { return (bool)GetValue(NoDinosProperty); }
+            set { SetValue(NoDinosProperty, value); }
+        }
+
         public static readonly DependencyProperty CrossArkClusterIdProperty = DependencyProperty.Register(nameof(CrossArkClusterId), typeof(string), typeof(ServerProfile), new PropertyMetadata(string.Empty));
         [DataMember]
         public string CrossArkClusterId
@@ -669,6 +695,22 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (bool)GetValue(ClusterDirOverrideProperty); }
             set { SetValue(ClusterDirOverrideProperty, value); }
+        }
+
+        public static readonly DependencyProperty BranchNameProperty = DependencyProperty.Register(nameof(BranchName), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        [DataMember]
+        public string BranchName
+        {
+            get { return (string)GetValue(BranchNameProperty); }
+            set { SetValue(BranchNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty BranchPasswordProperty = DependencyProperty.Register(nameof(BranchPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
+        [DataMember]
+        public string BranchPassword
+        {
+            get { return (string)GetValue(BranchPasswordProperty); }
+            set { SetValue(BranchPasswordProperty, value); }
         }
 
         public static readonly DependencyProperty AdditionalArgsProperty = DependencyProperty.Register(nameof(AdditionalArgs), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
@@ -693,31 +735,6 @@ namespace ARK_Server_Manager.Lib
         {
             get { return (string)GetValue(LauncherArgsProperty); }
             set { SetValue(LauncherArgsProperty, value); }
-        }
-
-        public static readonly DependencyProperty AllowHideDamageSourceFromLogsProperty = DependencyProperty.Register(nameof(AllowHideDamageSourceFromLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
-        public bool AllowHideDamageSourceFromLogs
-        {
-            get { return (bool)GetValue(AllowHideDamageSourceFromLogsProperty); }
-            set { SetValue(AllowHideDamageSourceFromLogsProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerAllowAnselProperty = DependencyProperty.Register(nameof(ServerAllowAnsel), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [DataMember]
-        public bool ServerAllowAnsel
-        {
-            get { return (bool)GetValue(ServerAllowAnselProperty); }
-            set { SetValue(ServerAllowAnselProperty, value); }
-        }
-
-        public static readonly DependencyProperty NoDinosProperty = DependencyProperty.Register(nameof(NoDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [DataMember]
-        public bool NoDinos
-        {
-            get { return (bool)GetValue(NoDinosProperty); }
-            set { SetValue(NoDinosProperty, value); }
         }
         #endregion
 
@@ -3101,6 +3118,34 @@ namespace ARK_Server_Manager.Lib
             SetupServerFilesWatcher();
         }
 
+        public void ClearSteamAppManifestBranch()
+        {
+            if (!string.IsNullOrWhiteSpace(BranchName))
+                return;
+
+            try
+            {
+                var manifestFile = ModUtils.GetSteamManifestFile(InstallDirectory, SOTF_Enabled);
+                if (string.IsNullOrWhiteSpace(manifestFile) || !File.Exists(manifestFile))
+                    return;
+
+                // load the manifest files
+                var vdfDeserializer = VdfDeserializer.FromFile(manifestFile);
+                var vdf = vdfDeserializer.Deserialize();
+
+                // clear any of th beta keys values
+                SteamCmdManifestDetailsResult.ClearUserConfigBetaKeys(vdf);
+
+                // save the manifest file
+                var vdfSerializer = new VdfSerializer(vdf);
+                vdfSerializer.Serialize(manifestFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Clear Branch Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         internal static ServerProfile FromDefaults()
         {
             var settings = new ServerProfile();
@@ -3689,6 +3734,9 @@ namespace ARK_Server_Manager.Lib
 
             if (SOTF_Enabled)
             {
+                BranchName = string.Empty;
+                BranchPassword = string.Empty;
+
                 // ensure that the auto settings are switched off for SotF servers
                 EnableAutoBackup = false;
                 EnableAutoShutdown1 = false;
@@ -3701,6 +3749,8 @@ namespace ARK_Server_Manager.Lib
                 // ensure the procedurally generated settings are switched off for SotF servers
                 PGM_Enabled = false;
             }
+
+            ClearSteamAppManifestBranch();
 
             if (!OverrideNamedEngramEntries.IsEnabled)
                 OnlyAllowSpecifiedEngrams = false;
@@ -4599,6 +4649,11 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(WebAlarmKeyProperty);
             this.ClearValue(WebAlarmUrlProperty);
 
+            this.ClearValue(BranchNameProperty);
+            this.ClearValue(BranchPasswordProperty);
+
+            this.ClearValue(LauncherArgsOverrideProperty);
+            this.ClearValue(LauncherArgsProperty);
             this.ClearValue(AdditionalArgsProperty);
         }
 
@@ -5078,9 +5133,12 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(CrossArkClusterIdProperty, sourceProfile.CrossArkClusterId);
             this.SetValue(ClusterDirOverrideProperty, sourceProfile.ClusterDirOverride);
 
-            this.SetValue(AdditionalArgsProperty, sourceProfile.AdditionalArgs);
+            this.SetValue(BranchNameProperty, sourceProfile.BranchName);
+            this.SetValue(BranchPasswordProperty, sourceProfile.BranchPassword);
+
             this.SetValue(LauncherArgsOverrideProperty, sourceProfile.LauncherArgsOverride);
             this.SetValue(LauncherArgsProperty, sourceProfile.LauncherArgs);
+            this.SetValue(AdditionalArgsProperty, sourceProfile.AdditionalArgs);
         }
 
         private void SyncAutomaticManagement(ServerProfile sourceProfile)

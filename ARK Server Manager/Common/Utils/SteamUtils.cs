@@ -196,6 +196,17 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public static SteamCmdAppManifest ReadSteamCmdAppManifestFile(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
+                return null;
+
+            var vdfSerializer = VdfDeserializer.FromFile(file);
+            var vdf = vdfSerializer.Deserialize();
+
+            return SteamCmdManifestDetailsResult.Deserialize(vdf);
+        }
+
         public static SteamCmdAppWorkshop ReadSteamCmdAppWorkshopFile(string file)
         {
             if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))

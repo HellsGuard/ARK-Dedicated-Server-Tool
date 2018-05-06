@@ -88,6 +88,7 @@ namespace ARK_Server_Manager.Lib
         private const int DIRECTORIES_PER_LINE = 200;
 
         private static readonly object LockObjectMessage = new object();
+        private static readonly object LockObjectBranchMessage = new object();
         private static readonly object LockObjectProfileMessage = new object();
         private static DateTime _startTime = DateTime.Now;
         private static string _logPrefix = "";
@@ -130,11 +131,11 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("------------------------");
             LogProfileMessage("Started server backup...");
             LogProfileMessage("------------------------");
-            LogProfileMessage($"ASM version: {App.Version}");
+            LogProfileMessage($"Server Manager version: {App.Version}");
 
-            emailMessage.AppendLine("ASM Backup Summary:");
+            emailMessage.AppendLine("Server Manager Backup Summary:");
             emailMessage.AppendLine();
-            emailMessage.AppendLine($"ASM version: {App.Version}");
+            emailMessage.AppendLine($"Server Manager version: {App.Version}");
 
             // Find the server process.
             Process process = GetServerProcess();
@@ -238,7 +239,7 @@ namespace ARK_Server_Manager.Lib
                 LogProfileMessage("Started server shutdown...");
                 LogProfileMessage("--------------------------");
             }
-            LogProfileMessage($"ASM version: {App.Version}");
+            LogProfileMessage($"Server Manager version: {App.Version}");
 
             // stop the server
             StopServer(cancellationToken);
@@ -501,7 +502,7 @@ namespace ARK_Server_Manager.Lib
                         var delay = sent ? 60000 - Config.Default.SendMessageDelay : 60000;
                         Task.Delay(delay, cancellationToken).Wait(cancellationToken);
                     }
-                    catch {}
+                    catch { }
                 }
 
                 // check if we need to perform a world save (not required for SotF servers)
@@ -756,7 +757,7 @@ namespace ARK_Server_Manager.Lib
                 };
 
                 var steamCmdInstallServerArgsFormat = _profile.SotFEnabled ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
-                var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, _profile.InstallDirectory, validate ? "validate" : string.Empty);
+                var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, _profile.InstallDirectory, string.Empty, validate ? "validate" : string.Empty);
 
                 success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, _profile.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, SteamCMDProcessWindowStyle).Result;
                 if (success && downloadSuccessful)
@@ -1106,9 +1107,10 @@ namespace ARK_Server_Manager.Lib
             LogProfileMessage("Started server update...");
             LogProfileMessage("------------------------");
             LogProfileMessage($"Server Manager version: {App.Version}");
+            LogProfileMessage($"Server branch: {GetBranchName(_profile.BranchName)}");
 
             // check if the server needs to be updated
-            var serverCacheLastUpdated = GetServerLatestTime(GetServerCacheTimeFile());
+            var serverCacheLastUpdated = GetServerLatestTime(GetServerCacheTimeFile(_profile?.BranchName));
             var serverLastUpdated = GetServerLatestTime(GetServerTimeFile());
             var updateServer = serverCacheLastUpdated > serverLastUpdated;
 
@@ -1218,12 +1220,14 @@ namespace ARK_Server_Manager.Lib
 
                     try
                     {
-                        if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))
+                        var cacheFolder = GetServerCacheFolder(_profile?.BranchName);
+
+                        if (Directory.Exists(cacheFolder))
                         {
                             LogProfileMessage($"Smart cache copy: {Config.Default.AutoUpdate_UseSmartCopy}.");
 
                             // update the server files from the cache.
-                            DirectoryCopy(Config.Default.AutoUpdate_CacheDir, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
+                            DirectoryCopy(cacheFolder, _profile.InstallDirectory, true, Config.Default.AutoUpdate_UseSmartCopy, null);
 
                             LogProfileMessage("Updated server from cache. See ARK patch notes.");
                             LogProfileMessage(Config.Default.ArkSE_PatchNotesUrl);
@@ -1429,7 +1433,7 @@ namespace ARK_Server_Manager.Lib
             LogMessage("----------------------------");
             LogMessage("Starting mod cache update...");
             LogMessage("----------------------------");
-            LogMessage($"ASM version: {App.Version}");
+            LogMessage($"Server Manager version: {App.Version}");
 
             LogMessage($"Downloading mod information for {modIdList.Count} mods from steam.");
 
@@ -1615,12 +1619,13 @@ namespace ARK_Server_Manager.Lib
             ExitCode = EXITCODE_NORMALEXIT;
         }
 
-        private void UpdateServerCache()
+        private void UpdateServerCache(string branchName, string branchPassword)
         {
-            LogMessage("-------------------------------");
-            LogMessage("Starting server cache update...");
-            LogMessage("-------------------------------");
-            LogMessage($"ASM version: {App.Version}");
+            LogBranchMessage(branchName, "-------------------------------");
+            LogBranchMessage(branchName, "Starting server cache update...");
+            LogBranchMessage(branchName, "-------------------------------");
+            LogBranchMessage(branchName, $"Server Manager version: {App.Version}");
+            LogBranchMessage(branchName, $"Server branch: {GetBranchName(branchName)}");
 
             var gotNewVersion = false;
             var downloadSuccessful = false;
@@ -1628,7 +1633,7 @@ namespace ARK_Server_Manager.Lib
             var steamCmdFile = SteamCmdUpdater.GetSteamCmdFile();
             if (string.IsNullOrWhiteSpace(steamCmdFile) || !File.Exists(steamCmdFile))
             {
-                LogError($"SteamCMD could not be found. Expected location is {steamCmdFile}");
+                LogBranchError(branchName, $"SteamCMD could not be found. Expected location is {steamCmdFile}");
                 ExitCode = EXITCODE_STEAMCMDNOTFOUND;
                 return;
             }
@@ -1636,7 +1641,7 @@ namespace ARK_Server_Manager.Lib
             DataReceivedEventHandler serverOutputHandler = (s, e) =>
             {
                 var dataValue = e.Data ?? string.Empty;
-                LogMessage(dataValue);
+                LogBranchMessage(branchName, dataValue);
                 if (!gotNewVersion && dataValue.Contains("downloading,"))
                 {
                     gotNewVersion = true;
@@ -1647,7 +1652,18 @@ namespace ARK_Server_Manager.Lib
                 }
             };
 
-            LogMessage("Server update started.");
+            // create the branch arguments
+            var steamCmdInstallServerBetaArgs = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(branchName))
+            {
+                steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaNameArgsFormat, branchName);
+                if (!string.IsNullOrWhiteSpace(branchPassword))
+                    steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaPasswordArgsFormat, branchPassword);
+            }
+
+            var cacheFolder = GetServerCacheFolder(branchName);
+
+            LogBranchMessage(branchName, "Server update started.");
 
             var attempt = 0;
             while (true)
@@ -1657,11 +1673,11 @@ namespace ARK_Server_Manager.Lib
                 gotNewVersion = false;
 
                 // update the server cache
-                var validateString = String.Empty;
-                if (Config.Default.AutoUpdate_ValidateServerFiles)
-                    validateString = "validate";
-                var steamCmdArgs = String.Format(Config.Default.SteamCmdInstallServerArgsFormat, Config.Default.AutoUpdate_CacheDir, validateString);
-                var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, Config.Default.AutoUpdate_CacheDir, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, SteamCMDProcessWindowStyle).Result;
+                var validate = Config.Default.AutoUpdate_ValidateServerFiles;
+                var steamCmdInstallServerArgsFormat = Config.Default.SteamCmdInstallServerArgsFormat;
+                var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, cacheFolder, steamCmdInstallServerBetaArgs, validate ? "validate" : string.Empty);
+
+                var success = ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, cacheFolder, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, CancellationToken.None, SteamCMDProcessWindowStyle).Result;
                 if (success && downloadSuccessful)
                     // download was successful, exit loop and continue.
                     break;
@@ -1670,14 +1686,14 @@ namespace ARK_Server_Manager.Lib
                 var logError = "Server cache update failed";
                 if (Config.Default.AutoUpdate_RetryOnFail)
                     logError += $" - attempt {attempt}.";
-                LogError(logError);
+                LogBranchError(branchName, logError);
 
                 // check if we have reached the max failed attempt limit.
                 if (!Config.Default.AutoUpdate_RetryOnFail || attempt >= STEAM_MAXRETRIES)
                 {
                     // failed max limit reached
                     if (Config.Default.SteamCmdRedirectOutput)
-                        LogMessage($"If the server cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
+                        LogBranchMessage(branchName, $"If the server cache update keeps failing try disabling the '{_globalizer.GetResourceString("GlobalSettings_SteamCmdRedirectOutputLabel")}' option in the ASM settings window.");
 
                     ExitCode = EXITCODE_CACHESERVERUPDATEFAILED;
                     return;
@@ -1686,29 +1702,29 @@ namespace ARK_Server_Manager.Lib
                 Task.Delay(5000).Wait();
             }
 
-            if (Directory.Exists(Config.Default.AutoUpdate_CacheDir))
+            if (Directory.Exists(cacheFolder))
             {
                 if (!Config.Default.SteamCmdRedirectOutput)
                     // check if any of the server files have changed.
-                    gotNewVersion = HasNewServerVersion(Config.Default.AutoUpdate_CacheDir, _startTime);
+                    gotNewVersion = HasNewServerVersion(cacheFolder, _startTime);
 
                 if (gotNewVersion)
                 {
-                    LogMessage("***** New version downloaded. *****");
+                    LogBranchMessage(branchName, "***** New version downloaded. *****");
 
-                    var latestCacheTimeFile = GetServerCacheTimeFile();
+                    var latestCacheTimeFile = GetServerCacheTimeFile(branchName);
                     File.WriteAllText(latestCacheTimeFile, _startTime.ToString("o", CultureInfo.CurrentCulture));
                 }
                 else
-                    LogMessage("No new version.");
+                    LogBranchMessage(branchName, "No new version.");
             }
             else
-                LogMessage($"Server cache does not exist.");
+                LogBranchMessage(branchName, $"Server cache does not exist.");
 
-            LogMessage("-----------------------------");
-            LogMessage("Finished server cache update.");
-            LogMessage("-----------------------------");
-            LogMessage("");
+            LogBranchMessage(branchName, "-----------------------------");
+            LogBranchMessage(branchName, "Finished server cache update.");
+            LogBranchMessage(branchName, "-----------------------------");
+            LogBranchMessage(branchName, "");
             ExitCode = EXITCODE_NORMALEXIT;
         }
 
@@ -2125,6 +2141,10 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public static string GetBranchName(string branchName) => string.IsNullOrWhiteSpace(branchName) ? Config.Default.DefaultServerBranchName : branchName;
+
+        public static string GetBranchLogFile(string branchName) => IOUtils.NormalizePath(Path.Combine(SteamCmdUpdater.GetLogFolder(), _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}{(string.IsNullOrWhiteSpace(branchName) ? string.Empty : $"_{branchName}")}.log"));
+
         private string GetLauncherFile() => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.LauncherFile));
 
         private static string GetLogFile() => IOUtils.NormalizePath(Path.Combine(SteamCmdUpdater.GetLogFolder(), _logPrefix, $"{_startTime.ToString("yyyyMMdd_HHmmss")}.log"));
@@ -2207,7 +2227,9 @@ namespace ARK_Server_Manager.Lib
             return IOUtils.NormalizePath(Path.Combine(Config.Default.BackupPath, Config.Default.ServersInstallDir, profileName));
         }
 
-        private static string GetServerCacheTimeFile() => IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile));
+        private static string GetServerCacheFolder(string branchName) => IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, $"{Config.Default.ServerBranchFolderPrefix}{GetBranchName(branchName)}"));
+
+        private static string GetServerCacheTimeFile(string branchName) => IOUtils.NormalizePath(Path.Combine(GetServerCacheFolder(branchName), Config.Default.LastUpdatedTimeFile));
 
         private string GetServerExecutableFile() => IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerBinaryRelativePath, Config.Default.ServerExe));
 
@@ -2345,6 +2367,52 @@ namespace ARK_Server_Manager.Lib
             Debug.WriteLine(message);
         }
 
+        private void LogBranchError(string branchName, string error, bool includeProgressCallback = true)
+        {
+            if (string.IsNullOrWhiteSpace(error))
+                return;
+
+            LogBranchMessage(branchName, $"***** ERROR: {error}", includeProgressCallback);
+        }
+
+        private void LogBranchMessage(string branchName, string message, bool includeProgressCallback = true)
+        {
+            message = message ?? string.Empty;
+
+            if (OutputLogs)
+            {
+                var logFile = GetBranchLogFile(branchName);
+                lock (LockObjectBranchMessage)
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(logFile)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(logFile));
+
+                    int retries = 0;
+                    while (retries < 3)
+                    {
+                        try
+                        {
+                            File.AppendAllLines(logFile, new[] { $"{DateTime.Now.ToString("o", CultureInfo.CurrentCulture)}: {message}" }, Encoding.Unicode);
+                            break;
+                        }
+                        catch (IOException)
+                        {
+                            retries++;
+                            Task.Delay(WRITELOG_ERRORRETRYDELAY).Wait();
+                        }
+                    }
+                }
+            }
+
+            if (includeProgressCallback)
+                ProgressCallback?.Invoke(0, message);
+
+            if (_profile != null)
+                Debug.WriteLine($"[Branch {GetBranchName(branchName) ?? "unknown"}] {message}");
+            else
+                Debug.WriteLine(message);
+        }
+
         private void LogProfileError(string error, bool includeProgressCallback = true)
         {
             if (string.IsNullOrWhiteSpace(error))
@@ -2386,7 +2454,7 @@ namespace ARK_Server_Manager.Lib
                 ProgressCallback?.Invoke(0, message);
 
             if (_profile != null)
-                Debug.WriteLine($"[{_profile?.ProfileName ?? "unknown"}] {message}");
+                Debug.WriteLine($"[Profile {_profile?.ProfileName ?? "unknown"}] {message}");
             else
                 Debug.WriteLine(message);
         }
@@ -2704,7 +2772,7 @@ namespace ARK_Server_Manager.Lib
             return ExitCode;
         }
 
-        public int PerformProfileUpdate(ServerProfileSnapshot profile)
+        public int PerformProfileUpdate(ServerBranchSnapshot branch, ServerProfileSnapshot profile)
         {
             _profile = profile;
 
@@ -2721,7 +2789,7 @@ namespace ARK_Server_Manager.Lib
 
             try
             {
-                LogMessage($"[{_profile.ProfileName}] Started server update process.");
+                LogBranchMessage(branch.BranchName, $"[{_profile.ProfileName}] Started server update process.");
 
                 // try to establish a mutex for the profile.
                 mutex = new Mutex(true, GetMutexName(_profile.InstallDirectory), out createdNew);
@@ -2733,7 +2801,7 @@ namespace ARK_Server_Manager.Lib
                 {
                     UpdateFiles();
 
-                    LogMessage($"[{_profile.ProfileName}] Finished server update process.");
+                    LogBranchMessage(branch.BranchName, $"[{_profile.ProfileName}] Finished server update process.");
 
                     if (ExitCode != EXITCODE_NORMALEXIT)
                     {
@@ -2745,7 +2813,7 @@ namespace ARK_Server_Manager.Lib
                 else
                 {
                     ExitCode = EXITCODE_PROCESSALREADYRUNNING;
-                    LogMessage($"[{_profile.ProfileName}] Cancelled server update process, could not lock server.");
+                    LogBranchMessage(branch.BranchName, $"[{_profile.ProfileName}] Cancelled server update process, could not lock server.");
                 }
             }
             catch (Exception ex)
@@ -2778,6 +2846,116 @@ namespace ARK_Server_Manager.Lib
             }
 
             LogProfileMessage($"Exitcode = {ExitCode}");
+            return ExitCode;
+        }
+
+        public int PerformServerBranchUpdate(ServerBranchSnapshot branch)
+        {
+            if (branch == null)
+                return EXITCODE_NORMALEXIT;
+
+            ExitCode = EXITCODE_NORMALEXIT;
+
+            Mutex mutex = null;
+            var createdNew = false;
+
+            try
+            {
+                LogBranchMessage(branch.BranchName, $"Started branch update process.");
+
+                var cacheFolder = GetServerCacheFolder(branch.BranchName);
+
+                // try to establish a mutex for the profile.
+                mutex = new Mutex(true, GetMutexName(cacheFolder), out createdNew);
+                if (!createdNew)
+                    createdNew = mutex.WaitOne(new TimeSpan(0, MUTEX_TIMEOUT, 0));
+
+                // check if the mutex was established
+                if (createdNew)
+                {
+                    // update the server cache for the branch
+                    UpdateServerCache(branch.BranchName, branch.BranchPassword);
+
+                    if (ExitCode != EXITCODE_NORMALEXIT)
+                    {
+                        if (Config.Default.EmailNotify_AutoUpdate)
+                            SendEmail($"{GetBranchName(branch.BranchName)} branch update", Config.Default.Alert_UpdateProcessError, true);
+                        ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
+                    }
+
+                    if (ExitCode == EXITCODE_NORMALEXIT)
+                    {
+                        // get the profile associated with the branch
+                        var profiles = _profiles.Keys.Where(p => p.EnableAutoUpdate && p.BranchName.Equals(branch.BranchName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                        var profileExitCodes = new ConcurrentDictionary<ServerProfileSnapshot, int>();
+
+                        if (Config.Default.AutoUpdate_ParallelUpdate)
+                        {
+                            Parallel.ForEach(profiles, profile =>
+                            {
+                                var app = new ServerApp();
+                                app.SendAlerts = true;
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcess;
+                                app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
+                                profileExitCodes.TryAdd(profile, app.PerformProfileUpdate(branch, profile));
+                            });
+                        }
+                        else
+                        {
+                            foreach (var profile in _profiles.Keys.Where(p => p.EnableAutoUpdate))
+                            {
+                                var app = new ServerApp();
+                                app.SendAlerts = true;
+                                app.SendEmails = true;
+                                app.ServerProcess = ServerProcess;
+                                app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
+                                profileExitCodes.TryAdd(profile, app.PerformProfileUpdate(branch, profile));
+                            }
+                        }
+
+                        if (profileExitCodes.Any(c => !c.Value.Equals(EXITCODE_NORMALEXIT)))
+                            ExitCode = EXITCODE_EXITWITHERRORS;
+                    }
+
+                    LogBranchMessage(branch.BranchName, $"Finished branch update process.");
+                }
+                else
+                {
+                    ExitCode = EXITCODE_PROCESSALREADYRUNNING;
+                    LogBranchMessage(branch.BranchName, "Cancelled branch update process, could not lock branch folder.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogBranchError(branch.BranchName, ex.Message);
+                LogBranchError(branch.BranchName, ex.GetType().ToString());
+                if (ex.InnerException != null)
+                {
+                    LogBranchMessage(branch.BranchName, $"InnerException - {ex.InnerException.Message}");
+                    LogBranchMessage(branch.BranchName, ex.InnerException.GetType().ToString());
+                }
+                LogBranchMessage(branch.BranchName, $"StackTrace\r\n{ex.StackTrace}");
+
+                if (Config.Default.EmailNotify_AutoUpdate)
+                    SendEmail($"{GetBranchName(branch.BranchName)} branch update", Config.Default.Alert_UpdateProcessError, true);
+                ProcessAlert(AlertType.Error, Config.Default.Alert_UpdateProcessError);
+                ExitCode = EXITCODE_UNKNOWNTHREADERROR;
+            }
+            finally
+            {
+                if (mutex != null)
+                {
+                    if (createdNew)
+                    {
+                        mutex.ReleaseMutex();
+                        mutex.Dispose();
+                    }
+                    mutex = null;
+                }
+            }
+
+            LogBranchMessage(branch.BranchName, $"Exitcode = {ExitCode}");
             return ExitCode;
         }
 
@@ -2935,44 +3113,38 @@ namespace ARK_Server_Manager.Lib
                     // load all the profiles, do this at the very start in case the user changes one or more while the process is running.
                     LoadProfiles();
 
+                    // update the mods - needs to be done before the server cache updates
                     ServerApp app = new ServerApp();
                     app.ServerProcess = ServerProcessType.AutoUpdate;
                     app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
-                    app.UpdateServerCache();
+                    app.UpdateModCache();
                     exitCode = app.ExitCode;
 
                     if (exitCode == EXITCODE_NORMALEXIT)
                     {
-                        app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
-                        app.UpdateModCache();
-                        exitCode = app.ExitCode;
-                    }
+                        var branches = _profiles.Keys.Where(p => p.EnableAutoUpdate).Select(p => new ServerBranchSnapshot() { BranchName = p.BranchName, BranchPassword = p.BranchPassword}).Distinct(new ServerBranchSnapshotComparer()).ToArray();
+                        var exitCodes = new ConcurrentDictionary<ServerBranchSnapshot, int>();
 
-                    if (exitCode == EXITCODE_NORMALEXIT)
-                    {
-                        var exitCodes = new ConcurrentDictionary<ServerProfileSnapshot, int>();
-
+                        // update the server cache for each branch
                         if (Config.Default.AutoUpdate_ParallelUpdate)
                         {
-                            Parallel.ForEach(_profiles.Keys.Where(p => p.EnableAutoUpdate), profile => {
+                            Parallel.ForEach(branches, branch => {
                                 app = new ServerApp();
-                                app.SendAlerts = true;
-                                app.SendEmails = true;
                                 app.ServerProcess = ServerProcessType.AutoUpdate;
                                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
-                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                                app.PerformServerBranchUpdate(branch);
+                                exitCodes.TryAdd(branch, app.ExitCode);
                             });
                         }
                         else
                         {
-                            foreach (var profile in _profiles.Keys.Where(p => p.EnableAutoUpdate))
+                            foreach (var branch in branches)
                             {
                                 app = new ServerApp();
-                                app.SendAlerts = true;
-                                app.SendEmails = true;
                                 app.ServerProcess = ServerProcessType.AutoUpdate;
                                 app.SteamCMDProcessWindowStyle = ProcessWindowStyle.Hidden;
-                                exitCodes.TryAdd(profile, app.PerformProfileUpdate(profile));
+                                app.PerformServerBranchUpdate(branch);
+                                exitCodes.TryAdd(branch, app.ExitCode);
                             }
                         }
 
