@@ -603,8 +603,8 @@
     <sys:String x:Key="ServerSettings_StartButtonTooltip">Запустить ARK сервер.</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonLabel">RCON</sys:String>
     <sys:String x:Key="ServerSettings_RCONButtonTooltip">Открыть окно RCON.</sys:String>
-    <sys:String x:Key="ServerSettings_PlayerListButtonLabel">Players</sys:String>
-    <sys:String x:Key="ServerSettings_PlayerListButtonTooltip">Open the Player List window.</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonLabel">Игроки</sys:String>
+    <sys:String x:Key="ServerSettings_PlayerListButtonTooltip">Открыть окно списка игроков.</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonLabel">Обновить / Проверить</sys:String>
     <sys:String x:Key="ServerSettings_UpgradeButtonTooltip">Обновление до последней версии ARK сервера, который в настоящее время доступен для загрузки.</sys:String>
     <sys:String x:Key="ServerSettings_InstallButtonLabel">Установить</sys:String>
@@ -835,6 +835,12 @@
     <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">Если включено, команды администратора будут отображаться в чате для администраторов только для просмотра.</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Лог Племени об уничтожении строений Врагом</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">Если включено, журнал уничтожения строений противником (для Племени жертвы) отобразит Племя злоумышленника в журналах Племени, а не общее сообщение об уничтожении строений.</sys:String>
+
+    <sys:String x:Key="ServerSettings_BranchLabel">Детали веток</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameLabel">Имя веток:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameTooltip">Имя загружаемой ветви (оставьте пустым для использования стандартной ветви выпуска).</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordLabel">Пароль ветки:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordTooltip">Пароль, используемый для доступа к загрузке ветви.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Командная строка</sys:String>
     <sys:String x:Key="ServerSettings_LauncherArgsLabel">Launcher Args:</sys:String>

@@ -1406,8 +1406,10 @@
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsLabel">Only Allow Selected Engrams</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsTooltip">If enabled, only the selected engrams will be available to learn in game.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Select all the engrams.</sys:String>
-    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all then engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all the engrams.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsLabel">Filter Only Selected Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsTooltip">If enabled, only the selected engram will be visible.</sys:String>
     <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Selected</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsModColumnLabel">Mod</sys:String>

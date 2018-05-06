@@ -104,6 +104,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedSupplyCrateOverrideProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateOverride), typeof(SupplyCrateOverride), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSet), typeof(SupplyCrateItemSet), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetEntryProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSetEntry), typeof(SupplyCrateItemSetEntry), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty FilterOnlySelectedEngramsProperty = DependencyProperty.Register(nameof(FilterOnlySelectedEngrams), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
 
         #region Properties
         public ArkApplicationComboBoxItemList BaseArkApplicationList
@@ -254,6 +255,12 @@ namespace ARK_Server_Manager
         {
             get { return GetValue(SelectedSupplyCrateItemSetEntryProperty) as SupplyCrateItemSetEntry; }
             set { SetValue(SelectedSupplyCrateItemSetEntryProperty, value); }
+        }
+
+        public bool FilterOnlySelectedEngrams
+        {
+            get { return (bool)GetValue(FilterOnlySelectedEngramsProperty); }
+            set { SetValue(FilterOnlySelectedEngramsProperty, value); }
         }
         #endregion
 
@@ -1313,7 +1320,7 @@ namespace ARK_Server_Manager
             if (item == null)
                 e.Accepted = false;
             else
-                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram);
+                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram) && (!Settings.OnlyAllowSpecifiedEngrams || !FilterOnlySelectedEngrams || item.SaveEngramOverride);
         }
 
         private void EngramArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)

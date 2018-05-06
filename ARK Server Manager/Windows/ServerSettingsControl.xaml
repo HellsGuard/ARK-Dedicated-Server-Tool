@@ -1453,7 +1453,7 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_BranchLabel}" DataContext="{Binding Runtime, ElementName=SettingsControl}" Visibility="{Binding Settings.SOTF_Enabled, ElementName=SettingsControl, Converter={StaticResource InvertBooleanToVisibilityConverter}, FallbackValue=False}">
+                                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_BranchLabel}" DataContext="{Binding Runtime, ElementName=SettingsControl}" Visibility="{Binding Settings.SOTF_Enabled, ElementName=SettingsControl, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
                                     <GroupBox.Style>
                                         <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
                                             <Style.Triggers>
@@ -3014,8 +3014,8 @@
                                     </GroupBox.Header>
 
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams}" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
+                                        <StackPanel Orientation="Horizontal" SourceUpdated="EngramArkApplications_SourceUpdated">
+                                            <CheckBox Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
                                             <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_SelectAll" ToolTip="{DynamicResource ServerSettings_EngramsSelectAllTooltip}">
                                                 <Image Source="../Art/Checked.png" Width="16" Height="16"/>
                                                 <Button.Style>
@@ -3025,7 +3025,7 @@
                                                                 <Setter Property="IsEnabled" Value="False"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding OnlyAllowSpecifiedEngrams}" Value="false">
-                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -3040,7 +3040,7 @@
                                                                 <Setter Property="IsEnabled" Value="False"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding OnlyAllowSpecifiedEngrams}" Value="false">
-                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -3051,13 +3051,27 @@
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <Label Content="{DynamicResource ServerSettings_EngramsFilterLabel}"/>
                                             <ComboBox Name="ArkApplicationsEngramComboBox" ItemsSource="{Binding BaseArkApplicationList, ElementName=SettingsControl}" SelectedValue="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" Margin="0,0,2,0" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                            <CheckBox Name="FilterOnlySelectedEngramsCheckBox" Margin="5" Content="{DynamicResource ServerSettings_FilterOnlySelectedEngramsLabel}" IsChecked="{Binding FilterOnlySelectedEngrams, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_FilterOnlySelectedEngramsTooltip}" HorizontalAlignment="Left">
+                                                <CheckBox.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Settings.OverrideNamedEngramEntries.IsEnabled, ElementName=SettingsControl}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Settings.OnlyAllowSpecifiedEngrams, ElementName=SettingsControl}" Value="false">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </CheckBox.Style>
+                                            </CheckBox>
                                         </StackPanel>
 
                                         <ListView Margin="0,5,0,0" Name="EngramsOverrideListView" ItemsSource="{Binding Source={StaticResource EngramsViewSource}}" Height="400" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
                                             <ListView.View>
                                                 <GridView>
                                                     <GridViewColumn Width="Auto" lvs:SortBehavior.SortExpression="SaveEngramOverride">
-                                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" IsEnabled="{Binding Settings.OnlyAllowSpecifiedEngrams, ElementName=SettingsControl}" >
+                                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" >
                                                             <TextBlock Text="{DynamicResource ServerSettings_SaveEngramOverrideColumnLabel}" />
                                                         </GridViewColumnHeader>
                                                         <GridViewColumn.CellTemplate>
@@ -3114,7 +3128,7 @@
                                                             <DataTemplate>
                                                                 <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center">
                                                                     <CheckBox.Style>
-                                                                        <Style TargetType="{x:Type CheckBox}">
+                                                                        <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding IsTekgram}" Value="True">
                                                                                     <Setter Property="Visibility" Value="Collapsed" />
