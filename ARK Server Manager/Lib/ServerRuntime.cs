@@ -545,13 +545,13 @@ namespace ARK_Server_Manager.Lib
                     }
 
                     // Check if this is a new server installation.
-                    if (isNewInstallation)
+                    if (isNewInstallation && !this.ProfileSnapshot.SotFEnabled && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
                     {
                         var branchName = string.IsNullOrWhiteSpace(branch?.BranchName) ? Config.Default.DefaultServerBranchName : branch.BranchName;
                         var cacheFolder = IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, $"{Config.Default.ServerBranchFolderPrefix}{branchName}"));
 
                         // check if the auto-update facility is enabled and the cache folder defined.
-                        if (!this.ProfileSnapshot.SotFEnabled && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(cacheFolder) && Directory.Exists(cacheFolder))
+                        if (!string.IsNullOrWhiteSpace(cacheFolder) && Directory.Exists(cacheFolder))
                         {
                             // Auto-Update enabled and cache foldler exists.
                             progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
