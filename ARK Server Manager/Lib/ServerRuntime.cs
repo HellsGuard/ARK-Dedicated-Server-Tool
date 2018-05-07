@@ -119,7 +119,7 @@ namespace ARK_Server_Manager.Lib
 
         public void Dispose()
         {
-            this.updateRegistration.DisposeAsync().DoNotWait();
+            this.updateRegistration?.DisposeAsync().DoNotWait();
         }
 
         public Task AttachToProfile(ServerProfile profile)
@@ -135,8 +135,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ProfileSnapshot = ServerProfileSnapshot.Create(profile);
 
-            Version lastInstalled;
-            if (Version.TryParse(profile.LastInstalledVersion, out lastInstalled))
+            if (Version.TryParse(profile.LastInstalledVersion, out Version lastInstalled))
             {
                 this.Version = lastInstalled;
             }
@@ -285,8 +284,8 @@ namespace ARK_Server_Manager.Lib
                         break;
                 }
 
-                this.Players = 0;
-                this.MaxPlayers = this.ProfileSnapshot.MaxPlayerCount;
+                this.Players = update.Players?.Count ?? 0;
+                this.MaxPlayers = update.ServerInfo?.MaxPlayers ?? this.ProfileSnapshot.MaxPlayerCount;
 
                 if (update.ServerInfo != null)
                 {
@@ -294,16 +293,11 @@ namespace ARK_Server_Manager.Lib
                     if (match.Success && match.Groups.Count >= 2)
                     {
                         var serverVersion = match.Groups[1].Value;
-                        Version temp;
-                        if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
+                        if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out Version temp))
                         {
                             this.Version = temp;
                         }
                     }
-
-                    // set the player count using the players list, as this should only contain the current valid players.
-                    this.Players = update.Players.Count;
-                    this.MaxPlayers = update.ServerInfo.MaxPlayers;
                 }
 
                 UpdateModStatus();
@@ -361,13 +355,10 @@ namespace ARK_Server_Manager.Lib
 
         private void UnregisterForUpdates()
         {
-            if (this.updateRegistration != null)
-            {
-                this.updateRegistration.DisposeAsync().DoNotWait();
-                this.updateRegistration = null;
-            }
+            this.updateRegistration?.DisposeAsync().DoNotWait();
+            this.updateRegistration = null;
         }
-        
+
 
         private void CheckServerWorldFileExists()
         {
@@ -459,8 +450,6 @@ namespace ARK_Server_Manager.Lib
                 case ServerStatus.Initializing:
                     try
                     {
-                        UnregisterForUpdates();
-
                         if (this.serverProcess != null)
                         {
                             UpdateServerStatus(ServerStatus.Stopping, SteamStatus.Unavailable, false);
