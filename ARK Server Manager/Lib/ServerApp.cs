@@ -1801,7 +1801,6 @@ namespace ARK_Server_Manager.Lib
                     var backupFile = IOUtils.NormalizePath(Path.Combine(backupFolder, backupFileName));
 
                     var profileFile = IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtension}"));
-                    var profileFileNew = IOUtils.NormalizePath(Path.Combine(Config.Default.ConfigDirectory, $"{_profile.ProfileName}{Config.Default.ProfileExtensionNew}"));
                     var gameIniFile = IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameConfigFile));
                     var gusIniFile = IOUtils.NormalizePath(Path.Combine(_profile.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile));
                     var launcherFile = GetLauncherFile();
@@ -1815,9 +1814,6 @@ namespace ARK_Server_Manager.Lib
                     var files = new List<string>();
                     if (File.Exists(profileFile))
                         files.Add(profileFile);
-
-                    if (File.Exists(profileFileNew))
-                        files.Add(profileFileNew);
 
                     if (File.Exists(gameIniFile))
                         files.Add(gameIniFile);
@@ -2316,7 +2312,7 @@ namespace ARK_Server_Manager.Lib
 
             _profiles = new Dictionary<ServerProfileSnapshot, ServerProfile>();
 
-            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtensionNew))
+            foreach (var profileFile in Directory.EnumerateFiles(Config.Default.ConfigDirectory, "*" + Config.Default.ProfileExtension))
             {
                 try
                 {

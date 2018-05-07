@@ -294,6 +294,10 @@
     <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">If enabled, the map spawner overrides will be managed by ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Enable Supply Crate Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">If enabled, the supply crate overrides will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMLabel">Enable PGM Ark Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMTooltip">If enabled, the PGM settings will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFLabel">Enable SotF Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFTooltip">If enabled, the SotF settings will be managed by ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">WARNING: While any of these options are disabled, ASM will not read or write the associated overrides settings. Re-enabling any of these options will cause ALL existing associated overrides to be removed from the config file.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Server Startup Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>

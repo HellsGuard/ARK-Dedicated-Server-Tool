@@ -173,9 +173,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".profile")]
-        public string ProfileExtension {
+        public string ProfileExtensionOld {
             get {
-                return ((string)(this["ProfileExtension"]));
+                return ((string)(this["ProfileExtensionOld"]));
             }
         }
         
@@ -1811,9 +1811,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".asmprofile")]
-        public string ProfileExtensionNew {
+        public string ProfileExtension {
             get {
-                return ((string)(this["ProfileExtensionNew"]));
+                return ((string)(this["ProfileExtension"]));
             }
         }
         
@@ -2179,6 +2179,30 @@ namespace ARK_Server_Manager {
         public string SteamManifestFolderRelativePath {
             get {
                 return ((string)(this["SteamManifestFolderRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SectionPGMEnabled {
+            get {
+                return ((bool)(this["SectionPGMEnabled"]));
+            }
+            set {
+                this["SectionPGMEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SectionSOTFEnabled {
+            get {
+                return ((bool)(this["SectionSOTFEnabled"]));
+            }
+            set {
+                this["SectionSOTFEnabled"] = value;
             }
         }
     }

@@ -10,46 +10,15 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Windows;
-using System.Xml.Serialization;
 using TinyCsvParser;
 
 namespace ARK_Server_Manager.Lib
 {
-    [XmlRoot("ArkServerProfile")]
     [DataContract]
     public class ServerProfile : DependencyObject
     {
-        public enum ServerProfileSection
-        {
-            AdministrationSection,
-            AutomaticManagement,
-            RulesSection,
-            ChatAndNotificationsSection,
-            HudAndVisualsSection,
-            PlayerSettingsSection,
-            DinoSettingsSection,
-            EnvironmentSection,
-            StructuresSection,
-            EngramsSection,
-            ServerFiles,
-            CustomSettingsSection,
-            CustomLevelsSection,
-            MapSpawnerOverridesSection,
-            CraftingOverridesSection,
-            SupplyCrateOverridesSection,
-            PGMSection,
-            SOTFSection,
-        }
-
-        public enum LevelProgression
-        {
-            Player,
-            Dino
-        };
-
         private const char CSV_DELIMITER = ';';
 
-        [XmlIgnore]
         private string _lastSaveLocation = String.Empty;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -104,7 +73,6 @@ namespace ARK_Server_Manager.Lib
 
         #region Properties
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register(nameof(IsDirty), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [XmlIgnore]
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -146,7 +114,7 @@ namespace ARK_Server_Manager.Lib
         #region Administration
         public static readonly DependencyProperty ServerNameProperty = DependencyProperty.Register(nameof(ServerName), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultServerName));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "SessionName")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "SessionName", Category = ServerProfileCategory.Administration)]
         public string ServerName
         {
             get { return (string)GetValue(ServerNameProperty); }
@@ -158,7 +126,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerNameLengthProperty = DependencyProperty.Register(nameof(ServerNameLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
-        [XmlIgnore]
         public int ServerNameLength
         {
             get { return (int)GetValue(ServerNameLengthProperty); }
@@ -166,7 +133,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServerNameLengthToLongProperty = DependencyProperty.Register(nameof(ServerNameLengthToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [XmlIgnore]
         public bool ServerNameLengthToLong
         {
             get { return (bool)GetValue(ServerNameLengthToLongProperty); }
@@ -175,7 +141,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ServerPasswordProperty = DependencyProperty.Register(nameof(ServerPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPassword")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public string ServerPassword
         {
             get { return (string)GetValue(ServerPasswordProperty); }
@@ -184,7 +150,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AdminPasswordProperty = DependencyProperty.Register(nameof(AdminPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerAdminPassword")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerAdminPassword", Category = ServerProfileCategory.Administration)]
         public string AdminPassword
         {
             get { return (string)GetValue(AdminPasswordProperty); }
@@ -193,35 +159,35 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SpectatorPasswordProperty = DependencyProperty.Register(nameof(SpectatorPassword), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public string SpectatorPassword
         {
             get { return (string)GetValue(SpectatorPasswordProperty); }
             set { SetValue(SpectatorPasswordProperty, value); }
         }
 
-        public static readonly DependencyProperty ServerConnectionPortProperty = DependencyProperty.Register(nameof(ServerConnectionPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(7777));
+        public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register(nameof(ServerPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(7777));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "Port")]
-        public int ServerConnectionPort
-        {
-            get { return (int)GetValue(ServerConnectionPortProperty); }
-            set { SetValue(ServerConnectionPortProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register(nameof(ServerPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(27015));
-        [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "QueryPort")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "Port", Category = ServerProfileCategory.Administration)]
         public int ServerPort
         {
             get { return (int)GetValue(ServerPortProperty); }
             set { SetValue(ServerPortProperty, value); }
         }
 
+        public static readonly DependencyProperty QueryPortProperty = DependencyProperty.Register(nameof(QueryPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(27015));
+        [DataMember]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, Category = ServerProfileCategory.Administration)]
+        public int QueryPort
+        {
+            get { return (int)GetValue(QueryPortProperty); }
+            set { SetValue(QueryPortProperty, value); }
+        }
+
         public static readonly DependencyProperty ServerIPProperty = DependencyProperty.Register(nameof(ServerIP), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "MultiHome")]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", WriteBoolValueIfNonEmpty = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.SessionSettings, "MultiHome", Category = ServerProfileCategory.Administration)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MultiHome, "MultiHome", Category = ServerProfileCategory.Administration, WriteBoolValueIfNonEmpty = true)]
         public string ServerIP
         {
             get { return (string)GetValue(ServerIPProperty); }
@@ -262,7 +228,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BanListURLProperty = DependencyProperty.Register(nameof(BanListURL), typeof(string), typeof(ServerProfile), new PropertyMetadata("http://arkdedicated.com/banlist.txt"));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableBanListURL), QuotedString = QuotedStringType.True)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration, ConditionedOn = nameof(EnableBanListURL), QuotedString = QuotedStringType.True)]
         public string BanListURL
         {
             get { return (string)GetValue(BanListURLProperty); }
@@ -271,7 +237,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.GameSession, "MaxPlayers")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.GameSession, Category = ServerProfileCategory.Administration)]
         public int MaxPlayers
         {
             get { return (int)GetValue(MaxPlayersProperty); }
@@ -288,7 +254,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty KickIdlePlayersPeriodProperty = DependencyProperty.Register(nameof(KickIdlePlayersPeriod), typeof(int), typeof(ServerProfile), new PropertyMetadata(3600));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableKickIdlePlayers))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration, ConditionedOn = nameof(EnableKickIdlePlayers))]
         public int KickIdlePlayersPeriod
         {
             get { return (int)GetValue(KickIdlePlayersPeriodProperty); }
@@ -297,7 +263,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty RCONEnabledProperty = DependencyProperty.Register(nameof(RCONEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public bool RCONEnabled
         {
             get { return (bool)GetValue(RCONEnabledProperty); }
@@ -306,7 +272,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty RCONPortProperty = DependencyProperty.Register(nameof(RCONPort), typeof(int), typeof(ServerProfile), new PropertyMetadata(32330));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public int RCONPort
         {
             get { return (int)GetValue(RCONPortProperty); }
@@ -315,7 +281,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty RCONServerGameLogBufferProperty = DependencyProperty.Register(nameof(RCONServerGameLogBuffer), typeof(int), typeof(ServerProfile), new PropertyMetadata(600));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public int RCONServerGameLogBuffer
         {
             get { return (int)GetValue(RCONServerGameLogBufferProperty); }
@@ -324,7 +290,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AdminLoggingProperty = DependencyProperty.Register(nameof(AdminLogging), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public bool AdminLogging
         {
             get { return (bool)GetValue(AdminLoggingProperty); }
@@ -349,7 +315,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ServerModIdsProperty = DependencyProperty.Register(nameof(ServerModIds), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "ActiveMods")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ActiveMods", Category = ServerProfileCategory.Administration)]
         public string ServerModIds
         {
             get { return (string)GetValue(ServerModIdsProperty); }
@@ -365,8 +331,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ExtinctionEventTimeIntervalProperty = DependencyProperty.Register(nameof(ExtinctionEventTimeInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(2592000));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableExtinctionEvent))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration, ConditionedOn = nameof(EnableExtinctionEvent))]
         public int ExtinctionEventTimeInterval
         {
             get { return (int)GetValue(ExtinctionEventTimeIntervalProperty); }
@@ -374,8 +339,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ExtinctionEventUTCProperty = DependencyProperty.Register(nameof(ExtinctionEventUTC), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "NextExtinctionEventUTC", ClearWhenOff = nameof(EnableExtinctionEvent))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "NextExtinctionEventUTC", Category = ServerProfileCategory.Administration, ClearWhenOff = nameof(EnableExtinctionEvent))]
         public int ExtinctionEventUTC
         {
             get { return (int)GetValue(ExtinctionEventUTCProperty); }
@@ -384,7 +348,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoSavePeriodMinutesProperty = DependencyProperty.Register(nameof(AutoSavePeriodMinutes), typeof(float), typeof(ServerProfile), new PropertyMetadata(15.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public float AutoSavePeriodMinutes
         {
             get { return (float)GetValue(AutoSavePeriodMinutesProperty); }
@@ -393,7 +357,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MOTDProperty = DependencyProperty.Register(nameof(MOTD), typeof(string), typeof(ServerProfile), new PropertyMetadata(String.Empty));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", ClearSection = true, Multiline = true, QuotedString = QuotedStringType.Remove)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Message", Category = ServerProfileCategory.Administration, ClearSection = true, Multiline = true, QuotedString = QuotedStringType.Remove)]
         public string MOTD
         {
             get { return (string)GetValue(MOTDProperty); }
@@ -405,7 +369,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MOTDLengthProperty = DependencyProperty.Register(nameof(MOTDLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
-        [XmlIgnore]
         public int MOTDLength
         {
             get { return (int)GetValue(MOTDLengthProperty); }
@@ -413,7 +376,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty MOTDLengthToLongProperty = DependencyProperty.Register(nameof(MOTDLengthToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [XmlIgnore]
         public bool MOTDLengthToLong
         {
             get { return (bool)GetValue(MOTDLengthToLongProperty); }
@@ -422,7 +384,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MOTDDurationProperty = DependencyProperty.Register(nameof(MOTDDuration), typeof(int), typeof(ServerProfile), new PropertyMetadata(20));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.MessageOfTheDay, "Duration", Category = ServerProfileCategory.Administration)]
         public int MOTDDuration
         {
             get { return (int)GetValue(MOTDDurationProperty); }
@@ -487,7 +449,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ServerAutoForceRespawnWildDinosIntervalProperty = DependencyProperty.Register(nameof(ServerAutoForceRespawnWildDinosInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableServerAutoForceRespawnWildDinosInterval))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration, ConditionedOn = nameof(EnableServerAutoForceRespawnWildDinosInterval))]
         public int ServerAutoForceRespawnWildDinosInterval
         {
             get { return (int)GetValue(ServerAutoForceRespawnWildDinosIntervalProperty); }
@@ -528,7 +490,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxTribeLogsProperty = DependencyProperty.Register(nameof(MaxTribeLogs), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Administration)]
         public int MaxTribeLogs
         {
             get { return (int)GetValue(MaxTribeLogsProperty); }
@@ -537,7 +499,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TribeLogDestroyedEnemyStructuresProperty = DependencyProperty.Register(nameof(TribeLogDestroyedEnemyStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public bool TribeLogDestroyedEnemyStructures
         {
             get { return (bool)GetValue(TribeLogDestroyedEnemyStructuresProperty); }
@@ -658,7 +620,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowHideDamageSourceFromLogsProperty = DependencyProperty.Register(nameof(AllowHideDamageSourceFromLogs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Administration)]
         public bool AllowHideDamageSourceFromLogs
         {
             get { return (bool)GetValue(AllowHideDamageSourceFromLogsProperty); }
@@ -839,7 +801,7 @@ namespace ARK_Server_Manager.Lib
         #region Rules
         public static readonly DependencyProperty EnableHardcoreProperty = DependencyProperty.Register(nameof(EnableHardcore), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerHardcore")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerHardcore", Category = ServerProfileCategory.Rules)]
         public bool EnableHardcore
         {
             get { return (bool)GetValue(EnableHardcoreProperty); }
@@ -848,7 +810,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnablePVPProperty = DependencyProperty.Register(nameof(EnablePVP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPVE", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerPVE", Category = ServerProfileCategory.Rules, InvertBoolean = true)]
         public bool EnablePVP
         {
             get { return (bool)GetValue(EnablePVPProperty); }
@@ -857,7 +819,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowCaveBuildingPvEProperty = DependencyProperty.Register(nameof(AllowCaveBuildingPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool AllowCaveBuildingPvE
         {
             get { return (bool)GetValue(AllowCaveBuildingPvEProperty); }
@@ -866,7 +828,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableFriendlyFirePvPProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableFriendlyFire")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableFriendlyFire", Category = ServerProfileCategory.Rules)]
         public bool DisableFriendlyFirePvP
         {
             get { return (bool)GetValue(DisableFriendlyFirePvPProperty); }
@@ -875,7 +837,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableFriendlyFirePvEProperty = DependencyProperty.Register(nameof(DisableFriendlyFirePvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEDisableFriendlyFire")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEDisableFriendlyFire", Category = ServerProfileCategory.Rules)]
         public bool DisableFriendlyFirePvE
         {
             get { return (bool)GetValue(DisableFriendlyFirePvEProperty); }
@@ -884,7 +846,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableLootCratesProperty = DependencyProperty.Register(nameof(DisableLootCrates), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableLootCrates")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableLootCrates", Category = ServerProfileCategory.Rules)]
         public bool DisableLootCrates
         {
             get { return (bool)GetValue(DisableLootCratesProperty); }
@@ -901,7 +863,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableExtraStructurePreventionVolumesProperty = DependencyProperty.Register(nameof(EnableExtraStructurePreventionVolumes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool EnableExtraStructurePreventionVolumes
         {
             get { return (bool)GetValue(EnableExtraStructurePreventionVolumesProperty); }
@@ -918,7 +880,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OverrideOfficialDifficultyProperty = DependencyProperty.Register(nameof(OverrideOfficialDifficulty), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDifficultyOverride))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableDifficultyOverride))]
         public float OverrideOfficialDifficulty
         {
             get { return (float)GetValue(OverrideOfficialDifficultyProperty); }
@@ -927,7 +889,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DifficultyOffsetProperty = DependencyProperty.Register(nameof(DifficultyOffset), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDifficultyOverride))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableDifficultyOverride))]
         public float DifficultyOffset
         {
             get { return (float)GetValue(DifficultyOffsetProperty); }
@@ -936,7 +898,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public int MaxNumberOfPlayersInTribe
         {
             get { return (int)GetValue(MaxNumberOfPlayersInTribeProperty); }
@@ -945,7 +907,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableTributeDownloadsProperty = DependencyProperty.Register(nameof(EnableTributeDownloads), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NoTributeDownloads", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "NoTributeDownloads", Category = ServerProfileCategory.Rules, InvertBoolean = true)]
         public bool EnableTributeDownloads
         {
             get { return (bool)GetValue(EnableTributeDownloadsProperty); }
@@ -954,7 +916,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventDownloadSurvivorsProperty = DependencyProperty.Register(nameof(PreventDownloadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadSurvivors
         {
             get { return (bool)GetValue(PreventDownloadSurvivorsProperty); }
@@ -963,7 +925,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventDownloadItemsProperty = DependencyProperty.Register(nameof(PreventDownloadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadItems
         {
             get { return (bool)GetValue(PreventDownloadItemsProperty); }
@@ -972,7 +934,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventDownloadDinosProperty = DependencyProperty.Register(nameof(PreventDownloadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableTributeDownloads))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableTributeDownloads))]
         public bool PreventDownloadDinos
         {
             get { return (bool)GetValue(PreventDownloadDinosProperty); }
@@ -981,7 +943,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventUploadSurvivorsProperty = DependencyProperty.Register(nameof(PreventUploadSurvivors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool PreventUploadSurvivors
         {
             get { return (bool)GetValue(PreventUploadSurvivorsProperty); }
@@ -990,7 +952,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventUploadItemsProperty = DependencyProperty.Register(nameof(PreventUploadItems), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool PreventUploadItems
         {
             get { return (bool)GetValue(PreventUploadItemsProperty); }
@@ -999,7 +961,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventUploadDinosProperty = DependencyProperty.Register(nameof(PreventUploadDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool PreventUploadDinos
         {
             get { return (bool)GetValue(PreventUploadDinosProperty); }
@@ -1046,28 +1008,24 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OverrideMinimumDinoReuploadIntervalProperty, value); }
         }
 
-        [XmlIgnore]
         public bool SaveTributeCharacterExpirationSeconds
         {
             get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeCharacterExpirationSeconds; }
             set { value = value; }
         }
 
-        [XmlIgnore]
         public bool SaveTributeItemExpirationSeconds
         {
             get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeItemExpirationSeconds; }
             set { value = value; }
         }
 
-        [XmlIgnore]
         public bool SaveTributeDinoExpirationSeconds
         {
             get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideTributeDinoExpirationSeconds; }
             set { value = value; }
         }
 
-        [XmlIgnore]
         public bool SaveMinimumDinoReuploadInterval
         {
             get { return !string.IsNullOrWhiteSpace(this.CrossArkClusterId) && OverrideMinimumDinoReuploadInterval; }
@@ -1076,7 +1034,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TributeCharacterExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeCharacterExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeCharacterExpirationSeconds))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(SaveTributeCharacterExpirationSeconds))]
         public int TributeCharacterExpirationSeconds
         {
             get { return (int)GetValue(TributeCharacterExpirationSecondsProperty); }
@@ -1085,7 +1043,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TributeItemExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeItemExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeItemExpirationSeconds))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(SaveTributeItemExpirationSeconds))]
         public int TributeItemExpirationSeconds
         {
             get { return (int)GetValue(TributeItemExpirationSecondsProperty); }
@@ -1094,7 +1052,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TributeDinoExpirationSecondsProperty = DependencyProperty.Register(nameof(TributeDinoExpirationSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(86400));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveTributeDinoExpirationSeconds))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(SaveTributeDinoExpirationSeconds))]
         public int TributeDinoExpirationSeconds
         {
             get { return (int)GetValue(TributeDinoExpirationSecondsProperty); }
@@ -1103,7 +1061,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MinimumDinoReuploadIntervalProperty = DependencyProperty.Register(nameof(MinimumDinoReuploadInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(43200));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(SaveMinimumDinoReuploadInterval))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(SaveMinimumDinoReuploadInterval))]
         public int MinimumDinoReuploadInterval
         {
             get { return (int)GetValue(MinimumDinoReuploadIntervalProperty); }
@@ -1112,7 +1070,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CrossARKAllowForeignDinoDownloadsProperty = DependencyProperty.Register(nameof(CrossARKAllowForeignDinoDownloads), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool CrossARKAllowForeignDinoDownloads
         {
             get { return (bool)GetValue(CrossARKAllowForeignDinoDownloadsProperty); }
@@ -1121,7 +1079,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnInterval), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bIncreasePvPRespawnInterval")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bIncreasePvPRespawnInterval", Category = ServerProfileCategory.Rules)]
         public bool IncreasePvPRespawnInterval
         {
             get { return (bool)GetValue(IncreasePvPRespawnIntervalProperty); }
@@ -1130,7 +1088,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalCheckPeriodProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnIntervalCheckPeriod), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
         public int IncreasePvPRespawnIntervalCheckPeriod
         {
             get { return (int)GetValue(IncreasePvPRespawnIntervalCheckPeriodProperty); }
@@ -1139,7 +1097,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalMultiplierProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
         public float IncreasePvPRespawnIntervalMultiplier
         {
             get { return (float)GetValue(IncreasePvPRespawnIntervalMultiplierProperty); }
@@ -1148,7 +1106,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty IncreasePvPRespawnIntervalBaseAmountProperty = DependencyProperty.Register(nameof(IncreasePvPRespawnIntervalBaseAmount), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(IncreasePvPRespawnInterval))]
         public int IncreasePvPRespawnIntervalBaseAmount
         {
             get { return (int)GetValue(IncreasePvPRespawnIntervalBaseAmountProperty); }
@@ -1157,7 +1115,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventOfflinePvPProperty = DependencyProperty.Register(nameof(PreventOfflinePvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool PreventOfflinePvP
         {
             get { return (bool)GetValue(PreventOfflinePvPProperty); }
@@ -1166,7 +1124,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventOfflinePvPIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(900));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(PreventOfflinePvP))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(PreventOfflinePvP))]
         public int PreventOfflinePvPInterval
         {
             get { return (int)GetValue(PreventOfflinePvPIntervalProperty); }
@@ -1175,7 +1133,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventOfflinePvPConnectionInvincibleIntervalProperty = DependencyProperty.Register(nameof(PreventOfflinePvPConnectionInvincibleInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(5));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(PreventOfflinePvP))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(PreventOfflinePvP))]
         public int PreventOfflinePvPConnectionInvincibleInterval
         {
             get { return (int)GetValue(PreventOfflinePvPConnectionInvincibleIntervalProperty); }
@@ -1184,7 +1142,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoPvETimerProperty = DependencyProperty.Register(nameof(AutoPvETimer), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bAutoPvETimer")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAutoPvETimer", Category = ServerProfileCategory.Rules)]
         public bool AutoPvETimer
         {
             get { return (bool)GetValue(AutoPvETimerProperty); }
@@ -1193,7 +1151,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoPvEUseSystemTimeProperty = DependencyProperty.Register(nameof(AutoPvEUseSystemTime), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Key = "bAutoPvEUseSystemTime", ConditionedOn = nameof(AutoPvETimer))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAutoPvEUseSystemTime", Category = ServerProfileCategory.Rules, ConditionedOn = nameof(AutoPvETimer))]
         public bool AutoPvEUseSystemTime
         {
             get { return (bool)GetValue(AutoPvEUseSystemTimeProperty); }
@@ -1202,7 +1160,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoPvEStartTimeSecondsProperty = DependencyProperty.Register(nameof(AutoPvEStartTimeSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AutoPvETimer))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(AutoPvETimer))]
         public int AutoPvEStartTimeSeconds
         {
             get { return (int)GetValue(AutoPvEStartTimeSecondsProperty); }
@@ -1211,7 +1169,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoPvEStopTimeSecondsProperty = DependencyProperty.Register(nameof(AutoPvEStopTimeSeconds), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AutoPvETimer))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(AutoPvETimer))]
         public int AutoPvEStopTimeSeconds
         {
             get { return (int)GetValue(AutoPvEStopTimeSecondsProperty); }
@@ -1220,7 +1178,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowTribeWarPvEProperty = DependencyProperty.Register(nameof(AllowTribeWarPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWar")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWar", Category = ServerProfileCategory.Rules)]
         public bool AllowTribeWarPvE
         {
             get { return (bool)GetValue(AllowTribeWarPvEProperty); }
@@ -1229,7 +1187,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowTribeWarCancelPvEProperty = DependencyProperty.Register(nameof(AllowTribeWarCancelPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWarCancel")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPvEAllowTribeWarCancel", Category = ServerProfileCategory.Rules)]
         public bool AllowTribeWarCancelPvE
         {
             get { return (bool)GetValue(AllowTribeWarCancelPvEProperty); }
@@ -1238,7 +1196,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowTribeAlliancesProperty = DependencyProperty.Register(nameof(AllowTribeAlliances), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventTribeAlliances", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventTribeAlliances", Category = ServerProfileCategory.Rules, InvertBoolean = true)]
         public bool AllowTribeAlliances
         {
             get { return (bool)GetValue(AllowTribeAlliancesProperty); }
@@ -1247,7 +1205,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxAlliancesPerTribeProperty = DependencyProperty.Register(nameof(MaxAlliancesPerTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(10));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AllowTribeAlliances))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(AllowTribeAlliances))]
         public int MaxAlliancesPerTribe
         {
             get { return (int)GetValue(MaxAlliancesPerTribeProperty); }
@@ -1256,7 +1214,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxTribesPerAllianceProperty = DependencyProperty.Register(nameof(MaxTribesPerAlliance), typeof(int), typeof(ServerProfile), new PropertyMetadata(10));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(AllowTribeAlliances))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(AllowTribeAlliances))]
         public int MaxTribesPerAlliance
         {
             get { return (int)GetValue(MaxTribesPerAllianceProperty); }
@@ -1265,7 +1223,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowCustomRecipesProperty = DependencyProperty.Register(nameof(AllowCustomRecipes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowCustomRecipes")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowCustomRecipes", Category = ServerProfileCategory.Rules)]
         public bool AllowCustomRecipes
         {
             get { return (bool)GetValue(AllowCustomRecipesProperty); }
@@ -1274,7 +1232,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CustomRecipeEffectivenessMultiplierProperty = DependencyProperty.Register(nameof(CustomRecipeEffectivenessMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float CustomRecipeEffectivenessMultiplier
         {
             get { return (float)GetValue(CustomRecipeEffectivenessMultiplierProperty); }
@@ -1283,7 +1241,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CustomRecipeSkillMultiplierProperty = DependencyProperty.Register(nameof(CustomRecipeSkillMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float CustomRecipeSkillMultiplier
         {
             get { return (float)GetValue(CustomRecipeSkillMultiplierProperty); }
@@ -1292,7 +1250,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableDiseasesProperty = DependencyProperty.Register(nameof(EnableDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventDiseases", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PreventDiseases", Category = ServerProfileCategory.Rules, InvertBoolean = true)]
         public bool EnableDiseases
         {
             get { return (bool)GetValue(EnableDiseasesProperty); }
@@ -1301,7 +1259,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty NonPermanentDiseasesProperty = DependencyProperty.Register(nameof(NonPermanentDiseases), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableDiseases))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(EnableDiseases))]
         public bool NonPermanentDiseases
         {
             get { return (bool)GetValue(NonPermanentDiseasesProperty); }
@@ -1318,7 +1276,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountStartProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountStart), typeof(int), typeof(ServerProfile), new PropertyMetadata(70));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public int NPCNetworkStasisRangeScalePlayerCountStart
         {
             get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountStartProperty); }
@@ -1327,7 +1285,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePlayerCountEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePlayerCountEnd), typeof(int), typeof(ServerProfile), new PropertyMetadata(120));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public int NPCNetworkStasisRangeScalePlayerCountEnd
         {
             get { return (int)GetValue(NPCNetworkStasisRangeScalePlayerCountEndProperty); }
@@ -1336,7 +1294,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty NPCNetworkStasisRangeScalePercentEndProperty = DependencyProperty.Register(nameof(NPCNetworkStasisRangeScalePercentEnd), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.5f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules, ConditionedOn = nameof(OverrideNPCNetworkStasisRangeScale))]
         public float NPCNetworkStasisRangeScalePercentEnd
         {
             get { return (float)GetValue(NPCNetworkStasisRangeScalePercentEndProperty); }
@@ -1345,7 +1303,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty UseCorpseLocatorProperty = DependencyProperty.Register(nameof(UseCorpseLocator), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseCorpseLocator", Category = ServerProfileCategory.Rules)]
         public bool UseCorpseLocator
         {
             get { return (bool)GetValue(UseCorpseLocatorProperty); }
@@ -1354,7 +1312,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventSpawnAnimationsProperty = DependencyProperty.Register(nameof(PreventSpawnAnimations), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public bool PreventSpawnAnimations
         {
             get { return (bool)GetValue(PreventSpawnAnimationsProperty); }
@@ -1363,7 +1321,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowUnlimitedRespecsProperty = DependencyProperty.Register(nameof(AllowUnlimitedRespecs), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowUnlimitedRespecs")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowUnlimitedRespecs", Category = ServerProfileCategory.Rules)]
         public bool AllowUnlimitedRespecs
         {
             get { return (bool)GetValue(AllowUnlimitedRespecsProperty); }
@@ -1372,7 +1330,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowPlatformSaddleMultiFloorsProperty = DependencyProperty.Register(nameof(AllowPlatformSaddleMultiFloors), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowPlatformSaddleMultiFloors")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAllowPlatformSaddleMultiFloors", Category = ServerProfileCategory.Rules)]
         public bool AllowPlatformSaddleMultiFloors
         {
             get { return (bool)GetValue(AllowPlatformSaddleMultiFloorsProperty); }
@@ -1381,7 +1339,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OxygenSwimSpeedStatMultiplierProperty = DependencyProperty.Register(nameof(OxygenSwimSpeedStatMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public float OxygenSwimSpeedStatMultiplier
         {
             get { return (float)GetValue(OxygenSwimSpeedStatMultiplierProperty); }
@@ -1390,7 +1348,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SupplyCrateLootQualityMultiplierProperty = DependencyProperty.Register(nameof(SupplyCrateLootQualityMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float SupplyCrateLootQualityMultiplier
         {
             get { return (float)GetValue(SupplyCrateLootQualityMultiplierProperty); }
@@ -1399,7 +1357,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty FishingLootQualityMultiplierProperty = DependencyProperty.Register(nameof(FishingLootQualityMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float FishingLootQualityMultiplier
         {
             get { return (float)GetValue(FishingLootQualityMultiplierProperty); }
@@ -1416,7 +1374,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty UseCorpseLifeSpanMultiplierProperty = DependencyProperty.Register(nameof(UseCorpseLifeSpanMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float UseCorpseLifeSpanMultiplier
         {
             get { return (float)GetValue(UseCorpseLifeSpanMultiplierProperty); }
@@ -1425,7 +1383,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty GlobalPoweredBatteryDurabilityDecreasePerSecondProperty = DependencyProperty.Register(nameof(GlobalPoweredBatteryDurabilityDecreasePerSecond), typeof(float), typeof(ServerProfile), new PropertyMetadata(4.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public float GlobalPoweredBatteryDurabilityDecreasePerSecond
         {
             get { return (float)GetValue(GlobalPoweredBatteryDurabilityDecreasePerSecondProperty); }
@@ -1434,7 +1392,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TribeNameChangeCooldownProperty = DependencyProperty.Register(nameof(TribeNameChangeCooldown), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Rules)]
         public int TribeNameChangeCooldown
         {
             get { return (int)GetValue(TribeNameChangeCooldownProperty); }
@@ -1443,7 +1401,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty RandomSupplyCratePointsProperty = DependencyProperty.Register(nameof(RandomSupplyCratePoints), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Rules)]
         public bool RandomSupplyCratePoints
         {
             get { return (bool)GetValue(RandomSupplyCratePointsProperty); }
@@ -1454,7 +1412,7 @@ namespace ARK_Server_Manager.Lib
         #region Chat and Notifications
         public static readonly DependencyProperty EnableGlobalVoiceChatProperty = DependencyProperty.Register(nameof(EnableGlobalVoiceChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "globalVoiceChat")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "globalVoiceChat", Category = ServerProfileCategory.ChatAndNotifications)]
         public bool EnableGlobalVoiceChat
         {
             get { return (bool)GetValue(EnableGlobalVoiceChatProperty); }
@@ -1463,7 +1421,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableProximityChatProperty = DependencyProperty.Register(nameof(EnableProximityChat), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "proximityChat")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "proximityChat", Category = ServerProfileCategory.ChatAndNotifications)]
         public bool EnableProximityChat
         {
             get { return (bool)GetValue(EnableProximityChatProperty); }
@@ -1472,7 +1430,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnablePlayerLeaveNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerLeaveNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "alwaysNotifyPlayerLeft")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "alwaysNotifyPlayerLeft", Category = ServerProfileCategory.ChatAndNotifications)]
         public bool EnablePlayerLeaveNotifications
         {
             get { return (bool)GetValue(EnablePlayerLeaveNotificationsProperty); }
@@ -1481,7 +1439,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnablePlayerJoinedNotificationsProperty = DependencyProperty.Register(nameof(EnablePlayerJoinedNotifications), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "alwaysNotifyPlayerJoined")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "alwaysNotifyPlayerJoined", Category = ServerProfileCategory.ChatAndNotifications)]
         public bool EnablePlayerJoinedNotifications
         {
             get { return (bool)GetValue(EnablePlayerJoinedNotificationsProperty); }
@@ -1492,7 +1450,7 @@ namespace ARK_Server_Manager.Lib
         #region HUD and Visuals
         public static readonly DependencyProperty AllowCrosshairProperty = DependencyProperty.Register(nameof(AllowCrosshair), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerCrosshair")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerCrosshair", Category = ServerProfileCategory.HudAndVisuals)]
         public bool AllowCrosshair
         {
             get { return (bool)GetValue(AllowCrosshairProperty); }
@@ -1501,7 +1459,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowHUDProperty = DependencyProperty.Register(nameof(AllowHUD), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerForceNoHud", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ServerForceNoHud", Category = ServerProfileCategory.HudAndVisuals, InvertBoolean = true)]
         public bool AllowHUD
         {
             get { return (bool)GetValue(AllowHUDProperty); }
@@ -1510,7 +1468,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowThirdPersonViewProperty = DependencyProperty.Register(nameof(AllowThirdPersonView), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowThirdPersonPlayer")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowThirdPersonPlayer", Category = ServerProfileCategory.HudAndVisuals)]
         public bool AllowThirdPersonView
         {
             get { return (bool)GetValue(AllowThirdPersonViewProperty); }
@@ -1519,7 +1477,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowMapPlayerLocationProperty = DependencyProperty.Register(nameof(AllowMapPlayerLocation), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ShowMapPlayerLocation")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "ShowMapPlayerLocation", Category = ServerProfileCategory.HudAndVisuals)]
         public bool AllowMapPlayerLocation
         {
             get { return (bool)GetValue(AllowMapPlayerLocationProperty); }
@@ -1528,7 +1486,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowPVPGammaProperty = DependencyProperty.Register(nameof(AllowPVPGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "EnablePVPGamma")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "EnablePVPGamma", Category = ServerProfileCategory.HudAndVisuals)]
         public bool AllowPVPGamma
         {
             get { return (bool)GetValue(AllowPVPGammaProperty); }
@@ -1537,7 +1495,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowPvEGammaProperty = DependencyProperty.Register(nameof(AllowPvEGamma), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisablePvEGamma", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisablePvEGamma", Category = ServerProfileCategory.HudAndVisuals, InvertBoolean = true)]
         public bool AllowPvEGamma
         {
             get { return (bool)GetValue(AllowPvEGammaProperty); }
@@ -1546,7 +1504,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ShowFloatingDamageTextProperty = DependencyProperty.Register(nameof(ShowFloatingDamageText), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.HudAndVisuals)]
         public bool ShowFloatingDamageText
         {
             get { return (bool)GetValue(ShowFloatingDamageTextProperty); }
@@ -1555,7 +1513,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowHitMarkersProperty = DependencyProperty.Register(nameof(AllowHitMarkers), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.HudAndVisuals)]
         public bool AllowHitMarkers
         {
             get { return (bool)GetValue(AllowHitMarkersProperty); }
@@ -1566,7 +1524,7 @@ namespace ARK_Server_Manager.Lib
         #region Player Settings
         public static readonly DependencyProperty EnableFlyerCarryProperty = DependencyProperty.Register(nameof(EnableFlyerCarry), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowFlyerCarryPVE")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "AllowFlyerCarryPVE", Category = ServerProfileCategory.Players)]
         public bool EnableFlyerCarry
         {
             get { return (bool)GetValue(EnableFlyerCarryProperty); }
@@ -1575,7 +1533,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty XPMultiplierProperty = DependencyProperty.Register(nameof(XPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float XPMultiplier
         {
             get { return (float)GetValue(XPMultiplierProperty); }
@@ -1584,7 +1542,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OverrideMaxExperiencePointsPlayerProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsPlayer), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsPlayer));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Players)]
         public int OverrideMaxExperiencePointsPlayer
         {
             get { return (int)GetValue(OverrideMaxExperiencePointsPlayerProperty); }
@@ -1593,7 +1551,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerDamageMultiplierProperty = DependencyProperty.Register(nameof(PlayerDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerDamageMultiplier
         {
             get { return (float)GetValue(PlayerDamageMultiplierProperty); }
@@ -1602,7 +1560,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerResistanceMultiplierProperty = DependencyProperty.Register(nameof(PlayerResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerResistanceMultiplier
         {
             get { return (float)GetValue(PlayerResistanceMultiplierProperty); }
@@ -1611,7 +1569,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerCharacterWaterDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterWaterDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerCharacterWaterDrainMultiplier
         {
             get { return (float)GetValue(PlayerCharacterWaterDrainMultiplierProperty); }
@@ -1620,7 +1578,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerCharacterFoodDrainMultiplier
         {
             get { return (float)GetValue(PlayerCharacterFoodDrainMultiplierProperty); }
@@ -1629,7 +1587,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterStaminaDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerCharacterStaminaDrainMultiplier
         {
             get { return (float)GetValue(PlayerCharacterStaminaDrainMultiplierProperty); }
@@ -1638,7 +1596,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PlayerCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register(nameof(PlayerCharacterHealthRecoveryMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Players)]
         public float PlayerCharacterHealthRecoveryMultiplier
         {
             get { return (float)GetValue(PlayerCharacterHealthRecoveryMultiplierProperty); }
@@ -1647,7 +1605,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HarvestingDamageMultiplierPlayerProperty = DependencyProperty.Register(nameof(PlayerHarvestingDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Players)]
         public float PlayerHarvestingDamageMultiplier
         {
             get { return (float)GetValue(HarvestingDamageMultiplierPlayerProperty); }
@@ -1655,8 +1613,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PlayerBaseStatMultipliersProperty = DependencyProperty.Register(nameof(PlayerBaseStatMultipliers), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Players)]
         public StatsMultiplierArray PlayerBaseStatMultipliers
         {
             get { return (StatsMultiplierArray)GetValue(PlayerBaseStatMultipliersProperty); }
@@ -1664,8 +1621,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_PlayerProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_Player), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Players)]
         public StatsMultiplierArray PerLevelStatsMultiplier_Player
         {
             get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_PlayerProperty); }
@@ -1674,7 +1630,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CraftingSkillBonusMultiplierProperty = DependencyProperty.Register(nameof(CraftingSkillBonusMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Players)]
         public float CraftingSkillBonusMultiplier
         {
             get { return (float)GetValue(CraftingSkillBonusMultiplierProperty); }
@@ -1685,7 +1641,7 @@ namespace ARK_Server_Manager.Lib
         #region Dino Settings
         public static readonly DependencyProperty OverrideMaxExperiencePointsDinoProperty = DependencyProperty.Register(nameof(OverrideMaxExperiencePointsDino), typeof(int), typeof(ServerProfile), new PropertyMetadata(GameData.DefaultMaxExperiencePointsDino));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public int OverrideMaxExperiencePointsDino
         {
             get { return (int)GetValue(OverrideMaxExperiencePointsDinoProperty); }
@@ -1694,7 +1650,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoDamageMultiplierProperty = DependencyProperty.Register(nameof(DinoDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoDamageMultiplier
         {
             get { return (float)GetValue(DinoDamageMultiplierProperty); }
@@ -1703,7 +1659,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TamedDinoDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float TamedDinoDamageMultiplier
         {
             get { return (float)GetValue(TamedDinoDamageMultiplierProperty); }
@@ -1712,7 +1668,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(DinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoResistanceMultiplier
         {
             get { return (float)GetValue(DinoResistanceMultiplierProperty); }
@@ -1721,7 +1677,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TamedDinoResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float TamedDinoResistanceMultiplier
         {
             get { return (float)GetValue(TamedDinoResistanceMultiplierProperty); }
@@ -1730,7 +1686,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxTamedDinosProperty = DependencyProperty.Register(nameof(MaxTamedDinos), typeof(int), typeof(ServerProfile), new PropertyMetadata(4000));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public int MaxTamedDinos
         {
             get { return (int)GetValue(MaxTamedDinosProperty); }
@@ -1739,7 +1695,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoCharacterFoodDrainMultiplier
         {
             get { return (float)GetValue(DinoCharacterFoodDrainMultiplierProperty); }
@@ -1748,7 +1704,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoCharacterStaminaDrainMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterStaminaDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoCharacterStaminaDrainMultiplier
         {
             get { return (float)GetValue(DinoCharacterStaminaDrainMultiplierProperty); }
@@ -1757,7 +1713,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoCharacterHealthRecoveryMultiplierProperty = DependencyProperty.Register(nameof(DinoCharacterHealthRecoveryMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoCharacterHealthRecoveryMultiplier
         {
             get { return (float)GetValue(DinoCharacterHealthRecoveryMultiplierProperty); }
@@ -1766,7 +1722,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DinoCountMultiplierProperty = DependencyProperty.Register(nameof(DinoCountMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float DinoCountMultiplier
         {
             get { return (float)GetValue(DinoCountMultiplierProperty); }
@@ -1793,7 +1749,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowRaidDinoFeedingProperty = DependencyProperty.Register(nameof(AllowRaidDinoFeeding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public bool AllowRaidDinoFeeding
         {
             get { return (bool)GetValue(AllowRaidDinoFeedingProperty); }
@@ -1802,7 +1758,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty RaidDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(RaidDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float RaidDinoCharacterFoodDrainMultiplier
         {
             get { return (float)GetValue(RaidDinoCharacterFoodDrainMultiplierProperty); }
@@ -1819,7 +1775,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowFlyingStaminaRecoveryProperty = DependencyProperty.Register(nameof(AllowFlyingStaminaRecovery), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(AllowFlyingStaminaRecovery))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(AllowFlyingStaminaRecovery))]
         public bool AllowFlyingStaminaRecovery
         {
             get { return (bool)GetValue(AllowFlyingStaminaRecoveryProperty); }
@@ -1828,7 +1784,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PreventMateBoostProperty = DependencyProperty.Register(nameof(PreventMateBoost), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(PreventMateBoost))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(PreventMateBoost))]
         public bool PreventMateBoost
         {
             get { return (bool)GetValue(PreventMateBoostProperty); }
@@ -1837,7 +1793,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableDinoDecayPvEProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public bool DisableDinoDecayPvE
         {
             get { return (bool)GetValue(DisableDinoDecayPvEProperty); }
@@ -1846,7 +1802,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableDinoDecayPvPProperty = DependencyProperty.Register(nameof(DisableDinoDecayPvP), typeof(bool), typeof(ServerProfile), new PropertyMetadata(true));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PvPDinoDecay", InvertBoolean=true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "PvPDinoDecay", Category = ServerProfileCategory.Dinos, InvertBoolean=true)]
         public bool DisableDinoDecayPvP
         {
             get { return (bool)GetValue(DisableDinoDecayPvPProperty); }
@@ -1855,7 +1811,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoDestroyDecayedDinosProperty = DependencyProperty.Register(nameof(AutoDestroyDecayedDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public bool AutoDestroyDecayedDinos
         {
             get { return (bool)GetValue(AutoDestroyDecayedDinosProperty); }
@@ -1864,7 +1820,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEDinoDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEDinoDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float PvEDinoDecayPeriodMultiplier
         {
             get { return (float)GetValue(PvEDinoDecayPeriodMultiplierProperty); }
@@ -1881,7 +1837,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowMultipleAttachedC4Property = DependencyProperty.Register(nameof(AllowMultipleAttachedC4), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(AllowMultipleAttachedC4))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(AllowMultipleAttachedC4))]
         public bool AllowMultipleAttachedC4
         {
             get { return (bool)GetValue(AllowMultipleAttachedC4Property); }
@@ -1890,7 +1846,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableDinoRidingProperty = DependencyProperty.Register(nameof(DisableDinoRiding), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoRiding", ConditionedOn = nameof(DisableDinoRiding))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoRiding", Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(DisableDinoRiding))]
         public bool DisableDinoRiding
         {
             get { return (bool)GetValue(DisableDinoRidingProperty); }
@@ -1899,7 +1855,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableDinoTamingProperty = DependencyProperty.Register(nameof(DisableDinoTaming), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoTaming", ConditionedOn = nameof(DisableDinoTaming))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableDinoTaming", Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(DisableDinoTaming))]
         public bool DisableDinoTaming
         {
             get { return (bool)GetValue(DisableDinoTamingProperty); }
@@ -1908,7 +1864,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxPersonalTamedDinosProperty = DependencyProperty.Register(nameof(MaxPersonalTamedDinos), typeof(float), typeof(ServerProfile), new PropertyMetadata(40.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public float MaxPersonalTamedDinos
         {
             get { return (float)GetValue(MaxPersonalTamedDinosProperty); }
@@ -1917,7 +1873,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PersonalTamedDinosSaddleStructureCostProperty = DependencyProperty.Register(nameof(PersonalTamedDinosSaddleStructureCost), typeof(int), typeof(ServerProfile), new PropertyMetadata(19));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public int PersonalTamedDinosSaddleStructureCost
         {
             get { return (int)GetValue(PersonalTamedDinosSaddleStructureCostProperty); }
@@ -1926,7 +1882,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty UseTameLimitForStructuresOnlyProperty = DependencyProperty.Register(nameof(UseTameLimitForStructuresOnly), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseTameLimitForStructuresOnly", ConditionedOn = nameof(UseTameLimitForStructuresOnly))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bUseTameLimitForStructuresOnly", Category = ServerProfileCategory.Dinos, ConditionedOn = nameof(UseTameLimitForStructuresOnly))]
         public bool UseTameLimitForStructuresOnly
         {
             get { return (bool)GetValue(UseTameLimitForStructuresOnlyProperty); }
@@ -1934,7 +1890,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DinoSettingsProperty = DependencyProperty.Register(nameof(DinoSettings), typeof(DinoSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
         public DinoSettingsList DinoSettings
         {
             get { return (DinoSettingsList)GetValue(DinoSettingsProperty); }
@@ -1942,8 +1897,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoWildProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoWild), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public StatsMultiplierArray PerLevelStatsMultiplier_DinoWild
         {
             get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoWildProperty); }
@@ -1951,8 +1905,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamedProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed
         {
             get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamedProperty); }
@@ -1960,8 +1913,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AddProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Add), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed_Add
         {
             get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AddProperty); }
@@ -1969,8 +1921,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PerLevelStatsMultiplier_DinoTamed_AffinityProperty = DependencyProperty.Register(nameof(PerLevelStatsMultiplier_DinoTamed_Affinity), typeof(StatsMultiplierArray), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public StatsMultiplierArray PerLevelStatsMultiplier_DinoTamed_Affinity
         {
             get { return (StatsMultiplierArray)GetValue(PerLevelStatsMultiplier_DinoTamed_AffinityProperty); }
@@ -1979,7 +1930,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MatingIntervalMultiplierProperty = DependencyProperty.Register(nameof(MatingIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float MatingIntervalMultiplier
         {
             get { return (float)GetValue(MatingIntervalMultiplierProperty); }
@@ -1988,7 +1939,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EggHatchSpeedMultiplierProperty = DependencyProperty.Register(nameof(EggHatchSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float EggHatchSpeedMultiplier
         {
             get { return (float)GetValue(EggHatchSpeedMultiplierProperty); }
@@ -1997,7 +1948,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyMatureSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyMatureSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyMatureSpeedMultiplier
         {
             get { return (float)GetValue(BabyMatureSpeedMultiplierProperty); }
@@ -2006,7 +1957,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyFoodConsumptionSpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyFoodConsumptionSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyFoodConsumptionSpeedMultiplier
         {
             get { return (float)GetValue(BabyFoodConsumptionSpeedMultiplierProperty); }
@@ -2015,7 +1966,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableImprintDinoBuffProperty = DependencyProperty.Register(nameof(DisableImprintDinoBuff), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public bool DisableImprintDinoBuff
         {
             get { return (bool)GetValue(DisableImprintDinoBuffProperty); }
@@ -2024,7 +1975,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AllowAnyoneBabyImprintCuddleProperty = DependencyProperty.Register(nameof(AllowAnyoneBabyImprintCuddle), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Dinos)]
         public bool AllowAnyoneBabyImprintCuddle
         {
             get { return (bool)GetValue(AllowAnyoneBabyImprintCuddleProperty); }
@@ -2033,7 +1984,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyImprintingStatScaleMultiplierProperty = DependencyProperty.Register(nameof(BabyImprintingStatScaleMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyImprintingStatScaleMultiplier
         {
             get { return (float)GetValue(BabyImprintingStatScaleMultiplierProperty); }
@@ -2042,7 +1993,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyCuddleIntervalMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyCuddleIntervalMultiplier
         {
             get { return (float)GetValue(BabyCuddleIntervalMultiplierProperty); }
@@ -2051,7 +2002,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyCuddleGracePeriodMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleGracePeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyCuddleGracePeriodMultiplier
         {
             get { return (float)GetValue(BabyCuddleGracePeriodMultiplierProperty); }
@@ -2060,7 +2011,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BabyCuddleLoseImprintQualitySpeedMultiplierProperty = DependencyProperty.Register(nameof(BabyCuddleLoseImprintQualitySpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float BabyCuddleLoseImprintQualitySpeedMultiplier
         {
             get { return (float)GetValue(BabyCuddleLoseImprintQualitySpeedMultiplierProperty); }
@@ -2070,8 +2021,7 @@ namespace ARK_Server_Manager.Lib
 
 
         public static readonly DependencyProperty DinoSpawnsProperty = DependencyProperty.Register(nameof(DinoSpawnWeightMultipliers), typeof(AggregateIniValueList<DinoSpawn>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<DinoSpawn> DinoSpawnWeightMultipliers
         {
             get { return (AggregateIniValueList<DinoSpawn>)GetValue(DinoSpawnsProperty); }
@@ -2079,8 +2029,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TamedDinoClassDamageMultipliersProperty = DependencyProperty.Register(nameof(TamedDinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<ClassMultiplier> TamedDinoClassDamageMultipliers
         {
             get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassDamageMultipliersProperty); }
@@ -2088,8 +2037,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty TamedDinoClassResistanceMultipliersProperty = DependencyProperty.Register(nameof(TamedDinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<ClassMultiplier> TamedDinoClassResistanceMultipliers
         {
             get { return (AggregateIniValueList<ClassMultiplier>)GetValue(TamedDinoClassResistanceMultipliersProperty); }
@@ -2097,8 +2045,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DinoClassDamageMultipliersProperty = DependencyProperty.Register(nameof(DinoClassDamageMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<ClassMultiplier> DinoClassDamageMultipliers
         {
             get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassDamageMultipliersProperty); }
@@ -2106,8 +2053,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DinoClassResistanceMultipliersProperty = DependencyProperty.Register(nameof(DinoClassResistanceMultipliers), typeof(AggregateIniValueList<ClassMultiplier>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<ClassMultiplier> DinoClassResistanceMultipliers
         {
             get { return (AggregateIniValueList<ClassMultiplier>)GetValue(DinoClassResistanceMultipliersProperty); }
@@ -2115,8 +2061,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCReplacementsProperty = DependencyProperty.Register(nameof(NPCReplacements), typeof(AggregateIniValueList<NPCReplacement>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public AggregateIniValueList<NPCReplacement> NPCReplacements
         {
             get { return (AggregateIniValueList<NPCReplacement>)GetValue(NPCReplacementsProperty); }
@@ -2124,8 +2069,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PreventDinoTameClassNamesProperty = DependencyProperty.Register(nameof(PreventDinoTameClassNames), typeof(StringIniValueList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public StringIniValueList PreventDinoTameClassNames
         {
             get { return (StringIniValueList)GetValue(PreventDinoTameClassNamesProperty); }
@@ -2134,7 +2078,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty WildDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(WildDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float WildDinoCharacterFoodDrainMultiplier
         {
             get { return (float)GetValue(WildDinoCharacterFoodDrainMultiplierProperty); }
@@ -2143,7 +2087,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TamedDinoCharacterFoodDrainMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoCharacterFoodDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float TamedDinoCharacterFoodDrainMultiplier
         {
             get { return (float)GetValue(TamedDinoCharacterFoodDrainMultiplierProperty); }
@@ -2152,7 +2096,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty WildDinoTorporDrainMultiplierProperty = DependencyProperty.Register(nameof(WildDinoTorporDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float WildDinoTorporDrainMultiplier
         {
             get { return (float)GetValue(WildDinoTorporDrainMultiplierProperty); }
@@ -2161,7 +2105,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty TamedDinoTorporDrainMultiplierProperty = DependencyProperty.Register(nameof(TamedDinoTorporDrainMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float TamedDinoTorporDrainMultiplier
         {
             get { return (float)GetValue(TamedDinoTorporDrainMultiplierProperty); }
@@ -2170,7 +2114,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PassiveTameIntervalMultiplierProperty = DependencyProperty.Register(nameof(PassiveTameIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Dinos)]
         public float PassiveTameIntervalMultiplier
         {
             get { return (float)GetValue(PassiveTameIntervalMultiplierProperty); }
@@ -2181,7 +2125,7 @@ namespace ARK_Server_Manager.Lib
         #region Environment
         public static readonly DependencyProperty TamingSpeedMultiplierProperty = DependencyProperty.Register(nameof(TamingSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float TamingSpeedMultiplier
         {
             get { return (float)GetValue(TamingSpeedMultiplierProperty); }
@@ -2190,7 +2134,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HarvestAmountMultiplierProperty = DependencyProperty.Register(nameof(HarvestAmountMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float HarvestAmountMultiplier
         {
             get { return (float)GetValue(HarvestAmountMultiplierProperty); }
@@ -2199,7 +2143,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ResourcesRespawnPeriodMultiplierProperty = DependencyProperty.Register(nameof(ResourcesRespawnPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float ResourcesRespawnPeriodMultiplier
         {
             get { return (float)GetValue(ResourcesRespawnPeriodMultiplierProperty); }
@@ -2208,7 +2152,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ResourceNoReplenishRadiusPlayersProperty = DependencyProperty.Register(nameof(ResourceNoReplenishRadiusPlayers), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float ResourceNoReplenishRadiusPlayers
         {
             get { return (float)GetValue(ResourceNoReplenishRadiusPlayersProperty); }
@@ -2217,7 +2161,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ResourceNoReplenishRadiusStructuresProperty = DependencyProperty.Register(nameof(ResourceNoReplenishRadiusStructures), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float ResourceNoReplenishRadiusStructures
         {
             get { return (float)GetValue(ResourceNoReplenishRadiusStructuresProperty); }
@@ -2226,7 +2170,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HarvestHealthMultiplierProperty = DependencyProperty.Register(nameof(HarvestHealthMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float HarvestHealthMultiplier
         {
             get { return (float)GetValue(HarvestHealthMultiplierProperty); }
@@ -2235,7 +2179,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty UseOptimizedHarvestingHealthProperty = DependencyProperty.Register(nameof(UseOptimizedHarvestingHealth), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(UseOptimizedHarvestingHealth))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment, ConditionedOn = nameof(UseOptimizedHarvestingHealth))]
         public bool UseOptimizedHarvestingHealth
         {
             get { return (bool)GetValue(UseOptimizedHarvestingHealthProperty); }
@@ -2244,7 +2188,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ClampResourceHarvestDamageProperty = DependencyProperty.Register(nameof(ClampResourceHarvestDamage), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(ClampResourceHarvestDamage))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment, ConditionedOn = nameof(ClampResourceHarvestDamage))]
         public bool ClampResourceHarvestDamage
         {
             get { return (bool)GetValue(ClampResourceHarvestDamageProperty); }
@@ -2253,7 +2197,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ClampItemSpoilingTimesProperty = DependencyProperty.Register(nameof(ClampItemSpoilingTimes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(ClampItemSpoilingTimes))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment, ConditionedOn = nameof(ClampItemSpoilingTimes))]
         public bool ClampItemSpoilingTimes
         {
             get { return (bool)GetValue(ClampItemSpoilingTimesProperty); }
@@ -2261,8 +2205,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty HarvestResourceItemAmountClassMultipliersProperty = DependencyProperty.Register(nameof(HarvestResourceItemAmountClassMultipliers), typeof(ResourceClassMultiplierList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public ResourceClassMultiplierList HarvestResourceItemAmountClassMultipliers
         {
             get { return (ResourceClassMultiplierList)GetValue(HarvestResourceItemAmountClassMultipliersProperty); }
@@ -2271,7 +2214,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty BaseTemperatureMultiplierProperty = DependencyProperty.Register(nameof(BaseTemperatureMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float BaseTemperatureMultiplier
         {
             get { return (float)GetValue(BaseTemperatureMultiplierProperty); }
@@ -2280,7 +2223,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DayCycleSpeedScaleProperty = DependencyProperty.Register(nameof(DayCycleSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float DayCycleSpeedScale
         {
             get { return (float)GetValue(DayCycleSpeedScaleProperty); }
@@ -2289,7 +2232,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DayTimeSpeedScaleProperty = DependencyProperty.Register(nameof(DayTimeSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float DayTimeSpeedScale
         {
             get { return (float)GetValue(DayTimeSpeedScaleProperty); }
@@ -2298,7 +2241,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty NightTimeSpeedScaleProperty = DependencyProperty.Register(nameof(NightTimeSpeedScale), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public float NightTimeSpeedScale
         {
             get { return (float)GetValue(NightTimeSpeedScaleProperty); }
@@ -2307,7 +2250,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty GlobalSpoilingTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalSpoilingTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float GlobalSpoilingTimeMultiplier
         {
             get { return (float)GetValue(GlobalSpoilingTimeMultiplierProperty); }
@@ -2316,7 +2259,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty GlobalCorpseDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalCorpseDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float GlobalItemDecompositionTimeMultiplier
         {
             get { return (float)GetValue(GlobalItemDecompositionTimeMultiplierProperty); }
@@ -2325,7 +2268,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty GlobalItemDecompositionTimeMultiplierProperty = DependencyProperty.Register(nameof(GlobalItemDecompositionTimeMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float GlobalCorpseDecompositionTimeMultiplier
         {
             get { return (float)GetValue(GlobalCorpseDecompositionTimeMultiplierProperty); }
@@ -2334,7 +2277,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CropDecaySpeedMultiplierProperty = DependencyProperty.Register(nameof(CropDecaySpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float CropDecaySpeedMultiplier
         {
             get { return (float)GetValue(CropDecaySpeedMultiplierProperty); }
@@ -2343,7 +2286,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CropGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(CropGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float CropGrowthSpeedMultiplier
         {
             get { return (float)GetValue(CropGrowthSpeedMultiplierProperty); }
@@ -2352,7 +2295,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty LayEggIntervalMultiplierProperty = DependencyProperty.Register(nameof(LayEggIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float LayEggIntervalMultiplier
         {
             get { return (float)GetValue(LayEggIntervalMultiplierProperty); }
@@ -2361,7 +2304,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PoopIntervalMultiplierProperty = DependencyProperty.Register(nameof(PoopIntervalMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float PoopIntervalMultiplier
         {
             get { return (float)GetValue(PoopIntervalMultiplierProperty); }
@@ -2370,7 +2313,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HairGrowthSpeedMultiplierProperty = DependencyProperty.Register(nameof(HairGrowthSpeedMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float HairGrowthSpeedMultiplier
         {
             get { return (float)GetValue(HairGrowthSpeedMultiplierProperty); }
@@ -2379,7 +2322,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty CraftXPMultiplierProperty = DependencyProperty.Register(nameof(CraftXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float CraftXPMultiplier
         {
             get { return (float)GetValue(CraftXPMultiplierProperty); }
@@ -2388,7 +2331,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty GenericXPMultiplierProperty = DependencyProperty.Register(nameof(GenericXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float GenericXPMultiplier
         {
             get { return (float)GetValue(GenericXPMultiplierProperty); }
@@ -2397,7 +2340,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HarvestXPMultiplierProperty = DependencyProperty.Register(nameof(HarvestXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float HarvestXPMultiplier
         {
             get { return (float)GetValue(HarvestXPMultiplierProperty); }
@@ -2406,7 +2349,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty KillXPMultiplierProperty = DependencyProperty.Register(nameof(KillXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float KillXPMultiplier
         {
             get { return (float)GetValue(KillXPMultiplierProperty); }
@@ -2415,7 +2358,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SpecialXPMultiplierProperty = DependencyProperty.Register(nameof(SpecialXPMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Environment)]
         public float SpecialXPMultiplier
         {
             get { return (float)GetValue(SpecialXPMultiplierProperty); }
@@ -2424,7 +2367,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableWeatherFogProperty = DependencyProperty.Register(nameof(DisableWeatherFog), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Environment)]
         public bool DisableWeatherFog
         {
             get { return (bool)GetValue(DisableWeatherFogProperty); }
@@ -2435,7 +2378,7 @@ namespace ARK_Server_Manager.Lib
         #region Structures
         public static readonly DependencyProperty StructureResistanceMultiplierProperty = DependencyProperty.Register(nameof(StructureResistanceMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public float StructureResistanceMultiplier
         {
             get { return (float)GetValue(StructureResistanceMultiplierProperty); }
@@ -2444,7 +2387,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty StructureDamageMultiplierProperty = DependencyProperty.Register(nameof(StructureDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public float StructureDamageMultiplier
         {
             get { return (float)GetValue(StructureDamageMultiplierProperty); }
@@ -2453,7 +2396,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty StructureDamageRepairCooldownProperty = DependencyProperty.Register(nameof(StructureDamageRepairCooldown), typeof(int), typeof(ServerProfile), new PropertyMetadata(180));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Structures)]
         public int StructureDamageRepairCooldown
         {
             get { return (int)GetValue(StructureDamageRepairCooldownProperty); }
@@ -2462,7 +2405,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvPStructureDecayProperty = DependencyProperty.Register(nameof(PvPStructureDecay), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool PvPStructureDecay
         {
             get { return (bool)GetValue(PvPStructureDecayProperty); }
@@ -2471,7 +2414,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvPZoneStructureDamageMultiplierProperty = DependencyProperty.Register(nameof(PvPZoneStructureDamageMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(6.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Structures)]
         public float PvPZoneStructureDamageMultiplier
         {
             get { return (float)GetValue(PvPZoneStructureDamageMultiplierProperty); }
@@ -2480,7 +2423,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxStructuresVisibleProperty = DependencyProperty.Register(nameof(MaxStructuresVisible), typeof(float), typeof(ServerProfile), new PropertyMetadata(10500f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "TheMaxStructuresInRange")]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "TheMaxStructuresInRange", Category = ServerProfileCategory.Structures)]
         public float MaxStructuresVisible
         {
             get { return (float)GetValue(MaxStructuresVisibleProperty); }
@@ -2489,7 +2432,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PerPlatformMaxStructuresMultiplierProperty = DependencyProperty.Register(nameof(PerPlatformMaxStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public float PerPlatformMaxStructuresMultiplier
         {
             get { return (float)GetValue(PerPlatformMaxStructuresMultiplierProperty); }
@@ -2498,7 +2441,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty MaxPlatformSaddleStructureLimitProperty = DependencyProperty.Register(nameof(MaxPlatformSaddleStructureLimit), typeof(int), typeof(ServerProfile), new PropertyMetadata(50));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public int MaxPlatformSaddleStructureLimit
         {
             get { return (int)GetValue(MaxPlatformSaddleStructureLimitProperty); }
@@ -2507,7 +2450,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OverrideStructurePlatformPreventionProperty = DependencyProperty.Register(nameof(OverrideStructurePlatformPrevention), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool OverrideStructurePlatformPrevention
         {
             get { return (bool)GetValue(OverrideStructurePlatformPreventionProperty); }
@@ -2516,7 +2459,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty FlyerPlatformAllowUnalignedDinoBasingProperty = DependencyProperty.Register(nameof(FlyerPlatformAllowUnalignedDinoBasing), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bFlyerPlatformAllowUnalignedDinoBasing")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bFlyerPlatformAllowUnalignedDinoBasing", Category = ServerProfileCategory.Structures)]
         public bool FlyerPlatformAllowUnalignedDinoBasing
         {
             get { return (bool)GetValue(FlyerPlatformAllowUnalignedDinoBasingProperty); }
@@ -2525,7 +2468,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEAllowStructuresAtSupplyDropsProperty = DependencyProperty.Register(nameof(PvEAllowStructuresAtSupplyDrops), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool PvEAllowStructuresAtSupplyDrops
         {
             get { return (bool)GetValue(PvEAllowStructuresAtSupplyDropsProperty); }
@@ -2534,7 +2477,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty EnableStructureDecayPvEProperty = DependencyProperty.Register(nameof(EnableStructureDecayPvE), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisableStructureDecayPVE", InvertBoolean = true)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "DisableStructureDecayPVE", Category = ServerProfileCategory.Structures, InvertBoolean = true)]
         public bool EnableStructureDecayPvE
         {
             get { return (bool)GetValue(EnableStructureDecayPvEProperty); }
@@ -2543,7 +2486,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEStructureDecayDestructionPeriodProperty = DependencyProperty.Register(nameof(PvEStructureDecayDestructionPeriod), typeof(float), typeof(ServerProfile), new PropertyMetadata(0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableStructureDecayPvE))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures, ConditionedOn = nameof(EnableStructureDecayPvE))]
         public float PvEStructureDecayDestructionPeriod
         {
             get { return (float)GetValue(PvEStructureDecayDestructionPeriodProperty); }
@@ -2552,7 +2495,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PvEStructureDecayPeriodMultiplierProperty = DependencyProperty.Register(nameof(PvEStructureDecayPeriodMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(1.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, ConditionedOn = nameof(EnableStructureDecayPvE))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures, ConditionedOn = nameof(EnableStructureDecayPvE))]
         public float PvEStructureDecayPeriodMultiplier
         {
             get { return (float)GetValue(PvEStructureDecayPeriodMultiplierProperty); }
@@ -2561,7 +2504,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoDestroyOldStructuresMultiplierProperty = DependencyProperty.Register(nameof(AutoDestroyOldStructuresMultiplier), typeof(float), typeof(ServerProfile), new PropertyMetadata(0.0f));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public float AutoDestroyOldStructuresMultiplier
         {
             get { return (float)GetValue(AutoDestroyOldStructuresMultiplierProperty); }
@@ -2570,7 +2513,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty ForceAllStructureLockingProperty = DependencyProperty.Register(nameof(ForceAllStructureLocking), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool ForceAllStructureLocking
         {
             get { return (bool)GetValue(ForceAllStructureLockingProperty); }
@@ -2579,7 +2522,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PassiveDefensesDamageRiderlessDinosProperty = DependencyProperty.Register(nameof(PassiveDefensesDamageRiderlessDinos), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPassiveDefensesDamageRiderlessDinos")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bPassiveDefensesDamageRiderlessDinos", Category = ServerProfileCategory.Structures)]
         public bool PassiveDefensesDamageRiderlessDinos
         {
             get { return (bool)GetValue(PassiveDefensesDamageRiderlessDinosProperty); }
@@ -2596,7 +2539,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OnlyAutoDestroyCoreStructuresProperty = DependencyProperty.Register(nameof(OnlyAutoDestroyCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool OnlyAutoDestroyCoreStructures
         {
             get { return (bool)GetValue(OnlyAutoDestroyCoreStructuresProperty); }
@@ -2605,7 +2548,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty OnlyDecayUnsnappedCoreStructuresProperty = DependencyProperty.Register(nameof(OnlyDecayUnsnappedCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool OnlyDecayUnsnappedCoreStructures
         {
             get { return (bool)GetValue(OnlyDecayUnsnappedCoreStructuresProperty); }
@@ -2614,7 +2557,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty FastDecayUnsnappedCoreStructuresProperty = DependencyProperty.Register(nameof(FastDecayUnsnappedCoreStructures), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool FastDecayUnsnappedCoreStructures
         {
             get { return (bool)GetValue(FastDecayUnsnappedCoreStructuresProperty); }
@@ -2623,7 +2566,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DestroyUnconnectedWaterPipesProperty = DependencyProperty.Register(nameof(DestroyUnconnectedWaterPipes), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Category = ServerProfileCategory.Structures)]
         public bool DestroyUnconnectedWaterPipes
         {
             get { return (bool)GetValue(DestroyUnconnectedWaterPipesProperty); }
@@ -2632,7 +2575,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty DisableStructurePlacementCollisionProperty = DependencyProperty.Register(nameof(DisableStructurePlacementCollision), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableStructurePlacementCollision")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bDisableStructurePlacementCollision", Category = ServerProfileCategory.Structures)]
         public bool DisableStructurePlacementCollision
         {
             get { return (bool)GetValue(DisableStructurePlacementCollisionProperty); }
@@ -2649,7 +2592,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty FastDecayIntervalProperty = DependencyProperty.Register(nameof(FastDecayInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(43200));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(EnableFastDecayInterval))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Structures, ConditionedOn = nameof(EnableFastDecayInterval))]
         public int FastDecayInterval
         {
             get { return (int)GetValue(FastDecayIntervalProperty); }
@@ -2658,7 +2601,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty LimitTurretsInRangeProperty = DependencyProperty.Register(nameof(LimitTurretsInRange), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bLimitTurretsInRange")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bLimitTurretsInRange", Category = ServerProfileCategory.Structures)]
         public bool LimitTurretsInRange
         {
             get { return (bool)GetValue(LimitTurretsInRangeProperty); }
@@ -2667,7 +2610,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty LimitTurretsRangeProperty = DependencyProperty.Register(nameof(LimitTurretsRange), typeof(int), typeof(ServerProfile), new PropertyMetadata(10000));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(LimitTurretsInRange))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Structures, ConditionedOn = nameof(LimitTurretsInRange))]
         public int LimitTurretsRange
         {
             get { return (int)GetValue(LimitTurretsRangeProperty); }
@@ -2676,7 +2619,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty LimitTurretsNumProperty = DependencyProperty.Register(nameof(LimitTurretsNum), typeof(int), typeof(ServerProfile), new PropertyMetadata(100));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, ConditionedOn = nameof(LimitTurretsInRange))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Structures, ConditionedOn = nameof(LimitTurretsInRange))]
         public int LimitTurretsNum
         {
             get { return (int)GetValue(LimitTurretsNumProperty); }
@@ -2685,7 +2628,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty HardLimitTurretsInRangeProperty = DependencyProperty.Register(nameof(HardLimitTurretsInRange), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bHardLimitTurretsInRange")]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bHardLimitTurretsInRange", Category = ServerProfileCategory.Structures)]
         public bool HardLimitTurretsInRange
         {
             get { return (bool)GetValue(HardLimitTurretsInRangeProperty); }
@@ -2696,7 +2639,7 @@ namespace ARK_Server_Manager.Lib
         #region Engrams
         public static readonly DependencyProperty OnlyAllowSpecifiedEngramsProperty = DependencyProperty.Register(nameof(OnlyAllowSpecifiedEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams", ConditionedOn = nameof(OnlyAllowSpecifiedEngrams))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bOnlyAllowSpecifiedEngrams", Category = ServerProfileCategory.Engrams, ConditionedOn = nameof(OnlyAllowSpecifiedEngrams))]
         public bool OnlyAllowSpecifiedEngrams
         {
             get { return (bool)GetValue(OnlyAllowSpecifiedEngramsProperty); }
@@ -2704,8 +2647,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty OverrideNamedEngramEntriesProperty = DependencyProperty.Register(nameof(OverrideNamedEngramEntries), typeof(EngramEntryList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.Engrams)]
         public EngramEntryList OverrideNamedEngramEntries
         {
             get { return (EngramEntryList)GetValue(OverrideNamedEngramEntriesProperty); }
@@ -2714,7 +2656,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty AutoUnlockAllEngramsProperty = DependencyProperty.Register(nameof(AutoUnlockAllEngrams), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAutoUnlockAllEngrams", ConditionedOn = nameof(AutoUnlockAllEngrams))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "bAutoUnlockAllEngrams", Category = ServerProfileCategory.Engrams, ConditionedOn = nameof(AutoUnlockAllEngrams))]
         public bool AutoUnlockAllEngrams
         {
             get { return (bool)GetValue(AutoUnlockAllEngramsProperty); }
@@ -2724,8 +2666,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Crafting Overrides
         public static readonly DependencyProperty ConfigOverrideItemCraftingCostsProperty = DependencyProperty.Register(nameof(ConfigOverrideItemCraftingCosts), typeof(AggregateIniValueList<CraftingOverride>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.CraftingOverrides)]
         public AggregateIniValueList<CraftingOverride> ConfigOverrideItemCraftingCosts
         {
             get { return (AggregateIniValueList<CraftingOverride>)GetValue(ConfigOverrideItemCraftingCostsProperty); }
@@ -2735,8 +2676,6 @@ namespace ARK_Server_Manager.Lib
 
         #region Custom Levels
         public static readonly DependencyProperty EnableLevelProgressionsProperty = DependencyProperty.Register(nameof(EnableLevelProgressions), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
-        [XmlIgnore]
-        //[DataMember]
         public bool EnableLevelProgressions
         {
             get { return (bool)GetValue(EnableLevelProgressionsProperty); }
@@ -2744,8 +2683,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty PlayerLevelsProperty = DependencyProperty.Register(nameof(PlayerLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
-        [XmlIgnore]
-        //[DataMember]
         public LevelList PlayerLevels
         {
             get { return (LevelList)GetValue(PlayerLevelsProperty); }
@@ -2753,8 +2690,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty DinoLevelsProperty = DependencyProperty.Register(nameof(DinoLevels), typeof(LevelList), typeof(ServerProfile), new PropertyMetadata());
-        [XmlIgnore]
-        //[DataMember]
         public LevelList DinoLevels
         {
             get { return (LevelList)GetValue(DinoLevelsProperty); }
@@ -2764,8 +2699,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Custom Settings
         public static readonly DependencyProperty CustomGameUserSettingsSectionsProperty = DependencyProperty.Register(nameof(CustomGameUserSettingsSections), typeof(CustomSectionList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Custom)]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.Custom, Category = ServerProfileCategory.CustomSettings)]
         public CustomSectionList CustomGameUserSettingsSections
         {
             get { return (CustomSectionList)GetValue(CustomGameUserSettingsSectionsProperty); }
@@ -2819,7 +2753,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PGM_NameProperty = DependencyProperty.Register(nameof(PGM_Name), typeof(string), typeof(ServerProfile), new PropertyMetadata(Config.Default.DefaultPGMapName));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", ConditionedOn = nameof(PGM_Enabled))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGMapName", Category = ServerProfileCategory.PGM, ConditionedOn = nameof(PGM_Enabled))]
         public string PGM_Name
         {
             get { return (string)GetValue(PGM_NameProperty); }
@@ -2828,7 +2762,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty PGM_TerrainProperty = DependencyProperty.Register(nameof(PGM_Terrain), typeof(PGMTerrain), typeof(ServerProfile), new PropertyMetadata(null));
         [DataMember]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", ConditionedOn = nameof(PGM_Enabled))]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, "PGTerrainPropertiesString", Category = ServerProfileCategory.PGM, ConditionedOn = nameof(PGM_Enabled))]
         public PGMTerrain PGM_Terrain
         {
             get { return (PGMTerrain)GetValue(PGM_TerrainProperty); }
@@ -2839,8 +2773,7 @@ namespace ARK_Server_Manager.Lib
 
         #region NPC Spawn Overrides
         public static readonly DependencyProperty ConfigAddNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigAddNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.MapSpawnerOverrides)]
         public NPCSpawnContainerList<NPCSpawnContainer> ConfigAddNPCSpawnEntriesContainer
         {
             get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigAddNPCSpawnEntriesContainerProperty); }
@@ -2848,8 +2781,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ConfigSubtractNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigSubtractNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.MapSpawnerOverrides)]
         public NPCSpawnContainerList<NPCSpawnContainer> ConfigSubtractNPCSpawnEntriesContainer
         {
             get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigSubtractNPCSpawnEntriesContainerProperty); }
@@ -2857,8 +2789,7 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ConfigOverrideNPCSpawnEntriesContainerProperty = DependencyProperty.Register(nameof(ConfigOverrideNPCSpawnEntriesContainer), typeof(NPCSpawnContainerList<NPCSpawnContainer>), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.MapSpawnerOverrides)]
         public NPCSpawnContainerList<NPCSpawnContainer> ConfigOverrideNPCSpawnEntriesContainer
         {
             get { return (NPCSpawnContainerList<NPCSpawnContainer>)GetValue(ConfigOverrideNPCSpawnEntriesContainerProperty); }
@@ -2866,7 +2797,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty NPCSpawnSettingsProperty = DependencyProperty.Register(nameof(NPCSpawnSettings), typeof(NPCSpawnSettingsList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
         public NPCSpawnSettingsList NPCSpawnSettings
         {
             get { return (NPCSpawnSettingsList)GetValue(NPCSpawnSettingsProperty); }
@@ -2876,8 +2806,7 @@ namespace ARK_Server_Manager.Lib
 
         #region Supply Drop Overrides
         public static readonly DependencyProperty ConfigOverrideSupplyCrateItemsProperty = DependencyProperty.Register(nameof(ConfigOverrideSupplyCrateItems), typeof(SupplyCrateOverrideList), typeof(ServerProfile), new PropertyMetadata(null));
-        [XmlIgnore]
-        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode)]
+        [IniFileEntry(IniFiles.Game, IniFileSections.GameMode, Category = ServerProfileCategory.SupplyCrateOverrides)]
         public SupplyCrateOverrideList ConfigOverrideSupplyCrateItems
         {
             get { return (SupplyCrateOverrideList)GetValue(ConfigOverrideSupplyCrateItemsProperty); }
@@ -2928,7 +2857,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_MaxNumberOfPlayersInTribeProperty = DependencyProperty.Register(nameof(SOTF_MaxNumberOfPlayersInTribe), typeof(int), typeof(ServerProfile), new PropertyMetadata(2));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "MaxNumberOfPlayersInTribe", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "MaxNumberOfPlayersInTribe", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_MaxNumberOfPlayersInTribe
         {
             get { return (int)GetValue(SOTF_MaxNumberOfPlayersInTribeProperty); }
@@ -2937,7 +2866,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleNumOfTribesToStartGameProperty = DependencyProperty.Register(nameof(SOTF_BattleNumOfTribesToStartGame), typeof(int), typeof(ServerProfile), new PropertyMetadata(15));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleNumOfTribesToStartGame", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "BattleNumOfTribesToStartGame", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_BattleNumOfTribesToStartGame
         {
             get { return (int)GetValue(SOTF_BattleNumOfTribesToStartGameProperty); }
@@ -2946,7 +2875,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_TimeToCollapseRODProperty = DependencyProperty.Register(nameof(SOTF_TimeToCollapseROD), typeof(int), typeof(ServerProfile), new PropertyMetadata(9000));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "TimeToCollapseROD", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "TimeToCollapseROD", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_TimeToCollapseROD
         {
             get { return (int)GetValue(SOTF_TimeToCollapseRODProperty); }
@@ -2955,7 +2884,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleAutoStartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoStartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoStartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "BattleAutoStartGameInterval", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_BattleAutoStartGameInterval
         {
             get { return (int)GetValue(SOTF_BattleAutoStartGameIntervalProperty); }
@@ -2964,7 +2893,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleAutoRestartGameIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleAutoRestartGameInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(45));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleAutoRestartGameInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "BattleAutoRestartGameInterval", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_BattleAutoRestartGameInterval
         {
             get { return (int)GetValue(SOTF_BattleAutoRestartGameIntervalProperty); }
@@ -2973,7 +2902,7 @@ namespace ARK_Server_Manager.Lib
 
         public static readonly DependencyProperty SOTF_BattleSuddenDeathIntervalProperty = DependencyProperty.Register(nameof(SOTF_BattleSuddenDeathInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(300));
         [DataMember]
-        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, Key = "BattleSuddenDeathInterval", ConditionedOn = nameof(SOTF_Enabled))]
+        [IniFileEntry(IniFiles.GameUserSettings, IniFileSections.ServerSettings, "BattleSuddenDeathInterval", Category = ServerProfileCategory.SOTF, ConditionedOn = nameof(SOTF_Enabled))]
         public int SOTF_BattleSuddenDeathInterval
         {
             get { return (int)GetValue(SOTF_BattleSuddenDeathIntervalProperty); }
@@ -3199,26 +3128,33 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        private static string[] GetExclusions()
+        private static ServerProfileCategory[] GetExclusions()
         {
-            var exclusions = new List<string>();
+            var exclusions = new List<ServerProfileCategory>();
 
             if (!Config.Default.SectionCraftingOverridesEnabled)
             {
-                exclusions.Add(nameof(ConfigOverrideItemCraftingCosts));
+                exclusions.Add(ServerProfileCategory.CraftingOverrides);
             }
 
             if (!Config.Default.SectionMapSpawnerOverridesEnabled)
             {
-                exclusions.Add(nameof(ConfigAddNPCSpawnEntriesContainer));
-                exclusions.Add(nameof(ConfigSubtractNPCSpawnEntriesContainer));
-                exclusions.Add(nameof(ConfigOverrideNPCSpawnEntriesContainer));
-                exclusions.Add(nameof(NPCSpawnSettings));
+                exclusions.Add(ServerProfileCategory.MapSpawnerOverrides);
             }
 
             if (!Config.Default.SectionSupplyCrateOverridesEnabled)
             {
-                exclusions.Add(nameof(ConfigOverrideSupplyCrateItems));
+                exclusions.Add(ServerProfileCategory.SupplyCrateOverrides);
+            }
+
+            if (!Config.Default.SectionPGMEnabled)
+            {
+                exclusions.Add(ServerProfileCategory.PGM);
+            }
+
+            if (!Config.Default.SectionSOTFEnabled)
+            {
+                exclusions.Add(ServerProfileCategory.SOTF);
             }
 
             return exclusions.ToArray();
@@ -3250,7 +3186,7 @@ namespace ARK_Server_Manager.Lib
 
         public string GetProfileIniDir()
         {
-            return Path.Combine(Path.GetDirectoryName(GetProfileFile()), this.ProfileName);
+            return Path.Combine(Path.GetDirectoryName(GetProfileFileOld()), this.ProfileName);
         }
 
         public string GetProfileKey()
@@ -3258,14 +3194,14 @@ namespace ARK_Server_Manager.Lib
             return TaskSchedulerUtils.ComputeKey(this.InstallDirectory);
         }
 
+        public string GetProfileFileOld()
+        {
+            return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtensionOld));
+        }
+
         public string GetProfileFile()
         {
             return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtension));
-        }
-
-        public string GetProfileFileNew()
-        {
-            return Path.Combine(Config.Default.ConfigDirectory, Path.ChangeExtension(this.ProfileName, Config.Default.ProfileExtensionNew));
         }
 
         public string GetServerAppId()
@@ -3299,8 +3235,8 @@ namespace ARK_Server_Manager.Lib
             {
                 serverArgs.Append("?MultiHome=").Append(this.ServerIP);
             }
-            serverArgs.Append("?Port=").Append(this.ServerConnectionPort);
-            serverArgs.Append("?QueryPort=").Append(this.ServerPort);
+            serverArgs.Append("?Port=").Append(this.ServerPort);
+            serverArgs.Append("?QueryPort=").Append(this.QueryPort);
             serverArgs.Append("?MaxPlayers=").Append(this.MaxPlayers);
 
             if (this.UseRawSockets)
@@ -3308,19 +3244,19 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append("?bRawSockets");
             }
 
-            if (this.ForceFlyerExplosives)
-            {
-                serverArgs.Append("?ForceFlyerExplosives=true");
-            }
-
             if (!string.IsNullOrWhiteSpace(this.AltSaveDirectoryName))
             {
                 serverArgs.Append($"?AltSaveDirectoryName={this.AltSaveDirectoryName}");
             }
 
+            if (this.ForceFlyerExplosives)
+            {
+                serverArgs.Append("?ForceFlyerExplosives=true");
+            }
+
             serverArgs.Append($"?AllowCrateSpawnsOnTopOfStructures={this.AllowCrateSpawnsOnTopOfStructures.ToString()}");
 
-            if (this.SOTF_Enabled)
+            if (Config.Default.SectionSOTFEnabled && this.SOTF_Enabled)
             {
                 serverArgs.Append("?EvoEventInterval=").Append(this.SOTF_EvoEventInterval);
                 serverArgs.Append("?RingStartTime=").Append(this.SOTF_RingStartTime);
@@ -3364,7 +3300,7 @@ namespace ARK_Server_Manager.Lib
                 serverArgs.Append(" -nofishloot");
             }
 
-            if(this.SOTF_Enabled)
+            if (Config.Default.SectionSOTFEnabled && this.SOTF_Enabled)
             {
                 if (this.SOTF_OutputGameReport)
                 {
@@ -3551,11 +3487,11 @@ namespace ARK_Server_Manager.Lib
             if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
                 return null;
 
+            if (Path.GetExtension(file) == Config.Default.ProfileExtensionOld)
+                return null;
+
             if (Path.GetExtension(file) == Config.Default.ProfileExtension)
                 return LoadFromProfileFile(file);
-
-            if (Path.GetExtension(file) == Config.Default.ProfileExtensionNew)
-                return LoadFromProfileFileNew(file);
 
             var filePath = Path.GetDirectoryName(file);
             if (!filePath.EndsWith(Config.Default.ServerConfigRelativePath))
@@ -3630,61 +3566,13 @@ namespace ARK_Server_Manager.Lib
                 return null;
 
             ServerProfile settings = null;
-            XmlSerializer serializer = new XmlSerializer(typeof(ServerProfile));
-            using (var reader = File.OpenRead(file))
-            {
-                settings = (ServerProfile)serializer.Deserialize(reader);
-            }
-
-            var profileIniPath = Path.Combine(Path.ChangeExtension(file, null), Config.Default.ServerGameUserSettingsConfigFile);
-            var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
-            if (File.Exists(configIniPath))
-            {
-                settings = LoadFromINIFiles(configIniPath, settings);
-            }
-            else if (File.Exists(profileIniPath))
-            {
-                settings = LoadFromINIFiles(profileIniPath, settings);
-            }
-
-            if (settings.PlayerLevels.Count == 0)
-            {
-                settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
-                settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
-                settings.EnableLevelProgressions = false;
-            }
-
-            //
-            // Since these are not inserted the normal way, we force a recomputation here.
-            //
-            settings.PlayerLevels.UpdateTotals();
-            settings.DinoLevels.UpdateTotals();
-            settings.DinoSettings.RenderToView();
-            if (Config.Default.SectionMapSpawnerOverridesEnabled)
-                settings.NPCSpawnSettings.RenderToView();
-            if (Config.Default.SectionSupplyCrateOverridesEnabled)
-                settings.ConfigOverrideSupplyCrateItems.RenderToView();
-
-            settings.LoadServerFileAdministrators();
-            settings.LoadServerFileExclusive();
-            settings.LoadServerFileWhitelisted();
-            settings.SetupServerFilesWatcher();
-
-            settings._lastSaveLocation = file;
-            settings.IsDirty = false;
-            return settings;
-        }
-
-        public static ServerProfile LoadFromProfileFileNew(string file)
-        {
-            if (string.IsNullOrWhiteSpace(file) || !File.Exists(file))
-                return null;
-
-            if (Path.GetExtension(file) != Config.Default.ProfileExtensionNew)
-                return null;
-
-            ServerProfile settings = null;
             settings = JsonUtils.DeserializeFromFile<ServerProfile>(file);
+
+            if (settings.PGM_Enabled)
+                Config.Default.SectionPGMEnabled = true;
+
+            if (settings.SOTF_Enabled)
+                Config.Default.SectionSOTFEnabled = true;
 
             var profileIniPath = Path.Combine(Path.ChangeExtension(file, null), Config.Default.ServerGameUserSettingsConfigFile);
             var configIniPath = Path.Combine(settings.InstallDirectory, Config.Default.ServerConfigRelativePath, Config.Default.ServerGameUserSettingsConfigFile);
@@ -3807,6 +3695,16 @@ namespace ARK_Server_Manager.Lib
                 this.ConfigOverrideSupplyCrateItems.RenderToModel();
             }
 
+            if (!Config.Default.SectionPGMEnabled)
+            {
+                PGM_Enabled = false;
+            }
+
+            if (!Config.Default.SectionSOTFEnabled)
+            {
+                SOTF_Enabled = false;
+            }
+
             //
             // Save the profile
             //
@@ -3826,14 +3724,14 @@ namespace ARK_Server_Manager.Lib
             //
             // If this was a rename, remove the old profile after writing the new one.
             //
-            if (!String.Equals(GetProfileFileNew(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(GetProfileFile(), this._lastSaveLocation, StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
                     if (File.Exists(this._lastSaveLocation))
                         File.Delete(this._lastSaveLocation);
 
-                    var profileFile = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtension);
+                    var profileFile = Path.ChangeExtension(this._lastSaveLocation, Config.Default.ProfileExtensionOld);
                     if (File.Exists(profileFile))
                         File.Delete(profileFile);
 
@@ -3846,7 +3744,7 @@ namespace ARK_Server_Manager.Lib
                     // We tried...
                 }
 
-                this._lastSaveLocation = GetProfileFileNew();
+                this._lastSaveLocation = GetProfileFile();
             }
 
             progressCallback?.Invoke(0, "Saving Launcher File...");
@@ -3873,14 +3771,19 @@ namespace ARK_Server_Manager.Lib
             //
             // Save the profile
             //
-            var serializer = new XmlSerializer(this.GetType());
-            using (var stream = File.Open(GetProfileFile(), FileMode.Create))
-            {
-                serializer.Serialize(stream, this);
-            }
-
-            JsonUtils.Serialize(this, GetProfileFileNew());
+            JsonUtils.Serialize(this, GetProfileFile());
             this.IsDirty = false;
+
+            // delete the old profile
+            var oldProfileFile = GetProfileFileOld();
+            if (File.Exists(oldProfileFile))
+            {
+                try
+                {
+                    File.Delete(oldProfileFile);
+                }
+                catch (Exception) {}
+            }
         }
 
         private void SaveLauncher()
@@ -4037,9 +3940,9 @@ namespace ARK_Server_Manager.Lib
             var appId = SOTF_Enabled ? Config.Default.AppId_SotF : Config.Default.AppId;
 
             // checking the port values are within the valid range
-            if (ServerConnectionPort < ushort.MinValue || ServerConnectionPort > ushort.MaxValue)
-                result.AppendLine($"The server port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
             if (ServerPort < ushort.MinValue || ServerPort > ushort.MaxValue)
+                result.AppendLine($"The server port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
+            if (QueryPort < ushort.MinValue || QueryPort > ushort.MaxValue)
                 result.AppendLine($"The query port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
             if (RCONPort < ushort.MinValue || RCONPort > ushort.MaxValue)
                 result.AppendLine($"The rcon port is outside the valid range ({ushort.MinValue}-{ushort.MaxValue}).");
@@ -4215,20 +4118,6 @@ namespace ARK_Server_Manager.Lib
         }
 
         public string ToOutputString()
-        {
-            //
-            // serializes the profile to a string
-            //
-            var result = new StringBuilder();
-            var serializer = new XmlSerializer(this.GetType());
-            using (var stream = new StringWriter(result))
-            {
-                serializer.Serialize(stream, this);
-            }
-            return result.ToString();
-        }
-
-        public string ToOutputStringNew()
         {
             //
             // serializes the profile to a string
@@ -4612,8 +4501,8 @@ namespace ARK_Server_Manager.Lib
             this.ClearValue(AdminPasswordProperty);
             this.ClearValue(SpectatorPasswordProperty);
 
-            this.ClearValue(ServerConnectionPortProperty);
             this.ClearValue(ServerPortProperty);
+            this.ClearValue(QueryPortProperty);
             this.ClearValue(ServerIPProperty);
             this.ClearValue(UseRawSocketsProperty);
             this.ClearValue(NoNetThreadingProperty);
@@ -4998,65 +4887,65 @@ namespace ARK_Server_Manager.Lib
         #endregion
 
         #region Sync Methods
-        public void SyncSettings(ServerProfileSection section, ServerProfile sourceProfile)
+        public void SyncSettings(ServerProfileCategory section, ServerProfile sourceProfile)
         {
             if (sourceProfile == null)
                 return;
 
             switch (section)
             {
-                case ServerProfileSection.AdministrationSection:
+                case ServerProfileCategory.Administration:
                     SyncAdministrationSection(sourceProfile);
                     break;
-                case ServerProfileSection.AutomaticManagement:
+                case ServerProfileCategory.AutomaticManagement:
                     SyncAutomaticManagement(sourceProfile);
                     break;
-                case ServerProfileSection.RulesSection:
+                case ServerProfileCategory.Rules:
                     SyncRulesSection(sourceProfile);
                     break;
-                case ServerProfileSection.ChatAndNotificationsSection:
+                case ServerProfileCategory.ChatAndNotifications:
                     SyncChatAndNotificationsSection(sourceProfile);
                     break;
-                case ServerProfileSection.HudAndVisualsSection:
+                case ServerProfileCategory.HudAndVisuals:
                     SyncHudAndVisualsSection(sourceProfile);
                     break;
-                case ServerProfileSection.PlayerSettingsSection:
+                case ServerProfileCategory.Players:
                     SyncPlayerSettingsSection(sourceProfile);
                     break;
-                case ServerProfileSection.DinoSettingsSection:
+                case ServerProfileCategory.Dinos:
                     SyncDinoSettingsSection(sourceProfile);
                     break;
-                case ServerProfileSection.EnvironmentSection:
+                case ServerProfileCategory.Environment:
                     SyncEnvironmentSection(sourceProfile);
                     break;
-                case ServerProfileSection.StructuresSection:
+                case ServerProfileCategory.Structures:
                     SyncStructuresSection(sourceProfile);
                     break;
-                case ServerProfileSection.EngramsSection:
+                case ServerProfileCategory.Engrams:
                     SyncEngramsSection(sourceProfile);
                     break;
-                case ServerProfileSection.ServerFiles:
+                case ServerProfileCategory.ServerFiles:
                     SyncServerFiles(sourceProfile);
                     break;
-                case ServerProfileSection.CustomSettingsSection:
+                case ServerProfileCategory.CustomSettings:
                     SyncCustomSettingsSection(sourceProfile);
                     break;
-                case ServerProfileSection.CustomLevelsSection:
+                case ServerProfileCategory.CustomLevels:
                     SyncCustomLevelsSection(sourceProfile);
                     break;
-                case ServerProfileSection.MapSpawnerOverridesSection:
+                case ServerProfileCategory.MapSpawnerOverrides:
                     SyncNPCSpawnOverridesSection(sourceProfile);
                     break;
-                case ServerProfileSection.CraftingOverridesSection:
+                case ServerProfileCategory.CraftingOverrides:
                     SyncCraftingOverridesSection(sourceProfile);
                     break;
-                case ServerProfileSection.SupplyCrateOverridesSection:
+                case ServerProfileCategory.SupplyCrateOverrides:
                     SyncSupplyCrateOverridesSection(sourceProfile);
                     break;
-                case ServerProfileSection.PGMSection:
+                case ServerProfileCategory.PGM:
                     SyncPGMSection(sourceProfile);
                     break;
-                case ServerProfileSection.SOTFSection:
+                case ServerProfileCategory.SOTF:
                     SyncSOTFSection(sourceProfile);
                     break;
             }
@@ -5067,8 +4956,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(ServerPasswordProperty, sourceProfile.ServerPassword);
             this.SetValue(AdminPasswordProperty, sourceProfile.AdminPassword);
             this.SetValue(SpectatorPasswordProperty, sourceProfile.SpectatorPassword);
-            this.SetValue(ServerConnectionPortProperty, sourceProfile.ServerConnectionPort);
             this.SetValue(ServerPortProperty, sourceProfile.ServerPort);
+            this.SetValue(QueryPortProperty, sourceProfile.QueryPort);
             this.SetValue(ServerIPProperty, sourceProfile.ServerIP);
             this.SetValue(UseRawSocketsProperty, sourceProfile.UseRawSockets);
             this.SetValue(NoNetThreadingProperty, sourceProfile.NoNetThreading);

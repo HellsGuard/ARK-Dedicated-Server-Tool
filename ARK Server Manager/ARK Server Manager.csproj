@@ -31,7 +31,7 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.326.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -175,6 +175,8 @@
     <Compile Include="Common\Serialization\IniSection.cs" />
     <Compile Include="Common\Utils\IOUtils.cs" />
     <Compile Include="Common\Utils\VersionFeedUtils.cs" />
+    <Compile Include="Lib\Enums\LevelProgression.cs" />
+    <Compile Include="Lib\Enums\ServerProfileCategory.cs" />
     <Compile Include="Lib\Model\ArkApplicationComboBoxItem.cs" />
     <Compile Include="Lib\Model\PlayerListParameters.cs" />
     <Compile Include="Lib\ServerBranchSnapshot.cs" />

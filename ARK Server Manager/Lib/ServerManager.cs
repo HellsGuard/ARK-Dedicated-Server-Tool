@@ -70,13 +70,13 @@ namespace ARK_Server_Manager.Lib
             {
                 try
                 {
+                    var profileFileOld = server.Profile.GetProfileFileOld();
+                    if (File.Exists(profileFileOld))
+                        File.Delete(profileFileOld);
+
                     var profileFile = server.Profile.GetProfileFile();
                     if (File.Exists(profileFile))
                         File.Delete(profileFile);
-
-                    var profileFileNew = server.Profile.GetProfileFileNew();
-                    if (File.Exists(profileFileNew))
-                        File.Delete(profileFileNew);
 
                     var profileFolder = server.Profile.GetProfileIniDir();
                     if (Directory.Exists(profileFolder))

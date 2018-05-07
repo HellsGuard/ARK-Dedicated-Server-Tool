@@ -50,7 +50,7 @@
     <Setting Name="ProfilesDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Profiles</Value>
     </Setting>
-    <Setting Name="ProfileExtension" Type="System.String" Scope="Application">
+    <Setting Name="ProfileExtensionOld" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.profile</Value>
     </Setting>
     <Setting Name="DefaultServerMap" Type="System.String" Scope="Application">
@@ -506,7 +506,7 @@
     <Setting Name="ASMPluginUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://arkservermanager.freeforums.net/board/22/plugins</Value>
     </Setting>
-    <Setting Name="ProfileExtensionNew" Type="System.String" Scope="Application">
+    <Setting Name="ProfileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.asmprofile</Value>
     </Setting>
     <Setting Name="PlayerFileExtension" Type="System.String" Scope="Application">
@@ -616,6 +616,12 @@
     </Setting>
     <Setting Name="SteamManifestFolderRelativePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">steamapps</Value>
+    </Setting>
+    <Setting Name="SectionPGMEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SectionSOTFEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

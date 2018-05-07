@@ -158,8 +158,8 @@ namespace ARK_Server_Manager.Lib
                 new[] {
                     ServerProfile.ProfileNameProperty,
                     ServerProfile.InstallDirectoryProperty,
+                    ServerProfile.QueryPortProperty,
                     ServerProfile.ServerPortProperty,
-                    ServerProfile.ServerConnectionPortProperty,
                     ServerProfile.ServerIPProperty,
                     ServerProfile.MaxPlayersProperty,
 

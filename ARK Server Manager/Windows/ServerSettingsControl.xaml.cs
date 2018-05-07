@@ -706,22 +706,8 @@ namespace ARK_Server_Manager
                         profileFile.SpectatorPassword = "obfuscated";
                         profileFile.WebAlarmKey = "obfuscated";
                         profileFile.WebAlarmUrl = "obfuscated";
+                        profileFile.BranchPassword = "obfuscated";
                         obfuscateFiles.Add(file, profileFile.ToOutputString());
-                    }
-                }
-
-                file = this.Settings.GetProfileFileNew();
-                if (File.Exists(file))
-                {
-                    var profileFile = ServerProfile.LoadFromProfileFileNew(file);
-                    if (profileFile != null)
-                    {
-                        profileFile.AdminPassword = "obfuscated";
-                        profileFile.ServerPassword = "obfuscated";
-                        profileFile.SpectatorPassword = "obfuscated";
-                        profileFile.WebAlarmKey = "obfuscated";
-                        profileFile.WebAlarmUrl = "obfuscated";
-                        obfuscateFiles.Add(file, profileFile.ToOutputStringNew());
                     }
                 }
 
@@ -1636,7 +1622,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
+            this.Settings.ClearLevelProgression(LevelProgression.Dino);
         }
 
         private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
@@ -1650,7 +1636,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
+            this.Settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
         }
 
         private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
@@ -1674,7 +1660,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
+            this.Settings.ClearLevelProgression(LevelProgression.Player);
         }
 
         private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
@@ -1688,7 +1674,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
+            this.Settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
         }
 
         private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)

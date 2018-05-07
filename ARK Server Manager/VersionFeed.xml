@@ -5,14 +5,14 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager release version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-06T21:10:00Z</updated>
+  <updated>2018-05-07T10:10:00Z</updated>
 
   <entry>
     <id>urn:uuid:C74E7548-6527-410D-8163-A3ACE1BB6326</id>
-    <title>1.0.326 (1.0.326.3)</title>
-    <summary>1.0.326.3</summary>
+    <title>1.0.326 (1.0.326.5)</title>
+    <summary>1.0.326.5</summary>
     <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
-    <updated>2018-05-06T21:10:00Z</updated>
+    <updated>2018-05-07T10:10:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
@@ -31,6 +31,8 @@
                 NOTE: This change affects the server cache and will force your server to perform an update when the next auto-update is run.
               </font>
             </li>
+            <br/>
+            <li>Profiles - added global options to enable/disable ASM controlling PGM and SotF settings (default disabled).</li>
           </ul>
         </p>
       </div>

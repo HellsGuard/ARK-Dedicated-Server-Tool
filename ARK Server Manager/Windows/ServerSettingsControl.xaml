@@ -1028,10 +1028,10 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerPortLabel}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerConnectionPort}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerPort}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
 
                                         <Label   Grid.Row="0" Grid.Column="2" Content="{DynamicResource ServerSettings_QueryPortLabel}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding ServerPort}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
+                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding QueryPort}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
 
                                         <DockPanel Grid.Row="0" Grid.Column="4">
                                             <Label DockPanel.Dock="Left" Content="{DynamicResource ServerSettings_LocalIPLabel}" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" VerticalAlignment="Center"/>
@@ -4571,7 +4571,7 @@
                             </Grid>
                         </Expander>
 
-                        <Expander Name="SectionPGM" IsExpanded="{Binding CurrentConfig.SectionPGMIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                        <Expander Name="SectionPGM" IsExpanded="{Binding CurrentConfig.SectionPGMIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Visibility="{Binding CurrentConfig.SectionPGMEnabled, ElementName=SettingsControl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_PGMLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -4863,7 +4863,7 @@
                             </Grid>
                         </Expander>
 
-                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Visibility="{Binding CurrentConfig.SectionSOTFEnabled, ElementName=SettingsControl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>

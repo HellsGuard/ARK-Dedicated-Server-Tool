@@ -5,7 +5,36 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager beta version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-06T21:10:00Z</updated>
+  <updated>2018-05-07T10:10:00Z</updated>
+
+  <entry>
+    <id>urn:uuid:248DD4A5-B39D-4BF5-B32F-49D80A7836E9</id>
+    <title>1.0.326 (1.0.326.5)</title>
+    <summary>1.0.326.5</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-326-test-build" />
+    <updated>2018-05-07T10:10:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+        <p>
+          <u style="font-size: .9em;">NEW</u>
+          <br/>
+          <ul>
+            <li>Profiles - added global options to enable/disable ASM controlling PGM and SotF settings (default disabled).</li>
+          </ul>
+          <u style="font-size: .9em;">CHANGE</u>
+          <br/>
+          <ul>
+            <li>Profiles - removed the loading and saving of the old xml profile.</li>
+            <li>Profiles - changed the way exclusions are passed to the config file load/save. Allows for whole sections to be excluded, rather than individual settings.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
 
   <entry>
     <id>urn:uuid:73DD522F-75AC-49E6-BE31-1C8D437F2C18</id>

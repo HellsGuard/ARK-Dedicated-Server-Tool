@@ -16,7 +16,7 @@ namespace ARK_Server_Manager
         {
             public static readonly DependencyProperty SelectedProperty = DependencyProperty.Register(nameof(Selected), typeof(bool), typeof(ProfileSection), new PropertyMetadata(false));
             public static readonly DependencyProperty SectionNameProperty = DependencyProperty.Register(nameof(SectionName), typeof(string), typeof(ProfileSection), new PropertyMetadata(string.Empty));
-            public static readonly DependencyProperty SectionProperty = DependencyProperty.Register(nameof(Section), typeof(ServerProfile.ServerProfileSection), typeof(ProfileSection));
+            public static readonly DependencyProperty SectionProperty = DependencyProperty.Register(nameof(Section), typeof(ServerProfileCategory), typeof(ProfileSection));
 
             public bool Selected
             {
@@ -28,9 +28,9 @@ namespace ARK_Server_Manager
                 get { return (string)GetValue(SectionNameProperty); }
                 set { SetValue(SectionNameProperty, value); }
             }
-            public ServerProfile.ServerProfileSection Section
+            public ServerProfileCategory Section
             {
-                get { return (ServerProfile.ServerProfileSection)GetValue(SectionProperty); }
+                get { return (ServerProfileCategory)GetValue(SectionProperty); }
                 set { SetValue(SectionProperty, value); }
             }
         }
@@ -172,27 +172,29 @@ namespace ARK_Server_Manager
         {
             ProfileSections.Clear();
 
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.AdministrationSection, SectionName = _globalizer.GetResourceString("ServerSettings_AdministrationSectionLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.AutomaticManagement, SectionName = _globalizer.GetResourceString("ServerSettings_AutomaticManagementLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.RulesSection, SectionName = _globalizer.GetResourceString("ServerSettings_RulesLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.ChatAndNotificationsSection, SectionName = _globalizer.GetResourceString("ServerSettings_ChatAndNotificationsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.HudAndVisualsSection, SectionName = _globalizer.GetResourceString("ServerSettings_HUDAndVisualsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.PlayerSettingsSection, SectionName = _globalizer.GetResourceString("ServerSettings_PlayerSettingsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.DinoSettingsSection, SectionName = _globalizer.GetResourceString("ServerSettings_DinoSettingsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.EnvironmentSection, SectionName = _globalizer.GetResourceString("ServerSettings_EnvironmentLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.StructuresSection, SectionName = _globalizer.GetResourceString("ServerSettings_StructuresLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.EngramsSection, SectionName = _globalizer.GetResourceString("ServerSettings_EngramsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.ServerFiles, SectionName = _globalizer.GetResourceString("ServerSettings_ServerFilesLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.CustomSettingsSection, SectionName = _globalizer.GetResourceString("ServerSettings_CustomSettingsLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.CustomLevelsSection, SectionName = _globalizer.GetResourceString("ServerSettings_CustomLevelProgressionsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Administration, SectionName = _globalizer.GetResourceString("ServerSettings_AdministrationSectionLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.AutomaticManagement, SectionName = _globalizer.GetResourceString("ServerSettings_AutomaticManagementLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Rules, SectionName = _globalizer.GetResourceString("ServerSettings_RulesLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.ChatAndNotifications, SectionName = _globalizer.GetResourceString("ServerSettings_ChatAndNotificationsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.HudAndVisuals, SectionName = _globalizer.GetResourceString("ServerSettings_HUDAndVisualsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Players, SectionName = _globalizer.GetResourceString("ServerSettings_PlayerSettingsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Dinos, SectionName = _globalizer.GetResourceString("ServerSettings_DinoSettingsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Environment, SectionName = _globalizer.GetResourceString("ServerSettings_EnvironmentLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Structures, SectionName = _globalizer.GetResourceString("ServerSettings_StructuresLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.Engrams, SectionName = _globalizer.GetResourceString("ServerSettings_EngramsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.ServerFiles, SectionName = _globalizer.GetResourceString("ServerSettings_ServerFilesLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.CustomSettings, SectionName = _globalizer.GetResourceString("ServerSettings_CustomSettingsLabel") });
+            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.CustomLevels, SectionName = _globalizer.GetResourceString("ServerSettings_CustomLevelProgressionsLabel") });
             if (Config.Default.SectionCraftingOverridesEnabled)
-                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.CraftingOverridesSection, SectionName = _globalizer.GetResourceString("ServerSettings_CraftingOverridesLabel") });
+                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.CraftingOverrides, SectionName = _globalizer.GetResourceString("ServerSettings_CraftingOverridesLabel") });
             if (Config.Default.SectionMapSpawnerOverridesEnabled)
-                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.MapSpawnerOverridesSection, SectionName = _globalizer.GetResourceString("ServerSettings_MapSpawnerOverridesLabel") });
+                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.MapSpawnerOverrides, SectionName = _globalizer.GetResourceString("ServerSettings_MapSpawnerOverridesLabel") });
             if (Config.Default.SectionSupplyCrateOverridesEnabled)
-                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.SupplyCrateOverridesSection, SectionName = _globalizer.GetResourceString("ServerSettings_SupplyCrateOverridesLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.PGMSection, SectionName = _globalizer.GetResourceString("ServerSettings_PGMLabel") });
-            ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfile.ServerProfileSection.SOTFSection, SectionName = _globalizer.GetResourceString("ServerSettings_SOTFLabel") });
+                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.SupplyCrateOverrides, SectionName = _globalizer.GetResourceString("ServerSettings_SupplyCrateOverridesLabel") });
+            if (Config.Default.SectionPGMEnabled)
+                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.PGM, SectionName = _globalizer.GetResourceString("ServerSettings_PGMLabel") });
+            if (Config.Default.SectionSOTFEnabled)
+                ProfileSections.Add(new ProfileSection() { Selected = false, Section = ServerProfileCategory.SOTF, SectionName = _globalizer.GetResourceString("ServerSettings_SOTFLabel") });
         }
 
         private void PerformProfileSync()
