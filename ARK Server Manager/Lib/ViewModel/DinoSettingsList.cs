@@ -96,6 +96,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach(var entry in this.DinoSpawnWeightMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.DinoNameTag))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
                 if (dinoSettings == null)
                 {
@@ -113,6 +116,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach(var entry in this.PreventDinoTameClassNames)
             {
+                if (string.IsNullOrWhiteSpace(entry))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
                 if (dinoSettings == null)
                 {
@@ -128,6 +134,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach(var entry in this.NpcReplacements)
             {
+                if (string.IsNullOrWhiteSpace(entry.FromClassName))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
                 if (dinoSettings == null)
                 {
@@ -144,6 +153,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach (var entry in this.TamedDinoClassDamageMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
@@ -159,6 +171,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach(var entry in this.TamedDinoClassResistanceMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
@@ -174,6 +189,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach (var entry in this.DinoClassDamageMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
@@ -189,6 +207,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach (var entry in this.DinoClassResistanceMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
                 var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
                 if (dinoSettings == null)
                 {
@@ -219,7 +240,8 @@ namespace ARK_Server_Manager.Lib.ViewModel
             {
                 if (entry.HasNameTag && !string.IsNullOrWhiteSpace(entry.NameTag))
                 {
-                    if (!entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE) ||
+                    if (!entry.KnownDino ||
+                        !entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE) ||
                         !entry.SpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE) ||
                         !entry.SpawnWeightMultiplier.Equals(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER))
                     {

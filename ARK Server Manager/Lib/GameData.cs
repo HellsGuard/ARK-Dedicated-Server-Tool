@@ -129,6 +129,20 @@ namespace ARK_Server_Manager.Lib
                 levelsPlayer = gameData.PlayerLevels.ConvertAll(item => new Level { EngramPoints = item.EngramPoints, XPRequired = item.XPRequired }).ToArray();
                 DefaultMaxExperiencePointsPlayer = levelsPlayer.Max(l => l.XPRequired) + 1;
             }
+
+            // branches
+            gameData.Branches.AddRange(userGameData.Branches);
+
+            if (gameData.Branches.Count > 0)
+            {
+                var branches1 = branches.ToList();
+                branches1.AddRange(gameData.Branches.Where(item => !item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.BranchName, DisplayMember = item.Description }));
+                var branches2 = branchesSotF.ToList();
+                branches2.AddRange(gameData.Branches.Where(item => item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.BranchName, DisplayMember = item.Description }));
+
+                branches = branches1.ToArray();
+                branchesSotF = branches2.ToArray();
+            }
         }
 
         public static string FriendlyNameForClass(string className, bool returnNullIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? (returnNullIfNotFound ? null : string.Empty) : GlobalizedApplication.Instance.GetResourceString(className) ?? (returnNullIfNotFound ? null : className);
@@ -144,7 +158,7 @@ namespace ARK_Server_Manager.Lib
 
         public static DinoTamable IsTameableForClass(string className) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.IsTameable ?? DinoTamable.True;
 
-        public static string NameTagForClass(string className) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.NameTag ?? null;
+        public static string NameTagForClass(string className, bool returnEmptyIfNotFound = false) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.NameTag ?? (returnEmptyIfNotFound ? string.Empty : className);
 
         public static string FriendlyCreatureNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Creatures?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
 
@@ -347,6 +361,26 @@ namespace ARK_Server_Manager.Lib
         public static IEnumerable<Level> LevelsDino => levelsDino.Select(l => l.Duplicate());
 
         public static IEnumerable<Level> LevelsPlayer => levelsPlayer.Select(l => l.Duplicate());
+        #endregion
+
+        #region Branches
+        private static ComboBoxItem[] branches = new[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetBranches() => branches.Select(d => d.Duplicate());
+
+        public static string FriendlyBranchName(string branchName, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(branchName) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(branchName) ?? gameData?.Branches?.FirstOrDefault(i => i.BranchName.Equals(branchName) && !i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : branchName);
+
+        private static ComboBoxItem[] branchesSotF = new[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetBranchesSotF() => branchesSotF.Select(d => d.Duplicate());
+
+        public static string FriendlyBranchSotFName(string branchName, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(branchName) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(branchName) ?? gameData?.Branches?.FirstOrDefault(i => i.BranchName.Equals(branchName) && i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : branchName);
         #endregion
     }
 }

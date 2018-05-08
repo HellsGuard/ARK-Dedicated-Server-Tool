@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -118,7 +119,7 @@ namespace ARK_Server_Manager.Lib
 
         public void Dispose()
         {
-            this.updateRegistration.DisposeAsync().DoNotWait();
+            this.updateRegistration?.DisposeAsync().DoNotWait();
         }
 
         public Task AttachToProfile(ServerProfile profile)
@@ -134,8 +135,7 @@ namespace ARK_Server_Manager.Lib
 
             this.ProfileSnapshot = ServerProfileSnapshot.Create(profile);
 
-            Version lastInstalled;
-            if (Version.TryParse(profile.LastInstalledVersion, out lastInstalled))
+            if (Version.TryParse(profile.LastInstalledVersion, out Version lastInstalled))
             {
                 this.Version = lastInstalled;
             }
@@ -158,8 +158,8 @@ namespace ARK_Server_Manager.Lib
                 new[] {
                     ServerProfile.ProfileNameProperty,
                     ServerProfile.InstallDirectoryProperty,
+                    ServerProfile.QueryPortProperty,
                     ServerProfile.ServerPortProperty,
-                    ServerProfile.ServerConnectionPortProperty,
                     ServerProfile.ServerIPProperty,
                     ServerProfile.MaxPlayersProperty,
 
@@ -284,8 +284,8 @@ namespace ARK_Server_Manager.Lib
                         break;
                 }
 
-                this.Players = 0;
-                this.MaxPlayers = this.ProfileSnapshot.MaxPlayerCount;
+                this.Players = update.Players?.Count ?? 0;
+                this.MaxPlayers = update.ServerInfo?.MaxPlayers ?? this.ProfileSnapshot.MaxPlayerCount;
 
                 if (update.ServerInfo != null)
                 {
@@ -293,16 +293,11 @@ namespace ARK_Server_Manager.Lib
                     if (match.Success && match.Groups.Count >= 2)
                     {
                         var serverVersion = match.Groups[1].Value;
-                        Version temp;
-                        if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out temp))
+                        if (!String.IsNullOrWhiteSpace(serverVersion) && Version.TryParse(serverVersion, out Version temp))
                         {
                             this.Version = temp;
                         }
                     }
-
-                    // set the player count using the players list, as this should only contain the current valid players.
-                    this.Players = update.Players.Count;
-                    this.MaxPlayers = update.ServerInfo.MaxPlayers;
                 }
 
                 UpdateModStatus();
@@ -360,13 +355,10 @@ namespace ARK_Server_Manager.Lib
 
         private void UnregisterForUpdates()
         {
-            if (this.updateRegistration != null)
-            {
-                this.updateRegistration.DisposeAsync().DoNotWait();
-                this.updateRegistration = null;
-            }
+            this.updateRegistration?.DisposeAsync().DoNotWait();
+            this.updateRegistration = null;
         }
-        
+
 
         private void CheckServerWorldFileExists()
         {
@@ -458,8 +450,6 @@ namespace ARK_Server_Manager.Lib
                 case ServerStatus.Initializing:
                     try
                     {
-                        UnregisterForUpdates();
-
                         if (this.serverProcess != null)
                         {
                             UpdateServerStatus(ServerStatus.Stopping, SteamStatus.Unavailable, false);
@@ -484,12 +474,12 @@ namespace ARK_Server_Manager.Lib
         }
 
 
-        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, ProgressDelegate progressCallback)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, ServerBranchSnapshot branch, bool validate, bool updateMods, ProgressDelegate progressCallback)
         {
-            return await UpgradeAsync(cancellationToken, updateServer, validate, updateMods, null, progressCallback);
+            return await UpgradeAsync(cancellationToken, updateServer, branch, validate, updateMods, null, progressCallback);
         }
 
-        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, bool validate, bool updateMods, string[] updateModIds, ProgressDelegate progressCallback)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, ServerBranchSnapshot branch, bool validate, bool updateMods, string[] updateModIds, ProgressDelegate progressCallback)
         {
             if (updateServer && !Environment.Is64BitOperatingSystem)
             {
@@ -532,12 +522,25 @@ namespace ARK_Server_Manager.Lib
                     // *********************
 
                     progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Starting server update.");
+                    progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Server branch: {ServerApp.GetBranchName(branch?.BranchName)}.");
+
+                    // create the branch arguments
+                    var steamCmdInstallServerBetaArgs = new StringBuilder();
+                    if (!string.IsNullOrWhiteSpace(branch?.BranchName))
+                    {
+                        steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaNameArgsFormat, branch.BranchName);
+                        if (!string.IsNullOrWhiteSpace(branch?.BranchPassword))
+                            steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaPasswordArgsFormat, branch?.BranchPassword);
+                    }
 
                     // Check if this is a new server installation.
-                    if (isNewInstallation)
+                    if (isNewInstallation && !this.ProfileSnapshot.SotFEnabled && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
                     {
+                        var branchName = string.IsNullOrWhiteSpace(branch?.BranchName) ? Config.Default.DefaultServerBranchName : branch.BranchName;
+                        var cacheFolder = IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, $"{Config.Default.ServerBranchFolderPrefix}{branchName}"));
+
                         // check if the auto-update facility is enabled and the cache folder defined.
-                        if (!this.ProfileSnapshot.SotFEnabled && Config.Default.AutoUpdate_EnableUpdate && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir))
+                        if (!string.IsNullOrWhiteSpace(cacheFolder) && Directory.Exists(cacheFolder))
                         {
                             // Auto-Update enabled and cache foldler exists.
                             progressCallback?.Invoke(0, $"{SteamCmdUpdater.OUTPUT_PREFIX} Installing server from local cache...may take a while to copy all the files.");
@@ -545,12 +548,12 @@ namespace ARK_Server_Manager.Lib
                             // Install the server files from the cache.
                             var installationFolder = this.ProfileSnapshot.InstallDirectory;
                             int count = 0;
-                            await Task.Run(() => 
-                                ServerApp.DirectoryCopy(Config.Default.AutoUpdate_CacheDir, installationFolder, true, Config.Default.AutoUpdate_UseSmartCopy, (p, m, n) =>
-                                                                                                                                                              {
-                                                                                                                                                                  count++;
-                                                                                                                                                                  progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
-                                                                                                                                                              }), cancellationToken);
+                            await Task.Run(() =>
+                                ServerApp.DirectoryCopy(cacheFolder, installationFolder, true, Config.Default.AutoUpdate_UseSmartCopy, (p, m, n) =>
+                                    {
+                                        count++;
+                                        progressCallback?.Invoke(0, ".", count % DIRECTORIES_PER_LINE == 0);
+                                    }), cancellationToken);
                         }
                     }
 
@@ -573,7 +576,7 @@ namespace ARK_Server_Manager.Lib
                     };
 
                     var steamCmdInstallServerArgsFormat = this.ProfileSnapshot.SotFEnabled ? Config.Default.SteamCmdInstallServerArgsFormat_SotF : Config.Default.SteamCmdInstallServerArgsFormat;
-                    var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, validate ? "validate" : string.Empty);
+                    var steamCmdArgs = String.Format(steamCmdInstallServerArgsFormat, this.ProfileSnapshot.InstallDirectory, steamCmdInstallServerBetaArgs, validate ? "validate" : string.Empty);
 
                     success = await ServerUpdater.UpgradeServerAsync(steamCmdFile, steamCmdArgs, this.ProfileSnapshot.InstallDirectory, Config.Default.SteamCmdRedirectOutput ? serverOutputHandler : null, cancellationToken, ProcessWindowStyle.Minimized);
                     if (success && downloadSuccessful)

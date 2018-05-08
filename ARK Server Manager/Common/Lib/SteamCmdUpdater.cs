@@ -76,8 +76,6 @@ namespace ARK_Server_Manager.Lib
            { Status.Cancelled, Update.AsCancelled("AutoUpdater_Status_Cancelled") }
         };
 
-        public static bool IsAutoUpdateCacheEnabled => Config.Default.AutoUpdate_EnableUpdate && Config.Default.AutoUpdate_UpdatePeriod >= 0 && !string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir) && Directory.Exists(Config.Default.AutoUpdate_CacheDir);
-
         public static string GetLogFolder() => IOUtils.NormalizePath(Path.Combine(Config.Default.DataDir, Config.Default.LogsDir));
 
         public static Version GetServerVersion(string versionFile)

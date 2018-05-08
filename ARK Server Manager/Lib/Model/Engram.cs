@@ -46,6 +46,7 @@ namespace ARK_Server_Manager.Lib
                 e.EngramPointsCost = item.EngramPointsCost;
                 e.EngramHidden = item.EngramHidden;
                 e.RemoveEngramPreReq = item.RemoveEngramPreReq;
+                e.SaveEngramOverride = item.SaveEngramOverride;
             }
 
             IsEnabled = (Count != 0);
@@ -55,12 +56,18 @@ namespace ARK_Server_Manager.Lib
 
         public override IEnumerable<string> ToIniValues()
         {
-            if (!OnlyAllowSelectedEngrams)
-                return base.ToIniValues();
+            if (OnlyAllowSelectedEngrams)
+            {
+                if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                    return this.Where(d => d.SaveEngramOverride).Select(d => d.ToINIValue());
 
-            var values = new List<string>();
-            values.AddRange(this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}"));
-            return values;
+                return this.Where(d => d.SaveEngramOverride).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}");
+            }
+
+            if (string.IsNullOrWhiteSpace(IniCollectionKey))
+                return this.Where(d => d.ShouldSave(OnlyAllowSelectedEngrams)).Select(d => d.ToINIValue());
+
+            return this.Where(d => d.ShouldSave(OnlyAllowSelectedEngrams)).Select(d => $"{this.IniCollectionKey}={d.ToINIValue()}");
         }
     }
 
@@ -187,9 +194,9 @@ namespace ARK_Server_Manager.Lib
             return String.Equals(this.EngramClassName, ((EngramEntry)other).EngramClassName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override bool ShouldSave()
+        public bool ShouldSave(bool OnlyAllowSelectedEngrams)
         {
-            if (!KnownEngram || SaveEngramOverride)
+            if (!KnownEngram || OnlyAllowSelectedEngrams && SaveEngramOverride)
                 return true;
 
             var engramEntry = GameData.GetEngramForClass(EngramClassName);

@@ -52,11 +52,12 @@ namespace ARK_Server_Manager.Lib
         /// <param name="File">The file into which the setting should be serialized.</param>
         /// <param name="Section">The section in the ini file.</param>
         /// <param name="Key">The key within the section.  Defaults to the same name as the attributed field.</param>
-        public IniFileEntryAttribute(IniFiles file, IniFileSections section, string key = "")
+        public IniFileEntryAttribute(IniFiles file, IniFileSections section, string key = "", ServerProfileCategory category = ServerProfileCategory.Unknown)
         {
             this.File = file;
             this.Section = section;
             this.Key = key;
+            this.Category = category;
 
             this.QuotedString = QuotedStringType.False;
         }
@@ -67,6 +68,11 @@ namespace ARK_Server_Manager.Lib
         /// The section of the ini file.
         /// </summary>
         public IniFileSections Section;
+
+        /// <summary>
+        /// The category of the setting.
+        /// </summary>
+        public ServerProfileCategory Category;
 
         /// <summary>
         /// The key within the section.
@@ -147,22 +153,22 @@ namespace ARK_Server_Manager.Lib
             basePath = INIPath;
         }
 
-        public void Deserialize(object obj, string[] exclusions)
+        public void Deserialize(object obj, ServerProfileCategory[] exclusions)
         {
             var iniFiles = new Dictionary<string, IniFile>();
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
 
             if (exclusions == null)
-                exclusions = new string[0];
+                exclusions = new ServerProfileCategory[0];
 
             foreach (var field in fields)
             {
-                if (exclusions.Contains(field.Name))
-                    continue;
-
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false);
                 foreach (var attr in attributes.OfType<IniFileEntryAttribute>())
                 {
+                    if (exclusions.Contains(attr.Category))
+                        continue;
+
                     if (attr.Section == IniFileSections.Custom)
                     {
                         // this code is to handle custom sections
@@ -258,22 +264,22 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
-        public void Serialize(object obj, string[] exclusions)
+        public void Serialize(object obj, ServerProfileCategory[] exclusions)
         {
             var iniFiles = new Dictionary<string, IniFile>();
             var fields = obj.GetType().GetProperties().Where(f => f.IsDefined(typeof(IniFileEntryAttribute), false));
 
             if (exclusions == null)
-                exclusions = new string[0];
+                exclusions = new ServerProfileCategory[0];
 
             foreach (var field in fields)
             {
-                if (exclusions.Contains(field.Name))
-                    continue;
-
                 var attributes = field.GetCustomAttributes(typeof(IniFileEntryAttribute), false).OfType<IniFileEntryAttribute>();
                 foreach (var attr in attributes)
                 {
+                    if (exclusions.Contains(attr.Category))
+                        continue;
+
                     if (attr.Section == IniFileSections.Custom)
                     {
                         // this code is to handle custom sections

@@ -260,6 +260,14 @@ namespace ARK_Server_Manager.Lib
             return metaInformation != null && metaInformation.ContainsKey("ModType") ? metaInformation["ModType"] : MODTYPE_UNKNOWN;
         }
 
+        public static string GetSteamManifestFile(string installDirectory, bool isSotF)
+        {
+            if (isSotF)
+                return IOUtils.NormalizePath(Path.Combine(installDirectory, Config.Default.SteamManifestFolderRelativePath, Config.Default.ArkSteamManifestFile_SotF));
+
+            return IOUtils.NormalizePath(Path.Combine(installDirectory, Config.Default.SteamManifestFolderRelativePath, Config.Default.ArkSteamManifestFile));
+        }
+
         public static string GetSteamWorkshopFile(bool isSotF)
         {
             if (isSotF)

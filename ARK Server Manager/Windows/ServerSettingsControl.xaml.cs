@@ -87,6 +87,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty BaseSupplyCrateListProperty = DependencyProperty.Register(nameof(BaseSupplyCrateList), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseGameMapsProperty = DependencyProperty.Register(nameof(BaseGameMaps), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty BaseTotalConversionsProperty = DependencyProperty.Register(nameof(BaseTotalConversions), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BaseBranchesProperty = DependencyProperty.Register(nameof(BaseBranches), typeof(ComboBoxItemList), typeof(ServerSettingsControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CurrentConfigProperty = DependencyProperty.Register(nameof(CurrentConfig), typeof(Config), typeof(ServerSettingsControl));
         public static readonly DependencyProperty IsAdministratorProperty = DependencyProperty.Register(nameof(IsAdministrator), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
         public static readonly DependencyProperty NetworkInterfacesProperty = DependencyProperty.Register(nameof(NetworkInterfaces), typeof(List<NetworkAdapterEntry>), typeof(ServerSettingsControl), new PropertyMetadata(new List<NetworkAdapterEntry>()));
@@ -103,6 +104,7 @@ namespace ARK_Server_Manager
         public static readonly DependencyProperty SelectedSupplyCrateOverrideProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateOverride), typeof(SupplyCrateOverride), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSet), typeof(SupplyCrateItemSet), typeof(ServerSettingsControl));
         public static readonly DependencyProperty SelectedSupplyCrateItemSetEntryProperty = DependencyProperty.Register(nameof(SelectedSupplyCrateItemSetEntry), typeof(SupplyCrateItemSetEntry), typeof(ServerSettingsControl));
+        public static readonly DependencyProperty FilterOnlySelectedEngramsProperty = DependencyProperty.Register(nameof(FilterOnlySelectedEngrams), typeof(bool), typeof(ServerSettingsControl), new PropertyMetadata(false));
 
         #region Properties
         public ArkApplicationComboBoxItemList BaseArkApplicationList
@@ -151,6 +153,12 @@ namespace ARK_Server_Manager
         {
             get { return (ComboBoxItemList)GetValue(BaseTotalConversionsProperty); }
             set { SetValue(BaseTotalConversionsProperty, value); }
+        }
+
+        public ComboBoxItemList BaseBranches
+        {
+            get { return (ComboBoxItemList)GetValue(BaseBranchesProperty); }
+            set { SetValue(BaseBranchesProperty, value); }
         }
 
         public Config CurrentConfig
@@ -248,6 +256,12 @@ namespace ARK_Server_Manager
             get { return GetValue(SelectedSupplyCrateItemSetEntryProperty) as SupplyCrateItemSetEntry; }
             set { SetValue(SelectedSupplyCrateItemSetEntryProperty, value); }
         }
+
+        public bool FilterOnlySelectedEngrams
+        {
+            get { return (bool)GetValue(FilterOnlySelectedEngramsProperty); }
+            set { SetValue(FilterOnlySelectedEngramsProperty, value); }
+        }
         #endregion
 
         public ServerSettingsControl()
@@ -267,6 +281,7 @@ namespace ARK_Server_Manager
             this.BaseSupplyCrateList = new ComboBoxItemList();
             this.BaseGameMaps = new ComboBoxItemList();
             this.BaseTotalConversions = new ComboBoxItemList();
+            this.BaseBranches = new ComboBoxItemList();
 
             // hook into the language change event
             GlobalizedApplication.Instance.GlobalizationManager.ResourceDictionaryChangedEvent += ResourceDictionaryChangedEvent;
@@ -293,6 +308,7 @@ namespace ARK_Server_Manager
                         ssc.RefreshBaseSupplyCrateList();
                         ssc.RefreshBaseGameMapsList();
                         ssc.RefreshBaseTotalConversionsList();
+                        ssc.RefreshBaseBranchesList();
                         ssc.LoadServerFiles();
                     }).DoNotWait();
             }
@@ -311,6 +327,7 @@ namespace ARK_Server_Manager
             this.RefreshBaseSupplyCrateList();
             this.RefreshBaseGameMapsList();
             this.RefreshBaseTotalConversionsList();
+            this.RefreshBaseBranchesList();
 
             this.HarvestResourceItemAmountClassMultipliersListBox.Items.Refresh();
             this.EngramsOverrideListView.Items.Refresh();
@@ -477,6 +494,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
+            this.Settings.Save(false, false, null);
             await UpdateServer(true, true, Config.Default.ServerUpdate_UpdateModsWhenUpdatingServer, false);
         }
 
@@ -492,6 +510,7 @@ namespace ARK_Server_Manager
                     return;
             }
 
+            this.Settings.Save(false, false, null);
             await UpdateServer(true, false, true, false);
         }
 
@@ -687,22 +706,8 @@ namespace ARK_Server_Manager
                         profileFile.SpectatorPassword = "obfuscated";
                         profileFile.WebAlarmKey = "obfuscated";
                         profileFile.WebAlarmUrl = "obfuscated";
+                        profileFile.BranchPassword = "obfuscated";
                         obfuscateFiles.Add(file, profileFile.ToOutputString());
-                    }
-                }
-
-                file = this.Settings.GetProfileFileNew();
-                if (File.Exists(file))
-                {
-                    var profileFile = ServerProfile.LoadFromProfileFileNew(file);
-                    if (profileFile != null)
-                    {
-                        profileFile.AdminPassword = "obfuscated";
-                        profileFile.ServerPassword = "obfuscated";
-                        profileFile.SpectatorPassword = "obfuscated";
-                        profileFile.WebAlarmKey = "obfuscated";
-                        profileFile.WebAlarmUrl = "obfuscated";
-                        obfuscateFiles.Add(file, profileFile.ToOutputStringNew());
                     }
                 }
 
@@ -725,7 +730,8 @@ namespace ARK_Server_Manager
                     // <server cache>
                     if (!string.IsNullOrWhiteSpace(Config.Default.AutoUpdate_CacheDir))
                     {
-                        file = Path.Combine(Config.Default.AutoUpdate_CacheDir, Config.Default.LastUpdatedTimeFile);
+                        var branchName = string.IsNullOrWhiteSpace(this.Settings.BranchName) ? Config.Default.DefaultServerBranchName : this.Settings.BranchName;
+                        file = IOUtils.NormalizePath(Path.Combine(Config.Default.AutoUpdate_CacheDir, $"{Config.Default.ServerBranchFolderPrefix}{branchName}", Config.Default.LastUpdatedTimeFile));
                         if (File.Exists(file)) files.Add(file);
                     }
                 }
@@ -952,6 +958,8 @@ namespace ARK_Server_Manager
                     textBox = WebKeyTextBox;
                 if (Equals(hideTextBox, HideWebURLTextBox))
                     textBox = WebURLTextBox;
+                if (Equals(hideTextBox, HideBranchPasswordTextBox)) 
+                    textBox = BranchPasswordTextBox;
 
                 if (textBox != null)
                 {
@@ -980,6 +988,8 @@ namespace ARK_Server_Manager
                     hideTextBox = HideWebKeyTextBox;
                 if (textBox == WebURLTextBox)
                     hideTextBox = HideWebURLTextBox;
+                if (textBox == BranchPasswordTextBox)
+                    hideTextBox = HideBranchPasswordTextBox;
 
                 if (hideTextBox != null)
                 {
@@ -1061,8 +1071,11 @@ namespace ARK_Server_Manager
             this.Settings.ServerMap = Config.Default.DefaultServerMap;
             this.Settings.TotalConversionModId = string.Empty;
             this.Settings.ServerModIds = string.Empty;
+            this.Settings.BranchName = string.Empty;
+            this.Settings.BranchPassword = string.Empty;
             RefreshBaseGameMapsList();
             RefreshBaseTotalConversionsList();
+            RefreshBaseBranchesList();
         }
 
         #region Dinos
@@ -1293,7 +1306,7 @@ namespace ARK_Server_Manager
             if (item == null)
                 e.Accepted = false;
             else
-                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram);
+                e.Accepted = (SelectedArkApplicationEngram == ArkApplication.All || item.ArkApplication == SelectedArkApplicationEngram) && (!Settings.OnlyAllowSpecifiedEngrams || !FilterOnlySelectedEngrams || item.SaveEngramOverride);
         }
 
         private void EngramArkApplications_SourceUpdated(object sender, DataTransferEventArgs e)
@@ -1609,7 +1622,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Dino);
+            this.Settings.ClearLevelProgression(LevelProgression.Dino);
         }
 
         private void DinoLevels_Recalculate(object sender, RoutedEventArgs e)
@@ -1623,7 +1636,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_DinoLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_DinoLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Dino);
+            this.Settings.ResetLevelProgressionToOfficial(LevelProgression.Dino);
         }
 
         private void MaxXPPlayer_Reset(object sender, RoutedEventArgs e)
@@ -1647,7 +1660,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ClearTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ClearLevelProgression(ServerProfile.LevelProgression.Player);
+            this.Settings.ClearLevelProgression(LevelProgression.Player);
         }
 
         private void PlayerLevels_Recalculate(object sender, RoutedEventArgs e)
@@ -1661,7 +1674,7 @@ namespace ARK_Server_Manager
             if (MessageBox.Show(_globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetLabel"), _globalizer.GetResourceString("ServerSettings_PlayerLevels_ResetTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            this.Settings.ResetLevelProgressionToOfficial(ServerProfile.LevelProgression.Player);
+            this.Settings.ResetLevelProgressionToOfficial(LevelProgression.Player);
         }
 
         private void RemoveDinoLevel_Click(object sender, RoutedEventArgs e)
@@ -2716,6 +2729,41 @@ namespace ARK_Server_Manager
             this.TotalConversionComboBox.SelectedValue = this.Settings.TotalConversionModId;
         }
 
+        public void RefreshBaseBranchesList()
+        {
+            var newList = new ComboBoxItemList();
+
+            if (this.Settings.SOTF_Enabled)
+            {
+                foreach (var item in GameData.GetBranchesSotF())
+                {
+                    newList.Add(item);
+                }
+            }
+            else
+            {
+                foreach (var item in GameData.GetBranches())
+                {
+                    newList.Add(item);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.Settings.BranchName))
+            {
+                if (!newList.Any(m => m.ValueMember.Equals(this.Settings.BranchName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    newList.Add(new Lib.ViewModel.ComboBoxItem
+                    {
+                        DisplayMember = this.Settings.SOTF_Enabled ? GameData.FriendlyBranchSotFName(this.Settings.BranchName) : GameData.FriendlyBranchName(this.Settings.BranchName),
+                        ValueMember = this.Settings.BranchName,
+                    });
+                }
+            }
+
+            this.BaseBranches = newList;
+            this.BranchComboBox.SelectedValue = this.Settings.BranchName;
+        }
+
         private void ReinitializeNetworkAdapters()
         {
             var adapters = NetworkUtils.GetAvailableIPV4NetworkAdapters();
@@ -2773,6 +2821,7 @@ namespace ARK_Server_Manager
                                 this.Settings.ResetAdministrationSection();
                                 RefreshBaseGameMapsList();
                                 RefreshBaseTotalConversionsList();
+                                RefreshBaseBranchesList();
                                 break;
 
                             case ServerSettingsResetAction.ChatAndNotificationsSection:
@@ -2963,6 +3012,7 @@ namespace ARK_Server_Manager
                                 RefreshBaseSupplyCrateList();
                                 RefreshBaseGameMapsList();
                                 RefreshBaseTotalConversionsList();
+                                RefreshBaseBranchesList();
 
                                 OverlayMessage.Content = _globalizer.GetResourceString("ServerSettings_OverlayMessage_PermissionsLabel");
                                 await Task.Delay(500);
@@ -3027,7 +3077,9 @@ namespace ARK_Server_Manager
                     window.Show();
 
                     await Task.Delay(1000);
-                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer, true, updateMods, (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m, n); }).DoNotWait(); });
+
+                    var branch = new ServerBranchSnapshot() { BranchName = this.Server.Profile.BranchName, BranchPassword = this.Server.Profile.BranchPassword };
+                    return await this.Server.UpgradeAsync(_upgradeCancellationSource.Token, updateServer, branch, true, updateMods, (p, m, n) => { TaskUtils.RunOnUIThreadAsync(() => { window?.AddMessage(m, n); }).DoNotWait(); });
                 }
                 else
                 {

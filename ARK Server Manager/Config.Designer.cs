@@ -82,7 +82,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1}\" +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 376030 {1} {2}\" +quit")]
         public string SteamCmdInstallServerArgsFormat {
             get {
                 return ((string)(this["SteamCmdInstallServerArgsFormat"]));
@@ -173,9 +173,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".profile")]
-        public string ProfileExtension {
+        public string ProfileExtensionOld {
             get {
-                return ((string)(this["ProfileExtension"]));
+                return ((string)(this["ProfileExtensionOld"]));
             }
         }
         
@@ -595,7 +595,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 445400 {1}\" +quit")]
+        [global::System.Configuration.DefaultSettingValueAttribute("+login anonymous +force_install_dir \"{0}\"  \"+app_update 445400 {1} {2}\" +quit")]
         public string SteamCmdInstallServerArgsFormat_SotF {
             get {
                 return ((string)(this["SteamCmdInstallServerArgsFormat_SotF"]));
@@ -1811,9 +1811,9 @@ namespace ARK_Server_Manager {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".asmprofile")]
-        public string ProfileExtensionNew {
+        public string ProfileExtension {
             get {
-                return ((string)(this["ProfileExtensionNew"]));
+                return ((string)(this["ProfileExtension"]));
             }
         }
         
@@ -2116,6 +2116,93 @@ namespace ARK_Server_Manager {
             }
             set {
                 this["RCON_ShowPlayerAvatars"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("release")]
+        public string DefaultServerBranchName {
+            get {
+                return ((string)(this["DefaultServerBranchName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-beta {0}")]
+        public string SteamCmdInstallServerBetaNameArgsFormat {
+            get {
+                return ((string)(this["SteamCmdInstallServerBetaNameArgsFormat"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-betapassword {0}")]
+        public string SteamCmdInstallServerBetaPasswordArgsFormat {
+            get {
+                return ((string)(this["SteamCmdInstallServerBetaPasswordArgsFormat"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("__")]
+        public string ServerBranchFolderPrefix {
+            get {
+                return ((string)(this["ServerBranchFolderPrefix"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("appmanifest_376030.acf")]
+        public string ArkSteamManifestFile {
+            get {
+                return ((string)(this["ArkSteamManifestFile"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("appmanifest_407530.acf")]
+        public string ArkSteamManifestFile_SotF {
+            get {
+                return ((string)(this["ArkSteamManifestFile_SotF"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("steamapps")]
+        public string SteamManifestFolderRelativePath {
+            get {
+                return ((string)(this["SteamManifestFolderRelativePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SectionPGMEnabled {
+            get {
+                return ((bool)(this["SectionPGMEnabled"]));
+            }
+            set {
+                this["SectionPGMEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SectionSOTFEnabled {
+            get {
+                return ((bool)(this["SectionSOTFEnabled"]));
+            }
+            set {
+                this["SectionSOTFEnabled"] = value;
             }
         }
     }

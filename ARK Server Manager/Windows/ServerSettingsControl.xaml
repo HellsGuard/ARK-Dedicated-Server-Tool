@@ -29,8 +29,9 @@
             <vm:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
             <vm:HasStringValueConverter x:Key="HasStringValueConverter"/>
             <vm:SecondsToHoursConverter x:Key="SecondsToHoursConverter"/>
+            <vm:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
+            
             <ObjectDataProvider x:Key="ArkApplications" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="lib:ArkApplication" />
@@ -1027,10 +1028,10 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label   Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_ServerPortLabel}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerConnectionPort}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerPort}" ToolTip="{DynamicResource ServerSettings_ServerPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
 
                                         <Label   Grid.Row="0" Grid.Column="2" Content="{DynamicResource ServerSettings_QueryPortLabel}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalAlignment="Center"/>
-                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding ServerPort}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
+                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding QueryPort}" ToolTip="{DynamicResource ServerSettings_QueryPortTooltip}" VerticalContentAlignment="Center" Margin="1"/>
 
                                         <DockPanel Grid.Row="0" Grid.Column="4">
                                             <Label DockPanel.Dock="Left" Content="{DynamicResource ServerSettings_LocalIPLabel}" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" VerticalAlignment="Center"/>
@@ -1452,7 +1453,60 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_CommandLineLabel}" Style="{StaticResource GroupBoxStyle}">
+                                <GroupBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_BranchLabel}" DataContext="{Binding Runtime, ElementName=SettingsControl}" Visibility="{Binding Settings.SOTF_Enabled, ElementName=SettingsControl, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                                    <GroupBox.Style>
+                                        <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Initializing}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Running}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopping}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Unknown}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Updating}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Uninstalled}">
+                                                    <Setter Property="IsEnabled" Value="true"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
+
+                                    <Grid DataContext="{Binding Settings, ElementName=SettingsControl}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label    Grid.Row="0" Grid.Column="0" Content="{DynamicResource ServerSettings_BranchNameLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_BranchNameTooltip}"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="1" Name="BranchComboBox" ItemsSource="{Binding BaseBranches, ElementName=SettingsControl}" SelectedValue="{Binding BranchName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_BranchNameTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                        <Label    Grid.Row="0" Grid.Column="2" Content="{DynamicResource ServerSettings_BranchPasswordLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_BranchPasswordTooltip}"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="3" Name="HideBranchPasswordTextBox" Text="{DynamicResource ServerSettings_HidePasswordText}"  ToolTip="{DynamicResource ServerSettings_HidePasswordTooltip}" GotFocus="HiddenField_GotFocus" Margin="1" Style="{StaticResource HiddenTextBoxStyle}"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="3" Name="BranchPasswordTextBox" Text="{Binding BranchPassword}" ToolTip="{DynamicResource ServerSettings_BranchPasswordTooltip}" LostFocus="HiddenField_LostFocus" VerticalContentAlignment="Center" Visibility="Collapsed" Margin="1"/>
+                                    </Grid>
+                                </GroupBox>
+
+                                <GroupBox Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_CommandLineLabel}" Style="{StaticResource GroupBoxStyle}">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -2960,8 +3014,8 @@
                                     </GroupBox.Header>
 
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams}" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
+                                        <StackPanel Orientation="Horizontal" SourceUpdated="EngramArkApplications_SourceUpdated">
+                                            <CheckBox Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
                                             <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_SelectAll" ToolTip="{DynamicResource ServerSettings_EngramsSelectAllTooltip}">
                                                 <Image Source="../Art/Checked.png" Width="16" Height="16"/>
                                                 <Button.Style>
@@ -2971,7 +3025,7 @@
                                                                 <Setter Property="IsEnabled" Value="False"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding OnlyAllowSpecifiedEngrams}" Value="false">
-                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2986,7 +3040,7 @@
                                                                 <Setter Property="IsEnabled" Value="False"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding OnlyAllowSpecifiedEngrams}" Value="false">
-                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -2997,13 +3051,27 @@
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <Label Content="{DynamicResource ServerSettings_EngramsFilterLabel}"/>
                                             <ComboBox Name="ArkApplicationsEngramComboBox" ItemsSource="{Binding BaseArkApplicationList, ElementName=SettingsControl}" SelectedValue="{Binding SelectedArkApplicationEngram, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" Margin="0,0,2,0" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" HorizontalAlignment="Left" VerticalContentAlignment="Center" MinWidth="200" Width="Auto" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
+                                            <CheckBox Name="FilterOnlySelectedEngramsCheckBox" Margin="5" Content="{DynamicResource ServerSettings_FilterOnlySelectedEngramsLabel}" IsChecked="{Binding FilterOnlySelectedEngrams, ElementName=SettingsControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_FilterOnlySelectedEngramsTooltip}" HorizontalAlignment="Left">
+                                                <CheckBox.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Settings.OverrideNamedEngramEntries.IsEnabled, ElementName=SettingsControl}" Value="false">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Settings.OnlyAllowSpecifiedEngrams, ElementName=SettingsControl}" Value="false">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </CheckBox.Style>
+                                            </CheckBox>
                                         </StackPanel>
 
                                         <ListView Margin="0,5,0,0" Name="EngramsOverrideListView" ItemsSource="{Binding Source={StaticResource EngramsViewSource}}" Height="400" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" HorizontalContentAlignment="Stretch" lvs:SortBehavior.CanUserSortColumns="true">
                                             <ListView.View>
                                                 <GridView>
                                                     <GridViewColumn Width="Auto" lvs:SortBehavior.SortExpression="SaveEngramOverride">
-                                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" IsEnabled="{Binding Settings.OnlyAllowSpecifiedEngrams, ElementName=SettingsControl}" >
+                                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" >
                                                             <TextBlock Text="{DynamicResource ServerSettings_SaveEngramOverrideColumnLabel}" />
                                                         </GridViewColumnHeader>
                                                         <GridViewColumn.CellTemplate>
@@ -3060,7 +3128,7 @@
                                                             <DataTemplate>
                                                                 <CheckBox IsChecked="{Binding RemoveEngramPreReq}" HorizontalAlignment="Center">
                                                                     <CheckBox.Style>
-                                                                        <Style TargetType="{x:Type CheckBox}">
+                                                                        <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding IsTekgram}" Value="True">
                                                                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -4503,7 +4571,7 @@
                             </Grid>
                         </Expander>
 
-                        <Expander Name="SectionPGM" IsExpanded="{Binding CurrentConfig.SectionPGMIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                        <Expander Name="SectionPGM" IsExpanded="{Binding CurrentConfig.SectionPGMIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Visibility="{Binding CurrentConfig.SectionPGMEnabled, ElementName=SettingsControl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_PGMLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
@@ -4795,7 +4863,7 @@
                             </Grid>
                         </Expander>
 
-                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}">
+                        <Expander Name="SectionSOTF" IsExpanded="{Binding CurrentConfig.SectionSOTFIsExpanded, ElementName=SettingsControl, FallbackValue=True, Mode=TwoWay}" Visibility="{Binding CurrentConfig.SectionSOTFEnabled, ElementName=SettingsControl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>

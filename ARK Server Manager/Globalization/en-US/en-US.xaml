@@ -294,6 +294,10 @@
     <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">If enabled, the map spawner overrides will be managed by ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Enable Supply Crate Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">If enabled, the supply crate overrides will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMLabel">Enable PGM Ark Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMTooltip">If enabled, the PGM settings will be managed by ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFLabel">Enable SotF Settings</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFTooltip">If enabled, the SotF settings will be managed by ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">WARNING: While any of these options are disabled, ASM will not read or write the associated overrides settings. Re-enabling any of these options will cause ALL existing associated overrides to be removed from the config file.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Server Startup Options</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Player Level Increase:</sys:String>
@@ -835,6 +839,12 @@
     <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">If enabled, admin commands will be echoed to chat for admins only to see.</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Tribe Log Destroyed Enemy Structures</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">If enabled, the enemy-structure destruction log (for the victim tribe) wil display the attacker tribe in the Tribe Logs, instead of a generic structure destruction message.</sys:String>
+
+    <sys:String x:Key="ServerSettings_BranchLabel">Branch Details</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameLabel">Branch Name:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameTooltip">The name of the branch to download (leave blank to use the release branch).</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordLabel">Branch Password:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordTooltip">The password that is used to access the branch download.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Command Line</sys:String>
     <sys:String x:Key="ServerSettings_LauncherArgsLabel">Launcher Args:</sys:String>
@@ -1400,8 +1410,10 @@
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsLabel">Only Allow Selected Engrams</sys:String>
     <sys:String x:Key="ServerSettings_OnlyAllowSpecifiedEngramsTooltip">If enabled, only the selected engrams will be available to learn in game.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Select all the engrams.</sys:String>
-    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all then engrams.</sys:String>
+    <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Unselect all the engrams.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filter:</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsLabel">Filter Only Selected Engrams</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsTooltip">If enabled, only the selected engram will be visible.</sys:String>
     <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Selected</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Name</sys:String>
     <sys:String x:Key="ServerSettings_EngramsModColumnLabel">Mod</sys:String>
