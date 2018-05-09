@@ -29,13 +29,13 @@
 
             <ContentControl x:Key="DataDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../Art/Open_6529.png" Width="16" Height="16" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderOpen.ico,Size=32}" Width="16" Height="16" />
                     <Label Content="{DynamicResource GlobalSettings_SetLocationButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="BackupDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../Art/Open_6529.png" Width="16" Height="16" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderOpen.ico,Size=32}" Width="16" Height="16" />
                     <Label Content="{DynamicResource GlobalSettings_SetLocationButtonLabel}" VerticalAlignment="Center" Margin="0,-2,0,-2"/>
                 </StackPanel>
             </ContentControl>
@@ -56,7 +56,7 @@
             </ContentControl>
             <ContentControl x:Key="CacheDirectoryButtonContent">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../Art/Open_6529.png" Width="16" Height="16" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderOpen.ico,Size=32}" Width="16" Height="16" />
                     <Label Content="{DynamicResource GlobalSettings_SetLocationButtonLabel}" VerticalAlignment="Center" Margin="0,-3,0,-3"/>
                 </StackPanel>
             </ContentControl>

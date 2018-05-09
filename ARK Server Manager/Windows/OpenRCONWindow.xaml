@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ARK_Server_Manager"
         mc:Ignorable="d"
         Width="350" SizeToContent="Height" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top" ResizeMode="NoResize" WindowStyle="ToolWindow"
-        Icon="../Art/Command.png" Title="{DynamicResource OpenRCON_Title}">
+        Icon="../Art/favicon.ico" Title="{DynamicResource OpenRCON_Title}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

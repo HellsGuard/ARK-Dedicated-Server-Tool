@@ -36,11 +36,13 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AlertTypeEnum.cs" />
+    <Compile Include="Extensions\IconExtension.cs" />
     <Compile Include="Interfaces\IAlertPlugin.cs" />
     <Compile Include="Interfaces\IBeta.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />

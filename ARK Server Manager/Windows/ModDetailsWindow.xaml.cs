@@ -127,10 +127,13 @@ namespace ARK_Server_Manager
             {
                 ModDetailsChanged = true;
 
-                Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
-                await Task.Delay(500);
+                if (e.Action == NotifyCollectionChangedAction.Add)
+                {
+                    Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
+                    await Task.Delay(500);
 
-                await LoadModsFromList();
+                    await LoadModsFromList();
+                }
             }
             catch (Exception ex)
             {
@@ -593,14 +596,11 @@ namespace ARK_Server_Manager
 
             if (targetItem == null || !ReferenceEquals(DraggedItem, targetItem))
             {
-                //remove the source from the list
-                ModDetails.Remove(DraggedItem);
-
                 //get target index
                 var targetIndex = ModDetails.IndexOf(targetItem);
 
                 //move source at the target's location
-                ModDetails.Insert(targetIndex, DraggedItem);
+                ModDetails.Move(DraggedItem, targetIndex);
 
                 //select the dropped item
                 ModDetailsGrid.SelectedItem = DraggedItem;

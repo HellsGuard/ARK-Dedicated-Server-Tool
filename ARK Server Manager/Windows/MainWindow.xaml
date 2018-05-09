@@ -23,8 +23,32 @@
             </LinearGradientBrush>
 
             <vm:HasStringValueConverter x:Key="HasStringValueConverter"/>
+
+            <Style x:Key="ButtonStyle1" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="#00ffffff"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Width" Value="22"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <Style x:Key="ButtonStyle2" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Width" Value="22"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <Style x:Key="ButtonStyle3" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="#00ffffff"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
+    
     <Grid>
         <DockPanel x:Name="dockPanel">
             <Grid>
@@ -64,8 +88,8 @@
                                 </Label.Style>
                             </Label>
                             <Label Margin="5,0,0,0" Background="Transparent" Foreground="White" FontSize="12" Content="{Binding Source={x:Static local:App.Instance}, Path=Version}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <Button Margin="5" Click="ASMPatchNotes_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
-                                <Image Source="../Art/Website.png" Height="16" Margin="0" />
+                            <Button Margin="5" Click="ASMPatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/ChangeNotes.ico,Size=32}"/>
                             </Button>
                             <Button Margin="5,0,0,0" Background="#00AA00" Foreground="White" Padding="1" BorderThickness="1" BorderBrush="White" ContentStringFormat="{DynamicResource MainWindow_UpdateToLabelFormat}" Content="{Binding LatestASMVersion}" Click="Upgrade_Click" VerticalAlignment="Center" >
                                 <Button.Style>
@@ -109,8 +133,8 @@
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
-                            <Button Grid.Row="1" Width="22" Height="22" VerticalAlignment="Center" Margin="5,0,0,0" Click="RefreshPublicIP_Click" ToolTip="{DynamicResource MainWindow_RefreshMyIpTooltip}">
-                                <Image Source="../Art/Reload.png" Width="14"/>
+                            <Button Grid.Row="1" Margin="5,0,0,0" VerticalAlignment="Center" Click="RefreshPublicIP_Click" ToolTip="{DynamicResource MainWindow_RefreshMyIpTooltip}" Style="{StaticResource ButtonStyle2}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                             </Button>
                         </StackPanel>
                     </Grid>
@@ -247,7 +271,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid DockPanel.Dock="Right" VerticalAlignment="Top" Margin="5" MinWidth="190">
+                    <Grid DockPanel.Dock="Right" VerticalAlignment="Top" Margin="5" MinWidth="130">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -260,26 +284,26 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Plugins_Click" ToolTip="{DynamicResource MainWindow_OpenPluginsTooltip}">
-                            <Image Source="../Art/Plugins.png" Width="16"/>
+                        <Button Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Right" Click="Plugins_Click" ToolTip="{DynamicResource MainWindow_OpenPluginsTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Plugin.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}">
-                            <Image Source="../Art/SteamCMD.png" Width="16"/>
+                        <Button Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" HorizontalAlignment="Right" Click="SteamCMD_Click" ToolTip="{DynamicResource MainWindow_SteamCMDTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Steam.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}">
-                            <Image Source="../Art/Command.png" Width="16"/>
+                        <Button Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" HorizontalAlignment="Right" Click="RCON_Click" ToolTip="{DynamicResource MainWindow_OpenRCONTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Command.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}">
-                            <Image Source="../Art/OpenLog.png" Width="16"/>
+                        <Button Grid.Row="0" Grid.Column="3" Margin="5,0,0,0" HorizontalAlignment="Right" Click="OpenLogFolder_Click" ToolTip="{DynamicResource MainWindow_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Logs.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}">
-                            <Image Source="../Art/Settings.png" Width="16"/>
+                        <Button Grid.Row="0" Grid.Column="4" Margin="5,0,0,0" HorizontalAlignment="Right" Click="Settings_Click" ToolTip="{DynamicResource MainWindow_OpenSettingsTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Settings.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Background="#00ffffff" Margin="5,0,5,5" Padding="5" Click="Help_Click" ToolTip="{DynamicResource MainWindow_OpenHelpTooltip}">
-                            <Image Source="../Art/Help.png" Width="16"/>
+                        <Button Grid.Row="1" Grid.Column="1" Margin="5,2,0,0" HorizontalAlignment="Right" Click="Help_Click" ToolTip="{DynamicResource MainWindow_OpenHelpTooltip}" Style="{StaticResource ButtonStyle1}">
+                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Help.ico,Size=32}"/>
                         </Button>
-                        <Button Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Background="#00ffffff" Margin="5,0,5,5" Click="Donate_Click" ToolTip="{DynamicResource MainWindow_DonateTooltip}">
-                            <Image Source="../Art/Donate.png" Height="22"/>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="5,2,0,0" Grid.ColumnSpan="3" Click="Donate_Click" ToolTip="{DynamicResource MainWindow_DonateTooltip}" Style="{StaticResource ButtonStyle3}">
+                            <Image Source="../Art/Donate.png"/>
                         </Button>
                     </Grid>
                 </DockPanel>
@@ -320,7 +344,7 @@
                                                     </LinearGradientBrush.GradientStops>
                                                 </LinearGradientBrush>
                                             </Border.Background>
-                                            <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="../Art/Add.png" ToolTip="{DynamicResource MainWindow_NewProfileTooltip}"/>
+                                            <Image Margin="0,2" VerticalAlignment="Center" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}" Width="16" Height="16" ToolTip="{DynamicResource MainWindow_NewProfileTooltip}"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -332,7 +356,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <Image VerticalAlignment="Center" Width="16" Height="16" Margin="0,2" Source="../Art/Delete.png" ToolTip="{DynamicResource MainWindow_CloseProfileTooltip}"/>
+                                        <Image Margin="0,2" VerticalAlignment="Center" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}" Width="16" Height="16" ToolTip="{DynamicResource MainWindow_CloseProfileTooltip}"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

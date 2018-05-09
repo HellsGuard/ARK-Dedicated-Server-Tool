@@ -54,8 +54,8 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PatchNotes_Click" Margin="5,5,5,0" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
-            <Image Source="../Art/Website.png" Width="16" />
+        <Button Grid.Row="0" Grid.Column="2" Width="22" Height="22" Margin="5,5,5,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}">
+            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Website.ico,Size=32}"/>
         </Button>
 
         <WebBrowser Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" lib:BrowserBehavior.Html="{Binding SelectedFeedEntry.Content}"/>

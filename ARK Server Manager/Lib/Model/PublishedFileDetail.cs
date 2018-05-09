@@ -47,6 +47,19 @@ namespace ARK_Server_Manager.Lib.Model
             SetPublishedFileIndex();
         }
 
+        public void Move(ModDetail mod, int newIndex)
+        {
+            if (mod == null)
+                return;
+
+            var index = base.IndexOf(mod);
+            if (index <= 0)
+                return;
+
+            base.Move(index, newIndex);
+            SetPublishedFileIndex();
+        }
+
         public void MoveDown(ModDetail mod)
         {
             if (mod == null)
