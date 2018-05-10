@@ -21,6 +21,7 @@
           <ul>
             <li>Icons - all icons have be cleaned up and updated.</li>
             <li>Mod Details window - when moving the mods up and down, it no longer updates the mod details. Only adding new mods will update the details.</li>
+            <li>Message of the Day - Added a new Lines count. Will let you know how many lines the MotD is, and will turn red when you have exceeded the visible space in game.</li>
           </ul>
         </p>
       </div>
