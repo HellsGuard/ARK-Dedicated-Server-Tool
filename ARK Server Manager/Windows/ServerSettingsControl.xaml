@@ -1269,8 +1269,40 @@
                                             <RowDefinition />
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                            <Label  Content="{DynamicResource ServerSettings_MOTDLineCountLabel}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MOTDLineCountToLong, FallbackValue=False}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                            <Label  Content="{Binding MOTDLineCount, FallbackValue=0}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MOTDLineCountToLong, FallbackValue=False}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
                                             <Label  Content="{DynamicResource ServerSettings_MOTDLengthLabel}" VerticalAlignment="Center">
                                                 <Label.Style>
                                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
@@ -1296,7 +1328,7 @@
                                                 </Label.Style>
                                             </Label>
                                         </StackPanel>
-                                        <TextBox Grid.Row="1" Margin="1" Text="{Binding MOTD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto" SourceUpdated="MOTD_SourceUpdated"/>
+                                        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Text="{Binding MOTD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto" SourceUpdated="MOTD_SourceUpdated"/>
                                         <local:AnnotatedSlider Grid.Row="2" Margin="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
                                     </Grid>
                                 </GroupBox>
