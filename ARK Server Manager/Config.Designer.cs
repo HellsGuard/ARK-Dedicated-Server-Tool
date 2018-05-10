@@ -2121,7 +2121,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("release")]
+        [global::System.Configuration.DefaultSettingValueAttribute("live")]
         public string DefaultServerBranchName {
             get {
                 return ((string)(this["DefaultServerBranchName"]));

@@ -2041,6 +2041,9 @@
     <sys:String x:Key="Settings_Title">Settings</sys:String>
 
     <!-- Game Map Names -->
+    <sys:String x:Key="Branch_live">Live</sys:String>
+
+    <!-- Game Map Names -->
     <sys:String x:Key="TheIsland">The Island</sys:String>
     <sys:String x:Key="TheCenter">The Center</sys:String>
     <sys:String x:Key="ScorchedEarth_P">Scorched Earth</sys:String>

@@ -1658,7 +1658,10 @@ namespace ARK_Server_Manager.Lib
             {
                 steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaNameArgsFormat, branchName);
                 if (!string.IsNullOrWhiteSpace(branchPassword))
+                {
+                    steamCmdInstallServerBetaArgs.Append(" ");
                     steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaPasswordArgsFormat, branchPassword);
+                }
             }
 
             var cacheFolder = GetServerCacheFolder(branchName);

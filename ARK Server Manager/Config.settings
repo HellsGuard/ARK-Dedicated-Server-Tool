@@ -597,7 +597,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DefaultServerBranchName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">release</Value>
+      <Value Profile="(Default)">live</Value>
     </Setting>
     <Setting Name="SteamCmdInstallServerBetaNameArgsFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">-beta {0}</Value>

@@ -366,7 +366,7 @@ namespace ARK_Server_Manager.Lib
         #region Branches
         private static ComboBoxItem[] branches = new[]
         {
-            new ComboBoxItem { ValueMember="", DisplayMember="" },
+            new ComboBoxItem { ValueMember="", DisplayMember=FriendlyNameForClass($"Branch_{Config.Default.DefaultServerBranchName}") },
         };
 
         public static IEnumerable<ComboBoxItem> GetBranches() => branches.Select(d => d.Duplicate());
@@ -375,7 +375,7 @@ namespace ARK_Server_Manager.Lib
 
         private static ComboBoxItem[] branchesSotF = new[]
         {
-            new ComboBoxItem { ValueMember="", DisplayMember="" },
+            new ComboBoxItem { ValueMember="", DisplayMember=FriendlyNameForClass($"Branch_{Config.Default.DefaultServerBranchName}") },
         };
 
         public static IEnumerable<ComboBoxItem> GetBranchesSotF() => branchesSotF.Select(d => d.Duplicate());
