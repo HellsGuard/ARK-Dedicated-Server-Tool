@@ -19,12 +19,12 @@ namespace NeXt.Vdf
             root = value;
         }
 
-        private const string Newline = "\r\n";
+        private const string Newline = "\n";
         private const string ValueDelimiter = "\"";
         private const string CommentDelimiter = "//";
         private const string TableOpen = "{";
         private const string TableClose = "}";
-        private const string KVSeperator = "\t";
+        private const string KVSeperator = "\t\t";
         private string IndentString
         {
             get

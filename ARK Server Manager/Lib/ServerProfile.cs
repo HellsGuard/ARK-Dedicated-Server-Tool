@@ -3077,11 +3077,14 @@ namespace ARK_Server_Manager.Lib
                 var vdf = vdfDeserializer.Deserialize();
 
                 // clear any of th beta keys values
-                SteamCmdManifestDetailsResult.ClearUserConfigBetaKeys(vdf);
+                var updated = SteamCmdManifestDetailsResult.ClearUserConfigBetaKeys(vdf);
 
-                // save the manifest file
-                var vdfSerializer = new VdfSerializer(vdf);
-                vdfSerializer.Serialize(manifestFile);
+                if (updated)
+                {
+                    // save the manifest file
+                    var vdfSerializer = new VdfSerializer(vdf);
+                    vdfSerializer.Serialize(manifestFile);
+                }
             }
             catch (Exception ex)
             {
