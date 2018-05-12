@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ArkServerManager.Plugin.Discord.Windows.ConfigWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pc="clr-namespace:ArkServerManager.Plugin.Common;assembly=ArkServerManager.Plugin.Common"
         Title="{DynamicResource ConfigWindow_Title}"
         Icon="/ArkServerManager.Plugin.Discord;component/Art/favicon.ico"
         Width="640" Height="480" MinWidth="640" MinHeight="480" ResizeMode="CanResizeWithGrip" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closing="ConfigWindow_Closing" Loaded="ConfigWindow_Loaded">
@@ -43,8 +44,8 @@
             </StackPanel.Style>
 
             <TextBlock Text="{DynamicResource Global_NewVersionAvailableLabel}" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold"/>
-            <Button Width="22" Height="22" Click="DownloadPlugin_Click" Margin="10,0,0,0" ToolTip="{DynamicResource Global_DownloadNewVersionTooltip}">
-                <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Down.png" Width="16"/>
+            <Button Width="22" Height="22" Margin="10,0,0,0" Click="DownloadPlugin_Click" ToolTip="{DynamicResource Global_DownloadNewVersionTooltip}">
+                <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Download.ico,Size=32}" />
             </Button>
         </StackPanel>
 
@@ -52,10 +53,10 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                     <Button Width="22" Height="22" Click="AddConfigProfile_Click" ToolTip="{DynamicResource ConfigWindow_AddConfigProfileTooltip}">
-                        <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Add.png" Width="16"/>
+                        <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Add.ico,Size=32}" />
                     </Button>
-                    <Button Width="22" Height="22" Click="ClearConfigProfiles_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ConfigWindow_ClearConfigProfilesTooltip}">
-                        <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16"/>
+                    <Button Width="22" Height="22" Margin="10,0,0,0" Click="ClearConfigProfiles_Click" ToolTip="{DynamicResource ConfigWindow_ClearConfigProfilesTooltip}">
+                        <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=32}" />
                     </Button>
                 </StackPanel>
             </GroupBox.Header>
@@ -107,7 +108,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="EditConfigProfile_Click" ToolTip="{DynamicResource ConfigWindow_EditConfigProfileTooltip}">
-                                    <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Edit.png" Width="16" />
+                                    <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Edit.ico,Size=32}" />
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -116,7 +117,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteConfigProfile_Click" ToolTip="{DynamicResource ConfigWindow_DeleteConfigProfileTooltip}">
-                                    <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16" />
+                                    <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=32}" />
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

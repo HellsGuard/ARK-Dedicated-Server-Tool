@@ -294,6 +294,10 @@
     <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">Если включено, Map Spawner Overrides будут использовать настройки ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Включить Supply Crate Overrides</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">Если включено, Supply Crate Overrides будут использовать настройки ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMLabel">Включить PGM Ark</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMTooltip">Если включено, процедурная генерация повятся в настройках ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFLabel">Включить SotF</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFTooltip">Если включено, SotF появится в настройках ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">ПРЕДУПРЕЖДЕНИЕ. Если любой из этих параметров отключен, ASM не будет читать или записывать связанные с этип параметры переопределения. Повторное включение любого из этих параметров приведет к удалению всех существующих связанных переопределений в файле конфигурации.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Настройки запуска Сервера</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Увеличение уровня игрока:</sys:String>
@@ -769,6 +773,7 @@
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Сообщение дня</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">Сообщение дня отображается пользователям при их подключении к серверу.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDLineCountLabel">Линий:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDLengthLabel">Длина:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Продолжительность:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">Время отображения Сообщения дня, когда пользователь подключается к серверу.</sys:String>
@@ -1408,6 +1413,8 @@
     <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Выделить все Энграммы.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Отменить выделение всех Энграммы.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Фильтр:</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsLabel">Фильтровать только выбранные энграммы</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsTooltip">Если включено, будет отображаться только выбранная энграмма.</sys:String>
     <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Выбрать</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Имя</sys:String>
     <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Ark App.</sys:String>
@@ -2033,6 +2040,9 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Настройки</sys:String>
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="Branch_live">Основной ARK</sys:String>
 
     <!-- Game Map Names -->
     <sys:String x:Key="TheIsland">The Island</sys:String>

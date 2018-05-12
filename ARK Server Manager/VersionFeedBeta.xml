@@ -5,27 +5,49 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager beta version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-07T10:10:00Z</updated>
+  <updated>2018-05-12T06:20:00Z</updated>
 
   <entry>
-    <id>urn:uuid:248DD4A5-B39D-4BF5-B32F-49D80A7836E9</id>
-    <title>1.0.326 (1.0.326.5)</title>
-    <summary>1.0.326.5</summary>
-    <link href="http://arkservermanager.freeforums.net/thread/5141/1-326-test-build" />
-    <updated>2018-05-07T10:10:00Z</updated>
+    <id>urn:uuid:45529A65-E2F7-484D-8C0C-2DA4EE790425</id>
+    <title>1.0.327 (1.0.327.4)</title>
+    <summary>1.0.327.4</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-327-test-build" />
+    <updated>2018-05-12T06:20:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
-          <u style="font-size: .9em;">NEW</u>
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
-            <li>Profiles - added global options to enable/disable ASM controlling PGM and SotF settings (default disabled).</li>
+            <li>RU Translation file updated. (thanks @varlonec)</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
+
+  <entry>
+    <id>urn:uuid:012B5F50-C10A-4B57-8BD3-CC418B2FAB1D</id>
+    <title>1.0.327 (1.0.327.3)</title>
+    <summary>1.0.327.3</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-327-test-build" />
+    <updated>2018-05-12T02:30:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+        <p>
+          <u style="font-size: .9em;">BUGFIX</u>
+          <br/>
+          <ul>
+            <li>SteamCMD - added a bug fix to reduce the steamcmd error when changing/removing branches.</li>
           </ul>
           <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
-            <li>Profiles - removed the loading and saving of the old xml profile.</li>
-            <li>Profiles - changed the way exclusions are passed to the config file load/save. Allows for whole sections to be excluded, rather than individual settings.</li>
+            <li>Settings Window - minor display tweaks.</li>
           </ul>
         </p>
       </div>
@@ -37,19 +59,18 @@
   </entry>
 
   <entry>
-    <id>urn:uuid:73DD522F-75AC-49E6-BE31-1C8D437F2C18</id>
-    <title>1.0.326 (1.0.326.3)</title>
-    <summary>1.0.326.3</summary>
-    <link href="http://arkservermanager.freeforums.net/thread/5141/1-326-test-build" />
-    <updated>2018-05-06T21:10:00Z</updated>
+    <id>urn:uuid:22836A7B-5FAD-44DF-ABB9-8C6345C99B63</id>
+    <title>1.0.327 (1.0.327.2)</title>
+    <summary>1.0.327.2</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-327-test-build" />
+    <updated>2018-05-10T22:10:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
-          <u style="font-size: .9em;">BUGFIX</u>
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
-            <li>Engrams - fixed bug that would clear the selected engrams.</li>
-            <li>Dino - fixed bug that would clear the dino spawn multipliers.</li>
+            <li>Message of the Day - Added a new Lines count. Will let you know how many lines the MotD is, and will turn red when you have exceeded the visible space in game.</li>
           </ul>
         </p>
       </div>
@@ -61,46 +82,19 @@
   </entry>
 
   <entry>
-    <id>urn:uuid:E5402078-0F90-465D-A941-9BABB8C6C720</id>
-    <title>1.0.326 (1.0.326.2)</title>
-    <summary>1.0.326.2</summary>
-    <link href="http://arkservermanager.freeforums.net/thread/5141/1-326-test-build" />
-    <updated>2018-05-06T09:30:00Z</updated>
+    <id>urn:uuid:AE20370D-536F-415B-BD9B-E3A373D4A6D4</id>
+    <title>1.0.327 (1.0.327.1)</title>
+    <summary>1.0.327.1</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-327-test-build" />
+    <updated>2018-05-08T23:30:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
-          <u style="font-size: .9em;">BUGFIX</u>
+          <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
-            <li>Fixed a bug with the manual server installation (not update) when auto-update cache path was not set.</li>
-          </ul>
-        </p>
-      </div>
-    </content>
-    <author>
-      <name>bletch</name>
-      <email>bletch1971@hotmail.com</email>
-    </author>
-  </entry>
-
-  <entry>
-    <id>urn:uuid:D413C7E9-3622-4E53-A280-A5E491F142FC</id>
-    <title>1.0.326 (1.0.326.1)</title>
-    <summary>1.0.326.1</summary>
-    <link href="http://arkservermanager.freeforums.net/thread/5141/1-326-test-build" />
-    <updated>2018-05-06T00:00:00Z</updated>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
-        <p>
-          <u style="font-size: .9em;">NEW</u>
-          <br/>
-          <ul>
-            <li>
-              Beta branch support now added to the server manager and works with the Manual and Auto update processes.<br/><br/>
-              <font color="#1979e6">
-                NOTE: This change affects the server cache and will force your server to perform an update when the next auto-update is run.
-              </font>
-            </li>
+            <li>Icons - all icons have be cleaned up and updated.</li>
+            <li>Mod Details window - when moving the mods up and down, it no longer updates the mod details. Only adding new mods will update the details.</li>
           </ul>
         </p>
       </div>

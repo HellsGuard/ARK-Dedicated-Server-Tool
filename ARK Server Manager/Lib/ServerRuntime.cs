@@ -530,7 +530,10 @@ namespace ARK_Server_Manager.Lib
                     {
                         steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaNameArgsFormat, branch.BranchName);
                         if (!string.IsNullOrWhiteSpace(branch?.BranchPassword))
+                        {
+                            steamCmdInstallServerBetaArgs.Append(" ");
                             steamCmdInstallServerBetaArgs.AppendFormat(Config.Default.SteamCmdInstallServerBetaPasswordArgsFormat, branch?.BranchPassword);
+                        }
                     }
 
                     // Check if this is a new server installation.

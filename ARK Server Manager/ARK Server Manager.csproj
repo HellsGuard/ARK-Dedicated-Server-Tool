@@ -31,8 +31,8 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>6</ApplicationRevision>
-    <ApplicationVersion>1.0.326.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.328.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -165,6 +165,7 @@
     <Compile Include="Common\Converters\SecondsToMinutesConverter.cs" />
     <Compile Include="Common\Converters\SecondsToHoursConverter.cs" />
     <Compile Include="Common\Converters\IntRangeValueConverter.cs" />
+    <Compile Include="Common\Extensions\IconExtension.cs" />
     <Compile Include="Common\Lib\BrowserBehavior.cs" />
     <Compile Include="Common\Model\PublishedFileDetail.cs" />
     <Compile Include="Common\Model\SteamCmdManifestDetails.cs" />
@@ -347,23 +348,39 @@
     </Compile>
     <Resource Include="VersionFeed.xml" />
     <Resource Include="VersionFeedBeta.xml" />
-    <Resource Include="Art\SteamCMD.png" />
-    <Resource Include="Art\OpenLog.png" />
-    <Resource Include="Art\Down.png" />
-    <Resource Include="Art\Up.png" />
-    <Resource Include="Art\Reload.png" />
-    <Resource Include="Art\Checked.png" />
-    <Resource Include="Art\Unchecked.png" />
-    <Resource Include="Art\Find.png" />
-    <Resource Include="Art\Zip.png" />
-    <Resource Include="Art\Paste.png" />
-    <Resource Include="Art\DragInsert.png" />
-    <Resource Include="Art\Delete_6529.png" />
-    <Resource Include="Art\Cancel.png" />
-    <Resource Include="Art\Plugins.png" />
-    <Resource Include="Art\Edit.png" />
-    <Resource Include="Art\Players.png" />
-    <Resource Include="Art\Website.png" />
+    <Resource Include="Art\Add.ico" />
+    <Resource Include="Art\Cancel.ico" />
+    <Resource Include="Art\Validate.ico" />
+    <Resource Include="Art\Checked.ico" />
+    <Resource Include="Art\Unchecked.ico" />
+    <Resource Include="Art\Command.ico" />
+    <Resource Include="Art\Copy.ico" />
+    <Resource Include="Art\Delete.ico" />
+    <Resource Include="Art\FolderDelete.ico" />
+    <Resource Include="Art\Down.ico" />
+    <Resource Include="Art\Up.ico" />
+    <Resource Include="Art\Drag.ico" />
+    <Resource Include="Art\Edit.ico" />
+    <Resource Include="Art\Find.ico" />
+    <Resource Include="Art\Help.ico" />
+    <Resource Include="Art\FolderOpen.ico" />
+    <Resource Include="Art\FolderImport.ico" />
+    <Resource Include="Art\Logs.ico" />
+    <Resource Include="Art\Paste.ico" />
+    <Resource Include="Art\Players.ico" />
+    <Resource Include="Art\Plugin.ico" />
+    <Resource Include="Art\Refresh.ico" />
+    <Resource Include="Art\Reload.ico" />
+    <Resource Include="Art\Save.ico" />
+    <Resource Include="Art\FolderExport.ico" />
+    <Resource Include="Art\Settings.ico" />
+    <Resource Include="Art\Start.ico" />
+    <Resource Include="Art\Stop.ico" />
+    <Resource Include="Art\Steam.ico" />
+    <Resource Include="Art\Download.ico" />
+    <Resource Include="Art\Website.ico" />
+    <Resource Include="Art\ChangeNotes.ico" />
+    <Resource Include="Art\Zip.ico" />
     <Content Include="Globalization\ru-RU\ru-RU.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -456,23 +473,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Resource Include="Art\NewFile_6276.png" />
-    <Resource Include="Art\Open_6529.png" />
-    <Resource Include="Art\Save_6530.png" />
-    <Resource Include="Art\Copy_6524.png" />
-    <Resource Include="Art\Start_6556.png" />
-    <Resource Include="Art\Stop.png" />
-    <Resource Include="Art\Delete.png" />
-    <Resource Include="Art\Upgrade.png" />
-    <Resource Include="Art\Help.png" />
-    <Resource Include="Art\Settings.png" />
-    <Resource Include="Art\Back.png" />
-    <Resource Include="Art\Forward.png" />
-    <Resource Include="Art\Check.png" />
-    <Resource Include="Art\Command.png" />
-    <Resource Include="Art\Add.png" />
     <Resource Include="Art\favicon.ico" />
-    <Resource Include="Art\Refresh.png" />
     <Resource Include="Art\Donate.png" />
     <Resource Include="Art\NoAvatar.png" />
     <Content Include="Globalization\en-US\en-US.xaml">
@@ -602,9 +603,6 @@
     <Folder Include="Common\Attributes\" />
     <Folder Include="Common\Enums\" />
     <Folder Include="Lib\Serialization\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Art\bgGrad1.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -91,13 +91,6 @@
     <Resource Include="Art\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Art\Add.png" />
-    <Resource Include="Art\Delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Art\Edit.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Config.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -107,7 +100,10 @@
     <None Include="DeployToAzure.cmd" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Art\Down.png" />
+    <Resource Include="Art\Add.ico" />
+    <Resource Include="Art\Delete.ico" />
+    <Resource Include="Art\Download.ico" />
+    <Resource Include="Art\Edit.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

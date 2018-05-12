@@ -7,8 +7,10 @@ namespace ARK_Server_Manager.Lib.Model
 {
     public class SteamCmdManifestDetailsResult
     {
-        public static void ClearUserConfigBetaKeys(VdfValue data)
+        public static bool ClearUserConfigBetaKeys(VdfValue data)
         {
+            var updated = false;
+
             var vdfTable = data as VdfTable;
             if (vdfTable != null)
             {
@@ -20,9 +22,12 @@ namespace ARK_Server_Manager.Lib.Model
                     foreach (var item in betaKeyItems)
                     {
                         tableValue.Remove(item);
+                        updated = true;
                     }
                 }
             }
+
+            return updated;
         }
 
         public static SteamCmdAppManifest Deserialize(VdfValue data)

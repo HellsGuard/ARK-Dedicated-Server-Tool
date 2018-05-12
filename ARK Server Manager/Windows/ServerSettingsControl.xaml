@@ -315,7 +315,10 @@
             </Style>
             <Style x:Key="ButtonStyle1" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="Background" Value="{StaticResource BeigeLabel}"/>
-                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Width" Value="22"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="2"/>
             </Style>
             <Style x:Key="ExpanderHeaderTextStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="13.333"/>
@@ -332,73 +335,73 @@
 
             <ContentControl x:Key="SupportZipButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Zip.png" Width="16" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,0,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Zip.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_SupportZipButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="SyncProfileButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Copy_6524.png" Width="16" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,0,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Copy.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_SyncProfileButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="ImportButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Open_6529.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderImport.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_ImportButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="SaveButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Save_6530.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_SaveButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="StopButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Stop.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Stop.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_StopButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="StartButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Start_6556.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Start.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_StartButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="OpenRCONButtonContent">
                 <StackPanel Orientation="Horizontal"  Height="27">
-                    <Image Source="../Art/Command.png" Width="16" Margin="5,0,5,0"  VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Command.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="PlayerListButtonContent">
                 <StackPanel Orientation="Horizontal"  Height="27">
-                    <Image Source="../Art/Players.png" Width="16" Margin="5,0,5,0"  VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Players.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_PlayerListButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="ResetRCONButtonContent">
                 <StackPanel Orientation="Horizontal" Height="20">
-                    <Image Source="../Art/Refresh.png" Width="16" Height="16" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_RCONButtonLabel}" VerticalAlignment="Center" Margin="0,-5,0,-5"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="UpgradeButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Upgrade.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Download.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_UpgradeButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="InstallButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Upgrade.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Download.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_InstallButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="CancelInstallButtonContent">
                 <StackPanel Orientation="Horizontal" Height="27">
-                    <Image Source="../Art/Stop.png" Width="16" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Stop.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_CancelUpgradeButtonLabel}" VerticalAlignment="Center"/>
                 </StackPanel>
             </ContentControl>
@@ -407,21 +410,15 @@
                     <Label Content="{DynamicResource ServerSettings_SetLocationButtonLabel}" />
                 </StackPanel>
             </ContentControl>
-            <ContentControl x:Key="ValidateButtonContent" Height="27">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Art/Check.png" Width="16" Margin="5,0,5,0" />
-                    <Label Content="{DynamicResource ServerSettings_ValidateButtonLabel}" />
-                </StackPanel>
-            </ContentControl>
             <ContentControl x:Key="ShowCmdButtonContent">
                 <StackPanel Orientation="Horizontal" Height="20">
-                    <Image Source="../Art/Command.png" Width="16" Height="16" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Command.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_ShowCommandButtonLabel}" VerticalAlignment="Center" Margin="0,-5,0,-5"/>
                 </StackPanel>
             </ContentControl>
             <ContentControl x:Key="CreateSymLinkButtonContent">
                 <StackPanel Orientation="Horizontal" Height="20">
-                    <Image Source="../Art/Command.png" Width="16" Height="16" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                    <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Command.ico,Size=32}" Width="16" VerticalAlignment="Center"/>
                     <Label Content="{DynamicResource ServerSettings_CreateSymbolicLinkButtonLabel}" VerticalAlignment="Center" Margin="0,-5,0,-5"/>
                 </StackPanel>
             </ContentControl>
@@ -543,8 +540,9 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
-                            <Image Source="../Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                        
+                        <Button Grid.Column="0" Grid.Row="0" Width="22" Height="22" Click="RemovePlayerLevel_Click" Margin="2" >
+                            <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                         </Button>
                         <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
@@ -566,8 +564,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Button Grid.Column="0" Grid.Row="0" Click="RemovePlayerLevel_Click" Margin="2" >
-                            <Image Source="../Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                        <Button Grid.Column="0" Grid.Row="0" Width="22" Height="22" Click="RemovePlayerLevel_Click" Margin="2" >
+                            <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                         </Button>
                         <Label Grid.Column="1" Grid.Row="0" Content="{Binding LevelIndex, Converter={StaticResource LevelIndexToDisplayLevelConverter}, StringFormat=Level: {0}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="0" Content="XP Required:" VerticalAlignment="Center"/>
@@ -635,8 +633,8 @@
 
                             <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstalledVersionLabel}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
                             <Label  Grid.Column="1" FontSize="15" Content="{Binding LastInstalledVersion, Converter={StaticResource InstalledVersionConverter}}" ToolTip="{DynamicResource ServerSettings_InstalledVersionTooltip}"/>
-                            <Button Grid.Column="2" Margin="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
-                                <Image Source="../Art/Website.png" Height="16" Width="16"/>
+                            <Button Grid.Column="2" Click="PatchNotes_Click" ToolTip="{DynamicResource ServerSettings_PatchNotesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Website.ico,Size=32}"/>
                             </Button>
 
                             <StackPanel Grid.Column="4" DataContext="{Binding Runtime, ElementName=SettingsControl}" Orientation="Horizontal" VerticalAlignment="Center">
@@ -664,16 +662,16 @@
                                         </Style>
                                     </Label.Style>
                                 </Label>
-                                <Button Grid.Column="2" Margin="2" Click="OutOfDateModUpdate_Click" ToolTip="{DynamicResource ServerSettings_OutOfDateModsButtonTooltip}" Style="{StaticResource ButtonStyle1}">
-                                    <Image Source="../Art/Reload.png" Width="14"/>
+                                <Button Grid.Column="2" Click="OutOfDateModUpdate_Click" ToolTip="{DynamicResource ServerSettings_OutOfDateModsButtonTooltip}" Style="{StaticResource ButtonStyle1}">
+                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                                 </Button>
                             </StackPanel>
 
-                            <Button Grid.Column="6" Margin="2" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
-                                <Image Source="../Art/Find.png" Height="16" Width="16"/>
+                            <Button Grid.Column="6" Click="ValidateProfile_Click" ToolTip="{DynamicResource ServerSettings_ValidateProfileTooltip}" Style="{StaticResource ButtonStyle1}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Validate.ico,Size=32}"/>
                             </Button>
-                            <Button Grid.Column="8" Margin="2" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
-                                <Image Source="../Art/OpenLog.png" Height="16" Width="16"/>
+                            <Button Grid.Column="8" Click="OpenLogFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenLogFolderTooltip}" Style="{StaticResource ButtonStyle1}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Logs.ico,Size=32}"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -731,8 +729,8 @@
 
                             <Label  Grid.Column="0" FontSize="15" Content="{DynamicResource ServerSettings_InstallLocationLabel}"/>
                             <Label  Grid.Column="1" FontSize="15" Content="{Binding InstallDirectory}"/>
-                            <Button Grid.Column="2" Margin="2" Click="OpenServerFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenServerFolderTooltip}" Style="{StaticResource ButtonStyle1}">
-                                <Image Source="../Art/Open_6529.png" Height="16" Width="16"/>
+                            <Button Grid.Column="2" Click="OpenServerFolder_Click" ToolTip="{DynamicResource ServerSettings_OpenServerFolderTooltip}" Style="{StaticResource ButtonStyle1}">
+                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderOpen.ico,Size=32}"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -906,10 +904,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_AdministrationSectionLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionAdministration, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.AdministrationSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -1035,8 +1033,8 @@
 
                                         <DockPanel Grid.Row="0" Grid.Column="4">
                                             <Label DockPanel.Dock="Left" Content="{DynamicResource ServerSettings_LocalIPLabel}" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" VerticalAlignment="Center"/>
-                                            <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" ToolTip="{DynamicResource ServerSettings_RefreshLocalIPTooltip}" Margin="1">
-                                                <Image Source="../Art/Reload.png" Width="14" />
+                                            <Button DockPanel.Dock="Right" Click="RefreshLocalIPs_Click" ToolTip="{DynamicResource ServerSettings_RefreshLocalIPTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                                             </Button>
                                         </DockPanel>
                                         <ComboBox  Grid.Row="0" Grid.Column="5" ItemsSource="{Binding ElementName=SettingsControl, Path=NetworkInterfaces}" SelectedValue="{Binding ServerIP}" SelectedValuePath="IPAddress" ToolTip="{DynamicResource ServerSettings_LocalIPTooltip}" Margin="1" PreviewMouseWheel="ComboBox_PreviewMouseWheel">
@@ -1075,8 +1073,8 @@
 
                                         <CheckBox Grid.Row="0" Grid.Column="0" Margin="5" Name="EnableBanListCheckbox" IsChecked="{Binding EnableBanListURL}" Content="{DynamicResource ServerSettings_UseBanListLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_UseBanListTooltip}"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding BanListURL}" ToolTip="{DynamicResource ServerSettings_BanListTooltip}" IsEnabled="{Binding ElementName=EnableBanListCheckbox, Path=IsChecked}"/>
-                                        <Button  Grid.Row="0" Grid.Column="2" Width="22" Height="22" Margin="5,0,5,0" ToolTip="{DynamicResource ServerSettings_ResetBanlistTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.BanListProperty}">
-                                            <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Button  Grid.Row="0" Grid.Column="2" ToolTip="{DynamicResource ServerSettings_ResetBanlistTooltip}" Style="{StaticResource ButtonStyle1}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.BanListProperty}">
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                         </Button>
                                         <local:AnnotatedSlider Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MaxPlayersLabel}" Value="{Binding MaxPlayers}" ToolTip="{DynamicResource ServerSettings_MaxPlayersTooltip}" VerticalAlignment="Center" Minimum="1" Maximum="127" LargeChange="25" SmallChange="10" TickFrequency="10" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="0"/>
 
@@ -1111,9 +1109,9 @@
                                 <GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" Header="{DynamicResource ServerSettings_MapsAndModsLabel}" Style="{StaticResource GroupBoxStyle}">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
@@ -1146,7 +1144,7 @@
                                         <ComboBox Grid.Row="1" Grid.Column="1" Margin="1" Name="TotalConversionComboBox" ItemsSource="{Binding BaseTotalConversions, ElementName=SettingsControl}" SelectedValue="{Binding TotalConversionModId, Mode=TwoWay, UpdateSourceTrigger=Explicit}" SelectedValuePath="ValueMember" DisplayMemberPath="DisplayMember" IsEditable="True" ToolTip="{DynamicResource ServerSettings_TotalConversionTooltip}" LostFocus="ComboBoxItemList_LostFocus" PreviewMouseWheel="ComboBox_PreviewMouseWheel"/>
                                         <Button  Grid.Row="1" Grid.Column="3" Width="22" Height="22" Margin="5,1,0,0" ToolTip="{DynamicResource ServerSettings_FindTotalConversionMapNameTooltip}" HorizontalAlignment="Left" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapNameTotalConversionProperty}">
                                             <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                <Style BasedOn="{StaticResource ButtonStyle1}" TargetType="{x:Type Button}">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Value="True">
@@ -1155,7 +1153,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
-                                            <Image Source="../Art/Find.png" Width="16" Height="16" />
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Find.ico,Size=32}"/>
                                         </Button>
 
                                         <Label   Grid.Row="2" Grid.Column="0" Content="{DynamicResource ServerSettings_ModIdsLabel}" Grid.ColumnSpan="2" ToolTip="{DynamicResource ServerSettings_ModIdsTooltip}" VerticalAlignment="Center"/>
@@ -1176,13 +1174,13 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Button  Grid.Row="2" Grid.Column="7" Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" HorizontalAlignment="Left" Click="OpenModDetails_Click">
-                                            <Image Source="../Art/Help.png" Width="16" Height="16" />
+                                        <Button  Grid.Row="2" Grid.Column="7" ToolTip="{DynamicResource ServerSettings_ModDetailsTooltip}" Click="OpenModDetails_Click" Style="{StaticResource ButtonStyle1}">
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Find.ico,Size=32}"/>
                                         </Button>
-                                        <Button  Grid.Row="2" Grid.Column="8" Width="22" Height="22" Margin="5,0,0,0" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" HorizontalAlignment="Left" Click="ModUpgrade_Click">
-                                            <Image Source="../Art/Upgrade.png" Width="16" Height="16" />
+                                        <Button  Grid.Row="2" Grid.Column="8" DataContext="{Binding Runtime, ElementName=SettingsControl}" ToolTip="{DynamicResource ServerSettings_ModUpgradeTooltip}" Click="ModUpgrade_Click">
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Download.ico,Size=32}"/>
                                             <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                <Style BasedOn="{StaticResource ButtonStyle1}" TargetType="{x:Type Button}">
                                                     <Setter Property="IsEnabled" Value="False"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Status}" Value="{x:Static lib:ServerRuntime+ServerStatus.Stopped}">
@@ -1271,8 +1269,40 @@
                                             <RowDefinition />
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" MinWidth="100"/>
+                                            <ColumnDefinition Width="Auto" MinWidth="100"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                            <Label  Content="{DynamicResource ServerSettings_MOTDLineCountLabel}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MOTDLineCountToLong, FallbackValue=False}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                            <Label  Content="{Binding MOTDLineCount, FallbackValue=0}" VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MOTDLineCountToLong, FallbackValue=False}" Value="true">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
                                             <Label  Content="{DynamicResource ServerSettings_MOTDLengthLabel}" VerticalAlignment="Center">
                                                 <Label.Style>
                                                     <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
@@ -1298,8 +1328,10 @@
                                                 </Label.Style>
                                             </Label>
                                         </StackPanel>
-                                        <TextBox Grid.Row="1" Margin="1" Text="{Binding MOTD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto" SourceUpdated="MOTD_SourceUpdated"/>
-                                        <local:AnnotatedSlider Grid.Row="2" Margin="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
+                                        
+                                        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Text="{Binding MOTD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto" SourceUpdated="MOTD_SourceUpdated"/>
+
+                                        <local:AnnotatedSlider Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
                                     </Grid>
                                 </GroupBox>
 
@@ -1307,8 +1339,8 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerOptionsLabel}"/>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ServerOptions}" ToolTip="{DynamicResource ServerSettings_ResetServerOptionsTooltip}">
-                                                <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                            <Button Margin="20,0,0,0" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ServerOptions}" ToolTip="{DynamicResource ServerSettings_ResetServerOptionsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -1389,8 +1421,8 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerLogOptionsLabel}"/>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ServerOptions}" ToolTip="{DynamicResource ServerSettings_ResetServerLogOptionsTooltip}">
-                                                <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                            <Button Margin="20,0,0,0" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ServerOptions}" ToolTip="{DynamicResource ServerSettings_ResetServerLogOptionsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -1658,10 +1690,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_RulesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionRules, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.RulesSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -1970,8 +2002,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_ChatAndNotificationsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" IsEnabled="{Binding ElementName=SectionChatAndNotifications, Path=IsExpanded}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ChatAndNotificationsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
+                                            IsEnabled="{Binding ElementName=SectionChatAndNotifications, Path=IsExpanded}" 
+                                            Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.ChatAndNotificationsSection}">
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2015,10 +2049,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_HUDAndVisualsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionHUDAndVisuals, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.HudAndVisualsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2067,10 +2101,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_PlayerSettingsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionPlayerSettings, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerSettingsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2094,8 +2128,8 @@
                                     <CheckBox Margin="5" IsChecked="{Binding EnableFlyerCarry}" Content="{DynamicResource ServerSettings_EnableFlyerCarryLabel}" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableFlyerCarryTooltip}"/>
                                     <local:AnnotatedSlider Margin="1,1,22,1" Label="{DynamicResource ServerSettings_XPMultiplierLabel}" Value="{Binding XPMultiplier}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1" TickFrequency="1" Suffix="{DynamicResource SliderUnits_Multiplier}" ToolTip="{DynamicResource ServerSettings_XPMultiplierTooltip}"/>
                                     <DockPanel>
-                                        <Button DockPanel.Dock="Right" Click="MaxXPPlayer_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
-                                            <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Button DockPanel.Dock="Right" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}" Click="MaxXPPlayer_Reset" Style="{StaticResource ButtonStyle1}">
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                         </Button>
                                         <local:AnnotatedSlider DockPanel.Dock="Right" Margin="0,1,0,1" Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsPlayer}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" Suffix="{DynamicResource ServerSettings_MaxXPUnits}" ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
                                     </DockPanel>
@@ -2112,8 +2146,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnablePlayerBaseStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_PlayerBaseStatMultipliersLabel}" IsChecked="{Binding PlayerBaseStatMultipliers.IsEnabled}" ToolTip="{DynamicResource ServerSettings_BaseStatMultipliersTooltip}" VerticalAlignment="Center"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePlayerBaseStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerBaseStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetBaseStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePlayerBaseStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerBaseStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetBaseStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2147,8 +2181,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnablePlayerPerLevelStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_PlayerPerLevelStatMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_Player.IsEnabled}" ToolTip="{DynamicResource ServerSettings_PerLevelStatMultipliersTooltip}" VerticalAlignment="Center"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePlayerPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PlayerPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2185,10 +2219,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_DinoSettingsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}"
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionDinoSettings, Path=IsExpanded}" 
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoSettingsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2210,8 +2244,8 @@
                             <Grid Margin="-8,0,2,0">
                                 <StackPanel Grid.Column="0">
                                     <DockPanel>
-                                        <Button DockPanel.Dock="Right" Click="MaxXPDino_Reset" Width="22" Height="22" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}">
-                                            <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Button DockPanel.Dock="Right" Click="MaxXPDino_Reset" ToolTip="{DynamicResource ServerSettings_ResetMaxXPTooltip}" Style="{StaticResource ButtonStyle1}">
+                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                         </Button>
                                         <local:AnnotatedSlider DockPanel.Dock="Right" Margin="0,1,0,1" Label="{DynamicResource ServerSettings_MaxXPLabel}" Value="{Binding OverrideMaxExperiencePointsDino}" Suffix="{DynamicResource ServerSettings_MaxXPUnits}" Minimum="0" Maximum="1000000" SmallChange="5000" LargeChange="100000" TickFrequency="50000" ToolTip="{DynamicResource ServerSettings_MaxXPTooltip}"/>
                                     </DockPanel>
@@ -2300,14 +2334,14 @@
                                                 <CheckBox Name="EditTamedResistanceCheckbox" Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.TamedDinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}" ToolTip="{DynamicResource ServerSettings_TamedResistanceOptionTooltip}"  Content="{DynamicResource ServerSettings_TamedResistanceOptionLabel}"/>
                                                 <CheckBox Name="EditWildDamageCheckbox"      Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassDamageMultipliers.IsEnabled, Mode=TwoWay}"          ToolTip="{DynamicResource ServerSettings_WildDamageOptionTooltip}"       Content="{DynamicResource ServerSettings_WildDamageOptionLabel}"/>
                                                 <CheckBox Name="EditWildResistanceCheckbox"  Margin="0,5,5,5" VerticalAlignment="Center" IsChecked="{Binding DinoSettings.DinoClassResistanceMultipliers.IsEnabled, Mode=TwoWay}"      ToolTip="{DynamicResource ServerSettings_WildResistanceOptionTooltip}"   Content="{DynamicResource ServerSettings_WildResistanceOptionLabel}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" Click="DinoCustomization_Reset" ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" />
+                                                <Button Width="22" Height="22" Margin="10,0,0,0" Click="DinoCustomization_Reset" ToolTip="{DynamicResource ServerSettings_ResetDinoCustomizationsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_PasteDinoCustomizationsTooltip}">
-                                                    <Image Source="../Art/Paste.png" Width="16"/>
+                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_PasteDinoCustomizationsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="SaveCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_SaveDinoCustomizationsTooltip}">
-                                                    <Image Source="../Art/Save_6530.png" Width="16"/>
+                                                <Button Width="22" Height="22" Margin="5,0,0,0" Click="SaveCustomDinos_Click" ToolTip="{DynamicResource ServerSettings_SaveDinoCustomizationsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2502,8 +2536,8 @@
                                                     <DataGridTemplateColumn Width="20*" CanUserReorder="False">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <Button Width="30" Click="RemoveDinoSetting_Click" ToolTip="{DynamicResource ServerSettings_DinoRemoveRecordTooltip}" HorizontalAlignment="Left">
-                                                                    <Image Source="../Art/Delete.png" Width="16" Height="16" />
+                                                                <Button Width="22" Height="22" Click="RemoveDinoSetting_Click" ToolTip="{DynamicResource ServerSettings_DinoRemoveRecordTooltip}" HorizontalAlignment="Left">
+                                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                                 </Button>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
@@ -2551,8 +2585,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnableWildDinoPerLevelStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_WildDinoPerLevelStatMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoWild.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatMultipliersTooltip}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableWildDinoPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoWildPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableWildDinoPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoWildPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2585,8 +2619,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnableTamedDinoPerLevelStatMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedMultipliersTooltip}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2619,8 +2653,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnableTamedDinoPerLevelStatAddMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAddMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Add.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedAddMultipliersTooltip}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAddMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAddPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAddMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAddPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2653,8 +2687,8 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox x:Name="EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox" Content="{DynamicResource ServerSettings_TamedDinoPerLevelStatAffinityMultipliersLabel}" IsChecked="{Binding PerLevelStatsMultiplier_DinoTamed_Affinity.IsEnabled}" Margin="0,5,5,5" ToolTip="{DynamicResource ServerSettings_PerLevelStatTamedAffinityMultipliersTooltip}"/>
-                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAffinityPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableTamedDinoPerLevelStatAffinityMultipliersCheckbox, Path=IsChecked}" Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.DinoTamedAffinityPerLevelStatMultipliers}" ToolTip="{DynamicResource ServerSettings_ResetPerLevelStatMultipliersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2718,10 +2752,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_EnvironmentLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionEnvironment, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.EnvironmentSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2757,14 +2791,14 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox Name="EnableHarvestResourceItemAmountClassMultipliersCheckbox" Content="{DynamicResource ServerSettings_CustomHarvestMultipliersLabel}" IsChecked="{Binding HarvestResourceItemAmountClassMultipliers.IsEnabled}" ToolTip="{DynamicResource ServerSettings_CustomHarvestMultipliersTooltip}" VerticalAlignment="Center"/>
-                                                <Button   Width="22" Height="22" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" ToolTip="{DynamicResource ServerSettings_ResetCustomHarvestTooltip}">
-                                                    <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                                <Button   Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="HarvestResourceItemAmountClassMultipliers_Reset" ToolTip="{DynamicResource ServerSettings_ResetCustomHarvestTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="PasteCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}">
-                                                    <Image Source="../Art/Paste.png" Width="16"/>
+                                                <Button Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="PasteCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="22" Height="22" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="SaveCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}">
-                                                    <Image Source="../Art/Save_6530.png" Width="16"/>
+                                                <Button Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnableHarvestResourceItemAmountClassMultipliersCheckbox, Path=IsChecked}" Click="SaveCustomResources_Click" ToolTip="{DynamicResource ServerSettings_PasteCustomResourcesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                 </Button>
                                             </StackPanel>
                                         </GroupBox.Header>
@@ -2794,7 +2828,7 @@
                                                                 <Label  Grid.Row="0" Grid.Column="0" Content="{Binding DisplayName}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
                                                                 <Label  Grid.Row="0" Grid.Column="1" Content="{Binding Mod}" VerticalAlignment="Center"/>
                                                                 <local:AnnotatedSlider Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" Label="{DynamicResource ServerSettings_HarvestAmountEntryLabel}" Value="{Binding Multiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" LabelRelativeWidth="120" ValueRelativeWidth="100" SuffixRelativeWidth="20" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                                                <Button Grid.Row="0" Grid.Column="3" Click="RemoveHarvestResource_Click" ToolTip="{DynamicResource ServerSettings_HarvestRemoveRecordTooltip}">
+                                                                <Button Grid.Row="0" Grid.Column="3" Width="22" Height="22" Click="RemoveHarvestResource_Click" ToolTip="{DynamicResource ServerSettings_HarvestRemoveRecordTooltip}">
                                                                     <Button.Style>
                                                                         <Style TargetType="{x:Type Button}">
                                                                             <Style.Triggers>
@@ -2804,7 +2838,7 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Button.Style>
-                                                                    <Image Source="../Art/Delete.png" Width="16" Height="16"/>
+                                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                                 </Button>
                                                             </Grid>
                                                         </Border>
@@ -2875,10 +2909,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_StructuresLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionStructures, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.StructuresSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -2967,10 +3001,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_EngramsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionEngrams, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.EngramsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -3001,14 +3035,14 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding OverrideNamedEngramEntries.IsEnabled}" Content="{DynamicResource ServerSettings_EnableEngramsOverrideLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableEngramsOverrideTooltip}"/>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_ResetEngramsLabel}">
-                                                <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                            <Button Margin="20,0,0,0" Click="Engrams_Reset" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_ResetEngramsLabel}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PasteCustomEngrams_Click" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_PasteCustomEngramsTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Margin="5,0,0,0" Click="PasteCustomEngrams_Click" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_PasteCustomEngramsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="SaveCustomEngrams_Click" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_SaveCustomEngramsTooltip}">
-                                                <Image Source="../Art/Save_6530.png" Width="16"/>
+                                            <Button Margin="5,0,0,0" Click="SaveCustomEngrams_Click" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_SaveCustomEngramsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3017,9 +3051,9 @@
                                         <StackPanel Orientation="Horizontal" SourceUpdated="EngramArkApplications_SourceUpdated">
                                             <CheckBox Margin="5" Content="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsLabel}" IsChecked="{Binding OnlyAllowSpecifiedEngrams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" IsEnabled="{Binding OverrideNamedEngramEntries.IsEnabled}" ToolTip="{DynamicResource ServerSettings_OnlyAllowSpecifiedEngramsTooltip}" HorizontalAlignment="Left"/>
                                             <Button Width="22" Height="22" Margin="20,0,0,0" Click="Engrams_SelectAll" ToolTip="{DynamicResource ServerSettings_EngramsSelectAllTooltip}">
-                                                <Image Source="../Art/Checked.png" Width="16" Height="16"/>
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Checked.ico,Size=32}"/>
                                                 <Button.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                    <Style BasedOn="{StaticResource ButtonStyle1}" TargetType="{x:Type Button}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding OverrideNamedEngramEntries.IsEnabled}" Value="false">
                                                                 <Setter Property="IsEnabled" Value="False"/>
@@ -3032,9 +3066,9 @@
                                                 </Button.Style>
                                             </Button>
                                             <Button Width="22" Height="22" Margin="5,0,0,0" Click="Engrams_UnselectAll" ToolTip="{DynamicResource ServerSettings_EngramsUnselectAllTooltip}">
-                                                <Image Source="../Art/Unchecked.png" Width="16" Height="16"/>
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Unchecked.ico,Size=32}"/>
                                                 <Button.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                                                    <Style BasedOn="{StaticResource ButtonStyle1}" TargetType="{x:Type Button}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding OverrideNamedEngramEntries.IsEnabled}" Value="false">
                                                                 <Setter Property="IsEnabled" Value="False"/>
@@ -3143,7 +3177,7 @@
                                                     <GridViewColumn Width="Auto" lvs:SortBehavior.CanUseSort="False">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <Button Click="RemoveEngramOverride_Click" Width="30" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
+                                                                <Button Width="22" Height="22" Click="RemoveEngramOverride_Click" ToolTip="{DynamicResource ServerSettings_EngramsRemoveRecordTooltip}">
                                                                     <Button.Style>
                                                                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                                                                             <Style.Triggers>
@@ -3153,7 +3187,7 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Button.Style>
-                                                                    <Image Source="../Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0"  />
+                                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                                 </Button>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
@@ -3236,14 +3270,14 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesAdminLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddAdminPlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddAdminPlayerTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Click="AddAdminPlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddAdminPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearAdminPlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearAdminPlayerTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Click="ClearAdminPlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearAdminPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ReloadAdminPlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadAdminPlayerTooltip}">
-                                                <Image Source="../Art/Reload.png" Width="16"/>
+                                            <Button Click="ReloadAdminPlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadAdminPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3322,7 +3356,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveAdminPlayer_Click" ToolTip="{DynamicResource ServerSettings_RemoveAdminPlayerTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="../Art/Delete.ico"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3335,14 +3369,14 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_ServerFilesWhitelistLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddWhitelistPlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddWhitelistPlayerTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddWhitelistPlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddWhitelistPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearWhitelistPlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearWhitelistPlayerTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearWhitelistPlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearWhitelistPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ReloadWhitelistPlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadWhitelistPlayerTooltip}">
-                                                <Image Source="../Art/Reload.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ReloadWhitelistPlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadWhitelistPlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3416,7 +3450,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveWhitelistPlayer_Click" ToolTip="{DynamicResource ServerSettings_RemoveWhitelistPlayerTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="../Art/Delete.ico"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3429,14 +3463,14 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Margin="0,6,0,5" IsChecked="{Binding EnableExclusiveJoin}" Content="{DynamicResource ServerSettings_EnableExclusiveJoinLabel}" ToolTip="{DynamicResource ServerSettings_EnableExclusiveJoinTooltip}" VerticalAlignment="Center"/>
-                                            <Button Width="22" Height="22" Click="AddExclusivePlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddExclusivePlayerTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddExclusivePlayer_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddExclusivePlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearExclusivePlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearExclusivePlayerTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearExclusivePlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearExclusivePlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ReloadExclusivePlayers_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadExclusivePlayerTooltip}">
-                                                <Image Source="../Art/Reload.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ReloadExclusivePlayers_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ReloadExclusivePlayerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Reload.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3510,7 +3544,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveExclusivePlayer_Click" ToolTip="{DynamicResource ServerSettings_RemoveExclusivePlayerTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3552,17 +3586,17 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CustomSettingsSectionsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCustomSection_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCustomSectionTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddCustomSection_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCustomSectionTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomSectionsTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="PasteCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomSectionsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ImportCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportCustomSectionsTooltip}">
-                                                <Image Source="../Art/Open_6529.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ImportCustomSections_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportCustomSectionsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderImport.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCustomSections_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomSectionsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearCustomSections_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomSectionsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3599,7 +3633,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCustomSection_Click" ToolTip="{DynamicResource ServerSettings_RemoveCustomSectionTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3612,14 +3646,14 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CustomSettingsItemsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCustomItem_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCustomItemTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddCustomItem_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_AddCustomItemTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteCustomItems_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomItemsTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="PasteCustomItems_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_PasteCustomItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCustomItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomItemsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearCustomItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_ClearCustomItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3656,7 +3690,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCustomItem_Click" ToolTip="{DynamicResource ServerSettings_RemoveCustomItemTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3671,10 +3705,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_CustomLevelProgressionsLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionCustomLevels, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.CustomLevelsSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -3712,20 +3746,20 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CustomPlayerLevelsLabel}"/>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16" Height="16"/>
+                                            <Button Margin="20,0,0,0" Click="PlayerLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
-                                                <Image Source="../Art/Refresh.png" Width="16" Height="16"/>
+                                            <Button Margin="5,0,0,0" Click="PlayerLevels_ResetOfficial" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdatePlayerXPCap}">
-                                                <Image Source="../Art/Upgrade.png" Width="16" Height="16"/>
+                                            <Button Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdatePlayerXPCap}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Edit.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}">
-                                                <Image Source="../Art/Open_6529.png" Width="16" Height="16"/>
+                                            <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportPlayerLevels}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderImport.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportPlayerLevels}">
-                                                <Image Source="../Art/Save_6530.png" Width="16" Height="16"/>
+                                            <Button Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportPlayerLevels}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderExport.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3736,8 +3770,8 @@
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Click="AddPlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
-                                                                <Image Source="../Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            <Button Width="22" Height="22" Click="AddPlayerLevel_Click" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
+                                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
@@ -3745,8 +3779,8 @@
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Click="RemovePlayerLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}">
-                                                                <Image Source="../Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            <Button Width="22" Height="22" Click="RemovePlayerLevel_Click" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}">
+                                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
@@ -3790,20 +3824,20 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CustomDinoLevelsLabel}"/>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Margin="20,0,0,0" Click="DinoLevels_Clear" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_DeleteAllLevelsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}">
-                                                <Image Source="../Art/Refresh.png" Width="16"/>
+                                            <Button Margin="5,0,0,0" Click="DinoLevels_ResetOfficial"  IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_ResetToOfficialDefaultsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdateDinoXPCap}">
-                                                <Image Source="../Art/Upgrade.png" Width="16"/>
+                                            <Button Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_UpdateLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.UpdateDinoXPCap}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Edit.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}">
-                                                <Image Source="../Art/Open_6529.png" Width="16"/>
+                                            <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ImportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ImportDinoLevels}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderImport.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportDinoLevels}">
-                                                <Image Source="../Art/Save_6530.png" Width="16"/>
+                                            <Button Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_ExportLevelsTooltip}" IsEnabled="{Binding ElementName=EnableLevelsCheckbox, Path=IsChecked}" Command="{Binding CustomLevelActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsCustomLevelsAction.ExportDinoLevels}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderExport.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3814,8 +3848,8 @@
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionPlusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Click="AddDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}" >
-                                                                <Image Source="../Art/Add.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            <Button Width="22" Height="22" Click="AddDinoLevel_Click" ToolTip="{DynamicResource ServerSettings_ProgressionAddLevelTooltip}">
+                                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
@@ -3823,8 +3857,8 @@
                                                 <GridViewColumn Header="{DynamicResource ServerSettings_ProgressionMinusColumnLabel}" Width="Auto">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Click="RemoveDinoLevel_Click" Margin="2" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}" >
-                                                                <Image Source="../Art/Delete.png" Width="16" Height="16" Margin="5,0,5,0" />
+                                                            <Button Width="22" Height="22" Click="RemoveDinoLevel_Click" ToolTip="{DynamicResource ServerSettings_ProgressionRemoveLevelTooltip}" >
+                                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                             </Button>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
@@ -3848,10 +3882,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_CraftingOverridesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionCraftingOverrides, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.CraftingOverridesSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -3889,17 +3923,17 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CraftingOverrides_ItemsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCraftingOverride_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddItemTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverride_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddItemTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteCraftingOverride_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_PasteItemsTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="PasteCraftingOverride_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_PasteItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearItemsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrides_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="SaveCraftingOverride_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_SaveItemsTooltip}">
-                                                <Image Source="../Art/Save_6530.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="SaveCraftingOverride_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_SaveItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -3936,7 +3970,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_RemoveItemTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3945,7 +3979,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveCraftingOverrideItem_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_SaveItemTooltip}">
-                                                            <Image Source="../Art/Save_6530.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -3958,11 +3992,11 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_CraftingOverrides_ResourcesLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddCraftingOverrideResource_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddResourceTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddCraftingOverrideResource_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_AddResourceTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearCraftingOverrideResources_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearResourcesTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearCraftingOverrideResources_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_ClearResourcesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4009,7 +4043,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveCraftingOverrideResource_Click" ToolTip="{DynamicResource ServerSettings_CraftingOverrides_RemoveResourceTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4024,10 +4058,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_MapSpawnerOverridesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionMapSpawnerOverrides, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.MapSpawnerOverridesSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -4062,17 +4096,17 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_MapSpawnerOverrides_ContainerLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddNPCSpawn_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddContainerTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddNPCSpawn_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddContainerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteNPCSpawn_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_PasteContainerTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="PasteNPCSpawn_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_PasteContainerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearNPCSpawn_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearContainerTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearNPCSpawn_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearContainerTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="SaveNPCSpawns_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_SaveContainersTooltip}">
-                                                <Image Source="../Art/Save_6530.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="SaveNPCSpawns_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_SaveContainersTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4119,7 +4153,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveContainerTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4128,7 +4162,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveNPCSpawn_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_SaveContainerTooltip}">
-                                                            <Image Source="../Art/Save_6530.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4141,11 +4175,11 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_MapSpawnerOverrides_EntryLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddNPCSpawnEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddEntryTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddNPCSpawnEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_AddEntryTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearNPCSpawnEntry_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearEntryTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearNPCSpawnEntry_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_ClearEntryTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4198,7 +4232,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveNPCSpawnEntry_Click" ToolTip="{DynamicResource ServerSettings_MapSpawnerOverrides_RemoveEntryTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4213,10 +4247,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_SupplyCrateOverridesLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionSupplyCrateOverrides, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SupplyCrateOverridesSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -4257,17 +4291,17 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_CratesLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddSupplyCrate_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddCrateTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrate_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddCrateTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="PasteSupplyCrate_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_PasteCrateTooltip}">
-                                                <Image Source="../Art/Paste.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="PasteSupplyCrate_Click" Margin="5,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_PasteCrateTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearCratesTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearCratesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="SaveSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_SaveCratesTooltip}">
-                                                <Image Source="../Art/Save_6530.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="SaveSupplyCrates_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_SaveCratesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4334,7 +4368,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrate_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveCrateTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4343,7 +4377,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveSupplyCrate_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_SaveCrateTooltip}">
-                                                            <Image Source="../Art/Save_6530.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4356,11 +4390,11 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSet_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSet_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSets_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSets_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4417,7 +4451,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItemSet_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemSetTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4430,11 +4464,11 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemSetEntriesLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSetEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetEntryTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItemSetEntry_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemSetEntryTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSetEntries_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetEntriesTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItemSetEntries_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemSetEntriesTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4501,7 +4535,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItemSetEntry_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemSetEntryTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4514,11 +4548,11 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_SupplyCrate_ItemsLabel}"/>
-                                            <Button Width="22" Height="22" Click="AddSupplyCrateItem_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemTooltip}">
-                                                <Image Source="../Art/Add.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="AddSupplyCrateItem_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_AddItemTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                                             </Button>
-                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemsTooltip}">
-                                                <Image Source="../Art/Delete.png" Width="16"/>
+                                            <Button Width="22" Height="22" Click="ClearSupplyCrateItems_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ServerSettings_SupplyCrate_ClearItemsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
@@ -4560,7 +4594,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemoveSupplyCrateItem_Click" ToolTip="{DynamicResource ServerSettings_SupplyCrate_RemoveItemTooltip}">
-                                                            <Image Source="../Art/Delete.png" Width="16" />
+                                                            <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -4575,10 +4609,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_PGMLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionPGM, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.PGMSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -4605,13 +4639,13 @@
                                         <GroupBox.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox Name="EnablePGMCheckbox" IsChecked="{Binding PGM_Enabled}" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_PGM_EnableLabel}" ToolTip="{DynamicResource ServerSettings_PGM_EnableTooltip}" VerticalContentAlignment="Center" FontWeight="Bold"/>
-                                                <Button Width="22" Height="22" Click="PastePGMSettings_Click" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_PasteSettingsTooltip}">
-                                                    <Image Source="../Art/Paste.png" Width="16"/>
+                                                <Button Click="PastePGMSettings_Click" Margin="20,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_PasteSettingsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Paste.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="22" Height="22" Click="SavePGMSettings_Click" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_SaveSettingsTooltip}">
-                                                    <Image Source="../Art/Save_6530.png" Width="16"/>
+                                                <Button Click="SavePGMSettings_Click" Margin="5,0,0,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_PGM_SaveSettingsTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Save.ico,Size=32}"/>
                                                 </Button>
-                                                <Button Width="Auto" Height="22" Click="RandomPGMSettings_Click" Margin="20,0,0,0" Padding="3,0,3,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Content="{DynamicResource ServerSettings_PGM_RandomSettingsLabel}" ToolTip="{DynamicResource ServerSettings_PGM_RandomSettingsTooltip}"/>
+                                                <Button Click="RandomPGMSettings_Click" Margin="20,0,0,0" Padding="3,0,3,0" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked}" Content="{DynamicResource ServerSettings_PGM_RandomSettingsLabel}" ToolTip="{DynamicResource ServerSettings_PGM_RandomSettingsTooltip}"/>
                                             </StackPanel>
                                         </GroupBox.Header>
 
@@ -4867,10 +4901,10 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{DynamicResource ServerSettings_SOTFLabel}" Style="{StaticResource ExpanderHeaderTextStyle}"/>
-                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" 
+                                    <Button Margin="20,0,0,0" ToolTip="{DynamicResource ServerSettings_ResetSectionTooltip}" Style="{StaticResource ButtonStyle1}"
                                             IsEnabled="{Binding ElementName=SectionSOTF, Path=IsExpanded}"
                                             Command="{Binding ResetActionCommand, ElementName=SettingsControl}" CommandParameter="{x:Static local:ServerSettingsResetAction.SOTFSection}">
-                                        <Image Source="../Art/Refresh.png" Width="16" Height="16" />
+                                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Refresh.ico,Size=32}"/>
                                     </Button>
                                 </StackPanel>
                             </Expander.Header>
@@ -4894,8 +4928,8 @@
                                     <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Name="EnableSOTFCheckbox" IsChecked="{Binding SOTF_Enabled, NotifyOnSourceUpdated=True}" IsEnabled="{Binding ElementName=EnablePGMCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_EnableSOTFLabel}" ToolTip="{DynamicResource ServerSettings_EnableSOTFTooltip}" VerticalContentAlignment="Center" FontWeight="Bold" SourceUpdated="EnableSOTFCheckbox_SourceUpdated" />
-                                            <Button Margin="20,5,5,5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}">
-                                                <Image Source="../Art/Help.png" Height="16" Margin="0" />
+                                            <Button Margin="20,5,5,5" Click="HelpSOTF_Click" BorderThickness="0" Background="{StaticResource BeigeGradient}"  ToolTip="{DynamicResource ServerSettings_SOTF_HelpTooltip}" Style="{StaticResource ButtonStyle1}">
+                                                <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Help.ico,Size=32}"/>
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>

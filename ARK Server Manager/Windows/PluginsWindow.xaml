@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ARK_Server_Manager.PluginsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lib="clr-namespace:ARK_Server_Manager.Lib"
         MinWidth="640" MinHeight="480" Width="640" Height="480" ResizeMode="CanResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Icon="../Art/favicon.ico" Title="{DynamicResource PluginsWindow_Title}">
     <Window.Resources>
@@ -33,16 +34,16 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                     <Button Width="22" Height="22" Click="AddPlugin_Click" ToolTip="{DynamicResource PluginsWindow_AddPluginTooltip}">
-                        <Image Source="../Art/Add.png" Width="16"/>
+                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Add.ico,Size=32}"/>
                     </Button>
                     <Button Width="22" Height="22" Click="ClearPlugins_Click" Margin="10,0,0,0" ToolTip="{DynamicResource PluginsWindow_ClearPluginsTooltip}">
-                        <Image Source="../Art/Delete.png" Width="16"/>
+                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                     </Button>
                     <Button Width="22" Height="22" Click="OpenPluginsFolder_Click" Margin="10,0,0,0" ToolTip="{DynamicResource PluginsWindow_OpenPluginsFolderTooltip}">
-                        <Image Source="../Art/Open_6529.png" Width="16"/>
+                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/FolderOpen.ico,Size=32}"/>
                     </Button>
                     <Button Width="22" Height="22" Click="PluginsForum_Click" Margin="20,0,0,0" ToolTip="{DynamicResource PluginsWindow_PluginsForumTooltip}">
-                        <Image Source="../Art/Help.png" Width="16"/>
+                        <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Help.ico,Size=32}"/>
                     </Button>
                 </StackPanel>
             </GroupBox.Header>
@@ -93,7 +94,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>
-                                    <Image Source="../Art/Settings.png" Width="16" />
+                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Settings.ico,Size=32}"/>
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -102,7 +103,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RemovePlugin_Click" ToolTip="{DynamicResource PluginsWindow_RemovePluginTooltip}">
-                                    <Image Source="../Art/Delete.png" Width="16" />
+                                    <Image Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

@@ -368,6 +368,20 @@ namespace ARK_Server_Manager.Lib
             }
         }
 
+        public static readonly DependencyProperty MOTDLineCountProperty = DependencyProperty.Register(nameof(MOTDLineCount), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
+        public int MOTDLineCount
+        {
+            get { return (int)GetValue(MOTDLineCountProperty); }
+            set { SetValue(MOTDLineCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty MOTDLineCountToLongProperty = DependencyProperty.Register(nameof(MOTDLineCountToLong), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        public bool MOTDLineCountToLong
+        {
+            get { return (bool)GetValue(MOTDLineCountToLongProperty); }
+            set { SetValue(MOTDLineCountToLongProperty, value); }
+        }
+
         public static readonly DependencyProperty MOTDLengthProperty = DependencyProperty.Register(nameof(MOTDLength), typeof(int), typeof(ServerProfile), new PropertyMetadata(0));
         public int MOTDLength
         {
@@ -3063,11 +3077,14 @@ namespace ARK_Server_Manager.Lib
                 var vdf = vdfDeserializer.Deserialize();
 
                 // clear any of th beta keys values
-                SteamCmdManifestDetailsResult.ClearUserConfigBetaKeys(vdf);
+                var updated = SteamCmdManifestDetailsResult.ClearUserConfigBetaKeys(vdf);
 
-                // save the manifest file
-                var vdfSerializer = new VdfSerializer(vdf);
-                vdfSerializer.Serialize(manifestFile);
+                if (updated)
+                {
+                    // save the manifest file
+                    var vdfSerializer = new VdfSerializer(vdf);
+                    vdfSerializer.Serialize(manifestFile);
+                }
             }
             catch (Exception ex)
             {
@@ -4251,6 +4268,9 @@ namespace ARK_Server_Manager.Lib
         {
             MOTDLength = Encoding.UTF8.GetByteCount(MOTD);
             MOTDLengthToLong = MOTDLength > 1000;
+
+            MOTDLineCount = string.IsNullOrWhiteSpace(MOTD) ? 0 : MOTD.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Length;
+            MOTDLineCountToLong = MOTDLineCount > 7;
         }
 
         #region Export Methods

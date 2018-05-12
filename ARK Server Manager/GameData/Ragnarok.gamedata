@@ -125,6 +125,11 @@
       "Mod": "Ragnarok"
     },
     {
+      "ClassName": "DinoSpawnEntries_Ragnarok_DeepWater_C",
+      "Description": "DeepWater",
+      "Mod": "Ragnarok"
+    },
+    {
       "ClassName": "DinoSpawnEntries_Ragnarok_Golem_C",
       "Description": "Golem",
       "Mod": "Ragnarok"
@@ -145,6 +150,11 @@
       "Mod": "Ragnarok"
     },
     {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Jungle_C",
+      "Description": "Jungle",
+      "Mod": "Ragnarok"
+    },
+    {
       "ClassName": "DinoSpawnEntries_Ragnarok_MonkeyIsland_C",
       "Description": "MonkeyIsland",
       "Mod": "Ragnarok"
@@ -152,6 +162,11 @@
     {
       "ClassName": "DinoSpawnEntries_Ragnarok_Mudslide_C",
       "Description": "Mudslide",
+      "Mod": "Ragnarok"
+    },
+    {
+      "ClassName": "DinoSpawnEntries_Ragnarok_Ocean_C",
+      "Description": "Ocean",
       "Mod": "Ragnarok"
     },
     {

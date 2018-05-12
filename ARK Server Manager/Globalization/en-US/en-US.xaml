@@ -773,6 +773,7 @@
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Message of the Day</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">The Message of the Day displayed to users when they connect to the server.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDLineCountLabel">Lines:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDLengthLabel">Length:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Duration:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">The time the Message of the Day will be shown for when the user connects to the server.</sys:String>
@@ -2039,6 +2040,9 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Settings</sys:String>
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="Branch_live">Live</sys:String>
 
     <!-- Game Map Names -->
     <sys:String x:Key="TheIsland">The Island</sys:String>

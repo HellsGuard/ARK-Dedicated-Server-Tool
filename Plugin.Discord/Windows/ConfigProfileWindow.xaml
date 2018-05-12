@@ -93,11 +93,11 @@
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{DynamicResource ConfigProfileWindow_ProfileNamesLabel}"/>
-                            <Button Width="22" Height="22" Click="AddProfileName_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ConfigProfileWindow_AddProfileNameTooltip}">
-                                <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Add.png" Width="16"/>
+                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="AddProfileName_Click" ToolTip="{DynamicResource ConfigProfileWindow_AddProfileNameTooltip}">
+                                <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Add.ico,Size=16}"/>
                             </Button>
-                            <Button Width="22" Height="22" Click="ClearProfileNames_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ConfigProfileWindow_ClearProfileNamesTooltip}">
-                                <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16"/>
+                            <Button Width="22" Height="22" Margin="10,0,0,0" Click="ClearProfileNames_Click" ToolTip="{DynamicResource ConfigProfileWindow_ClearProfileNamesTooltip}">
+                                <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=16}"/>
                             </Button>
                         </StackPanel>
                     </GroupBox.Header>
@@ -129,7 +129,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteProfileName_Click" ToolTip="{DynamicResource ConfigProfileWindow_DeleteProfileNameTooltip}">
-                                            <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16" />
+                                            <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=16}"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -142,11 +142,11 @@
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{DynamicResource ConfigProfileWindow_AlertTypesLabel}"/>
-                            <Button Width="22" Height="22" Click="AddAlertType_Click" Margin="20,0,0,0" ToolTip="{DynamicResource ConfigProfileWindow_AddAlertTypeTooltip}">
-                                <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Add.png" Width="16"/>
+                            <Button Width="22" Height="22" Margin="20,0,0,0" Click="AddAlertType_Click" ToolTip="{DynamicResource ConfigProfileWindow_AddAlertTypeTooltip}">
+                                <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Add.ico,Size=16}"/>
                             </Button>
-                            <Button Width="22" Height="22" Click="ClearAlertTypes_Click" Margin="10,0,0,0" ToolTip="{DynamicResource ConfigProfileWindow_ClearAlertTypesTooltip}">
-                                <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16"/>
+                            <Button Width="22" Height="22" Margin="10,0,0,0" Click="ClearAlertTypes_Click" ToolTip="{DynamicResource ConfigProfileWindow_ClearAlertTypesTooltip}">
+                                <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=16}"/>
                             </Button>
                         </StackPanel>
 
@@ -184,7 +184,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Width="22" Height="22" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteAlertType_Click" ToolTip="{DynamicResource ConfigProfileWindow_DeleteAlertTypeTooltip}">
-                                            <Image Source="/ArkServerManager.Plugin.Discord;component/Art/Delete.png" Width="16" />
+                                            <Image Source="{pc:Icon Path=/ArkServerManager.Plugin.Discord;component/Art/Delete.ico,Size=16}"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
