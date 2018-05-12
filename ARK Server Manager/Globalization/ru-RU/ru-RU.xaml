@@ -773,6 +773,7 @@
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Сообщение дня</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">Сообщение дня отображается пользователям при их подключении к серверу.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDLineCountLabel">Линий:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDLengthLabel">Длина:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Продолжительность:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">Время отображения Сообщения дня, когда пользователь подключается к серверу.</sys:String>
@@ -2039,6 +2040,9 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Настройки</sys:String>
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="Branch_live">Основной ARK</sys:String>
 
     <!-- Game Map Names -->
     <sys:String x:Key="TheIsland">The Island</sys:String>
