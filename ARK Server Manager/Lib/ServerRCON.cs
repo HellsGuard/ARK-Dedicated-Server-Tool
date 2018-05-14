@@ -489,10 +489,8 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    DataFileDetails.PlayerFileFolder = savedPath;
-                    DataFileDetails.TribeFileFolder = savedPath;
                     // load the player data from the files.
-                    dataContainer = await DataContainer.CreateAsync();
+                    dataContainer = await DataContainer.CreateAsync(savedPath, savedPath);
                 }
                 catch (Exception ex)
                 {

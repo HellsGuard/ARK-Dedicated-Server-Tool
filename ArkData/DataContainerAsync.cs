@@ -16,22 +16,22 @@ namespace ArkData
         /// Instantiates the DataContainer and parses all the user-data files
         /// </summary>
         /// <returns>The async task context containing the resulting container.</returns>
-        public static async Task<DataContainer> CreateAsync()
+        public static async Task<DataContainer> CreateAsync(string playerFileFolder, string tribeFileFolder)
         {
             var playerFiles = new string[0];
             var tribeFiles = new string[0];
 
-            if (Directory.Exists(DataFileDetails.PlayerFileFolder))
+            if (Directory.Exists(playerFileFolder))
             {
-                playerFiles = Directory.GetFiles(DataFileDetails.PlayerFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.PlayerFilePrefix)
-                                                                                            && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.PlayerFileSuffix)
-                                                                                            && Path.GetExtension(f).Equals(DataFileDetails.PlayerFileExtension)).ToArray();
+                playerFiles = Directory.GetFiles(playerFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.PlayerFilePrefix)
+                    && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.PlayerFileSuffix)
+                    && Path.GetExtension(f).Equals(DataFileDetails.PlayerFileExtension)).ToArray();
             }
-            if (Directory.Exists(DataFileDetails.TribeFileFolder))
+            if (Directory.Exists(tribeFileFolder))
             {
-                tribeFiles = Directory.GetFiles(DataFileDetails.TribeFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.TribeFilePrefix)
-                                                                                        && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.TribeFileSuffix)
-                                                                                        && Path.GetExtension(f).Equals(DataFileDetails.TribeFileExtension)).ToArray();
+                tribeFiles = Directory.GetFiles(tribeFileFolder).Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(DataFileDetails.TribeFilePrefix)
+                    && Path.GetFileNameWithoutExtension(f).EndsWith(DataFileDetails.TribeFileSuffix)
+                    && Path.GetExtension(f).Equals(DataFileDetails.TribeFileExtension)).ToArray();
             }
 
             var container = new DataContainer();
