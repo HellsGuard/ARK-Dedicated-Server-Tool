@@ -114,6 +114,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
         public bool IsSpawnable { get; internal set; }
         public DinoTamable IsTameable { get; internal set; }
 
+        public float OriginalSpawnWeightMultiplier { get; internal set; }
+        public bool OriginalOverrideSpawnLimitPercentage { get; internal set; }
+        public float OriginalSpawnLimitPercentage { get; internal set; }
+
         public DinoSettings Clone()
         {
             return new DinoSettings()

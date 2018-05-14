@@ -53,6 +53,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
                 SpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
                 OverrideSpawnLimitPercentage = DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE,
                 SpawnLimitPercentage = DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE,
+                OriginalSpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
+                OriginalOverrideSpawnLimitPercentage = DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE,
+                OriginalSpawnLimitPercentage = DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE,
 
                 TamedDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
                 TamedResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
@@ -111,6 +114,10 @@ namespace ARK_Server_Manager.Lib.ViewModel
                     dinoSetting.SpawnWeightMultiplier = entry.SpawnWeightMultiplier;
                     dinoSetting.OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
                     dinoSetting.SpawnLimitPercentage = entry.SpawnLimitPercentage;
+
+                    dinoSetting.OriginalSpawnWeightMultiplier = entry.SpawnWeightMultiplier;
+                    dinoSetting.OriginalOverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
+                    dinoSetting.OriginalSpawnLimitPercentage = entry.SpawnLimitPercentage;
                 }
             }
 
@@ -245,17 +252,33 @@ namespace ARK_Server_Manager.Lib.ViewModel
                         !entry.SpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE) ||
                         !entry.SpawnWeightMultiplier.Equals(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER))
                     {
-                        if (this.DinoSpawnWeightMultipliers.Any(d => d.DinoNameTag.Equals(entry.NameTag, StringComparison.OrdinalIgnoreCase)))
-                            continue;
 
-                        this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                        var dinoSpawns = this.DinoSpawnWeightMultipliers.Where(d => d.DinoNameTag.Equals(entry.NameTag, StringComparison.OrdinalIgnoreCase)).ToArray();
+                        if (dinoSpawns == null || dinoSpawns.Length == 0)
                         {
-                            ClassName = entry.ClassName,
-                            DinoNameTag = entry.NameTag,
-                            OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
-                            SpawnLimitPercentage = entry.SpawnLimitPercentage,
-                            SpawnWeightMultiplier = entry.SpawnWeightMultiplier
-                        });
+                            this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                            {
+                                ClassName = entry.ClassName,
+                                DinoNameTag = entry.NameTag,
+                                OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
+                                SpawnLimitPercentage = entry.SpawnLimitPercentage,
+                                SpawnWeightMultiplier = entry.SpawnWeightMultiplier
+                            });
+                        }
+                        else
+                        {
+                            foreach (var dinoSpawn in dinoSpawns)
+                            {
+                                if (entry.SpawnWeightMultiplier != entry.OriginalSpawnWeightMultiplier || 
+                                    entry.OverrideSpawnLimitPercentage != entry.OriginalOverrideSpawnLimitPercentage ||
+                                    entry.SpawnLimitPercentage != entry.OriginalSpawnLimitPercentage)
+                                {
+                                    dinoSpawn.OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
+                                    dinoSpawn.SpawnLimitPercentage = entry.SpawnLimitPercentage;
+                                    dinoSpawn.SpawnWeightMultiplier = entry.SpawnWeightMultiplier;
+                                }
+                            }
+                        }
                     }
                 }
 
