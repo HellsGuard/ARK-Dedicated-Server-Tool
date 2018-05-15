@@ -5,7 +5,30 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager beta version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-14T23:25:00Z</updated>
+  <updated>2018-05-15T00:10:00Z</updated>
+
+  <entry>
+    <id>urn:uuid:7336274F-E3DC-4C37-9E7D-163A3BB54BE5</id>
+    <title>1.0.328 (1.0.328.4)</title>
+    <summary>1.0.328.4</summary>
+    <link href="http://arkservermanager.freeforums.net/thread/5141/1-327-test-build" />
+    <updated>2018-05-15T00:10:00Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
+        <p>
+          <u style="font-size: .9em;">BUGFIX</u>
+          <br/>
+          <ul>
+            <li>Player List - fixed bug that would prevent loading the player list if the steam fetch caused a problem.</li>
+          </ul>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>bletch</name>
+      <email>bletch1971@hotmail.com</email>
+    </author>
+  </entry>
 
   <entry>
     <id>urn:uuid:620219A2-7CDC-4D9D-8D55-4493A11FB988</id>
@@ -16,7 +39,7 @@
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
-          <u style="font-size: .9em;">CHANGE</u>
+          <u style="font-size: .9em;">BUGFIX</u>
           <br/>
           <ul>
             <li>Dino Spawns - changed code to store original values from INI file. Using the original values to determine which dino spawn record has changed.</li>
@@ -39,7 +62,7 @@
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
-          <u style="font-size: .9em;">CHANGE</u>
+          <u style="font-size: .9em;">BUGFIX</u>
           <br/>
           <ul>
             <li>Dino Spawns - changed code to set spawn values to ALL dino record with the same DinoNameTag.</li>

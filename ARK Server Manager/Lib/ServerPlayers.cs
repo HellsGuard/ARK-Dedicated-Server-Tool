@@ -167,7 +167,6 @@ namespace ARK_Server_Manager.Lib
                 catch (Exception ex)
                 {
                     _errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
-                    return;
                 }
 
                 token.ThrowIfCancellationRequested();
