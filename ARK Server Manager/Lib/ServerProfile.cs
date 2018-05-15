@@ -405,6 +405,22 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(MOTDDurationProperty, value); }
         }
 
+        public static readonly DependencyProperty MOTDIntervalEnabledProperty = DependencyProperty.Register(nameof(MOTDIntervalEnabled), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
+        [DataMember]
+        public bool MOTDIntervalEnabled
+        {
+            get { return (bool)GetValue(MOTDIntervalEnabledProperty); }
+            set { SetValue(MOTDIntervalEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty MOTDIntervalProperty = DependencyProperty.Register(nameof(MOTDInterval), typeof(int), typeof(ServerProfile), new PropertyMetadata(60));
+        [DataMember]
+        public int MOTDInterval
+        {
+            get { return (int)GetValue(MOTDIntervalProperty); }
+            set { SetValue(MOTDIntervalProperty, value); }
+        }
+
         public static readonly DependencyProperty DisableValveAntiCheatSystemProperty = DependencyProperty.Register(nameof(DisableValveAntiCheatSystem), typeof(bool), typeof(ServerProfile), new PropertyMetadata(false));
         [DataMember]
         public bool DisableValveAntiCheatSystem
@@ -4550,6 +4566,8 @@ namespace ARK_Server_Manager.Lib
 
             this.ClearValue(MOTDProperty);
             this.ClearValue(MOTDDurationProperty);
+            this.ClearValue(MOTDIntervalEnabledProperty);
+            this.ClearValue(MOTDIntervalProperty);
 
             ResetServerOptions();
             ResetServerLogOptions();
@@ -5005,6 +5023,8 @@ namespace ARK_Server_Manager.Lib
             this.SetValue(AutoSavePeriodMinutesProperty, sourceProfile.AutoSavePeriodMinutes);
             this.SetValue(MOTDProperty, sourceProfile.MOTD);
             this.SetValue(MOTDDurationProperty, sourceProfile.MOTDDuration);
+            this.SetValue(MOTDIntervalEnabledProperty, sourceProfile.MOTDIntervalEnabled);
+            this.SetValue(MOTDIntervalProperty, sourceProfile.MOTDInterval);
 
             this.SetValue(DisableValveAntiCheatSystemProperty, sourceProfile.DisableValveAntiCheatSystem);
             this.SetValue(DisablePlayerMovePhysicsOptimizationProperty, sourceProfile.DisablePlayerMovePhysicsOptimization);

@@ -778,6 +778,10 @@
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Duration:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">The time the Message of the Day will be shown for when the user connects to the server.</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationUnits">seconds</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDIntervalEnabledLabel">Enable Interval:</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDIntervalEnabledTooltip">If enabled, the message of the day will be shown at set intervals.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDIntervalTooltip">The interval when the Message of the Day will be shown.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDIntervalUnits">minutes</sys:String>
 
     <sys:String x:Key="ServerSettings_ServerOptionsLabel">Server Options</sys:String>
     <sys:String x:Key="ServerSettings_ResetServerOptionsTooltip">Reset all server options to defaults.</sys:String>

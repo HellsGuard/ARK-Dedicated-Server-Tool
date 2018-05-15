@@ -137,6 +137,8 @@ namespace ARK_Server_Manager
                 Application.Current.Dispatcher.Invoke(() => this.Cursor = System.Windows.Input.Cursors.Wait);
                 Application.Current.Dispatcher.Invoke(() => this.CancelShutdownButton.Cursor = System.Windows.Input.Cursors.Arrow);
 
+                this.Server.Runtime.DisableMotDIntervalTimer();
+
                 var app = new ServerApp(true)
                 {
                     BackupWorldFile = this.BackupWorldFile,
@@ -192,6 +194,7 @@ namespace ARK_Server_Manager
                 PluginHelper.Instance.ProcessAlert(AlertType.Shutdown, Server.Profile.ProfileName, Config.Default.Alert_ServerStopMessage);
                 await Task.Delay(2000);
 
+                this.Server.Runtime.DisableMotDIntervalTimer();
                 await this.Server.StopAsync();
 
                 ShutdownType = 0;
