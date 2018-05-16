@@ -25,10 +25,7 @@ namespace ARK_Server_Manager.Lib
         public string ServerMapModId;
         public string TotalConversionModId;
         public List<string> ServerModIds;
-        public string MOTD;
         public int MotDDuration;
-        public bool MOTDIntervalEnabled;
-        public int MOTDInterval;
         public bool ForceRespawnDinos;
 
         public string BranchName;
@@ -76,9 +73,6 @@ namespace ARK_Server_Manager.Lib
                 TotalConversionModId = profile.TotalConversionModId ?? string.Empty,
                 ServerModIds = ModUtils.GetModIdList(profile.ServerModIds),
                 MotDDuration = Math.Max(profile.MOTDDuration, 10),
-                MOTD = profile.MOTD,
-                MOTDIntervalEnabled = profile.MOTDIntervalEnabled && !string.IsNullOrWhiteSpace(profile.MOTD),
-                MOTDInterval = Math.Max(1, Math.Min(int.MaxValue, profile.MOTDInterval)),
                 ForceRespawnDinos = profile.ForceRespawnDinos,
 
                 BranchName = profile.BranchName,
