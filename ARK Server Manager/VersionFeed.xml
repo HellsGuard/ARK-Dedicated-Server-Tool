@@ -5,14 +5,14 @@
   <title>Ark Server Manager Version Feed</title>
   <subtitle>This is the Ark Server Manager release version feed.</subtitle>
   <link href="http://arkservermanager.freeforums.net/" />
-  <updated>2018-05-16T05:50:00Z</updated>
+  <updated>2018-05-16T06:00:00Z</updated>
 
   <entry>
     <id>urn:uuid:C5F289AB-85F9-4690-BDAC-743149524942</id>
     <title>1.0.328 (1.0.328.7)</title>
     <summary>1.0.328.7</summary>
     <link href="http://arkservermanager.freeforums.net/thread/3/downloads" />
-    <updated>2018-05-16T05:50:00Z</updated>
+    <updated>2018-05-16T06:00:00Z</updated>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Verdana, Helvetica, Sans-Serif;font-size: .8em;">
         <p>
@@ -30,6 +30,7 @@
           <u style="font-size: .9em;">CHANGE</u>
           <br/>
           <ul>
+            <li>FR Translation file updated. (thanks @angemymy)</li>
             <li>ArkData - some code tweaks</li>
           </ul>
         </p>
