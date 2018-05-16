@@ -31,8 +31,8 @@
     <ProductName>Ark Server Manager</ProductName>
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>1.0.328.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.329.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
