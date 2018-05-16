@@ -1,4 +1,5 @@
-﻿using ARK_Server_Manager.Lib.Model;
+﻿using QueryMaster;
+using ARK_Server_Manager.Lib.Model;
 using ArkServerManager.Plugin.Common;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,10 @@ namespace ARK_Server_Manager.Lib
         private Process serverProcess;
         private IAsyncDisposable updateRegistration;
         private DateTime lastModStatusQuery = DateTime.MinValue;
+
+        private System.Timers.Timer motdIntervalTimer = new System.Timers.Timer(3600000);
+        private const int RCON_MAXRETRIES = 3;
+        private Rcon _rconConsole = null;
 
         #region Properties
 
@@ -119,6 +124,11 @@ namespace ARK_Server_Manager.Lib
 
         public void Dispose()
         {
+            this.motdIntervalTimer.Stop();
+            this.motdIntervalTimer.Elapsed -= async (sender, e) => await HandleMotDIntervalTimer();
+            this.motdIntervalTimer.Dispose();
+            this.motdIntervalTimer = null;
+
             this.updateRegistration?.DisposeAsync().DoNotWait();
         }
 
@@ -134,6 +144,10 @@ namespace ARK_Server_Manager.Lib
             UnregisterForUpdates();
 
             this.ProfileSnapshot = ServerProfileSnapshot.Create(profile);
+            
+            // setup the MotD timer
+            this.motdIntervalTimer = new System.Timers.Timer(this.ProfileSnapshot.MOTDInterval * 60 * 1000);
+            this.motdIntervalTimer.Elapsed += async (sender, e) => await HandleMotDIntervalTimer();
 
             if (Version.TryParse(profile.LastInstalledVersion, out Version lastInstalled))
             {
@@ -166,6 +180,9 @@ namespace ARK_Server_Manager.Lib
                     ServerProfile.ServerMapProperty,
                     ServerProfile.ServerModIdsProperty,
                     ServerProfile.TotalConversionModIdProperty,
+
+                    ServerProfile.MOTDIntervalEnabledProperty,
+                    ServerProfile.MOTDIntervalProperty,
                 },
                 (s, p) =>
                 {
@@ -257,30 +274,41 @@ namespace ARK_Server_Manager.Lib
                 {
                     case ServerStatusWatcher.ServerStatus.NotInstalled:
                         UpdateServerStatus(ServerStatus.Uninstalled, SteamStatus.Unavailable, false);
+                        if (this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Stop();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Initializing:
                         UpdateServerStatus(ServerStatus.Initializing, SteamStatus.Unavailable, oldStatus != ServerStatus.Initializing && oldStatus != ServerStatus.Unknown);
+                        if (this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Stop();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Stopped:
                         UpdateServerStatus(ServerStatus.Stopped, SteamStatus.Unavailable, oldStatus == ServerStatus.Initializing || oldStatus == ServerStatus.Running || oldStatus == ServerStatus.Stopping);
+                        if (this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Stop();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Unknown:
                         UpdateServerStatus(ServerStatus.Unknown, SteamStatus.Unknown, false);
+                        if (this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Stop();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.RunningLocalCheck:
                         UpdateServerStatus(ServerStatus.Running, this.Steam != SteamStatus.Available ? SteamStatus.WaitingForPublication : this.Steam, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
+                        if (this.ProfileSnapshot.MOTDIntervalEnabled && !this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Start();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.RunningExternalCheck:
                         UpdateServerStatus(ServerStatus.Running, SteamStatus.WaitingForPublication, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
+                        if (this.ProfileSnapshot.MOTDIntervalEnabled && !this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Start();
                         break;
 
                     case ServerStatusWatcher.ServerStatus.Published:
                         UpdateServerStatus(ServerStatus.Running, SteamStatus.Available, oldStatus != ServerStatus.Running && oldStatus != ServerStatus.Unknown);
+                        if (this.ProfileSnapshot.MOTDIntervalEnabled && !this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Start();
+                        break;
+
+                    default:
+                        if (this.motdIntervalTimer.Enabled) this.motdIntervalTimer.Stop();
                         break;
                 }
 
@@ -355,6 +383,9 @@ namespace ARK_Server_Manager.Lib
 
         private void UnregisterForUpdates()
         {
+            this.motdIntervalTimer.Stop();
+            this.motdIntervalTimer.Elapsed -= async (sender, e) => await HandleMotDIntervalTimer();
+
             this.updateRegistration?.DisposeAsync().DoNotWait();
             this.updateRegistration = null;
         }
@@ -971,6 +1002,139 @@ namespace ARK_Server_Manager.Lib
                     StatusString = _globalizer.GetResourceString("ServerSettings_RuntimeStatusUnknownLabel");
                     break;
             }
+        }
+
+        public void DisableMotDIntervalTimer()
+        {
+            var snapshot = this.ProfileSnapshot;
+            snapshot.MOTDIntervalEnabled = false;
+            this.ProfileSnapshot = snapshot;
+
+            this.motdIntervalTimer.Stop();
+        }
+
+        private async Task HandleMotDIntervalTimer()
+        {
+            await TaskUtils.RunOnUIThreadAsync(async () =>
+            {
+
+                if (this.ProfileSnapshot.RCONEnabled)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(this.ProfileSnapshot.MOTD))
+                        {
+                            SendMessage(this.ProfileSnapshot.MOTD, CancellationToken.None);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    finally
+                    {
+                        CloseRconConsole();
+                    }
+                }
+                else
+                {
+                }
+                await Task.Delay(1);
+            });
+        }
+
+        private void CloseRconConsole()
+        {
+            if (_rconConsole != null)
+            {
+                _rconConsole.Dispose();
+                _rconConsole = null;
+
+                Task.Delay(1000).Wait();
+            }
+        }
+
+        private void SetupRconConsole()
+        {
+            CloseRconConsole();
+
+            if (this.ProfileSnapshot == null || !this.ProfileSnapshot.RCONEnabled)
+                return;
+
+            try
+            {
+                var endPoint = new IPEndPoint(IPAddress.Parse(this.ProfileSnapshot.ServerIP), this.ProfileSnapshot.RCONPort);
+                var server = ServerQuery.GetServerInstance(EngineType.Source, endPoint, sendTimeOut: 10000, receiveTimeOut: 10000);
+                if (server == null)
+                {
+                    return;
+                }
+
+                Task.Delay(1000).Wait();
+
+                _rconConsole = server.GetControl(this.ProfileSnapshot.AdminPassword);
+                if (_rconConsole == null)
+                {
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private bool SendCommand(string command, bool retryIfFailed)
+        {
+            if (this.ProfileSnapshot == null || !this.ProfileSnapshot.RCONEnabled)
+                return false;
+            if (string.IsNullOrWhiteSpace(command))
+                return false;
+
+            int retries = 0;
+            int rconRetries = 0;
+            int maxRetries = retryIfFailed ? RCON_MAXRETRIES : 1;
+
+            while (retries < maxRetries && rconRetries < RCON_MAXRETRIES)
+            {
+                SetupRconConsole();
+
+                if (_rconConsole == null)
+                {
+                    rconRetries++;
+                }
+                else
+                {
+                    rconRetries = 0;
+                    try
+                    {
+                        _rconConsole.SendCommand(command);
+
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    retries++;
+                }
+            }
+
+            return false;
+        }
+
+        private bool SendMessage(string message, CancellationToken token)
+        {
+            var sent = SendCommand($"broadcast {message}", false);
+
+            if (sent)
+            {
+                try
+                {
+                    Task.Delay(Config.Default.SendMessageDelay, token).Wait(token);
+                }
+                catch { }
+            }
+
+            return sent;
         }
     }
 }
