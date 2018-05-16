@@ -31,7 +31,7 @@
             <vm:SecondsToHoursConverter x:Key="SecondsToHoursConverter"/>
             <vm:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
+            
             <ObjectDataProvider x:Key="ArkApplications" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="lib:ArkApplication" />
@@ -540,7 +540,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-
+                        
                         <Button Grid.Column="0" Grid.Row="0" Width="22" Height="22" Click="RemovePlayerLevel_Click" Margin="2" >
                             <Image Margin="5,0,5,0" Source="{lib:Icon Path=/Ark Server Manager;component/Art/Delete.ico,Size=32}"/>
                         </Button>
@@ -1268,7 +1268,6 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition />
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" MinWidth="100"/>
@@ -1329,15 +1328,10 @@
                                                 </Label.Style>
                                             </Label>
                                         </StackPanel>
-
+                                        
                                         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Text="{Binding MOTD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" ToolTip="{DynamicResource ServerSettings_MOTDTooltip}" AcceptsReturn="True" TextWrapping="Wrap" MaxLength="4096" SpellCheck.IsEnabled="True" VerticalScrollBarVisibility="Auto" SourceUpdated="MOTD_SourceUpdated"/>
 
-                                        <Label Grid.Row="2" Grid.Column="0" Margin="15,1" Content="{DynamicResource ServerSettings_MOTDDurationLabel}" Grid.ColumnSpan="2"></Label>
-                                        <local:AnnotatedSlider Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="1" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
-
-                                        <CheckBox Grid.Row="3" Grid.Column="0" Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{DynamicResource ServerSettings_MOTDIntervalEnabledLabel}" IsChecked="{Binding MOTDIntervalEnabled}" ToolTip="{DynamicResource ServerSettings_MOTDIntervalEnabledTooltip}" Height="14" Width="100"/>
-                                        <local:AnnotatedSlider Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="1" Value="{Binding MOTDInterval}" Suffix="{DynamicResource ServerSettings_MOTDIntervalUnits}" Minimum="10" Maximum="1440" TickFrequency="60" SmallChange="10" LargeChange="60" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" IsEnabled="{Binding MOTDIntervalEnabled}" ToolTip="{DynamicResource ServerSettings_MOTDIntervalTooltip}" />
-
+                                        <local:AnnotatedSlider Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="1" Label="{DynamicResource ServerSettings_MOTDDurationLabel}" Value="{Binding MOTDDuration}" Suffix="{DynamicResource ServerSettings_MOTDDurationUnits}" Minimum="1" Maximum="30" TickFrequency="5" SmallChange="1" LargeChange="5" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_MOTDDurationTooltip}" />
                                     </Grid>
                                 </GroupBox>
 
@@ -1383,7 +1377,7 @@
                                         <CheckBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" IsChecked="{Binding NoDinos}" Content="{DynamicResource ServerSettings_NoDinosLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_NoDinosTooltip}"/>
                                         <CheckBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" IsChecked="{Binding EnableServerAutoForceRespawnWildDinosInterval}" Content="{DynamicResource ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_EnableServerAutoForceRespawnWildDinosIntervalTooltip}"/>
                                         <local:AnnotatedSlider Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,1,5,1" Label="{DynamicResource ServerSettings_ServerAutoForceRespawnWildDinosIntervalLabel}" Value="{Binding ServerAutoForceRespawnWildDinosInterval, Converter={StaticResource SecondsToHoursConverter}}" Suffix="{DynamicResource SliderUnits_Hours}" Minimum="1" Maximum="720" SmallChange="1" LargeChange="24" TickFrequency="24" LabelRelativeWidth="Auto" SliderRelativeWidth="15*" SuffixRelativeWidth="Auto" ToolTip="{DynamicResource ServerSettings_ServerAutoForceRespawnWildDinosIntervalTooltip}" IsEnabled="{Binding EnableServerAutoForceRespawnWildDinosInterval, FallbackValue=False}"/>
-
+                                        
                                         <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,5,0" Orientation="Horizontal">
                                             <Label Content="{DynamicResource ServerSettings_AltSaveDirectoryNameLabel}" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}" VerticalAlignment="Center" MinWidth="200"/>
                                             <TextBox Margin="10,1,0,1" VerticalContentAlignment="Center" Width="200" HorizontalAlignment="Left" ToolTip="{DynamicResource ServerSettings_AltSaveDirectoryNameTooltip}">
@@ -1634,7 +1628,7 @@
                                             </Grid.Style>
 
                                             <CheckBox Grid.Row="0" Margin="5,5,5,0" Content="{DynamicResource ServerSettings_AutoStartLabel}" IsChecked="{Binding EnableAutoStart}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_AutoStartTooltip}" HorizontalAlignment="Left"/>
-
+                                            
                                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5,5,5,0" IsEnabled="{Binding ElementName=EnableSOTFCheckbox, Path=IsChecked, Converter={StaticResource InvertBooleanConverter}}" >
                                                 <CheckBox Name="EnableAutoShutdown1Checkbox" IsChecked="{Binding EnableAutoShutdown1}" Content="{DynamicResource ServerSettings_EnableAutoShutdownLabel}" VerticalAlignment="Center" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}"/>
                                                 <TextBox Margin="10,0,0,0" Width="60" IsEnabled="{Binding ElementName=EnableAutoShutdown1Checkbox, Path=IsChecked}" ToolTip="{DynamicResource ServerSettings_EnableAutoShutdownTooltip}">
@@ -1757,7 +1751,7 @@
                                         <local:AnnotatedSlider Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Label="{DynamicResource ServerSettings_SupplyCrateLootQualityMultiplierLabel}" Value="{Binding SupplyCrateLootQualityMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="5" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_SupplyCrateLootQualityMultiplierTooltip}" />
 
                                         <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding EnableNoFishLoot}" Content="{DynamicResource ServerSettings_EnableNoFishLootLabel}" ToolTip="{DynamicResource ServerSettings_EnableNoFishLootTooltip}" HorizontalAlignment="Left"/>
-
+                                        
                                         <local:AnnotatedSlider Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Label="{DynamicResource ServerSettings_FishingLootQualityMultiplierLabel}" Value="{Binding FishingLootQualityMultiplier}" Suffix="{DynamicResource SliderUnits_Multiplier}" Minimum="0" Maximum="5" SmallChange="0.1" LargeChange="1" TickFrequency="1"  ToolTip="{DynamicResource ServerSettings_FishingLootQualityMultiplierTooltip}" />
 
                                         <CheckBox Grid.Row="7" Grid.Column="0" Margin="5,5,5,0" IsChecked="{Binding UseCorpseLocator}" Content="{DynamicResource ServerSettings_UseCorpseLocatorLabel}" ToolTip="{DynamicResource ServerSettings_UseCorpseLocatorTooltip}" HorizontalAlignment="Left" />
@@ -3034,7 +3028,7 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-
+                                
                                 <CheckBox Grid.Row="0" Margin="5" Content="{DynamicResource ServerSettings_AutoUnlockAllEngramsLabel}" IsChecked="{Binding AutoUnlockAllEngrams}" ToolTip="{DynamicResource ServerSettings_AutoUnlockAllEngramsTooltip}" HorizontalAlignment="Left"/>
 
                                 <GroupBox Grid.Row="1" Style="{StaticResource GroupBoxStyle}">
@@ -3287,7 +3281,7 @@
                                             </Button>
                                         </StackPanel>
                                     </GroupBox.Header>
-
+                                    
                                     <GroupBox.Style>
                                         <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}">
                                             <Style.Triggers>
@@ -4328,7 +4322,7 @@
                                         <DataGrid.VerticalGridLinesBrush>
                                             <SolidColorBrush Color="#FFB4B4B4"/>
                                         </DataGrid.VerticalGridLinesBrush>
-
+                                        
                                         <DataGrid.Columns>
                                             <DataGridTemplateColumn Width="*" MinWidth="100" CanUserSort="True" SortMemberPath="DisplayName">
                                                 <DataGridTemplateColumn.Header>
