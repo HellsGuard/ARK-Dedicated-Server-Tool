@@ -106,4 +106,7 @@
     <Resource Include="Art\Edit.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)\ARK Server Manager\$(OutDir)Plugins\*.*" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

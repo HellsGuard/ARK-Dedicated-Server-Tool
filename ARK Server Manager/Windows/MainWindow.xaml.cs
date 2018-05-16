@@ -9,6 +9,7 @@ using WPFSharp.Globalizer;
 using System.Threading;
 using NLog;
 using System.Reflection;
+using ARK_Server_Manager.Utils;
 
 namespace ARK_Server_Manager
 {
@@ -178,6 +179,12 @@ namespace ARK_Server_Manager
             RCONWindow.CloseAllWindows();
             PlayerListWindow.CloseAllWindows();
             this.versionChecker.DisposeAsync().DoNotWait();
+
+            var installFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var backupFolder = IOUtils.NormalizePath(string.IsNullOrWhiteSpace(Config.Default.BackupPath)
+                ? Path.Combine(Config.Default.DataDir, Config.Default.BackupDir)
+                : Path.Combine(Config.Default.BackupPath));
+            SettingsUtils.BackupUserConfigSettings(Config.Default, "userconfig.json", installFolder, backupFolder);
         }
 
         private void ResourceDictionaryChangedEvent(object source, ResourceDictionaryChangedEventArgs e)

@@ -98,6 +98,7 @@
     <sys:String x:Key="PlayerList_Menu_FilterBanned">Afficher banni</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterWhitelisted">Afficher Liste blanche</sys:String>
     <sys:String x:Key="PlayerList_Menu_FilterInvalid">Afficher Invalide</sys:String>
+    <sys:String x:Key="PlayerList_Menu_ShowAvatars">Afficher les avatars de joueurs</sys:String>
 
     <!-- Mod Details Window -->
     <sys:String x:Key="ModDetails_Title">Détails du mod</sys:String>
@@ -286,9 +287,6 @@
     <sys:String x:Key="GlobalSettings_SteamAPIKeyButtonLabel">Obtenir la clé Web Api...</sys:String>
     <sys:String x:Key="GlobalSettings_SteamAPIKeyHelpButtonLabel">Aide...</sys:String>
     <sys:String x:Key="GlobalSettings_LanguageSelectionLabel">Langue</sys:String>
-    <sys:String x:Key="GlobalSettings_RconOptionsLabel">Options RCON</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsLabel">Télécharger les avatars du joueur</sys:String>
-    <sys:String x:Key="GlobalSettings_Rcon_DownloadPlayerAvatarsTooltip">Si activé, les images de l'avatar du joueur seront téléchargées à partir de steam pour être affichées dans la liste des joueurs RCON.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsLabel">Options de Personnalisation</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingLabel">Activer les substitutions d'artisanat</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideCraftingTooltip">Si elle est activée, les substitutions d'artisanat seront gérées par ASM.</sys:String>
@@ -296,6 +294,10 @@
     <sys:String x:Key="GlobalSettings_CustomOverrideMapSpawnerTooltip">Si cette option est activée, les remplacements de dino de cartes seront gérés par ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateLabel">Activer les remplacements de caisse d'approvisionnement</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideSupplyCrateTooltip">Si activé, les remplacements de caisse d'approvisionnement seront gérés par ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMLabel">Activer les paramètres Ark PGM</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverridePGMTooltip">Si activé, les paramètres PGM seront gérés par ASM.</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFLabel">Activer les paramètres SotF</sys:String>
+    <sys:String x:Key="GlobalSettings_CustomOverrideSOTFTooltip">Si activé, les paramètres SotF seront gérés par ASM.</sys:String>
     <sys:String x:Key="GlobalSettings_CustomOverrideOptionsWarningLabel">AVERTISSEMENT: Tant que l'une de ces options est désactivée, ASM ne lit ni n'écrit les paramètres de remplacement associés. Si vous réactivez l'une de ces options, TOUS les remplacements associés existants seront supprimés du fichier de configuration.</sys:String>
     <sys:String x:Key="GlobalSettings_ServerStartupLabel">Options de démarrage du serveur</sys:String>
     <sys:String x:Key="GlobalSettings_CustomLevelXPIncreasePlayerLabel">Augmentation du niveau du joueur:</sys:String>
@@ -469,7 +471,7 @@
     <sys:String x:Key="MainWindow_NewProfileTooltip">Créer un nouveau profil de serveur.</sys:String>
     <sys:String x:Key="MainWindow_CloseProfileTooltip">Supprimer le profil du serveur.</sys:String>
     <sys:String x:Key="MainWindow_VersionLabel">Version ASM:</sys:String>
-    <sys:String x:Key="MainWindow_BetaVersionLabel">Beta Version:</sys:String>
+    <sys:String x:Key="MainWindow_BetaVersionLabel">Version Béta:</sys:String>
     <sys:String x:Key="MainWindow_MyIpLabel">Mon adresse IP publique:</sys:String>
     <sys:String x:Key="MainWindow_MyIpTooltip">Les lecteurs d'adresse IP utilisent pour se connecter à votre serveur.</sys:String>
     <sys:String x:Key="MainWindow_MyIpError">Adresse IP ou nom d'hôte non valide</sys:String>
@@ -771,6 +773,7 @@
 
     <sys:String x:Key="ServerSettings_MOTDLabel">Le message du jour</sys:String>
     <sys:String x:Key="ServerSettings_MOTDTooltip">Le message du jour affiché aux utilisateurs lorsqu'ils se connectent au serveur.</sys:String>
+    <sys:String x:Key="ServerSettings_MOTDLineCountLabel">Lines:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDLengthLabel">Longueur:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationLabel">Durée d'affichage:</sys:String>
     <sys:String x:Key="ServerSettings_MOTDDurationTooltip">L'heure à laquelle le message du jour sera affiché lorsque l'utilisateur se connecte au serveur.</sys:String>
@@ -837,6 +840,12 @@
     <sys:String x:Key="ServerSettings_NotifyAdminCommandsInChatTooltip">Si cette option est activée, les commandes d'administration seront renvoyées pour permettre aux administrateurs de voir.</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresLabel">Logs tribu des Structures ennemies détruites</sys:String>
     <sys:String x:Key="ServerSettings_TribeLogDestroyedEnemyStructuresTooltip">Si activé, le Log de destruction de la structure ennemie (pour la tribu victime) affichera la tribu attaquante dans les Logs de tribu, au lieu d'un message de destruction de structure générique.</sys:String>
+
+    <sys:String x:Key="ServerSettings_BranchLabel">Détails de la branche du jeux </sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameLabel">Nom de la branche du jeux:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchNameTooltip">Le nom de la branche  Ark à télécharger (laissez vide pour utiliser la branche par défaut).</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordLabel">Mot de passe de la branche:</sys:String>
+    <sys:String x:Key="ServerSettings_BranchPasswordTooltip">Le mot de passe utilisé pour accéder au téléchargement ds branches Béta.</sys:String>
 
     <sys:String x:Key="ServerSettings_CommandLineLabel">Ligne de commande</sys:String>
     <sys:String x:Key="ServerSettings_LauncherArgsLabel">Lanceur Args:</sys:String>
@@ -1404,6 +1413,8 @@
     <sys:String x:Key="ServerSettings_EngramsSelectAllTooltip">Sélectionnez tous les engrammes.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsUnselectAllTooltip">Désélectionner tout les engrammes.</sys:String>
     <sys:String x:Key="ServerSettings_EngramsFilterLabel">Filtre:</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsLabel">Filtrer uniquement les engrammes sélectionnés</sys:String>
+    <sys:String x:Key="ServerSettings_FilterOnlySelectedEngramsTooltip">Si activé, seul l'engramme sélectionné sera visible.</sys:String>
     <sys:String x:Key="ServerSettings_SaveEngramOverrideColumnLabel">Sélectionner</sys:String>
     <sys:String x:Key="ServerSettings_EngramsNameColumnLabel">Nom</sys:String>
     <sys:String x:Key="ServerSettings_EngramsArkAppColumnLabel">Application Ark.</sys:String>
@@ -1918,6 +1929,7 @@
     <sys:String x:Key="RCON_Menu_FilterBanned">Afficher banni</sys:String>
     <sys:String x:Key="RCON_Menu_FilterWhitelisted">Afficher la liste blanche</sys:String>
     <sys:String x:Key="RCON_Menu_FilterInvalid">Afficher invalide</sys:String>
+    <sys:String x:Key="RCON_Menu_ShowAvatars">Afficher les avatars des joueurs</sys:String>
 
     <sys:String x:Key="RCON_Menu_ChatPlayer">Discuter avec le joueur...</sys:String>
     <sys:String x:Key="RCON_Menu_RenamePlayer">Renommer le joueur...</sys:String>
@@ -2028,6 +2040,9 @@
 
     <!-- Settings window -->
     <sys:String x:Key="Settings_Title">Paramètres</sys:String>
+
+    <!-- Game Map Names -->
+    <sys:String x:Key="Branch_live">Version Steam (Défaut)</sys:String>
 
     <!-- Game Map Names -->
     <sys:String x:Key="TheIsland">The Island</sys:String>
@@ -3595,7 +3610,7 @@
     <sys:String x:Key="PrimalItemStructure_Campfire_C">Campfire</sys:String>
     <sys:String x:Key="PrimalItemStructure_Cannon_C">Cannon</sys:String>
     <sys:String x:Key="PrimalItemStructure_ChemBench_C">Chemistry Bench</sys:String>
-    <sys:String x:Key="PrimalItemStructure_ChristmasTree_C">Holiday Tree</sys:String>
+    <sys:String x:Key="PrimalItemStructure_ChristmasTree_C">Abre de Noël</sys:String>
     <sys:String x:Key="PrimalItemStructure_CompostBin_C">Compost Bin</sys:String>
     <sys:String x:Key="PrimalItemStructure_CookingPot_C">Cooking Pot</sys:String>
     <sys:String x:Key="PrimalItemStructure_CropPlot_Large_C">Large Crop Plot</sys:String>

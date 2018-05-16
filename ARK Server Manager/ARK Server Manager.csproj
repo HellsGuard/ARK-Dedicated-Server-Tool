@@ -32,7 +32,7 @@
     <PublisherName>Ark Server Manager</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.328.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.329.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -167,6 +167,7 @@
     <Compile Include="Common\Converters\IntRangeValueConverter.cs" />
     <Compile Include="Common\Extensions\IconExtension.cs" />
     <Compile Include="Common\Lib\BrowserBehavior.cs" />
+    <Compile Include="Common\Lib\UserScopedSettingContractResolver.cs" />
     <Compile Include="Common\Model\PublishedFileDetail.cs" />
     <Compile Include="Common\Model\SteamCmdManifestDetails.cs" />
     <Compile Include="Common\Model\VersionFeed.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Common\Serialization\IniKey.cs" />
     <Compile Include="Common\Serialization\IniSection.cs" />
     <Compile Include="Common\Utils\IOUtils.cs" />
+    <Compile Include="Common\Utils\SettingsUtils.cs" />
     <Compile Include="Common\Utils\VersionFeedUtils.cs" />
     <Compile Include="Lib\Enums\LevelProgression.cs" />
     <Compile Include="Lib\Enums\ServerProfileCategory.cs" />

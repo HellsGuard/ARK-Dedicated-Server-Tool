@@ -489,10 +489,8 @@ namespace ARK_Server_Manager.Lib
 
                 try
                 {
-                    DataFileDetails.PlayerFileFolder = savedPath;
-                    DataFileDetails.TribeFileFolder = savedPath;
                     // load the player data from the files.
-                    dataContainer = await DataContainer.CreateAsync();
+                    dataContainer = await DataContainer.CreateAsync(savedPath, savedPath);
                 }
                 catch (Exception ex)
                 {
@@ -522,7 +520,6 @@ namespace ARK_Server_Manager.Lib
                 catch (Exception ex)
                 {
                     errorLogger.Error($"{nameof(UpdatePlayerDetailsAsync)} - Error: LoadSteamAsync. {ex.Message}\r\n{ex.StackTrace}");
-                    return;
                 }
 
                 token.ThrowIfCancellationRequested();
