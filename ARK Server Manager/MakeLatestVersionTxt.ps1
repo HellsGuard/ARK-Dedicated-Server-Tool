@@ -14,18 +14,6 @@
 
     [Parameter()]
     [string]$filenamePrefix = "Ark Server Manager_",
-
-    [Parameter()]
-    [string]$signTool = "C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\SignTool.exe",
-
-    [Parameter()]
-    [string]$signFile = "ARK Server Manager.exe",
-
-    [Parameter()]
-    [string]$signNFlag = "${env:SIGN_NFLAG}",
-
-    [Parameter()]
-    [string]$signTFlag = "http://timestamp.verisign.com/scripts/timstamp.dll"
 )
 
 [string] $AppVersion = ""
@@ -37,18 +25,6 @@ function Get-LatestVersion()
     $xml = [xml](Get-Content $xmlFile)
     $version = $xml.assembly.assemblyIdentity | Select version
     return $version.version;
-}
-
-function Sign-Application ( $sourcePath )
-{
-	if(Test-Path $signTool)
-	{
-		if(($signFile -ne "") -and ($signNFlag -ne "") -and ($signTFlag -ne ""))
-		{
-			Write-Host "Signing $($signFile)"
-			& $signTool sign /n "$($signNFlag)" /t $signTFlag "$($sourcePath)\$($signFile)"
-		}
-	}
 }
 
 function Create-Zip( $sourcePath , $zipFile )
@@ -73,8 +49,6 @@ Write-Host "LatestVersion $($AppVersionShort) ($($AppVersion))"
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
 $publishSrcDir = "$($rootPath)\$($publishDir)\Application Files\$($filenamePrefix)$($versionWithUnderscores)"
 Remove-Item -Path "$($publishSrcDir)\$($srcXmlFilename)" -ErrorAction Ignore
-
-Sign-Application $publishSrcDir
 
 $filenamePrefixStripped = $filenamePrefix.Replace(' ', '')
 $zipDestFileName = "$($filenamePrefixStripped)$($AppVersionShort).zip"
