@@ -12,7 +12,7 @@ namespace ArkServerManager.Plugin.Discord {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
     internal sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
         
         private static Config defaultInstance = ((Config)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Config())));
@@ -25,7 +25,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/plugin/call/{0}/{1}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PluginCallUrlFormat {
             get {
                 return ((string)(this["PluginCallUrlFormat"]));
@@ -43,8 +43,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.P" +
-            "lugin.Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LatestDownloadUrl {
             get {
                 return ((string)(this["LatestDownloadUrl"]));
@@ -53,8 +52,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/release/ArkServerManager.P" +
-            "lugin.Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LatestVersionUrl {
             get {
                 return ((string)(this["LatestVersionUrl"]));
@@ -63,8 +61,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plug" +
-            "in.Discord.zip")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LatestBetaDownloadUrl {
             get {
                 return ((string)(this["LatestBetaDownloadUrl"]));
@@ -73,8 +70,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/discordplugin/beta/ArkServerManager.Plug" +
-            "in.Discord.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LatestBetaVersionUrl {
             get {
                 return ((string)(this["LatestBetaVersionUrl"]));
@@ -110,7 +106,7 @@ namespace ArkServerManager.Plugin.Discord {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E0CF2C1F-17B7-45E1-A2C9-2718493D0873")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PluginCode {
             get {
                 return ((string)(this["PluginCode"]));
