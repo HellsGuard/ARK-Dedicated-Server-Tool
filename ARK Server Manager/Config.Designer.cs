@@ -12,7 +12,7 @@ namespace ARK_Server_Manager {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
     public sealed partial class Config : global::System.Configuration.ApplicationSettingsBase {
         
         private static Config defaultInstance = ((Config)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Config())));
@@ -316,7 +316,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("04149324FF1D918789B9BC55903A0665")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DefaultSteamAPIKey {
             get {
                 return ((string)(this["DefaultSteamAPIKey"]));
@@ -1341,7 +1341,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/{0}/{1}/{2}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ServerStatusUrlFormat {
             get {
                 return ((string)(this["ServerStatusUrlFormat"]));
@@ -1455,7 +1455,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/api/server/call/{0}/{1}/{2}/{3}/{4}/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ServerCallUrlFormat {
             get {
                 return ((string)(this["ServerCallUrlFormat"]));
@@ -1955,7 +1955,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ServerManagerCode {
             get {
                 return ((string)(this["ServerManagerCode"]));
@@ -2078,8 +2078,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/release/versionfeed.xml" +
-            "")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ServerManagerVersionFeedUrl {
             get {
                 return ((string)(this["ServerManagerVersionFeedUrl"]));
@@ -2088,7 +2087,7 @@ namespace ARK_Server_Manager {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://arksm.azurewebsites.net/downloads/arkservermanager/beta/versionfeed.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ServerManagerVersionBetaFeedUrl {
             get {
                 return ((string)(this["ServerManagerVersionBetaFeedUrl"]));
