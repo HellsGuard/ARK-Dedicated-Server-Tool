@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,14 +22,27 @@ namespace ARK_Server_Manager.Lib
             protected set { SetValue(RuntimeProperty, value); }
         }
 
-        public void ImportFromPath(string path)
+        private Server(ServerProfile profile)
         {
-            var profile = ServerProfile.LoadFrom(path);
             InitializeFromProfile(profile);
         }
 
-        private Server(ServerProfile profile)
+        public void Dispose()
         {
+            this.Profile.DestroyServerFilesWatcher();
+
+            this.Runtime.StatusUpdate -= Runtime_StatusUpdate;
+            this.Runtime.Dispose();
+        }
+
+        private void Runtime_StatusUpdate(object sender, EventArgs eventArgs)
+        {
+            this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
+        }
+
+        public void ImportFromPath(string path)
+        {
+            var profile = ServerProfile.LoadFrom(path);
             InitializeFromProfile(profile);
         }
 
@@ -41,6 +51,8 @@ namespace ARK_Server_Manager.Lib
             this.Profile = profile;
             this.Runtime = new ServerRuntime();
             this.Runtime.AttachToProfile(this.Profile).Wait();
+
+            this.Runtime.StatusUpdate += Runtime_StatusUpdate;
         }
 
         public static Server FromPath(string path)
@@ -66,17 +78,12 @@ namespace ARK_Server_Manager.Lib
             await this.Runtime.StopAsync();
         }
 
-        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool validate)
+        public async Task<bool> UpgradeAsync(CancellationToken cancellationToken, bool updateServer, ServerBranchSnapshot branch, bool validate, bool updateMods, ProgressDelegate progressCallback)
         {
             await this.Runtime.AttachToProfile(this.Profile);
-            var success = await this.Runtime.UpgradeAsync(cancellationToken, validate);
+            var success = await this.Runtime.UpgradeAsync(cancellationToken, updateServer, branch, validate, updateMods, progressCallback);
             this.Profile.LastInstalledVersion = this.Runtime.Version.ToString();
             return success;
-        }
-
-        public void Dispose()
-        {
-            this.Runtime.Dispose();
         }
     }
 }

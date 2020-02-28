@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ASMWebAPI" GeneratedClassName="Config">
+  <Profiles />
+  <Settings>
+    <Setting Name="LogsDir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/Logs</Value>
+    </Setting>
+    <Setting Name="ServerManagerCode1" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ED89B8FA-0E0B-46CC-A90B-595E69AE9A7E</Value>
+    </Setting>
+    <Setting Name="PluginCode1" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">E0CF2C1F-17B7-45E1-A2C9-2718493D0873</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

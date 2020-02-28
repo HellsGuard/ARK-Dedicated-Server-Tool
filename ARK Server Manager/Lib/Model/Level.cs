@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Xml.Serialization;
-using System.Windows.Data;
-using System.Collections.ObjectModel;
+using TinyCsvParser.Mapping;
+using System.Runtime.Serialization;
 
 namespace ARK_Server_Manager.Lib
 {
-
+    [DataContract]
     public class LevelList : SortableObservableCollection<Level>
     {
         const bool WORKAROUND_FOR_ENGRAM_LIST = true;
+        const int ASCENSION_LEVELS = 30;
+
         public static readonly Regex XPRegex = new Regex(@"ExperiencePointsForLevel\[(?<level>\d*)]=(?<xp>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
         public static readonly Regex EngramRegex = new Regex(@"OverridePlayerLevelEngramPoints=(?<points>\d*)", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
@@ -29,7 +28,7 @@ namespace ARK_Server_Manager.Lib
 
         public void AddRange(IEnumerable<Level> levels)
         {
-            foreach(var level in levels)
+            foreach (var level in levels)
             {
                 base.Add(level);
             }
@@ -39,10 +38,15 @@ namespace ARK_Server_Manager.Lib
 
         public void AddNewLevel(Level afterLevel)
         {
+            AddNewLevel(afterLevel, 1);
+        }
+
+        public void AddNewLevel(Level afterLevel, int xpIncrease)
+        {
             var newLevel = new Level
             {
                 LevelIndex = 0,
-                XPRequired = afterLevel.XPRequired + 1,
+                XPRequired = afterLevel.XPRequired + xpIncrease,
                 EngramPoints = afterLevel.EngramPoints
             };
 
@@ -64,6 +68,7 @@ namespace ARK_Server_Manager.Lib
                 existingLevel.EngramTotal = engramTotal;
 
                 existingLevel.LevelIndex = index;
+                existingLevel.ShowColored = index >= this.Count - ASCENSION_LEVELS;
                 index++;
             }
 
@@ -104,9 +109,9 @@ namespace ARK_Server_Manager.Lib
             var xpResult = XPRegex.Match(xpValue);
             var engramResult = engramValues == null ? null : EngramRegex.Match(String.Join(" ", engramValues));
 
-            if(WORKAROUND_FOR_ENGRAM_LIST)
+            if (WORKAROUND_FOR_ENGRAM_LIST)
             {
-                if(engramResult != null)
+                if (engramResult != null)
                 {
                     engramResult = engramResult.NextMatch();
                 }
@@ -151,32 +156,31 @@ namespace ARK_Server_Manager.Lib
         }
     }
 
-    [Serializable()]
+    [DataContract]
     public class Level : DependencyObject
     {
-        public static readonly DependencyProperty EngramTotalProperty =
-            DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty XPTotalProperty =
-            DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty EngramPointsProperty =
-            DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty XPRequiredProperty =
-            DependencyProperty.Register(nameof(XPRequired), typeof(int), typeof(Level), new PropertyMetadata(0));
-        public static readonly DependencyProperty LevelIndexProperty =
-            DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
-        
+        public static readonly DependencyProperty LevelIndexProperty = DependencyProperty.Register(nameof(LevelIndex), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty XPRequiredProperty = DependencyProperty.Register(nameof(XPRequired), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty EngramPointsProperty = DependencyProperty.Register(nameof(EngramPoints), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty XPTotalProperty = DependencyProperty.Register(nameof(XPTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty EngramTotalProperty = DependencyProperty.Register(nameof(EngramTotal), typeof(int), typeof(Level), new PropertyMetadata(0));
+        public static readonly DependencyProperty ShowColoredProperty = DependencyProperty.Register(nameof(ShowColored), typeof(bool), typeof(Level), new PropertyMetadata(false));
+
+        [DataMember]
         public int LevelIndex
         {
             get { return (int)GetValue(LevelIndexProperty); }
             set { SetValue(LevelIndexProperty, value); }
         }
-        
+
+        [DataMember]
         public int XPRequired
         {
             get { return (int)GetValue(XPRequiredProperty); }
             set { SetValue(XPRequiredProperty, value); }
         }
 
+        [DataMember]
         public int EngramPoints
         {
             get { return (int)GetValue(EngramPointsProperty); }
@@ -210,6 +214,45 @@ namespace ARK_Server_Manager.Lib
         internal Level Duplicate()
         {
             return new Level { XPRequired = this.XPRequired, EngramPoints = this.EngramPoints };
+        }
+
+        public bool ShowColored
+        {
+            get { return (bool)GetValue(ShowColoredProperty); }
+            set { SetValue(ShowColoredProperty, value); }
+        }
+    }
+
+    public class CsvPlayerLevelMapping : CsvMapping<ImportLevel>
+    {
+        public CsvPlayerLevelMapping()
+            : base()
+        {
+            MapProperty(0, x => x.LevelIndex);
+            MapProperty(1, x => x.XPRequired);
+            MapProperty(2, x => x.EngramPoints);
+        }
+    }
+
+    public class CsvDinoLevelMapping : CsvMapping<ImportLevel>
+    {
+        public CsvDinoLevelMapping()
+            : base()
+        {
+            MapProperty(0, x => x.LevelIndex);
+            MapProperty(1, x => x.XPRequired);
+        }
+    }
+
+    public class ImportLevel
+    {
+        public int LevelIndex { get; set; }
+        public int XPRequired { get; set; }
+        public int EngramPoints { get; set; }
+
+        public Level AsLevel()
+        {
+            return new Level() { LevelIndex = LevelIndex, XPRequired = XPRequired, EngramPoints = EngramPoints };
         }
     }
 }

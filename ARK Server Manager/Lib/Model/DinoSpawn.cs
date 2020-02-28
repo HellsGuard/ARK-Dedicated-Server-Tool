@@ -1,23 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Xml.Serialization;
 
 namespace ARK_Server_Manager.Lib
-{   
+{
+    [DataContract]
     public class DinoSpawn : AggregateIniValue
     {
-        public const string AggregateValueName = "DinoSpawnWeightMultipliers";
-        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(10.0F));
-        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata("--SET ME--"));
-        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(0.0F));
-        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
+        public const bool DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE = true;
+        public const float DEFAULT_SPAWN_LIMIT_PERCENTAGE = ClassMultiplier.DEFAULT_MULTIPLIER;
+        public const float DEFAULT_SPAWN_WEIGHT_MULTIPLIER = ClassMultiplier.DEFAULT_MULTIPLIER;
+
+        public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSpawn), new PropertyMetadata(ArkApplication.SurvivalEvolved));
+        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownDinoProperty = DependencyProperty.Register(nameof(KnownDino), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(false));
+        public static readonly DependencyProperty DinoNameTagProperty = DependencyProperty.Register(nameof(DinoNameTag), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSpawn), new PropertyMetadata(DEFAULT_SPAWN_WEIGHT_MULTIPLIER));
+
+        [DataMember]
+        public ArkApplication ArkApplication
+        {
+            get { return (ArkApplication)GetValue(ArkApplicationProperty); }
+            set { SetValue(ArkApplicationProperty, value); }
+        }
+
+        [DataMember]
+        public string ClassName
+        {
+            get { return (string)GetValue(ClassNameProperty); }
+            set { SetValue(ClassNameProperty, value); }
+        }
+
+        [DataMember]
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
+
+        [DataMember]
+        public bool KnownDino
+        {
+            get { return (bool)GetValue(KnownDinoProperty); }
+            set { SetValue(KnownDinoProperty, value); }
+        }
 
         [XmlElement(ElementName="Name")]
+        [DataMember]
         [AggregateIniValueEntry]
         public string DinoNameTag
         {
@@ -25,13 +58,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(DinoNameTagProperty, value); }
         }
 
-        [AggregateIniValueEntry]
-        public float SpawnWeightMultiplier
-        {
-            get { return (float)GetValue(SpawnWeightMultiplierProperty); }
-            set { SetValue(SpawnWeightMultiplierProperty, value); }
-        }
-
+        [DataMember]
         [AggregateIniValueEntry]
         public bool OverrideSpawnLimitPercentage
         {
@@ -39,6 +66,7 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(OverrideSpawnLimitPercentageProperty, value); }
         }
 
+        [DataMember]
         [AggregateIniValueEntry]
         public float SpawnLimitPercentage
         {
@@ -46,49 +74,15 @@ namespace ARK_Server_Manager.Lib
             set { SetValue(SpawnLimitPercentageProperty, value); }  
         }
 
-
-
-        public string ClassName
+        [DataMember]
+        [AggregateIniValueEntry]
+        public float SpawnWeightMultiplier
         {
-            get { return (string)GetValue(ClassNameProperty); }
-            set { SetValue(ClassNameProperty, value); }
+            get { return (float)GetValue(SpawnWeightMultiplierProperty); }
+            set { SetValue(SpawnWeightMultiplierProperty, value); }
         }
 
-        public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
-
-        public string CommonName
-        {
-            get
-            {
-                string name = (string)GetValue(CommonNameProperty);
-                // check if the name has been defined (could be an unknown dino).
-                if (string.IsNullOrWhiteSpace(name))
-                    // name not defined, use the DinoNameTag instead.
-                    return DinoNameTag;
-                return name;
-            }
-            set { SetValue(CommonNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty CommonNameProperty = DependencyProperty.Register(nameof(CommonName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
-
-        public string DinoName
-        {
-            get
-            {
-                string name = (string)GetValue(DinoNameProperty);
-                // check if the name has been defined (could be an unknown dino).
-                if (string.IsNullOrWhiteSpace(name))
-                    // name not defined, use the DinoNameTag instead.
-                    return DinoNameTag;
-                return name;
-            }
-            set { SetValue(CommonNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty DinoNameProperty = DependencyProperty.Register(nameof(DinoName), typeof(string), typeof(DinoSpawn), new PropertyMetadata(String.Empty));
-
-
+        public string DisplayName => GameData.FriendlyCreatureNameForClass(ClassName);
 
         public static DinoSpawn FromINIValue(string iniValue)
         {
@@ -97,14 +91,14 @@ namespace ARK_Server_Manager.Lib
             return newSpawn;
         }
 
-        public override bool IsEquivalent(AggregateIniValue other)
-        {
-            return String.Equals(this.DinoNameTag, ((DinoSpawn)other).DinoNameTag, StringComparison.OrdinalIgnoreCase);
-        }
-
         public override string GetSortKey()
         {
             return this.DinoNameTag;
+        }
+
+        public override bool IsEquivalent(AggregateIniValue other)
+        {
+            return String.Equals(this.DinoNameTag, ((DinoSpawn)other).DinoNameTag, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

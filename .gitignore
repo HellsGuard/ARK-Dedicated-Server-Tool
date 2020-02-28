@@ -5,22 +5,36 @@
 *~
 *.pdb
 
+.vs/
 packages/
 ARK Dedicated Server Tool/bin/
 ARK Dedicated Server Tool/obj/
-Ark Server Manager/bin/
-Ark Server Manager/obj/
-Ark Server Manager/publish/
 ARK Dedicated Server Tool Updater/bin/
 ARK Dedicated Server Tool Updater/obj/
 ARK Dedicated Server Tool Updater/publish/
-ASMWeb/bin/
-ASMWeb/obj/
-WPFSharp.Globalizer/bin/
-WPFSharp.Globalizer/obj/
-QueryMaster/bin/
-QueryMaster/obj/
-SteamKit2/bin/
-SteamKit2/obj/
+Ark Server Manager/bin/
+Ark Server Manager/obj/
+Ark Server Manager/publish/
 ArkData/bin/
 ArkData/obj/
+NeXtVdf/bin/
+NeXtVdf/obj/
+Plugin.Common/bin/
+Plugin.Common/obj/
+Plugin.Discord/bin/
+Plugin.Discord/obj/
+Plugin.Discord/publish/
+Plugin.Discord.UnitTests/bin/
+Plugin.Discord.UnitTests/obj/
+QueryMaster/bin/
+QueryMaster/obj/
+ServerManager.Updater/bin/
+ServerManager.Updater/obj/
+SteamKit2/bin/
+SteamKit2/obj/
+WebAPI/bin/
+WebAPI/obj/
+WebAPI/publish/
+WebAPI/Logs/
+WPFSharp.Globalizer/bin/
+WPFSharp.Globalizer/obj/

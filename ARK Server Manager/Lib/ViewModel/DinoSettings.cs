@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib.ViewModel
@@ -12,29 +8,43 @@ namespace ARK_Server_Manager.Lib.ViewModel
     //
     public class DinoSettings : DependencyObject
     {
-        public static readonly DependencyProperty FriendlyNameProperty = DependencyProperty.Register(nameof(FriendlyName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ArkApplicationProperty = DependencyProperty.Register(nameof(ArkApplication), typeof(ArkApplication), typeof(DinoSettings), new PropertyMetadata(ArkApplication.SurvivalEvolved));
         public static readonly DependencyProperty ClassNameProperty = DependencyProperty.Register(nameof(ClassName), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(false));
+        public static readonly DependencyProperty ModProperty = DependencyProperty.Register(nameof(Mod), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty KnownDinoProperty = DependencyProperty.Register(nameof(KnownDino), typeof(bool), typeof(DinoSettings), new PropertyMetadata(false));
+        public static readonly DependencyProperty CanTameProperty = DependencyProperty.Register(nameof(CanTame), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty CanSpawnProperty = DependencyProperty.Register(nameof(CanSpawn), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
         public static readonly DependencyProperty ReplacementClassProperty = DependencyProperty.Register(nameof(ReplacementClass), typeof(string), typeof(DinoSettings), new PropertyMetadata(String.Empty));
-        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSettings), new PropertyMetadata(false));
-        public static readonly DependencyProperty WildDamageMultiplierProperty = DependencyProperty.Register(nameof(WildDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty WildResistanceMultiplierProperty = DependencyProperty.Register(nameof(WildResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty TamedResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty TamedDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
-        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSettings), new PropertyMetadata(1.0f));
+        public static readonly DependencyProperty SpawnWeightMultiplierProperty = DependencyProperty.Register(nameof(SpawnWeightMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER));
+        public static readonly DependencyProperty OverrideSpawnLimitPercentageProperty = DependencyProperty.Register(nameof(OverrideSpawnLimitPercentage), typeof(bool), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty SpawnLimitPercentageProperty = DependencyProperty.Register(nameof(SpawnLimitPercentage), typeof(float), typeof(DinoSettings), new PropertyMetadata(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE));
+        public static readonly DependencyProperty TamedDamageMultiplierProperty = DependencyProperty.Register(nameof(TamedDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty TamedResistanceMultiplierProperty = DependencyProperty.Register(nameof(TamedResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty WildDamageMultiplierProperty = DependencyProperty.Register(nameof(WildDamageMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
+        public static readonly DependencyProperty WildResistanceMultiplierProperty = DependencyProperty.Register(nameof(WildResistanceMultiplier), typeof(float), typeof(DinoSettings), new PropertyMetadata(ClassMultiplier.DEFAULT_MULTIPLIER));
 
-        public string FriendlyName
+        public ArkApplication ArkApplication
         {
-            get { return (string)GetValue(FriendlyNameProperty); }
-            set { SetValue(FriendlyNameProperty, value); }
+            get { return (ArkApplication)GetValue(ArkApplicationProperty); }
+            set { SetValue(ArkApplicationProperty, value); }
         }
-      
+
         public string ClassName
         {
             get { return (string)GetValue(ClassNameProperty); }
             set { SetValue(ClassNameProperty, value); }
+        }
+
+        public string Mod
+        {
+            get { return (string)GetValue(ModProperty); }
+            set { SetValue(ModProperty, value); }
+        }
+
+        public bool KnownDino
+        {
+            get { return (bool)GetValue(KnownDinoProperty); }
+            set { SetValue(KnownDinoProperty, value); }
         }
 
         public bool CanTame
@@ -48,15 +58,6 @@ namespace ARK_Server_Manager.Lib.ViewModel
             get { return (bool)GetValue(CanSpawnProperty); }
             set { SetValue(CanSpawnProperty, value); }
         }
-
-        public bool CanSetSpawnMultipliers
-        {
-            get { return (bool)GetValue(CanSetSpawnMultipliersProperty); }
-            set { SetValue(CanSetSpawnMultipliersProperty, value); }
-        }
-
-        public static readonly DependencyProperty CanSetSpawnMultipliersProperty = DependencyProperty.Register(nameof(CanSetSpawnMultipliers), typeof(bool), typeof(DinoSettings), new PropertyMetadata(true));
-
 
         public string ReplacementClass
         {
@@ -106,6 +107,45 @@ namespace ARK_Server_Manager.Lib.ViewModel
             set { SetValue(WildResistanceMultiplierProperty, value); }
         }
 
+        public string DisplayName => GameData.FriendlyCreatureNameForClass(ClassName);
         public string NameTag { get; internal set; }
+        public bool HasNameTag { get; internal set; }
+        public bool HasClassName { get; internal set; }
+        public bool IsSpawnable { get; internal set; }
+        public DinoTamable IsTameable { get; internal set; }
+
+        public float OriginalSpawnWeightMultiplier { get; internal set; }
+        public bool OriginalOverrideSpawnLimitPercentage { get; internal set; }
+        public float OriginalSpawnLimitPercentage { get; internal set; }
+
+        public DinoSettings Clone()
+        {
+            return new DinoSettings()
+            {
+                ArkApplication = ArkApplication,
+                ClassName = ClassName,
+                Mod = Mod,
+                KnownDino = KnownDino,
+                NameTag = NameTag,
+
+                CanSpawn = CanSpawn,
+                CanTame = CanTame,
+                ReplacementClass = ReplacementClass,
+
+                SpawnWeightMultiplier = SpawnWeightMultiplier,
+                OverrideSpawnLimitPercentage = OverrideSpawnLimitPercentage,
+                SpawnLimitPercentage = SpawnLimitPercentage,
+
+                TamedDamageMultiplier = TamedDamageMultiplier,
+                TamedResistanceMultiplier = TamedResistanceMultiplier,
+                WildDamageMultiplier = WildDamageMultiplier,
+                WildResistanceMultiplier = WildResistanceMultiplier,
+
+                HasNameTag = HasNameTag,
+                HasClassName = HasClassName,
+                IsSpawnable = IsSpawnable,
+                IsTameable = IsTameable,
+            };
+        }
     }
 }

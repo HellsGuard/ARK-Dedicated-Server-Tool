@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using WPFSharp.Globalizer;
+using ARK_Server_Manager.Lib;
 
 namespace ARK_Server_Manager
 {
@@ -19,52 +16,73 @@ namespace ARK_Server_Manager
             // Oops!  Bad news everyone - the app is going down!
             // Write out a log file with all the details so users can send us the info...
             
-            string file = Path.GetTempFileName();
-            string crashFile = file + ".dmp";
+            var file = Path.GetTempFileName();
+            var crashFile = file + ".dmp";
+
             try
             {
                 MiniDumpToFile(crashFile);
             }
-            finally
-            {
+            catch { }
 
-                try
+            try
+            {
+                var details = new StringBuilder();
+                details.AppendLine("ARK Server Manager Crash Report");
+                details.AppendLine("Please report this crash to the Ark Server Manager forums - http://arkservermanager.freeforums.net");
+                details.AppendLine();
+
+                details.AppendLine($"Assembly: {Assembly.GetExecutingAssembly()}");
+                details.AppendLine($"Version: {App.Version}");
+                details.AppendLine($"IsAdministrator: {SecurityUtils.IsAdministrator()}");
+                details.AppendLine();
+
+                details.AppendLine($"Windows Platform: {Environment.OSVersion.Platform}");
+                details.AppendLine($"Windows Version: {Environment.OSVersion.VersionString}");
+                details.AppendLine();
+
+                details.AppendLine($"Crash Dump: {crashFile}");
+                details.AppendLine();
+
+                var exception = e.ExceptionObject as Exception;
+                if (exception != null)
                 {
-                    var exception = e.ExceptionObject as Exception;
-                    var details = new StringBuilder();
-                    details.AppendLine("ARK Server Manager Crash Report");
-                    details.AppendLine("Please report this crash to ChronosWS or HellsGuard on Steam").AppendLine();
-                    details.Append("Assembly: ").Append(Assembly.GetExecutingAssembly().ToString()).AppendLine();
-                    details.Append("Crash Dump: ").AppendLine(crashFile);
                     details.AppendLine("Exception Message:");
-                    details.AppendLine(exception.Message).AppendLine();
+                    details.AppendLine(exception.Message);
+                    details.AppendLine();
+
                     details.AppendLine("Stack Trace:");
                     details.AppendLine(exception.StackTrace);
-                    File.WriteAllText(file, details.ToString());
-
-                    var result = MessageBox.Show(String.Format(@"
-OOPS!  ARK Server Manager has suffered from an internal error and must shut down.
-This is probably a bug and should be reported.  The error files are below:
-Error File: {0}
-Crash Dump: {1}
-Please send this file to ChronosWS or HellsGuard on Steam.  The crash log
-will now be opened in notepad.
-", file, crashFile), "ARK Server Manager crashed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-
-
-                    if (result == MessageBoxResult.OK)
-                    {
-                        Process.Start("notepad.exe", file);
-                    }
                 }
-                catch(Exception ex)
+
+                File.WriteAllText(file, details.ToString());
+
+                var message = new StringBuilder();
+                message.AppendLine("OOPS! ARK Server Manager has suffered from an internal error and must shut down, this is probably a bug and should be reported. The error files are:");
+                message.AppendLine($"Error File: {file}");
+                message.AppendLine($"Crash Dump: {crashFile}");
+                details.AppendLine();
+                details.AppendLine();
+                message.AppendLine("Please report this crash to the Ark Server Manager forums - http://arkservermanager.freeforums.net");
+                message.AppendLine("The crash log will now be opened in notepad.");
+
+                var result = MessageBox.Show(message.ToString(), "ARK Server Manager crashed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                if (result == MessageBoxResult.OK)
                 {
-                    try { File.WriteAllText(file, $"Exception trying to write exception: {ex.Message} : {ex.StackTrace} "); } catch { }
+                    Process.Start("notepad.exe", file);
                 }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    File.WriteAllText(file, $"Exception trying to write exception: {ex.Message}\r\nStacktrace: {ex.StackTrace}");
+                }
+                catch { }
             }
         }
 
-        internal enum MINIDUMP_TYPE
+        internal enum MinidumpType
         {
             MiniDumpNormal = 0x00000000,
             MiniDumpWithDataSegs = 0x00000001,
@@ -82,27 +100,16 @@ will now be opened in notepad.
             MiniDumpWithThreadInfo = 0x00001000,
             MiniDumpWithCodeSegs = 0x00002000
         }
+
         [DllImport("dbghelp.dll")]
-        static extern bool MiniDumpWriteDump(
-            IntPtr hProcess,
-            Int32 ProcessId,
-            IntPtr hFile,
-            MINIDUMP_TYPE DumpType,
-            IntPtr ExceptionParam,
-            IntPtr UserStreamParam,
-            IntPtr CallackParam);
+        static extern bool MiniDumpWriteDump(IntPtr hProcess, Int32 ProcessId, IntPtr hFile, MinidumpType DumpType, IntPtr ExceptionParam, IntPtr UserStreamParam, IntPtr CallackParam);
 
         public static void MiniDumpToFile(String fileToDump)
         {
-            FileStream fsToDump = null;
-            fsToDump = File.Create(fileToDump);
+            var fsToDump = File.Create(fileToDump);
 
             Process thisProcess = Process.GetCurrentProcess();
-            MiniDumpWriteDump(thisProcess.Handle, 
-                              thisProcess.Id,
-                              fsToDump.SafeFileHandle.DangerousGetHandle(),
-                              MINIDUMP_TYPE.MiniDumpWithFullMemory,
-                              IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            MiniDumpWriteDump(thisProcess.Handle, thisProcess.Id, fsToDump.SafeFileHandle.DangerousGetHandle(), MinidumpType.MiniDumpWithFullMemory, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
             fsToDump.Close();
         }
     }

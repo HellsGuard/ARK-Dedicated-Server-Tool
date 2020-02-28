@@ -1,821 +1,275 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
+using ARK_Server_Manager.Lib.Utils;
+using ARK_Server_Manager.Lib.ViewModel;
+using WPFSharp.Globalizer;
 
 namespace ARK_Server_Manager.Lib
 {
+    [DefaultValue(SurvivalEvolved)]
+    public enum ArkApplication
+    {
+        /// <summary>
+        /// All has been added only for filter selection.
+        /// </summary>
+        All = 0,
+        SurvivalEvolved,
+        PrimitivePlus,
+        ScorchedEarth,
+        Ragnarok,
+        Aberration,
+        Unknown,
+    }
+
+    [DefaultValue(False)]
+    public enum DinoTamable
+    {
+        False,
+        True,
+        ByBreeding,
+    }
+
     public static class GameData
     {
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_DINO = 415000;
-        public const int DEFAULT_MAX_EXPERIENCE_POINTS_PLAYER = 1083538;
+        public static int DefaultMaxExperiencePointsDino = 10;
+        public static int DefaultMaxExperiencePointsPlayer = 5;
 
-        private static readonly DinoSpawn[] dinoSpawns = new DinoSpawn[]
+        private static BaseGameData gameData = null;
+
+        public static void Initialize()
+        {
+            // read static game data
+            GameDataUtils.ReadAllData(out gameData);
+
+            // read user game data
+            var dataFolder = System.IO.Path.Combine(Config.Default.DataDir, Config.Default.GameDataDir);
+            GameDataUtils.ReadAllData(out BaseGameData userGameData, dataFolder, true);
+
+            // creatures
+            gameData.Creatures.AddRange(userGameData.Creatures);
+
+            dinoSpawns = gameData.Creatures.ConvertAll(item => new DinoSpawn { ClassName = item.ClassName, Mod = item.Mod, KnownDino = true, DinoNameTag = item.NameTag, ArkApplication = item.ArkApplication }).ToArray();
+            dinoMultipliers = gameData.Creatures.ConvertAll(item => new ClassMultiplier { ClassName = item.ClassName }).ToArray();
+
+            // engrams
+            gameData.Engrams.AddRange(userGameData.Engrams);
+
+            engrams = gameData.Engrams.ConvertAll(item => new EngramEntry { EngramClassName = item.ClassName, Mod = item.Mod, KnownEngram = true, EngramLevelRequirement = item.Level, EngramPointsCost = item.Points, IsTekgram = item.IsTekGram, ArkApplication = item.ArkApplication }).ToArray();
+
+            // items
+            gameData.Items.AddRange(userGameData.Items);
+
+            items = gameData.Items.ConvertAll(item => new PrimalItem { ClassName = item.ClassName, Mod = item.Mod, KnownItem = true, Category = item.Category, ArkApplication = item.ArkApplication }).ToArray();
+
+            // resources
+            resourceMultipliers = gameData.Items.Where(item => item.IsHarvestable).ToList().ConvertAll(item => new ResourceClassMultiplier { ClassName = item.ClassName, Mod = item.Mod, KnownResource = true, ArkApplication = item.ArkApplication }).ToArray();
+
+            // map spawners
+            gameData.MapSpawners.AddRange(userGameData.MapSpawners);
+
+            mapSpawners = gameData.MapSpawners.ConvertAll(item => new MapSpawner { ClassName = item.ClassName, Mod = item.Mod, KnownSpawner = true }).ToArray();
+
+            // supply crates
+            gameData.SupplyCrates.AddRange(userGameData.SupplyCrates);
+
+            var crates = gameData.SupplyCrates.ConvertAll(item => new SupplyCrate { ClassName = item.ClassName, Mod = item.Mod, KnownSupplyCrate = true });
+
+            // inventories
+            gameData.Inventories.AddRange(userGameData.Inventories);
+
+            crates.AddRange(gameData.Inventories.ConvertAll(item => new SupplyCrate { ClassName = item.ClassName, Mod = item.Mod, KnownSupplyCrate = true }));
+
+            supplyCrates = crates.ToArray();
+
+            // game maps
+            gameData.GameMaps.AddRange(userGameData.GameMaps);
+
+            if (gameData.GameMaps.Count > 0)
             {
-                new DinoSpawn { ClassName="Angler_Character_BP_C",          DinoNameTag="Angler",          DinoName="Angler Fish",         CommonName="Angler",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ankylo_Character_BP_C",          DinoNameTag="Anky",            DinoName="Ankylosaurus",        CommonName="Ankylo",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ant_Character_BP_C",             DinoNameTag="Ant",             DinoName="Titanomyrma",         CommonName="Titanomyrma Drone",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Argent_Character_BP_C",          DinoNameTag="Argent",          DinoName="Argentavis",          CommonName="Argentavis",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Bat_Character_BP_C",             DinoNameTag="Bat",             DinoName="Onychonycteris",      CommonName="Onyc",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Beaver_Character_BP_C",          DinoNameTag="Beaver",          DinoName="Castoroides",         CommonName="Castoroides",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BigFoot_Character_BP_C",         DinoNameTag="Bigfoot",         DinoName="Gigantopithecus",     CommonName="Gigantopithecus",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="BoaFrill_Character_BP_C",        DinoNameTag="Titanboa",        DinoName="Titanoboa",           CommonName="Titanoboa",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Carno_Character_BP_C",           DinoNameTag="Carno",           DinoName="Carnotaurus",         CommonName="Carnotaurus",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Coel_Character_BP_C",            DinoNameTag="Coel",            DinoName="Coelacanth",          CommonName="Coel",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Compy_Character_BP_C",           DinoNameTag="Compy",           DinoName="Compsognathus",       CommonName="Compy",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dilo_Character_BP_C",            DinoNameTag="Dilo",            DinoName="Dilophosaurus",       CommonName="Dilophosaurus",       SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimetro_Character_BP_C",         DinoNameTag="Dimetro",         DinoName="Dimetrodon",          CommonName="Dimetrodon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dimorph_Character_BP_C",         DinoNameTag="Dimorph",         DinoName="Dimorphodon",         CommonName="Dimorphodon",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direbear_Character_BP_C",        DinoNameTag="Direbear",        DinoName="Direbear",            CommonName="Direbear",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Direwolf_Character_BP_C",        DinoNameTag="Direwolf",        DinoName="Direwolf",            CommonName="Direwolf",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dodo_Character_BP_C",            DinoNameTag="Dodo",            DinoName="Dodo",                CommonName="Dodo",                SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Doed_Character_BP_C",            DinoNameTag="Doed",            DinoName="Doedicurus",          CommonName="Doedicurus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dolphin_Character_BP_C",         DinoNameTag="Dolphin",         DinoName="Ichthyosaurus",       CommonName="Ichthy",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dragonfly_Character_BP_C",       DinoNameTag="Dragonfly",       DinoName="Meganeura",           CommonName="Meganeura",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="DungBeetle_Character_BP_C",      DinoNameTag="Beetle",          DinoName="Dung Beetle",         CommonName="Dung Beetle",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Dunkle_Character_BP_C",          DinoNameTag="Dunkle",          DinoName="Dunkleosteus",        CommonName="Dunkleosteus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Euryp_Character_C",              DinoNameTag="Euryp",           DinoName="Eurypterid",          CommonName="Eurypterid",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Galli_Character_BP",             DinoNameTag="Galli",           DinoName="Gallimimus",          CommonName="Gallimimus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Gigant_Character_BP_C",          DinoNameTag="Gigant",          DinoName="Giganotosaurus",      CommonName="Giganotosaurus",      SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Kairuku_Character_BP_C",         DinoNameTag="Kairuku",         DinoName="Kairuku",             CommonName="Kairuku",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaCarno_Character_BP_C",       DinoNameTag="Elite Carno",     DinoName="Alpha Carnotaurus",   CommonName="Alpha Carnotaurus",   SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRaptor_Character_BP_C",      DinoNameTag="Elite Raptor",    DinoName="Alpha Raptor",        CommonName="Alpha Raptor",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="MegaRex_Character_BP_C",         DinoNameTag="Elite Rex",       DinoName="Alpha Tyrannosaurus", CommonName="Alpha T-Rex",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mammoth_Character_BP_C",         DinoNameTag="Mammoth",         DinoName="Mammoth",             CommonName="Mammoth",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Manta_Character_BP_C",           DinoNameTag="Manta",           DinoName="Manta",               CommonName="Manta",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Megalodon_Character_BP_C",       DinoNameTag="Mega",            DinoName="Megalodon",           CommonName="Megalodon",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Monkey_Character_BP_C",          DinoNameTag="Monkey",          DinoName="Mesopithecus",        CommonName="Mesopithecus",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Mosa_Character_BP_C",            DinoNameTag="Mosasaur",        DinoName="Mosasaurus",          CommonName="Mosasaurus",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Oviraptor_Character_BP_C",       DinoNameTag="Oviraptor",       DinoName="Oviraptor",           CommonName="Oviraptor",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Pachy_Character_BP_C",           DinoNameTag="Pachy",           DinoName="Pachycephalosaurus",  CommonName="Pachy",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Para_Character_BP_C",            DinoNameTag="Para",            DinoName="Parasaur",            CommonName="Parasaur",            SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Paracer_Character_BP_C",         DinoNameTag="Paracer",         DinoName="Paraceratherium",     CommonName="Paracer",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Phiomia_Character_BP_C",         DinoNameTag="Phiomia",         DinoName="Phiomia",             CommonName="Phiomia",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Piranha_Character_BP_C",         DinoNameTag="Piranha",         DinoName="Megapiranha",         CommonName="Megapiranha",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Plesiosaur_Character_BP_C",      DinoNameTag="Plesiosaur",      DinoName="Plesiosaur",          CommonName="Plesiosaur",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Procoptodon_Character_BP_C",     DinoNameTag="Kangaroo",        DinoName="Procoptodon",         CommonName="Procoptodon",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Ptero_Character_BP_C",           DinoNameTag="Ptera",           DinoName="Pteranodon",          CommonName="Pteranodon",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Quetz_Character_BP_C",           DinoNameTag="Quetz",           DinoName="Quetzalcoatlus",      CommonName="Quetzal",             SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Raptor_Character_BP_C",          DinoNameTag="Raptor",          DinoName="Raptor",              CommonName="Raptor",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rex_Character_BP_C",             DinoNameTag="Rex",             DinoName="Tyrannosaurus",       CommonName="Rex",                 SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Rhino_Character_BP_C",           DinoNameTag="Rhino",           DinoName="Woolly Rhino",        CommonName="Woolly Rhino",        SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Saber_Character_BP_C",           DinoNameTag="Sabertooth",      DinoName="Sabertooth",          CommonName="Sabertooth",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sarco_Character_BP_C",           DinoNameTag="Sarco",           DinoName="Sarcosuchus",         CommonName="Sarco",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Sauropod_Character_BP_C",        DinoNameTag="Bronto",          DinoName="Brontosaurus",        CommonName="Bronto",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Scorpion_Character_BP_C",        DinoNameTag="Scorpion",        DinoName="Pulmonoscorpius",     CommonName="Pulmonoscorpius",     SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="SpiderL_Character_BP_C",         DinoNameTag="Uberspider",      DinoName="Broodmother Lysrix",  CommonName="Broodmother Lysrix",  SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="SpiderS_Character_BP_C",         DinoNameTag="Spider",          DinoName="Araneomorphus",       CommonName="Araneo",              SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Spino_Character_BP_C",           DinoNameTag="Spino",           DinoName="Spinosaurus",         CommonName="Spinosaurus",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stag_Character_BP_C",            DinoNameTag="Stag",            DinoName="Megaloceros",         CommonName="Megaloceros",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Stego_Character_BP_C",           DinoNameTag="Stego",           DinoName="Stegosaurus",         CommonName="Stego",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="TerrorBird_Character_BP_C",      DinoNameTag="TerrorBird",      DinoName="Terror Bird",         CommonName="Terror Bird",         SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Toad_Character_BP_C",            DinoNameTag="Toad",            DinoName="Beelzebufo",          CommonName="Beelzebufo",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trike_Character_BP_C",           DinoNameTag="Trike",           DinoName="Triceratops",         CommonName="Trike",               SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Trilobite_Character_C",          DinoNameTag="Trilobite",       DinoName="Trilobite",           CommonName="Trilobite",           SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-                new DinoSpawn { ClassName="Turtle_Character_BP_C",          DinoNameTag="Turtle",          DinoName="Carbonemys",          CommonName="Carbonemys",          SpawnWeightMultiplier=0.1f, OverrideSpawnLimitPercentage=true, SpawnLimitPercentage=1.0f },
-            };
+                var maps1 = gameMaps.ToList();
+                maps1.AddRange(gameData.GameMaps.Where(item => !item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.ClassName, DisplayMember = item.Description }));
+                var maps2 = gameMapsSotF.ToList();
+                maps2.AddRange(gameData.GameMaps.Where(item => item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.ClassName, DisplayMember = item.Description }));
 
-        public static string NameTagForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? null : dinoSpawns.First(d => d.ClassName == entry).DinoNameTag;
+                gameMaps = maps1.ToArray();
+                gameMapsSotF = maps2.ToArray();
+            }
 
-        public static string FriendlyNameForClass(string entry) => entry == "FlyingAnt_Character_BP_C" ? "Titanomyrma Soldier" : dinoSpawns.First(d => d.ClassName == entry).CommonName;
+            // total conversion mods
+            gameData.Mods.AddRange(userGameData.Mods);
+
+            if (gameData.Mods.Count > 0)
+            {
+                var mods1 = totalConversions.ToList();
+                mods1.AddRange(gameData.Mods.Where(item => !item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.ClassName, DisplayMember = item.Description }));
+                var mods2 = totalConversionsSotF.ToList();
+                mods2.AddRange(gameData.Mods.Where(item => item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.ClassName, DisplayMember = item.Description }));
+
+                totalConversions = mods1.ToArray();
+                totalConversionsSotF = mods2.ToArray();
+            }
+
+            // creature levels
+            if (userGameData.CreatureLevels.Count > 0)
+                gameData.CreatureLevels = userGameData.CreatureLevels;
+
+            if (gameData.CreatureLevels.Count > 0)
+            {
+                levelsDino = gameData.CreatureLevels.ConvertAll(item => new Level { XPRequired = item.XPRequired }).ToArray();
+                DefaultMaxExperiencePointsDino = levelsDino.Max(l => l.XPRequired) + 1;
+            }
+
+            // player levels
+            if (userGameData.PlayerLevels.Count > 0)
+                gameData.PlayerLevels = userGameData.PlayerLevels;
+
+            if (gameData.PlayerLevels.Count > 0)
+            {
+                levelsPlayer = gameData.PlayerLevels.ConvertAll(item => new Level { EngramPoints = item.EngramPoints, XPRequired = item.XPRequired }).ToArray();
+                DefaultMaxExperiencePointsPlayer = levelsPlayer.Max(l => l.XPRequired) + 1;
+            }
+
+            // branches
+            gameData.Branches.AddRange(userGameData.Branches);
+
+            if (gameData.Branches.Count > 0)
+            {
+                var branches1 = branches.ToList();
+                branches1.AddRange(gameData.Branches.Where(item => !item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.BranchName, DisplayMember = item.Description }));
+                var branches2 = branchesSotF.ToList();
+                branches2.AddRange(gameData.Branches.Where(item => item.IsSotF).ToList().ConvertAll(item => new ComboBoxItem { ValueMember = item.BranchName, DisplayMember = item.Description }));
+
+                branches = branches1.ToArray();
+                branchesSotF = branches2.ToArray();
+            }
+        }
+
+        public static string FriendlyNameForClass(string className, bool returnNullIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? (returnNullIfNotFound ? null : string.Empty) : GlobalizedApplication.Instance.GetResourceString(className) ?? (returnNullIfNotFound ? null : className);
+
+        #region Creatures
+        private static DinoSpawn[] dinoSpawns = new DinoSpawn[0];
 
         public static IEnumerable<DinoSpawn> GetDinoSpawns() => dinoSpawns.Select(d => d.Duplicate<DinoSpawn>());
 
-        private static readonly ClassMultiplier[] standardDinoMultipliers = new ClassMultiplier[]
-        {
-            new ClassMultiplier { ClassName="Angler_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Ankylo_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Ant_Character_BP_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Argent_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Bat_Character_BP_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Beaver_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="BigFoot_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="BoaFrill_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Carno_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Coel_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Compy_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dilo_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dimetro_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dimorph_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Direbear_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Direwolf_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dodo_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Doed_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dolphin_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dragonfly_Character_BP_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="DungBeetle_Character_BP_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Dunkle_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Euryp_Character_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Galli_Character_BP",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Gigant_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Kairuku_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Mammoth_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Manta_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Megalodon_Character_BP_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="MegaCarno_Character_BP_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="MegaRaptor_Character_BP_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="MegaRex_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Monkey_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Mosa_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Oviraptor_Character_BP_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Pachy_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Para_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Paracer_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Phiomia_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Piranha_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Plesiosaur_Character_BP_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Procoptodon_Character_BP_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Ptero_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Quetz_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Raptor_Character_BP_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Rex_Character_BP_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Rhino_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Saber_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Sarco_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Sauropod_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Scorpion_Character_BP_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="SpiderL_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="SpiderS_Character_BP_C",       Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Spino_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Stag_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Stego_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="TerrorBird_Character_BP_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Toad_Character_BP_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Trike_Character_BP_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Trilobite_Character_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="Turtle_Character_BP_C",        Multiplier=1.0f },
+        public static IEnumerable<NPCReplacement> GetNPCReplacements() => dinoSpawns.Select(d => new NPCReplacement() { FromClassName = d.ClassName, ToClassName = d.ClassName });
 
-            new ClassMultiplier { ClassName="FlyingAnt_Character_BP_C",     Multiplier=1.0f },
+        public static bool IsSpawnableForClass(string className) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.IsSpawnable ?? true;
+
+        public static DinoTamable IsTameableForClass(string className) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.IsTameable ?? DinoTamable.True;
+
+        public static string NameTagForClass(string className, bool returnEmptyIfNotFound = false) => gameData?.Creatures?.FirstOrDefault(c => c.ClassName.Equals(className))?.NameTag ?? (returnEmptyIfNotFound ? string.Empty : className);
+
+        public static string FriendlyCreatureNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Creatures?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+
+        private static ClassMultiplier[] dinoMultipliers = new ClassMultiplier[0];
+
+        public static IEnumerable<ClassMultiplier> GetDinoMultipliers() => dinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+        #endregion
+
+        #region Engrams
+        private static EngramEntry[] engrams = new EngramEntry[0];
+
+        public static IEnumerable<EngramEntry> GetEngrams() => engrams.Select(d => d.Duplicate<EngramEntry>());
+
+        public static EngramEntry GetEngramForClass(string className) => engrams.FirstOrDefault(e => e.EngramClassName.Equals(className));
+
+        public static bool HasEngramForClass(string className) => engrams.Any(e => e.EngramClassName.Equals(className));
+
+        public static bool IsTekgram(string className) => engrams.Any(e => e.EngramClassName.Equals(className) && e.IsTekgram);
+
+        public static string FriendlyEngramNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Engrams?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
+
+        #region Items
+        private static PrimalItem[] items = new PrimalItem[0];
+
+        public static IEnumerable<PrimalItem> GetItems() => items.Select(d => d.Duplicate());
+
+        public static PrimalItem GetItemForClass(string className) => items.FirstOrDefault(e => e.ClassName.Equals(className));
+
+        public static bool HasItemForClass(string className) => items.Any(e => e.ClassName.Equals(className));
+
+        public static string FriendlyItemNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Items?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
+
+        #region Resources
+        private static ResourceClassMultiplier[] resourceMultipliers = new ResourceClassMultiplier[0];
+
+        public static IEnumerable<ResourceClassMultiplier> GetResourceMultipliers() => resourceMultipliers.Select(d => d.Duplicate<ResourceClassMultiplier>());
+
+        public static ResourceClassMultiplier GetResourceMultiplierForClass(string className) => resourceMultipliers.FirstOrDefault(e => e.ClassName.Equals(className));
+
+        public static bool HasResourceMultiplierForClass(string className) => resourceMultipliers.Any(e => e.ClassName.Equals(className));
+
+        public static string FriendlyResourceNameForClass(string className) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Items?.FirstOrDefault(i => i.ClassName.Equals(className) && i.IsHarvestable)?.Description ?? className;
+        #endregion
+
+        #region Map Spawners
+        private static MapSpawner[] mapSpawners = new MapSpawner[0];
+
+        public static IEnumerable<MapSpawner> GetMapSpawners() => mapSpawners.Select(d => d.Duplicate());
+
+        public static MapSpawner GetMapSpawnerForClass(string className) => mapSpawners.FirstOrDefault(e => e.ClassName.Equals(className));
+
+        public static bool HasMapSpawnerForClass(string className) => mapSpawners.Any(e => e.ClassName.Equals(className));
+
+        public static string FriendlyMapSpawnerNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.MapSpawners?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
+
+        #region Supply Crates
+        private static SupplyCrate[] supplyCrates = new SupplyCrate[0];
+
+        public static IEnumerable<SupplyCrate> GetSupplyCrates() => supplyCrates.Select(d => d.Duplicate());
+
+        public static SupplyCrate GetSupplyCrateForClass(string className) => supplyCrates.FirstOrDefault(e => e.ClassName.Equals(className));
+
+        public static bool HasSupplyCrateForClass(string className) => supplyCrates.Any(e => e.ClassName.Equals(className));
+
+        public static string FriendlySupplyCrateNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.SupplyCrates?.FirstOrDefault(i => i.ClassName.Equals(className))?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
+
+        #region Game Maps
+        private static ComboBoxItem[] gameMaps = new[]
+        {
+            new ComboBoxItem { ValueMember=Config.Default.DefaultServerMap, DisplayMember=FriendlyNameForClass(Config.Default.DefaultServerMap) },
         };
 
-        public static IEnumerable<string> GetDinoClasses() => standardDinoMultipliers.Select(d => d.ClassName);
+        public static IEnumerable<ComboBoxItem> GetGameMaps() => gameMaps.Select(d => d.Duplicate());
 
-        public static IEnumerable<NPCReplacement> GetNPCReplacements() => standardDinoMultipliers.Select(d => new NPCReplacement() { FromClassName = d.ClassName, ToClassName = d.ClassName });
+        public static string FriendlyMapNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.GameMaps?.FirstOrDefault(i => i.ClassName.Equals(className) && !i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
 
-        public static IEnumerable<ClassMultiplier> GetStandardDinoMultipliers() => standardDinoMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
-
-        private static readonly ClassMultiplier[] standardResourceMultipliers = new ClassMultiplier[]
+        private static ComboBoxItem[] gameMapsSotF = new[]
         {
-            new ClassMultiplier { ClassName="PrimalItemResource_AnglerGel_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Argentavis_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Megalodon_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Rex_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ApexDrop_Sauro_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_BlackPearl_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Charcoal_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Chitin_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ChitinOrKeratin_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_ChitinPaste_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Craftable_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Crystal_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Electronics_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Fibers_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Flint_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Gasoline_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Gunpowder_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Hide_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Horn_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Keratin_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Metal_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_MetalIngot_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Obsidian_C",            Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Oil_C",                 Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Pelt_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Polymer_Organic_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_RareFlower_C",          Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_RareMushroom_C",        Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Silicon_C",             Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Sparkpowder_C",         Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Stone_C",               Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Temp_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Thatch_C",              Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemResource_Wood_C",                Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawMeat_C",           Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_RawPrimeMeat_C",      Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Amarberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Azulberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Mejoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Narcoberry_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Stimberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Berry_Tintoberry_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Citronal_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Longrass_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Rockarrot_C",  Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Veggie_Savoroot_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Amarberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Azulberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_DefensePlant_C", Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Mejoberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Narcoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Stimberry_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Tintoberry_C",   Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Citronal_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Longrass_C",     Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Rockarrot_C",    Multiplier=1.0f },
-            new ClassMultiplier { ClassName="PrimalItemConsumable_Seed_Savoroot_C",     Multiplier=1.0f },
+            new ComboBoxItem { ValueMember=Config.Default.DefaultServerMap, DisplayMember=FriendlyNameForClass(Config.Default.DefaultServerMap) },
         };
 
-        public static IEnumerable<ClassMultiplier> GetStandardResourceMultipliers() => standardResourceMultipliers.Select(d => d.Duplicate<ClassMultiplier>());
+        public static IEnumerable<ComboBoxItem> GetGameMapsSotF() => gameMapsSotF.Select(d => d.Duplicate());
 
-        private static readonly Level[] levelProgression = new Level[]
-            {
-                new Level { XPRequired=5,      EngramPoints=8  },
-                new Level { XPRequired=20,     EngramPoints=8  },
-                new Level { XPRequired=40,     EngramPoints=8  },
-                new Level { XPRequired=70,     EngramPoints=8  },
-                new Level { XPRequired=120,    EngramPoints=8  },
-                new Level { XPRequired=190,    EngramPoints=8  },
-                new Level { XPRequired=270,    EngramPoints=8  },
-                new Level { XPRequired=360,    EngramPoints=8  },
-                new Level { XPRequired=450,    EngramPoints=12 },
-                new Level { XPRequired=550,    EngramPoints=12 },
-                new Level { XPRequired=660,    EngramPoints=12 },
-                new Level { XPRequired=780,    EngramPoints=12 },
-                new Level { XPRequired=910,    EngramPoints=12 },
-                new Level { XPRequired=1050,   EngramPoints=12 },
-                new Level { XPRequired=1200,   EngramPoints=12 },
-                new Level { XPRequired=1360,   EngramPoints=12 },
-                new Level { XPRequired=1530,   EngramPoints=12 },
-                new Level { XPRequired=1710,   EngramPoints=12 },
-                new Level { XPRequired=1900,   EngramPoints=16 },
-                new Level { XPRequired=2100,   EngramPoints=16 },
-                new Level { XPRequired=2310,   EngramPoints=16 },
-                new Level { XPRequired=2530,   EngramPoints=16 },
-                new Level { XPRequired=2760,   EngramPoints=16 },
-                new Level { XPRequired=3000,   EngramPoints=16 },
-                new Level { XPRequired=3250,   EngramPoints=16 },
-                new Level { XPRequired=3510,   EngramPoints=16 },
-                new Level { XPRequired=3780,   EngramPoints=16 },
-                new Level { XPRequired=4060,   EngramPoints=16 },
-                new Level { XPRequired=4350,   EngramPoints=20 },
-                new Level { XPRequired=4650,   EngramPoints=20 },
-                new Level { XPRequired=4960,   EngramPoints=20 },
-                new Level { XPRequired=5280,   EngramPoints=20 },
-                new Level { XPRequired=5610,   EngramPoints=20 },
-                new Level { XPRequired=5950,   EngramPoints=20 },
-                new Level { XPRequired=6300,   EngramPoints=20 },
-                new Level { XPRequired=6660,   EngramPoints=20 },
-                new Level { XPRequired=7030,   EngramPoints=20 },
-                new Level { XPRequired=7410,   EngramPoints=20 },
-                new Level { XPRequired=7800,   EngramPoints=24 },
-                new Level { XPRequired=8200,   EngramPoints=24 },
-                new Level { XPRequired=8610,   EngramPoints=24 },
-                new Level { XPRequired=9030,   EngramPoints=24 },
-                new Level { XPRequired=9460,   EngramPoints=24 },
-                new Level { XPRequired=9900,   EngramPoints=24 },
-                new Level { XPRequired=10350,  EngramPoints=24 },
-                new Level { XPRequired=10810,  EngramPoints=24 },
-                new Level { XPRequired=11280,  EngramPoints=24 },
-                new Level { XPRequired=11760,  EngramPoints=24 },
-                new Level { XPRequired=12250,  EngramPoints=28 },
-                new Level { XPRequired=12750,  EngramPoints=28 },
-                new Level { XPRequired=13260,  EngramPoints=28 },
-                new Level { XPRequired=13780,  EngramPoints=28 },
-                new Level { XPRequired=14310,  EngramPoints=28 },
-                new Level { XPRequired=14850,  EngramPoints=28 },
-                new Level { XPRequired=15400,  EngramPoints=28 },
-                new Level { XPRequired=15960,  EngramPoints=28 },
-                new Level { XPRequired=16530,  EngramPoints=28 },
-                new Level { XPRequired=17110,  EngramPoints=28 },
-                new Level { XPRequired=17700,  EngramPoints=28 },
-                new Level { XPRequired=18850,  EngramPoints=28 },
-                new Level { XPRequired=21078,  EngramPoints=28 },
-                new Level { XPRequired=22448,  EngramPoints=28 },
-                new Level { XPRequired=23908,  EngramPoints=28 },
-                new Level { XPRequired=25462,  EngramPoints=28 },
-                new Level { XPRequired=27498,  EngramPoints=28 },
-                new Level { XPRequired=30248,  EngramPoints=28 },
-                new Level { XPRequired=32043,  EngramPoints=28 },
-                new Level { XPRequired=34148,  EngramPoints=28 },
-                new Level { XPRequired=36254,  EngramPoints=28 },
-                new Level { XPRequired=38359,  EngramPoints=28 },
-                new Level { XPRequired=40465,  EngramPoints=28 },
-                new Level { XPRequired=42571,  EngramPoints=28 },
-                new Level { XPRequired=44676,  EngramPoints=28 },
-                new Level { XPRequired=46782,  EngramPoints=28 },
-                new Level { XPRequired=48887,  EngramPoints=28 },
-                new Level { XPRequired=50993,  EngramPoints=28 },
-                new Level { XPRequired=53099,  EngramPoints=28 },
-                new Level { XPRequired=55204,  EngramPoints=28 },
-                new Level { XPRequired=57310,  EngramPoints=31 },
-                new Level { XPRequired=59415,  EngramPoints=31 },
-                new Level { XPRequired=61521,  EngramPoints=31 },
-                new Level { XPRequired=63627,  EngramPoints=31 },
-                new Level { XPRequired=65732,  EngramPoints=31 },
-                new Level { XPRequired=67838,  EngramPoints=31 },
-                new Level { XPRequired=69943,  EngramPoints=31 },
-                new Level { XPRequired=72049,  EngramPoints=31 },
-                new Level { XPRequired=74155,  EngramPoints=31 },
-                new Level { XPRequired=76260,  EngramPoints=31 },
-                new Level { XPRequired=78366,  EngramPoints=33 },
-                new Level { XPRequired=80471,  EngramPoints=33 },
-                new Level { XPRequired=82577,  EngramPoints=33 },
-                new Level { XPRequired=84683,  EngramPoints=33 },
-                new Level { XPRequired=86788,  EngramPoints=33 },
-                new Level { XPRequired=88894,  EngramPoints=33 },
-                new Level { XPRequired=90999,  EngramPoints=33 },
-                new Level { XPRequired=93105,  EngramPoints=33 },
-                new Level { XPRequired=95211,  EngramPoints=33 },
-                new Level { XPRequired=97316,  EngramPoints=33 },
-                new Level { XPRequired=99422,  EngramPoints=33 },
-            };
+        public static string FriendlyMapSotFNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.GameMaps?.FirstOrDefault(i => i.ClassName.Equals(className) && i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
 
-        private static readonly Level[] levelProgressionDinoOfficial = new Level[]
-            {
-                new Level { XPRequired=10,      EngramPoints=0 },
-                new Level { XPRequired=30,      EngramPoints=0 },
-                new Level { XPRequired=60,      EngramPoints=0 },
-                new Level { XPRequired=100,     EngramPoints=0 },
-                new Level { XPRequired=150,     EngramPoints=0 },
-                new Level { XPRequired=210,     EngramPoints=0 },
-                new Level { XPRequired=280,     EngramPoints=0 },
-                new Level { XPRequired=360,     EngramPoints=0 },
-                new Level { XPRequired=450,     EngramPoints=0 },
-                new Level { XPRequired=550,     EngramPoints=0 },
-                new Level { XPRequired=660,     EngramPoints=0 },
-                new Level { XPRequired=780,     EngramPoints=0 },
-                new Level { XPRequired=910,     EngramPoints=0 },
-                new Level { XPRequired=1050,    EngramPoints=0 },
-                new Level { XPRequired=1200,    EngramPoints=0 },
-                new Level { XPRequired=1360,    EngramPoints=0 },
-                new Level { XPRequired=1530,    EngramPoints=0 },
-                new Level { XPRequired=1710,    EngramPoints=0 },
-                new Level { XPRequired=1900,    EngramPoints=0 },
-                new Level { XPRequired=2100,    EngramPoints=0 },
-                new Level { XPRequired=2310,    EngramPoints=0 },
-                new Level { XPRequired=2530,    EngramPoints=0 },
-                new Level { XPRequired=2760,    EngramPoints=0 },
-                new Level { XPRequired=3000,    EngramPoints=0 },
-                new Level { XPRequired=3250,    EngramPoints=0 },
-                new Level { XPRequired=3510,    EngramPoints=0 },
-                new Level { XPRequired=3780,    EngramPoints=0 },
-                new Level { XPRequired=4060,    EngramPoints=0 },
-                new Level { XPRequired=4350,    EngramPoints=0 },
-                new Level { XPRequired=4650,    EngramPoints=0 },
-                new Level { XPRequired=4960,    EngramPoints=0 },
-                new Level { XPRequired=5280,    EngramPoints=0 },
-                new Level { XPRequired=5610,    EngramPoints=0 },
-                new Level { XPRequired=5950,    EngramPoints=0 },
-                new Level { XPRequired=6545,    EngramPoints=0 },
-                new Level { XPRequired=7199,    EngramPoints=0 },
-                new Level { XPRequired=7919,    EngramPoints=0 },
-                new Level { XPRequired=8711,    EngramPoints=0 },
-                new Level { XPRequired=9582,    EngramPoints=0 },
-                new Level { XPRequired=10540,   EngramPoints=0 },
-                new Level { XPRequired=11594,   EngramPoints=0 },
-                new Level { XPRequired=12985,   EngramPoints=0 },
-                new Level { XPRequired=14932,   EngramPoints=0 },
-                new Level { XPRequired=17172,   EngramPoints=0 },
-                new Level { XPRequired=19748,   EngramPoints=0 },
-                new Level { XPRequired=23105,   EngramPoints=0 },
-                new Level { XPRequired=27105,   EngramPoints=0 },
-                new Level { XPRequired=31505,   EngramPoints=0 },
-                new Level { XPRequired=36005,   EngramPoints=0 },
-                new Level { XPRequired=41000,   EngramPoints=0 },
-                new Level { XPRequired=47000,   EngramPoints=0 },
-                new Level { XPRequired=55000,   EngramPoints=0 },
-                new Level { XPRequired=65000,   EngramPoints=0 },
-                new Level { XPRequired=80000,   EngramPoints=0 },
-                new Level { XPRequired=98000,   EngramPoints=0 },
-                new Level { XPRequired=120000,  EngramPoints=0 },
-                new Level { XPRequired=150000,  EngramPoints=0 },
-                new Level { XPRequired=185000,  EngramPoints=0 },
-                new Level { XPRequired=225000,  EngramPoints=0 },
-                new Level { XPRequired=275000,  EngramPoints=0 },
-                new Level { XPRequired=340000,  EngramPoints=0 },
-                new Level { XPRequired=415000,  EngramPoints=0 },
-            };
-
-        private static readonly Level[] levelProgressionPlayerOfficial = new Level[]
-            {
-                new Level { XPRequired=5,       EngramPoints=8 },
-                new Level { XPRequired=20,      EngramPoints=8 },
-                new Level { XPRequired=40,      EngramPoints=8 },
-                new Level { XPRequired=70,      EngramPoints=8 },
-                new Level { XPRequired=120,     EngramPoints=8 },
-                new Level { XPRequired=190,     EngramPoints=8 },
-                new Level { XPRequired=270,     EngramPoints=8 },
-                new Level { XPRequired=360,     EngramPoints=8 },
-                new Level { XPRequired=450,     EngramPoints=12 },
-                new Level { XPRequired=550,     EngramPoints=12 },
-                new Level { XPRequired=660,     EngramPoints=12 },
-                new Level { XPRequired=780,     EngramPoints=12 },
-                new Level { XPRequired=910,     EngramPoints=12 },
-                new Level { XPRequired=1050,    EngramPoints=12 },
-                new Level { XPRequired=1200,    EngramPoints=12 },
-                new Level { XPRequired=1360,    EngramPoints=12 },
-                new Level { XPRequired=1530,    EngramPoints=12 },
-                new Level { XPRequired=1710,    EngramPoints=12 },
-                new Level { XPRequired=1900,    EngramPoints=16 },
-                new Level { XPRequired=2100,    EngramPoints=16 },
-                new Level { XPRequired=2310,    EngramPoints=16 },
-                new Level { XPRequired=2530,    EngramPoints=16 },
-                new Level { XPRequired=2760,    EngramPoints=16 },
-                new Level { XPRequired=3000,    EngramPoints=16 },
-                new Level { XPRequired=3250,    EngramPoints=16 },
-                new Level { XPRequired=3510,    EngramPoints=16 },
-                new Level { XPRequired=3780,    EngramPoints=16 },
-                new Level { XPRequired=4060,    EngramPoints=16 },
-                new Level { XPRequired=4350,    EngramPoints=20 },
-                new Level { XPRequired=4650,    EngramPoints=20 },
-                new Level { XPRequired=4960,    EngramPoints=20 },
-                new Level { XPRequired=5280,    EngramPoints=20 },
-                new Level { XPRequired=5610,    EngramPoints=20 },
-                new Level { XPRequired=5950,    EngramPoints=20 },
-                new Level { XPRequired=6300,    EngramPoints=20 },
-                new Level { XPRequired=6660,    EngramPoints=20 },
-                new Level { XPRequired=7030,    EngramPoints=20 },
-                new Level { XPRequired=7410,    EngramPoints=20 },
-                new Level { XPRequired=7800,    EngramPoints=24 },
-                new Level { XPRequired=8200,    EngramPoints=24 },
-                new Level { XPRequired=8610,    EngramPoints=24 },
-                new Level { XPRequired=9030,    EngramPoints=24 },
-                new Level { XPRequired=9460,    EngramPoints=24 },
-                new Level { XPRequired=9900,    EngramPoints=24 },
-                new Level { XPRequired=10350,   EngramPoints=24 },
-                new Level { XPRequired=10810,   EngramPoints=24 },
-                new Level { XPRequired=11280,   EngramPoints=24 },
-                new Level { XPRequired=11760,   EngramPoints=24 },
-                new Level { XPRequired=12250,   EngramPoints=28 },
-                new Level { XPRequired=12750,   EngramPoints=28 },
-                new Level { XPRequired=13260,   EngramPoints=28 },
-                new Level { XPRequired=13780,   EngramPoints=28 },
-                new Level { XPRequired=14310,   EngramPoints=28 },
-                new Level { XPRequired=14850,   EngramPoints=28 },
-                new Level { XPRequired=15400,   EngramPoints=28 },
-                new Level { XPRequired=15960,   EngramPoints=28 },
-                new Level { XPRequired=16530,   EngramPoints=28 },
-                new Level { XPRequired=17110,   EngramPoints=28 },
-                new Level { XPRequired=17700,   EngramPoints=40},
-                new Level { XPRequired=18850,   EngramPoints=40 },
-                new Level { XPRequired=21078,   EngramPoints=40 },
-                new Level { XPRequired=22448,   EngramPoints=40 },
-                new Level { XPRequired=23908,   EngramPoints=40 },
-                new Level { XPRequired=25462,   EngramPoints=40 },
-                new Level { XPRequired=27498,   EngramPoints=40 },
-                new Level { XPRequired=30248,   EngramPoints=40 },
-                new Level { XPRequired=34786,   EngramPoints=40 },
-                new Level { XPRequired=40004,   EngramPoints=40 },
-                new Level { XPRequired=46804,   EngramPoints=40 },
-                new Level { XPRequired=54761,   EngramPoints=40 },
-                new Level { XPRequired=63713,   EngramPoints=40 },
-                new Level { XPRequired=73000,   EngramPoints=50 },
-                new Level { XPRequired=85000,   EngramPoints=50 },
-                new Level { XPRequired=98000,   EngramPoints=50 },
-                new Level { XPRequired=112000,  EngramPoints=50 },
-                new Level { XPRequired=127500,  EngramPoints=50 },
-                new Level { XPRequired=144500,  EngramPoints=50 },
-                new Level { XPRequired=163500,  EngramPoints=50 },
-                new Level { XPRequired=184500,  EngramPoints=50 },
-                new Level { XPRequired=207500,  EngramPoints=50 },
-                new Level { XPRequired=232570,  EngramPoints=50 },
-                new Level { XPRequired=259896,  EngramPoints=50 },
-                new Level { XPRequired=289681,  EngramPoints=50 },
-                new Level { XPRequired=323189,  EngramPoints=50 },
-                new Level { XPRequired=360886,  EngramPoints=50 },
-                new Level { XPRequired=403318,  EngramPoints=60 },
-                new Level { XPRequired=451484,  EngramPoints=60 },
-                new Level { XPRequired=506186,  EngramPoints=60 },
-                new Level { XPRequired=566358,  EngramPoints=60 },
-                new Level { XPRequired=632547,  EngramPoints=60 },
-                new Level { XPRequired=705354,  EngramPoints=60 },
-                new Level { XPRequired=785441,  EngramPoints=60 },
-                new Level { XPRequired=873538,  EngramPoints=60 },
-                new Level { XPRequired=971538,  EngramPoints=60 },
-                new Level { XPRequired=1083538, EngramPoints=60 },
-            };
-
-        public static IEnumerable<EngramEntry> GetStandardEngramOverrides() => engrams.Select(d => d.Duplicate<EngramEntry>());
-
-        public static readonly EngramEntry[] engrams = new[]
+        #region Total Conversions
+        private static ComboBoxItem[] totalConversions = new[]
         {
-            new EngramEntry { EngramClassName="EngramEntry_AdvancedBullet_C",                EngramLevelRequirement=50, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_AdvancedRifleBullet_C",           EngramLevelRequirement=55, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_AdvancedSniperBullet_C",          EngramLevelRequirement=70, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_AirConditioner_C",                EngramLevelRequirement=55, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_AlarmTrap_C",                     EngramLevelRequirement=20, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_AnvilBench_C",                    EngramLevelRequirement=25, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ArrowStone_C",                    EngramLevelRequirement=15, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ArrowTranq_C",                    EngramLevelRequirement=20, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BallistaArrow_C",                 EngramLevelRequirement=25, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BallistaTurret_C",                EngramLevelRequirement=25, EngramPointsCost=25,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BearTrap_C",                      EngramLevelRequirement=25, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BearTrap_Large_C",                EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BeerBarrel_C",                    EngramLevelRequirement=35, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BloodExtractor_C",                EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Bookshelf_C",                     EngramLevelRequirement=20, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Bow_C",                           EngramLevelRequirement=15, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_BugRepel_C",                      EngramLevelRequirement=15, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_C4Ammo_C",                        EngramLevelRequirement=55, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Campfire_C",                      EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Cannon_C",                        EngramLevelRequirement=35, EngramPointsCost=25,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CannonBall_C",                    EngramLevelRequirement=35, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Canteen_C",                       EngramLevelRequirement=50, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CatapultTurret_C",                EngramLevelRequirement=30, EngramPointsCost=25,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChemBench_C",                     EngramLevelRequirement=85, EngramPointsCost=65,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinBoots_C",                   EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinGloves_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinHelmet_C",                  EngramLevelRequirement=30, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinPants_C",                   EngramLevelRequirement=30, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinPaste_C",                   EngramLevelRequirement=10, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ChitinShirt_C",                   EngramLevelRequirement=30, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ClothBoots_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ClothGloves_C",                   EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ClothHelmet_C",                   EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ClothPants_C",                    EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ClothShirt_C",                    EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Compass_C",                       EngramLevelRequirement=10, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CompostBin_C",                    EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CompoundArrow_C",                 EngramLevelRequirement=70, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CompoundBow_C",                   EngramLevelRequirement=70, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CookingPot_C",                    EngramLevelRequirement=10, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CropPlot_Large_C",                EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CropPlot_Medium_C",               EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_CropPlot_Small_C",                EngramLevelRequirement=10, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Crossbow_C",                      EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Electronics_C",                   EngramLevelRequirement=40, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElectricProd_C",                  EngramLevelRequirement=80, EngramPointsCost=60,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformLarge_C",         EngramLevelRequirement=65, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformMedium_C",        EngramLevelRequirement=65, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorPlatformSmall_C",         EngramLevelRequirement=65, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ElevatorTrack_C",                 EngramLevelRequirement=65, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Fabricator_C",                    EngramLevelRequirement=40, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FeedingTrough_C",                 EngramLevelRequirement=15, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Fireplace_C",                     EngramLevelRequirement=30, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Flag_C",                          EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FlagSingle_C",                    EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FlareLauncher_C",                 EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Flashlight_C",                    EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Forge_C",                         EngramLevelRequirement=20, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Furniture_WoodTable_C",           EngramLevelRequirement=15, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FurBoots_C",                      EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FurGloves_C",                     EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FurHelmet_C",                     EngramLevelRequirement=25, EngramPointsCost=14,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FurPants_C",                      EngramLevelRequirement=25, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_FurShirt_C",                      EngramLevelRequirement=25, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GPS_C",                           EngramLevelRequirement=45, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GasGrenade_C",                    EngramLevelRequirement=25, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GhillieBoots_C",                  EngramLevelRequirement=40, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GhillieGloves_C",                 EngramLevelRequirement=40, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GhillieHelmet_C",                 EngramLevelRequirement=35, EngramPointsCost=13,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GhilliePants_C",                  EngramLevelRequirement=35, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GhillieShirt_C",                  EngramLevelRequirement=35, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GrapplingHook_C",                 EngramLevelRequirement=50, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Gravestone_C",                    EngramLevelRequirement=10, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseCeiling_C",             EngramLevelRequirement=45, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseDoor_C",                EngramLevelRequirement=45, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseRoof_C",                EngramLevelRequirement=50, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseSlopedWall_Left_C",     EngramLevelRequirement=50, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseSlopedWall_Right_C",    EngramLevelRequirement=50, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseWall_C",                EngramLevelRequirement=45, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseWallWithDoor_C",        EngramLevelRequirement=45, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_GreenhouseWindow_C",              EngramLevelRequirement=45, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Grenade_C",                       EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Grill_C",                         EngramLevelRequirement=45, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Gunpowder_C",                     EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Handcuffs_C",                     EngramLevelRequirement=25, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HideBoots_C",                     EngramLevelRequirement=20, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HideGloves_C",                    EngramLevelRequirement=20, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HideHelmet_C",                    EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HidePants_C",                     EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HideShirt_C",                     EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HideSleepingBag_C",               EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_HoloScope_C",                     EngramLevelRequirement=55, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_IceBox_C",                        EngramLevelRequirement=55, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_IndustrialCookingPot_C",          EngramLevelRequirement=80, EngramPointsCost=60,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_IndustrialForge_C",               EngramLevelRequirement=85, EngramPointsCost=90,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Keypad_C",                        EngramLevelRequirement=50, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Lamppost_C",                      EngramLevelRequirement=50, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_LamppostOmni_C",                  EngramLevelRequirement=50, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Laser_C",                         EngramLevelRequirement=55, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MachinedPistol_C",                EngramLevelRequirement=50, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MachinedRifle_C",                 EngramLevelRequirement=55, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MachinedShotgun_C",               EngramLevelRequirement=50, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MachinedSniper_C",                EngramLevelRequirement=70, EngramPointsCost=36,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MagnifyingGlass_C",               EngramLevelRequirement=20, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalBoots_C",                    EngramLevelRequirement=50, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalCatwalk_C",                  EngramLevelRequirement=50, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalCeiling_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalCeilingWithTrapdoor_C",      EngramLevelRequirement=40, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalDoor_C",                     EngramLevelRequirement=35, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalFenceFoundation_C",          EngramLevelRequirement=40, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalFloor_C",                    EngramLevelRequirement=30, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalGate_C",                     EngramLevelRequirement=40, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalGateway_C",                  EngramLevelRequirement=40, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalGateway_Large_C",            EngramLevelRequirement=55, EngramPointsCost=28,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalGate_Large_C",               EngramLevelRequirement=55, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalGloves_C",                   EngramLevelRequirement=50, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalHatchet_C",                  EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalHelmet_C",                   EngramLevelRequirement=50, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalLadder_C",                   EngramLevelRequirement=45, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPants_C",                    EngramLevelRequirement=45, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPick_C",                     EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPillar_C",                   EngramLevelRequirement=35, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalRailing_C",                  EngramLevelRequirement=30, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeIncline_C",              EngramLevelRequirement=45, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeIntake_C",               EngramLevelRequirement=40, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeIntersection_C",         EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeStraight_C",             EngramLevelRequirement=40, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeTap_C",                  EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalPipeVertical_C",             EngramLevelRequirement=45, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalRamp_C",                     EngramLevelRequirement=35, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalRoof_C",                     EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalShield_C",                   EngramLevelRequirement=30, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalShirt_C",                    EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSickle_C",                   EngramLevelRequirement=30, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSign_C",                     EngramLevelRequirement=25, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSign_Large_C",               EngramLevelRequirement=50, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSign_Wall_C",                EngramLevelRequirement=30, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSlopedWall_Left_C",          EngramLevelRequirement=30, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSlopedWall_Right_C",         EngramLevelRequirement=30, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalSpikeWall_C",                EngramLevelRequirement=25, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalTrapdoor_C",                 EngramLevelRequirement=40, EngramPointsCost=14,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalWall_C",                     EngramLevelRequirement=30, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalWallWithDoor_C",             EngramLevelRequirement=30, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalWallWithWindow_C",           EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MetalWindow_C",                   EngramLevelRequirement=50, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MinersHelmet_C",                  EngramLevelRequirement=65, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MinigunTurret_C",                 EngramLevelRequirement=85, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MiracleGro_C",                    EngramLevelRequirement=35, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ModernBed_C",                     EngramLevelRequirement=60, EngramPointsCost=28,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_MortarAndPestle_C",               EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Narcotic_C",                      EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_NotePaper_C",                     EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Paintbrush_C",                    EngramLevelRequirement=5,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PaintingCanvas_C",                EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Parachute_C",                     EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Pike_C",                          EngramLevelRequirement=25, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Pistol_C",                        EngramLevelRequirement=30, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PoisonGrenade_C",                 EngramLevelRequirement=35, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PoisonTrap_C",                    EngramLevelRequirement=25, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Polymer_C",                       EngramLevelRequirement=40, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerCableIncline_C",             EngramLevelRequirement=55, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerCableIntersection_C",        EngramLevelRequirement=55, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerCableStraight_C",            EngramLevelRequirement=50, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerCableVertical_C",            EngramLevelRequirement=55, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerGenerator_C",                EngramLevelRequirement=50, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PowerOutlet_C",                   EngramLevelRequirement=50, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_PreservingBin_C",                 EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Radio_C",                         EngramLevelRequirement=25, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Raft_C",                          EngramLevelRequirement=15, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotBoots_C",                     EngramLevelRequirement=80, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotGloves_C",                    EngramLevelRequirement=80, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotHelmet_C",                    EngramLevelRequirement=80, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotPants_C",                     EngramLevelRequirement=80, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotShirt_C",                     EngramLevelRequirement=80, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RiotShield_C",                    EngramLevelRequirement=75, EngramPointsCost=45,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RocketAmmo_C",                    EngramLevelRequirement=60, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RocketLauncher_C",                EngramLevelRequirement=60, EngramPointsCost=32,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_RocketTurret_C",                  EngramLevelRequirement=90, EngramPointsCost=100, EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Ankylo_C",                 EngramLevelRequirement=40, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Argentavis_C",             EngramLevelRequirement=55, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Beaver_C",                 EngramLevelRequirement=55, EngramPointsCost=50,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Carno_C",                  EngramLevelRequirement=50, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Direbear_C",               EngramLevelRequirement=35, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Doed_C",                   EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Dolphin_C",                EngramLevelRequirement=10, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Dunkle_C",                 EngramLevelRequirement=40, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Galli_C",                  EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Gigant_C",                 EngramLevelRequirement=85, EngramPointsCost=75,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Mammoth_C",                EngramLevelRequirement=40, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Megalodon_C",              EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Mosa_C",                   EngramLevelRequirement=80, EngramPointsCost=60,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Mosa_Platform_C",          EngramLevelRequirement=85, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Pachy_C",                  EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Para_C",                   EngramLevelRequirement=10, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Paracer_C",                EngramLevelRequirement=30, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Paracer_Platform_C",       EngramLevelRequirement=45, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Phiomia_C",                EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesia_C",                 EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Ptero_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Plesio_Platform_C",        EngramLevelRequirement=80, EngramPointsCost=50,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Procop_C",                 EngramLevelRequirement=50, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_C",                  EngramLevelRequirement=60, EngramPointsCost=44,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Quetz_Platform_C",         EngramLevelRequirement=80, EngramPointsCost=80,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Raptor_C",                 EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Rex_C",                    EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Rhino_C",                  EngramLevelRequirement=45, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Saber_C",                  EngramLevelRequirement=45, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Sarco_C",                  EngramLevelRequirement=35, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Sauro_C",                  EngramLevelRequirement=55, EngramPointsCost=21,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Sauro_Platform_C",         EngramLevelRequirement=70, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Scorpion_C",               EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Spider_C",                 EngramLevelRequirement=40, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Spino_C",                  EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Stag_C",                   EngramLevelRequirement=30, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Stego_C",                  EngramLevelRequirement=30, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_TerrorBird_C",             EngramLevelRequirement=25, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Toad_C",                   EngramLevelRequirement=20, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Trike_C",                  EngramLevelRequirement=20, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Saddle_Turtle_C",                 EngramLevelRequirement=25, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Scope_C",                         EngramLevelRequirement=30, EngramPointsCost=13,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ScubaBoots_Flippers_C",           EngramLevelRequirement=75, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ScubaHelmet_Goggles_C",           EngramLevelRequirement=75, EngramPointsCost=25,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ScubaPants_C",                    EngramLevelRequirement=75, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ScubaShirt_SuitWithTank_C",       EngramLevelRequirement=75, EngramPointsCost=35,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SeaMine_C",                       EngramLevelRequirement=75, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Silencer_C",                      EngramLevelRequirement=40, EngramPointsCost=13,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleBed_C",                     EngramLevelRequirement=5,  EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleBullet_C",                  EngramLevelRequirement=30, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleRifle_C",                   EngramLevelRequirement=35, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleRifleBullet_C",             EngramLevelRequirement=35, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleShotgun_C",                 EngramLevelRequirement=35, EngramPointsCost=18,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SimpleShotgunBullet_C",           EngramLevelRequirement=35, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Slingshot_C",                     EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Sparkpowder_C",                   EngramLevelRequirement=5,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Spear_C",                         EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_SprayPainter_C",                  EngramLevelRequirement=60, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Spyglass_C",                      EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StandingTorch_C",                 EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Stimulant_C",                     EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneCeiling_C",                  EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneCeilingWithTrapdoor_C",      EngramLevelRequirement=25, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneClub_C",                     EngramLevelRequirement=2,  EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneDoor_C",                     EngramLevelRequirement=20, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneFenceFoundation_C",          EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneFloor_C",                    EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneGate_C",                     EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneGateLarge_C",                EngramLevelRequirement=30, EngramPointsCost=16,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneGateway_C",                  EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneGateway_Large_C",            EngramLevelRequirement=30, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneHatchet_C",                  EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePillar_C",                   EngramLevelRequirement=25, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeInclined_C",             EngramLevelRequirement=15, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeIntake_C",               EngramLevelRequirement=10, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeIntersection_C",         EngramLevelRequirement=15, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeStraight_C",             EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeTap_C",                  EngramLevelRequirement=10, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StonePipeVertical_C",             EngramLevelRequirement=15, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneTrapdoor_C",                 EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneWall_C",                     EngramLevelRequirement=15, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Left_C",          EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneSlopedWall_Right_C",         EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneRailing_C",                  EngramLevelRequirement=20, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneRoof_C",                     EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneWallWithDoor_C",             EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneWallWithWindow_C",           EngramLevelRequirement=25, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StoneWindow_C",                   EngramLevelRequirement=30, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StorageBox_Huge_C",               EngramLevelRequirement=65, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StorageBox_Large_C",              EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_StorageBox_Small_C",              EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Sword_C",                         EngramLevelRequirement=30, EngramPointsCost=11,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchCeiling_C",                 EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchDoor_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchFloor_C",                   EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchWall_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Left_C",         EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchSlopedWall_Right_C",        EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchRoof_C",                    EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_ThatchWallWithDoor_C",            EngramLevelRequirement=2,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TranqDart_C",                     EngramLevelRequirement=60, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TransGPS_C",                      EngramLevelRequirement=65, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TransGPSAmmo_C",                  EngramLevelRequirement=65, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TripwireC4_C",                    EngramLevelRequirement=45, EngramPointsCost=30,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TrophyBase_C",                    EngramLevelRequirement=20, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_TrophyWall_C",                    EngramLevelRequirement=20, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Turret_C",                        EngramLevelRequirement=60, EngramPointsCost=40,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WallTorch_C",                     EngramLevelRequirement=25, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Wardrums_C",                      EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WarMap_C",                        EngramLevelRequirement=50, EngramPointsCost=15,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WaterJar_C",                      EngramLevelRequirement=30, EngramPointsCost=12,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_Waterskin_C",                     EngramLevelRequirement=3,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WaterTank_C",                     EngramLevelRequirement=15, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WaterTankMetal_C",                EngramLevelRequirement=45, EngramPointsCost=20,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WeaponC4_C",                      EngramLevelRequirement=55, EngramPointsCost=24,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodBench_C",                     EngramLevelRequirement=15, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodCage_C",                      EngramLevelRequirement=10, EngramPointsCost=10,  EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodCatwalk_C",                   EngramLevelRequirement=20, EngramPointsCost=8,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodCeiling_C",                   EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodCeilingWithTrapdoor_C",       EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodChair_C",                     EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodDoor_C",                      EngramLevelRequirement=10, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodFenceFoundation_C",           EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodFloor_C",                     EngramLevelRequirement=5,  EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodGate_C",                      EngramLevelRequirement=15, EngramPointsCost=5,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodGateway_C",                   EngramLevelRequirement=15, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodLadder_C",                    EngramLevelRequirement=15, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodPillar_C",                    EngramLevelRequirement=15, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodRailing_C",                   EngramLevelRequirement=10, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodRamp_C",                      EngramLevelRequirement=15, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodShield_C",                    EngramLevelRequirement=10, EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSign_C",                      EngramLevelRequirement=3,  EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSign_Large_C",                EngramLevelRequirement=15, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSign_Wall_C",                 EngramLevelRequirement=10, EngramPointsCost=2,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSpikeWall_C",                 EngramLevelRequirement=10, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodTrapdoor_C",                  EngramLevelRequirement=20, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodWall_C",                      EngramLevelRequirement=5,  EngramPointsCost=7,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSlopedWall_Left_C",           EngramLevelRequirement=10, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodSlopedWall_Right_C",          EngramLevelRequirement=10, EngramPointsCost=3,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodRoof_C",                      EngramLevelRequirement=10, EngramPointsCost=4,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodWallWithDoor_C",              EngramLevelRequirement=10, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodWallWithWindow_C",            EngramLevelRequirement=20, EngramPointsCost=9,   EngramHidden=false, RemoveEngramPreReq=false },
-            new EngramEntry { EngramClassName="EngramEntry_WoodWindow_C",                    EngramLevelRequirement=25, EngramPointsCost=6,   EngramHidden=false, RemoveEngramPreReq=false },
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
         };
 
+        public static IEnumerable<ComboBoxItem> GetTotalConversions() => totalConversions.Select(d => d.Duplicate());
+
+        public static string FriendlyTotalConversionNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Mods?.FirstOrDefault(i => i.ClassName.Equals(className) && !i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+
+        private static ComboBoxItem[] totalConversionsSotF = new[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember="" },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetTotalConversionsSotF() => totalConversionsSotF.Select(d => d.Duplicate());
+
+        public static string FriendlyTotalConversionSotFNameForClass(string className, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(className) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(className) ?? gameData?.Mods?.FirstOrDefault(i => i.ClassName.Equals(className) && i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : className);
+        #endregion
+
+        #region Stats Multipliers
         public enum StatsMultiplier
         {
             Health = 0,
@@ -826,36 +280,107 @@ namespace ARK_Server_Manager.Lib
             Water = 5,
             Temperature = 6,
             Weight = 7,
-            MeleeDamageMultiplier = 8,
-            SpeedMultiplier = 9,
-            TemperatureFortitude = 10,
-            CraftingSpeedMultiplier = 11
+            Melee = 8,
+            Speed = 9,
+            Fortitude = 10,
+            Crafting = 11
         };
 
-        public static IEnumerable<Level> LevelProgression => levelProgression.Select(l => l.Duplicate());
-
-        public static IEnumerable<Level> LevelProgressionDinoOfficial => levelProgressionDinoOfficial.Select(l => l.Duplicate());
-
-        public static IEnumerable<Level> LevelProgressionPlayerOfficial => levelProgressionPlayerOfficial.Select(l => l.Duplicate());
-
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_Default()
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoWild()
         {
-            return new float[12] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
         }
 
         internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed()
         {
-            return new float[12] { 0.23f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.20f, 1.0f, 1.0f, 1.0f };
+            return new float[] { 0.2f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.17f, 1.0f, 1.0f, 1.0f };
         }
 
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Add()
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamedAdd()
         {
-            return new float[12] { 0.15f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.15f, 1.0f, 1.0f, 1.0f };
+            return new float[] { 0.14f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.14f, 1.0f, 1.0f, 1.0f };
         }
 
-        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamed_Affinity()
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_DinoTamedAffinity()
         {
-            return new float[12] { 0.45f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.45f, 1.0f, 1.0f, 1.0f };
+            return new float[] { 0.44f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.44f, 1.0f, 1.0f, 1.0f };
         }
+
+        internal static IEnumerable<float> GetBaseStatMultipliers_Player()
+        {
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static IEnumerable<float> GetPerLevelStatsMultipliers_Player()
+        {
+            return new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoWildPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, false, true, true, true, true, false, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, false, true, true, true, true, false, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedAdd()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_DinoTamedAffinity()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, false };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_PlayerBase()
+        {
+            return new bool[] { true, true, true, true, true, true, true, true, true, true, true, true };
+        }
+
+        internal static bool[] GetStatMultiplierInclusions_PlayerPerLevel()
+        {
+            return new bool[] { true, true, false, true, true, true, true, true, true, true, true, true };
+        }
+        #endregion
+
+        #region Levels
+        private static Level[] levelsDino = new[]
+        {
+            new Level { XPRequired=10 },
+        };
+
+        private static Level[] levelsPlayer = new[]
+        {
+            new Level { XPRequired=5, EngramPoints=8 },
+        };
+
+        public static IEnumerable<Level> LevelsDino => levelsDino.Select(l => l.Duplicate());
+
+        public static IEnumerable<Level> LevelsPlayer => levelsPlayer.Select(l => l.Duplicate());
+        #endregion
+
+        #region Branches
+        private static ComboBoxItem[] branches = new[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember=FriendlyNameForClass($"Branch_{Config.Default.DefaultServerBranchName}") },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetBranches() => branches.Select(d => d.Duplicate());
+
+        public static string FriendlyBranchName(string branchName, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(branchName) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(branchName) ?? gameData?.Branches?.FirstOrDefault(i => i.BranchName.Equals(branchName) && !i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : branchName);
+
+        private static ComboBoxItem[] branchesSotF = new[]
+        {
+            new ComboBoxItem { ValueMember="", DisplayMember=FriendlyNameForClass($"Branch_{Config.Default.DefaultServerBranchName}") },
+        };
+
+        public static IEnumerable<ComboBoxItem> GetBranchesSotF() => branchesSotF.Select(d => d.Duplicate());
+
+        public static string FriendlyBranchSotFName(string branchName, bool returnEmptyIfNotFound = false) => string.IsNullOrWhiteSpace(branchName) ? string.Empty : GlobalizedApplication.Instance.GetResourceString(branchName) ?? gameData?.Branches?.FirstOrDefault(i => i.BranchName.Equals(branchName) && i.IsSotF)?.Description ?? (returnEmptyIfNotFound ? string.Empty : branchName);
+        #endregion
     }
 }

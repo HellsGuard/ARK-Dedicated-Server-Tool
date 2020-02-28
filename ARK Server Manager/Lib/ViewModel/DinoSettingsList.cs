@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ARK_Server_Manager.Lib.ViewModel
 {
@@ -22,13 +18,9 @@ namespace ARK_Server_Manager.Lib.ViewModel
             Reset();
         }
 
-        public DinoSettingsList(AggregateIniValueList<DinoSpawn> dinoSpawnWeightMultipliers, 
-                                StringIniValueList preventDinoTameClassNames,
-                                AggregateIniValueList<NPCReplacement> npcReplacements,
-                                AggregateIniValueList<ClassMultiplier> tamedDinoClassDamageMultipliers, 
-                                AggregateIniValueList<ClassMultiplier> tamedDinoClassResistanceMultipliers,
-                                AggregateIniValueList<ClassMultiplier> dinoClassDamageMultipliers,
-                                AggregateIniValueList<ClassMultiplier> dinoClassResistanceMultipliers)
+        public DinoSettingsList(AggregateIniValueList<DinoSpawn> dinoSpawnWeightMultipliers, StringIniValueList preventDinoTameClassNames, AggregateIniValueList<NPCReplacement> npcReplacements,
+                                AggregateIniValueList<ClassMultiplier> tamedDinoClassDamageMultipliers, AggregateIniValueList<ClassMultiplier> tamedDinoClassResistanceMultipliers,
+                                AggregateIniValueList<ClassMultiplier> dinoClassDamageMultipliers, AggregateIniValueList<ClassMultiplier> dinoClassResistanceMultipliers)
         {
             this.DinoSpawnWeightMultipliers = dinoSpawnWeightMultipliers;
             this.PreventDinoTameClassNames = preventDinoTameClassNames;
@@ -40,32 +32,65 @@ namespace ARK_Server_Manager.Lib.ViewModel
             Reset();
         }
 
+        private DinoSettings CreateDinoSetting(string className, string mod, bool knownDino, bool hasNameTag, bool hasClassName, ArkApplication arkApplication)
+        {
+            var nameTag = GameData.NameTagForClass(className);
+            var isSpawnable = GameData.IsSpawnableForClass(className);
+            var isTameable = GameData.IsTameableForClass(className);
+
+            return new DinoSettings()
+            {
+                ArkApplication = arkApplication,
+                ClassName = className,
+                Mod = mod,
+                KnownDino = knownDino,
+                NameTag = nameTag,
+
+                CanSpawn = true,
+                CanTame = isTameable == DinoTamable.True || isTameable == DinoTamable.ByBreeding,
+                ReplacementClass = className,
+
+                SpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
+                OverrideSpawnLimitPercentage = DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE,
+                SpawnLimitPercentage = DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE,
+                OriginalSpawnWeightMultiplier = DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER,
+                OriginalOverrideSpawnLimitPercentage = DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE,
+                OriginalSpawnLimitPercentage = DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE,
+
+                TamedDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                TamedResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                WildDamageMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+                WildResistanceMultiplier = ClassMultiplier.DEFAULT_MULTIPLIER,
+
+                HasClassName = hasClassName,
+                HasNameTag = hasNameTag,
+                IsSpawnable = isSpawnable,
+                IsTameable = isTameable,
+            };
+        }
+
+        public DinoSettingsList Clone()
+        {
+            DinoSettingsList clone = new DinoSettingsList();
+            clone.Clear();
+
+            foreach (var dinoSetting in this)
+            {
+                clone.Add(dinoSetting.Clone());
+            }
+
+            return clone;
+        }
+
         public void Reset()
         {
             this.Clear();
-            foreach(var entry in GameData.GetDinoClasses())
-            {
-                this.Add(new DinoSettings()
-                {
-                    ClassName = entry,
-                    FriendlyName = GameData.FriendlyNameForClass(entry),
-                    NameTag = GameData.NameTagForClass(entry),
-                    CanSpawn = true,
-                    ReplacementClass = entry,
-                    CanTame = true,
-                    CanSetSpawnMultipliers = !String.IsNullOrEmpty(GameData.NameTagForClass(entry)),
-                    SpawnWeightMultiplier = 0.1f,
-                    OverrideSpawnLimitPercentage = true,
-                    SpawnLimitPercentage = 1.0f,
-                    TamedDamageMultiplier = 1.0f,
-                    TamedResistanceMultiplier = 1.0f,
-                    WildDamageMultiplier = 1.0f,
-                    WildResistanceMultiplier = 1.0f,
-                });
-            }
 
-            // sort the collection by the friendly name.
-            this.Sort(row => row.FriendlyName);
+            var dinoSpawns = GameData.GetDinoSpawns();
+            foreach (var entry in dinoSpawns)
+            {
+                this.Add(CreateDinoSetting(entry.ClassName, entry.Mod, entry.KnownDino, entry.DinoNameTag != null, true, entry.ArkApplication));
+            }
         }
 
         public void RenderToView()
@@ -74,68 +99,134 @@ namespace ARK_Server_Manager.Lib.ViewModel
 
             foreach(var entry in this.DinoSpawnWeightMultipliers)
             {
-                var settings = this.FirstOrDefault(vi => vi.NameTag == entry.DinoNameTag);
-                if (settings != null)
+                if (string.IsNullOrWhiteSpace(entry.DinoNameTag))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.NameTag == entry.DinoNameTag).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    settings.SpawnWeightMultiplier = entry.SpawnWeightMultiplier;
-                    settings.OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
-                    settings.SpawnLimitPercentage = entry.SpawnLimitPercentage;
+                    this.Add(CreateDinoSetting(entry.DinoNameTag, entry.Mod, entry.KnownDino, true, false, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.NameTag == entry.DinoNameTag).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.SpawnWeightMultiplier = entry.SpawnWeightMultiplier;
+                    dinoSetting.OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
+                    dinoSetting.SpawnLimitPercentage = entry.SpawnLimitPercentage;
+
+                    dinoSetting.OriginalSpawnWeightMultiplier = entry.SpawnWeightMultiplier;
+                    dinoSetting.OriginalOverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
+                    dinoSetting.OriginalSpawnLimitPercentage = entry.SpawnLimitPercentage;
                 }
             }
 
             foreach(var entry in this.PreventDinoTameClassNames)
             {
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry);
-                if (dinoSettings != null)
+                if (string.IsNullOrWhiteSpace(entry))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.ClassName == entry).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.CanTame = false;
+                    this.Add(CreateDinoSetting(entry, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.CanTame = false;
                 }
             }
 
             foreach(var entry in this.NpcReplacements)
             {
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.FromClassName);
-                if (dinoSettings != null)
+                if (string.IsNullOrWhiteSpace(entry.FromClassName))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.ClassName == entry.FromClassName).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.CanSpawn = !string.IsNullOrWhiteSpace(entry.ToClassName);
-                    dinoSettings.ReplacementClass = dinoSettings.CanSpawn ? entry.ToClassName : dinoSettings.ClassName;
+                    this.Add(CreateDinoSetting(entry.FromClassName, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry.FromClassName).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.CanSpawn = !string.IsNullOrWhiteSpace(entry.ToClassName);
+                    dinoSetting.ReplacementClass = dinoSetting.CanSpawn ? entry.ToClassName : dinoSetting.ClassName;
                 }
             }
 
             foreach (var entry in this.TamedDinoClassDamageMultipliers)
             {
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
-                if (dinoSettings != null)
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.TamedDamageMultiplier = entry.Multiplier;
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.TamedDamageMultiplier = entry.Multiplier;
                 }
             }
 
             foreach(var entry in this.TamedDinoClassResistanceMultipliers)
             {
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
-                if (dinoSettings != null)
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.TamedResistanceMultiplier = entry.Multiplier;
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.TamedResistanceMultiplier = entry.Multiplier;
                 }
             }
 
             foreach (var entry in this.DinoClassDamageMultipliers)
             {
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
-                if (dinoSettings != null)
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
+                var dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.WildDamageMultiplier = entry.Multiplier;
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.WildDamageMultiplier = entry.Multiplier;
                 }
             }
 
             foreach (var entry in this.DinoClassResistanceMultipliers)
             {
+                if (string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
 
-                var dinoSettings = this.FirstOrDefault(vi => vi.ClassName == entry.ClassName);
-                if (dinoSettings != null)
+                var dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                if (dinoSettings == null || dinoSettings.Length == 0)
                 {
-                    dinoSettings.WildResistanceMultiplier = entry.Multiplier;
+                    this.Add(CreateDinoSetting(entry.ClassName, string.Empty, false, false, true, ArkApplication.Unknown));
+                }
+
+                dinoSettings = this.Where(vi => vi.ClassName == entry.ClassName).ToArray();
+                foreach (var dinoSetting in dinoSettings)
+                {
+                    dinoSetting.WildResistanceMultiplier = entry.Multiplier;
                 }
             }
         }
@@ -154,30 +245,80 @@ namespace ARK_Server_Manager.Lib.ViewModel
                        
             foreach(var entry in this)
             {
-                if (!String.IsNullOrWhiteSpace(entry.NameTag))
+                if (entry.HasNameTag && !string.IsNullOrWhiteSpace(entry.NameTag))
                 {
-                    this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                    if (!entry.KnownDino ||
+                        !entry.OverrideSpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_OVERRIDE_SPAWN_LIMIT_PERCENTAGE) ||
+                        !entry.SpawnLimitPercentage.Equals(DinoSpawn.DEFAULT_SPAWN_LIMIT_PERCENTAGE) ||
+                        !entry.SpawnWeightMultiplier.Equals(DinoSpawn.DEFAULT_SPAWN_WEIGHT_MULTIPLIER))
                     {
-                        ClassName = entry.ClassName,
-                        DinoNameTag = entry.NameTag,
-                        OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
-                        SpawnLimitPercentage = entry.SpawnLimitPercentage,
-                        SpawnWeightMultiplier = entry.SpawnWeightMultiplier
-                    });
+
+                        var dinoSpawns = this.DinoSpawnWeightMultipliers.Where(d => d.DinoNameTag.Equals(entry.NameTag, StringComparison.OrdinalIgnoreCase)).ToArray();
+                        if (dinoSpawns == null || dinoSpawns.Length == 0)
+                        {
+                            this.DinoSpawnWeightMultipliers.Add(new DinoSpawn()
+                            {
+                                ClassName = entry.ClassName,
+                                DinoNameTag = entry.NameTag,
+                                OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage,
+                                SpawnLimitPercentage = entry.SpawnLimitPercentage,
+                                SpawnWeightMultiplier = entry.SpawnWeightMultiplier
+                            });
+                        }
+                        else
+                        {
+                            foreach (var dinoSpawn in dinoSpawns)
+                            {
+                                if (entry.SpawnWeightMultiplier != entry.OriginalSpawnWeightMultiplier || 
+                                    entry.OverrideSpawnLimitPercentage != entry.OriginalOverrideSpawnLimitPercentage ||
+                                    entry.SpawnLimitPercentage != entry.OriginalSpawnLimitPercentage)
+                                {
+                                    dinoSpawn.OverrideSpawnLimitPercentage = entry.OverrideSpawnLimitPercentage;
+                                    dinoSpawn.SpawnLimitPercentage = entry.SpawnLimitPercentage;
+                                    dinoSpawn.SpawnWeightMultiplier = entry.SpawnWeightMultiplier;
+                                }
+                            }
+                        }
+                    }
                 }
 
-                if(!entry.CanTame)
+                if (entry.HasClassName && !string.IsNullOrWhiteSpace(entry.ClassName))
                 {
-                    this.PreventDinoTameClassNames.Add(entry.ClassName);
+                    if ((entry.IsTameable == DinoTamable.True || entry.IsTameable == DinoTamable.ByBreeding) && !entry.CanTame)
+                    {
+                        this.PreventDinoTameClassNames.Add(entry.ClassName);
+                    }
+
+                    this.NpcReplacements.Add(new NPCReplacement() { FromClassName = entry.ClassName, ToClassName = entry.CanSpawn ? entry.ReplacementClass : string.Empty });
+
+                    if (entry.IsTameable == DinoTamable.True || entry.IsTameable == DinoTamable.ByBreeding)
+                    {
+                        // check if the value has changed.
+                        if (!entry.TamedDamageMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
+                            this.TamedDinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedDamageMultiplier });
+
+                        // check if the value has changed.
+                        if (!entry.TamedResistanceMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
+                            this.TamedDinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedResistanceMultiplier });
+                    }
+
+                    // check if the value has changed.
+                    if (!entry.WildDamageMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
+                        this.DinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildDamageMultiplier });
+
+                    // check if the value has changed.
+                    if (!entry.WildResistanceMultiplier.Equals(ClassMultiplier.DEFAULT_MULTIPLIER))
+                        this.DinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildResistanceMultiplier });
                 }
-
-                this.NpcReplacements.Add(new NPCReplacement() { FromClassName = entry.ClassName, ToClassName = entry.CanSpawn ? entry.ReplacementClass : String.Empty });
-
-                this.TamedDinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedDamageMultiplier });
-                this.TamedDinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.TamedResistanceMultiplier });
-                this.DinoClassDamageMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildDamageMultiplier });
-                this.DinoClassResistanceMultipliers.Add(new ClassMultiplier() { ClassName = entry.ClassName, Multiplier = entry.WildResistanceMultiplier });
             }
+        }
+
+        public void UpdateForLocalization()
+        {
+            //foreach (var dinoSetting in this)
+            //{
+            //    dinoSetting.FriendlyName = GameData.FriendlyNameForClass(dinoSetting.ClassName);
+            //}
         }
     }
 }

@@ -27,24 +27,16 @@ namespace ARK_Server_Manager.Lib
         }
 
         public static readonly DependencyProperty ServersProperty = DependencyProperty.Register(nameof(Servers), typeof(ObservableCollection<Server>), typeof(ServerManager), new PropertyMetadata(new ObservableCollection<Server>()));
-        public static readonly DependencyProperty AvailableVersionProperty = DependencyProperty.Register(nameof(AvailableVersion), typeof(Version), typeof(ServerManager), new PropertyMetadata(new Version()));
 
         public ObservableCollection<Server> Servers
         {
             get { return (ObservableCollection<Server>)GetValue(ServersProperty); }
             set { SetValue(ServersProperty, value); }
         }
-
-        public Version AvailableVersion
-        {
-            get { return (Version)GetValue(AvailableVersionProperty); }
-            set { SetValue(AvailableVersionProperty, value); }
-        }
       
         public ServerManager()
         {
             this.Servers.CollectionChanged += Servers_CollectionChanged;
-            CheckForUpdatesAsync().DoNotWait();
         }
 
         void Servers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -74,13 +66,23 @@ namespace ARK_Server_Manager.Lib
 
         public void Remove(Server server, bool deleteProfile)
         {
-            if(deleteProfile)
+            if (deleteProfile)
             {
                 try
                 {
-                    File.Delete(server.Profile.GetProfilePath());
+                    var profileFileOld = server.Profile.GetProfileFileOld();
+                    if (File.Exists(profileFileOld))
+                        File.Delete(profileFileOld);
+
+                    var profileFile = server.Profile.GetProfileFile();
+                    if (File.Exists(profileFile))
+                        File.Delete(profileFile);
+
+                    var profileFolder = server.Profile.GetProfileIniDir();
+                    if (Directory.Exists(profileFolder))
+                        Directory.Delete(profileFolder, recursive: true);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Best effort to delete.
                 }
@@ -89,10 +91,21 @@ namespace ARK_Server_Manager.Lib
             this.Servers.Remove(server);
         }
 
-        public async Task CheckForUpdatesAsync()
+        public void CheckProfiles()
         {
-            var result = await NetworkUtils.GetLatestAvailableVersion();
-            await TaskUtils.RunOnUIThreadAsync(() => this.AvailableVersion = result.Current);
+            var serverIds = new Dictionary<string, bool>();
+            foreach (var server in Servers)
+            {
+                if (server == null || server.Profile == null)
+                    continue;
+
+                while (serverIds.ContainsKey(server.Profile.ProfileID))
+                {
+                    server.Profile.ResetProfileId();
+                }
+
+                serverIds.Add(server.Profile.ProfileID, true);
+            }
         }
     }
 }

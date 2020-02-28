@@ -1,55 +1,68 @@
 ﻿Param
 (
     [Parameter()]
-    [string]$rootDir = "E:\Development\Projects\GitHub\ARK-Dedicated-Server-Tool\ARK Server Manager",
+    [string]$rootPath = "E:\Development\Projects\GitHub\ARK-Dedicated-Server-Tool\ARK Server Manager",
 
     [Parameter()]
-    [string]$srcXml = "publish\ARK Server Manager.application",
+    [string]$publishDir = "publish",
 
     [Parameter()]
-    [string]$destFile = "publish\latest.txt"
+    [string]$srcXmlFilename = "ARK Server Manager.application",
+
+    [Parameter()]
+    [string]$destLatestFilename = "latest.txt",
+
+    [Parameter()]
+    [string]$filenamePrefix = "Ark Server Manager_",
 )
 
 [string] $AppVersion = ""
+[string] $AppVersionShort = ""
 
-function Write-LatestTxt()
+function Get-LatestVersion()
 {    
-    $xml = [xml](Get-Content $srcXml)
+    $xmlFile = "$($rootPath)\$($publishDir)\$($srcXmlFilename)"
+    $xml = [xml](Get-Content $xmlFile)
     $version = $xml.assembly.assemblyIdentity | Select version
-    $version.version | Set-Content $destFile
     return $version.version;
 }
 
-function Create-Zip( $zipfilename, $sourcedir )
+function Create-Zip( $sourcePath , $zipFile )
 {
-    if(Test-Path $zipfilename)
+    if(Test-Path $zipFile)
     {
-        Remove-Item -LiteralPath:$zipfilename -Force
+        Remove-Item -LiteralPath:$zipFile -Force
     }
-   Add-Type -Assembly System.IO.Compression.FileSystem
-   Write-Host "Zipping $($sourcedir) into $($zipfilename)"
-   $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-   [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir,
-        $zipfilename, $compressionLevel, $false)
+	Add-Type -Assembly System.IO.Compression.FileSystem
+	Write-Host "Zipping $($sourcePath) into $($zipFile)"
+	$compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+	[System.IO.Compression.ZipFile]::CreateFromDirectory($sourcePath, $zipFile, $compressionLevel, $false)
 }
 
-$AppVersion = Write-LatestTxt
-Write-Host "LatestVersion $($AppVersion)"
+$txtDestFile = "$($rootPath)\$($publishDir)\$($destLatestFilename)"
+
+$AppVersion = Get-LatestVersion
+$AppVersionShort = $AppVersion.Substring(0, $AppVersion.LastIndexOf('.'))
+$AppVersionShort | Set-Content "$($txtDestFile)"
+Write-Host "LatestVersion $($AppVersionShort) ($($AppVersion))"
+
 $versionWithUnderscores = $AppVersion.Replace('.', '_')
-$publishSrcDir = "$($rootDir)\publish\Application Files\Ark Server Manager_$($versionWithUnderscores)"
-Remove-Item -Path "$($publishSrcDir)\Ark Server Manager.application"
-$publishDestFileName = "ArkServerManager_$($AppVersion).zip"
-$publishDestFile = "$($rootDir)\publish\$($publishDestFileName)"
-Create-Zip $publishDestFile $publishSrcDir
+$publishSrcDir = "$($rootPath)\$($publishDir)\Application Files\$($filenamePrefix)$($versionWithUnderscores)"
+Remove-Item -Path "$($publishSrcDir)\$($srcXmlFilename)" -ErrorAction Ignore
+
+$filenamePrefixStripped = $filenamePrefix.Replace(' ', '')
+$zipDestFileName = "$($filenamePrefixStripped)$($AppVersionShort).zip"
+$zipDestFile = "$($rootPath)\$($publishDir)\$($zipDestFileName)"
+Create-Zip $publishSrcDir $zipDestFile
 
 $batchFileContent = @"
-set AWS_DEFAULT_PROFILE=ASMPublisher
-aws s3 cp "$($publishDestFile)" s3://arkservermanager/release/
-aws s3 cp s3://arkservermanager/release/$($publishDestFileName) s3://arkservermanager/release/latest.zip
-aws s3 cp "$($destFile)" s3://arkservermanager/release/
+set AWS_DEFAULT_PROFILE=ASMPublish
+aws s3 cp "$($zipDestFile)" s3://arkservermanager/release/
+aws s3 cp s3://arkservermanager/release/$($zipDestFileName) s3://arkservermanager/release/latest.zip
+aws s3 cp "$($txtDestFile)" s3://arkservermanager/release/
 "@
 
-$batchFile = "$env:TEMP\ASMPublishToAWS.cmd"
+$batchFile = "$env:TEMP\$($filenamePrefixStripped)PublishToFtp.cmd"
 $batchFileContent | Out-File -LiteralPath:$batchFile -Force -Encoding ascii
 
 Invoke-Expression -Command:$batchFile

@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using System.Windows;
 
 namespace ARK_Server_Manager.Lib
 {
-    public class RCONParameters
+    public class RCONParameters : PlayerListParameters
     {
-        public string ProfileName { get; set; }
+        public static readonly DependencyProperty MaxPlayersProperty = DependencyProperty.Register(nameof(MaxPlayers), typeof(int), typeof(RCONParameters), new PropertyMetadata(0));
 
-        public string ServerIP { get; set; }
+        public string RCONHost { get; set; }
+
+        public IPAddress RCONHostIP
+        {
+            get
+            {
+                try
+                {
+                    var ipAddresses = Dns.GetHostAddresses(RCONHost);
+                    if (ipAddresses.Length > 0)
+                        return ipAddresses[0].MapToIPv4();
+                }
+                catch {}
+
+                return IPAddress.None;
+            }
+        }
 
         public int RCONPort { get; set; }
 
         public string AdminPassword { get; set; }
 
-        public string InstallDirectory { get; set; }
-
-        public Rect RCONWindowExtents { get; set; }
-
-        public int MaxPlayers { get; set; }
-
-        public Server Server { get; set; }
+        public int MaxPlayers
+        {
+            get { return (int)GetValue(MaxPlayersProperty); }
+            set { SetValue(MaxPlayersProperty, value); }
+        }
     }
 }
